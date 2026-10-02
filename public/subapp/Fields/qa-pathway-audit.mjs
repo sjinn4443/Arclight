@@ -368,7 +368,7 @@ function expectedTargets(primaryHtml, lesionHtml, rapdState, sourceAssessment) {
   }
 
   if (conditionText.includes("binocular blindness")) {
-    return preChiasmal("both");
+    return [...preChiasmal("both"), "part-v1-left", "part-v1-right"];
   }
 
   if (conditionText.includes("junctional scotoma")) {

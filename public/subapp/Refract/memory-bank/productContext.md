@@ -58,3 +58,7 @@ Provide a lightweight refraction helper that runs anywhere in a browser, stays e
 - Rich navigation-heavy workflows
 - Multi-page onboarding or wizard flows
 - Replacing clinician judgement with opaque automation
+
+## MCQ review experience — 26 July 2026
+
+Attempts must fail safely when incomplete, then provide useful result-first review with answer rationales and source status. Retry should preserve the selected tier while drawing a fresh attempt. Clinical approval remains a separate external gate.

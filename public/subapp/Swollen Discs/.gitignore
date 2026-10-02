@@ -32,6 +32,7 @@ jspm_packages/
 # Distribution directories
 dist/
 build/
+output/
 
 # Local env files
 .env

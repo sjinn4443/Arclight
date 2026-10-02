@@ -198,6 +198,7 @@ function runImageAssetSelectionTest() {
 }
 
 function runTimedControllerIntegrationTest() {
+  let pendingImage;
   const state = createAppState({ defaultImageSrc: 'assets/images/ret180.webp' });
   const machine = createStateMachine(state);
   const timedGuessBox = createTimedGuessBox();
@@ -209,7 +210,9 @@ function runTimedControllerIntegrationTest() {
     setCataractLevel: () => {},
     getCataractLevel: () => 0,
     ensureUndilated: () => {},
-    setImageSource: () => {},
+    setImageSource: (path, callbacks = {}) => {
+      pendingImage = callbacks;
+    },
     getActiveConditionImagePath: () => 'assets/images/ret180.webp'
   };
 
@@ -237,11 +240,16 @@ function runTimedControllerIntegrationTest() {
   assert.equal(timedController.startTimedTest(), true);
   assert.equal(state.timed.isActive, true);
   assert.equal(state.timed.round, 1);
+  assert.equal(state.timed.countdownTimer, null, 'Loading must not consume viewing time.');
+  timedController.submitTimedGuess();
+  assert.equal(state.timed.score, 0, 'Loading must not accept an answer.');
+  pendingImage.onReady();
   assert.ok(state.timed.countdownTimer);
 
   assert.equal(timedController.startTimedTest(), false);
 
   timedController.destroy();
+  pendingImage.onReady?.();
   assert.equal(state.timed.isActive, false);
   assert.equal(state.timed.countdownTimer, null);
   assert.equal(state.timed.feedbackTimer, null);
@@ -262,6 +270,7 @@ function runTimedSetGuaranteedFlipTest() {
     const machine = createStateMachine(state);
     const timedGuessBox = createTimedGuessBox();
     const timedAugmentationHistory = [];
+    const labelsSeen = [];
     const viewer = {
       setDiscVisible: () => {},
       setViewerControlsDisabled: () => {},
@@ -274,7 +283,7 @@ function runTimedSetGuaranteedFlipTest() {
       setRightEye: () => {},
       getIsRightEye: () => true,
       getFovDegrees: () => 8,
-      setImageSource: () => {},
+      setImageSource: (path, callbacks = {}) => callbacks.onReady?.(),
       getActiveConditionImagePath: () => 'assets/images/ret180.webp',
       clearTimedAugmentation: () => {},
       setTimedAugmentation: (augmentation) => {
@@ -321,6 +330,7 @@ function runTimedSetGuaranteedFlipTest() {
         radio.checked = false;
       });
       const currentLabel = state.timed.currentLabel;
+      labelsSeen.push(currentLabel);
       const selected = timedGuessBox.querySelector(
         `input[name="timedGuess"][value="${currentLabel}"]`
       );
@@ -331,13 +341,18 @@ function runTimedSetGuaranteedFlipTest() {
     }
 
     assert.equal(state.timed.isActive, false);
+    assert.equal(
+      new Set(labelsSeen.slice(0, 3)).size,
+      3,
+      'Every set must cover all three classes.'
+    );
     assert.ok(
       timedAugmentationHistory.length >= 4,
       'Expected one augmentation payload per timed round.'
     );
     assert.ok(
-      timedAugmentationHistory.some(Boolean),
-      'Expected at least one vertically flipped round per timed set.'
+      timedAugmentationHistory.every((flipped) => !flipped),
+      'Direct-view timed rounds must preserve vertical anatomy.'
     );
   } finally {
     globalThis.setTimeout = originalSetTimeout;
@@ -405,6 +420,8 @@ function runMcqControllerScopedQueryTest() {
 
 async function runModalFocusAndEscapeTest() {
   const originalDocument = globalThis.document;
+  const originalRequestAnimationFrame = globalThis.requestAnimationFrame;
+  globalThis.requestAnimationFrame = (callback) => setTimeout(callback, 0);
   const fakeDocument = {
     activeElement: null,
     body: {
@@ -453,7 +470,8 @@ async function runModalFocusAndEscapeTest() {
     assert.equal(sideMenuButtonA.tabIndex, 0);
 
     modalManager.setModalState(infoModal, true, infoIcon);
-    await Promise.resolve();
+    modalManager.setSideMenuOpen(false);
+    await new Promise(resolve => setTimeout(resolve, 0));
     assert.equal(fakeDocument.activeElement, infoCloseButton);
     assert.equal(state.ui.activeModal, 'infoModal');
 
@@ -510,6 +528,7 @@ async function runModalFocusAndEscapeTest() {
     assert.equal(state.ui.activeModal, null);
   } finally {
     globalThis.document = originalDocument;
+    globalThis.requestAnimationFrame = originalRequestAnimationFrame;
   }
 }
 

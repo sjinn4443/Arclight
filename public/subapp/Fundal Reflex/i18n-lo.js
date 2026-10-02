@@ -324,7 +324,7 @@
     // fragment independently leaves clinical words behind, so replace the
     // complete visible sentence with its reviewed Lao version.
     setText(
-      ".info-reflex-definition p:nth-of-type(2)",
+      ".info-reflex-definition p:nth-of-type(2):not(.info-purpose-copy)",
       translations.get(
         "The fundal reflex is the glow in the pupil from the fundus, seen with Arclight at arm's length. We use fundal reflex rather than red reflex. In those with darker pigmentation, a normal reflex may look orange-yellow or blue-white. Bright, equal and round is reassuring. Null, milky or black means the back is not being seen.",
       ),

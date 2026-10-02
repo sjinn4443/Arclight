@@ -38,12 +38,14 @@
     pupilReactivityByEye: { left: 1, right: 1 },
     pupilModelByEye: { left: "normal", right: "normal" },
     activeLightSide: "none",
+    nearActive: false,
     lightPillSide: "right",
     lightPillPos: 0.5,
     ambientLevel: 100,
     rapdValue: 0,
     infoPopupOpen: false,
     coverEye: "none",
+    coverObservation: "",
     isApplyingPreset: false,
     isBabyMode: false,
     activeDiagnosticHints: { left: "", right: "" },
@@ -68,6 +70,7 @@
     gazeDirection: "primary",
     gazeVector: { x: 0, y: 0 },
     gazePatternCue: "",
+    nystagmusFastPhase: "none",
     gazeSamples: {
       primary: null,
       up: null,
@@ -77,6 +80,12 @@
 
   function clearDiagnosticHints() {
     state.activeDiagnosticHints = { left: "", right: "" };
+  }
+
+  function resetPupilPhysiology() {
+    state.pupilReactivityByEye = { left: 1, right: 1 };
+    state.pupilModelByEye = { left: "normal", right: "normal" };
+    state.rapdValue = 0;
   }
 
   function setDiagnosticHint(eyeType, hint) {
@@ -126,6 +135,7 @@
     getReflexColor: SimCoreRef.getReflexColor,
     PresetRunner: PresetRunnerRef,
     clearDiagnosticHints,
+    resetPupilPhysiology,
     setDiagnosticHint,
     clearGazeSamples,
     markManualInteraction,

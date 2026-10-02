@@ -23969,6 +23969,73 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 /* PEC's native lessons use the same scroll cards as Medical Students. */
+#pecEyeLessonPage .pec-reflex-panel {
+  width: min(88vw, 660px);
+  min-height: auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 22px 18px;
+}
+
+#pecEyeLessonPage .pec-reflex-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2382 / 1700;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+}
+
+#pecEyeLessonPage .pec-reflex-layer {
+  position: absolute;
+  display: block;
+  max-width: none;
+  margin: 0;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+#pecEyeLessonPage .pec-reflex-variations {
+  width: min(100%, 400px);
+  aspect-ratio: 1169 / 1280;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+#pecEyeLessonPage .pec-reflex-variations svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#pecEyeLessonPage .pec-reflex-replay {
+  width: auto;
+  justify-self: end;
+  padding: 9px 15px;
+  border: 1px solid #087d08;
+  border-radius: 999px;
+  background: #ecffec;
+  color: #075c07;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#pecEyeLessonPage .pec-reflex-replay:focus-visible {
+  outline: 3px solid #087d08;
+  outline-offset: 3px;
+}
+
+#pecEyeLessonPage .pec-reflex-replay:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+#pecEyeLessonPage .pec-reflex-panel p {
+  margin: 0;
+}
+
 :is(#pecEyeLessonPage, #primaryEarCareLessonPage)
   .medical-students-screening-page {
   --medical-orange: #00d900;

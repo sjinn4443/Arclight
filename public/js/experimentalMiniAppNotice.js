@@ -17,6 +17,7 @@ const EXPERIMENTAL_MINI_APP_PAGE_IDS = new Set([
   "fieldsInteractivePage",
   "refractInteractivePage",
   "sauronInteractivePage",
+  "discsInteractivePage",
   "swollenDiscsInteractivePage",
   "glaucomaRAPDFullSwingInteractive",
   "squintPalsySimulatorPage",

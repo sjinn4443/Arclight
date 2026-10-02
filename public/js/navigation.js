@@ -302,6 +302,8 @@ function injectInteractiveSubappChrome(iframe) {
   if (!style) {
     style = doc.createElement("style");
     style.id = "arclightEmbeddedSubappChromeStyle";
+    const nonce = doc.querySelector("script[nonce], style[nonce]")?.nonce;
+    if (nonce) style.nonce = nonce;
     style.textContent = `
       html.arclight-embedded-subapp,
       body.arclight-embedded-subapp {
@@ -369,15 +371,16 @@ function injectInteractiveSubappChrome(iframe) {
         height: auto !important;
       }
 
-      .arclight-embedded-actions #info-icon {
+      .arclight-embedded-actions [data-arclight-embedded-info-button="true"] {
         order: 1 !important;
+        color: var(--arclight-embedded-control-color, currentColor) !important;
       }
 
       .arclight-embedded-actions [data-arclight-embedded-menu-button="true"] {
         order: 2 !important;
       }
 
-      .arclight-embedded-actions #info-icon,
+      .arclight-embedded-actions [data-arclight-embedded-info-button="true"],
       .arclight-embedded-actions [data-arclight-embedded-menu-button="true"] {
         position: static !important;
         inset: auto !important;
@@ -449,10 +452,15 @@ function injectInteractiveSubappChrome(iframe) {
     appBar.appendChild(actions);
   }
 
-  const infoIcon = doc.getElementById("info-icon");
+  const infoIcon = appBar.querySelector(
+    '#info-icon, #info-toggle, #infoButton, [aria-label="Open quick guide"], [aria-label="Open information"]',
+  );
+  infoIcon?.setAttribute("data-arclight-embedded-info-button", "true");
   const burgerIcon =
     doc.getElementById("burger-icon") ||
     doc.getElementById("sidebar-toggle") ||
+    doc.getElementById("menuButton") ||
+    doc.getElementById("menu-icon") ||
     appBar.querySelector(
       '[aria-label="Open menu"], [aria-label="Open MCQ menu"], .appbar-button-left',
     );
@@ -485,8 +493,17 @@ function injectInteractiveSubappChrome(iframe) {
   }
 
   const titleEl = appBar.querySelector("h1");
-  const controlColorSource = burgerIcon || infoIcon || appBar;
+  // Squint draws its visible title in ::after while keeping a hidden h1.
+  const titleAfterStyle = doc.defaultView?.getComputedStyle?.(
+    appBar,
+    "::after",
+  );
+  const hasPaintedTitle =
+    titleAfterStyle?.content &&
+    !["none", "normal", '""', "''"].includes(titleAfterStyle.content);
+  const controlColorSource = titleEl || infoIcon || appBar;
   const controlColor =
+    (hasPaintedTitle ? titleAfterStyle.color : null) ||
     doc.defaultView?.getComputedStyle?.(controlColorSource)?.color ||
     "currentColor";
 
@@ -606,6 +623,7 @@ function injectInteractiveSubappChrome(iframe) {
 
   applyStyles(infoIcon, {
     order: "1",
+    color: controlColor,
     position: "static",
     inset: "auto",
     "grid-column": "auto",

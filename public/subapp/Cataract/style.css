@@ -52,9 +52,9 @@
   --tap-target-dense: 32px;
   --radius-xs: 4px;
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-control: 10px;
-  --radius-panel: 18px;
+  --radius-md: 10px;
+  --radius-control: 8px;
+  --radius-panel: 14px;
   --radius-pill: 999px;
   --motion-quick: 0.18s ease;
   --motion-standard: 0.2s ease;
@@ -73,6 +73,10 @@ body {
   padding: 0;
   min-height: 100%;
   overscroll-behavior-x: none;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 html {
@@ -266,24 +270,23 @@ main section h2 {
 
 .history-panel {
   padding: 8px;
-  border: 1px solid rgba(120, 144, 174, 0.3);
+  border: 1px solid rgba(120, 144, 174, 0.24);
   border-radius: var(--radius-md);
   background: var(--surface-soft);
 }
 
 .history-panel--core {
   background: #ffffff;
-  border-color: rgba(120, 144, 174, 0.42);
-  box-shadow: 0 3px 8px rgba(18, 23, 34, 0.045);
+  border-color: rgba(120, 144, 174, 0.32);
 }
 
 .history-panel--required {
-  border-color: rgba(120, 144, 174, 0.38);
+  border-color: rgba(120, 144, 174, 0.28);
   background: #ffffff;
 }
 
 .history-panel--secondary {
-  border-color: rgba(120, 144, 174, 0.22);
+  border-color: rgba(120, 144, 174, 0.18);
   background: rgba(248, 251, 255, 0.72);
 }
 
@@ -303,11 +306,14 @@ main section h2 {
 }
 
 .history-row--three {
-  grid-template-columns: minmax(96px, 0.88fr) minmax(126px, 1.15fr) minmax(
-      86px,
-      0.8fr
-    );
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr) minmax(0, 0.8fr);
   align-items: center;
+  gap: 4px;
+}
+
+.history-row--three .history-field {
+  gap: 3px;
+  font-size: 0.76rem;
 }
 
 .history-field {
@@ -342,7 +348,8 @@ main section h2 {
   gap: 6px;
 }
 
-.choice-cluster span {
+.choice-cluster span,
+.choice-cluster > label {
   white-space: nowrap;
 }
 
@@ -363,7 +370,7 @@ main section h2 {
 }
 
 #pain-yes-label {
-  margin-left: 7px;
+  margin-left: 0;
 }
 
 .question-group {
@@ -446,7 +453,7 @@ select {
   min-height: 30px;
   padding: 3px 18px 3px 7px;
   border: 1px solid #aeb8ca;
-  border-radius: 8px;
+  border-radius: var(--radius-control);
   background: #ffffff;
   color: var(--text-body);
   box-sizing: border-box;
@@ -471,6 +478,23 @@ select {
   background-position: right 5px center;
 }
 
+.tri-state-select {
+  flex: 0 0 52px;
+  width: 52px;
+}
+
+.tri-state-select.is-recorded-normal {
+  border-color: rgba(41, 122, 73, 0.52);
+  background-color: #f4fbf6;
+  color: #176036;
+}
+
+.tri-state-select.is-recorded-concern {
+  border-color: rgba(190, 42, 42, 0.58);
+  background-color: #fff5f5;
+  color: #a91f2c;
+}
+
 #ageBand,
 #nearVA {
   width: 56px;
@@ -482,7 +506,7 @@ select {
 }
 
 #distanceVA option.child-va-option {
-  font-style: italic;
+  font-style: normal;
 }
 
 .vision-row {
@@ -511,7 +535,8 @@ select {
   margin: -2px 0 8px;
   color: var(--text-muted);
   font-size: 0.72rem;
-  font-style: italic;
+  font-weight: 600;
+  font-style: normal;
   line-height: 1.25;
 }
 
@@ -604,6 +629,7 @@ main section.disabled .section-lock-hint {
   color: #667186;
   font-size: 0.68rem;
   font-weight: 700;
+  font-style: normal;
   line-height: 1.1;
   overflow-wrap: anywhere;
 }
@@ -699,7 +725,7 @@ main section.disabled .section-lock-hint {
   color: inherit;
   font-size: 0.76rem;
   font-weight: 700;
-  font-style: italic;
+  font-style: normal;
   line-height: 1.22;
 }
 
@@ -784,8 +810,8 @@ main section.disabled .section-lock-hint {
 }
 
 .info-close {
-  width: 30px;
-  height: 30px;
+  width: var(--tap-target-min);
+  height: var(--tap-target-min);
   padding: 0;
   border: 0;
   border-radius: var(--radius-sm);
@@ -793,6 +819,49 @@ main section.disabled .section-lock-hint {
   color: var(--text-strong);
   font-size: 22px;
   font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.image-preview-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 3200;
+  padding: 64px 20px 24px;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 8, 13, 0.8);
+  backdrop-filter: blur(2px);
+}
+
+.image-preview-dialog[hidden] {
+  display: none !important;
+}
+
+.image-preview-image {
+  display: block;
+  width: auto;
+  max-width: min(88vw, 520px);
+  max-height: min(76vh, 620px);
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  box-shadow: var(--shadow-strong);
+  object-fit: contain;
+}
+
+.image-preview-close {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 10px);
+  right: 12px;
+  width: var(--tap-target-min);
+  height: var(--tap-target-min);
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: var(--radius-control);
+  background: rgba(0, 0, 0, 0.72);
+  color: #ffffff;
+  font-size: 28px;
   line-height: 1;
   cursor: pointer;
 }
@@ -966,9 +1035,26 @@ select.recheck-flash {
   margin-left: 10px !important;
 }
 
+@media (max-width: 400px) {
+  .history-row--three .choice-cluster {
+    gap: 1px;
+  }
+
+  .history-row--three .history-field .inline-choice {
+    gap: 1px;
+    padding-inline: 0;
+  }
+
+  .history-row--three input[type="radio"] {
+    width: 17px;
+    height: 17px;
+    margin-left: 1px;
+  }
+}
+
 @media (max-width: 380px) {
   main {
-    padding: 7px 7px 10px;
+    padding: 7px 10px 10px;
   }
 
   main section {
@@ -980,8 +1066,33 @@ select.recheck-flash {
     font-size: 0.76rem;
   }
 
+  .history-row--three {
+    grid-template-columns:
+      minmax(82px, 0.95fr)
+      minmax(112px, 1.2fr)
+      minmax(86px, 0.95fr);
+    gap: 3px;
+  }
+
+  .history-row--three .history-field {
+    gap: 3px;
+    font-size: 0.74rem;
+  }
+
+  #ageBand {
+    min-width: 60px;
+    width: 60px;
+    padding-right: 14px;
+    padding-left: 4px;
+    background-position: right 3px center;
+  }
+
   .button-label {
     font-size: 0.64rem;
+  }
+
+  .history-field--vision .small-text {
+    display: none;
   }
 }
 
@@ -995,7 +1106,7 @@ select.recheck-flash {
   }
 
   main {
-    padding: 6px 7px 6px;
+    padding: 6px 10px 6px;
   }
 
   #cataractForm {
@@ -1004,7 +1115,7 @@ select.recheck-flash {
 
   main section {
     padding: 7px 8px;
-    border-radius: 16px;
+    border-radius: var(--radius-panel);
   }
 
   #top-section {
@@ -1033,17 +1144,9 @@ select.recheck-flash {
     padding-bottom: 9px;
   }
 
-  .history-row--three {
-    grid-template-columns: minmax(96px, 0.98fr) minmax(120px, 1.2fr) minmax(
-        78px,
-        0.82fr
-      );
-    gap: 5px;
-  }
-
   .history-field {
     gap: 5px;
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     line-height: 1.14;
   }
 
@@ -1053,7 +1156,7 @@ select.recheck-flash {
   }
 
   .history-field--age {
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   .choice-cluster {
@@ -1064,7 +1167,7 @@ select.recheck-flash {
   .question-group {
     margin-bottom: 4px;
     gap: 4px 6px;
-    font-size: 0.74rem;
+    font-size: 0.77rem;
     line-height: 1.18;
   }
 
@@ -1075,7 +1178,7 @@ select.recheck-flash {
 
   .flag-helper {
     margin-top: 0;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     line-height: 1.05;
   }
 
@@ -1086,9 +1189,13 @@ select.recheck-flash {
     padding-bottom: 2px;
   }
 
-  #ageBand,
   #nearVA {
     width: 52px;
+  }
+
+  #ageBand {
+    min-width: 60px;
+    width: 60px;
   }
 
   #distanceVA {
@@ -1119,11 +1226,11 @@ select.recheck-flash {
   }
 
   .result-summary--compact .result-label {
-    font-size: 0.62rem;
+    font-size: 0.66rem;
   }
 
   .result-summary--compact .result-value {
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     line-height: 1.16;
   }
 
@@ -1138,13 +1245,13 @@ select.recheck-flash {
 
   .action-note-line {
     margin-bottom: 2px;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     line-height: 1.16;
   }
 
   .section-lock-hint {
     margin: -1px 0 5px;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     line-height: 1.15;
   }
 
@@ -1159,7 +1266,7 @@ select.recheck-flash {
 
   .button-label {
     margin-top: 3px;
-    font-size: 0.61rem;
+    font-size: 0.68rem;
     line-height: 1.05;
   }
 
@@ -1172,4 +1279,81 @@ select.recheck-flash {
   main {
     padding-top: 10px;
   }
+}
+
+/* Shared fleet information-card type hierarchy. */
+.info-box .info-popup-header h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.info-box .info-popup-body,
+.info-box .info-popup-body p {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+.info-box .info-popup-body p.info-look-title {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.info-box .info-basics-cue strong {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.info-box .info-basics-cue small {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.info-box .info-popup-body p.info-version {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+  color: #6e7c95;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Fleet UI alignment: information card and main section hierarchy. */
+#info-popup {
+  border-radius: 16px;
+}
+
+#info-popup .info-popup-header {
+  min-height: 44px;
+}
+
+#info-popup .info-close {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+main > form h2 {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
 }

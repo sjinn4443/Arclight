@@ -1,0 +1,15 @@
+{
+  "name": "fundal-reflex-teaching-simulator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "test:bundle": "node tools/check-bundle.mjs",
+    "browser:review": "node tools/mobile-browser-check.mjs",
+    "test": "node tests/run-tests.mjs",
+    "check": "npm run build && npm test && npm run test:bundle"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5"
+  }
+}

@@ -1,8 +1,20 @@
 # Tech Context
 
+## Current runtime — 30 September 2026
+
+App-scoped cache: `arclight-trauma-v1.1-20260929-ots1-info-20260929-ui20260930`. Scoring and main-script queries retain `20260929-ots1`; the stylesheet retains `20260928-ui1`. See [fleet repair evidence](../../FLEET_FIXES_2026-09-30.md) for current tests and exclusions.
+
+## Untouched-state verification, 25 July 2026
+
+July cache and visible asset token: `20260725-unassessed1`. That browser review asserted a `360 x 740` viewport, `360px` document width, placeholder acuity, null score, null category, `Not assessed`, no text overlap and correct reset restoration.
+
+## v1.1 commands
+
+Run `npm ci`, `npm run lint` and `npm test`. Normal runtime uses local fonts and assets. Direct-file use remains supported while service-worker behaviour requires HTTP(S). The July dependency audit recorded one moderate and five high findings. It was not rerun in this UI repair and is not a current vulnerability assessment.
+
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Historical Memory Status (18/5/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -21,8 +33,9 @@
 
 ## External Assets
 
-- Google Fonts (Quicksand)
-- Font Awesome stylesheet (currently linked, minimal direct use)
+- No normal runtime CDN dependencies
+- Inter and Quicksand are packaged under `assets/fonts`
+- The CEHJ source remains a user-activated external reference link, not a runtime dependency
 - Local image assets for risk tooltips
 
 ## Runtime
@@ -47,4 +60,12 @@
 
 - Linting is configured (`eslint`, `stylelint`, `htmlhint`).
 - `npm run lint` is the current quality gate.
-- No automated runtime/unit test suite is configured yet.
+- Scoring and contract tests run through `npm test`.
+
+## Refactor verification — 26 July 2026
+
+`node --check shell-controller.js`, `npm test` and `npm run lint` pass. The service worker precaches `shell-controller.js?v=20260726-refactor1`. Direct-file use remains available because the runtime is unbundled local classic JavaScript.
+
+The Presenting-VA copy refinement uses main-script and cache version `20260726-copy2`. `npm test` protects the `Select` placeholder and concise guidance while rejecting the former repeated untouched guidance.
+
+The MCQ quality pass uses stylesheet, main-script and Trauma-cache token `20260726-mcqquality1`. `node --check script.js`, `npm test` and `npm run lint` pass. Contracts cover all 37 stable IDs, rationales, sources, review states, unanswered focus, full answer review and retry labels.

@@ -159,22 +159,41 @@ export function updateLightResponsivePupilScale({
   sweepX,
   sweepY,
   maxConstriction = 0.075,
+  isDilated = false,
+  consensualScale = 1,
 }) {
   const iris = eye?.querySelector(".iris");
   if (!iris) {
     return;
   }
 
-  if (flags.acgCase && isActiveEye) {
+  if (isDilated || flags.aniridiaCase || (flags.acgCase && isActiveEye)) {
     iris.style.setProperty("--light-pupil-scale", "1");
     return;
   }
 
+  const pupilScale = getLightResponsivePupilTargetScale({
+    pupilRadiusPx,
+    sweepX,
+    sweepY,
+    maxConstriction,
+  });
+  iris.style.setProperty(
+    "--light-pupil-scale",
+    Math.min(pupilScale, consensualScale).toFixed(3),
+  );
+}
+
+export function getLightResponsivePupilTargetScale({
+  pupilRadiusPx,
+  sweepX,
+  sweepY,
+  maxConstriction = 0.075,
+}) {
   const distancePx = Math.hypot(sweepX, sweepY);
   const responseRadiusPx = Math.max(1, pupilRadiusPx * 1.18);
   const rawT = Math.max(0, Math.min(1, distancePx / responseRadiusPx));
   const smoothT = rawT * rawT * (3 - 2 * rawT);
   const constrictionAmount = (1 - smoothT) * maxConstriction;
-  const pupilScale = 1 - constrictionAmount;
-  iris.style.setProperty("--light-pupil-scale", pupilScale.toFixed(3));
+  return 1 - constrictionAmount;
 }

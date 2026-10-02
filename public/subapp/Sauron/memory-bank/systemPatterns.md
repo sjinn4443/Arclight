@@ -1,5 +1,36 @@
 # System Patterns
 
+## Timed-test integrity pattern
+
+- Build the eligible timed-test pool through `getTimedTestCasePool()` so mode filtering and exclusions are explicit and testable.
+- Capture and restore the visible streak angle around hidden-case initialisation. Keep the generated case axis unchanged for scoring and reveal.
+- When a safety dialog opens over a case dialog, make the underlying dialog inert and hidden from assistive technology, then restore it when the safety dialog closes.
+- Keep intentional teaching geometry separate from cautionary wording. The ACG oval remains exaggerated while the adjacent text identifies it as stylised.
+
+## Case safety pattern
+
+- Keep level metadata and safety metadata separate in `src/case-catalog.js`.
+- Render case selection and safety-note controls as siblings. Never nest one button inside another.
+- Use one red warning triangle for a selected safety case and suppress the competing red tier dot.
+- Safety dialogs focus the close control, close with Escape and return focus to the originating warning control.
+- Safety metadata must not affect reflex rendering, MCQ scoring or timed-test selection.
+
+## Eye-engine consistency pattern
+
+- Derive the light-responsive pupil target from `Math.hypot(sweepX, sweepY)` and test horizontal, vertical, centred and distant positions.
+- Preserve Sauron's immediate response timing rather than importing Fundal Reflex's smoothing.
+- In examiner view, DOM `data-eye="left"` is screen-left patient RE and DOM `data-eye="right"` is screen-right patient LE. Correct labels without renaming internal keys.
+- Dense-cataract visual calibration does not equal independent clinical approval.
+
+## v1.1 additions
+
+- `src/reset-controller.js`: isolated two-step full-simulator reset controller
+- `src/pwa.js`: HTTP(S)-only service-worker registration
+- `sw.js`: versioned same-origin application-shell cache
+- `tests/`: DOM, catalogue, asset, PWA and exact-device contracts
+
+Do not move simulator maths into reset, PWA or view code.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -147,3 +178,13 @@ No broad rewrite is needed. Continue the targeted split only when it reduces cas
 - keep media masks in `src/central-media-masks.js`
 - keep structural pupil effects in `src/structural-eye-effects.js`
 - keep case picker metadata in `src/case-catalog.js`
+
+## Maintenance pattern — 26 July 2026
+
+- Derive service-worker thumbnail expectations from `getCaseList()` and require exact set equality.
+- Keep `app.bundle.js` reproducible from `script.js` with exact parity.
+- Do not alter the established eye oval during maintenance refactors.
+
+- Keep each MCQ's stable `sauron-{tier}-{NN}` ID, one keyed answer, rationale, known source and explicit review status.
+- Conditional examination steps must remain conditional and authorised. Label observations that apply only to the simulator.
+- Do not reveal partial grading for unanswered attempts. Show result, explanations and source status before retry.

@@ -1,0 +1,349 @@
+{
+  "date": "2026-09-30",
+  "apps": 15,
+  "galleryPreviews": 15,
+  "kind": "full source/runtime snapshot",
+  "excludedPaths": [
+    "Allan/.agents",
+    "Allan/.git",
+    "Allan/node_modules",
+    "Allan/output",
+    "Allan/test-results",
+    "Cataract/node_modules",
+    "Diabetic/node_modules",
+    "Diabetic/output",
+    "Discs/node_modules",
+    "Discs/output",
+    "Fields/node_modules",
+    "Fundal Reflex/node_modules",
+    "Fundal Reflex/output",
+    "Glaucoma/node_modules",
+    "Mires/node_modules",
+    "Mires/output",
+    "Morph/node_modules",
+    "Morph/output",
+    "Refract/node_modules",
+    "Refract/output",
+    "Refract/outputs",
+    "Sauron/node_modules",
+    "Squint/output",
+    "Swollen Discs/node_modules",
+    "Swollen Discs/output"
+  ],
+  "retainedRefractOutputFixtures": [
+    "weighted-20260930/baseline/prescribing-rules.js",
+    "weighted-20260930/baseline/prescription-logic.js",
+    "weighted-20260930/baseline/prescription-config.js",
+    "weighted-20260930/candidate.mjs",
+    "weighted-20260930/experiment.mjs",
+    "refract-review-20260930/analyse.mjs",
+    "refract-review-20260930/analysis.json",
+    "flowchart-polish-20260930/baseline/flowchart-model.json",
+    "flowchart-polish-20260930/flowchart-model.json",
+    "flowchart-polish-20260930/presentation-regression.json",
+    "flowchart-polish-20260930/flowchart-verification.json"
+  ],
+  "checks": [
+    {
+      "command": "node gallery/verify.mjs",
+      "exitCode": 0,
+      "stdout": "Gallery verification passed: 15 apps, entries, cards and thumbnails are in sync.\n",
+      "stderr": ""
+    },
+    {
+      "command": "node fleet-contract-check.mjs",
+      "exitCode": 0,
+      "stdout": "Fleet contracts passed for 15 apps and 1 excluded directories.\n",
+      "stderr": ""
+    },
+    {
+      "command": "node Refract/tests/run-tests.mjs",
+      "exitCode": 0,
+      "stdout": "MCQ and app contracts passed\n",
+      "stderr": ""
+    },
+    {
+      "command": "node Refract/tests/prescribing-rules.mjs",
+      "exitCode": 0,
+      "stdout": "Prescribing rules passed: 960 context combinations, 60 determinism/swap/transpose cases, add and missing-data boundaries; original CSV unchanged.\n",
+      "stderr": ""
+    },
+    {
+      "command": "node Refract/tests/context-ui.mjs",
+      "exitCode": 0,
+      "stdout": "Optional context UI contracts passed\n",
+      "stderr": ""
+    },
+    {
+      "command": "node Refract/tests/weighted-rules.mjs",
+      "exitCode": 0,
+      "stdout": "{\n  \"date\": \"2026-09-30\",\n  \"status\": \"in-sample development, not clinical validation\",\n  \"metric\": \"maximum absolute meridional power difference, worse eye per patient\",\n  \"before\": {\n    \"n\": 60,\n    \"meanWorstEyeD\": 0.18531029997393234,\n    \"exactDistance\": 32,\n    \"within025\": 45,\n    \"within050\": 54,\n    \"maximum\": 1.6395129474882504,\n    \"literalFull\": 29\n  },\n  \"after\": {\n    \"n\": 60,\n    \"meanWorstEyeD\": 0.16103659783016283,\n    \"exactDistance\": 32,\n    \"within025\": 45,\n    \"within050\": 55,\n    \"maximum\": 0.9999999999999996,\n    \"literalFull\": 29\n  },\n  \"changes\": [\n    {\n      \"caseNumber\": 6,\n      \"before\": 1,\n      \"after\": 0.5\n    },\n    {\n      \"caseNumber\": 18,\n      \"before\": 1.6395129474882504,\n      \"after\": 0.8895129474882502\n    },\n    {\n      \"caseNumber\": 42,\n      \"before\": 0.25,\n      \"after\": 0\n    },\n    {\n      \"caseNumber\": 57,\n      \"before\": 0,\n      \"after\": 0.04357787137382895\n    }\n  ],\n  \"combinations\": 3780,\n  \"csvSha256\": \"c286c8fa03a9375609088d6092bb99da7f58c334b72e9eb1679b53d6454b44e2\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "node Refract/tests/target-safety.mjs",
+      "exitCode": 0,
+      "stdout": "Target safety passed: 740 checks; fractional bias cannot cross plano and 60-case candidate parity holds.\n",
+      "stderr": ""
+    },
+    {
+      "command": "node Refract/tools/test-flowchart-polish.mjs",
+      "exitCode": 0,
+      "stdout": "{\"passed\":true,\"unchangedNodes\":70,\"unchangedRoutes\":92,\"unchangedPrescribingSources\":4,\"unchangedWeightPanel\":true,\"semanticExamples\":22,\"svgCornerRadius\":6,\"drawioArcSize\":12,\"wordsBefore\":1416,\"wordsAfter\":1365,\"changedWordingNodes\":[\"INPUT\",\"VALID\",\"INVALID\",\"NORMALISE\",\"SIMPLE\",\"PREPARED\",\"DISCREPANCY\",\"RETAIN_RECORDED\",\"VA_HOLD\",\"Q_HOLD\",\"CYLINDER_MOVE\",\"CYL_PROGRESS\",\"COMPONENT_READY\",\"SPHERE_READY\",\"HIGH_CYL_HOLD\",\"EYE_READY\",\"DISTANCE\",\"KEEP_ADD\",\"ESTIMATE_ADD\",\"INCREMENT_ADD\",\"RESULT\"]}\n",
+      "stderr": ""
+    }
+  ],
+  "privateDevelopmentData": "60 case rows; first two name columns blank; not a regulatory anonymisation claim",
+  "clinicalSignOff": "pending",
+  "physicalDeviceAcceptance": "pending",
+  "olderInstalledCacheMigration": "not established",
+  "sourceBundleParity": "Refract node tests/bundle-parity.mjs passed; stage source and bundles verified identical",
+  "retainedGalleryToolbar": {
+    "before": "843x1192",
+    "after": "360x740",
+    "afterSwitch": "360x740",
+    "url": "http://127.0.0.1:8090/gallery/index.html?handover=20260930"
+  },
+  "stagedInitialBrowserReview": [
+    {
+      "label": "Allan",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Allan/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Allan",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Amsler",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Amsler/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Amsler",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Cataract",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Cataract/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Cataract",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Diabetic",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Diabetic/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Diabetic",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Discs",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Discs/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Discs",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Fields",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Fields/home.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Fields",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Fundal Reflex",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Fundal%20Reflex/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Fundal Reflex",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Glaucoma",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Glaucoma/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Glaucoma",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Mires",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Mires/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Mires",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Morph",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Morph/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Morph",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Refract",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Refract/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Refract",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Sauron",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Sauron/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Sauron",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Squint",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Squint/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Squint",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Swollen Discs",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Swollen%20Discs/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Swollen Discs",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    },
+    {
+      "label": "Trauma",
+      "url": "http://127.0.0.1:8090/output/developer-handover-20260930/Arclight%20App/Trauma/index.html",
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "title": "Trauma",
+      "width": 360,
+      "height": 740,
+      "overflow": false,
+      "cards": 0,
+      "images": [],
+      "links": [],
+      "errors": []
+    }
+  ]
+}

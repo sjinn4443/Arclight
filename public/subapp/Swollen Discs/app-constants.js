@@ -28,40 +28,33 @@ export const MCQ_TIER_CONFIGS = [
     className: 'primary-star',
     questionCount: 4,
     optionCount: 3,
-    passRatio: 0.5,
+    passRatio: 0.75,
     timeLimitSeconds: 0,
-    questionIds: ['q01', 'q02', 'q06', 'q08', 'q11', 'q16', 'q26', 'q30']
+    questionIds: ['q01', 'q02', 'q03', 'q04', 'q05', 'q06', 'q07', 'q08', 'q09', 'q10'].map(
+      (id) => `swollen-discs-${id}`
+    )
   },
   {
     name: 'Intermediate',
     className: 'intermediate-star',
     questionCount: 5,
     optionCount: 4,
-    passRatio: 0.6,
-    timeLimitSeconds: 110,
-    questionIds: ['q03', 'q05', 'q07', 'q10', 'q12', 'q14', 'q18', 'q22', 'q25', 'q27']
+    passRatio: 0.8,
+    timeLimitSeconds: 0,
+    questionIds: ['q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20'].map(
+      (id) => `swollen-discs-${id}`
+    )
   },
   {
     name: 'Advanced',
     className: 'advanced-star',
     questionCount: 7,
     optionCount: 5,
-    passRatio: 0.7,
-    timeLimitSeconds: 80,
-    questionIds: [
-      'q04',
-      'q09',
-      'q13',
-      'q15',
-      'q17',
-      'q19',
-      'q20',
-      'q21',
-      'q23',
-      'q24',
-      'q28',
-      'q29'
-    ]
+    passRatio: 0.8,
+    timeLimitSeconds: 0,
+    questionIds: ['q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30'].map(
+      (id) => `swollen-discs-${id}`
+    )
   }
 ];
 
@@ -283,7 +276,7 @@ export const CATARACT_OCCLUSION_SPOTS = [
 export const EXPLANATION_TEMPLATES = {
   normal: `
     <div class="interpretation-summary interpretation-summary--normal">
-      <span class="interpretation-kicker">Referral</span>
+      <span class="interpretation-kicker">Teaching example</span>
       <strong class="interpretation-referral text-green">No urgent referral</strong>
     </div>
     <p class="interpretation-detail">
@@ -296,7 +289,7 @@ export const EXPLANATION_TEMPLATES = {
   `,
   suspicious: `
     <div class="interpretation-summary interpretation-summary--suspicious">
-      <span class="interpretation-kicker">Referral</span>
+      <span class="interpretation-kicker">Teaching example</span>
       <strong class="interpretation-referral text-orange">Same-day advice</strong>
     </div>
     <p class="interpretation-detail">
@@ -309,11 +302,11 @@ export const EXPLANATION_TEMPLATES = {
   `,
   swollen: `
     <div class="interpretation-summary interpretation-summary--swollen">
-      <span class="interpretation-kicker">Referral</span>
+      <span class="interpretation-kicker">Teaching example</span>
       <strong class="interpretation-referral text-red">Emergency now</strong>
     </div>
     <p class="interpretation-detail">
-      Why: elevated disc with obscured major vessels or haemorrhages around the disc.
+      Why: disc elevation and vessel obscuration; haemorrhages may accompany swelling.
     </p>
     <div class="interpretation-meta">
       <span>Likely: definite disc swelling</span>

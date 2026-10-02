@@ -89,7 +89,6 @@ function startPatientFacingIntro(onComplete) {
   let played = false;
   let fadeTimer = null;
   let hideTimer = null;
-  let collapseTimer = null;
 
   function collapseInstructionCard() {
     if (!instructionCard || instructionCard.classList.contains("is-collapsed"))
@@ -114,7 +113,7 @@ function startPatientFacingIntro(onComplete) {
     fireComplete();
 
     if (played) {
-      collapseTimer = window.setTimeout(
+      window.setTimeout(
         collapseInstructionCard,
         PATIENT_INTRO_CONFIG.collapseDelayMs,
       );
@@ -187,16 +186,18 @@ function initPathwayPhotoToggle() {
     photoView.hidden = false;
     viewport.classList.add("photo-mode");
     openButton.setAttribute("aria-expanded", "true");
+    window.requestAnimationFrame(() => closeButton.focus());
   }
 
-  function closePhotoView() {
+  function closePhotoView(restoreFocus = true) {
     viewport.classList.remove("photo-mode");
     photoView.hidden = true;
     canvas.hidden = false;
     openButton.setAttribute("aria-expanded", "false");
+    if (restoreFocus) openButton.focus();
   }
 
-  closePhotoView();
+  closePhotoView(false);
 
   openButton.addEventListener("click", () => {
     if (photoView.hidden) {
@@ -245,9 +246,89 @@ function initMobileContextAutoClose() {
   });
 }
 
+let newAssessmentConfirmTimer = null;
+
+function resetNewAssessmentButton() {
+  const button = document.getElementById("new-assessment");
+  if (!button) return;
+  button.textContent = "New";
+  button.dataset.confirming = "false";
+  button.classList.remove("is-confirming");
+  if (newAssessmentConfirmTimer) {
+    window.clearTimeout(newAssessmentConfirmTimer);
+    newAssessmentConfirmTimer = null;
+  }
+}
+
+function hasCurrentAssessmentData() {
+  const hasFieldEntry = Array.from(
+    document.querySelectorAll(".color-button"),
+  ).some(
+    (button) => button.dataset.state && button.dataset.state !== "unassessed",
+  );
+  return (
+    hasFieldEntry ||
+    (typeof getRapdState === "function" && getRapdState() !== "none") ||
+    (typeof hasAnyHistoryModifierSelected === "function" &&
+      hasAnyHistoryModifierSelected())
+  );
+}
+
+function resetAssessment() {
+  if (typeof resetFieldAssessment === "function") resetFieldAssessment();
+  if (typeof setRapdState === "function") setRapdState("none");
+  if (typeof setOnsetState === "function") setOnsetState("none");
+  if (typeof setNeuroFlagsState === "function") setNeuroFlagsState("no");
+  if (typeof setKnownOldDefectState === "function")
+    setKnownOldDefectState("no");
+  if (typeof setNightVisionPoorState === "function")
+    setNightVisionPoorState("no");
+  if (typeof setFlashesCurtainState === "function")
+    setFlashesCurtainState("no");
+  if (typeof setColourFadeState === "function") setColourFadeState("no");
+
+  const contextPanel = document.getElementById("context-panel");
+  if (contextPanel) contextPanel.open = false;
+  const calcToggle = document.getElementById("calc-toggle");
+  const rawOutput = document.getElementById("output");
+  const resultPanel = document.getElementById("result-panel");
+  if (calcToggle) {
+    calcToggle.setAttribute("aria-expanded", "false");
+    calcToggle.classList.remove("is-active");
+  }
+  if (rawOutput) rawOutput.hidden = true;
+  if (resultPanel) resultPanel.classList.remove("is-calc-open");
+
+  const photoView = document.getElementById("pathway-photo-view");
+  if (photoView && !photoView.hidden) {
+    document.getElementById("pathway-photo-close")?.click();
+  }
+
+  refreshAssessmentOutputs();
+  resetNewAssessmentButton();
+  document.getElementById("menu-close")?.click();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function requestNewAssessment() {
+  const button = document.getElementById("new-assessment");
+  if (!button) return;
+  if (!hasCurrentAssessmentData() || button.dataset.confirming === "true") {
+    resetAssessment();
+    return;
+  }
+
+  button.dataset.confirming = "true";
+  button.classList.add("is-confirming");
+  button.textContent = "Clear?";
+  newAssessmentConfirmTimer = window.setTimeout(resetNewAssessmentButton, 4000);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const infoIcon = document.getElementById("info-icon");
   const infoClose = document.getElementById("info-close");
+  const completeAssessment = document.getElementById("complete-assessment");
+  const newAssessment = document.getElementById("new-assessment");
   const mcqController =
     typeof createMcqController === "function" ? createMcqController() : null;
 
@@ -261,8 +342,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".color-button").forEach((button) => {
     button.addEventListener("click", () => cycleColor(button));
-    applyButtonState(button, 0);
   });
+  if (typeof initialiseFieldAssessment === "function")
+    initialiseFieldAssessment();
+  if (
+    completeAssessment &&
+    typeof markRemainingFieldPointsSeen === "function"
+  ) {
+    completeAssessment.addEventListener("click", markRemainingFieldPointsSeen);
+  }
+  if (newAssessment)
+    newAssessment.addEventListener("click", requestNewAssessment);
 
   if (typeof setRapdState === "function") {
     setRapdState("none");
@@ -272,8 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (typeof setRapdState === "function") {
         setRapdState(button.getAttribute("data-rapd") || "none");
       }
-      const eyeState = updateOutput();
-      updateAnalysisOutput(eyeState);
+      refreshAssessmentOutputs();
     });
   });
 
@@ -292,8 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const current = getOnsetState();
           setOnsetState(current === target ? "none" : target);
         }
-        const eyeState = updateOutput();
-        updateAnalysisOutput(eyeState);
+        refreshAssessmentOutputs();
       });
     });
 
@@ -311,8 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const next = getNeuroFlagsState() === "yes" ? "no" : "yes";
           setNeuroFlagsState(next);
         }
-        const eyeState = updateOutput();
-        updateAnalysisOutput(eyeState);
+        refreshAssessmentOutputs();
       });
     });
 
@@ -330,8 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const next = getKnownOldDefectState() === "yes" ? "no" : "yes";
           setKnownOldDefectState(next);
         }
-        const eyeState = updateOutput();
-        updateAnalysisOutput(eyeState);
+        refreshAssessmentOutputs();
       });
     });
 
@@ -349,8 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const next = getNightVisionPoorState() === "yes" ? "no" : "yes";
           setNightVisionPoorState(next);
         }
-        const eyeState = updateOutput();
-        updateAnalysisOutput(eyeState);
+        refreshAssessmentOutputs();
       });
     });
 
@@ -368,8 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const next = getFlashesCurtainState() === "yes" ? "no" : "yes";
           setFlashesCurtainState(next);
         }
-        const eyeState = updateOutput();
-        updateAnalysisOutput(eyeState);
+        refreshAssessmentOutputs();
       });
     });
 
@@ -387,8 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const next = getColourFadeState() === "yes" ? "no" : "yes";
           setColourFadeState(next);
         }
-        const eyeState = updateOutput();
-        updateAnalysisOutput(eyeState);
+        refreshAssessmentOutputs();
       });
     });
 
@@ -406,14 +489,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setSectionLocksEnabled(false);
   }
 
-  const eyeState = updateOutput();
-  updateAnalysisOutput(eyeState);
+  refreshAssessmentOutputs();
   startPatientFacingIntro(() => {
     if (typeof setSectionLocksEnabled === "function") {
       setSectionLocksEnabled(true);
     }
 
-    const nextEyeState = updateOutput();
-    updateAnalysisOutput(nextEyeState);
+    refreshAssessmentOutputs();
   });
 });

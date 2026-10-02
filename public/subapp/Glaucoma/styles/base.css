@@ -23,14 +23,14 @@
   --ui-surface-muted: #f3f7fc;
   --ui-border: #d5dbe4;
   --ui-border-strong: #b8c7dc;
-  --ui-shadow: 0 6px 16px rgba(18, 23, 34, 0.07);
-  --ui-shadow-panel: 0 10px 24px rgba(18, 23, 34, 0.1);
+  --ui-shadow: 0 4px 12px rgba(18, 23, 34, 0.065);
+  --ui-shadow-panel: 0 8px 20px rgba(18, 23, 34, 0.09);
   --ui-shadow-strong: 0 16px 32px rgba(12, 18, 31, 0.3);
   --ui-focus: #0f6bdc;
   --ui-focus-outline: 3px solid var(--ui-focus);
   --ui-focus-halo: 0 0 0 5px rgba(15, 107, 220, 0.2);
   --app-bar-bg: #000000;
-  --app-bar-accent: #f03b2f;
+  --app-bar-accent: #00b938;
   --app-bar-content: #00ff3b;
   --app-bar-content-hover: rgba(0, 255, 59, 0.16);
   --state-red-hover: rgba(240, 59, 47, 0.14);
@@ -52,6 +52,18 @@
 
 * {
   box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 body {

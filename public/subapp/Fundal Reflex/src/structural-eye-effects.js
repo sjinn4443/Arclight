@@ -233,16 +233,30 @@ export function updateLightResponsivePupilScale({
     return;
   }
 
-  const distancePx = Math.abs(sweepX);
-  const responseRadiusPx = Math.max(1, pupilRadiusPx * 1.18);
-  const rawT = Math.max(0, Math.min(1, distancePx / responseRadiusPx));
-  const smoothT = rawT * rawT * (3 - 2 * rawT);
-  const constrictionAmount = (1 - smoothT) * maxConstriction;
-  const targetPupilScale = 1 - constrictionAmount;
+  const targetPupilScale = getLightResponsivePupilTargetScale({
+    pupilRadiusPx,
+    sweepX,
+    sweepY,
+    maxConstriction,
+  });
   const previousPupilScale =
     parseFloat(iris.style.getPropertyValue("--light-pupil-scale")) || 1;
   const responseRate = targetPupilScale < previousPupilScale ? 0.28 : 0.16;
   const pupilScale =
     previousPupilScale + (targetPupilScale - previousPupilScale) * responseRate;
   iris.style.setProperty("--light-pupil-scale", pupilScale.toFixed(3));
+}
+
+export function getLightResponsivePupilTargetScale({
+  pupilRadiusPx,
+  sweepX,
+  sweepY,
+  maxConstriction = 0.075,
+}) {
+  const distancePx = Math.hypot(sweepX, sweepY);
+  const responseRadiusPx = Math.max(1, pupilRadiusPx * 1.18);
+  const rawT = Math.max(0, Math.min(1, distancePx / responseRadiusPx));
+  const smoothT = rawT * rawT * (3 - 2 * rawT);
+  const constrictionAmount = (1 - smoothT) * maxConstriction;
+  return 1 - constrictionAmount;
 }

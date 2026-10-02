@@ -9,14 +9,19 @@
     primary: [
       { label: "Exotropia (L)", value: "exotropia (large)" },
       { label: "Esotropia (L)", value: "esotropia (large)" },
-      { label: "3rd nerve palsy", value: "3rd nerve palsy" },
+      { label: "Pupil-involving 3rd palsy", value: "3rd nerve palsy" },
       { label: "6th nerve palsy", value: "6th nerve palsy" },
       { label: "Unilateral dilated pupil", value: "unilateral dilated pupil" },
+      {
+        label: "Unilateral constricted pupil",
+        value: "unilateral constricted pupil",
+      },
       { label: "Bilateral dilated pupils", value: "bilateral dilated pupils" },
       {
         label: "Bilateral constricted pupils",
         value: "bilateral constricted pupils",
       },
+      { label: "Benign anisocoria", value: "benign anisocoria" },
       { label: "Ptosis (Severe)", value: "ptosis (severe)" },
     ],
     intermediate: [
@@ -29,15 +34,14 @@
       { label: "Horner's syndrome", value: "horner's syndrome" },
       { label: "Ptosis (Moderate)", value: "ptosis (moderate)" },
       { label: "Adie's pupil", value: "adie's pupil" },
-      { label: "Benign anisocoria", value: "benign anisocoria" },
-      {
-        label: "Pupil-sparing 3rd palsy",
-        value: "pupil-sparing 3rd nerve palsy",
-      },
+      { label: "RAPD (RE marked)", value: "rapd (re marked)" },
+      { label: "RAPD (LE marked)", value: "rapd (le marked)" },
       {
         label: "Partial 6th palsy (M)",
         value: "partial 6th nerve palsy (medium)",
       },
+      { label: "Nystagmus (H jerk)", value: "nystagmus (h jerk)" },
+      { label: "Nystagmus (H pendular)", value: "nystagmus (h pendular)" },
     ],
     advanced: [
       { label: "4th nerve palsy", value: "4th nerve palsy" },
@@ -60,6 +64,10 @@
       },
       { label: "Right hyperphoria", value: "right hyperphoria" },
       { label: "Left hyperphoria", value: "left hyperphoria" },
+      {
+        label: "Pupil-sparing 3rd palsy",
+        value: "pupil-sparing 3rd nerve palsy",
+      },
       { label: "Compressive 3rd palsy", value: "compressive 3rd nerve palsy" },
       {
         label: "Acute angle-closure pupil",
@@ -72,9 +80,7 @@
       },
       { label: "Pharmacological miosis", value: "pharmacological miosis" },
       { label: "RAPD (RE subtle)", value: "rapd (re subtle)" },
-      { label: "RAPD (RE marked)", value: "rapd (re marked)" },
       { label: "RAPD (LE subtle)", value: "rapd (le subtle)" },
-      { label: "RAPD (LE marked)", value: "rapd (le marked)" },
       { label: "Traumatic mydriasis", value: "traumatic mydriasis" },
       { label: "Traumatic miotic pupil", value: "traumatic miotic pupil" },
       { label: "Traumatic peaked pupil", value: "traumatic peaked pupil" },
@@ -83,10 +89,6 @@
       { label: "Hypertropia (S)", value: "hypertropia (small)" },
       { label: "Hypotropia (S)", value: "hypotropia (small)" },
       { label: "Ptosis (Slight)", value: "ptosis (slight)" },
-      {
-        label: "Unilateral constricted pupil",
-        value: "unilateral constricted pupil",
-      },
       {
         label: "Partial 6th palsy (S)",
         value: "partial 6th nerve palsy (small)",
@@ -101,8 +103,6 @@
       { label: "Cyclo pattern (RE out)", value: "cyclo pattern (re out)" },
       { label: "Cyclo pattern (LE in)", value: "cyclo pattern (le in)" },
       { label: "Cyclo pattern (LE out)", value: "cyclo pattern (le out)" },
-      { label: "Nystagmus (H jerk)", value: "nystagmus (h jerk)" },
-      { label: "Nystagmus (H pendular)", value: "nystagmus (h pendular)" },
       { label: "Nystagmus (H jerk fast)", value: "nystagmus (h jerk fast)" },
       { label: "Nystagmus (V jerk)", value: "nystagmus (v jerk)" },
       {
@@ -187,11 +187,36 @@
     return `rgb(${r}, ${g}, ${b})`;
   }
 
+  function computeAvPatternCue(upSample, downSample, threshold = 4) {
+    const up = Number(upSample);
+    const down = Number(downSample);
+    if (
+      !Number.isFinite(up) ||
+      !Number.isFinite(down) ||
+      up === 0 ||
+      down === 0
+    )
+      return "";
+    if (Math.sign(up) !== Math.sign(down)) return "";
+
+    const absUp = Math.abs(up);
+    const absDown = Math.abs(down);
+    const isEso = up < 0;
+    if (absUp >= absDown + threshold) {
+      return `${isEso ? "A" : "V"}-pattern cue (${isEso ? "esotropia" : "exotropia"})`;
+    }
+    if (absDown >= absUp + threshold) {
+      return `${isEso ? "V" : "A"}-pattern cue (${isEso ? "esotropia" : "exotropia"})`;
+    }
+    return "";
+  }
+
   globalObj.SimCore = {
     BASE_PUPIL_SIZE,
     CONDITION_LIBRARY,
     parseRGB,
     brightenColor,
     getReflexColor,
+    computeAvPatternCue,
   };
 })(typeof globalThis !== "undefined" ? globalThis : window);

@@ -2,15 +2,16 @@
 setlocal
 cd /d "%~dp0"
 
-call :bundle "Amsler" "script.js" || exit /b 1
-call :bundle "Cataract" "script.js" || exit /b 1
-call :bundle "Diabetic" "script.js" || exit /b 1
-call :bundle "Fundal Reflex" "script.js" || exit /b 1
-call :bundle "Glaucoma" "scripts.js" || exit /b 1
-call :bundle "Mires" "app.js" || exit /b 1
-call :bundle "Refract" "scripts.js" || exit /b 1
-call :bundle "Sauron" "script.js" || exit /b 1
-call :bundle "Swollen Discs" "script.js" || exit /b 1
+call :bundle "Amsler" || exit /b 1
+call :bundle "Cataract" || exit /b 1
+call :bundle "Diabetic" || exit /b 1
+call :bundle "Discs" || exit /b 1
+call :bundle "Fundal Reflex" || exit /b 1
+call :bundle "Glaucoma" || exit /b 1
+call :bundle "Mires" || exit /b 1
+call :bundle "Refract" || exit /b 1
+call :bundle "Sauron" || exit /b 1
+call :bundle "Swollen Discs" || exit /b 1
 
 echo Bundles rebuilt.
 exit /b 0
@@ -18,7 +19,8 @@ exit /b 0
 :bundle
 echo Bundling %~1
 pushd "%~1" || exit /b 1
-call npx --yes esbuild "%~2" --bundle --format=iife --target=es2018 --outfile=app.bundle.js --log-level=warning
+rem Delegate to each app's canonical build, including custom and multiple bundles.
+call npm run build
 set "status=%errorlevel%"
 popd
 exit /b %status%

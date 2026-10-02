@@ -12,6 +12,8 @@ export function wireUiEvents(app) {
     mcqPrimaryBtn,
     mcqIntermediateBtn,
     mcqAdvancedBtn,
+    newAssessmentBtn,
+    assessmentResetStatus,
     mcqModal,
     closeMcqModal,
     mcqSubmitBtn,
@@ -39,6 +41,18 @@ export function wireUiEvents(app) {
     erase: toolErase,
     haemorrhage: toolHaemorrhage,
   };
+  const modalTriggers = new Map();
+  let resetConfirmTimer = null;
+
+  function getFocusable(container) {
+    return Array.from(
+      container.querySelectorAll(
+        "button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])",
+      ),
+    ).filter(
+      (element) => !element.hidden && element.getClientRects().length > 0,
+    );
+  }
 
   function setToggleButtonState(button, isActive) {
     button.classList.toggle("active", isActive);
@@ -54,17 +68,44 @@ export function wireUiEvents(app) {
     });
   }
 
-  function openModal(modalElement) {
+  function openModal(modalElement, trigger) {
+    modalTriggers.set(modalElement, trigger || document.activeElement);
+    modalElement.hidden = false;
     modalElement.style.display = "block";
+    const focusTarget = getFocusable(modalElement)[0];
+    focusTarget?.focus();
   }
 
-  function closeModal(modalElement) {
+  function closeModal(modalElement, restoreFocus = true) {
     modalElement.style.display = "none";
+    modalElement.hidden = true;
+    if (restoreFocus) {
+      modalTriggers.get(modalElement)?.focus?.();
+    }
+    modalTriggers.delete(modalElement);
   }
 
-  function toggleModal(modalElement) {
-    modalElement.style.display =
-      modalElement.style.display === "block" ? "none" : "block";
+  function toggleModal(modalElement, trigger) {
+    if (modalElement.hidden) {
+      openModal(modalElement, trigger);
+    } else {
+      closeModal(modalElement);
+    }
+  }
+
+  function trapModalFocus(event, modalElement) {
+    if (event.key !== "Tab" || modalElement.hidden) return;
+    const focusable = getFocusable(modalElement);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   function setStrokeSettingsOpen(isOpen) {
@@ -79,12 +120,14 @@ export function wireUiEvents(app) {
     penWidthValue.textContent = `${penWidth}px`;
   }
 
-  canvas.addEventListener("mousedown", app.canvasController.startDrawing);
-  canvas.addEventListener("touchstart", app.canvasController.startDrawing);
-  canvas.addEventListener("mousemove", app.canvasController.draw);
-  canvas.addEventListener("touchmove", app.canvasController.draw);
-  canvas.addEventListener("mouseup", app.canvasController.endDrawing);
-  canvas.addEventListener("touchend", app.canvasController.endDrawing);
+  canvas.addEventListener("pointerdown", app.canvasController.startDrawing);
+  canvas.addEventListener("pointermove", app.canvasController.draw);
+  canvas.addEventListener("pointerup", app.canvasController.endDrawing);
+  canvas.addEventListener("pointercancel", app.canvasController.endDrawing);
+  canvas.addEventListener(
+    "lostpointercapture",
+    app.canvasController.endDrawing,
+  );
 
   flashToggleBtn.addEventListener("click", () => {
     app.state.flashDot = !app.state.flashDot;
@@ -104,12 +147,14 @@ export function wireUiEvents(app) {
   });
 
   redToggleBtn.addEventListener("click", () => {
+    app.invalidateReport();
     app.state.redMode = !app.state.redMode;
     setToggleButtonState(redToggleBtn, app.state.redMode);
     app.canvasController.redraw();
   });
 
   diagToggleBtn.addEventListener("click", () => {
+    app.invalidateReport();
     app.state.diagMode = !app.state.diagMode;
     setToggleButtonState(diagToggleBtn, app.state.diagMode);
     app.canvasController.redraw();
@@ -119,6 +164,8 @@ export function wireUiEvents(app) {
     app.state.currentEye = "RE";
     reTab.classList.add("active");
     leTab.classList.remove("active");
+    reTab.setAttribute("aria-selected", "true");
+    leTab.setAttribute("aria-selected", "false");
     app.canvasController.redraw();
   });
 
@@ -126,11 +173,14 @@ export function wireUiEvents(app) {
     app.state.currentEye = "LE";
     leTab.classList.add("active");
     reTab.classList.remove("active");
+    leTab.setAttribute("aria-selected", "true");
+    reTab.setAttribute("aria-selected", "false");
     app.canvasController.redraw();
   });
 
   infoIcon.addEventListener("click", () => {
-    toggleModal(infoModal);
+    toggleModal(infoModal, infoIcon);
+    infoIcon.setAttribute("aria-expanded", String(!infoModal.hidden));
   });
 
   burgerIcon.addEventListener("click", (event) => {
@@ -185,36 +235,100 @@ export function wireUiEvents(app) {
 
   closeInfoModal.addEventListener("click", () => {
     closeModal(infoModal);
+    infoIcon.setAttribute("aria-expanded", "false");
   });
 
   patientInfoToggle.addEventListener("click", () => {
-    openModal(patientInfoModal);
+    openModal(patientInfoModal, patientInfoToggle);
+    patientInfoToggle.setAttribute("aria-expanded", "true");
   });
 
   closePatientInfo.addEventListener("click", () => {
     closeModal(patientInfoModal);
+    patientInfoToggle.setAttribute("aria-expanded", "false");
   });
 
   savePatientInfo.addEventListener("click", () => {
     closeModal(patientInfoModal);
+    patientInfoToggle.setAttribute("aria-expanded", "false");
   });
+
+  app.elements.patientName.addEventListener("input", app.invalidateReport);
+  app.elements.patientDate.addEventListener("input", app.invalidateReport);
 
   window.addEventListener("click", (event) => {
     if (event.target === infoModal) {
       closeModal(infoModal);
+      infoIcon.setAttribute("aria-expanded", "false");
     }
 
     if (event.target === patientInfoModal) {
       closeModal(patientInfoModal);
+      patientInfoToggle.setAttribute("aria-expanded", "false");
     }
 
     app.mcqController.handleModalBackdropClick(event);
   });
 
   window.addEventListener("keydown", (event) => {
+    trapModalFocus(event, infoModal);
+    trapModalFocus(event, patientInfoModal);
     if (event.key === "Escape") {
-      app.mcqController.handleEscape();
+      if (!infoModal.hidden) {
+        closeModal(infoModal);
+        infoIcon.setAttribute("aria-expanded", "false");
+      } else if (!patientInfoModal.hidden) {
+        closeModal(patientInfoModal);
+        patientInfoToggle.setAttribute("aria-expanded", "false");
+      } else {
+        app.mcqController.handleEscape();
+      }
     }
+  });
+
+  function restoreExaminationUi() {
+    app.resetExaminationState();
+    setToggleButtonState(flashToggleBtn, false);
+    setToggleButtonState(redToggleBtn, false);
+    setToggleButtonState(diagToggleBtn, false);
+    setActiveTool("pen");
+    reTab.classList.add("active");
+    leTab.classList.remove("active");
+    reTab.setAttribute("aria-selected", "true");
+    leTab.setAttribute("aria-selected", "false");
+    setStrokeSettingsOpen(false);
+    syncPenWidthUi();
+    app.elements.patientName.value = "";
+    app.elements.patientDate.value = "";
+    app.elements.resultText.textContent = "Results:";
+    app.elements.reportSection.replaceChildren();
+    app.elements.reportSection.hidden = true;
+    app.setReportButtonEnabled(false);
+    app.canvasController.resizeCanvas();
+  }
+
+  newAssessmentBtn.addEventListener("click", () => {
+    if (newAssessmentBtn.dataset.confirmReset !== "true") {
+      newAssessmentBtn.dataset.confirmReset = "true";
+      newAssessmentBtn.textContent = "Confirm new assessment";
+      assessmentResetStatus.textContent =
+        "Select again to clear this examination.";
+      window.clearTimeout(resetConfirmTimer);
+      resetConfirmTimer = window.setTimeout(() => {
+        newAssessmentBtn.dataset.confirmReset = "false";
+        newAssessmentBtn.textContent = "New assessment";
+        assessmentResetStatus.textContent = "";
+      }, 5000);
+      return;
+    }
+
+    window.clearTimeout(resetConfirmTimer);
+    restoreExaminationUi();
+    newAssessmentBtn.dataset.confirmReset = "false";
+    newAssessmentBtn.textContent = "New assessment";
+    assessmentResetStatus.textContent = "New assessment ready.";
+    app.mcqController.setSideMenuOpen(false);
+    burgerIcon.focus();
   });
 
   toolPen.addEventListener("click", () => setActiveTool("pen"));

@@ -24,6 +24,8 @@ function getRequiredElements() {
     mcqPrimaryBtn: document.getElementById("mcqPrimaryBtn"),
     mcqIntermediateBtn: document.getElementById("mcqIntermediateBtn"),
     mcqAdvancedBtn: document.getElementById("mcqAdvancedBtn"),
+    newAssessmentBtn: document.getElementById("newAssessmentBtn"),
+    assessmentResetStatus: document.getElementById("assessmentResetStatus"),
     mcqModal: document.getElementById("mcqModal"),
     closeMcqModal: document.getElementById("closeMcqModal"),
     mcqTitle: document.getElementById("mcqTitle"),
@@ -64,8 +66,21 @@ function createApp() {
     app.elements.reportBtn.disabled = !isEnabled;
   };
 
+  app.invalidateReport = () => {
+    app.elements.reportSection.replaceChildren();
+    app.elements.reportSection.hidden = true;
+  };
   app.markAnalysisDirty = () => {
     markAnalysisDirty(app);
+    app.elements.resultText.textContent = "Results: Changes not computed.";
+    app.invalidateReport();
+  };
+
+  app.resetExaminationState = () => {
+    if (app.state.dotInterval) {
+      window.clearInterval(app.state.dotInterval);
+    }
+    app.state = createInitialState();
   };
 
   app.canvasController = createCanvasController(app);
@@ -78,3 +93,16 @@ function createApp() {
 
 const app = createApp();
 wireUiEvents(app);
+
+if (
+  window.location.protocol === "http:" ||
+  window.location.protocol === "https:"
+) {
+  window.addEventListener("load", () => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./service-worker.js").catch(() => {
+        // The app remains fully usable when installation is unavailable.
+      });
+    }
+  });
+}

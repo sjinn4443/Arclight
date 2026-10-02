@@ -12,15 +12,19 @@
         api.setPtosis("right", 20);
         api.setPupil("right", 45);
         api.setPupilReactivity("right", 0);
+        api.setDiagnosticHint("right", "third_nerve");
         return true;
 
       case "4th nerve palsy":
-        api.setEyeTransform("right", 16, -8);
+        api.setEyeTransform("right", 6, -8);
+        api.setCyclo("left", "out");
+        api.setDiagnosticHint("right", "fourth_nerve");
         return true;
 
       case "6th nerve palsy":
         api.enableSudden();
         api.setEyeTransform("right", -30, 0);
+        api.setDiagnosticHint("right", "sixth_nerve");
         return true;
 
       case "partial 6th nerve palsy (medium)":
@@ -76,10 +80,10 @@
         return true;
 
       case "horner's syndrome":
-        api.setFaded("right", true);
-        api.setPtosis("right", 20);
+        api.setPtosis("right", 8);
         api.setPupil("right", 25);
         api.setPupilModel("right", "horner");
+        api.setDiagnosticHint("right", "horner");
         return true;
 
       case "compressive 3rd nerve palsy":
@@ -201,6 +205,7 @@
         api.setPtosis("right", 12);
         api.setPupil("right", 32);
         api.setPupil("left", 32);
+        api.enableFatigable();
         api.setDiagnosticHint("right", "myasthenia");
         return true;
 
@@ -302,7 +307,8 @@
         return true;
 
       case "dvd-like pattern":
-        api.setEyeTransform("right", 0, -10);
+        api.setEyeTransform("right", 0, -4);
+        api.setCyclo("left", "out");
         api.setDiagnosticHint("right", "dvd_like");
         return true;
 
@@ -353,6 +359,7 @@
       case "benign anisocoria":
         api.setPupil("right", 38);
         api.setPupil("left", 32);
+        api.setDiagnosticHint("right", "benign_anisocoria");
         return true;
 
       case "adie's pupil":

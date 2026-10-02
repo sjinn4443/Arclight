@@ -467,6 +467,7 @@ const CONTENT_ASSET_PREFIXES = [
   "/images/learning/",
   "/images/pdf/",
   "/images/quiz/",
+  "/images/workshop/",
   "/narration/",
   "/scrolly/",
   "/scrolls/",
@@ -542,6 +543,113 @@ export const OFFLINE_CATALOG_OPTIONS = [
     description: "Includes Arclight Overview and Holo Overview.",
   },
 ];
+const OFFLINE_DOWNLOAD_OPTIONS = [
+  ...OFFLINE_CATALOG_OPTIONS,
+  ...[
+    ["procedure-lid-hygiene", "Lid Hygiene"],
+    ["procedure-irrigation", "Eye Irrigation"],
+    ["procedure-eyelash-removal", "Eyelash Removal"],
+    ["procedure-foreign-body", "Foreign Body Removal"],
+    ["procedure-drops", "Drops & Ointment"],
+    ["procedure-eye-pad", "Eye Pad / Shield"],
+    ["procedure-sight-loss", "Sight Loss Guidance"],
+    ["condition-ure", "Uncorrected Refractive Error"],
+    ["condition-cataract", "Cataract"],
+    ["condition-glaucoma", "Glaucoma"],
+    ["condition-diabetic", "Diabetic Retinopathy"],
+    ["condition-corneal", "Corneal Disease"],
+    ["condition-childhood", "Childhood Eye Screening"],
+    ["condition-rop", "Retinopathy of Prematurity"],
+    ["condition-retinal", "Retinal Disease"],
+    ["condition-optic-nerve", "Optic Nerve Disease"],
+    ["workshop-pec", "PEC"],
+    ["workshop-medical-students", "Medical Students"],
+    ["workshop-childhood", "Childhood Eye Screening"],
+    ["workshop-glaucoma", "Glaucoma"],
+    ["workshop-diabetic", "Diabetic Retinopathy"],
+  ].map(([id, label]) => ({ id, label })),
+  { id: "procedures", label: "Eye Care Procedure" },
+];
+export const OFFLINE_CATALOG_GROUPS = [
+  {
+    id: "core",
+    label: "Examination",
+    downloadLabel: "Download all examination content",
+    sections: [
+      "tools",
+      "core-history",
+      "core-visual-acuity",
+      "core-pupils",
+      "core-front-of-eye",
+      "core-fundal-reflex",
+      "core-ophthalmoscopy",
+      "core-interactive-learning",
+      "extended",
+    ],
+  },
+  {
+    id: "procedures",
+    label: "Eye Care Procedure",
+    downloadLabel: "Download all eye care procedures",
+    sections: [
+      "procedure-lid-hygiene",
+      "procedure-irrigation",
+      "procedure-eyelash-removal",
+      "procedure-foreign-body",
+      "procedure-drops",
+      "procedure-eye-pad",
+      "procedure-sight-loss",
+    ],
+  },
+  {
+    id: "conditions",
+    label: "Conditions",
+    downloadLabel: "Download all conditions",
+    sections: [
+      "condition-ure",
+      "condition-cataract",
+      "condition-glaucoma",
+      "condition-diabetic",
+      "condition-corneal",
+      "condition-childhood",
+      "condition-rop",
+      "condition-retinal",
+      "condition-optic-nerve",
+    ],
+  },
+  {
+    id: "workshops",
+    label: "Workshops",
+    downloadLabel: "Download all workshops",
+    sections: [
+      "workshop-pec",
+      "workshop-medical-students",
+      "workshop-childhood",
+      "workshop-glaucoma",
+      "workshop-diabetic",
+    ],
+  },
+];
+
+const OFFLINE_SECTION_PATTERNS = {
+  "procedure-lid-hygiene": /lid.?hygiene|cleananeye|warmcompress/,
+  "procedure-irrigation": /irrigat/,
+  "procedure-eyelash-removal": /eyelash/,
+  "procedure-foreign-body": /foreign.?body/,
+  "procedure-drops": /drops|ointment/,
+  "procedure-eye-pad": /eye.?pad|eye.?shield|pad.*shield/,
+  "procedure-sight-loss": /sight.?loss|guideblind/,
+  "condition-ure": /\/ure\/|refract/,
+  "condition-cataract": /cataract/,
+  "condition-glaucoma": /glaucoma/,
+  "condition-diabetic": /diabetic/,
+  "condition-corneal": /corneal/,
+  "condition-childhood": /childhood|usaid/,
+  "condition-rop": /prematurity|\/rop\//,
+  "condition-retinal": /retinal|\/subapp\/amsler\//,
+  "condition-optic-nerve":
+    /optic.?nerve|\/subapp\/(?:discs|swollen discs|fields)\//,
+};
 const VIDEO_QUALITY_OPTIONS = [
   {
     id: "both",
@@ -702,6 +810,30 @@ function isAppShellAsset(url) {
 
 export function matchesOfflineCatalog(url, catalogId) {
   const assetPath = getAssetPath(url);
+
+  const group = OFFLINE_CATALOG_GROUPS.find((item) => item.id === catalogId);
+  if (group?.sections.some((id) => matchesOfflineCatalog(url, id))) return true;
+  if (OFFLINE_SECTION_PATTERNS[catalogId])
+    return OFFLINE_SECTION_PATTERNS[catalogId].test(assetPath);
+  if (catalogId.startsWith("workshop-")) {
+    const shared = assetPath.startsWith("/videos/workshop/shared/");
+    const workshop = catalogId.slice("workshop-".length);
+    if (workshop === "pec" || workshop === "medical-students") {
+      const directory = workshop === "pec" ? "pec" : "medstudents";
+      return (
+        shared ||
+        assetPath.includes(`/workshop/${directory}/`) ||
+        assetPath.includes(
+          workshop === "pec" ? "pecworkshop" : "medicalstudentsworkshop",
+        ) ||
+        assetPath.startsWith("/images/pdf/workshop/coreexamination/") ||
+        matchesOfflineCatalog(url, "core") ||
+        (workshop === "pec" &&
+          assetPath.includes("cataract identification pec"))
+      );
+    }
+    return shared || matchesOfflineCatalog(url, `condition-${workshop}`);
+  }
 
   if (catalogId === "core-history") {
     return (
@@ -876,9 +1008,18 @@ function formatEstimatedDownloadTime(bytes) {
 
 function getCatalogLabel(catalogId) {
   const label =
-    OFFLINE_CATALOG_OPTIONS.find((option) => option.id === catalogId)?.label ||
+    OFFLINE_DOWNLOAD_OPTIONS.find((option) => option.id === catalogId)?.label ||
     OFFLINE_CATALOG_OPTIONS[0].label;
   return t(label);
+}
+
+function getSelectedCatalogIds(choice) {
+  const ids = Array.isArray(choice.catalogIds)
+    ? choice.catalogIds
+    : [choice.catalogId || OFFLINE_CATALOG_OPTIONS[0].id];
+  return [...new Set(ids)].filter((id) =>
+    OFFLINE_DOWNLOAD_OPTIONS.some((option) => option.id === id),
+  );
 }
 
 function getVideoQualityLabel(videoQuality) {
@@ -890,7 +1031,8 @@ function getVideoQualityLabel(videoQuality) {
 
 function getDownloadChoiceLabel(choice) {
   if (choice?.mode === "app-only") return t("Exclude videos");
-  if (choice?.mode === "select") return getCatalogLabel(choice.catalogId);
+  if (choice?.mode === "select")
+    return getSelectedCatalogIds(choice).map(getCatalogLabel).join(", ");
   return t("Full content");
 }
 
@@ -925,9 +1067,9 @@ function getSelectedContentSummary(downloadSelection) {
       extended: "extended examination content and mini apps",
       tools: "tool overview videos and related assets",
     };
-    return `${t(
-      catalogSummaries[downloadSelection.catalogId] || "selected content",
-    )} ${qualitySummary}`;
+    return `${getSelectedCatalogIds(downloadSelection)
+      .map((id) => t(catalogSummaries[id] || getCatalogLabel(id)))
+      .join(", ")} ${qualitySummary}`;
   }
 
   return `${t("videos, images, animations and app pages")} ${qualitySummary}`;
@@ -949,7 +1091,8 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   const allAssets = getOfflineManifestAssets(manifest);
   const availableUrls = new Set(allAssets.map((asset) => asset.url));
   const mode = choice.mode || "full";
-  const catalogId = choice.catalogId || OFFLINE_CATALOG_OPTIONS[0].id;
+  const catalogIds = getSelectedCatalogIds(choice);
+  const catalogId = catalogIds[0];
   const videoQuality = choice.videoQuality || VIDEO_QUALITY_OPTIONS[0].id;
   const preferredNarrationLanguage = resolveNarrationDownloadLanguage(
     choice.language || getLanguage() || "en",
@@ -969,7 +1112,7 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
     assets = allAssets.filter(
       (asset) =>
         isAppShellAsset(asset.url) ||
-        matchesOfflineCatalog(asset.url, catalogId),
+        catalogIds.some((id) => matchesOfflineCatalog(asset.url, id)),
     );
   } else {
     assets = allAssets;
@@ -1000,11 +1143,12 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   return {
     bytes: bytes || fallbackBytes,
     catalogId,
+    catalogIds,
     count: assets.length,
     label:
       mode === "app-only"
-        ? getDownloadChoiceLabel({ mode, catalogId })
-        : `${getDownloadChoiceLabel({ mode, catalogId })} - ${getVideoQualityLabel(videoQuality)}`,
+        ? getDownloadChoiceLabel({ mode, catalogIds })
+        : `${getDownloadChoiceLabel({ mode, catalogIds })} - ${getVideoQualityLabel(videoQuality)}`,
     mode,
     narrationLanguage,
     urls: assets.map((asset) => asset.url),
@@ -1032,6 +1176,55 @@ function renderDownloadEstimate(target, selection) {
   )}.`;
 
   target.append(timeEl, networkNoteEl, sizeEl);
+}
+
+async function getCachedDownloadUrls() {
+  if (!("caches" in window)) return null;
+  try {
+    const names = (await caches.keys()).filter((name) =>
+      name.startsWith("arclight-"),
+    );
+    const requests = await Promise.all(
+      names.map(async (name) => (await caches.open(name)).keys()),
+    );
+    return new Set(requests.flat().map((request) => getAssetPath(request.url)));
+  } catch {
+    return null;
+  }
+}
+
+function setDownloadStatus(target, state, detail = "") {
+  if (!target) return;
+  const labels = {
+    complete: "Completed",
+    progress: "In progress",
+    paused: "Paused",
+    partial: "Partly downloaded",
+    empty: "Not downloaded",
+    checking: "Checking downloaded content...",
+    unavailable: "Download status unavailable",
+  };
+  target.className = `download-status download-status--${state}`;
+  target.textContent = `${t(labels[state])}${detail ? ` · ${detail}` : ""}`;
+}
+
+function updateCachedDownloadStatus(target, selection, cachedUrls) {
+  if (cachedUrls === null) {
+    setDownloadStatus(target, "unavailable");
+    return;
+  }
+  // Shell pages are cached on install; they must not mark every section as partial.
+  const contentUrls = selection.urls.filter((url) => !isAppShellAsset(url));
+  const cached = contentUrls.filter((url) =>
+    cachedUrls.has(getAssetPath(url)),
+  ).length;
+  const state =
+    cached && cached === contentUrls.length
+      ? "complete"
+      : cached
+        ? "partial"
+        : "empty";
+  setDownloadStatus(target, state);
 }
 
 function ensureDownloadAppModal() {
@@ -1074,6 +1267,11 @@ function ensureDownloadAppModal() {
 
 export function showDownloadAppModal(manifest) {
   return new Promise((resolve) => {
+    const availableContent = getOfflineManifestAssets(manifest).filter(
+      (asset) => !isAppShellAsset(asset.url),
+    );
+    const hasContent = (id) =>
+      availableContent.some((asset) => matchesOfflineCatalog(asset.url, id));
     const modal = ensureDownloadAppModal();
     if (!modal) {
       resolve({
@@ -1095,6 +1293,7 @@ export function showDownloadAppModal(manifest) {
       titleEl.textContent = t("Download options");
     }
     if (content) {
+      content.removeAttribute("role");
       content.innerHTML = `
         <fieldset class="download-options" aria-label="${escapeHtml(
           t("Offline download options"),
@@ -1104,26 +1303,51 @@ export function showDownloadAppModal(manifest) {
             <span>
               <span class="download-option__title">${escapeHtml(t("Download full content"))}</span>
               <span class="download-option__description">${escapeHtml(t("Includes all app features, videos and images."))}</span>
+              <span id="offlineFullContentSize" class="download-option__size"></span>
+              <span data-download-status="full" class="download-status"></span>
             </span>
           </label>
+          <div class="download-selection-card">
           <label class="download-option">
             <input type="radio" name="offlineDownloadMode" value="select" />
             <span>
               <span class="download-option__title">${escapeHtml(t("Select content"))}</span>
-              <span class="download-option__description">${escapeHtml(t("Choose which content to download for offline use."))}</span>
+              <span class="download-option__description">${escapeHtml(t("Choose one or more sections to download."))}</span>
             </span>
           </label>
           <div class="download-select-panel" hidden>
-            <label for="offlineCatalogSelect">${escapeHtml(t("Content section"))}</label>
-            <select id="offlineCatalogSelect">
-              ${OFFLINE_CATALOG_OPTIONS.map(
-                (option) =>
-                  `<option value="${escapeHtml(option.id)}">${escapeHtml(
-                    t(option.label),
-                  )}</option>`,
+            <fieldset id="offlineCatalogSelect" class="download-section-list">
+              <legend>${escapeHtml(t("Choose sections"))}</legend>
+              ${OFFLINE_CATALOG_GROUPS.map(
+                (group) => `
+                <details class="download-group" data-download-group="${group.id}">
+                  <summary>
+                    <span>${escapeHtml(t(group.label))}</span>
+                    <span data-download-status="${group.id}" class="download-status"></span>
+                  </summary>
+                  <div class="download-group__sections">
+                    ${group.sections
+                      .map((id) => {
+                        const option = OFFLINE_DOWNLOAD_OPTIONS.find(
+                          (item) => item.id === id,
+                        );
+                        const available = hasContent(id);
+                        return `<label class="download-section">
+                        <input type="checkbox" name="offlineCatalog" value="${id}" ${available ? "" : "disabled"} />
+                        <span>
+                          <span class="download-section__title">${escapeHtml(t(option.label))}</span>
+                          ${available ? `<span data-download-status="${id}" class="download-status"></span>` : `<span class="download-section__unavailable">${escapeHtml(t("Coming soon"))}</span>`}
+                        </span>
+                      </label>`;
+                      })
+                      .join("")}
+                    <button type="button" class="download-group__all" data-download-all-group="${group.id}" ${hasContent(group.id) ? "" : "disabled"}>${escapeHtml(t(group.downloadLabel))}</button>
+                  </div>
+                </details>`,
               ).join("")}
-            </select>
-            <p id="offlineCatalogDescription"></p>
+            </fieldset>
+            <p id="offlineCatalogDescription" role="status"></p>
+          </div>
           </div>
           <div class="download-select-panel download-video-quality-panel">
             <label for="offlineVideoQualitySelect">${escapeHtml(t("Video quality"))}</label>
@@ -1142,13 +1366,11 @@ export function showDownloadAppModal(manifest) {
             <span>
               <span class="download-option__title">${escapeHtml(t("Exclude videos"))}</span>
               <span class="download-option__description">${escapeHtml(t("Downloads app pages, images, quizzes and other non-video content."))}</span>
+              <span data-download-status="app-only" class="download-status"></span>
             </span>
           </label>
         </fieldset>
         <p id="downloadEstimateText" class="download-estimate"></p>
-        <p data-i18n="languageInstall.downloadStorageNotice">
-          Full content requires about 1 GB of storage.
-        </p>
       `;
     }
 
@@ -1156,6 +1378,8 @@ export function showDownloadAppModal(manifest) {
     notNowBtn?.removeAttribute("hidden");
     if (closeBtn) closeBtn.onclick = null;
     if (notNowBtn) {
+      notNowBtn.onclick = null;
+      notNowBtn.disabled = false;
       notNowBtn.setAttribute("data-i18n", "languageInstall.not_now_button");
       notNowBtn.textContent = t("Not Now");
     }
@@ -1186,14 +1410,15 @@ export function showDownloadAppModal(manifest) {
       const mode =
         content?.querySelector('input[name="offlineDownloadMode"]:checked')
           ?.value || "full";
-      const catalogId =
-        content?.querySelector("#offlineCatalogSelect")?.value ||
-        OFFLINE_CATALOG_OPTIONS[0].id;
+      const catalogIds = Array.from(
+        content?.querySelectorAll('input[name="offlineCatalog"]:checked') || [],
+      ).map((input) => input.value);
       const videoQuality =
         content?.querySelector("#offlineVideoQualitySelect")?.value ||
         VIDEO_QUALITY_OPTIONS[0].id;
-      return { catalogId, mode, videoQuality };
+      return { catalogId: catalogIds[0], catalogIds, mode, videoQuality };
     };
+    let cachedUrls;
     const updateChoiceDetails = () => {
       const choice = getChoice();
       const selection = resolveOfflineDownloadSelection(manifest, choice);
@@ -1206,9 +1431,6 @@ export function showDownloadAppModal(manifest) {
         "#offlineVideoQualityDescription",
       );
       const estimate = content?.querySelector("#downloadEstimateText");
-      const selectedCatalog = OFFLINE_CATALOG_OPTIONS.find(
-        (option) => option.id === choice.catalogId,
-      );
       const selectedVideoQuality = VIDEO_QUALITY_OPTIONS.find(
         (option) => option.id === choice.videoQuality,
       );
@@ -1217,17 +1439,59 @@ export function showDownloadAppModal(manifest) {
       if (videoQualityPanel)
         videoQualityPanel.hidden = choice.mode === "app-only";
       if (description)
-        description.textContent = t(selectedCatalog?.description || "");
+        description.textContent = choice.catalogIds.length
+          ? choice.catalogIds.map(getCatalogLabel).join(", ")
+          : t("Select at least one section.");
+      if (downloadBtn)
+        downloadBtn.disabled =
+          choice.mode === "select" && !choice.catalogIds.length;
       if (videoQualityDescription) {
         videoQualityDescription.textContent = t(
           selectedVideoQuality?.description || "",
         );
       }
       if (estimate) renderDownloadEstimate(estimate, selection);
+      const fullSelection = resolveOfflineDownloadSelection(manifest, {
+        ...choice,
+        mode: "full",
+      });
+      const fullSize = content?.querySelector("#offlineFullContentSize");
+      if (fullSize)
+        fullSize.textContent = `${t("Download size:")} ${formatDownloadSize(fullSelection.bytes)}`;
+      content?.querySelectorAll("[data-download-status]").forEach((badge) => {
+        const id = badge.dataset.downloadStatus;
+        if (cachedUrls === undefined) {
+          setDownloadStatus(badge, "checking");
+          return;
+        }
+        const statusSelection =
+          id === "full"
+            ? fullSelection
+            : resolveOfflineDownloadSelection(manifest, {
+                ...choice,
+                mode: id === "app-only" ? "app-only" : "select",
+                catalogIds: [id],
+              });
+        updateCachedDownloadStatus(badge, statusSelection, cachedUrls);
+      });
     };
 
     const cancel = () => finish(null);
-    const confirm = () => finish(getChoice());
+    const confirm = () => {
+      const choice = getChoice();
+      if (choice.mode !== "select" || choice.catalogIds.length) finish(choice);
+    };
+    content?.querySelectorAll("[data-download-all-group]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.downloadAllGroup;
+        finish({
+          ...getChoice(),
+          mode: "select",
+          catalogId: id,
+          catalogIds: [id],
+        });
+      });
+    });
     const onOverlayClick = (event) => {
       if (event.target === modal) cancel();
     };
@@ -1250,10 +1514,35 @@ export function showDownloadAppModal(manifest) {
     window.I18N?.applyTranslations?.(modal);
     updateChoiceDetails();
     modal.classList.remove("hidden");
+    getCachedDownloadUrls().then((urls) => {
+      if (settled || !content?.querySelector("#offlineCatalogSelect")) return;
+      cachedUrls = urls;
+      updateChoiceDetails();
+    });
   });
 }
 
-function setDownloadModalBusy({ title, message, detail }) {
+function renderDownloadProgress(
+  content,
+  processed,
+  total,
+  failed = 0,
+  state = "progress",
+) {
+  const panel = document.createElement("div");
+  panel.className = "download-progress";
+  panel.innerHTML = `
+    <div class="download-progress__heading">
+      <span id="downloadProgressStatus" class="download-status" role="status"></span>
+      <span id="downloadProgressPercent">0%</span>
+    </div>
+    <progress id="downloadProgressBar" max="${Math.max(1, total)}" value="0" aria-label="${escapeHtml(t("Download progress"))}"></progress>
+    <p id="downloadProgressText" role="status" aria-live="polite"></p>`;
+  content.appendChild(panel);
+  updateDownloadProgress(processed, total, failed, state);
+}
+
+function setDownloadModalBusy({ title, message, detail, total, onPause }) {
   const modal = document.getElementById("downloadAppModal");
   const titleEl = document.getElementById("downloadAppTitle");
   const content = modal?.querySelector(".modal-content");
@@ -1266,21 +1555,38 @@ function setDownloadModalBusy({ title, message, detail }) {
   titleEl.removeAttribute("data-i18n");
   titleEl.textContent = t(title);
   content.innerHTML = "";
+  content.removeAttribute("role");
 
   const messageEl = document.createElement("p");
   messageEl.textContent = t(message);
   content.appendChild(messageEl);
 
   const detailEl = document.createElement("p");
-  detailEl.id = "downloadProgressText";
-  detailEl.setAttribute("role", "status");
-  detailEl.setAttribute("aria-live", "polite");
+  detailEl.className = "download-progress__selection";
   detailEl.textContent = detail;
   content.appendChild(detailEl);
+  renderDownloadProgress(content, 0, total);
 
   closeBtn?.setAttribute("hidden", "");
-  notNowBtn?.setAttribute("hidden", "");
+  if (notNowBtn) {
+    notNowBtn.removeAttribute("hidden");
+    notNowBtn.removeAttribute("data-i18n");
+    notNowBtn.disabled = false;
+    notNowBtn.textContent = t("Pause download");
+    notNowBtn.onclick = () => {
+      if (
+        !window.confirm(
+          "Are you sure you want to pause this download? Already downloaded files will be kept.",
+        )
+      )
+        return;
+      notNowBtn.disabled = true;
+      notNowBtn.textContent = t("Pausing...");
+      onPause();
+    };
+  }
   if (downloadBtn) {
+    downloadBtn.removeAttribute("hidden");
     downloadBtn.disabled = true;
     downloadBtn.removeAttribute("data-i18n");
     downloadBtn.textContent = t("Downloading...");
@@ -1289,14 +1595,84 @@ function setDownloadModalBusy({ title, message, detail }) {
   modal.classList.remove("hidden");
 }
 
-function updateDownloadProgress(processed, total, failed = 0) {
+function updateDownloadProgress(
+  processed,
+  total,
+  failed = 0,
+  state = "progress",
+) {
   const progress = document.getElementById("downloadProgressText");
   if (!progress) return;
 
   const failureText = failed ? ` (${failed} ${t("failed")})` : "";
-  progress.textContent = `${t("Downloaded")} ${processed} ${t(
+  const downloaded = Math.max(0, processed - failed);
+  progress.textContent = `${t("Downloaded")} ${downloaded} ${t(
     "of",
   )} ${total} ${t("files")}${failureText}.`;
+  const bar = document.getElementById("downloadProgressBar");
+  const percent = total
+    ? Math.min(100, Math.floor((100 * downloaded) / total))
+    : 0;
+  if (bar) {
+    bar.max = Math.max(1, total);
+    bar.value = downloaded;
+    bar.dataset.state = state;
+  }
+  const percentEl = document.getElementById("downloadProgressPercent");
+  if (percentEl) percentEl.textContent = `${percent}%`;
+  setDownloadStatus(document.getElementById("downloadProgressStatus"), state);
+}
+
+function showDownloadComplete(total) {
+  const modal = document.getElementById("downloadAppModal");
+  const title = document.getElementById("downloadAppTitle");
+  if (title)
+    title.textContent = t("Download complete. Content is ready offline.");
+  updateDownloadProgress(total, total, 0, "complete");
+  const message = modal?.querySelector(".modal-content > p");
+  if (message)
+    message.textContent = t("Download complete. Content is ready offline.");
+  const close = document.getElementById("closeDownloadAppModalBtn");
+  const dismiss = document.getElementById("notNowBtn");
+  for (const button of [close, dismiss]) {
+    if (!button) continue;
+    button.removeAttribute("hidden");
+    button.disabled = false;
+    button.onclick = hideDownloadAppModal;
+  }
+  if (dismiss) {
+    dismiss.removeAttribute("data-i18n");
+    dismiss.textContent = t("Close");
+  }
+  document.getElementById("downloadAllBtn")?.setAttribute("hidden", "");
+}
+
+function showDownloadPaused(cached, total, onResume) {
+  const modal = document.getElementById("downloadAppModal");
+  const title = document.getElementById("downloadAppTitle");
+  if (title) title.textContent = t("Download paused");
+  const message = modal?.querySelector(".modal-content > p");
+  if (message)
+    message.textContent = t(
+      "Already downloaded files have been kept. Resume to download the remaining content.",
+    );
+  updateDownloadProgress(cached, total, 0, "paused");
+  const close = document.getElementById("closeDownloadAppModalBtn");
+  const dismiss = document.getElementById("notNowBtn");
+  for (const button of [close, dismiss]) {
+    if (!button) continue;
+    button.removeAttribute("hidden");
+    button.disabled = false;
+    button.onclick = hideDownloadAppModal;
+  }
+  if (dismiss) dismiss.textContent = t("Close");
+  const resume = document.getElementById("downloadAllBtn");
+  if (resume) {
+    resume.removeAttribute("hidden");
+    resume.disabled = false;
+    resume.textContent = t("Resume download");
+    resume.onclick = onResume;
+  }
 }
 
 export function showDownloadErrorModal(error) {
@@ -1319,6 +1695,20 @@ export function showDownloadErrorModal(error) {
     "Some app content could not be downloaded. The items below may not work offline until you try again.",
   );
   content.appendChild(messageEl);
+
+  if (Number.isFinite(error?.total)) {
+    renderDownloadProgress(
+      content,
+      error.cached || 0,
+      error.total,
+      0,
+      "partial",
+    );
+  } else {
+    const status = document.createElement("span");
+    setDownloadStatus(status, "partial");
+    content.appendChild(status);
+  }
 
   const failedUrls = Array.isArray(error?.failedUrls) ? error.failedUrls : [];
   if (failedUrls.length) {
@@ -1370,6 +1760,7 @@ export function showDownloadErrorModal(error) {
   closeBtn?.removeAttribute("hidden");
   notNowBtn?.removeAttribute("hidden");
   if (notNowBtn) {
+    notNowBtn.disabled = false;
     notNowBtn.removeAttribute("data-i18n");
     notNowBtn.textContent = t("Close");
     notNowBtn.onclick = () => hideDownloadAppModal();
@@ -1388,19 +1779,30 @@ function hideDownloadAppModal() {
   document.getElementById("downloadAppModal")?.classList.add("hidden");
 }
 
-async function sendUrlsToServiceWorker(urls, onProgress) {
+async function sendUrlsToServiceWorker(urls, onProgress, signal) {
+  const abortError = () => new DOMException("Download paused.", "AbortError");
+  if (signal?.aborted) throw abortError();
   const registration = await new Promise((resolve, reject) => {
-    const timer = setTimeout(
-      () => reject(new Error("Offline setup timed out. Reconnect and reload.")),
-      30000,
-    );
+    const cleanup = () => {
+      clearTimeout(timer);
+      signal?.removeEventListener("abort", onAbort);
+    };
+    const onAbort = () => {
+      cleanup();
+      reject(abortError());
+    };
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error("Offline setup timed out. Reconnect and reload."));
+    }, 30000);
+    signal?.addEventListener("abort", onAbort, { once: true });
     navigator.serviceWorker.ready.then(
       (value) => {
-        clearTimeout(timer);
+        cleanup();
         resolve(value);
       },
       (error) => {
-        clearTimeout(timer);
+        cleanup();
         reject(error);
       },
     );
@@ -1413,10 +1815,17 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
   return await new Promise((resolve, reject) => {
     const channel = new MessageChannel();
     let timer;
+    const requestPause = () =>
+      channel.port1.postMessage({ type: "CACHE_CANCEL" });
+    const cleanup = () => {
+      clearTimeout(timer);
+      signal?.removeEventListener("abort", requestPause);
+      channel.port1.close();
+    };
     const resetTimeout = () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        channel.port1.close();
+        cleanup();
         reject(new Error("Download interrupted. Try again to resume."));
       }, 300000);
     };
@@ -1431,8 +1840,7 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
       }
 
       if (message.type === "CACHE_DONE") {
-        clearTimeout(timer);
-        channel.port1.close();
+        cleanup();
         if (message.failed?.length) {
           const downloadError = new Error(
             `${message.failed.length} files failed to download for offline use.`,
@@ -1447,18 +1855,26 @@ async function sendUrlsToServiceWorker(urls, onProgress) {
         return;
       }
 
+      if (message.type === "CACHE_PAUSED") {
+        cleanup();
+        resolve({ ...message, paused: true });
+        return;
+      }
+
       if (message.type === "CACHE_ERROR") {
-        clearTimeout(timer);
-        channel.port1.close();
+        cleanup();
         reject(new Error(message.error || "Offline download failed."));
       }
     };
 
     worker.postMessage({ type: "CACHE_URLS", payload: urls }, [channel.port2]);
+    if (signal?.aborted) requestPause();
+    else signal?.addEventListener("abort", requestPause, { once: true });
   });
 }
 
 export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
+  ensureDownloadAppModal();
   const urlsToCache = Array.isArray(downloadSelection)
     ? downloadSelection
     : downloadSelection.urls;
@@ -1469,23 +1885,38 @@ export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
     ? "Selected content"
     : downloadSelection.label;
   const sizeText = formatDownloadSize(selectedBytes);
+  const controller = new AbortController();
+  const pause = (cached, total) => {
+    showDownloadPaused(cached, total, () => {
+      void cacheOfflineUrls(downloadSelection, totalBytes).catch(
+        showDownloadErrorModal,
+      );
+    });
+    return false;
+  };
 
   setDownloadModalBusy({
     title: "Downloading app content",
     message: "Please keep the app open until the download is finished.",
-    detail: `${t("Downloaded")} 0 ${t("of")} ${urlsToCache.length} ${t(
-      "files",
-    )}. ${t(selectedLabel)}: ${sizeText}.`,
+    detail: `${t(selectedLabel)}: ${sizeText}.`,
+    total: urlsToCache.length,
+    onPause: () => controller.abort(),
   });
 
+  let lastProgress = { cached: 0, total: urlsToCache.length };
   try {
-    await sendUrlsToServiceWorker(
+    const result = await sendUrlsToServiceWorker(
       urlsToCache,
       ({ processed, total, failed }) => {
+        lastProgress = { cached: Math.max(0, processed - failed), total };
         updateDownloadProgress(processed, total, failed);
       },
+      controller.signal,
     );
+    if (result.paused) return pause(result.cached, result.total);
   } catch (error) {
+    if (error?.name === "AbortError")
+      return pause(lastProgress.cached, lastProgress.total);
     const downloadError =
       error instanceof Error
         ? error
@@ -1493,10 +1924,13 @@ export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
     if (downloadSelection && !Array.isArray(downloadSelection)) {
       downloadError.downloadSelection = downloadSelection;
     }
+    downloadError.cached ??= lastProgress.cached;
+    downloadError.total ??= lastProgress.total;
     throw downloadError;
   }
 
-  hideDownloadAppModal();
+  showDownloadComplete(urlsToCache.length);
+  return true;
 }
 
 function normalizeChildhoodPilotSubtitleCacheLanguage(lang) {
@@ -1648,7 +2082,7 @@ export function initializeLanguageInstall() {
                 manifest,
                 downloadChoice,
               );
-              await cacheOfflineUrls(downloadSelection);
+              if ((await cacheOfflineUrls(downloadSelection)) === false) return;
             } catch (err) {
               console.warn("[install] could not cache standalone app:", err);
               showDownloadErrorModal(err);
@@ -1704,7 +2138,7 @@ export function initializeLanguageInstall() {
         // Accepted → warm cache (best-effort) then advance
         try {
           await navigator.serviceWorker.ready;
-          await cacheOfflineUrls(downloadSelection);
+          if ((await cacheOfflineUrls(downloadSelection)) === false) return;
           console.warn(
             "[install] cached app assets:",
             downloadSelection.urls.length,

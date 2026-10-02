@@ -38,21 +38,21 @@
   const FIELD_SPECS_HIGHER = [
     {
       id: "f1",
-      stem: "monoL",
-      answer: "monoL",
-      opts: ["monoL", "monoR", "biTemp", "leftHom"],
+      stem: "biNasal",
+      answer: "biNasal",
+      opts: ["biNasal", "biTemp", "rightHom", "leftHom"],
     },
     {
       id: "f2",
-      stem: "biTemp",
-      answer: "biTemp",
-      opts: ["biTemp", "biNasal", "rightHom", "leftHom"],
+      stem: "leftSup",
+      answer: "leftSup",
+      opts: ["leftSup", "rightSup", "leftInf", "rightInf"],
     },
     {
       id: "f3",
-      stem: "leftHom",
-      answer: "leftHom",
-      opts: ["leftHom", "rightHom", "leftSup", "leftInf"],
+      stem: "rightInf",
+      answer: "rightInf",
+      opts: ["rightInf", "leftInf", "rightSup", "leftSup"],
     },
     {
       id: "f4",
@@ -97,7 +97,7 @@
 
   const PATHWAY_SPECS_PRIMARY = [
     {
-      id: "p1",
+      id: "pp1",
       prompt: "Pick the best matching field pattern.",
       stem: { kind: "pathway", key: "chiasm", caption: "Site" },
       answer: "biTemp",
@@ -105,7 +105,7 @@
       opts: ["biTemp", "biNasal", "rightHom", "leftHom"],
     },
     {
-      id: "p2",
+      id: "pp2",
       prompt: "Pick the best matching field pattern.",
       stem: { kind: "pathway", key: "leftTract", caption: "Site" },
       answer: "rightHom",
@@ -113,7 +113,7 @@
       opts: ["rightHom", "leftHom", "biTemp", "monoL"],
     },
     {
-      id: "p3",
+      id: "pp3",
       prompt: "Pick the best matching field pattern.",
       stem: { kind: "pathway", key: "rightNerve", caption: "Site" },
       answer: "monoR",
@@ -121,7 +121,7 @@
       opts: ["monoR", "monoL", "rightHom", "biTemp"],
     },
     {
-      id: "p4",
+      id: "pp4",
       prompt: "Pattern shown. Pick the best matching site.",
       stem: { kind: "pattern", key: "leftHom", caption: "Pattern" },
       answer: "rightPost",
@@ -129,7 +129,7 @@
       opts: ["rightPost", "leftPost", "chiasm", "rightNerve"],
     },
     {
-      id: "p6",
+      id: "pp5",
       prompt: "Pattern shown. Pick the best matching site.",
       stem: { kind: "pattern", key: "monoL", caption: "Pattern" },
       answer: "leftAnteriorMixed",
@@ -140,44 +140,52 @@
 
   const PATHWAY_SPECS_HIGHER = [
     {
-      id: "p1",
+      id: "ph1",
       prompt: "Pick the best matching field pattern.",
-      stem: { kind: "pathway", key: "chiasm", caption: "Site" },
-      answer: "biTemp",
+      stem: { kind: "pathway", key: "rightMeyer", caption: "Site" },
+      answer: "leftSup",
       optionKind: "pattern",
-      opts: ["biTemp", "biNasal", "rightHom", "leftHom"],
+      opts: ["leftSup", "leftInf", "rightSup", "rightInf"],
     },
     {
-      id: "p2",
+      id: "ph2",
       prompt: "Pick the best matching field pattern.",
-      stem: { kind: "pathway", key: "leftTract", caption: "Site" },
-      answer: "rightHom",
+      stem: { kind: "pathway", key: "leftParietal", caption: "Site" },
+      answer: "rightInf",
       optionKind: "pattern",
-      opts: ["rightHom", "leftHom", "biTemp", "monoL"],
+      opts: ["rightInf", "rightSup", "leftInf", "leftSup"],
     },
     {
-      id: "p3",
+      id: "ph3",
       prompt: "Pick the best matching field pattern.",
-      stem: { kind: "pathway", key: "rightNerve", caption: "Site" },
-      answer: "monoR",
+      stem: { kind: "pathway", key: "binasalSite", caption: "Site" },
+      answer: "biNasal",
       optionKind: "pattern",
-      opts: ["monoR", "monoL", "rightHom", "biTemp"],
+      opts: ["biNasal", "biTemp", "rightHom", "leftHom"],
     },
     {
-      id: "p4",
+      id: "ph4",
       prompt: "Pattern shown. Pick the best matching site.",
-      stem: { kind: "pattern", key: "leftHom", caption: "Pattern" },
-      answer: "rightPost",
+      stem: {
+        kind: "pattern",
+        key: "teachJunctionalScotoma",
+        caption: "Pattern",
+      },
+      answer: "rightJunction",
       optionKind: "pathway",
-      opts: ["rightPost", "leftPost", "chiasm", "rightNerve"],
+      opts: ["rightJunction", "rightNerve", "chiasm", "rightPost"],
     },
     {
-      id: "p5",
+      id: "ph5",
       prompt: "Pattern shown. Pick the best matching site.",
-      stem: { kind: "pattern", key: "rightSup", caption: "Pattern" },
-      answer: "leftMeyer",
+      stem: {
+        kind: "pattern",
+        key: "teachBitemporalQuadrantanopia",
+        caption: "Pattern",
+      },
+      answer: "chiasm",
       optionKind: "pathway",
-      opts: ["leftMeyer", "leftParietal", "rightMeyer", "rightParietal"],
+      opts: ["chiasm", "leftTract", "rightTract", "bilateralAnterior"],
     },
   ];
 
@@ -201,7 +209,7 @@
     {
       id: "pa3",
       prompt:
-        "Pattern shown with sudden onset and no RAPD. Pick the best site.",
+        "Monocular pattern with sudden flashes and a curtain-like symptom. Retinal pathology is suspected. Pick the best site.",
       stem: { kind: "pattern", key: "monoR", caption: "Pattern" },
       answer: "rightRetina",
       optionKind: "pathway",
@@ -209,7 +217,8 @@
     },
     {
       id: "pa4",
-      prompt: "Pattern shown with matching RAPD. Pick the best site.",
+      prompt:
+        "Monocular pattern with dyschromatopsia, a matching RAPD and no retinal explanation. Pick the best site.",
       stem: { kind: "pattern", key: "monoR", caption: "Pattern" },
       answer: "rightNerve",
       optionKind: "pathway",
@@ -327,6 +336,95 @@
       site: "rightAnteriorMixed",
     },
   ];
+
+  const FIELD_RATIONALES = Object.freeze({
+    monoL: "Loss confined to the left eye is a left monocular field pattern.",
+    monoR: "Loss confined to the right eye is a right monocular field pattern.",
+    biTemp: "Temporal field loss in both eyes is a bitemporal pattern.",
+    biNasal: "Nasal field loss in both eyes is a binasal pattern.",
+    leftHom:
+      "Loss of the left visual hemifield in both eyes is a left homonymous pattern.",
+    rightHom:
+      "Loss of the right visual hemifield in both eyes is a right homonymous pattern.",
+    leftSup:
+      "Loss of the left superior quadrant in both eyes is a left superior homonymous quadrantanopia.",
+    rightSup:
+      "Loss of the right superior quadrant in both eyes is a right superior homonymous quadrantanopia.",
+    leftInf:
+      "Loss of the left inferior quadrant in both eyes is a left inferior homonymous quadrantanopia.",
+    rightInf:
+      "Loss of the right inferior quadrant in both eyes is a right inferior homonymous quadrantanopia.",
+  });
+
+  const SITE_RATIONALES = Object.freeze({
+    chiasm:
+      "Central chiasmal dysfunction classically affects crossing nasal retinal fibres and produces bitemporal loss.",
+    leftTract:
+      "The left optic tract carries the right visual hemifield, so injury produces a right homonymous defect.",
+    rightTract:
+      "The right optic tract carries the left visual hemifield, so injury produces a left homonymous defect.",
+    leftPost:
+      "The left post-chiasmal pathway carries the right visual hemifield.",
+    rightPost:
+      "The right post-chiasmal pathway carries the left visual hemifield.",
+    leftMeyer:
+      "Left temporal optic radiations in Meyer loop carry the right superior visual field.",
+    rightMeyer:
+      "Right temporal optic radiations in Meyer loop carry the left superior visual field.",
+    leftParietal:
+      "Left parietal optic radiations carry the right inferior visual field.",
+    rightParietal:
+      "Right parietal optic radiations carry the left inferior visual field.",
+    leftNerve:
+      "A left optic-nerve lesion produces monocular left-eye loss and can cause a left RAPD.",
+    rightNerve:
+      "A right optic-nerve lesion produces monocular right-eye loss and can cause a right RAPD.",
+    leftRetina:
+      "A left retinal lesion can produce monocular left-eye field loss.",
+    rightRetina:
+      "A right retinal lesion can produce monocular right-eye field loss; flashes and a curtain-like symptom strengthen retinal concern.",
+    leftAnteriorMixed:
+      "A monocular pattern localises before the chiasm but field shape alone may not distinguish retina from optic nerve.",
+  });
+
+  function attachQuestionMetadata(collection, explanationFor) {
+    collection.forEach((question) => {
+      question.explanation = explanationFor(question);
+      question.sourceIds = ["VISUAL-PATHWAY-2023", "VISUAL-PATHWAY-2021"];
+      question.reviewStatus = "Independent clinical sign-off pending";
+    });
+  }
+
+  [FIELD_SPECS_PRIMARY, FIELD_SPECS_HIGHER, FIELD_SPECS_ADVANCED_EXTRA].forEach(
+    (collection) => {
+      attachQuestionMetadata(
+        collection,
+        (question) =>
+          FIELD_RATIONALES[question.answer] ||
+          "Name the defect from the eye and hemifield pattern shown.",
+      );
+    },
+  );
+
+  [
+    PATHWAY_SPECS_PRIMARY,
+    PATHWAY_SPECS_HIGHER,
+    PATHWAY_SPECS_ADVANCED_EXTRA,
+  ].forEach((collection) => {
+    attachQuestionMetadata(collection, (question) => {
+      if (question.optionKind === "pattern") {
+        return (
+          SITE_RATIONALES[question.stem.key] ||
+          FIELD_RATIONALES[question.answer] ||
+          "Match the highlighted pathway site to its expected field pattern."
+        );
+      }
+      return (
+        SITE_RATIONALES[question.answer] ||
+        "Match the field pattern to the most likely pathway site."
+      );
+    });
+  });
 
   const parts = (globalScope.MCQ_DATA_PARTS = globalScope.MCQ_DATA_PARTS || {});
   Object.assign(parts, {

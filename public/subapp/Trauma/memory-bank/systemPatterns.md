@@ -1,8 +1,20 @@
 # System Patterns
 
+## Result-state hierarchy
+
+Completed results use the compact label-and-score grid. Untouched results use the dedicated `is-unassessed` stacked layout so instructional text cannot collide with the state heading.
+
+## v1.1 additions
+
+- `scoring-engine.js`: browser/Node-compatible pure scoring data and functions
+- `pwa.js`, `manifest.webmanifest`, `sw.js`: scoped offline application shell
+- `tests/`: scoring boundaries, contracts and exact-device review
+
+UI rendering consumes the pure engine. Copy/export remains downstream of the same calculated result.
+
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Historical Memory Status (18/5/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -31,7 +43,7 @@
 ## Calculation Pattern
 
 - Event-driven recomputation (`change` on VA and checkboxes).
-- Rebuild output fragments with `innerHTML` in one function (`calculateOTS`).
+- Render calculated output through DOM/text construction downstream of `TraumaScoring`.
 - Keep one source of truth for category thresholds in JS logic.
 
 ## UI Pattern
@@ -40,8 +52,8 @@
   - input card
   - result card
 - App bar identity is Trauma-specific:
-  - red background
-  - black Quicksand title
+  - black background
+  - red Quicksand title
   - 54px height
 - Current visual language copies the Fundal Reflex lessons:
   - mobile-first clinical density
@@ -81,3 +93,13 @@
 
 - Prefer DOM construction, `textContent` and `replaceChildren` for dynamic visible UI.
 - Avoid `innerHTML`, `outerHTML` and `insertAdjacentHTML` for app data.
+
+## Maintenance pattern — 26 July 2026
+
+- Keep static layout in `index.html` and modal/sidebar lifecycle in `shell-controller.js`.
+- Load the shell controller after scoring and main behaviour scripts.
+- Cache every new local runtime script in the app-scoped service-worker shell.
+
+Use the section heading as the sole full label for dense mobile inputs. Dropdown placeholders and untouched guidance should be concise without repeating that heading.
+
+MCQ records must retain a stable `trauma-{tier}-{NN}` ID, four distinct options, one valid `answerIndex`, a useful rationale, a known source key and explicit review status. Incomplete attempts must not grade. Completed attempts show result, correct and incorrect states, rationales and source status before retry. Keep this teaching layer separate from `TraumaScoring`.

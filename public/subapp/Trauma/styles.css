@@ -26,8 +26,8 @@
   --ink: #111827;
   --text-strong: #0f1625;
   --muted: #5c6677;
-  --appbar: #ff0000;
-  --appbar-accent: #000000;
+  --appbar: #000000;
+  --appbar-accent: #f03b2f;
   --brand-red: #f03b2f;
   --accent: #0f6bdc;
   --white: #ffffff;
@@ -97,7 +97,7 @@ body {
   z-index: 200;
   height: calc(var(--header-height) + env(safe-area-inset-top));
   padding: env(safe-area-inset-top) var(--space-12) 0;
-  background: linear-gradient(180deg, var(--appbar), #df0000);
+  background: linear-gradient(180deg, var(--appbar), #050505);
   display: grid;
   grid-template-columns: var(--tap-target-min) 1fr var(--tap-target-min);
   align-items: center;
@@ -130,7 +130,7 @@ body {
 }
 
 .appbar-button:hover {
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(240, 59, 47, 0.14);
 }
 
 .appbar-button-left {
@@ -220,9 +220,11 @@ body {
 .side-menu-title {
   margin: 0;
   color: #6e7c95;
-  font-size: 0.72rem;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -232,7 +234,8 @@ body {
   height: 34px;
   border-radius: var(--radius-sm);
   background: transparent;
-  font-size: 28px;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 22px;
   line-height: 1;
   color: #203250;
   cursor: pointer;
@@ -249,15 +252,9 @@ body {
 
 .menu-section-title {
   margin: 0 0 var(--space-8);
-  font-size: 0.96rem;
-  font-weight: 700;
-}
-
-.menu-list {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 .mcq-level-menu {
@@ -307,12 +304,12 @@ body {
   min-width: 0;
 }
 
-.mcq-level-button-meta {
-  flex: 0 0 auto;
-  color: #6e7c95;
-  font-size: 0.72rem;
-  font-weight: 700;
-  white-space: nowrap;
+.mcq-menu-note {
+  margin: 8px 0 0;
+  color: #50627e;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.4;
 }
 
 .mcq-level-button[data-level-index="0"] {
@@ -347,10 +344,28 @@ body {
   outline-offset: 2px;
 }
 
-.mcq-menu-note {
-  margin: 8px 0 0;
-  font-size: 12px;
-  color: #50627e;
+.reset-case-button {
+  width: 100%;
+  min-height: var(--tap-target-min);
+  margin-top: var(--space-8);
+  border: 1px solid #b7beca;
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: #343b48;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reset-case-button:hover {
+  background: #f2f4f7;
+}
+
+.reset-case-status {
+  min-height: 1.25em;
+  margin: var(--space-6) 2px 0;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  line-height: 1.3;
 }
 
 .main-shell {
@@ -395,7 +410,7 @@ body {
 
 .risk-section .form-section-title {
   margin-bottom: 6px;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.02em;
 }
 
@@ -414,13 +429,6 @@ body {
 
 .form-group {
   margin: 0 0 12px;
-}
-
-.control-label {
-  display: block;
-  margin: 0 0 6px;
-  font-size: 17px;
-  font-weight: 700;
 }
 
 .risk-fieldset {
@@ -597,6 +605,12 @@ select {
   box-shadow: 0 2px 7px rgba(18, 23, 34, 0.08);
 }
 
+.tooltip-close::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+}
+
 .tooltip-close:hover {
   background: rgba(15, 22, 37, 0.08);
   color: #233551;
@@ -680,6 +694,23 @@ input:checked + .slider::before {
   gap: 10px;
 }
 
+#scoreDisplay.is-unassessed {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 2px;
+}
+
+.result-unassessed-title {
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.result-unassessed-copy {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
 #scoreDisplay .result-text,
 #scoreDisplay .static-text {
   min-width: 0;
@@ -694,18 +725,6 @@ input:checked + .slider::before {
   justify-content: flex-end;
   gap: 8px;
   min-width: max-content;
-}
-
-.result-scope-note {
-  margin: 9px 0 0;
-  padding: 8px 2px 0;
-  border-top: 1px solid #dbe3ef;
-  border-radius: 0;
-  background: transparent;
-  color: #4c596c;
-  font-size: 12px;
-  line-height: 1.3;
-  font-style: italic;
 }
 
 .score-box {
@@ -839,12 +858,6 @@ input:checked + .slider::before {
   margin-top: 8px;
 }
 
-.calculation-title {
-  margin: 0 0 6px;
-  font-size: 15px;
-  color: #5f6d82;
-}
-
 .calculation-list {
   margin: 0;
   padding: 0;
@@ -853,7 +866,7 @@ input:checked + .slider::before {
   gap: 3px 10px;
   font-size: 12px;
   line-height: 1.35;
-  font-style: italic;
+  font-style: normal;
   color: #6f7b8d;
 }
 
@@ -984,7 +997,7 @@ input:checked + .slider::before {
   width: 100%;
   margin: 0 0 8px;
   padding: 0;
-  font-size: 0.98rem;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.25;
   color: #1f3250;
@@ -1000,11 +1013,11 @@ input:checked + .slider::before {
   display: flex;
   align-items: flex-start;
   gap: var(--space-8);
-  min-height: var(--tap-target-dense);
+  min-height: var(--tap-target-min);
   margin: var(--space-4) 0;
   padding: var(--space-6);
   border-radius: var(--radius-sm);
-  font-size: 0.94rem;
+  font-size: 12.5px;
   line-height: 1.24;
   color: #2a3d5b;
   cursor: pointer;
@@ -1017,6 +1030,37 @@ input:checked + .slider::before {
 
 .mcq-option input {
   margin-top: 2px;
+}
+
+.mcq-option.is-correct {
+  background: #e8f8ee;
+  color: #126c37;
+}
+
+.mcq-option.is-wrong {
+  background: #fdecec;
+  color: #9e1b1b;
+}
+
+.mcq-item-review {
+  clear: both;
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid #d7e0ec;
+}
+
+.mcq-item-feedback,
+.mcq-item-source {
+  margin: 0;
+  color: #44516a;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.mcq-item-source {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .mcq-actions {
@@ -1034,7 +1078,7 @@ input:checked + .slider::before {
   background: linear-gradient(180deg, #11c85c, #0ea84d);
   color: #ffffff;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 12.5px;
   font-weight: 700;
   padding: var(--space-10) var(--space-16);
   cursor: pointer;
@@ -1079,7 +1123,12 @@ input:checked + .slider::before {
   color: #334965;
 }
 
+.mcq-result:empty {
+  display: none;
+}
+
 .mcq-result:not(:empty) {
+  margin-bottom: 8px;
   padding: 10px 11px;
   border: 1px solid #d9e2ef;
   border-radius: var(--radius-sm);
@@ -1254,22 +1303,36 @@ a:focus-visible {
   line-height: 1.42;
 }
 
-#infoModal .info-popup-body > p:first-child {
+#infoModal .info-popup-body {
+  display: grid;
+  gap: 8px;
+}
+
+#infoModal .info-look-section {
+  display: grid;
+  gap: 5px;
+}
+
+#infoModal .info-look-section p {
+  margin: 0;
+}
+
+#infoModal .info-look-section--intro {
   padding: 9px 10px;
   border: 1px solid #e1e9f4;
   border-radius: var(--radius-sm);
   background: #f5f8fc;
 }
 
-#infoModal .info-popup-body > p:nth-child(2) {
+#infoModal .info-look-section--method {
   padding: 8px 10px;
   border: 1px solid #dbe5f2;
   border-radius: var(--radius-sm);
   background: #ffffff;
 }
 
-#infoModal .info-popup-body > p:nth-child(3) {
-  padding-right: 76px;
+#infoModal .info-look-section--reference {
+  padding: 0 2px;
 }
 
 #infoModal .info-popup-body strong {
@@ -1299,12 +1362,19 @@ a:focus-visible {
   color: #233551;
 }
 
+#infoModal #closeModal::after {
+  position: absolute;
+  inset: -5px;
+  content: "";
+}
+
 #infoModal .modal-version {
-  right: 13px;
-  bottom: 10px;
+  position: static;
+  margin-top: 0;
   color: #6e7c95;
   font-size: 0.72rem;
   font-weight: 700;
+  text-align: right;
 }
 
 .info-section-title {
@@ -1314,72 +1384,6 @@ a:focus-visible {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-.info-basics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
-}
-
-.info-basics-cue {
-  min-width: 0;
-  padding: 7px 5px 6px;
-  border: 1px solid #d7e0ec;
-  border-radius: var(--radius-control);
-  background: #ffffff;
-  text-align: center;
-  box-shadow: 0 3px 8px rgba(18, 23, 34, 0.05);
-}
-
-.info-basics-cue strong {
-  display: block;
-  font-size: 0.76rem;
-  line-height: 1.15;
-  color: #18263d;
-}
-
-.info-basics-cue:nth-child(2) strong {
-  color: #d61f1f;
-}
-
-.info-basics-cue:nth-child(3) strong {
-  color: var(--accent);
-}
-
-.info-basics-cue small {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.6rem;
-  line-height: 1.15;
-  color: #5f6d82;
-}
-
-.info-detail {
-  padding: 9px 10px;
-  border: 1px solid #e1e9f4;
-  border-radius: var(--radius-sm);
-  background: #f3f7fc;
-}
-
-.info-detail p,
-.info-link-row {
-  margin: 0;
-  line-height: 1.4;
-}
-
-.info-link-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.modal-version-inline {
-  white-space: nowrap;
-  font-size: 0.72em;
-  font-weight: 700;
-  color: #6e7c95;
 }
 
 @supports (height: 100dvh) {
@@ -1444,7 +1448,7 @@ a:focus-visible {
 
 @media (max-width: 420px) and (max-height: 760px) {
   .main-shell {
-    padding: 6px 8px 4px;
+    padding: 6px 10px 4px;
     gap: 8px;
   }
 
@@ -1533,9 +1537,8 @@ a:focus-visible {
   }
 
   .calculation-content {
-    max-height: 78px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    max-height: none;
+    overflow-y: visible;
     padding-right: 4px;
   }
 
@@ -1555,10 +1558,69 @@ a:focus-visible {
     padding: 5px 6px;
     font-size: 11px;
   }
+}
 
-  .result-scope-note {
-    margin-top: 7px;
-    padding-top: 6px;
-    font-size: 11.5px;
-  }
+/* Shared fleet information-card type hierarchy. */
+#infoModal .info-popup-header h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#infoModal .info-popup-body,
+#infoModal .info-popup-body p {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+#infoModal .info-popup-body p.info-section-title {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+#infoModal .info-popup-body p.info-version {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+  color: #6e7c95;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Fleet UI alignment: information card and main section hierarchy. */
+#infoModal .modal-content {
+  border-radius: 16px;
+}
+
+#infoModal .info-popup-header {
+  min-height: 44px;
+}
+
+#infoModal #closeModal {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  top: 4px;
+  right: 8px;
+}
+
+main .form-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
 }

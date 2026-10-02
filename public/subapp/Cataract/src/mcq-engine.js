@@ -36,6 +36,7 @@ export function evaluateMcqAnswers(
   allowUnanswered,
 ) {
   let score = 0;
+  let answeredCount = 0;
   for (
     let questionIndex = 0;
     questionIndex < questions.length;
@@ -44,13 +45,24 @@ export function evaluateMcqAnswers(
     const selectedOptionIndex = selectedAnswers[questionIndex];
     if (selectedOptionIndex === null || selectedOptionIndex === undefined) {
       if (!allowUnanswered) {
-        return { isComplete: false, score: 0, total: questions.length };
+        return {
+          isComplete: false,
+          score: 0,
+          total: questions.length,
+          unansweredCount: 1,
+        };
       }
       continue;
     }
+    answeredCount += 1;
     if (Number(selectedOptionIndex) === questions[questionIndex].answerIndex) {
       score += 1;
     }
   }
-  return { isComplete: true, score, total: questions.length };
+  return {
+    isComplete: true,
+    score,
+    total: questions.length,
+    unansweredCount: questions.length - answeredCount,
+  };
 }

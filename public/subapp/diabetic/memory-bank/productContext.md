@@ -1,19 +1,34 @@
 # Product Context
 
+## v1.1 Product Boundary (22/7/2026)
+
+The image viewer and quizzes remain teaching surfaces. Only the Exam state drives triage and referral-note output. New-assessment reset clears that operational state without changing the active teaching case or earned achievement. No clinical threshold, action label or referral wording changed in v1.1.
+
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Current Memory Status (21/5/2026)
 
+- v1 app review completed on `21/5/26`.
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
-- Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
+- Main screen: image-led diabetic case practice viewer using the Swollen Discs draggable circular viewing engine.
+- Case assets: ten expanded WebP diabetic cases in `assets/images/diabetic/`, with thumbnails plus light and dark pigmentation support.
+- Viewer controls: `<` / `>` case navigation, icon-only case information, R/L orientation, Gaze, Dilated, Skin and full-width Adv controls for cataract blur and nystagmus.
+- Arclight (DO): compact direct-view simulation.
+- Holo (BIO): wider lens-style view; corneal reflection is hidden; field is `15 deg` undilated and `25 deg` dilated, and switching to Holo does not automatically switch Dilated on.
+- Exam system: RE and LE VA, View, Findings and Action live in one separate compact Exam box below or beside the viewer.
+- Findings: paired per-eye dropdowns are both labelled `Findings` and group no referable signs, DR signs, macula risk and proliferative signs with mini explanations.
+- Action logic: outputs `Routine (weeks)`, `Soon (days)`, `Urgent (today)`, `Ungradable (repeat)` or `Record both eyes` using green, orange, red and neutral chips, with a compact `+` expander for details.
+- Quick guide, side drawer, practice cases, findings guide and referral note follow the Fundal Reflex compact UI pattern.
+- Quick guide popup shows `v1 21/5/26` at bottom right.
+- MCQs use Primary, Intermediate and Advanced banks with stable IDs, explanations and source-status metadata. Engineering review is complete but independent clinical sign-off remains pending.
+- Final UI polish: equal-width VA/View selects, lighter select text and muted mid-grey Temporal/Nasal canvas labels.
+- Responsive checks completed at `360 x 740`, `768 x 1024`, `1024 x 768` and `1366 x 768`.
+- Latest Lighthouse: mobile `90 / 100 / 100 / 100`; desktop `100 / 100 / 100 / 100`.
 - Shared appbar: `54px` high; `Quicksand` `25px`/`700` title; `44 x 44` burger and info buttons set `12px` from the edges.
-- Burger glyph: shared CSS three-bar mark, `18px` wide with `2px` strokes, so no app depends on a bold font glyph.
-- Shared side menu: left drawer under the appbar; `min(76vw, 284px)` width; `16px` padding; pale `#f8fbff` surface; blue-grey border; card-style actions with small level dots.
-- Appbar content colour: red `#f04444` on a black appbar.
-- Favicon: current black-square app favicon with the app letter or letters centred.
+- Favicon: black square with a centred red `D`.
 <!-- APP-DOC-STATUS:END -->
 
-Last updated: 18/5/2026
+Last updated: 21/5/2026
 
 ## Users
 
@@ -35,7 +50,7 @@ Secondary users:
 
 The app may be used:
 
-- offline.
+- offline or from a simple local static server.
 - on a small phone.
 - in a busy clinic.
 - with limited retinal imaging access.
@@ -91,7 +106,7 @@ The app should make the user feel:
 
 It should not make the user feel they have produced a definitive specialist diagnosis.
 
-Practice should feel clearly educational and live in the side drawer. Arclight (DO) and Holo (BIO) should feel like clinical recording routes with shared per-eye findings and mode-specific view options.
+Practice should feel clearly educational, use the ten image cases and live in the side drawer. Arclight (DO) and Holo (BIO) should feel like clinical recording routes with shared per-eye findings and mode-specific view options.
 
 ## Tone
 

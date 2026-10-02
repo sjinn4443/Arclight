@@ -114,6 +114,7 @@ export function createMcqController({
   triggerButton,
   testContainer,
   submitTestButton,
+  retryTestButton,
   saveResultButton,
   testResultDiv,
   testModalTitle,
@@ -227,15 +228,24 @@ export function createMcqController({
     }
 
     const tierConfig = getActiveTierConfig();
-    if (tierConfig.timeLimitSeconds <= 0 || state.mcq.lastResult) {
+    if (state.mcq.lastResult) {
       mcqTimer.hidden = true;
       mcqTimer.textContent = '';
       mcqTimer.classList.remove('is-warning');
       return;
     }
 
+    const passThreshold = Math.max(1, Math.ceil(tierConfig.questionCount * tierConfig.passRatio));
     mcqTimer.hidden = false;
-    mcqTimer.textContent = `Time left: ${formatSeconds(secondsRemaining)}`;
+    if (tierConfig.timeLimitSeconds <= 0) {
+      mcqTimer.textContent = `Pass mark ${passThreshold}/${tierConfig.questionCount} · Untimed`;
+      mcqTimer.classList.remove('is-warning');
+      return;
+    }
+
+    mcqTimer.textContent = `Pass mark ${passThreshold}/${tierConfig.questionCount} · ${formatSeconds(
+      secondsRemaining
+    )} left`;
     mcqTimer.classList.toggle('is-warning', secondsRemaining <= 15);
   }
 
@@ -269,7 +279,19 @@ export function createMcqController({
     }
 
     const tierConfig = getActiveTierConfig();
-    testModalTitle.textContent = `MCQ Test - ${tierConfig.name}`;
+    testModalTitle.textContent = `${tierConfig.name} MCQ`;
+  }
+
+  function resetAttemptUi() {
+    testResultDiv.textContent = '';
+    testResultDiv.className = 'result-text';
+    testResultDiv.removeAttribute?.('tabindex');
+    submitTestButton.hidden = false;
+    submitTestButton.disabled = false;
+    if (retryTestButton) {
+      retryTestButton.hidden = true;
+    }
+    saveResultButton.hidden = true;
   }
 
   function openTestModal({ beforeOpen, tierIndex } = {}) {
@@ -288,10 +310,7 @@ export function createMcqController({
     }
 
     activeTierIndex = requestedTierIndex;
-    testResultDiv.textContent = '';
-    submitTestButton.hidden = false;
-    submitTestButton.disabled = false;
-    saveResultButton.hidden = true;
+    resetAttemptUi();
 
     applyTierUiState();
     generateTest();
@@ -344,6 +363,7 @@ export function createMcqController({
     state.mcq.selectedQuestions.forEach((question, index) => {
       const questionFieldset = doc.createElement('fieldset');
       questionFieldset.className = 'question';
+      questionFieldset.dataset.questionId = question.id;
 
       const prompt = doc.createElement('legend');
       prompt.textContent = `${index + 1}. ${question.prompt}`;
@@ -369,6 +389,11 @@ export function createMcqController({
       });
 
       questionFieldset.appendChild(optionsDiv);
+
+      const explanation = doc.createElement('p');
+      explanation.className = 'answer-explanation';
+      explanation.hidden = true;
+      questionFieldset.appendChild(explanation);
       testContainer.appendChild(questionFieldset);
     });
   }
@@ -427,7 +452,16 @@ export function createMcqController({
       tierConfig.passRatio
     );
 
+    if (!evaluation.isComplete && !autoSubmitted) {
+      const firstUnansweredIndex = selectedChoiceIds.findIndex((choiceId) => !choiceId);
+      testResultDiv.textContent = 'Please answer all questions before submitting.';
+      testResultDiv.className = 'test-result is-review';
+      testContainer.querySelector(`input[name="question${firstUnansweredIndex}"]`)?.focus();
+      return;
+    }
+
     evaluation.details.forEach((detail) => {
+      const questionFieldset = testContainer.querySelectorAll('.question')[detail.index];
       if (detail.selectedChoiceId && !detail.isCorrect) {
         const selectedRadio = testContainer.querySelector(
           `input[name="question${detail.index}"][value="${detail.selectedChoiceId}"]`
@@ -443,6 +477,12 @@ export function createMcqController({
 
       if (correctRadio) {
         correctRadio.parentElement.classList.add('correct-answer-label');
+      }
+
+      const explanation = questionFieldset?.querySelector('.answer-explanation');
+      if (explanation) {
+        explanation.textContent = detail.explanation;
+        explanation.hidden = false;
       }
     });
 
@@ -471,9 +511,29 @@ export function createMcqController({
     });
 
     submitTestButton.hidden = true;
+    if (retryTestButton) {
+      retryTestButton.hidden = false;
+      retryTestButton.textContent = 'Try again';
+    }
     showTestResult(state.mcq.lastResult, progression.starLine);
     saveResultButton.hidden = false;
     updateTimerDisplay();
+    testResultDiv.setAttribute?.('tabindex', '-1');
+    testResultDiv.focus?.();
+  }
+
+  function handleRetryTest() {
+    if (!stateMachine.beginMcqSession()) {
+      return false;
+    }
+
+    clearMcqTimer();
+    resetAttemptUi();
+    applyTierUiState();
+    generateTest();
+    startMcqTimer();
+    testContainer.querySelector('input[type="radio"]')?.focus();
+    return true;
   }
 
   function handleSaveResult() {
@@ -551,6 +611,7 @@ export function createMcqController({
     openTestModal,
     closeTestModal,
     handleSubmitTest,
+    handleRetryTest,
     handleSaveResult,
     getLevelProgress,
     getProgressState,

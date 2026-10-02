@@ -1,0 +1,101 @@
+Cataract Full-State Audit Report
+Generated: 2026-09-28T21:51:15.624Z
+
+Run Details
+-----------
+Command: node qa-cataract-full-audit.mjs
+Engine: src/cataract-engine.js
+Audit script: qa-cataract-full-audit.mjs
+Mode: exhaustive cartesian enumeration (not sampling)
+
+State Axes Enumerated
+---------------------
+Onset: 3 -> , gradual, sudden
+Age: 9 -> , baby, child, adolescent, young_adult, adult, middle_aged, elderly, very_elderly
+Eyes: 3 -> , one, two
+Pain: 2 -> false, true
+Distance VA: 9 -> , 6/6, 6/12, 6/36, 6/60, HM, fix_follow_good, fix_follow_poor, unable_test
+Near VA: 6 -> , N5, N8, N12, N18, N36
+Pupil: 3 -> normal, abnormal, unrecorded
+Front of eye: 2 -> false, true
+RAPD: 2 -> false, true
+Direction-light poor: 2 -> false, true
+Fundal reflex: 6 -> , normal, dark, patches, spots, white
+Back of eye: 6 -> , normal, cupping, diabetic, detached, poor view
+Total cartesian states: 3 x 9 x 3 x 2 x 9 x 6 x 3 x 2 x 2 x 2 x 6 x 6 = 7558272
+
+Normalization and Reachability Rules
+------------------------------------
+- UI reachability constraint: white reflex should force poor view in Back of Eye.
+- Engine robustness normalization: white reflex with a normal back selection becomes poor view while explicit posterior findings are preserved.
+- Required fields for definitive action: onset, eyes, age, distanceVA, fundal and back.
+
+Coverage
+--------
+Total states audited: 7558272
+White-constraint reachable states: 6718464
+White-constraint unreachable states: 839808
+White-back normalized states (engine robustness): 73728
+Complete states (required inputs present): 1843200
+Incomplete states: 5715072
+Complete + reachable states: 1548288
+Engine returned result states: 1843200
+Engine returned no-result states: 5715072
+Complete states with result: 1843200
+Complete states with no-result: 0
+Incomplete states with result: 0
+Incomplete states with no-result: 5715072
+
+Checks Executed
+---------------
+complete_state_no_result (P0): A clinically complete state did not produce an action.
+posterior_override_missing (P0): Posterior disease did not map to posterior-first pathway.
+painful_sudden_unilateral_not_urgent (P0): Sudden painful unilateral pattern did not trigger urgent signaling.
+white_reflex_priority_missing (P0): White reflex did not stay on priority cataract pathway.
+incomplete_state_returned_action (P1): Incomplete state returned a definitive action.
+missing_expected_recheck_warning (P1): Contradictory state did not include re-check warning.
+missing_expected_recheck_highlight (P1): Contradictory state did not include expected re-check fields.
+normal_6_6_has_cataract_referral (P1): Normal reflex + normal back + VA 6/6 produced cataract referral wording.
+sudden_pain_white_not_urgent_main (P1): Sudden painful white-reflex scenario did not route to urgent same-day main action.
+gradual_unilateral_pain_overurgent (P1): Gradual painful unilateral baseline was escalated to red urgent action without extra red flags.
+posterior_non_detached_overurgent (P1): Non-detached posterior override (cupping/diabetic) was red without acute red flags.
+posterior_action_without_posterior_finding (P1): Posterior-first action was emitted without posterior pathology.
+detached_not_red (P1): Detached retina pathway was not red.
+child_abnormal_fundal_under_escalated (P1): Child with abnormal fundal pattern was not escalated at least to orange.
+child_reduced_va_under_escalated (P1): Child with reduced vision and normal reflex was not escalated at least to orange.
+severity_rank_mismatch (P2): Engine severity rank is inconsistent with action colour.
+contradictory_action_text (P2): Action text contains conflicting pathway wording.
+urgent_word_not_red (P2): Action text contains urgent wording but action colour is not red.
+urgency_note_exceeds_action_colour (P2): Urgency note colour implies higher severity than the main action colour.
+non_monotonic_va_severity (P2): Severity dropped as VA worsened within a fixed clinical signature.
+missing_cataract_explanation_for_abnormal_reflex (P2): Abnormal reflex pathway did not provide cataract explanation text.
+routine_action_with_high_risk_checks (P2): Routine/review action persisted despite re-check warning in high-risk context.
+red_action_without_red_trigger (P2): Red action occurred without a matching red clinical trigger.
+rapd_override_without_neuro_flags (P2): RAPD/non-cataract override was used without neuro flags.
+missing_rapd_override_when_eligible (P2): Neuro flags eligible for RAPD override did not route to non-cataract-first/urgent.
+non_cataract_main_action_without_competing_confidence (P2): Non-cataract-first urgent pathway kept cataract confidence too definitive.
+requires_recheck_without_fields (P2): Re-check flag was set but no fields were highlighted.
+recheck_fields_without_flag (P2): Re-check fields were highlighted without re-check flag.
+black_action_with_notes (P2): Black/low-severity action still displayed supporting warning notes.
+action_notes_over_policy_limit (P2): Supporting note count exceeded policy limit for the action colour.
+red_action_contains_near_va_note (P2): Red outputs should suppress near-VA detail notes to keep urgent messaging concise.
+action_text_over_5_words (P3): Core action text exceeds five words.
+ui_unreachable_combo_returns_action (P3): UI-unreachable combo still produces a decision in the engine.
+missing_posterior_specific_note (P3): Posterior-first action lacked the expected specific posterior check note.
+near_va_note_mismatch (P3): Near-VA note presence did not match near-VA input pattern.
+pupil_confidence_note_without_pupil_abnormal (P3): Pupil-specific confidence wording appeared without abnormal pupil input.
+recorded_normal_pupil_downgraded_confidence (P2): Recorded normal pupil was treated like an unrecorded pupil.
+
+Issue Totals By Severity
+------------------------
+P0: 0
+P1: 0
+P2: 0
+P3: 0
+
+Issue Breakdown
+---------------
+No issues detected in configured checks.
+Recommendations
+---------------
+1. No corrective recommendations from this run: no issues were detected in configured checks.

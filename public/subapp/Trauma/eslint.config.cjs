@@ -19,4 +19,14 @@ module.exports = [
       "no-console": "off",
     },
   },
+  {
+    files: ["scoring-engine.js"],
+    languageOptions: { globals: { module: "readonly" } },
+  },
+  {
+    files: ["tests/**/*.{js,cjs,mjs}"],
+    languageOptions: {
+      globals: { ...globals.node, fetch: "readonly", WebSocket: "readonly" },
+    },
+  },
 ];

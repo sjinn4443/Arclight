@@ -310,10 +310,10 @@ function runRegressionChecks(ctx) {
     },
     {
       id: "R9",
-      name: "Bitemporal hemianopia requires clean nasal/central sparing",
+      name: "Bitemporal hemianopia retains central involvement",
       right: { st: "?", sn: "R", it: "?", in: "R", c: "R" },
       left: { st: "?", sn: "R", it: "?", in: "R", c: "?" },
-      assert: (text) => !text.includes("Bitemporal Hemianopia"),
+      assert: (text) => text.includes("Bitemporal Hemianopia") && text.includes("central involvement"),
     },
     {
       id: "R10",
@@ -582,15 +582,13 @@ function runAudit() {
           right.sn !== "R" ||
           right.in !== "R" ||
           left.sn !== "R" ||
-          left.in !== "R" ||
-          right.c !== "R" ||
-          left.c !== "R";
+          left.in !== "R";
         if (nonClean) {
           checkIssue(
             issues,
             "P1",
             "BITEMPORAL-OVERCALL",
-            "Bitemporal hemianopia label appears despite nasal/central contamination.",
+            "Bitemporal hemianopia label appears despite nasal contamination.",
             { right, left, rendered }
           );
         }

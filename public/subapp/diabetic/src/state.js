@@ -16,17 +16,40 @@ function createEyeState() {
 export function createInitialState() {
   return {
     mode: "arclight-do",
-    dilation: "no",
+    dilation: "",
     systemicChecks: {
       bp: false,
       lipids: false,
       hba1c: false,
+    },
+    viewer: {
+      activeImageSrc: "",
+      conditionImageSrc: "",
+      activeCondition: "case-01",
+      pigmentation: "light",
+      isRightEye: true,
+      isDiscVisible: true,
+      cataractLevel: 0,
+      caseImageScale: 1,
+      nystagmusEnabled: false,
+      nystagmusDirection: "horizontal",
+      nystagmusRate: "slow",
+      shiftInProgress: false,
     },
     eyes: {
       right: createEyeState(),
       left: createEyeState(),
     },
   };
+}
+
+export function resetAssessmentState(state) {
+  const fresh = createInitialState();
+  state.mode = fresh.mode;
+  state.dilation = fresh.dilation;
+  state.systemicChecks = fresh.systemicChecks;
+  state.eyes = fresh.eyes;
+  return state;
 }
 
 export function setMode(state, mode) {

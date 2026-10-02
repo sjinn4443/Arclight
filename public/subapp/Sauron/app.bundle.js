@@ -1,734 +1,1125 @@
 "use strict";
 (() => {
-  // src/color.js
-  function parseRGB(rgbStr) {
-    const result = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/.exec(rgbStr);
-    if (!result) {
-      return { r: 0, g: 0, b: 0 };
-    }
+  function at(e) {
+    let t = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/.exec(e);
+    return t
+      ? { r: parseInt(t[1], 10), g: parseInt(t[2], 10), b: parseInt(t[3], 10) }
+      : { r: 0, g: 0, b: 0 };
+  }
+  function rt(e, t) {
     return {
-      r: parseInt(result[1], 10),
-      g: parseInt(result[2], 10),
-      b: parseInt(result[3], 10),
+      r: Math.min(Math.round(e.r * t), 255),
+      g: Math.min(Math.round(e.g * t), 255),
+      b: Math.min(Math.round(e.b * t), 255),
     };
   }
-  function brightenColor(color, factor) {
-    return {
-      r: Math.min(Math.round(color.r * factor), 255),
-      g: Math.min(Math.round(color.g * factor), 255),
-      b: Math.min(Math.round(color.b * factor), 255),
-    };
-  }
-  function getReflexColor(value) {
-    const colorStops = [
-      {
-        value: 0,
-        color: {
-          r: Math.round(173 * 0.7),
-          g: Math.round(216 * 0.7),
-          b: Math.round(230 * 0.7),
+  function it(e) {
+    let t = [
+        {
+          value: 0,
+          color: {
+            r: Math.round(121.1),
+            g: Math.round(151.2),
+            b: Math.round(161),
+          },
         },
-      },
-      {
-        value: 33,
-        color: {
-          r: Math.round(255 * 0.7),
-          g: Math.round(220 * 0.7),
-          b: Math.round(0 * 0.7),
+        {
+          value: 33,
+          color: { r: Math.round(178.5), g: Math.round(154), b: Math.round(0) },
         },
-      },
-      {
-        value: 66,
-        color: {
-          r: Math.round(218 * 0.7),
-          g: Math.round(58 * 0.7),
-          b: Math.round(0 * 0.7),
+        {
+          value: 66,
+          color: {
+            r: Math.round(152.6),
+            g: Math.round(40.599999999999994),
+            b: Math.round(0),
+          },
         },
-      },
-      {
-        value: 100,
-        color: {
-          r: Math.round(255 * 0.7),
-          g: Math.round(0 * 0.7),
-          b: Math.round(0 * 0.7),
+        {
+          value: 100,
+          color: { r: Math.round(178.5), g: Math.round(0), b: Math.round(0) },
         },
-      },
-    ];
-    let lowerStop;
-    let upperStop;
-    for (let i = 0; i < colorStops.length - 1; i += 1) {
-      if (value >= colorStops[i].value && value <= colorStops[i + 1].value) {
-        lowerStop = colorStops[i];
-        upperStop = colorStops[i + 1];
+      ],
+      a,
+      i;
+    for (let E = 0; E < t.length - 1; E += 1)
+      if (e >= t[E].value && e <= t[E + 1].value) {
+        ((a = t[E]), (i = t[E + 1]));
         break;
       }
-    }
-    if (!lowerStop || !upperStop) {
-      return "rgb(255, 0, 0)";
-    }
-    const factor =
-      (value - lowerStop.value) / (upperStop.value - lowerStop.value);
-    const r = Math.round(
-      lowerStop.color.r + (upperStop.color.r - lowerStop.color.r) * factor,
-    );
-    const g = Math.round(
-      lowerStop.color.g + (upperStop.color.g - lowerStop.color.g) * factor,
-    );
-    const b = Math.round(
-      lowerStop.color.b + (upperStop.color.b - lowerStop.color.b) * factor,
-    );
-    return `rgb(${r}, ${g}, ${b})`;
+    if (!a || !i) return "rgb(255, 0, 0)";
+    let c = (e - a.value) / (i.value - a.value),
+      u = Math.round(a.color.r + (i.color.r - a.color.r) * c),
+      x = Math.round(a.color.g + (i.color.g - a.color.g) * c),
+      d = Math.round(a.color.b + (i.color.b - a.color.b) * c);
+    return `rgb(${u}, ${x}, ${d})`;
   }
-
-  // src/constants.js?v=20260506-2
-  var DEFAULT_BASE_REFLEX_COLOR = {
-    r: Math.round(218 * 0.7),
-    g: Math.round(58 * 0.7),
-    b: Math.round(0 * 0.7),
-  };
-  var DEFAULT_REFRACTION_VALUE = "zero";
-  var REFRACTION_GROUPS = [
-    {
-      label: "Sphere",
-      category: "sphere",
-      options: [
-        { value: "high-minus", label: "High minus (---)" },
-        { value: "minus", label: "Minus (-)" },
-        { value: "zero", label: "Neutral (0)" },
-        { value: "plus", label: "Plus (+)" },
-        { value: "high-plus", label: "High plus (+++)" },
-      ],
+  var Wa = {
+      r: Math.round(152.6),
+      g: Math.round(40.599999999999994),
+      b: Math.round(0),
     },
-    {
-      label: "Regular astigmatism",
-      category: "astig",
-      options: [
-        { value: "low-cylinder", label: "Low astigmatism (Cyl)" },
-        { value: "high-cylinder", label: "High astigmatism (Cyl++)" },
-      ],
-    },
-    {
-      label: "Irregular reflex",
-      category: "irregular",
-      options: [
-        { value: "small-scissors", label: "Small scissors reflex" },
-        { value: "keratoconus", label: "Keratoconus (large scissors reflex)" },
-        { value: "corneal-scar", label: "Corneal scar (large diffuse reflex)" },
-        { value: "poor-tear-film", label: "Poor tear film" },
-      ],
-    },
-    {
-      label: "Other conditions",
-      category: "other",
-      options: [
-        { value: "acg", label: "ACG (vertical oval pupil)" },
-        { value: "aniridia", label: "Aniridia" },
-        { value: "anisometropia", label: "Anisometropia (RE+, LE-)" },
-        { value: "aphakia", label: "Aphakia" },
-        { value: "iris-transillumination", label: "Iris transillumination" },
-        { value: "nasal-coloboma", label: "Nasal coloboma" },
-        { value: "small-pupils", label: "Small pupils" },
-      ],
-    },
-    {
-      label: "Media and fundus",
-      category: "media-fundus",
-      options: [
-        { value: "small-cortical-cataract", label: "Small cortical cataract" },
-        { value: "big-cortical-cataract", label: "Big cortical cataract" },
-        {
-          value: "central-sub-cortical-cataract",
-          label: "Posterior subcapsular cataract",
-        },
-        { value: "posterior-pole-cataract", label: "Posterior pole cataract" },
-        { value: "dense-cataract", label: "Dense cataract" },
-        { value: "floaters", label: "Vitreous floaters" },
-        { value: "vitreous-haemorrhage", label: "Vitreous haemorrhage" },
-        { value: "leucocoria", label: "Leucocoria" },
-        {
-          value: "partial-retinal-detachment",
-          label: "Partial retinal detachment",
-        },
-        {
-          value: "posterior-capsular-thickening",
-          label: "Posterior capsular thickening (IOL)",
-        },
-      ],
-    },
-  ];
-  var REFRACTION_OPTIONS = REFRACTION_GROUPS.flatMap(({ category, options }) =>
-    options.map((option) => ({ ...option, category })),
-  );
-  var TEST_REFRACTION_OPTIONS = REFRACTION_OPTIONS.filter(
-    ({ value }) => value !== "anisometropia",
-  );
-  var REFRACTION_VALUE_SET = new Set(
-    REFRACTION_OPTIONS.map(({ value }) => value),
-  );
-  var CYLINDER_REFRACTION_VALUES = /* @__PURE__ */ new Set([
-    "low-cylinder",
-    "high-cylinder",
-  ]);
-  var AXIS_DEPENDENT_REFRACTION_VALUES = /* @__PURE__ */ new Set([
-    ...CYLINDER_REFRACTION_VALUES,
-    "small-scissors",
-    "keratoconus",
-    "corneal-scar",
-  ]);
-
-  // src/constants.js
-  var DEFAULT_BASE_REFLEX_COLOR2 = {
-    r: Math.round(218 * 0.7),
-    g: Math.round(58 * 0.7),
-    b: Math.round(0 * 0.7),
-  };
-  var DEFAULT_REFRACTION_VALUE2 = "zero";
-  var DEFAULT_RETINOSCOPY_STATE = {
-    retStreakOffset: 0,
-    retStreakRotation: 0,
-    currentRefraction: DEFAULT_REFRACTION_VALUE2,
-    cylinderAxisDeg: null,
-    // random axis for cylinder cases
-    cataractLevel: 0,
-    // 0 to 100
-    nystagmusLevel: 0,
-    // 0 to 100
-    activeRetEye: "left",
-    // examiner view: screen-left = RE, screen-right = LE
-  };
-  var REFRACTION_GROUPS2 = [
-    {
-      label: "Sphere",
-      category: "sphere",
-      options: [
-        { value: "high-minus", label: "High minus (---)" },
-        { value: "minus", label: "Minus (-)" },
-        { value: "zero", label: "Neutral (0)" },
-        { value: "plus", label: "Plus (+)" },
-        { value: "high-plus", label: "High plus (+++)" },
-      ],
-    },
-    {
-      label: "Regular astigmatism",
-      category: "astig",
-      options: [
-        { value: "low-cylinder", label: "Low astigmatism (Cyl)" },
-        { value: "high-cylinder", label: "High astigmatism (Cyl++)" },
-      ],
-    },
-    {
-      label: "Irregular reflex",
-      category: "irregular",
-      options: [
-        { value: "small-scissors", label: "Small scissors reflex" },
-        { value: "keratoconus", label: "Keratoconus (large scissors reflex)" },
-        { value: "corneal-scar", label: "Corneal scar (large diffuse reflex)" },
-        { value: "poor-tear-film", label: "Poor tear film" },
-      ],
-    },
-    {
-      label: "Other conditions",
-      category: "other",
-      options: [
-        { value: "acg", label: "ACG (vertical oval pupil)" },
-        { value: "aniridia", label: "Aniridia" },
-        { value: "anisometropia", label: "Anisometropia (RE+, LE-)" },
-        { value: "aphakia", label: "Aphakia" },
-        { value: "iris-transillumination", label: "Iris transillumination" },
-        { value: "nasal-coloboma", label: "Nasal coloboma" },
-        { value: "small-pupils", label: "Small pupils" },
-      ],
-    },
-    {
-      label: "Media and fundus",
-      category: "media-fundus",
-      options: [
-        { value: "small-cortical-cataract", label: "Small cortical cataract" },
-        { value: "big-cortical-cataract", label: "Big cortical cataract" },
-        {
-          value: "central-sub-cortical-cataract",
-          label: "Posterior subcapsular cataract",
-        },
-        { value: "posterior-pole-cataract", label: "Posterior pole cataract" },
-        { value: "dense-cataract", label: "Dense cataract" },
-        { value: "floaters", label: "Vitreous floaters" },
-        { value: "vitreous-haemorrhage", label: "Vitreous haemorrhage" },
-        { value: "leucocoria", label: "Leucocoria" },
-        {
-          value: "partial-retinal-detachment",
-          label: "Partial retinal detachment",
-        },
-        {
-          value: "posterior-capsular-thickening",
-          label: "Posterior capsular thickening (IOL)",
-        },
-      ],
-    },
-  ];
-  var REFRACTION_OPTIONS2 = REFRACTION_GROUPS2.flatMap(
-    ({ category, options }) =>
-      options.map((option) => ({ ...option, category })),
-  );
-  var TEST_REFRACTION_OPTIONS2 = REFRACTION_OPTIONS2.filter(
-    ({ value }) => value !== "anisometropia",
-  );
-  var REFRACTION_VALUE_SET2 = new Set(
-    REFRACTION_OPTIONS2.map(({ value }) => value),
-  );
-  var CYLINDER_REFRACTION_VALUES2 = /* @__PURE__ */ new Set([
-    "low-cylinder",
-    "high-cylinder",
-  ]);
-  var AXIS_DEPENDENT_REFRACTION_VALUES2 = /* @__PURE__ */ new Set([
-    ...CYLINDER_REFRACTION_VALUES2,
-    "small-scissors",
-    "keratoconus",
-    "corneal-scar",
-  ]);
-  var MCQ_LEVEL_META = {
-    primary: { title: "Primary", passMark: 3, questionCount: 5 },
-    intermediate: { title: "Intermediate", passMark: 4, questionCount: 6 },
-    advanced: { title: "Advanced", passMark: 4, questionCount: 8 },
-  };
-  var TEST_COUNTDOWN_SEQUENCE = [20, 15, 10, 8, 6];
-  var MCQ_BANK = {
-    primary: [
+    nt = "zero";
+  var Re = [
       {
-        question:
-          'In plane mirror retinoscopy, a "with" reflex is neutralised with:',
+        label: "Sphere",
+        category: "sphere",
         options: [
-          "Plus or less minus",
-          "Minus or less plus",
-          "Axis change",
-          "No lens change",
+          { value: "high-minus", label: "High minus (---)" },
+          { value: "minus", label: "Minus (-)" },
+          { value: "zero", label: "Neutral (0)" },
+          { value: "plus", label: "Plus (+)" },
+          { value: "high-plus", label: "High plus (+++)" },
         ],
-        answer: 0,
       },
       {
-        question:
-          'In plane mirror retinoscopy, an "against" reflex is neutralised with:',
+        label: "Regular astigmatism",
+        category: "astig",
         options: [
-          "Plus or less minus",
-          "Minus or less plus",
-          "Axis change",
-          "No lens change",
+          { value: "low-cylinder", label: "Low astigmatism (Cyl)" },
+          { value: "high-cylinder", label: "High astigmatism (Cyl++)" },
         ],
-        answer: 1,
       },
       {
-        question: "Neutrality at the working distance means:",
+        label: "Irregular reflex",
+        category: "irregular",
         options: [
-          "No directional reflex movement",
-          "The reflex still moves with the streak",
-          "The reflex still moves against the streak",
-          "No red reflex is visible",
+          { value: "small-scissors", label: "Small scissors reflex" },
+          {
+            value: "keratoconus",
+            label: "Keratoconus (large scissors reflex)",
+          },
+          {
+            value: "corneal-scar",
+            label: "Corneal scar (large diffuse reflex)",
+          },
+          { value: "poor-tear-film", label: "Poor tear film" },
         ],
-        answer: 0,
       },
       {
-        question: "Sweeping the streak mainly changes the:",
+        label: "Other conditions",
+        category: "other",
         options: [
-          "Streak position",
-          "Streak angle",
-          "Working distance",
-          "Pupil size",
+          { value: "acg", label: "ACG (vertical oval pupil)" },
+          { value: "aniridia", label: "Aniridia" },
+          { value: "anisometropia", label: "Anisometropia (RE+, LE-)" },
+          { value: "aphakia", label: "Aphakia" },
+          { value: "iris-transillumination", label: "Iris transillumination" },
+          { value: "nasal-coloboma", label: "Nasal coloboma" },
+          { value: "small-pupils", label: "Small pupils" },
         ],
-        answer: 0,
       },
       {
-        question: "Rotating the streak mainly changes the:",
+        label: "Media and fundus",
+        category: "media-fundus",
         options: [
-          "Streak angle",
-          "Streak position",
-          "Working distance",
-          "Pupil size",
+          {
+            value: "small-cortical-cataract",
+            label: "Small cortical cataract",
+          },
+          { value: "big-cortical-cataract", label: "Big cortical cataract" },
+          {
+            value: "central-sub-cortical-cataract",
+            label: "Posterior subcapsular cataract",
+          },
+          {
+            value: "posterior-pole-cataract",
+            label: "Posterior pole cataract",
+          },
+          { value: "dense-cataract", label: "Dense cataract" },
+          { value: "floaters", label: "Vitreous floaters" },
+          { value: "vitreous-haemorrhage", label: "Vitreous haemorrhage" },
+          { value: "leucocoria", label: "Leucocoria" },
+          {
+            value: "partial-retinal-detachment",
+            label: "Partial retinal detachment",
+          },
+          {
+            value: "posterior-capsular-thickening",
+            label: "Posterior capsular thickening (IOL)",
+          },
         ],
-        answer: 0,
-      },
-      {
-        question: "At 50 cm, the working distance allowance is:",
-        options: ["0.50 D", "1.00 D", "1.50 D", "2.00 D"],
-        answer: 3,
-      },
-      {
-        question: "Why should working distance stay steady?",
-        options: [
-          "It changes the working distance allowance",
-          "It sets the streak angle",
-          "It keeps the reflex centred on the pupil",
-          "It fixes the pupil size",
-        ],
-        answer: 0,
-      },
-      {
-        question: "As neutrality is approached, the reflex is usually:",
-        options: [
-          "Brighter, broader and faster",
-          "Darker, narrower and slower",
-          "Brighter, narrower and slower",
-          "Dimmer, broader and slower",
-        ],
-        answer: 0,
       },
     ],
-    intermediate: [
-      {
-        question: "At 67 cm, you convert gross retinoscopy to net by:",
-        options: [
-          "Adding 1.50 D",
-          "Subtracting 1.50 D",
-          "Adding 2.00 D",
-          "Subtracting 2.00 D",
-        ],
-        answer: 1,
-      },
-      {
-        question: "As plus lenses are added, neutrality lies:",
-        options: [
-          'At the first clearly "against" lens',
-          'Between the last clearly "with" lens and the first clearly "against" lens',
-          'At the last clearly "with" lens',
-          "At plano (0.00 D)",
-        ],
-        answer: 1,
-      },
-      {
-        question: "Why rotate the streak during retinoscopy?",
-        options: [
-          "To align with principal meridians",
-          "To keep the beam in the middle of the pupil",
-          "To change the working distance allowance",
-          "To make the pupil larger",
-        ],
-        answer: 0,
-      },
-      {
-        question:
-          "One meridian neutralises at +2.00 D and the perpendicular meridian at +0.50 D. Cylinder power is:",
-        options: ["0.50 D", "1.00 D", "1.50 D", "2.50 D"],
-        answer: 2,
-      },
-      {
-        question: "Which endpoint method is most reliable in practice?",
-        options: [
-          "Stop at the first bright reflex",
-          "Bracket neutrality with small lens steps such as +/- 0.25 D",
-          "Use whole-dioptre steps only",
-          "Rely on brightness alone",
-        ],
-        answer: 1,
-      },
-      {
-        question:
-          "If the pupil is too small to judge the reflex well, the best next step is:",
-        options: [
-          "Move farther back and accept a dimmer view",
-          "Improve dilatation conditions or use pharmacological dilatation when appropriate",
-          "Judge neutrality from brightness alone",
-          "Rotate to 0 degrees and continue",
-        ],
-        answer: 1,
-      },
-      {
-        question:
-          "At 67 cm, gross neutralities are +1.75 D @ 90 and +0.25 D @ 180. Net minus-cylinder form is:",
-        options: [
-          "+0.25 / -1.50 x 90",
-          "+0.25 / -1.50 x 180",
-          "-1.25 / +1.50 x 90",
-          "+1.75 / -1.50 x 90",
-        ],
-        answer: 0,
-      },
-      {
-        question:
-          "A practical sign that the streak is not aligned with a principal meridian is:",
-        options: [
-          "Break or skew of the reflex relative to the streak",
-          "A brighter reflex without any change in axis",
-          "Equal speed in every meridian",
-          "A wider pupil than expected",
-        ],
-        answer: 0,
-      },
-    ],
-    advanced: [
-      {
-        question:
-          "Working distance is 50 cm. Gross neutrality in one meridian is +3.00 D. Net meridional power is:",
-        options: ["+3.00 D", "+2.00 D", "+1.00 D", "-1.00 D"],
-        answer: 2,
-      },
-      {
-        question:
-          "At 67 cm, gross meridional powers are +2.25 D @ 90 and +0.75 D @ 180. Net refraction in minus-cylinder form is:",
-        options: [
-          "+0.75 / -1.50 x 90",
-          "+0.75 / -1.50 x 180",
-          "-0.75 / -1.50 x 90",
-          "+0.75 / -0.75 x 90",
-        ],
-        answer: 0,
-      },
-      {
-        question:
-          "At 67 cm, gross meridional powers are +1.00 D @ 180 and -0.50 D @ 90. Net refraction in minus-cylinder form is:",
-        options: [
-          "-0.50 / -1.50 x 180",
-          "-2.00 / -1.50 x 90",
-          "-0.50 / +1.50 x 180",
-          "+0.50 / -1.50 x 90",
-        ],
-        answer: 0,
-      },
-      {
-        question:
-          "Axis refinement is most accurate when the streak is oriented so that the reflex:",
-        options: [
-          "Appears as the narrowest, least broken band",
-          "Looks circular and diffuse",
-          "Shows the greatest shimmer",
-          "Becomes equally broad at every axis",
-        ],
-        answer: 0,
-      },
-      {
-        question: "For high astigmatism, the best sequence is:",
-        options: [
-          "Estimate sphere first then refine axis later",
-          "Neutralise one meridian then infer the second",
-          "Neutralise each principal meridian, apply working distance correction and convert to sphere and cylinder form",
-          "Apply working distance correction before neutralising",
-        ],
-        answer: 2,
-      },
-      {
-        question: "Partial retinal detachment is most likely to appear as:",
-        options: [
-          "A fixed dark sector with reflex confined to the remaining pupil",
-          "A uniformly bright reflex in all meridians",
-          "A pure central dark spot only",
-          "A scissoring reflex that changes axis",
-        ],
-        answer: 0,
-      },
-      {
-        question: "Which finding most strongly suggests irregular astigmatism?",
-        options: [
-          "Scissoring reflex",
-          "Equal neutrality in both meridians",
-          "A broad bright reflex near neutrality",
-          "A stable with movement in one meridian only",
-        ],
-        answer: 0,
-      },
-      {
-        question:
-          "In posterior subcapsular cataract, the reflex is most likely to appear as:",
-        options: [
-          "A moving reflex with a dull central defect",
-          "A uniformly dull reflex with no central change",
-          "A pure scissoring reflex",
-          "A uniformly bright reflex",
-        ],
-        answer: 0,
-      },
-      {
-        question: "Posterior pole cataract is most likely to appear as:",
-        options: [
-          "A very dull reflex with a dense irregular central defect",
-          "A uniformly bright reflex in every meridian",
-          "A pure scissoring reflex",
-          "A mild diffuse haze with no central opacity",
-        ],
-        answer: 0,
-      },
-      {
-        question: "Aphakia is most likely to show:",
-        options: [
-          "Slow with movement requiring large plus to neutralise",
-          "Against movement requiring large minus to neutralise",
-          "Immediate neutrality with no lens",
-          "A fixed scissoring reflex",
-        ],
-        answer: 0,
-      },
-    ],
-  };
-
-  // src/case-catalog.js?v=20260507-1
-  var LEVEL_META = {
-    primary: {
-      label: "Primary cases",
-      shortLabel: "Primary",
-      marker: "P",
-      order: 1,
+    ot = Re.flatMap(({ category: e, options: t }) =>
+      t.map((a) => ({ ...a, category: e })),
+    ),
+    Xa = ot.filter(({ value: e }) => e !== "anisometropia"),
+    Ya = new Set(ot.map(({ value: e }) => e)),
+    sa = new Set(["low-cylinder", "high-cylinder"]),
+    ja = new Set([...sa, "small-scissors", "keratoconus", "corneal-scar"]);
+  var la = {
+    "aao-retinoscopy": {
+      label: "AAO EyeWiki: Retinoscopy",
+      url: "https://eyewiki.aao.org/Retinoscopy",
+      status: "current-clinical-reference",
     },
-    intermediate: {
-      label: "Intermediate cases",
-      shortLabel: "Intermediate",
-      marker: "I",
-      order: 2,
+    "sauron-optics-contract-v1": {
+      label: "Sauron working-distance and meridional-power contract",
+      url: null,
+      status: "engineering-formula-reviewed",
     },
-    advanced: {
-      label: "Advanced cases",
-      shortLabel: "Advanced",
-      marker: "A",
-      order: 3,
+    "sauron-pathology-visuals-v1": {
+      label: "Sauron pathology-visual teaching contract",
+      url: null,
+      status: "pending-independent-clinical-sign-off",
     },
   };
-  var CASE_LEVEL_BY_VALUE = {
-    "high-minus": "primary",
-    minus: "primary",
-    zero: "primary",
-    plus: "primary",
-    "high-plus": "primary",
-    "low-cylinder": "primary",
-    "high-cylinder": "intermediate",
-    anisometropia: "intermediate",
-    "small-pupils": "intermediate",
-    "small-scissors": "intermediate",
-    "poor-tear-film": "intermediate",
-    "small-cortical-cataract": "intermediate",
-    "big-cortical-cataract": "intermediate",
-    "central-sub-cortical-cataract": "intermediate",
-    keratoconus: "advanced",
-    "corneal-scar": "advanced",
-    acg: "advanced",
-    aniridia: "advanced",
-    aphakia: "advanced",
-    "iris-transillumination": "advanced",
-    "nasal-coloboma": "advanced",
-    "posterior-pole-cataract": "advanced",
-    "dense-cataract": "advanced",
-    floaters: "advanced",
-    "vitreous-haemorrhage": "advanced",
-    leucocoria: "advanced",
-    "partial-retinal-detachment": "advanced",
-    "posterior-capsular-thickening": "advanced",
-  };
-  var CASE_SUMMARY_BY_VALUE = {
-    "high-minus": "Fast against movement with a narrow reflex.",
-    minus: "Against movement before neutralisation.",
-    zero: "No directional movement at neutrality.",
-    plus: "With movement before neutralisation.",
-    "high-plus": "Slow broad with movement requiring more plus.",
-    "low-cylinder": "Two meridians, mild axis-dependent change.",
-    "high-cylinder": "Stronger meridional difference and axis finding.",
-    anisometropia: "Different reflex behaviour between right and left eyes.",
-    "small-pupils": "Reduced aperture makes the reflex harder to judge.",
-    "small-scissors": "Subtle split reflex with irregular movement.",
-    "poor-tear-film": "Unstable shimmering reflex surface.",
-    "small-cortical-cataract":
-      "Peripheral cortical opacity crossing the reflex.",
-    "big-cortical-cataract": "More extensive cortical spokes.",
-    "central-sub-cortical-cataract":
-      "Central posterior opacity dulling the reflex.",
-    keratoconus: "Large scissors reflex with marked irregularity.",
-    "corneal-scar": "Diffuse corneal haze disrupting the streak.",
-    acg: "Oval pupil geometry with abnormal reflex behaviour.",
-    aniridia: "Large abnormal aperture with unstable reflex detail.",
-    aphakia: "High plus behaviour with altered pupil optics.",
-    "iris-transillumination":
-      "Peripheral iris light leak alongside the reflex.",
-    "nasal-coloboma": "Notched pupil aperture affecting the reflex edge.",
-    "posterior-pole-cataract": "Dense central posterior pole defect.",
-    "dense-cataract": "Very dull reflex through dense media opacity.",
-    floaters: "Mobile vitreous shadows over the reflex.",
-    "vitreous-haemorrhage": "Dark vitreous opacity reducing the view.",
-    leucocoria: "White reflex appearance rather than normal red-orange.",
-    "partial-retinal-detachment":
-      "Fixed dark sector with remaining reflex visible.",
-    "posterior-capsular-thickening":
-      "IOL/capsule haze reducing reflex clarity.",
-  };
-  var BABY_CASE_VALUES = /* @__PURE__ */ new Set([
-    "zero",
-    "plus",
-    "high-plus",
-    "minus",
-    "low-cylinder",
-    "anisometropia",
-    "small-pupils",
-    "central-sub-cortical-cataract",
-    "dense-cataract",
-    "leucocoria",
-  ]);
-  var CASE_ORDER = [
-    "zero",
-    "minus",
-    "plus",
-    "high-minus",
-    "high-plus",
-    "low-cylinder",
-    "high-cylinder",
-    "anisometropia",
-    "small-pupils",
-    "small-scissors",
-    "poor-tear-film",
-    "small-cortical-cataract",
-    "big-cortical-cataract",
-    "central-sub-cortical-cataract",
-    "keratoconus",
-    "corneal-scar",
-    "acg",
-    "aniridia",
-    "aphakia",
-    "iris-transillumination",
-    "nasal-coloboma",
-    "posterior-pole-cataract",
-    "dense-cataract",
-    "floaters",
-    "vitreous-haemorrhage",
-    "leucocoria",
-    "partial-retinal-detachment",
-    "posterior-capsular-thickening",
-  ];
-  var CASE_ORDER_BY_VALUE = new Map(
-    CASE_ORDER.map((value, index) => [value, index]),
-  );
-  var RETINOSCOPY_CASES = REFRACTION_OPTIONS2.map((option) => {
-    var _a;
-    const level = CASE_LEVEL_BY_VALUE[option.value] || "advanced";
-    return {
-      ...option,
-      order:
-        (_a = CASE_ORDER_BY_VALUE.get(option.value)) != null
-          ? _a
-          : Number.MAX_SAFE_INTEGER,
-      level,
-      levelLabel: LEVEL_META[level].shortLabel,
-      levelMarker: LEVEL_META[level].marker,
-      summary: CASE_SUMMARY_BY_VALUE[option.value] || option.label,
-      thumbnailSrc: `assets/case-thumbnails/${option.value}.webp?v=20260507-fellow-corneal`,
-      isBabyCase: BABY_CASE_VALUES.has(option.value),
+  var st = {
+      primary: [
+        {
+          question:
+            'In plane mirror retinoscopy, a "with" reflex is neutralised with:',
+          options: [
+            "Plus or less minus",
+            "Minus or less plus",
+            "Axis change",
+            "No lens change",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            'In plane mirror retinoscopy, an "against" reflex is neutralised with:',
+          options: [
+            "Plus or less minus",
+            "Minus or less plus",
+            "Axis change",
+            "No lens change",
+          ],
+          answer: 1,
+        },
+        {
+          question: "Neutrality at the working distance means:",
+          options: [
+            "No directional reflex movement",
+            "The reflex still moves with the streak",
+            "The reflex still moves against the streak",
+            "No red reflex is visible",
+          ],
+          answer: 0,
+        },
+        {
+          question: "Sweeping the streak mainly changes the:",
+          options: [
+            "Streak position",
+            "Streak angle",
+            "Working distance",
+            "Pupil size",
+          ],
+          answer: 0,
+        },
+        {
+          question: "Rotating the streak mainly changes the:",
+          options: [
+            "Streak angle",
+            "Streak position",
+            "Working distance",
+            "Pupil size",
+          ],
+          answer: 0,
+        },
+        {
+          question: "At 50 cm, the working distance allowance is:",
+          options: ["0.50 D", "1.00 D", "1.50 D", "2.00 D"],
+          answer: 3,
+        },
+        {
+          question: "Why should working distance stay steady?",
+          options: [
+            "It changes the working distance allowance",
+            "It sets the streak angle",
+            "It keeps the reflex centred on the pupil",
+            "It fixes the pupil size",
+          ],
+          answer: 0,
+        },
+        {
+          question: "As neutrality is approached, the reflex is usually:",
+          options: [
+            "Brighter, broader and faster",
+            "Darker, narrower and slower",
+            "Brighter, narrower and slower",
+            "Dimmer, broader and slower",
+          ],
+          answer: 0,
+        },
+      ],
+      intermediate: [
+        {
+          question: "At 67 cm, you convert gross retinoscopy to net by:",
+          options: [
+            "Adding 1.50 D",
+            "Subtracting 1.50 D",
+            "Adding 2.00 D",
+            "Subtracting 2.00 D",
+          ],
+          answer: 1,
+        },
+        {
+          question: "As plus lenses are added, neutrality lies:",
+          options: [
+            'At the first clearly "against" lens',
+            'Between the last clearly "with" lens and the first clearly "against" lens',
+            'At the last clearly "with" lens',
+            "At plano (0.00 D)",
+          ],
+          answer: 1,
+        },
+        {
+          question: "Why rotate the streak during retinoscopy?",
+          options: [
+            "To align with principal meridians",
+            "To keep the beam in the middle of the pupil",
+            "To change the working distance allowance",
+            "To make the pupil larger",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "One meridian neutralises at +2.00 D and the perpendicular meridian at +0.50 D. Cylinder power is:",
+          options: ["0.50 D", "1.00 D", "1.50 D", "2.50 D"],
+          answer: 2,
+        },
+        {
+          question: "Which endpoint method is most reliable in practice?",
+          options: [
+            "Stop at the first bright reflex",
+            "Bracket neutrality with small lens steps such as +/- 0.25 D",
+            "Use whole-dioptre steps only",
+            "Rely on brightness alone",
+          ],
+          answer: 1,
+        },
+        {
+          question:
+            "If a small pupil makes the reflex difficult to judge, the safest next step is:",
+          options: [
+            "Optimise fixation, illumination and viewing conditions, then dilate only when appropriate and authorised",
+            "Move farther back and accept a dimmer view",
+            "Judge neutrality from brightness alone",
+            "Rotate to 0 degrees and continue",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "At 67 cm, gross neutralities are +1.75 D @ 90 and +0.25 D @ 180. Net minus-cylinder form is:",
+          options: [
+            "+0.25 / -1.50 x 90",
+            "+0.25 / -1.50 x 180",
+            "-1.25 / +1.50 x 90",
+            "+1.75 / -1.50 x 90",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "A practical sign that the streak is not aligned with a principal meridian is:",
+          options: [
+            "Break or skew of the reflex relative to the streak",
+            "A brighter reflex without any change in axis",
+            "Equal speed in every meridian",
+            "A wider pupil than expected",
+          ],
+          answer: 0,
+        },
+      ],
+      advanced: [
+        {
+          question:
+            "Working distance is 50 cm. Gross neutrality in one meridian is +3.00 D. Net meridional power is:",
+          options: ["+3.00 D", "+2.00 D", "+1.00 D", "-1.00 D"],
+          answer: 2,
+        },
+        {
+          question:
+            "At 67 cm, gross meridional powers are +2.25 D @ 90 and +0.75 D @ 180. Net refraction in minus-cylinder form is:",
+          options: [
+            "+0.75 / -1.50 x 90",
+            "+0.75 / -1.50 x 180",
+            "-0.75 / -1.50 x 90",
+            "+0.75 / -0.75 x 90",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "At 67 cm, gross meridional powers are +1.00 D @ 180 and -0.50 D @ 90. Net refraction in minus-cylinder form is:",
+          options: [
+            "-0.50 / -1.50 x 180",
+            "-2.00 / -1.50 x 90",
+            "-0.50 / +1.50 x 180",
+            "+0.50 / -1.50 x 90",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "Axis refinement is most accurate when the streak is oriented so that the reflex:",
+          options: [
+            "Appears as the narrowest, least broken band",
+            "Looks circular and diffuse",
+            "Shows the greatest shimmer",
+            "Becomes equally broad at every axis",
+          ],
+          answer: 0,
+        },
+        {
+          question: "For high astigmatism, the best sequence is:",
+          options: [
+            "Estimate sphere first then refine axis later",
+            "Neutralise one meridian then infer the second",
+            "Neutralise each principal meridian, apply working distance correction and convert to sphere and cylinder form",
+            "Apply working distance correction before neutralising",
+          ],
+          answer: 2,
+        },
+        {
+          question:
+            "In this simulator, which cue represents partial retinal detachment?",
+          options: [
+            "A fixed dark sector with reflex confined to the remaining pupil",
+            "A uniformly bright reflex in all meridians",
+            "A pure central dark spot only",
+            "A scissoring reflex that changes axis",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "Which finding most strongly suggests irregular astigmatism?",
+          options: [
+            "Scissoring reflex",
+            "Equal neutrality in both meridians",
+            "A broad bright reflex near neutrality",
+            "A stable with movement in one meridian only",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "In this simulator, posterior subcapsular cataract is represented by:",
+          options: [
+            "A moving reflex with a dull central defect",
+            "A uniformly dull reflex with no central change",
+            "A pure scissoring reflex",
+            "A uniformly bright reflex",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "In this simulator, posterior pole cataract is represented by:",
+          options: [
+            "A very dull reflex with a dense irregular central defect",
+            "A uniformly bright reflex in every meridian",
+            "A pure scissoring reflex",
+            "A mild diffuse haze with no central opacity",
+          ],
+          answer: 0,
+        },
+        {
+          question: "Aphakia is most likely to show:",
+          options: [
+            "Slow with movement requiring large plus to neutralise",
+            "Against movement requiring large minus to neutralise",
+            "Immediate neutrality with no lens",
+            "A fixed scissoring reflex",
+          ],
+          answer: 0,
+        },
+      ],
+    },
+    ca = {
+      primary: [
+        "With movement is neutralised by adding plus power or reducing minus power until movement disappears.",
+        "Against movement is neutralised by adding minus power or reducing plus power until movement disappears.",
+        "At neutrality the reflex fills the pupil without a discernible direction of movement at the working distance.",
+        "Sweeping translates the streak across the pupil while keeping its selected meridian unchanged.",
+        "Rotating the streak changes the meridian being assessed rather than the working distance or pupil size.",
+        "A 50 cm working distance has a dioptric equivalent of 2.00 D.",
+        "The working-distance correction is the inverse of distance in metres, so an unstable distance changes the correction.",
+        "Near neutrality the reflex generally becomes brighter, broader and faster before movement reverses beyond the endpoint.",
+      ],
+      intermediate: [
+        "A 67 cm working distance is approximately 1.50 D, which is subtracted from each gross meridional finding.",
+        "Bracketing uses the last clear with movement and first clear against movement to refine the neutral endpoint.",
+        "Rotating the streak helps identify and align with the principal meridians before each is neutralised.",
+        "The difference between +2.00 D and +0.50 D is 1.50 D, which is the cylinder magnitude.",
+        "Small lens steps on either side of neutrality are more reliable than brightness alone for locating the endpoint.",
+        "Start by improving ordinary viewing conditions. Pharmacological dilation requires an appropriate indication, competence and local protocol.",
+        "After subtracting 1.50 D from each meridian, the powers are +0.25 D at 90 and -1.25 D at 180, giving +0.25 / -1.50 x 90.",
+        "A break or skew between the retinal reflex and streak suggests that the streak is not aligned with a principal meridian.",
+      ],
+      advanced: [
+        "Subtracting the 2.00 D working-distance allowance from +3.00 D leaves a net meridional power of +1.00 D.",
+        "Subtracting 1.50 D gives +0.75 D at 90 and -0.75 D at 180, which is +0.75 / -1.50 x 90.",
+        "Subtracting 1.50 D gives -0.50 D at 180 and -2.00 D at 90, which is -0.50 / -1.50 x 180.",
+        "The narrowest and least broken alignment helps identify the principal meridian before power is refined.",
+        "Each principal meridian is neutralised first, then the working-distance correction is applied before conversion to sphero-cylinder form.",
+        "The simulator uses a fixed dark sector to teach a limited reflex from its partial-retinal-detachment case. This visual still awaits independent clinical sign-off.",
+        "A scissoring reflex is a recognised clue to irregular astigmatism, though the cause still needs full examination.",
+        "The simulator uses a moving reflex with a dull central defect for its posterior-subcapsular-cataract teaching case. This representation still awaits clinical sign-off.",
+        "The simulator uses a dense irregular central defect for its posterior-pole-cataract teaching case. This representation still awaits clinical sign-off.",
+        "Without the crystalline lens, the eye is markedly hyperopic and typically requires substantial plus power to neutralise.",
+      ],
     };
-  })
-    .sort((a, b) => a.order - b.order || a.label.localeCompare(b.label))
-    .map((caseItem, index) => ({
-      ...caseItem,
-      index: index + 1,
-    }));
-  var CASE_LEVELS = Object.entries(LEVEL_META)
-    .map(([value, meta]) => ({ value, ...meta }))
-    .sort((a, b) => a.order - b.order);
-  function getCaseByValue(value) {
-    return (
-      RETINOSCOPY_CASES.find((caseItem) => caseItem.value === value) || null
-    );
+  function ua(e, t) {
+    return e === "advanced" && t >= 5 && t <= 8
+      ? "sauron-pathology-visuals-v1"
+      : /working distance|gross|net|meridian neutralises|Cylinder power/i.test(
+            st[e][t].question,
+          )
+        ? "sauron-optics-contract-v1"
+        : "aao-retinoscopy";
   }
-  function getCaseList({ babyOnly = false } = {}) {
-    if (!babyOnly) {
-      return RETINOSCOPY_CASES;
-    }
-    return RETINOSCOPY_CASES.filter((caseItem) => caseItem.isBabyCase);
+  var Qa = Object.fromEntries(
+    Object.entries(st).map(([e, t]) => [
+      e,
+      t.map((a, i) => {
+        let c = ua(e, i);
+        return {
+          ...a,
+          id: `sauron-${e}-${String(i + 1).padStart(2, "0")}`,
+          explanation: ca[e][i],
+          source: c,
+          reviewStatus: la[c].status,
+        };
+      }),
+    ]),
+  );
+  var lt = {
+      r: Math.round(152.6),
+      g: Math.round(40.599999999999994),
+      b: Math.round(0),
+    },
+    ke = "zero",
+    ct = {
+      retStreakOffset: 0,
+      retStreakRotation: 0,
+      currentRefraction: ke,
+      cylinderAxisDeg: null,
+      cataractLevel: 0,
+      nystagmusLevel: 0,
+      activeRetEye: "left",
+    },
+    da = [
+      {
+        label: "Sphere",
+        category: "sphere",
+        options: [
+          { value: "high-minus", label: "High minus (---)" },
+          { value: "minus", label: "Minus (-)" },
+          { value: "zero", label: "Neutral (0)" },
+          { value: "plus", label: "Plus (+)" },
+          { value: "high-plus", label: "High plus (+++)" },
+        ],
+      },
+      {
+        label: "Regular astigmatism",
+        category: "astig",
+        options: [
+          { value: "low-cylinder", label: "Low astigmatism (Cyl)" },
+          { value: "high-cylinder", label: "High astigmatism (Cyl++)" },
+        ],
+      },
+      {
+        label: "Irregular reflex",
+        category: "irregular",
+        options: [
+          { value: "small-scissors", label: "Small scissors reflex" },
+          {
+            value: "keratoconus",
+            label: "Keratoconus (large scissors reflex)",
+          },
+          {
+            value: "corneal-scar",
+            label: "Corneal scar (large diffuse reflex)",
+          },
+          { value: "poor-tear-film", label: "Poor tear film" },
+        ],
+      },
+      {
+        label: "Other conditions",
+        category: "other",
+        options: [
+          { value: "acg", label: "ACG (vertical oval pupil)" },
+          { value: "aniridia", label: "Aniridia" },
+          { value: "anisometropia", label: "Anisometropia (RE+, LE-)" },
+          { value: "aphakia", label: "Aphakia" },
+          { value: "iris-transillumination", label: "Iris transillumination" },
+          { value: "nasal-coloboma", label: "Nasal coloboma" },
+          { value: "small-pupils", label: "Small pupils" },
+        ],
+      },
+      {
+        label: "Media and fundus",
+        category: "media-fundus",
+        options: [
+          {
+            value: "small-cortical-cataract",
+            label: "Small cortical cataract",
+          },
+          { value: "big-cortical-cataract", label: "Big cortical cataract" },
+          {
+            value: "central-sub-cortical-cataract",
+            label: "Posterior subcapsular cataract",
+          },
+          {
+            value: "posterior-pole-cataract",
+            label: "Posterior pole cataract",
+          },
+          { value: "dense-cataract", label: "Dense cataract" },
+          { value: "floaters", label: "Vitreous floaters" },
+          { value: "vitreous-haemorrhage", label: "Vitreous haemorrhage" },
+          { value: "leucocoria", label: "Leucocoria" },
+          {
+            value: "partial-retinal-detachment",
+            label: "Partial retinal detachment",
+          },
+          {
+            value: "posterior-capsular-thickening",
+            label: "Posterior capsular thickening (IOL)",
+          },
+        ],
+      },
+    ],
+    he = da.flatMap(({ category: e, options: t }) =>
+      t.map((a) => ({ ...a, category: e })),
+    ),
+    Oe = he.filter(({ value: e }) => e !== "anisometropia"),
+    ut = new Set(he.map(({ value: e }) => e)),
+    _e = new Set(["low-cylinder", "high-cylinder"]),
+    dt = new Set([..._e, "small-scissors", "keratoconus", "corneal-scar"]),
+    Pe = {
+      primary: { title: "Primary", passMark: 3, questionCount: 5 },
+      intermediate: { title: "Intermediate", passMark: 4, questionCount: 6 },
+      advanced: { title: "Advanced", passMark: 6, questionCount: 8 },
+    },
+    De = {
+      "aao-retinoscopy": {
+        label: "AAO EyeWiki: Retinoscopy",
+        url: "https://eyewiki.aao.org/Retinoscopy",
+        status: "current-clinical-reference",
+      },
+      "sauron-optics-contract-v1": {
+        label: "Sauron working-distance and meridional-power contract",
+        url: null,
+        status: "engineering-formula-reviewed",
+      },
+      "sauron-pathology-visuals-v1": {
+        label: "Sauron pathology-visual teaching contract",
+        url: null,
+        status: "pending-independent-clinical-sign-off",
+      },
+    },
+    Ce = [20, 15, 10, 8, 6],
+    gt = {
+      primary: [
+        {
+          question:
+            'In plane mirror retinoscopy, a "with" reflex is neutralised with:',
+          options: [
+            "Plus or less minus",
+            "Minus or less plus",
+            "Axis change",
+            "No lens change",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            'In plane mirror retinoscopy, an "against" reflex is neutralised with:',
+          options: [
+            "Plus or less minus",
+            "Minus or less plus",
+            "Axis change",
+            "No lens change",
+          ],
+          answer: 1,
+        },
+        {
+          question: "Neutrality at the working distance means:",
+          options: [
+            "No directional reflex movement",
+            "The reflex still moves with the streak",
+            "The reflex still moves against the streak",
+            "No red reflex is visible",
+          ],
+          answer: 0,
+        },
+        {
+          question: "Sweeping the streak mainly changes the:",
+          options: [
+            "Streak position",
+            "Streak angle",
+            "Working distance",
+            "Pupil size",
+          ],
+          answer: 0,
+        },
+        {
+          question: "Rotating the streak mainly changes the:",
+          options: [
+            "Streak angle",
+            "Streak position",
+            "Working distance",
+            "Pupil size",
+          ],
+          answer: 0,
+        },
+        {
+          question: "At 50 cm, the working distance allowance is:",
+          options: ["0.50 D", "1.00 D", "1.50 D", "2.00 D"],
+          answer: 3,
+        },
+        {
+          question: "Why should working distance stay steady?",
+          options: [
+            "It changes the working distance allowance",
+            "It sets the streak angle",
+            "It keeps the reflex centred on the pupil",
+            "It fixes the pupil size",
+          ],
+          answer: 0,
+        },
+        {
+          question: "As neutrality is approached, the reflex is usually:",
+          options: [
+            "Brighter, broader and faster",
+            "Darker, narrower and slower",
+            "Brighter, narrower and slower",
+            "Dimmer, broader and slower",
+          ],
+          answer: 0,
+        },
+      ],
+      intermediate: [
+        {
+          question: "At 67 cm, you convert gross retinoscopy to net by:",
+          options: [
+            "Adding 1.50 D",
+            "Subtracting 1.50 D",
+            "Adding 2.00 D",
+            "Subtracting 2.00 D",
+          ],
+          answer: 1,
+        },
+        {
+          question: "As plus lenses are added, neutrality lies:",
+          options: [
+            'At the first clearly "against" lens',
+            'Between the last clearly "with" lens and the first clearly "against" lens',
+            'At the last clearly "with" lens',
+            "At plano (0.00 D)",
+          ],
+          answer: 1,
+        },
+        {
+          question: "Why rotate the streak during retinoscopy?",
+          options: [
+            "To align with principal meridians",
+            "To keep the beam in the middle of the pupil",
+            "To change the working distance allowance",
+            "To make the pupil larger",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "One meridian neutralises at +2.00 D and the perpendicular meridian at +0.50 D. Cylinder power is:",
+          options: ["0.50 D", "1.00 D", "1.50 D", "2.50 D"],
+          answer: 2,
+        },
+        {
+          question: "Which endpoint method is most reliable in practice?",
+          options: [
+            "Stop at the first bright reflex",
+            "Bracket neutrality with small lens steps such as +/- 0.25 D",
+            "Use whole-dioptre steps only",
+            "Rely on brightness alone",
+          ],
+          answer: 1,
+        },
+        {
+          question:
+            "If a small pupil makes the reflex difficult to judge, the safest next step is:",
+          options: [
+            "Optimise fixation, illumination and viewing conditions, then dilate only when appropriate and authorised",
+            "Move farther back and accept a dimmer view",
+            "Judge neutrality from brightness alone",
+            "Rotate to 0 degrees and continue",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "At 67 cm, gross neutralities are +1.75 D @ 90 and +0.25 D @ 180. Net minus-cylinder form is:",
+          options: [
+            "+0.25 / -1.50 x 90",
+            "+0.25 / -1.50 x 180",
+            "-1.25 / +1.50 x 90",
+            "+1.75 / -1.50 x 90",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "A practical sign that the streak is not aligned with a principal meridian is:",
+          options: [
+            "Break or skew of the reflex relative to the streak",
+            "A brighter reflex without any change in axis",
+            "Equal speed in every meridian",
+            "A wider pupil than expected",
+          ],
+          answer: 0,
+        },
+      ],
+      advanced: [
+        {
+          question:
+            "Working distance is 50 cm. Gross neutrality in one meridian is +3.00 D. Net meridional power is:",
+          options: ["+3.00 D", "+2.00 D", "+1.00 D", "-1.00 D"],
+          answer: 2,
+        },
+        {
+          question:
+            "At 67 cm, gross meridional powers are +2.25 D @ 90 and +0.75 D @ 180. Net refraction in minus-cylinder form is:",
+          options: [
+            "+0.75 / -1.50 x 90",
+            "+0.75 / -1.50 x 180",
+            "-0.75 / -1.50 x 90",
+            "+0.75 / -0.75 x 90",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "At 67 cm, gross meridional powers are +1.00 D @ 180 and -0.50 D @ 90. Net refraction in minus-cylinder form is:",
+          options: [
+            "-0.50 / -1.50 x 180",
+            "-2.00 / -1.50 x 90",
+            "-0.50 / +1.50 x 180",
+            "+0.50 / -1.50 x 90",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "Axis refinement is most accurate when the streak is oriented so that the reflex:",
+          options: [
+            "Appears as the narrowest, least broken band",
+            "Looks circular and diffuse",
+            "Shows the greatest shimmer",
+            "Becomes equally broad at every axis",
+          ],
+          answer: 0,
+        },
+        {
+          question: "For high astigmatism, the best sequence is:",
+          options: [
+            "Estimate sphere first then refine axis later",
+            "Neutralise one meridian then infer the second",
+            "Neutralise each principal meridian, apply working distance correction and convert to sphere and cylinder form",
+            "Apply working distance correction before neutralising",
+          ],
+          answer: 2,
+        },
+        {
+          question:
+            "In this simulator, which cue represents partial retinal detachment?",
+          options: [
+            "A fixed dark sector with reflex confined to the remaining pupil",
+            "A uniformly bright reflex in all meridians",
+            "A pure central dark spot only",
+            "A scissoring reflex that changes axis",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "Which finding most strongly suggests irregular astigmatism?",
+          options: [
+            "Scissoring reflex",
+            "Equal neutrality in both meridians",
+            "A broad bright reflex near neutrality",
+            "A stable with movement in one meridian only",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "In this simulator, posterior subcapsular cataract is represented by:",
+          options: [
+            "A moving reflex with a dull central defect",
+            "A uniformly dull reflex with no central change",
+            "A pure scissoring reflex",
+            "A uniformly bright reflex",
+          ],
+          answer: 0,
+        },
+        {
+          question:
+            "In this simulator, posterior pole cataract is represented by:",
+          options: [
+            "A very dull reflex with a dense irregular central defect",
+            "A uniformly bright reflex in every meridian",
+            "A pure scissoring reflex",
+            "A mild diffuse haze with no central opacity",
+          ],
+          answer: 0,
+        },
+        {
+          question: "Aphakia is most likely to show:",
+          options: [
+            "Slow with movement requiring large plus to neutralise",
+            "Against movement requiring large minus to neutralise",
+            "Immediate neutrality with no lens",
+            "A fixed scissoring reflex",
+          ],
+          answer: 0,
+        },
+      ],
+    },
+    ga = {
+      primary: [
+        "With movement is neutralised by adding plus power or reducing minus power until movement disappears.",
+        "Against movement is neutralised by adding minus power or reducing plus power until movement disappears.",
+        "At neutrality the reflex fills the pupil without a discernible direction of movement at the working distance.",
+        "Sweeping translates the streak across the pupil while keeping its selected meridian unchanged.",
+        "Rotating the streak changes the meridian being assessed rather than the working distance or pupil size.",
+        "A 50 cm working distance has a dioptric equivalent of 2.00 D.",
+        "The working-distance correction is the inverse of distance in metres, so an unstable distance changes the correction.",
+        "Near neutrality the reflex generally becomes brighter, broader and faster before movement reverses beyond the endpoint.",
+      ],
+      intermediate: [
+        "A 67 cm working distance is approximately 1.50 D, which is subtracted from each gross meridional finding.",
+        "Bracketing uses the last clear with movement and first clear against movement to refine the neutral endpoint.",
+        "Rotating the streak helps identify and align with the principal meridians before each is neutralised.",
+        "The difference between +2.00 D and +0.50 D is 1.50 D, which is the cylinder magnitude.",
+        "Small lens steps on either side of neutrality are more reliable than brightness alone for locating the endpoint.",
+        "Start by improving ordinary viewing conditions. Pharmacological dilation requires an appropriate indication, competence and local protocol.",
+        "After subtracting 1.50 D from each meridian, the powers are +0.25 D at 90 and -1.25 D at 180, giving +0.25 / -1.50 x 90.",
+        "A break or skew between the retinal reflex and streak suggests that the streak is not aligned with a principal meridian.",
+      ],
+      advanced: [
+        "Subtracting the 2.00 D working-distance allowance from +3.00 D leaves a net meridional power of +1.00 D.",
+        "Subtracting 1.50 D gives +0.75 D at 90 and -0.75 D at 180, which is +0.75 / -1.50 x 90.",
+        "Subtracting 1.50 D gives -0.50 D at 180 and -2.00 D at 90, which is -0.50 / -1.50 x 180.",
+        "The narrowest and least broken alignment helps identify the principal meridian before power is refined.",
+        "Each principal meridian is neutralised first, then the working-distance correction is applied before conversion to sphero-cylinder form.",
+        "The simulator uses a fixed dark sector to teach a limited reflex from its partial-retinal-detachment case. This visual still awaits independent clinical sign-off.",
+        "A scissoring reflex is a recognised clue to irregular astigmatism, though the cause still needs full examination.",
+        "The simulator uses a moving reflex with a dull central defect for its posterior-subcapsular-cataract teaching case. This representation still awaits clinical sign-off.",
+        "The simulator uses a dense irregular central defect for its posterior-pole-cataract teaching case. This representation still awaits clinical sign-off.",
+        "Without the crystalline lens, the eye is markedly hyperopic and typically requires substantial plus power to neutralise.",
+      ],
+    };
+  function pa(e, t) {
+    return e === "advanced" && t >= 5 && t <= 8
+      ? "sauron-pathology-visuals-v1"
+      : /working distance|gross|net|meridian neutralises|Cylinder power/i.test(
+            gt[e][t].question,
+          )
+        ? "sauron-optics-contract-v1"
+        : "aao-retinoscopy";
   }
-  function getFallbackBabyCase() {
-    return getCaseByValue("zero") || RETINOSCOPY_CASES[0] || null;
+  var pt = Object.fromEntries(
+    Object.entries(gt).map(([e, t]) => [
+      e,
+      t.map((a, i) => {
+        let c = pa(e, i);
+        return {
+          ...a,
+          id: `sauron-${e}-${String(i + 1).padStart(2, "0")}`,
+          explanation: ga[e][i],
+          source: c,
+          reviewStatus: De[c].status,
+        };
+      }),
+    ]),
+  );
+  var Be = {
+      primary: {
+        label: "Primary cases",
+        shortLabel: "Primary",
+        marker: "P",
+        order: 1,
+      },
+      intermediate: {
+        label: "Intermediate cases",
+        shortLabel: "Intermediate",
+        marker: "I",
+        order: 2,
+      },
+      advanced: {
+        label: "Advanced cases",
+        shortLabel: "Advanced",
+        marker: "A",
+        order: 3,
+      },
+    },
+    ma = {
+      "high-minus": "primary",
+      minus: "primary",
+      zero: "primary",
+      plus: "primary",
+      "high-plus": "primary",
+      "low-cylinder": "intermediate",
+      "high-cylinder": "intermediate",
+      anisometropia: "intermediate",
+      "small-pupils": "intermediate",
+      "small-scissors": "intermediate",
+      "poor-tear-film": "intermediate",
+      "small-cortical-cataract": "intermediate",
+      "big-cortical-cataract": "intermediate",
+      "dense-cataract": "intermediate",
+      floaters: "intermediate",
+      "central-sub-cortical-cataract": "advanced",
+      keratoconus: "advanced",
+      "corneal-scar": "advanced",
+      acg: "advanced",
+      aniridia: "advanced",
+      aphakia: "advanced",
+      "iris-transillumination": "advanced",
+      "nasal-coloboma": "advanced",
+      "posterior-pole-cataract": "advanced",
+      "vitreous-haemorrhage": "advanced",
+      leucocoria: "advanced",
+      "partial-retinal-detachment": "advanced",
+      "posterior-capsular-thickening": "advanced",
+    },
+    fa = Object.freeze({
+      acg: Object.freeze({
+        title: "Acute angle-closure warning",
+        body: "The exaggerated oval is a stylised teaching cue, not a diagnostic pupil shape. A painful red eye with a fixed or poorly reactive mid-dilated pupil is an ocular emergency. This simulation does not diagnose angle closure; arrange urgent ophthalmic assessment.",
+      }),
+      leucocoria: Object.freeze({
+        title: "Abnormal white reflex",
+        body: "A white or absent red reflex, particularly in a child, requires urgent ophthalmic assessment. Causes include cataract, retinal disease and intraocular tumour.",
+      }),
+      "vitreous-haemorrhage": Object.freeze({
+        title: "Vitreous haemorrhage warning",
+        body: "A suddenly darkened reflex with new floaters or loss of vision may reflect vitreous haemorrhage and underlying retinal pathology. Arrange urgent ophthalmic assessment.",
+      }),
+      "partial-retinal-detachment": Object.freeze({
+        title: "Retinal detachment warning",
+        body: "A fixed dark sector with symptoms suggesting retinal detachment requires urgent ophthalmic assessment. The simulator appearance is illustrative only.",
+      }),
+    }),
+    ha = {
+      "high-minus": "Slow against movement with a narrow reflex.",
+      minus: "Against movement before neutralisation.",
+      zero: "No directional movement at neutrality.",
+      plus: "With movement before neutralisation.",
+      "high-plus": "Slow broad with movement requiring more plus.",
+      "low-cylinder":
+        "Stylised example: opposite movement in the two principal meridians.",
+      "high-cylinder":
+        "Stylised example: stronger change between the two principal meridians.",
+      anisometropia: "Different reflex behaviour between right and left eyes.",
+      "small-pupils": "Reduced aperture makes the reflex harder to judge.",
+      "small-scissors": "Subtle split reflex with irregular movement.",
+      "poor-tear-film": "Unstable shimmering reflex surface.",
+      "small-cortical-cataract":
+        "Peripheral cortical opacity crossing the reflex.",
+      "big-cortical-cataract": "More extensive cortical spokes.",
+      "central-sub-cortical-cataract":
+        "Central posterior opacity dulling the reflex.",
+      keratoconus: "Large scissors reflex with marked irregularity.",
+      "corneal-scar": "Diffuse corneal haze disrupting the streak.",
+      acg: "Stylised vertical oval pupil with abnormal reflex behaviour.",
+      aniridia: "Large abnormal aperture with unstable reflex detail.",
+      aphakia: "High plus behaviour with altered pupil optics.",
+      "iris-transillumination":
+        "Peripheral iris light leak alongside the reflex.",
+      "nasal-coloboma": "Notched pupil aperture affecting the reflex edge.",
+      "posterior-pole-cataract": "Dense central posterior pole defect.",
+      "dense-cataract": "Very dull reflex through dense media opacity.",
+      floaters: "Mobile vitreous shadows over the reflex.",
+      "vitreous-haemorrhage": "Dark vitreous opacity reducing the view.",
+      leucocoria: "White reflex appearance rather than normal red-orange.",
+      "partial-retinal-detachment":
+        "Fixed dark sector with remaining reflex visible.",
+      "posterior-capsular-thickening":
+        "IOL/capsule haze reducing reflex clarity.",
+    },
+    ba = new Set([
+      "zero",
+      "plus",
+      "high-plus",
+      "minus",
+      "low-cylinder",
+      "anisometropia",
+      "small-pupils",
+      "central-sub-cortical-cataract",
+      "dense-cataract",
+      "leucocoria",
+    ]),
+    ya = [
+      "zero",
+      "minus",
+      "plus",
+      "high-minus",
+      "high-plus",
+      "low-cylinder",
+      "high-cylinder",
+      "anisometropia",
+      "small-pupils",
+      "small-scissors",
+      "poor-tear-film",
+      "small-cortical-cataract",
+      "big-cortical-cataract",
+      "dense-cataract",
+      "floaters",
+      "keratoconus",
+      "corneal-scar",
+      "acg",
+      "aniridia",
+      "aphakia",
+      "iris-transillumination",
+      "nasal-coloboma",
+      "central-sub-cortical-cataract",
+      "posterior-pole-cataract",
+      "vitreous-haemorrhage",
+      "leucocoria",
+      "partial-retinal-detachment",
+      "posterior-capsular-thickening",
+    ],
+    xa = new Map(ya.map((e, t) => [e, t])),
+    Me = he
+      .map((e) => {
+        var a;
+        let t = ma[e.value] || "advanced";
+        return {
+          ...e,
+          order: (a = xa.get(e.value)) != null ? a : Number.MAX_SAFE_INTEGER,
+          level: t,
+          levelLabel: Be[t].shortLabel,
+          levelMarker: Be[t].marker,
+          summary: ha[e.value] || e.label,
+          safetyNote: fa[e.value] || null,
+          thumbnailSrc: `assets/case-thumbnails/${e.value}.webp?v=20260507-fellow-corneal`,
+          isBabyCase: ba.has(e.value),
+        };
+      })
+      .sort((e, t) => e.order - t.order || e.label.localeCompare(t.label))
+      .map((e, t) => ({ ...e, index: t + 1 })),
+    mt = Object.entries(Be)
+      .map(([e, t]) => ({ value: e, ...t }))
+      .sort((e, t) => e.order - t.order);
+  function we(e) {
+    return Me.find((t) => t.value === e) || null;
   }
-
-  // src/dom.js?v=20260506-4
-  function getDomRefs() {
+  function Ae({ babyOnly: e = !1 } = {}) {
+    return e ? Me.filter((t) => t.isBabyCase) : Me;
+  }
+  function ft() {
+    return we("zero") || Me[0] || null;
+  }
+  function ht() {
     return {
       body: document.body,
       infoIcon: document.getElementById("info-icon"),
@@ -738,6 +1129,8 @@
       burgerIcon: document.getElementById("burger-icon"),
       sideMenu: document.getElementById("sideMenu"),
       testModeButton: document.getElementById("test-mode-button"),
+      resetSimulatorButton: document.getElementById("reset-simulator-button"),
+      resetSimulatorStatus: document.getElementById("reset-simulator-status"),
       mcqModal: document.getElementById("mcqModal"),
       mcqModalContent: document.getElementById("mcqModalContent"),
       closeMcqModalButton: document.getElementById("closeMcqModal"),
@@ -764,12 +1157,20 @@
       caseSectionsContainer: document.getElementById("caseSectionsContainer"),
       caseSimilarTool: document.getElementById("case-similar-tool"),
       caseSimilarList: document.getElementById("case-similar-list"),
+      caseSafetyModal: document.getElementById("caseSafetyModal"),
+      caseSafetyModalContent: document.getElementById("caseSafetyModalContent"),
+      closeCaseSafetyModalButton: document.getElementById(
+        "closeCaseSafetyModal",
+      ),
+      caseSafetyTitle: document.getElementById("caseSafetyTitle"),
+      caseSafetyBody: document.getElementById("caseSafetyBody"),
       casePicker: document.getElementById("case-picker"),
       casePreviousButton: document.getElementById("case-previous-button"),
       caseNextButton: document.getElementById("case-next-button"),
       caseTriggerButton: document.getElementById("case-trigger-button"),
       caseTriggerLabel: document.getElementById("case-trigger-label"),
       caseTriggerLevel: document.getElementById("case-trigger-level"),
+      caseTriggerSafety: document.getElementById("case-trigger-safety"),
       caseMaskLabel: document.getElementById("case-mask-label"),
       refractionShell: document.getElementById("refraction-shell"),
       refractionMaskLabel: document.getElementById("refraction-mask-label"),
@@ -802,957 +1203,682 @@
       retStreakSweepHandle: document.getElementById("ret-streak-sweep-handle"),
     };
   }
-
-  // src/motion.js
-  function prefersReducedMotion() {
-    var _a;
-    return Boolean(
-      (_a = window.matchMedia) == null
-        ? void 0
-        : _a.call(window, "(prefers-reduced-motion: reduce)").matches,
+  function be() {
+    var e;
+    return !!(
+      (e = window.matchMedia) != null &&
+      e.call(window, "(prefers-reduced-motion: reduce)").matches
     );
   }
-
-  // src/eyes.js?v=20260506-5
-  function createEyesController({ state, dom, onEyeGeometryChange }) {
-    function applyPupilFill(target, fillValue) {
-      if (!target) {
-        return;
-      }
-      const pupil = target.querySelector(".pupil");
-      if (pupil) {
-        pupil.style.background = fillValue;
-      }
-      const colobomaExtension = target.querySelector(".coloboma-extension");
-      if (colobomaExtension) {
-        colobomaExtension.style.background = fillValue;
-      }
-      const irisTransilluminationPatch = target.querySelector(
-        ".iris-transillumination-patch",
-      );
-      if (irisTransilluminationPatch) {
-        irisTransilluminationPatch.style.background = fillValue;
-      }
+  function bt({ state: e, dom: t, onEyeGeometryChange: a }) {
+    function i(r, o) {
+      if (!r) return;
+      let n = r.querySelector(".pupil");
+      n && (n.style.background = o);
+      let g = r.querySelector(".coloboma-extension");
+      g && (g.style.background = o);
+      let l = r.querySelector(".iris-transillumination-patch");
+      l && (l.style.background = o);
     }
-    function applyManualEyeMoveState() {
-      dom.irises.forEach((iris) => {
-        iris.classList.toggle(
-          "is-manual-drag-enabled",
-          state.isManualEyeMoveEnabled,
-        );
+    function c() {
+      t.irises.forEach((r) => {
+        r.classList.toggle("is-manual-drag-enabled", e.isManualEyeMoveEnabled);
       });
     }
-    function getCataractPupilFilter(level) {
-      const normalized = Math.max(0, Math.min(100, level)) / 100;
-      const brightness = 1 - normalized * 0.72;
-      const saturation = 1 - normalized * 0.64;
-      const contrast = 1 - normalized * 0.18;
-      return `brightness(${brightness.toFixed(2)}) saturate(${saturation.toFixed(2)}) contrast(${contrast.toFixed(2)})`;
+    function u(r) {
+      let o = Math.max(0, Math.min(100, r)) / 100,
+        n = 1 - o * 0.72,
+        g = 1 - o * 0.64,
+        l = 1 - o * 0.18;
+      return `brightness(${n.toFixed(2)}) saturate(${g.toFixed(2)}) contrast(${l.toFixed(2)})`;
     }
-    function applyCataractToPupils() {
-      const filterValue = getCataractPupilFilter(state.cataractLevel);
-      dom.irises.forEach((iris) => {
-        const pupil = iris.querySelector(".pupil");
-        if (pupil) {
-          pupil.style.filter = filterValue;
-        }
-        const colobomaExtension = iris.querySelector(".coloboma-extension");
-        if (colobomaExtension) {
-          colobomaExtension.style.filter = filterValue;
-        }
-        const irisTransilluminationPatch = iris.querySelector(
-          ".iris-transillumination-patch",
-        );
-        if (irisTransilluminationPatch) {
-          irisTransilluminationPatch.style.filter = filterValue;
-        }
+    function x() {
+      let r = u(e.cataractLevel);
+      t.irises.forEach((o) => {
+        let n = o.querySelector(".pupil");
+        n && (n.style.filter = r);
+        let g = o.querySelector(".coloboma-extension");
+        g && (g.style.filter = r);
+        let l = o.querySelector(".iris-transillumination-patch");
+        l && (l.style.filter = r);
       });
     }
-    function notifyEyeGeometryChange(includePosition = true) {
-      if (typeof onEyeGeometryChange === "function") {
-        onEyeGeometryChange({ includePosition });
-      }
+    function d(r = !0) {
+      typeof a == "function" && a({ includePosition: r });
     }
-    function notifyAmbientEyeGeometryChange(
-      includePosition = state.nystagmusLevel === 0,
-    ) {
-      notifyEyeGeometryChange(state.isGazeMode ? false : includePosition);
+    function E(r = e.nystagmusLevel === 0) {
+      d(e.isGazeMode ? !1 : r);
     }
-    function applyGazeFacePose({ x = 0, y = 0, tilt = 0 } = {}) {
-      if (!dom.eyesContainer) {
-        return;
-      }
-      dom.eyesContainer.style.setProperty("--gaze-face-x", `${x.toFixed(2)}px`);
-      dom.eyesContainer.style.setProperty("--gaze-face-y", `${y.toFixed(2)}px`);
-      dom.eyesContainer.style.setProperty(
-        "--gaze-face-tilt",
-        `${tilt.toFixed(2)}deg`,
-      );
+    function S({ x: r = 0, y: o = 0, tilt: n = 0 } = {}) {
+      t.eyesContainer &&
+        (t.eyesContainer.style.setProperty(
+          "--gaze-face-x",
+          `${r.toFixed(2)}px`,
+        ),
+        t.eyesContainer.style.setProperty("--gaze-face-y", `${o.toFixed(2)}px`),
+        t.eyesContainer.style.setProperty(
+          "--gaze-face-tilt",
+          `${n.toFixed(2)}deg`,
+        ));
     }
-    function resetGazeFacePose() {
-      applyGazeFacePose();
+    function p() {
+      S();
     }
-    function getRestingUpperLidHeight(upperEyelid) {
-      return (
-        (upperEyelid == null ? void 0 : upperEyelid.dataset.restingHeightPx) ||
-        "0px"
-      );
+    function v(r) {
+      return (r == null ? void 0 : r.dataset.restingHeightPx) || "0px";
     }
-    function getActiveUpperLidHeight(upperEyelid) {
-      return (
-        (upperEyelid == null
-          ? void 0
-          : upperEyelid.dataset.gazeLidDroopHeightPx) ||
-        getRestingUpperLidHeight(upperEyelid)
-      );
+    function h(r) {
+      return (r == null ? void 0 : r.dataset.gazeLidDroopHeightPx) || v(r);
     }
-    function resetTemporaryGazeLids() {
-      dom.eyes.forEach((eye) => {
-        const upperEyelid = eye.querySelector(".upper-eyelid");
-        if (!upperEyelid) {
-          return;
-        }
-        if (upperEyelid.gazeLidDroopTimerId) {
-          window.clearTimeout(upperEyelid.gazeLidDroopTimerId);
-          upperEyelid.gazeLidDroopTimerId = 0;
-        }
-        delete upperEyelid.dataset.gazeLidDroopHeightPx;
-        if (upperEyelid.dataset.isBlinking !== "true") {
-          upperEyelid.style.height = getRestingUpperLidHeight(upperEyelid);
-        }
+    function C() {
+      t.eyes.forEach((r) => {
+        let o = r.querySelector(".upper-eyelid");
+        o &&
+          (o.gazeLidDroopTimerId &&
+            (window.clearTimeout(o.gazeLidDroopTimerId),
+            (o.gazeLidDroopTimerId = 0)),
+          delete o.dataset.gazeLidDroopHeightPx,
+          o.dataset.isBlinking !== "true" && (o.style.height = v(o)));
       });
     }
-    function resetBlinkLids() {
-      dom.eyes.forEach((eye) => {
-        const upperEyelid = eye.querySelector(".upper-eyelid");
-        const lowerEyelid = eye.querySelector(".lower-eyelid");
-        if (upperEyelid == null ? void 0 : upperEyelid.blinkTimerId) {
-          window.clearTimeout(upperEyelid.blinkTimerId);
-          upperEyelid.blinkTimerId = 0;
-        }
-        if (lowerEyelid == null ? void 0 : lowerEyelid.blinkTimerId) {
-          window.clearTimeout(lowerEyelid.blinkTimerId);
-          lowerEyelid.blinkTimerId = 0;
-        }
-        if (upperEyelid) {
-          delete upperEyelid.dataset.isBlinking;
-          upperEyelid.style.height = getActiveUpperLidHeight(upperEyelid);
-        }
-        if (lowerEyelid) {
-          lowerEyelid.style.height = "0px";
-        }
+    function I() {
+      t.eyes.forEach((r) => {
+        let o = r.querySelector(".upper-eyelid"),
+          n = r.querySelector(".lower-eyelid");
+        (o != null &&
+          o.blinkTimerId &&
+          (window.clearTimeout(o.blinkTimerId), (o.blinkTimerId = 0)),
+          n != null &&
+            n.blinkTimerId &&
+            (window.clearTimeout(n.blinkTimerId), (n.blinkTimerId = 0)),
+          o && (delete o.dataset.isBlinking, (o.style.height = h(o))),
+          n && (n.style.height = "0px"));
       });
     }
-    function updateIrisTransform(iris) {
-      var _a, _b, _c, _d, _e, _f, _g, _h;
-      const totalX =
-        (((_a = iris.microOffset) == null ? void 0 : _a.x) || 0) +
-        (((_b = iris.backgroundOffset) == null ? void 0 : _b.x) || 0) +
-        (((_c = iris.gazeOffset) == null ? void 0 : _c.x) || 0) +
-        (((_d = iris.nystagmusOffset) == null ? void 0 : _d.x) || 0);
-      const totalY =
-        (((_e = iris.microOffset) == null ? void 0 : _e.y) || 0) +
-        (((_f = iris.backgroundOffset) == null ? void 0 : _f.y) || 0) +
-        (((_g = iris.gazeOffset) == null ? void 0 : _g.y) || 0) +
-        (((_h = iris.nystagmusOffset) == null ? void 0 : _h.y) || 0);
-      iris.style.transform = `translate(${totalX}px, ${totalY}px)`;
-      const eye = iris.closest(".eye");
-      if (eye) {
-        eye.style.setProperty(
+    function A(r) {
+      var l, w, m, f, O, D, _, W;
+      let o =
+          (((l = r.microOffset) == null ? void 0 : l.x) || 0) +
+          (((w = r.backgroundOffset) == null ? void 0 : w.x) || 0) +
+          (((m = r.gazeOffset) == null ? void 0 : m.x) || 0) +
+          (((f = r.nystagmusOffset) == null ? void 0 : f.x) || 0),
+        n =
+          (((O = r.microOffset) == null ? void 0 : O.y) || 0) +
+          (((D = r.backgroundOffset) == null ? void 0 : D.y) || 0) +
+          (((_ = r.gazeOffset) == null ? void 0 : _.y) || 0) +
+          (((W = r.nystagmusOffset) == null ? void 0 : W.y) || 0);
+      r.style.transform = `translate(${o}px, ${n}px)`;
+      let g = r.closest(".eye");
+      g &&
+        (g.style.setProperty(
           "--corneal-reflex-micro-x",
-          `${(totalX * 0.08).toFixed(2)}px`,
-        );
-        eye.style.setProperty(
+          `${(o * 0.08).toFixed(2)}px`,
+        ),
+        g.style.setProperty(
           "--corneal-reflex-micro-y",
-          `${(totalY * 0.06).toFixed(2)}px`,
-        );
-      }
+          `${(n * 0.06).toFixed(2)}px`,
+        ));
     }
-    function dispatchInput2(element) {
-      if (!element) {
-        return;
-      }
-      element.dispatchEvent(new Event("input", { bubbles: true }));
+    function b(r) {
+      r && r.dispatchEvent(new Event("input", { bubbles: !0 }));
     }
-    function setPupilSliderValues(values) {
-      dom.pupilSizeSliders.forEach((slider, index) => {
-        var _a;
-        const nextValue = (_a = values[index]) != null ? _a : values[0];
-        if (nextValue === void 0) {
-          return;
-        }
-        slider.value = String(nextValue);
-        dispatchInput2(slider);
+    function k(r) {
+      t.pupilSizeSliders.forEach((o, n) => {
+        var l;
+        let g = (l = r[n]) != null ? l : r[0];
+        g !== void 0 && ((o.value = String(g)), b(o));
       });
     }
-    function clearGazeTimers() {
-      if (state.gazeIntervalId) {
-        window.clearInterval(state.gazeIntervalId);
-        state.gazeIntervalId = 0;
-      }
-      if (state.gazeReturnTimeoutId) {
-        window.clearTimeout(state.gazeReturnTimeoutId);
-        state.gazeReturnTimeoutId = 0;
-      }
-      if (state.gazeShiftTimerId) {
-        window.clearTimeout(state.gazeShiftTimerId);
-        state.gazeShiftTimerId = 0;
-      }
-      dom.irises.forEach((iris) => {
-        if (iris.gazeSettleTimerId) {
-          window.clearTimeout(iris.gazeSettleTimerId);
-          iris.gazeSettleTimerId = 0;
-        }
-        if (iris.gazeStartTimerId) {
-          window.clearTimeout(iris.gazeStartTimerId);
-          iris.gazeStartTimerId = 0;
-        }
-      });
+    function H() {
+      (e.gazeIntervalId &&
+        (window.clearInterval(e.gazeIntervalId), (e.gazeIntervalId = 0)),
+        e.gazeReturnTimeoutId &&
+          (window.clearTimeout(e.gazeReturnTimeoutId),
+          (e.gazeReturnTimeoutId = 0)),
+        e.gazeShiftTimerId &&
+          (window.clearTimeout(e.gazeShiftTimerId), (e.gazeShiftTimerId = 0)),
+        t.irises.forEach((r) => {
+          (r.gazeSettleTimerId &&
+            (window.clearTimeout(r.gazeSettleTimerId),
+            (r.gazeSettleTimerId = 0)),
+            r.gazeStartTimerId &&
+              (window.clearTimeout(r.gazeStartTimerId),
+              (r.gazeStartTimerId = 0)));
+        }));
     }
-    function applyIrisGazePose(
-      resolveOffset,
-      { overshoot = 0, settleMs = 0, staggerMs = 0 } = {},
+    function R(
+      r,
+      { overshoot: o = 0, settleMs: n = 0, staggerMs: g = 0 } = {},
     ) {
-      dom.irises.forEach((iris, index) => {
-        if (iris.isDragging) {
-          return;
-        }
-        if (iris.gazeSettleTimerId) {
-          window.clearTimeout(iris.gazeSettleTimerId);
-          iris.gazeSettleTimerId = 0;
-        }
-        if (iris.gazeStartTimerId) {
-          window.clearTimeout(iris.gazeStartTimerId);
-          iris.gazeStartTimerId = 0;
-        }
-        const targetOffset = resolveOffset(iris, index);
-        const previousOffset = iris.gazeOffset || { x: 0, y: 0 };
-        const applyOffset = (offset) => {
-          iris.gazeOffset = {
-            x: parseFloat(offset.x.toFixed(2)),
-            y: parseFloat(offset.y.toFixed(2)),
-          };
-          updateIrisTransform(iris);
-        };
-        const startMove = () => {
-          if (overshoot > 0 && settleMs > 0) {
-            applyOffset({
-              x:
-                targetOffset.x +
-                (targetOffset.x - previousOffset.x) * overshoot,
-              y:
-                targetOffset.y +
-                (targetOffset.y - previousOffset.y) * overshoot,
-            });
-            notifyAmbientEyeGeometryChange(false);
-            iris.gazeSettleTimerId = window.setTimeout(() => {
-              applyOffset(targetOffset);
-              iris.gazeSettleTimerId = 0;
-              notifyAmbientEyeGeometryChange(false);
-            }, settleMs);
-            return;
-          }
-          applyOffset(targetOffset);
-          notifyAmbientEyeGeometryChange(false);
-        };
-        const startDelay = index * staggerMs;
-        if (startDelay > 0) {
-          iris.gazeStartTimerId = window.setTimeout(() => {
-            iris.gazeStartTimerId = 0;
-            startMove();
-          }, startDelay);
-        } else {
-          startMove();
-        }
-      });
-    }
-    function resetGazeOffset() {
-      dom.irises.forEach((iris) => {
-        iris.gazeOffset = { x: 0, y: 0 };
-        updateIrisTransform(iris);
-      });
-      notifyEyeGeometryChange(false);
-    }
-    function startGazeShifts() {
-      clearGazeTimers();
-      if (!state.isGazeMode || prefersReducedMotion()) {
-        return;
-      }
-      let isFirstShift = true;
-      const applyRestingGaze = () => {
-        const side = Math.random() < 0.5 ? -1 : 1;
-        const restingGazeX = parseFloat(
-          (side * (2.2 + Math.random() * 2.2)).toFixed(2),
-        );
-        const restingGazeY = parseFloat((Math.random() * 2.2 - 1.1).toFixed(2));
-        applyGazeFacePose({
-          x: side * (0.6 + Math.random() * 0.7),
-          y: Math.random() * 0.8 - 0.2,
-          tilt: side * (0.24 + Math.random() * 0.22),
-        });
-        applyIrisGazePose(
-          () => ({
-            x: restingGazeX + (Math.random() * 0.35 - 0.18),
-            y: restingGazeY + (Math.random() * 0.25 - 0.13),
-          }),
-          {
-            overshoot: state.isBabyMode ? 0.07 : 0.045,
-            settleMs: state.isBabyMode ? 210 : 250,
-            staggerMs: state.isBabyMode ? 14 : 10,
-          },
-        );
-      };
-      const applyTemporaryGazeLidDroop = (holdDuration, strength = 0.18) => {
-        dom.eyes.forEach((eye) => {
-          const upperEyelid = eye.querySelector(".upper-eyelid");
-          if (!upperEyelid) {
-            return;
-          }
-          if (upperEyelid.gazeLidDroopTimerId) {
-            window.clearTimeout(upperEyelid.gazeLidDroopTimerId);
-          }
-          const restingHeight =
-            parseFloat(getRestingUpperLidHeight(upperEyelid)) || 0;
-          const targetHeight = Math.max(
-            restingHeight,
-            eye.clientHeight * strength,
-          );
-          const targetHeightPx = `${targetHeight}px`;
-          upperEyelid.dataset.gazeLidDroopHeightPx = targetHeightPx;
-          if (upperEyelid.dataset.isBlinking !== "true") {
-            upperEyelid.style.height = targetHeightPx;
-          }
-          upperEyelid.gazeLidDroopTimerId = window.setTimeout(() => {
-            delete upperEyelid.dataset.gazeLidDroopHeightPx;
-            upperEyelid.gazeLidDroopTimerId = 0;
-            if (upperEyelid.dataset.isBlinking !== "true") {
-              upperEyelid.style.height = getRestingUpperLidHeight(upperEyelid);
-            }
-          }, holdDuration);
-        });
-      };
-      const scheduleNextGazeShift = () => {
-        const babyGaze = state.isBabyMode;
-        const delay = isFirstShift
-          ? 450 + Math.random() * 650
-          : babyGaze
-            ? 820 + Math.random() * 850
-            : 1250 + Math.random() * 1150;
-        isFirstShift = false;
-        state.gazeShiftTimerId = window.setTimeout(() => {
-          if (!state.isGazeMode) {
-            state.gazeShiftTimerId = 0;
-            return;
-          }
-          const isLargeDistractedLook = Math.random() < (babyGaze ? 0.4 : 0.28);
-          const holdDuration = isLargeDistractedLook
-            ? babyGaze
-              ? 760 + Math.random() * 760
-              : 1200 + Math.random() * 850
-            : babyGaze
-              ? 620 + Math.random() * 640
-              : 1100 + Math.random() * 800;
-          const side = Math.random() < 0.5 ? -1 : 1;
-          const sharedX = isLargeDistractedLook
-            ? parseFloat((side * (15 + Math.random() * 6)).toFixed(2))
-            : parseFloat((side * (8.5 + Math.random() * 5.5)).toFixed(2));
-          const sharedY = isLargeDistractedLook
-            ? parseFloat((7.5 + Math.random() * 4.5).toFixed(2))
-            : parseFloat((Math.random() * 7 - 3.5).toFixed(2));
-          const faceShiftX =
-            side *
-            (isLargeDistractedLook
-              ? 2.4 + Math.random() * 1.2
-              : 1.4 + Math.random() * 0.9);
-          const faceShiftY = isLargeDistractedLook
-            ? 1.8 + Math.random() * 1.1
-            : Math.max(-0.8, Math.min(1.2, sharedY * 0.2));
-          const headTiltRandom = Math.random();
-          const hasLargeHeadTilt =
-            isLargeDistractedLook && headTiltRandom < 0.16;
-          const hasBiggerHeadTilt =
-            isLargeDistractedLook && headTiltRandom < 0.42;
-          const faceTilt =
-            side *
-            (hasLargeHeadTilt
-              ? 1.02 + Math.random() * 0.34
-              : hasBiggerHeadTilt
-                ? 1.05 + Math.random() * 0.3
-                : isLargeDistractedLook
-                  ? 0.76 + Math.random() * 0.34
-                  : 0.44 + Math.random() * 0.28);
-          applyGazeFacePose({
-            x: faceShiftX,
-            y: faceShiftY,
-            tilt: faceTilt,
-          });
-          if (isLargeDistractedLook) {
-            applyTemporaryGazeLidDroop(
-              holdDuration,
-              0.16 + Math.random() * 0.06,
-            );
-          }
-          if (
-            isLargeDistractedLook &&
-            Math.random() < (babyGaze ? 0.46 : 0.22)
-          ) {
-            window.setTimeout(
-              () => blinkEyes({ doubleBlink: false }),
-              babyGaze ? 80 : 140,
-            );
-          }
-          applyIrisGazePose(
-            () => ({
-              x:
-                sharedX +
-                (Math.random() * (babyGaze ? 1.2 : 0.8) -
-                  (babyGaze ? 0.6 : 0.4)),
-              y:
-                sharedY +
-                (Math.random() * (babyGaze ? 0.75 : 0.5) -
-                  (babyGaze ? 0.38 : 0.25)),
+      t.irises.forEach((l, w) => {
+        if (l.isDragging) return;
+        (l.gazeSettleTimerId &&
+          (window.clearTimeout(l.gazeSettleTimerId), (l.gazeSettleTimerId = 0)),
+          l.gazeStartTimerId &&
+            (window.clearTimeout(l.gazeStartTimerId),
+            (l.gazeStartTimerId = 0)));
+        let m = r(l, w),
+          f = l.gazeOffset || { x: 0, y: 0 },
+          O = (W) => {
+            ((l.gazeOffset = {
+              x: parseFloat(W.x.toFixed(2)),
+              y: parseFloat(W.y.toFixed(2)),
             }),
-            {
-              overshoot: babyGaze ? 0.1 : 0.065,
-              settleMs: babyGaze ? 160 : 200,
-              staggerMs: babyGaze ? 16 : 12,
-            },
-          );
-          state.gazeShiftTimerId = window.setTimeout(() => {
-            applyRestingGaze();
-            if (state.isGazeMode) {
-              scheduleNextGazeShift();
-            } else {
-              state.gazeShiftTimerId = 0;
+              A(l));
+          },
+          D = () => {
+            if (o > 0 && n > 0) {
+              (O({ x: m.x + (m.x - f.x) * o, y: m.y + (m.y - f.y) * o }),
+                E(!1),
+                (l.gazeSettleTimerId = window.setTimeout(() => {
+                  (O(m), (l.gazeSettleTimerId = 0), E(!1));
+                }, n)));
+              return;
             }
-          }, holdDuration);
-        }, delay);
-      };
-      applyRestingGaze();
-      scheduleNextGazeShift();
-    }
-    function startGazeLoop() {
-      startGazeShifts();
-    }
-    function initDraggable(draggable) {
-      let dragging = false;
-      const eye = draggable.closest(".eye");
-      let eyeRect;
-      let centreX;
-      let centreY;
-      let maxOffsetX;
-      let maxOffsetY;
-      function removePointerListeners() {
-        document.removeEventListener("touchmove", onDrag);
-        document.removeEventListener("touchend", endDrag);
-        document.removeEventListener("touchcancel", endDrag);
-        document.removeEventListener("mousemove", onDrag);
-        document.removeEventListener("mouseup", endDrag);
-      }
-      function finishDrag() {
-        dragging = false;
-        draggable.isDragging = false;
-        removePointerListeners();
-      }
-      function startDrag(event) {
-        if (!state.isManualEyeMoveEnabled || state.isTestMode) {
-          return;
-        }
-        event.preventDefault();
-        dragging = true;
-        draggable.isDragging = true;
-        eyeRect = eye.getBoundingClientRect();
-        centreX = eyeRect.left + eyeRect.width / 2;
-        centreY = eyeRect.top + eyeRect.height / 2;
-        maxOffsetX = (eyeRect.width / 2 - draggable.offsetWidth / 2) * 0.8;
-        maxOffsetY = 30 * 0.8;
-        if (event.type === "touchstart") {
-          document.addEventListener("touchmove", onDrag, { passive: false });
-          document.addEventListener("touchend", endDrag);
-          document.addEventListener("touchcancel", endDrag);
-        } else {
-          document.addEventListener("mousemove", onDrag);
-          document.addEventListener("mouseup", endDrag);
-        }
-      }
-      function onDrag(event) {
-        if (!dragging) {
-          return;
-        }
-        if (!state.isManualEyeMoveEnabled || state.isTestMode) {
-          finishDrag();
-          return;
-        }
-        let pointerX;
-        let pointerY;
-        if (event.type === "touchmove") {
-          pointerX = event.touches[0].clientX;
-          pointerY = event.touches[0].clientY;
-        } else {
-          pointerX = event.clientX;
-          pointerY = event.clientY;
-        }
-        let dx = pointerX - centreX;
-        let dy = pointerY - centreY;
-        if (Math.abs(dx) > maxOffsetX) {
-          dx = Math.sign(dx) * maxOffsetX;
-        }
-        if (Math.abs(dy) > maxOffsetY) {
-          dy = Math.sign(dy) * maxOffsetY;
-        }
-        draggable.style.left = `calc(50% + ${dx}px - ${draggable.offsetWidth / 2}px)`;
-        draggable.style.top = `calc(50% + ${dy}px - ${draggable.offsetHeight / 2}px)`;
-        const pupil = draggable.querySelector(".pupil");
-        if (pupil) {
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const maxDistance = Math.sqrt(maxOffsetX ** 2 + maxOffsetY ** 2);
-          const factor = 1 + Math.min(distance / maxDistance, 1);
-          const brightColor = brightenColor(state.baseReflexColor, factor);
-          applyPupilFill(
-            draggable,
-            `rgb(${brightColor.r}, ${brightColor.g}, ${brightColor.b})`,
-          );
-        }
-        notifyEyeGeometryChange();
-      }
-      function endDrag() {
-        finishDrag();
-      }
-      draggable.cancelManualDrag = finishDrag;
-      draggable.addEventListener("mousedown", startDrag);
-      draggable.addEventListener("touchstart", startDrag, { passive: false });
-    }
-    function initPupilSlider(slider) {
-      function updatePupil() {
-        const eyeData = slider.getAttribute("data-eye");
-        const eye = document.querySelector(`.eye[data-eye="${eyeData}"]`);
-        if (!eye) {
-          return;
-        }
-        const pupil = eye.querySelector(".pupil");
-        const newSize = parseInt(slider.value, 10);
-        pupil.dataset.baseSizePx = String(newSize);
-        pupil.style.width = `${newSize}px`;
-        pupil.style.height = `${newSize}px`;
-        pupil.style.left = `calc(50% - ${newSize / 2}px)`;
-        pupil.style.top = `calc(50% - ${newSize / 2}px)`;
-        notifyEyeGeometryChange(false);
-      }
-      function snapToCentre() {
-        const centre = 32;
-        const tolerance = 3;
-        const current = parseInt(slider.value, 10);
-        if (Math.abs(current - centre) <= tolerance) {
-          slider.value = centre;
-          updatePupil();
-        }
-      }
-      slider.addEventListener("input", updatePupil);
-      slider.addEventListener("change", snapToCentre);
-      slider.addEventListener("mouseup", snapToCentre);
-      slider.addEventListener("touchend", snapToCentre);
-      updatePupil();
-    }
-    function initVerticalEyelidSlider() {
-      dom.eyelidSliders.forEach((slider) => {
-        slider.addEventListener("input", () => {
-          const eyeData = slider.getAttribute("data-eye");
-          const eye = document.querySelector(`.eye[data-eye="${eyeData}"]`);
-          if (!eye) {
-            return;
-          }
-          const upperEyelid = eye.querySelector(".upper-eyelid");
-          if (upperEyelid) {
-            const restingHeight = `${slider.value * 1.5}px`;
-            upperEyelid.dataset.restingHeightPx = restingHeight;
-            if (
-              upperEyelid.dataset.isBlinking !== "true" &&
-              !upperEyelid.dataset.gazeLidDroopHeightPx
-            ) {
-              upperEyelid.style.height = restingHeight;
-            }
-          }
-          notifyEyeGeometryChange(false);
-        });
+            (O(m), E(!1));
+          },
+          _ = w * g;
+        _ > 0
+          ? (l.gazeStartTimerId = window.setTimeout(() => {
+              ((l.gazeStartTimerId = 0), D());
+            }, _))
+          : D();
       });
     }
-    function startMicroSaccades() {
-      const saccadeInterval = 2300;
-      const saccadeDuration = 120;
-      dom.irises.forEach((iris) => {
-        iris.microOffset = { x: 0, y: 0 };
-      });
-      state.microSaccadeIntervalId = window.setInterval(() => {
-        const hasLargerShift = state.isGazeMode && Math.random() < 0.18;
-        const horizontalRange = state.isGazeMode
-          ? hasLargerShift
-            ? 4.8
-            : 2.6
-          : 2;
-        const verticalRange = state.isGazeMode
-          ? hasLargerShift
-            ? 2.6
-            : 1.4
-          : 2;
-        const sharedOffsetX =
-          Math.random() * horizontalRange - horizontalRange / 2;
-        const sharedOffsetY = Math.random() * verticalRange - verticalRange / 2;
-        dom.irises.forEach((iris) => {
-          if (!iris.isDragging) {
-            const offsetX = parseFloat(
-              (sharedOffsetX + (Math.random() * 0.28 - 0.14)).toFixed(2),
-            );
-            const offsetY = parseFloat(
-              (sharedOffsetY + (Math.random() * 0.22 - 0.11)).toFixed(2),
-            );
-            iris.microOffset = { x: offsetX, y: offsetY };
-            updateIrisTransform(iris);
-          }
-        });
-        notifyAmbientEyeGeometryChange();
-        setTimeout(() => {
-          dom.irises.forEach((iris) => {
-            if (!iris.isDragging) {
-              iris.microOffset = { x: 0, y: 0 };
-              updateIrisTransform(iris);
-            }
+    function q() {
+      (t.irises.forEach((r) => {
+        ((r.gazeOffset = { x: 0, y: 0 }), A(r));
+      }),
+        d(!1));
+    }
+    function z() {
+      if ((H(), !e.isGazeMode || be())) return;
+      let r = !0,
+        o = () => {
+          let l = Math.random() < 0.5 ? -1 : 1,
+            w = parseFloat((l * (2.2 + Math.random() * 2.2)).toFixed(2)),
+            m = parseFloat((Math.random() * 2.2 - 1.1).toFixed(2));
+          (S({
+            x: l * (0.6 + Math.random() * 0.7),
+            y: Math.random() * 0.8 - 0.2,
+            tilt: l * (0.24 + Math.random() * 0.22),
+          }),
+            R(
+              () => ({
+                x: w + (Math.random() * 0.35 - 0.18),
+                y: m + (Math.random() * 0.25 - 0.13),
+              }),
+              {
+                overshoot: e.isBabyMode ? 0.07 : 0.045,
+                settleMs: e.isBabyMode ? 210 : 250,
+                staggerMs: e.isBabyMode ? 14 : 10,
+              },
+            ));
+        },
+        n = (l, w = 0.18) => {
+          t.eyes.forEach((m) => {
+            let f = m.querySelector(".upper-eyelid");
+            if (!f) return;
+            f.gazeLidDroopTimerId && window.clearTimeout(f.gazeLidDroopTimerId);
+            let O = parseFloat(v(f)) || 0,
+              _ = `${Math.max(O, m.clientHeight * w)}px`;
+            ((f.dataset.gazeLidDroopHeightPx = _),
+              f.dataset.isBlinking !== "true" && (f.style.height = _),
+              (f.gazeLidDroopTimerId = window.setTimeout(() => {
+                (delete f.dataset.gazeLidDroopHeightPx,
+                  (f.gazeLidDroopTimerId = 0),
+                  f.dataset.isBlinking !== "true" && (f.style.height = v(f)));
+              }, l)));
           });
-          notifyAmbientEyeGeometryChange();
-        }, saccadeDuration);
-      }, saccadeInterval);
+        },
+        g = () => {
+          let l = e.isBabyMode,
+            w = r
+              ? 450 + Math.random() * 650
+              : l
+                ? 820 + Math.random() * 850
+                : 1250 + Math.random() * 1150;
+          ((r = !1),
+            (e.gazeShiftTimerId = window.setTimeout(() => {
+              if (!e.isGazeMode) {
+                e.gazeShiftTimerId = 0;
+                return;
+              }
+              let m = Math.random() < (l ? 0.4 : 0.28),
+                f = m
+                  ? l
+                    ? 760 + Math.random() * 760
+                    : 1200 + Math.random() * 850
+                  : l
+                    ? 620 + Math.random() * 640
+                    : 1100 + Math.random() * 800,
+                O = Math.random() < 0.5 ? -1 : 1,
+                D = parseFloat(
+                  m
+                    ? (O * (15 + Math.random() * 6)).toFixed(2)
+                    : (O * (8.5 + Math.random() * 5.5)).toFixed(2),
+                ),
+                _ = parseFloat(
+                  m
+                    ? (7.5 + Math.random() * 4.5).toFixed(2)
+                    : (Math.random() * 7 - 3.5).toFixed(2),
+                ),
+                W =
+                  O *
+                  (m ? 2.4 + Math.random() * 1.2 : 1.4 + Math.random() * 0.9),
+                Y = m
+                  ? 1.8 + Math.random() * 1.1
+                  : Math.max(-0.8, Math.min(1.2, _ * 0.2)),
+                N = Math.random(),
+                ie = m && N < 0.16,
+                ne = m && N < 0.42,
+                re =
+                  O *
+                  (ie
+                    ? 1.02 + Math.random() * 0.34
+                    : ne
+                      ? 1.05 + Math.random() * 0.3
+                      : m
+                        ? 0.76 + Math.random() * 0.34
+                        : 0.44 + Math.random() * 0.28);
+              (S({ x: W, y: Y, tilt: re }),
+                m && n(f, 0.16 + Math.random() * 0.06),
+                m &&
+                  Math.random() < (l ? 0.46 : 0.22) &&
+                  window.setTimeout(
+                    () => ee({ doubleBlink: !1 }),
+                    l ? 80 : 140,
+                  ),
+                R(
+                  () => ({
+                    x: D + (Math.random() * (l ? 1.2 : 0.8) - (l ? 0.6 : 0.4)),
+                    y:
+                      _ +
+                      (Math.random() * (l ? 0.75 : 0.5) - (l ? 0.38 : 0.25)),
+                  }),
+                  {
+                    overshoot: l ? 0.1 : 0.065,
+                    settleMs: l ? 160 : 200,
+                    staggerMs: l ? 16 : 12,
+                  },
+                ),
+                (e.gazeShiftTimerId = window.setTimeout(() => {
+                  (o(), e.isGazeMode ? g() : (e.gazeShiftTimerId = 0));
+                }, f)));
+            }, w)));
+        };
+      (o(), g());
     }
-    function startBackgroundJitter() {
-      dom.irises.forEach((iris) => {
-        iris.backgroundOffset = { x: 0, y: 0 };
-      });
-      const applyBackgroundJitter = () => {
-        dom.irises.forEach((iris) => {
-          if (!iris.isDragging) {
-            const jitterRangeX = state.isGazeMode ? 0.62 : 0.4;
-            const jitterRangeY = state.isGazeMode ? 0.52 : 0.4;
-            const jitterX = parseFloat(
-              (Math.random() * jitterRangeX - jitterRangeX / 2).toFixed(2),
-            );
-            const jitterY = parseFloat(
-              (Math.random() * jitterRangeY - jitterRangeY / 2).toFixed(2),
-            );
-            iris.backgroundOffset = { x: jitterX, y: jitterY };
-            updateIrisTransform(iris);
-          }
-        });
-        notifyAmbientEyeGeometryChange();
-      };
-      const scheduleNextJitter = () => {
-        const jitterInterval = 170 + Math.random() * 95;
-        state.backgroundJitterIntervalId = window.setTimeout(() => {
-          applyBackgroundJitter();
-          scheduleNextJitter();
-        }, jitterInterval);
-      };
-      scheduleNextJitter();
+    function $() {
+      z();
     }
-    function applyNystagmusFrame(timestampMs) {
-      const normalizedLevel =
-        Math.max(0, Math.min(100, state.nystagmusLevel)) / 100;
-      if (normalizedLevel <= 0) {
-        return;
+    function G(r) {
+      let o = !1,
+        n = r.closest(".eye"),
+        g,
+        l,
+        w,
+        m,
+        f;
+      function O() {
+        (document.removeEventListener("touchmove", W),
+          document.removeEventListener("touchend", Y),
+          document.removeEventListener("touchcancel", Y),
+          document.removeEventListener("mousemove", W),
+          document.removeEventListener("mouseup", Y));
       }
-      const amplitudeX = normalizedLevel * 9.5;
-      const amplitudeY = normalizedLevel * 1.3;
-      const frequencyHz = 0.45 + normalizedLevel * 3.9;
-      const phaseBase = (timestampMs / 1e3) * Math.PI * 2 * frequencyHz;
-      let didMove = false;
-      dom.irises.forEach((iris, index) => {
-        if (iris.isDragging) {
+      function D() {
+        ((o = !1), (r.isDragging = !1), O());
+      }
+      function _(N) {
+        !e.isManualEyeMoveEnabled ||
+          e.isTestMode ||
+          (N.preventDefault(),
+          (o = !0),
+          (r.isDragging = !0),
+          (g = n.getBoundingClientRect()),
+          (l = g.left + g.width / 2),
+          (w = g.top + g.height / 2),
+          (m = (g.width / 2 - r.offsetWidth / 2) * 0.8),
+          (f = 30 * 0.8),
+          N.type === "touchstart"
+            ? (document.addEventListener("touchmove", W, { passive: !1 }),
+              document.addEventListener("touchend", Y),
+              document.addEventListener("touchcancel", Y))
+            : (document.addEventListener("mousemove", W),
+              document.addEventListener("mouseup", Y)));
+      }
+      function W(N) {
+        if (!o) return;
+        if (!e.isManualEyeMoveEnabled || e.isTestMode) {
+          D();
           return;
         }
-        const eyePhaseOffset = index * 0.22;
-        const phase = phaseBase + eyePhaseOffset;
-        const fastComponent = Math.sin(phase);
-        const slowComponent = Math.sin(phase * 0.5);
-        const x =
-          amplitudeX *
-          (0.82 * fastComponent +
-            0.18 * Math.sign(fastComponent) * slowComponent);
-        const y = amplitudeY * Math.sin(phase * 2 + 0.8);
-        const previous = iris.nystagmusOffset || { x: 0, y: 0 };
+        let ie, ne;
+        N.type === "touchmove"
+          ? ((ie = N.touches[0].clientX), (ne = N.touches[0].clientY))
+          : ((ie = N.clientX), (ne = N.clientY));
+        let re = ie - l,
+          F = ne - w;
         if (
-          Math.abs(previous.x - x) > 0.02 ||
-          Math.abs(previous.y - y) > 0.02
+          (Math.abs(re) > m && (re = Math.sign(re) * m),
+          Math.abs(F) > f && (F = Math.sign(F) * f),
+          (r.style.left = `calc(50% + ${re}px - ${r.offsetWidth / 2}px)`),
+          (r.style.top = `calc(50% + ${F}px - ${r.offsetHeight / 2}px)`),
+          r.querySelector(".pupil"))
         ) {
-          iris.nystagmusOffset = {
-            x: parseFloat(x.toFixed(2)),
-            y: parseFloat(y.toFixed(2)),
-          };
-          updateIrisTransform(iris);
-          didMove = true;
+          let ce = Math.sqrt(re * re + F * F),
+            V = Math.sqrt(m ** 2 + f ** 2),
+            se = 1 + Math.min(ce / V, 1),
+            de = rt(e.baseReflexColor, se);
+          i(r, `rgb(${de.r}, ${de.g}, ${de.b})`);
         }
-      });
-      if (didMove) {
-        notifyEyeGeometryChange(false);
+        d();
       }
+      function Y() {
+        D();
+      }
+      ((r.cancelManualDrag = D),
+        r.addEventListener("mousedown", _),
+        r.addEventListener("touchstart", _, { passive: !1 }));
     }
-    function startNystagmusLoop() {
-      if (state.nystagmusRafId) {
-        return;
+    function j(r) {
+      function o() {
+        let g = r.getAttribute("data-eye"),
+          l = document.querySelector(`.eye[data-eye="${g}"]`);
+        if (!l) return;
+        let w = l.querySelector(".pupil"),
+          m = parseInt(r.value, 10);
+        ((w.dataset.baseSizePx = String(m)),
+          (w.style.width = `${m}px`),
+          (w.style.height = `${m}px`),
+          (w.style.left = `calc(50% - ${m / 2}px)`),
+          (w.style.top = `calc(50% - ${m / 2}px)`),
+          d(!1));
       }
-      const loop = (timestampMs) => {
-        applyNystagmusFrame(timestampMs);
-        if (state.nystagmusLevel > 0) {
-          state.nystagmusRafId = requestAnimationFrame(loop);
-        } else {
-          state.nystagmusRafId = 0;
-        }
+      function n() {
+        let w = parseInt(r.value, 10);
+        Math.abs(w - 32) <= 3 && ((r.value = 32), o());
+      }
+      (r.addEventListener("input", o),
+        r.addEventListener("change", n),
+        r.addEventListener("mouseup", n),
+        r.addEventListener("touchend", n),
+        o());
+    }
+    function X() {
+      t.eyelidSliders.forEach((r) => {
+        r.addEventListener("input", () => {
+          let o = r.getAttribute("data-eye"),
+            n = document.querySelector(`.eye[data-eye="${o}"]`);
+          if (!n) return;
+          let g = n.querySelector(".upper-eyelid");
+          if (g) {
+            let l = `${r.value * 1.5}px`;
+            ((g.dataset.restingHeightPx = l),
+              g.dataset.isBlinking !== "true" &&
+                !g.dataset.gazeLidDroopHeightPx &&
+                (g.style.height = l));
+          }
+          d(!1);
+        });
+      });
+    }
+    function te() {
+      (t.irises.forEach((n) => {
+        n.microOffset = { x: 0, y: 0 };
+      }),
+        (e.microSaccadeIntervalId = window.setInterval(() => {
+          let n = e.isGazeMode && Math.random() < 0.18,
+            g = e.isGazeMode ? (n ? 4.8 : 2.6) : 2,
+            l = e.isGazeMode ? (n ? 2.6 : 1.4) : 2,
+            w = Math.random() * g - g / 2,
+            m = Math.random() * l - l / 2;
+          (t.irises.forEach((f) => {
+            if (!f.isDragging) {
+              let O = parseFloat(
+                  (w + (Math.random() * 0.28 - 0.14)).toFixed(2),
+                ),
+                D = parseFloat((m + (Math.random() * 0.22 - 0.11)).toFixed(2));
+              ((f.microOffset = { x: O, y: D }), A(f));
+            }
+          }),
+            E(),
+            setTimeout(() => {
+              (t.irises.forEach((f) => {
+                f.isDragging || ((f.microOffset = { x: 0, y: 0 }), A(f));
+              }),
+                E());
+            }, 120));
+        }, 2300)));
+    }
+    function Z() {
+      t.irises.forEach((n) => {
+        n.backgroundOffset = { x: 0, y: 0 };
+      });
+      let r = () => {
+          (t.irises.forEach((n) => {
+            if (!n.isDragging) {
+              let g = e.isGazeMode ? 0.62 : 0.4,
+                l = e.isGazeMode ? 0.52 : 0.4,
+                w = parseFloat((Math.random() * g - g / 2).toFixed(2)),
+                m = parseFloat((Math.random() * l - l / 2).toFixed(2));
+              ((n.backgroundOffset = { x: w, y: m }), A(n));
+            }
+          }),
+            E());
+        },
+        o = () => {
+          let n = 170 + Math.random() * 95;
+          e.backgroundJitterIntervalId = window.setTimeout(() => {
+            (r(), o());
+          }, n);
+        };
+      o();
+    }
+    function U(r) {
+      let o = Math.max(0, Math.min(100, e.nystagmusLevel)) / 100;
+      if (o <= 0) return;
+      let n = o * 9.5,
+        g = o * 1.3,
+        l = 0.45 + o * 3.9,
+        w = (r / 1e3) * Math.PI * 2 * l,
+        m = !1;
+      (t.irises.forEach((f, O) => {
+        if (f.isDragging) return;
+        let D = O * 0.22,
+          _ = w + D,
+          W = Math.sin(_),
+          Y = Math.sin(_ * 0.5),
+          N = n * (0.82 * W + 0.18 * Math.sign(W) * Y),
+          ie = g * Math.sin(_ * 2 + 0.8),
+          ne = f.nystagmusOffset || { x: 0, y: 0 };
+        (Math.abs(ne.x - N) > 0.02 || Math.abs(ne.y - ie) > 0.02) &&
+          ((f.nystagmusOffset = {
+            x: parseFloat(N.toFixed(2)),
+            y: parseFloat(ie.toFixed(2)),
+          }),
+          A(f),
+          (m = !0));
+      }),
+        m && d(!1));
+    }
+    function Q() {
+      if (e.nystagmusRafId) return;
+      let r = (o) => {
+        (U(o),
+          e.nystagmusLevel > 0
+            ? (e.nystagmusRafId = requestAnimationFrame(r))
+            : (e.nystagmusRafId = 0));
       };
-      state.nystagmusRafId = requestAnimationFrame(loop);
+      e.nystagmusRafId = requestAnimationFrame(r);
     }
-    function blinkEyes({ doubleBlink = false } = {}) {
-      state.lastBlinkAtMs = performance.now();
-      const isBabyBlink = Boolean(state.isBabyMode && state.isGazeMode);
-      const isLongBabyBlink = isBabyBlink && Math.random() < 0.26;
-      const closeTransition = isBabyBlink
-        ? `height ${isLongBabyBlink ? 0.34 : 0.28}s ease-in`
-        : "";
-      const openTransition = isBabyBlink
-        ? `height ${isLongBabyBlink ? 0.38 : 0.3}s ease-out`
-        : "";
-      const blinkHoldMs = isLongBabyBlink
-        ? 560 + Math.random() * 520
-        : isBabyBlink
-          ? 190 + Math.random() * 130
-          : 115;
-      dom.eyes.forEach((eye) => {
-        const upperEyelid = eye.querySelector(".upper-eyelid");
-        const lowerEyelid = eye.querySelector(".lower-eyelid");
-        if (upperEyelid) {
-          if (upperEyelid.blinkTimerId) {
-            window.clearTimeout(upperEyelid.blinkTimerId);
-          }
-          upperEyelid.dataset.isBlinking = "true";
-          upperEyelid.style.transition = closeTransition;
-          upperEyelid.style.height = `${eye.clientHeight * 0.7}px`;
-        }
-        if (lowerEyelid) {
-          if (lowerEyelid.blinkTimerId) {
-            window.clearTimeout(lowerEyelid.blinkTimerId);
-          }
-          lowerEyelid.style.transition = closeTransition;
-          lowerEyelid.style.height = `${eye.clientHeight * 0.3}px`;
-        }
-        const blinkRestoreTimerId = window.setTimeout(() => {
-          if (upperEyelid) {
-            delete upperEyelid.dataset.isBlinking;
-            upperEyelid.blinkTimerId = 0;
-            upperEyelid.style.transition = openTransition;
-            upperEyelid.style.height = getActiveUpperLidHeight(upperEyelid);
+    function ee({ doubleBlink: r = !1 } = {}) {
+      e.lastBlinkAtMs = performance.now();
+      let o = !!(e.isBabyMode && e.isGazeMode),
+        n = o && Math.random() < 0.26,
+        g = o ? `height ${n ? 0.34 : 0.28}s ease-in` : "",
+        l = o ? `height ${n ? 0.38 : 0.3}s ease-out` : "",
+        w = n ? 560 + Math.random() * 520 : o ? 190 + Math.random() * 130 : 115;
+      (t.eyes.forEach((m) => {
+        let f = m.querySelector(".upper-eyelid"),
+          O = m.querySelector(".lower-eyelid");
+        (f &&
+          (f.blinkTimerId && window.clearTimeout(f.blinkTimerId),
+          (f.dataset.isBlinking = "true"),
+          (f.style.transition = g),
+          (f.style.height = `${m.clientHeight * 0.7}px`)),
+          O &&
+            (O.blinkTimerId && window.clearTimeout(O.blinkTimerId),
+            (O.style.transition = g),
+            (O.style.height = `${m.clientHeight * 0.3}px`)));
+        let D = window.setTimeout(() => {
+          (f &&
+            (delete f.dataset.isBlinking,
+            (f.blinkTimerId = 0),
+            (f.style.transition = l),
+            (f.style.height = h(f)),
             window.setTimeout(
               () => {
-                if (upperEyelid.dataset.isBlinking !== "true") {
-                  upperEyelid.style.transition = "";
-                }
+                f.dataset.isBlinking !== "true" && (f.style.transition = "");
               },
-              isBabyBlink ? 440 : 0,
-            );
-          }
-          if (lowerEyelid) {
-            lowerEyelid.blinkTimerId = 0;
-            lowerEyelid.style.transition = openTransition;
-            lowerEyelid.style.height = "0px";
-            window.setTimeout(
-              () => {
-                if (!lowerEyelid.blinkTimerId) {
-                  lowerEyelid.style.transition = "";
-                }
-              },
-              isBabyBlink ? 440 : 0,
-            );
-          }
-        }, blinkHoldMs);
-        if (upperEyelid) {
-          upperEyelid.blinkTimerId = blinkRestoreTimerId;
+              o ? 440 : 0,
+            )),
+            O &&
+              ((O.blinkTimerId = 0),
+              (O.style.transition = l),
+              (O.style.height = "0px"),
+              window.setTimeout(
+                () => {
+                  O.blinkTimerId || (O.style.transition = "");
+                },
+                o ? 440 : 0,
+              )));
+        }, w);
+        (f && (f.blinkTimerId = D), O && (O.blinkTimerId = D));
+      }),
+        r &&
+          !n &&
+          window.setTimeout(() => ee({ doubleBlink: !1 }), o ? 320 : 210));
+    }
+    function ae() {
+      let r = e.isBabyMode && e.isGazeMode,
+        o = r ? 2800 + Math.random() * 3200 : 4200 + Math.random() * 3300;
+      e.blinkIntervalId = window.setTimeout(() => {
+        (ee({ doubleBlink: Math.random() < (r ? 0.1 : 0.14) }), ae());
+      }, o);
+    }
+    function K() {
+      (e.blinkIntervalId &&
+        (window.clearTimeout(e.blinkIntervalId), (e.blinkIntervalId = 0)),
+        be() || ae());
+    }
+    function le() {
+      be() ||
+        (e.microSaccadeIntervalId || te(),
+        e.backgroundJitterIntervalId || Z(),
+        e.blinkIntervalId || ae(),
+        e.nystagmusLevel > 0 && Q(),
+        e.isGazeMode && !e.gazeShiftTimerId && $());
+    }
+    function oe(r) {
+      (t.irises.forEach((o) => {
+        i(o, r);
+      }),
+        x());
+    }
+    function ge(r) {
+      let o = Number.isFinite(r) ? r : parseInt(r, 10);
+      Number.isNaN(o) ||
+        ((e.cataractLevel = Math.max(0, Math.min(100, o))), x());
+    }
+    function T(r) {
+      let o = Number.isFinite(r) ? r : parseInt(r, 10);
+      if (
+        !Number.isNaN(o) &&
+        ((e.nystagmusLevel = Math.max(0, Math.min(100, o))),
+        e.nystagmusLevel > 0 && (Q(), d(!1)),
+        e.nystagmusLevel === 0)
+      ) {
+        let n = !1;
+        (t.irises.forEach((g) => {
+          let l = g.nystagmusOffset || { x: 0, y: 0 };
+          (Math.abs(l.x) > 0.02 || Math.abs(l.y) > 0.02) &&
+            ((g.nystagmusOffset = { x: 0, y: 0 }), A(g), (n = !0));
+        }),
+          n && d(!0));
+      }
+    }
+    function B(r) {
+      ((e.isManualEyeMoveEnabled = !!r),
+        (!e.isManualEyeMoveEnabled || e.isTestMode) &&
+          t.irises.forEach((o) => {
+            typeof o.cancelManualDrag == "function" && o.cancelManualDrag();
+          }),
+        c());
+    }
+    function s(r) {
+      let o = !!r;
+      if (o !== e.isGazeMode) {
+        if (((e.isGazeMode = o), I(), K(), o)) {
+          z();
+          return;
         }
-        if (lowerEyelid) {
-          lowerEyelid.blinkTimerId = blinkRestoreTimerId;
-        }
-      });
-      if (doubleBlink && !isLongBabyBlink) {
-        window.setTimeout(
-          () => blinkEyes({ doubleBlink: false }),
-          isBabyBlink ? 320 : 210,
-        );
+        (H(), C(), p(), q());
       }
     }
-    function scheduleNextBlink() {
-      const usesBabyGazeBlink = state.isBabyMode && state.isGazeMode;
-      const nextBlinkDelay = usesBabyGazeBlink
-        ? 2800 + Math.random() * 3200
-        : 4200 + Math.random() * 3300;
-      state.blinkIntervalId = window.setTimeout(() => {
-        blinkEyes({
-          doubleBlink: Math.random() < (usesBabyGazeBlink ? 0.1 : 0.14),
-        });
-        scheduleNextBlink();
-      }, nextBlinkDelay);
+    function y(r) {
+      let o = !!r;
+      o !== e.isDilatedMode &&
+        (o
+          ? ((e.dilatedPreviousPupilValues = t.pupilSizeSliders.map(
+              (n) => n.value,
+            )),
+            k([44, 44]))
+          : e.dilatedPreviousPupilValues
+            ? (k(e.dilatedPreviousPupilValues),
+              (e.dilatedPreviousPupilValues = null))
+            : k([32, 32]),
+        (e.isDilatedMode = o),
+        d(!1));
     }
-    function resetBlinkSchedule() {
-      if (state.blinkIntervalId) {
-        window.clearTimeout(state.blinkIntervalId);
-        state.blinkIntervalId = 0;
-      }
-      if (!prefersReducedMotion()) {
-        scheduleNextBlink();
-      }
+    function M(r) {
+      let o = !!r,
+        n = e.isBabyMode;
+      ((e.isBabyMode = o),
+        t.eyesWrapper &&
+          t.eyesWrapper.classList.toggle("is-baby-mode", e.isBabyMode),
+        n !== o && (I(), K()),
+        d(!0));
     }
-    function startAmbientAnimations() {
-      if (prefersReducedMotion()) {
-        return;
-      }
-      if (!state.microSaccadeIntervalId) {
-        startMicroSaccades();
-      }
-      if (!state.backgroundJitterIntervalId) {
-        startBackgroundJitter();
-      }
-      if (!state.blinkIntervalId) {
-        scheduleNextBlink();
-      }
-      if (state.nystagmusLevel > 0) {
-        startNystagmusLoop();
-      }
-      if (state.isGazeMode && !state.gazeShiftTimerId) {
-        startGazeLoop();
-      }
-    }
-    function applyReflexColor(color) {
-      dom.irises.forEach((iris) => {
-        applyPupilFill(iris, color);
-      });
-      applyCataractToPupils();
-    }
-    function setCataractLevel(value) {
-      const parsed = Number.isFinite(value) ? value : parseInt(value, 10);
-      if (Number.isNaN(parsed)) {
-        return;
-      }
-      state.cataractLevel = Math.max(0, Math.min(100, parsed));
-      applyCataractToPupils();
-    }
-    function setNystagmusLevel(value) {
-      const parsed = Number.isFinite(value) ? value : parseInt(value, 10);
-      if (Number.isNaN(parsed)) {
-        return;
-      }
-      state.nystagmusLevel = Math.max(0, Math.min(100, parsed));
-      if (state.nystagmusLevel > 0) {
-        startNystagmusLoop();
-        notifyEyeGeometryChange(false);
-      }
-      if (state.nystagmusLevel === 0) {
-        let resetNeeded = false;
-        dom.irises.forEach((iris) => {
-          const previous = iris.nystagmusOffset || { x: 0, y: 0 };
-          if (Math.abs(previous.x) > 0.02 || Math.abs(previous.y) > 0.02) {
-            iris.nystagmusOffset = { x: 0, y: 0 };
-            updateIrisTransform(iris);
-            resetNeeded = true;
-          }
-        });
-        if (resetNeeded) {
-          notifyEyeGeometryChange(true);
-        }
-      }
-    }
-    function setManualEyeMoveEnabled(isEnabled) {
-      state.isManualEyeMoveEnabled = Boolean(isEnabled);
-      if (!state.isManualEyeMoveEnabled || state.isTestMode) {
-        dom.irises.forEach((iris) => {
-          if (typeof iris.cancelManualDrag === "function") {
-            iris.cancelManualDrag();
-          }
-        });
-      }
-      applyManualEyeMoveState();
-    }
-    function setGazeMode(isEnabled) {
-      const nextEnabled = Boolean(isEnabled);
-      if (nextEnabled === state.isGazeMode) {
-        return;
-      }
-      state.isGazeMode = nextEnabled;
-      resetBlinkLids();
-      resetBlinkSchedule();
-      if (nextEnabled) {
-        startGazeShifts();
-        return;
-      }
-      clearGazeTimers();
-      resetTemporaryGazeLids();
-      resetGazeFacePose();
-      resetGazeOffset();
-    }
-    function setDilatedMode(isEnabled) {
-      const nextEnabled = Boolean(isEnabled);
-      if (nextEnabled === state.isDilatedMode) {
-        return;
-      }
-      if (nextEnabled) {
-        state.dilatedPreviousPupilValues = dom.pupilSizeSliders.map(
-          (slider) => slider.value,
-        );
-        setPupilSliderValues([44, 44]);
-      } else if (state.dilatedPreviousPupilValues) {
-        setPupilSliderValues(state.dilatedPreviousPupilValues);
-        state.dilatedPreviousPupilValues = null;
-      } else {
-        setPupilSliderValues([32, 32]);
-      }
-      state.isDilatedMode = nextEnabled;
-      notifyEyeGeometryChange(false);
-    }
-    function setBabyMode(isEnabled) {
-      const nextEnabled = Boolean(isEnabled);
-      const previousEnabled = state.isBabyMode;
-      state.isBabyMode = nextEnabled;
-      if (dom.eyesWrapper) {
-        dom.eyesWrapper.classList.toggle("is-baby-mode", state.isBabyMode);
-      }
-      if (previousEnabled !== nextEnabled) {
-        resetBlinkLids();
-        resetBlinkSchedule();
-      }
-      notifyEyeGeometryChange(true);
-    }
-    function init() {
-      dom.irises.forEach((iris) => {
-        iris.nystagmusOffset = { x: 0, y: 0 };
-        iris.gazeOffset = { x: 0, y: 0 };
-        iris.microOffset = { x: 0, y: 0 };
-        iris.backgroundOffset = { x: 0, y: 0 };
-      });
-      dom.irises.forEach(initDraggable);
-      dom.pupilSizeSliders.forEach(initPupilSlider);
-      initVerticalEyelidSlider();
-      applyCataractToPupils();
-      applyManualEyeMoveState();
-      if (dom.eyesWrapper) {
-        dom.eyesWrapper.classList.toggle("is-baby-mode", state.isBabyMode);
-      }
+    function P() {
+      (t.irises.forEach((r) => {
+        ((r.nystagmusOffset = { x: 0, y: 0 }),
+          (r.gazeOffset = { x: 0, y: 0 }),
+          (r.microOffset = { x: 0, y: 0 }),
+          (r.backgroundOffset = { x: 0, y: 0 }));
+      }),
+        t.irises.forEach(G),
+        t.pupilSizeSliders.forEach(j),
+        X(),
+        x(),
+        c(),
+        t.eyesWrapper &&
+          t.eyesWrapper.classList.toggle("is-baby-mode", e.isBabyMode));
     }
     return {
-      init,
-      applyReflexColor,
-      setCataractLevel,
-      setBabyMode,
-      setDilatedMode,
-      setGazeMode,
-      setManualEyeMoveEnabled,
-      setNystagmusLevel,
-      startAmbientAnimations,
+      init: P,
+      applyReflexColor: oe,
+      setCataractLevel: ge,
+      setBabyMode: M,
+      setDilatedMode: y,
+      setGazeMode: s,
+      setManualEyeMoveEnabled: B,
+      setNystagmusLevel: T,
+      startAmbientAnimations: le,
     };
   }
-
-  // src/modal.js
-  var FOCUSABLE_SELECTOR = [
+  var va = [
     "button:not([disabled])",
     "[href]",
     "input:not([disabled])",
@@ -1760,738 +1886,632 @@
     "textarea:not([disabled])",
     '[tabindex]:not([tabindex="-1"])',
   ].join(", ");
-  function setBodyModalLock(body, shouldLock) {
-    if (!body) {
-      return;
-    }
-    const currentCount = parseInt(body.dataset.openModalCount || "0", 10);
-    const nextCount = Math.max(0, currentCount + (shouldLock ? 1 : -1));
-    body.dataset.openModalCount = String(nextCount);
-    body.classList.toggle("modal-open", nextCount > 0);
+  function yt(e, t) {
+    if (!e) return;
+    let a = parseInt(e.dataset.openModalCount || "0", 10),
+      i = Math.max(0, a + (t ? 1 : -1));
+    ((e.dataset.openModalCount = String(i)),
+      e.classList.toggle("modal-open", i > 0));
   }
-  function getFocusableElements(container) {
-    if (!container) {
-      return [];
-    }
-    return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
-      (element) =>
-        element instanceof HTMLElement &&
-        element.getAttribute("aria-hidden") !== "true" &&
-        element.getClientRects().length > 0,
-    );
+  function xt(e) {
+    return e
+      ? Array.from(e.querySelectorAll(va)).filter(
+          (t) =>
+            t instanceof HTMLElement &&
+            t.getAttribute("aria-hidden") !== "true" &&
+            t.getClientRects().length > 0,
+        )
+      : [];
   }
-  function createModalController({
-    body,
-    modal,
-    focusRoot,
-    initialFocusElement,
+  function pe({
+    body: e,
+    modal: t,
+    focusRoot: a,
+    initialFocusElement: i,
+    onAfterClose: c,
+    onAfterOpen: u,
   }) {
-    if (!modal) {
+    if (!t)
       return {
         close() {},
         isOpen() {
-          return false;
+          return !1;
         },
         open() {},
         toggle() {},
       };
+    a && !a.hasAttribute("tabindex") && a.setAttribute("tabindex", "-1");
+    let x = !1,
+      d = null;
+    function E() {
+      let h = xt(a || t),
+        C = a || t,
+        I = i || h[0] || C;
+      I instanceof HTMLElement && I.focus();
     }
-    if (focusRoot && !focusRoot.hasAttribute("tabindex")) {
-      focusRoot.setAttribute("tabindex", "-1");
+    function S({ restoreFocus: h = !0 } = {}) {
+      x &&
+        ((x = !1),
+        (t.style.display = "none"),
+        t.setAttribute("aria-hidden", "true"),
+        yt(e, !1),
+        typeof c == "function" && c(),
+        h && d instanceof HTMLElement && document.contains(d) && d.focus());
     }
-    let isModalOpen = false;
-    let lastFocusedElement = null;
-    function focusInitialTarget() {
-      const focusableElements = getFocusableElements(focusRoot || modal);
-      const fallbackTarget = focusRoot || modal;
-      const target =
-        initialFocusElement || focusableElements[0] || fallbackTarget;
-      if (target instanceof HTMLElement) {
-        target.focus();
-      }
+    function p({ triggerElement: h } = {}) {
+      x ||
+        ((d =
+          h instanceof HTMLElement
+            ? h
+            : document.activeElement instanceof HTMLElement
+              ? document.activeElement
+              : null),
+        (x = !0),
+        (t.style.display = "block"),
+        t.setAttribute("aria-hidden", "false"),
+        yt(e, !0),
+        typeof u == "function" && u(),
+        requestAnimationFrame(() => {
+          E();
+        }));
     }
-    function close({ restoreFocus = true } = {}) {
-      if (!isModalOpen) {
+    function v({ triggerElement: h } = {}) {
+      if (x) {
+        S();
         return;
       }
-      isModalOpen = false;
-      modal.style.display = "none";
-      modal.setAttribute("aria-hidden", "true");
-      setBodyModalLock(body, false);
-      if (
-        restoreFocus &&
-        lastFocusedElement instanceof HTMLElement &&
-        document.contains(lastFocusedElement)
-      ) {
-        lastFocusedElement.focus();
-      }
+      p({ triggerElement: h });
     }
-    function open({ triggerElement } = {}) {
-      if (isModalOpen) {
-        return;
-      }
-      lastFocusedElement =
-        triggerElement instanceof HTMLElement
-          ? triggerElement
-          : document.activeElement instanceof HTMLElement
-            ? document.activeElement
-            : null;
-      isModalOpen = true;
-      modal.style.display = "block";
-      modal.setAttribute("aria-hidden", "false");
-      setBodyModalLock(body, true);
-      requestAnimationFrame(() => {
-        focusInitialTarget();
-      });
-    }
-    function toggle({ triggerElement } = {}) {
-      if (isModalOpen) {
-        close();
-        return;
-      }
-      open({ triggerElement });
-    }
-    modal.addEventListener("keydown", (event) => {
-      if (!isModalOpen) {
-        return;
-      }
-      if (event.key === "Escape") {
-        event.preventDefault();
-        close();
-        return;
-      }
-      if (event.key !== "Tab") {
-        return;
-      }
-      const focusableElements = getFocusableElements(focusRoot || modal);
-      const fallbackTarget = focusRoot || modal;
-      if (!focusableElements.length) {
-        event.preventDefault();
-        if (fallbackTarget instanceof HTMLElement) {
-          fallbackTarget.focus();
+    return (
+      t.addEventListener("keydown", (h) => {
+        if (!x) return;
+        if (h.key === "Escape") {
+          (h.preventDefault(), S());
+          return;
         }
-        return;
+        if (h.key !== "Tab") return;
+        let C = xt(a || t),
+          I = a || t;
+        if (!C.length) {
+          (h.preventDefault(), I instanceof HTMLElement && I.focus());
+          return;
+        }
+        let A = C[0],
+          b = C[C.length - 1],
+          k = document.activeElement;
+        if (h.shiftKey && k === A) {
+          (h.preventDefault(), b.focus());
+          return;
+        }
+        !h.shiftKey && k === b && (h.preventDefault(), A.focus());
+      }),
+      {
+        close: S,
+        isOpen() {
+          return x;
+        },
+        open: p,
+        toggle: v,
       }
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-      const activeElement = document.activeElement;
-      if (event.shiftKey && activeElement === firstElement) {
-        event.preventDefault();
-        lastElement.focus();
-        return;
+    );
+  }
+  function vt(e) {
+    let {
+      body: t,
+      infoIcon: a,
+      infoModal: i,
+      infoModalContent: c,
+      closeModal: u,
+    } = e;
+    if (!t || !a || !i || !c || !u) return;
+    let x = pe({ body: t, focusRoot: c, initialFocusElement: u, modal: i });
+    (a.addEventListener("click", () => {
+      (x.toggle({ triggerElement: a }),
+        a.setAttribute("aria-expanded", String(x.isOpen())));
+    }),
+      u.addEventListener("click", () => {
+        (x.close(), a.setAttribute("aria-expanded", "false"));
+      }),
+      i.addEventListener("click", (d) => {
+        d.target === i && (x.close(), a.setAttribute("aria-expanded", "false"));
+      }),
+      i.addEventListener("keydown", (d) => {
+        d.key === "Escape" && a.setAttribute("aria-expanded", "false");
+      }));
+  }
+  function St(e) {
+    return e
+      .map((t) => ({ item: t, sortKey: Math.random() }))
+      .sort((t, a) => t.sortKey - a.sortKey)
+      .map((t) => t.item);
+  }
+  function Sa(e) {
+    let t = e.options[e.answer],
+      a = St(e.options);
+    return { ...e, options: a, answer: a.indexOf(t) };
+  }
+  function Et(e, t = 5) {
+    let a = pt[e] || [],
+      i = St(a);
+    return i.slice(0, Math.min(t, i.length)).map(Sa);
+  }
+  function Ct(e, t) {
+    if (!e) return;
+    let a = document.createDocumentFragment();
+    (t.forEach((i, c) => {
+      let u = document.createElement("fieldset");
+      ((u.className = "question"), (u.dataset.questionId = i.id));
+      let x = document.createElement("legend");
+      ((x.textContent = `${c + 1}. ${i.question}`), u.appendChild(x));
+      let d = document.createElement("div");
+      ((d.className = "options"),
+        i.options.forEach((h, C) => {
+          let I = document.createElement("label"),
+            A = document.createElement("input");
+          ((A.type = "radio"),
+            (A.name = `mcq_q_${c}`),
+            (A.value = String(C)),
+            I.append(A, document.createTextNode(` ${h}`)),
+            d.appendChild(I));
+        }),
+        u.appendChild(d));
+      let E = document.createElement("div");
+      ((E.className = "mcq-item-review"), (E.hidden = !0));
+      let S = document.createElement("p");
+      ((S.className = "mcq-item-feedback"),
+        (S.textContent = `Why: ${i.explanation}`));
+      let p = document.createElement("p");
+      p.className = "mcq-item-source";
+      let v = De[i.source];
+      ((p.textContent = `Source: ${(v == null ? void 0 : v.label) || i.source}. Status: ${i.reviewStatus}.`),
+        E.append(S, p),
+        u.appendChild(E),
+        a.appendChild(u));
+    }),
+      e.replaceChildren(a));
+  }
+  function Mt(e) {
+    let t = [];
+    for (let a = 0; a < e.length; a += 1) {
+      let i = document.querySelector(`input[name="mcq_q_${a}"]:checked`);
+      if (!i) return null;
+      t.push(parseInt(i.value, 10));
+    }
+    return t;
+  }
+  function wt(e, t) {
+    let a = 0;
+    return (
+      e.forEach((i, c) => {
+        t[c] === i.answer && (a += 1);
+      }),
+      a
+    );
+  }
+  function At(e, t, a) {
+    if (!e || !Array.isArray(t) || !Array.isArray(a)) return;
+    Array.from(e.querySelectorAll("fieldset.question")).forEach((c, u) => {
+      var v;
+      let x = Array.from(c.querySelectorAll(".options label"));
+      x.forEach((h) => {
+        h.classList.remove("correct-answer-label", "wrong-answer-label");
+      });
+      let d = (v = t[u]) == null ? void 0 : v.answer,
+        E = a[u],
+        S = x[d];
+      if (
+        (S && S.classList.add("correct-answer-label"),
+        Number.isInteger(E) && E !== d)
+      ) {
+        let h = x[E];
+        h && h.classList.add("wrong-answer-label");
       }
-      if (!event.shiftKey && activeElement === lastElement) {
-        event.preventDefault();
-        firstElement.focus();
-      }
+      c.querySelectorAll("input[type='radio']").forEach((h) => {
+        h.disabled = !0;
+      });
+      let p = c.querySelector(".mcq-item-review");
+      p && (p.hidden = !1);
     });
-    return {
-      close,
-      isOpen() {
-        return isModalOpen;
+  }
+  function Tt({ state: e, dom: t, onBeforeOpenMcq: a }) {
+    let {
+      body: i,
+      burgerIcon: c,
+      sideMenu: u,
+      mcqModal: x,
+      mcqModalContent: d,
+      closeMcqModalButton: E,
+      mcqTitle: S,
+      mcqIntro: p,
+      mcqContainer: v,
+      submitMcqButton: h,
+      mcqResult: C,
+      mcqLevelButtons: I,
+    } = t;
+    if (!i || !c || !u || !x || !d || !E || !S || !p || !v || !h || !C) return;
+    let A = (R) => {
+        var q;
+        (u.classList.toggle("open", R),
+          u.setAttribute("aria-hidden", String(!R)),
+          R
+            ? (u.removeAttribute("inert"),
+              (q = u.querySelector("button:not([disabled])")) == null ||
+                q.focus({ preventScroll: !0 }))
+            : u.setAttribute("inert", ""),
+          c.setAttribute("aria-expanded", String(R)),
+          c.setAttribute("aria-label", R ? "Close menu" : "Open menu"));
       },
-      open,
-      toggle,
-    };
-  }
-
-  // src/info-modal.js
-  function initInfoModal(dom) {
-    const { body, infoIcon, infoModal, infoModalContent, closeModal } = dom;
-    if (!body || !infoIcon || !infoModal || !infoModalContent || !closeModal) {
-      return;
-    }
-    const infoModalController = createModalController({
-      body,
-      focusRoot: infoModalContent,
-      initialFocusElement: closeModal,
-      modal: infoModal,
-    });
-    infoIcon.addEventListener("click", () => {
-      infoModalController.toggle({ triggerElement: infoIcon });
-      infoIcon.setAttribute(
-        "aria-expanded",
-        String(infoModalController.isOpen()),
-      );
-    });
-    closeModal.addEventListener("click", () => {
-      infoModalController.close();
-      infoIcon.setAttribute("aria-expanded", "false");
-    });
-    infoModal.addEventListener("click", (event) => {
-      if (event.target === infoModal) {
-        infoModalController.close();
-        infoIcon.setAttribute("aria-expanded", "false");
-      }
-    });
-    infoModal.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        infoIcon.setAttribute("aria-expanded", "false");
-      }
-    });
-  }
-
-  // src/mcq.js
-  function shuffledCopy(items) {
-    return items
-      .map((item) => ({ item, sortKey: Math.random() }))
-      .sort((a, b) => a.sortKey - b.sortKey)
-      .map((entry) => entry.item);
-  }
-  function shuffleQuestionOptions(question) {
-    const correctOption = question.options[question.answer];
-    const options = shuffledCopy(question.options);
-    return {
-      ...question,
-      options,
-      answer: options.indexOf(correctOption),
-    };
-  }
-  function sampleQuestions(level, count = 5) {
-    const source = MCQ_BANK[level] || [];
-    const shuffled = shuffledCopy(source);
-    return shuffled
-      .slice(0, Math.min(count, shuffled.length))
-      .map(shuffleQuestionOptions);
-  }
-  function renderMcqQuestions(container, questions) {
-    if (!container) {
-      return;
-    }
-    const fragment = document.createDocumentFragment();
-    questions.forEach((question, questionIndex) => {
-      const fieldset = document.createElement("fieldset");
-      fieldset.className = "question";
-      const legend = document.createElement("legend");
-      legend.textContent = `${questionIndex + 1}. ${question.question}`;
-      fieldset.appendChild(legend);
-      const options = document.createElement("div");
-      options.className = "options";
-      question.options.forEach((option, optionIndex) => {
-        const label = document.createElement("label");
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = `mcq_q_${questionIndex}`;
-        input.value = String(optionIndex);
-        label.append(input, document.createTextNode(` ${option}`));
-        options.appendChild(label);
-      });
-      fieldset.appendChild(options);
-      fragment.appendChild(fieldset);
-    });
-    container.replaceChildren(fragment);
-  }
-  function getMcqAnswers(questions) {
-    const answers = [];
-    for (let i = 0; i < questions.length; i += 1) {
-      const selected = document.querySelector(
-        `input[name="mcq_q_${i}"]:checked`,
-      );
-      if (!selected) {
-        return null;
-      }
-      answers.push(parseInt(selected.value, 10));
-    }
-    return answers;
-  }
-  function gradeMcq(questions, answers) {
-    let score = 0;
-    questions.forEach((question, index) => {
-      if (answers[index] === question.answer) {
-        score += 1;
-      }
-    });
-    return score;
-  }
-  function revealMcqFeedback(container, questions, answers) {
-    if (!container || !Array.isArray(questions) || !Array.isArray(answers)) {
-      return;
-    }
-    const questionBlocks = Array.from(
-      container.querySelectorAll("fieldset.question"),
-    );
-    questionBlocks.forEach((questionBlock, questionIndex) => {
-      var _a;
-      const optionLabels = Array.from(
-        questionBlock.querySelectorAll(".options label"),
-      );
-      optionLabels.forEach((label) => {
-        label.classList.remove("correct-answer-label", "wrong-answer-label");
-      });
-      const correctOptionIndex =
-        (_a = questions[questionIndex]) == null ? void 0 : _a.answer;
-      const selectedOptionIndex = answers[questionIndex];
-      const correctLabel = optionLabels[correctOptionIndex];
-      if (correctLabel) {
-        correctLabel.classList.add("correct-answer-label");
-      }
-      if (
-        Number.isInteger(selectedOptionIndex) &&
-        selectedOptionIndex !== correctOptionIndex
-      ) {
-        const selectedLabel = optionLabels[selectedOptionIndex];
-        if (selectedLabel) {
-          selectedLabel.classList.add("wrong-answer-label");
+      b = pe({ body: i, focusRoot: d, initialFocusElement: E, modal: x }),
+      k = !1,
+      H = (R, q) => {
+        let z = Pe[R];
+        z &&
+          (typeof a == "function" && a(),
+          (e.activeMcqLevel = R),
+          (e.activeMcqQuestions = Et(R, z.questionCount || 5)),
+          (S.textContent = `${z.title} MCQ`),
+          (p.textContent = `${e.activeMcqQuestions.length} questions. Pass mark ${z.passMark}.`),
+          Ct(v, e.activeMcqQuestions),
+          (C.textContent = ""),
+          (C.className = "result-text"),
+          (C.hidden = !0),
+          (k = !1),
+          (h.textContent = "Submit answers"),
+          (h.disabled = !1),
+          A(!1),
+          b.open({ triggerElement: c }));
+      };
+    (c.addEventListener("click", () => {
+      A(!u.classList.contains("open"));
+    }),
+      I.forEach((R) => {
+        R.addEventListener("click", () => {
+          H(R.dataset.level, R);
+        });
+      }),
+      E.addEventListener("click", () => {
+        b.close();
+      }),
+      h.addEventListener("click", () => {
+        var G, j;
+        if (!e.activeMcqQuestions.length) return;
+        if (k) {
+          H(e.activeMcqLevel, c);
+          return;
         }
-      }
-      questionBlock.querySelectorAll("input[type='radio']").forEach((input) => {
-        input.disabled = true;
-      });
-    });
-  }
-
-  // src/menu-mcq.js?v=20260506-9
-  function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
-    const {
-      body,
-      burgerIcon,
-      sideMenu,
-      mcqModal,
-      mcqModalContent,
-      closeMcqModalButton,
-      mcqTitle,
-      mcqIntro,
-      mcqContainer,
-      submitMcqButton,
-      mcqResult,
-      mcqLevelButtons,
-    } = dom;
-    if (
-      !body ||
-      !burgerIcon ||
-      !sideMenu ||
-      !mcqModal ||
-      !mcqModalContent ||
-      !closeMcqModalButton ||
-      !mcqTitle ||
-      !mcqIntro ||
-      !mcqContainer ||
-      !submitMcqButton ||
-      !mcqResult
-    ) {
-      return;
-    }
-    const setSideMenuOpen = (isOpen) => {
-      sideMenu.classList.toggle("open", isOpen);
-      sideMenu.setAttribute("aria-hidden", String(!isOpen));
-      if (isOpen) {
-        sideMenu.removeAttribute("inert");
-      } else {
-        sideMenu.setAttribute("inert", "");
-      }
-      burgerIcon.setAttribute("aria-expanded", String(isOpen));
-      burgerIcon.setAttribute(
-        "aria-label",
-        isOpen ? "Close menu" : "Open menu",
-      );
-    };
-    const mcqModalController = createModalController({
-      body,
-      focusRoot: mcqModalContent,
-      initialFocusElement: closeMcqModalButton,
-      modal: mcqModal,
-    });
-    const openMcqLevel = (level, triggerElement) => {
-      const meta = MCQ_LEVEL_META[level];
-      if (!meta) {
-        return;
-      }
-      if (typeof onBeforeOpenMcq === "function") {
-        onBeforeOpenMcq();
-      }
-      state.activeMcqLevel = level;
-      state.activeMcqQuestions = sampleQuestions(
-        level,
-        meta.questionCount || 5,
-      );
-      mcqTitle.textContent = `${meta.title} MCQ`;
-      mcqIntro.textContent = `${state.activeMcqQuestions.length} questions. Pass mark ${meta.passMark}.`;
-      renderMcqQuestions(mcqContainer, state.activeMcqQuestions);
-      mcqResult.textContent = "";
-      mcqResult.style.color = "";
-      mcqResult.hidden = true;
-      submitMcqButton.disabled = false;
-      setSideMenuOpen(false);
-      mcqModalController.open({ triggerElement });
-    };
-    burgerIcon.addEventListener("click", () => {
-      setSideMenuOpen(!sideMenu.classList.contains("open"));
-    });
-    mcqLevelButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        openMcqLevel(button.dataset.level, button);
-      });
-    });
-    closeMcqModalButton.addEventListener("click", () => {
-      mcqModalController.close();
-    });
-    submitMcqButton.addEventListener("click", () => {
-      if (!state.activeMcqQuestions.length) {
-        return;
-      }
-      const answers = getMcqAnswers(state.activeMcqQuestions);
-      if (!answers) {
-        mcqResult.textContent =
-          "Please answer all questions before submitting.";
-        mcqResult.style.color = "#c4171d";
-        mcqResult.hidden = false;
-        return;
-      }
-      const score = gradeMcq(state.activeMcqQuestions, answers);
-      revealMcqFeedback(mcqContainer, state.activeMcqQuestions, answers);
-      submitMcqButton.disabled = true;
-      mcqResult.hidden = false;
-      const passMark = MCQ_LEVEL_META[state.activeMcqLevel].passMark;
-      const didPass = score >= passMark;
-      if (didPass) {
-        const star = document.createElement("span");
-        star.className = "result-star";
-        star.setAttribute("aria-label", "star earned");
-        star.textContent = String.fromCharCode(9733);
-        mcqResult.replaceChildren(
-          document.createTextNode(
-            `Score ${score}/${state.activeMcqQuestions.length} - Pass `,
-          ),
-          star,
-        );
-        mcqResult.style.color = "#0f9644";
-      } else {
-        mcqResult.textContent = `Score ${score}/${state.activeMcqQuestions.length} - Needs more practice`;
-        mcqResult.style.color = "#c4171d";
-      }
-    });
-    document.addEventListener("click", (event) => {
-      const target = event.target;
-      if (target === mcqModal) {
-        mcqModalController.close();
-        return;
-      }
-      if (sideMenu.classList.contains("open") && target instanceof Node) {
-        const clickedInsideMenu = sideMenu.contains(target);
-        const clickedBurger = burgerIcon.contains(target);
-        if (!clickedInsideMenu && !clickedBurger) {
-          setSideMenuOpen(false);
+        let R = Mt(e.activeMcqQuestions);
+        if (!R) {
+          ((C.textContent = "Please answer all questions before submitting."),
+            (C.className = "result-text is-review"),
+            (C.hidden = !1),
+            (j =
+              (G = Array.from(v.querySelectorAll("fieldset.question")).find(
+                (X) => !X.querySelector("input:checked"),
+              )) == null
+                ? void 0
+                : G.querySelector("input")) == null || j.focus());
+          return;
         }
-      }
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") {
-        return;
-      }
-      setSideMenuOpen(false);
-      mcqModalController.close();
-    });
+        let q = wt(e.activeMcqQuestions, R);
+        (At(v, e.activeMcqQuestions, R), (C.hidden = !1));
+        let z = Pe[e.activeMcqLevel].passMark,
+          $ = q >= z;
+        if ($) {
+          let X = document.createElement("span");
+          ((X.className = "result-star"),
+            X.setAttribute("aria-label", "star earned"),
+            (X.textContent = "\u2605"),
+            C.replaceChildren(
+              document.createTextNode(
+                `Score ${q}/${e.activeMcqQuestions.length} - Pass `,
+              ),
+              X,
+            ),
+            (C.className = "result-text is-pass"));
+        } else
+          ((C.textContent = `Score ${q}/${e.activeMcqQuestions.length} - Review and retry`),
+            (C.className = "result-text is-review"));
+        ((k = !0),
+          (h.textContent = $ ? "New attempt" : "Try again"),
+          (h.disabled = !1));
+      }),
+      document.addEventListener("click", (R) => {
+        let q = R.target;
+        if (q === x) {
+          b.close();
+          return;
+        }
+        if (u.classList.contains("open") && q instanceof Node) {
+          let z = u.contains(q),
+            $ = c.contains(q);
+          !z && !$ && A(!1);
+        }
+      }),
+      document.addEventListener("keydown", (R) => {
+        if (R.key !== "Escape") return;
+        let q = u.classList.contains("open");
+        (A(!1), q && c.focus({ preventScroll: !0 }), b.close());
+      }));
   }
-
-  // src/menu-visual-cases.js?v=20260507-1
-  function createElement(tagName, className, textContent) {
-    const element = document.createElement(tagName);
-    if (className) {
-      element.className = className;
-    }
-    if (textContent !== void 0) {
-      element.textContent = textContent;
-    }
-    return element;
+  function J(e, t, a) {
+    let i = document.createElement(e);
+    return (t && (i.className = t), a !== void 0 && (i.textContent = a), i);
   }
-  function getCurrentCaseIndex(caseList, currentValue) {
-    const index = caseList.findIndex(
-      (caseItem) => caseItem.value === currentValue,
-    );
-    return index >= 0 ? index : 0;
+  function Lt(e, t) {
+    let a = e.findIndex((i) => i.value === t);
+    return a >= 0 ? a : 0;
   }
-  function scrollCardIntoView(card) {
-    if (!(card instanceof HTMLElement)) {
-      return;
-    }
-    requestAnimationFrame(() => {
-      card.scrollIntoView({
-        block: "nearest",
-        inline: "nearest",
+  function Ne(e) {
+    e instanceof HTMLElement &&
+      requestAnimationFrame(() => {
+        e.scrollIntoView({ block: "nearest", inline: "nearest" });
       });
-    });
   }
-  function buildFallbackPreview(caseItem) {
-    const preview = createElement("div", "case-card-fallback-preview");
-    preview.dataset.caseCategory = caseItem.category;
-    preview.dataset.caseLevel = caseItem.level;
-    const leftEye = createElement("span", "case-preview-eye");
-    const rightEye = createElement("span", "case-preview-eye");
-    preview.append(leftEye, rightEye);
-    return preview;
+  function Ea(e) {
+    let t = J("div", "case-card-fallback-preview");
+    ((t.dataset.caseCategory = e.category), (t.dataset.caseLevel = e.level));
+    let a = J("span", "case-preview-eye"),
+      i = J("span", "case-preview-eye");
+    return (t.append(a, i), t);
   }
-  function createVisualCasesController({
-    state,
-    dom,
-    onSelectCase,
-    onBeforeOpen,
-  } = {}) {
-    const {
-      body,
-      caseModal,
-      caseModalContent,
-      closeCaseModalButton,
-      caseSectionsContainer,
-      caseSimilarTool,
-      caseSimilarList,
-      casePicker,
-      casePreviousButton,
-      caseNextButton,
-      caseTriggerButton,
-      caseTriggerLabel,
-      caseTriggerLevel,
-    } = dom;
+  function It({ state: e, dom: t, onSelectCase: a, onBeforeOpen: i } = {}) {
+    let {
+      body: c,
+      caseModal: u,
+      caseModalContent: x,
+      closeCaseModalButton: d,
+      caseSectionsContainer: E,
+      caseSimilarTool: S,
+      caseSimilarList: p,
+      caseSafetyModal: v,
+      caseSafetyModalContent: h,
+      closeCaseSafetyModalButton: C,
+      caseSafetyTitle: I,
+      caseSafetyBody: A,
+      casePicker: b,
+      casePreviousButton: k,
+      caseNextButton: H,
+      caseTriggerButton: R,
+      caseTriggerLabel: q,
+      caseTriggerLevel: z,
+      caseTriggerSafety: $,
+    } = t;
     if (
-      !body ||
-      !caseModal ||
-      !caseModalContent ||
-      !closeCaseModalButton ||
-      !caseSectionsContainer ||
-      !casePicker ||
-      !casePreviousButton ||
-      !caseNextButton ||
-      !caseTriggerButton ||
-      !caseTriggerLabel ||
-      !caseTriggerLevel
-    ) {
+      !c ||
+      !u ||
+      !x ||
+      !d ||
+      !E ||
+      !v ||
+      !h ||
+      !C ||
+      !I ||
+      !A ||
+      !b ||
+      !k ||
+      !H ||
+      !R ||
+      !q ||
+      !z ||
+      !$
+    )
       return {
         init() {},
         update() {},
         selectNextCase() {},
         selectPreviousCase() {},
       };
+    let G = pe({ body: c, focusRoot: x, initialFocusElement: d, modal: u });
+    function j(T) {
+      G.isOpen() &&
+        (u.toggleAttribute("inert", T),
+        u.setAttribute("aria-hidden", String(T)));
     }
-    const modalController = createModalController({
-      body,
-      focusRoot: caseModalContent,
-      initialFocusElement: closeCaseModalButton,
-      modal: caseModal,
+    let X = pe({
+      body: c,
+      focusRoot: h,
+      initialFocusElement: C,
+      modal: v,
+      onAfterClose: () => j(!1),
+      onAfterOpen: () => j(!0),
     });
-    function getVisibleCases() {
-      return getCaseList({ babyOnly: state.isBabyMode });
+    function te() {
+      return Ae({ babyOnly: e.isBabyMode });
     }
-    function selectCase(value, triggerElement) {
-      const caseItem = getCaseByValue(value);
-      if (!caseItem || typeof onSelectCase !== "function") {
+    function Z(T, B) {
+      let s = we(T);
+      !s ||
+        typeof a != "function" ||
+        (a(s.value),
+        G.close({ restoreFocus: !1 }),
+        le(),
+        B instanceof HTMLElement && B.focus());
+    }
+    function U(T) {
+      let B = te();
+      if (!B.length || e.isTestMode) return;
+      let y = (Lt(B, e.currentRefraction) + T + B.length) % B.length;
+      Z(B[y].value);
+    }
+    function Q(T, B) {
+      T != null &&
+        T.safetyNote &&
+        ((I.textContent = T.safetyNote.title),
+        (A.textContent = T.safetyNote.body),
+        X.open({ triggerElement: B }));
+    }
+    function ee(T) {
+      let B = J("div", "case-card-shell");
+      ((B.dataset.caseValue = T.value),
+        T.safetyNote && B.classList.add("has-safety-note"));
+      let s = J("button", "case-card");
+      ((s.type = "button"),
+        (s.dataset.caseValue = T.value),
+        (s.dataset.level = T.level),
+        s.setAttribute("aria-pressed", String(T.value === e.currentRefraction)),
+        T.safetyNote &&
+          s.setAttribute("aria-label", `${T.label}. Safety note available.`));
+      let y = J("span", "case-card-header"),
+        M = J("span", "case-card-badge", String(T.index)),
+        P = J("span", "case-card-text"),
+        r = J("span", "case-card-title", T.label),
+        o = J("span", "case-card-summary", T.summary);
+      (P.append(r, o), y.append(M, P));
+      let n = J("span", "case-card-media"),
+        g = document.createElement("img");
+      if (
+        ((g.src = T.thumbnailSrc),
+        (g.alt = ""),
+        (g.loading = "lazy"),
+        (g.decoding = "async"),
+        g.addEventListener(
+          "error",
+          () => {
+            n.replaceChildren(Ea(T));
+          },
+          { once: !0 },
+        ),
+        n.appendChild(g),
+        s.append(y, n),
+        s.addEventListener("click", () => Z(T.value, s)),
+        s.addEventListener("focus", () => Ne(s)),
+        B.appendChild(s),
+        T.safetyNote)
+      ) {
+        let l = J("button", "case-safety-button");
+        ((l.type = "button"),
+          (l.dataset.caseValue = T.value),
+          l.setAttribute("aria-label", `Safety note for ${T.label}`),
+          l.setAttribute("aria-haspopup", "dialog"),
+          l.setAttribute("aria-controls", "caseSafetyModal"));
+        let w = J("span", "case-warning-symbol");
+        (w.setAttribute("aria-hidden", "true"),
+          l.appendChild(w),
+          l.addEventListener("click", () => Q(T, l)),
+          l.addEventListener("focus", () => Ne(B)),
+          B.appendChild(l));
+      }
+      return B;
+    }
+    function ae() {
+      if (!S || !p) return;
+      let T = te(),
+        B = Lt(T, e.currentRefraction),
+        s = T[B];
+      if (!s) {
+        ((S.hidden = !0), p.replaceChildren());
         return;
       }
-      onSelectCase(caseItem.value);
-      modalController.close({ restoreFocus: false });
-      update();
-      if (triggerElement instanceof HTMLElement) {
-        triggerElement.focus();
-      }
-    }
-    function selectByDelta(delta) {
-      const caseList = getVisibleCases();
-      if (!caseList.length || state.isTestMode) {
-        return;
-      }
-      const currentIndex = getCurrentCaseIndex(
-        caseList,
-        state.currentRefraction,
-      );
-      const nextIndex =
-        (currentIndex + delta + caseList.length) % caseList.length;
-      selectCase(caseList[nextIndex].value);
-    }
-    function renderCaseCard(caseItem) {
-      const button = createElement("button", "case-card");
-      button.type = "button";
-      button.dataset.caseValue = caseItem.value;
-      button.dataset.level = caseItem.level;
-      button.setAttribute(
-        "aria-pressed",
-        String(caseItem.value === state.currentRefraction),
-      );
-      const header = createElement("span", "case-card-header");
-      const badge = createElement(
-        "span",
-        "case-card-badge",
-        String(caseItem.index),
-      );
-      const text = createElement("span", "case-card-text");
-      const title = createElement("span", "case-card-title", caseItem.label);
-      const summary = createElement(
-        "span",
-        "case-card-summary",
-        caseItem.summary,
-      );
-      text.append(title, summary);
-      header.append(badge, text);
-      const media = createElement("span", "case-card-media");
-      const image = document.createElement("img");
-      image.src = caseItem.thumbnailSrc;
-      image.alt = "";
-      image.loading = "lazy";
-      image.decoding = "async";
-      image.addEventListener(
-        "error",
-        () => {
-          media.replaceChildren(buildFallbackPreview(caseItem));
-        },
-        { once: true },
-      );
-      media.appendChild(image);
-      button.append(header, media);
-      button.addEventListener("click", () =>
-        selectCase(caseItem.value, button),
-      );
-      button.addEventListener("focus", () => scrollCardIntoView(button));
-      return button;
-    }
-    function renderSimilarCases() {
-      if (!caseSimilarTool || !caseSimilarList) {
-        return;
-      }
-      const visibleCases = getVisibleCases();
-      const currentIndex = getCurrentCaseIndex(
-        visibleCases,
-        state.currentRefraction,
-      );
-      const currentCase = visibleCases[currentIndex];
-      if (!currentCase) {
-        caseSimilarTool.hidden = true;
-        caseSimilarList.replaceChildren();
-        return;
-      }
-      const adjacentCases = [-1, 1]
-        .map((delta) => {
-          const index = currentIndex + delta;
-          return visibleCases[index] || null;
+      let y = [-1, 1]
+        .map((P) => {
+          let r = B + P;
+          return T[r] || null;
         })
-        .filter((caseItem) => caseItem && caseItem.level === currentCase.level);
-      if (!adjacentCases.length) {
-        caseSimilarTool.hidden = true;
-        caseSimilarList.replaceChildren();
+        .filter((P) => P && P.level === s.level);
+      if (!y.length) {
+        ((S.hidden = !0), p.replaceChildren());
         return;
       }
-      const fragment = document.createDocumentFragment();
-      adjacentCases.forEach((caseItem) => {
-        const chip = createElement(
-          "button",
-          "case-similar-chip",
-          `${caseItem.index}. ${caseItem.label}`,
-        );
-        chip.type = "button";
-        chip.dataset.caseValue = caseItem.value;
-        chip.addEventListener("click", () => selectCase(caseItem.value, chip));
-        fragment.appendChild(chip);
-      });
-      caseSimilarList.replaceChildren(fragment);
-      caseSimilarTool.hidden = false;
-      caseSimilarTool.open = false;
+      let M = document.createDocumentFragment();
+      (y.forEach((P) => {
+        let r = J("button", "case-similar-chip", `${P.index}. ${P.label}`);
+        ((r.type = "button"),
+          (r.dataset.caseValue = P.value),
+          r.addEventListener("click", () => Z(P.value, r)),
+          M.appendChild(r));
+      }),
+        p.replaceChildren(M),
+        (S.hidden = !1),
+        (S.open = !1));
     }
-    function renderCaseSections() {
-      const visibleCases = getVisibleCases();
-      const fragment = document.createDocumentFragment();
-      CASE_LEVELS.forEach((level) => {
-        const levelCases = visibleCases.filter(
-          (caseItem) => caseItem.level === level.value,
-        );
-        if (!levelCases.length) {
-          return;
-        }
-        const details = document.createElement("details");
-        details.className = "case-level-section";
-        details.dataset.level = level.value;
-        details.open = level.value === "primary";
-        const summary = createElement("summary", "case-level-summary");
-        const label = createElement("span", "case-level-label", level.label);
-        const count = createElement(
-          "span",
-          "case-level-count",
-          `(${levelCases.length})`,
-        );
-        summary.append(label, count);
-        const grid = createElement("div", "case-card-grid");
-        levelCases.forEach((caseItem) => {
-          grid.appendChild(renderCaseCard(caseItem));
-        });
-        details.append(summary, grid);
-        fragment.appendChild(details);
-      });
-      caseSectionsContainer.replaceChildren(fragment);
+    function K() {
+      let T = te(),
+        B = document.createDocumentFragment();
+      (mt.forEach((s) => {
+        let y = T.filter((g) => g.level === s.value);
+        if (!y.length) return;
+        let M = document.createElement("details");
+        ((M.className = "case-level-section"),
+          (M.dataset.level = s.value),
+          (M.open = s.value === "primary"));
+        let P = J("summary", "case-level-summary"),
+          r = J("span", "case-level-label", s.label),
+          o = J("span", "case-level-count", `(${y.length})`);
+        P.append(r, o);
+        let n = J("div", "case-card-grid");
+        (y.forEach((g) => {
+          n.appendChild(ee(g));
+        }),
+          M.append(P, n),
+          B.appendChild(M));
+      }),
+        E.replaceChildren(B));
     }
-    function update() {
-      const currentCase = getCaseByValue(state.currentRefraction);
-      if (!currentCase) {
-        return;
-      }
-      caseTriggerLabel.textContent = currentCase.label;
-      caseTriggerLevel.textContent = "";
-      caseTriggerLevel.dataset.level = currentCase.level;
-      caseTriggerButton.dataset.level = currentCase.level;
-      const visibleCases = getVisibleCases();
-      const hasMultipleCases = visibleCases.length > 1;
-      casePreviousButton.disabled = state.isTestMode || !hasMultipleCases;
-      caseNextButton.disabled = state.isTestMode || !hasMultipleCases;
-      caseTriggerButton.disabled = state.isTestMode;
-      if (modalController.isOpen()) {
-        renderCaseSections();
-        renderSimilarCases();
-      }
+    function le() {
+      let T = we(e.currentRefraction);
+      if (!T) return;
+      ((q.textContent = T.label),
+        (z.textContent = ""),
+        (z.dataset.level = T.level),
+        (R.dataset.level = T.level),
+        ($.hidden = !T.safetyNote),
+        R.classList.toggle("has-safety-note", !!T.safetyNote),
+        R.setAttribute(
+          "aria-label",
+          `Case: ${T.label}. ${T.levelLabel}.${T.safetyNote ? " Safety note available." : ""}`,
+        ));
+      let s = te().length > 1;
+      ((k.disabled = e.isTestMode || !s),
+        (H.disabled = e.isTestMode || !s),
+        (R.disabled = e.isTestMode),
+        G.isOpen() && (K(), ae()));
     }
-    function openCases(triggerElement) {
-      if (state.isTestMode) {
-        return;
-      }
-      if (typeof onBeforeOpen === "function") {
-        onBeforeOpen();
-      }
-      renderCaseSections();
-      renderSimilarCases();
-      modalController.open({ triggerElement });
-      const selectedCard = caseSectionsContainer.querySelector(
-        `.case-card[data-case-value="${CSS.escape(state.currentRefraction)}"]`,
+    function oe(T) {
+      if (e.isTestMode) return;
+      (typeof i == "function" && i(), K(), ae(), G.open({ triggerElement: T }));
+      let B = E.querySelector(
+        `.case-card[data-case-value="${CSS.escape(e.currentRefraction)}"]`,
       );
-      scrollCardIntoView(selectedCard);
+      Ne(B);
     }
-    function init() {
-      casePreviousButton.addEventListener("click", () => selectByDelta(-1));
-      caseNextButton.addEventListener("click", () => selectByDelta(1));
-      caseTriggerButton.addEventListener("click", () =>
-        openCases(caseTriggerButton),
-      );
-      closeCaseModalButton.addEventListener("click", () =>
-        modalController.close(),
-      );
-      caseModal.addEventListener("click", (event) => {
-        if (event.target === caseModal) {
-          modalController.close();
-        }
-      });
-      update();
+    function ge() {
+      (k.addEventListener("click", () => U(-1)),
+        H.addEventListener("click", () => U(1)),
+        R.addEventListener("click", () => oe(R)),
+        d.addEventListener("click", () => G.close()),
+        C.addEventListener("click", () => X.close()),
+        u.addEventListener("click", (T) => {
+          T.target === u && G.close();
+        }),
+        v.addEventListener("click", (T) => {
+          T.target === v && X.close();
+        }),
+        le());
     }
     return {
-      init,
-      selectNextCase: () => selectByDelta(1),
-      selectPreviousCase: () => selectByDelta(-1),
-      update,
+      init: ge,
+      selectNextCase: () => U(1),
+      selectPreviousCase: () => U(-1),
+      update: le,
     };
   }
-
-  // src/central-media-masks.js?v=20260506-2
-  function clearMask(maskElement) {
-    if (!maskElement) {
-      return;
-    }
-    maskElement.style.opacity = "0";
+  function Ca(e) {
+    e && (e.style.opacity = "0");
   }
-  function applyMaskConfig(maskElement, config) {
-    maskElement.style.width = config.width;
-    maskElement.style.height = config.height;
-    maskElement.style.minWidth = config.minWidth;
-    maskElement.style.minHeight = config.minHeight;
-    maskElement.style.maxWidth = config.maxWidth;
-    maskElement.style.maxHeight = config.maxHeight;
-    maskElement.style.borderRadius = config.borderRadius;
-    maskElement.style.transform = config.transform;
-    maskElement.style.background = config.background;
-    maskElement.style.filter = config.filter;
-    maskElement.style.opacity = config.opacity;
+  function Ma(e, t) {
+    ((e.style.width = t.width),
+      (e.style.height = t.height),
+      (e.style.minWidth = t.minWidth),
+      (e.style.minHeight = t.minHeight),
+      (e.style.maxWidth = t.maxWidth),
+      (e.style.maxHeight = t.maxHeight),
+      (e.style.borderRadius = t.borderRadius),
+      (e.style.transform = t.transform),
+      (e.style.background = t.background),
+      (e.style.filter = t.filter),
+      (e.style.opacity = t.opacity));
   }
-  function getPosteriorCapsularThickeningMaskConfig() {
+  function wa() {
     return {
       width: "104%",
       height: "92%",
@@ -2584,7 +2604,7 @@
       opacity: "0.9",
     };
   }
-  function getPosteriorPoleCataractMaskConfig() {
+  function Aa() {
     return {
       width: "48%",
       height: "48%",
@@ -2689,7 +2709,7 @@
       opacity: "0.95",
     };
   }
-  function getPosteriorSubcapsularMaskConfig() {
+  function Ta() {
     return {
       width: "44%",
       height: "44%",
@@ -2725,422 +2745,308 @@
       opacity: "0.94",
     };
   }
-  function getCentralMediaMaskConfig(flags) {
-    if (flags.posteriorCapsularThickeningCase) {
-      return getPosteriorCapsularThickeningMaskConfig();
-    }
-    if (flags.posteriorPoleCataractCase) {
-      return getPosteriorPoleCataractMaskConfig();
-    }
-    if (flags.centralSubCorticalCataractCase) {
-      return getPosteriorSubcapsularMaskConfig();
-    }
-    return null;
+  function La(e) {
+    return e.posteriorCapsularThickeningCase
+      ? wa()
+      : e.posteriorPoleCataractCase
+        ? Aa()
+        : e.centralSubCorticalCataractCase
+          ? Ta()
+          : null;
   }
-  function updateCentralMediaMask({ maskElement, flags, isActiveEye }) {
-    if (!maskElement) {
+  function Rt({ maskElement: e, flags: t, isActiveEye: a }) {
+    if (!e) return;
+    let i = a && La(t);
+    if (!i) {
+      Ca(e);
       return;
     }
-    const config = isActiveEye && getCentralMediaMaskConfig(flags);
-    if (!config) {
-      clearMask(maskElement);
-      return;
-    }
-    applyMaskConfig(maskElement, config);
+    Ma(e, i);
   }
-
-  // src/retinoscopy-case-metadata.js?v=20260506-2
-  var REFRACTION_VALUES = {
-    ACG: "acg",
-    ANIRIDIA: "aniridia",
-    APHAKIA: "aphakia",
-    ANISOMETROPIA: "anisometropia",
-    BIG_CORTICAL_CATARACT: "big-cortical-cataract",
-    CENTRAL_SUB_CORTICAL_CATARACT: "central-sub-cortical-cataract",
-    CORNEAL_SCAR: "corneal-scar",
-    DENSE_CATARACT: "dense-cataract",
-    FLOATERS: "floaters",
-    HIGH_CYLINDER: "high-cylinder",
-    HIGH_MINUS: "high-minus",
-    HIGH_PLUS: "high-plus",
-    KERATOCONUS: "keratoconus",
-    IRIS_TRANSILLUMINATION: "iris-transillumination",
-    LEUCOCORIA: "leucocoria",
-    MINUS: "minus",
-    NASAL_COLOBOMA: "nasal-coloboma",
-    PARTIAL_RETINAL_DETACHMENT: "partial-retinal-detachment",
-    POSTERIOR_CAPSULAR_THICKENING: "posterior-capsular-thickening",
-    POSTERIOR_POLE_CATARACT: "posterior-pole-cataract",
-    PLUS: "plus",
-    POOR_TEAR_FILM: "poor-tear-film",
-    SMALL_CORTICAL_CATARACT: "small-cortical-cataract",
-    SMALL_PUPILS: "small-pupils",
-    SMALL_SCISSORS: "small-scissors",
-    VITREOUS_HAEMORRHAGE: "vitreous-haemorrhage",
-    ZERO: DEFAULT_REFRACTION_VALUE2,
-  };
-  var EDGE_DIMMING_PROFILE = Object.freeze({
-    minimumFactor: 0.12,
-    fadeDistanceRatio: 1.35,
-    softness: 1.15,
-  });
-  var EDGE_VISUAL_BLEND = Object.freeze({
-    brightnessFloor: 0.4,
-    blurBoostPx: 0.5,
-    opacityFloor: 0.25,
-  });
-  var DEFAULT_REFLEX_BACKGROUND =
-    "radial-gradient(ellipse 72% 62% at 50% 50%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.52) 28%, rgba(255, 255, 255, 0.16) 56%, rgba(255, 255, 255, 0.04) 72%, rgba(255, 255, 255, 0) 84%)";
-  function randomIntInRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  var L = {
+      ACG: "acg",
+      ANIRIDIA: "aniridia",
+      APHAKIA: "aphakia",
+      ANISOMETROPIA: "anisometropia",
+      BIG_CORTICAL_CATARACT: "big-cortical-cataract",
+      CENTRAL_SUB_CORTICAL_CATARACT: "central-sub-cortical-cataract",
+      CORNEAL_SCAR: "corneal-scar",
+      DENSE_CATARACT: "dense-cataract",
+      FLOATERS: "floaters",
+      HIGH_CYLINDER: "high-cylinder",
+      HIGH_MINUS: "high-minus",
+      HIGH_PLUS: "high-plus",
+      KERATOCONUS: "keratoconus",
+      IRIS_TRANSILLUMINATION: "iris-transillumination",
+      LEUCOCORIA: "leucocoria",
+      MINUS: "minus",
+      NASAL_COLOBOMA: "nasal-coloboma",
+      PARTIAL_RETINAL_DETACHMENT: "partial-retinal-detachment",
+      POSTERIOR_CAPSULAR_THICKENING: "posterior-capsular-thickening",
+      POSTERIOR_POLE_CATARACT: "posterior-pole-cataract",
+      PLUS: "plus",
+      POOR_TEAR_FILM: "poor-tear-film",
+      SMALL_CORTICAL_CATARACT: "small-cortical-cataract",
+      SMALL_PUPILS: "small-pupils",
+      SMALL_SCISSORS: "small-scissors",
+      VITREOUS_HAEMORRHAGE: "vitreous-haemorrhage",
+      ZERO: ke,
+    },
+    kt = Object.freeze({
+      minimumFactor: 0.12,
+      fadeDistanceRatio: 1.35,
+      softness: 1.15,
+    }),
+    ve = Object.freeze({
+      brightnessFloor: 0.4,
+      blurBoostPx: 0.5,
+      opacityFloor: 0.25,
+    }),
+    Ot =
+      "radial-gradient(ellipse 72% 62% at 50% 50%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.52) 28%, rgba(255, 255, 255, 0.16) 56%, rgba(255, 255, 255, 0.04) 72%, rgba(255, 255, 255, 0) 84%)";
+  function Se(e, t) {
+    return Math.floor(Math.random() * (t - e + 1)) + e;
   }
-  function randomFloatInRange(min, max) {
-    return Math.random() * (max - min) + min;
+  function Te(e, t) {
+    return Math.random() * (t - e) + e;
   }
-  function smallestCircularDifference(aDeg, bDeg) {
-    const delta = Math.abs(aDeg - bDeg) % 360;
-    return delta > 180 ? 360 - delta : delta;
+  function Ia(e, t) {
+    let a = Math.abs(e - t) % 360;
+    return a > 180 ? 360 - a : a;
   }
-  function getEdgeDimmingFactor({
-    probeOffsetX,
-    probeOffsetY,
-    pupilRadiusPx,
-    profile = EDGE_DIMMING_PROFILE,
+  function Ra({
+    probeOffsetX: e,
+    probeOffsetY: t,
+    pupilRadiusPx: a,
+    profile: i = kt,
   }) {
-    const centreDistance = Math.hypot(probeOffsetX, probeOffsetY);
-    const startDistancePx = pupilRadiusPx;
-    const { minimumFactor, fadeDistanceRatio, softness } = profile;
-    if (centreDistance <= startDistancePx) {
-      return 1;
-    }
-    const fadeDistancePx = Math.max(1.5, pupilRadiusPx * fadeDistanceRatio);
-    const overshootPx = centreDistance - startDistancePx;
-    const t = Math.max(0, Math.min(1, overshootPx / fadeDistancePx));
-    const smoothT = t * t * (3 - 2 * t);
-    const shapedT = Math.pow(smoothT, softness);
-    return 1 - shapedT * (1 - Math.max(0, minimumFactor));
+    let c = Math.hypot(e, t),
+      u = a,
+      { minimumFactor: x, fadeDistanceRatio: d, softness: E } = i;
+    if (c <= u) return 1;
+    let S = Math.max(1.5, a * d),
+      p = c - u,
+      v = Math.max(0, Math.min(1, p / S)),
+      h = v * v * (3 - 2 * v);
+    return 1 - Math.pow(h, E) * (1 - Math.max(0, x));
   }
-  function getCaseFlags(currentRefraction) {
-    const acgCase = currentRefraction === REFRACTION_VALUES.ACG;
-    const aniridiaCase = currentRefraction === REFRACTION_VALUES.ANIRIDIA;
-    const aphakiaCase = currentRefraction === REFRACTION_VALUES.APHAKIA;
-    const cylinderCase = CYLINDER_REFRACTION_VALUES2.has(currentRefraction);
-    const scissorsCase = currentRefraction === REFRACTION_VALUES.SMALL_SCISSORS;
-    const keratoconusCase = currentRefraction === REFRACTION_VALUES.KERATOCONUS;
-    const cornealScarCase =
-      currentRefraction === REFRACTION_VALUES.CORNEAL_SCAR;
-    const denseCataractCase =
-      currentRefraction === REFRACTION_VALUES.DENSE_CATARACT;
-    const floatersCase = currentRefraction === REFRACTION_VALUES.FLOATERS;
-    const anisometropiaCase =
-      currentRefraction === REFRACTION_VALUES.ANISOMETROPIA;
-    const irisTransilluminationCase =
-      currentRefraction === REFRACTION_VALUES.IRIS_TRANSILLUMINATION;
-    const leucocoriaCase = currentRefraction === REFRACTION_VALUES.LEUCOCORIA;
-    const nasalColobomaCase =
-      currentRefraction === REFRACTION_VALUES.NASAL_COLOBOMA;
-    const partialRetinalDetachmentCase =
-      currentRefraction === REFRACTION_VALUES.PARTIAL_RETINAL_DETACHMENT;
-    const posteriorCapsularThickeningCase =
-      currentRefraction === REFRACTION_VALUES.POSTERIOR_CAPSULAR_THICKENING;
-    const poorTearFilmCase =
-      currentRefraction === REFRACTION_VALUES.POOR_TEAR_FILM;
-    const smallCorticalCataractCase =
-      currentRefraction === REFRACTION_VALUES.SMALL_CORTICAL_CATARACT;
-    const smallPupilsCase =
-      currentRefraction === REFRACTION_VALUES.SMALL_PUPILS;
-    const bigCorticalCataractCase =
-      currentRefraction === REFRACTION_VALUES.BIG_CORTICAL_CATARACT;
-    const centralSubCorticalCataractCase =
-      currentRefraction === REFRACTION_VALUES.CENTRAL_SUB_CORTICAL_CATARACT;
-    const posteriorPoleCataractCase =
-      currentRefraction === REFRACTION_VALUES.POSTERIOR_POLE_CATARACT;
-    const vitreousHaemorrhageCase =
-      currentRefraction === REFRACTION_VALUES.VITREOUS_HAEMORRHAGE;
+  function Fe(e) {
+    let t = e === L.ACG,
+      a = e === L.ANIRIDIA,
+      i = e === L.APHAKIA,
+      c = _e.has(e),
+      u = e === L.SMALL_SCISSORS,
+      x = e === L.KERATOCONUS,
+      d = e === L.CORNEAL_SCAR,
+      E = e === L.DENSE_CATARACT,
+      S = e === L.FLOATERS,
+      p = e === L.ANISOMETROPIA,
+      v = e === L.IRIS_TRANSILLUMINATION,
+      h = e === L.LEUCOCORIA,
+      C = e === L.NASAL_COLOBOMA,
+      I = e === L.PARTIAL_RETINAL_DETACHMENT,
+      A = e === L.POSTERIOR_CAPSULAR_THICKENING,
+      b = e === L.POOR_TEAR_FILM,
+      k = e === L.SMALL_CORTICAL_CATARACT,
+      H = e === L.SMALL_PUPILS,
+      R = e === L.BIG_CORTICAL_CATARACT,
+      q = e === L.CENTRAL_SUB_CORTICAL_CATARACT,
+      z = e === L.POSTERIOR_POLE_CATARACT,
+      $ = e === L.VITREOUS_HAEMORRHAGE;
     return {
-      acgCase,
-      aniridiaCase,
-      aphakiaCase,
-      anisometropiaCase,
-      bigCorticalCataractCase,
-      centralSubCorticalCataractCase,
-      cornealScarCase,
-      corticalCataractCase:
-        smallCorticalCataractCase || bigCorticalCataractCase,
-      cylinderCase,
-      denseCataractCase,
-      floatersCase,
-      irisTransilluminationCase,
-      keratoconusCase,
-      leucocoriaCase,
-      nasalColobomaCase,
-      partialRetinalDetachmentCase,
-      posteriorCapsularThickeningCase,
-      posteriorPoleCataractCase,
-      poorTearFilmCase,
-      scissorsCase,
-      smallCorticalCataractCase,
-      smallPupilsCase,
-      vitreousHaemorrhageCase,
+      acgCase: t,
+      aniridiaCase: a,
+      aphakiaCase: i,
+      anisometropiaCase: p,
+      bigCorticalCataractCase: R,
+      centralSubCorticalCataractCase: q,
+      cornealScarCase: d,
+      corticalCataractCase: k || R,
+      cylinderCase: c,
+      denseCataractCase: E,
+      floatersCase: S,
+      irisTransilluminationCase: v,
+      keratoconusCase: x,
+      leucocoriaCase: h,
+      nasalColobomaCase: C,
+      partialRetinalDetachmentCase: I,
+      posteriorCapsularThickeningCase: A,
+      posteriorPoleCataractCase: z,
+      poorTearFilmCase: b,
+      scissorsCase: u,
+      smallCorticalCataractCase: k,
+      smallPupilsCase: H,
+      vitreousHaemorrhageCase: $,
     };
   }
-  function isAxisDependentCase(currentRefraction) {
-    return AXIS_DEPENDENT_REFRACTION_VALUES2.has(currentRefraction);
+  function _t(e) {
+    return dt.has(e);
   }
-  function getActiveRefractionForMode(currentRefraction, activeEye) {
-    if (currentRefraction === REFRACTION_VALUES.ANISOMETROPIA) {
-      return activeEye === "left"
-        ? REFRACTION_VALUES.PLUS
-        : REFRACTION_VALUES.MINUS;
-    }
-    if (currentRefraction === REFRACTION_VALUES.ACG) {
-      return REFRACTION_VALUES.ZERO;
-    }
-    if (currentRefraction === REFRACTION_VALUES.ANIRIDIA) {
-      return REFRACTION_VALUES.ZERO;
-    }
-    if (currentRefraction === REFRACTION_VALUES.IRIS_TRANSILLUMINATION) {
-      return REFRACTION_VALUES.ZERO;
-    }
-    if (currentRefraction === REFRACTION_VALUES.NASAL_COLOBOMA) {
-      return REFRACTION_VALUES.ZERO;
-    }
-    if (currentRefraction === REFRACTION_VALUES.POSTERIOR_CAPSULAR_THICKENING) {
-      return REFRACTION_VALUES.ZERO;
-    }
-    if (currentRefraction === REFRACTION_VALUES.SMALL_PUPILS) {
-      return REFRACTION_VALUES.ZERO;
-    }
-    return currentRefraction;
+  function qe(e, t) {
+    return e === L.ANISOMETROPIA
+      ? t === "left"
+        ? L.PLUS
+        : L.MINUS
+      : e === L.ACG ||
+          e === L.ANIRIDIA ||
+          e === L.IRIS_TRANSILLUMINATION ||
+          e === L.NASAL_COLOBOMA ||
+          e === L.POSTERIOR_CAPSULAR_THICKENING ||
+          e === L.SMALL_PUPILS
+        ? L.ZERO
+        : e;
   }
-  function normalizeTo180(angleDeg) {
-    const normalized = angleDeg % 180;
-    return normalized < 0 ? normalized + 180 : normalized;
+  function Pt(e) {
+    let t = e % 180;
+    return t < 0 ? t + 180 : t;
   }
-  function smallestAxisDifference(aDeg, bDeg) {
-    const delta = Math.abs(aDeg - bDeg) % 180;
-    return delta > 90 ? 180 - delta : delta;
+  function Dt(e, t) {
+    let a = Math.abs(e - t) % 180;
+    return a > 90 ? 180 - a : a;
   }
-  function createCorticalCataractPattern(isLarge) {
-    const wedgeCount = randomIntInRange(3, 4);
-    const minSeparationDeg = isLarge ? 30 : 34;
-    const wedgeAngles = [];
-    let guard = 0;
-    while (wedgeAngles.length < wedgeCount && guard < 500) {
-      const candidate = randomIntInRange(0, 359);
-      const hasCollision = wedgeAngles.some(
-        (existingAngle) =>
-          smallestCircularDifference(existingAngle, candidate) <
-          minSeparationDeg,
-      );
-      if (!hasCollision) {
-        wedgeAngles.push(candidate);
-      }
-      guard += 1;
+  function ze(e) {
+    let t = Se(3, 4),
+      a = e ? 30 : 34,
+      i = [],
+      c = 0;
+    for (; i.length < t && c < 500; ) {
+      let u = Se(0, 359);
+      (i.some((d) => Ia(d, u) < a) || i.push(u), (c += 1));
     }
-    while (wedgeAngles.length < wedgeCount) {
-      wedgeAngles.push(randomIntInRange(0, 359));
-    }
+    for (; i.length < t; ) i.push(Se(0, 359));
     return {
-      wedges: wedgeAngles.map((angleDeg) => ({
-        angleDeg,
-        opacity: isLarge
-          ? randomFloatInRange(0.82, 0.93)
-          : randomFloatInRange(0.72, 0.86),
-        widthDeg: isLarge
-          ? randomFloatInRange(28, 40)
-          : randomFloatInRange(20, 30),
+      wedges: i.map((u) => ({
+        angleDeg: u,
+        opacity: e ? Te(0.82, 0.93) : Te(0.72, 0.86),
+        widthDeg: e ? Te(28, 40) : Te(20, 30),
       })),
     };
   }
-  function normalizeTo360(angleDeg) {
-    const normalized = angleDeg % 360;
-    return normalized < 0 ? normalized + 360 : normalized;
+  function ka(e) {
+    let t = e % 360;
+    return t < 0 ? t + 360 : t;
   }
-  function buildCorticalCataractOverlay(pattern) {
-    return pattern.wedges
-      .map((wedge) => {
-        const startDeg = normalizeTo360(wedge.angleDeg - wedge.widthDeg * 0.5);
-        const spanDeg = wedge.widthDeg.toFixed(1);
-        const opacity = wedge.opacity.toFixed(2);
-        return `
+  function Bt(e) {
+    return e.wedges.map((t) => {
+      let a = ka(t.angleDeg - t.widthDeg * 0.5),
+        i = t.widthDeg.toFixed(1),
+        c = t.opacity.toFixed(2);
+      return `
       conic-gradient(
-        from ${startDeg.toFixed(1)}deg at 50% 50%,
-        rgba(0, 0, 0, ${opacity}) 0deg,
-        rgba(0, 0, 0, ${opacity}) ${spanDeg}deg,
-        rgba(0, 0, 0, 0) ${spanDeg}deg,
+        from ${a.toFixed(1)}deg at 50% 50%,
+        rgba(0, 0, 0, ${c}) 0deg,
+        rgba(0, 0, 0, ${c}) ${i}deg,
+        rgba(0, 0, 0, 0) ${i}deg,
         rgba(0, 0, 0, 0) 360deg
       )`;
-      })
-      .join(",\n");
+    }).join(`,
+`);
   }
-  function randomCylinderAxisDeg() {
-    const weightedRanges = [
-      { min: 20, max: 70, weight: 4 },
-      { min: 110, max: 160, weight: 4 },
-      { min: 0, max: 19, weight: 1 },
-      { min: 71, max: 109, weight: 1 },
-      { min: 161, max: 179, weight: 1 },
-    ];
-    const totalWeight = weightedRanges.reduce(
-      (sum, range) => sum + range.weight,
-      0,
-    );
-    let roll = Math.random() * totalWeight;
-    for (const range of weightedRanges) {
-      roll -= range.weight;
-      if (roll <= 0) {
-        return randomIntInRange(range.min, range.max);
-      }
-    }
-    return randomIntInRange(20, 70);
+  function Nt() {
+    let e = [
+        { min: 20, max: 70, weight: 4 },
+        { min: 110, max: 160, weight: 4 },
+        { min: 0, max: 19, weight: 1 },
+        { min: 71, max: 109, weight: 1 },
+        { min: 161, max: 179, weight: 1 },
+      ],
+      t = e.reduce((i, c) => i + c.weight, 0),
+      a = Math.random() * t;
+    for (let i of e) if (((a -= i.weight), a <= 0)) return Se(i.min, i.max);
+    return Se(20, 70);
   }
-  function getCataractVisualState(cataractLevel) {
-    const normalized = Math.max(0, Math.min(100, cataractLevel)) / 100;
+  function Ft(e) {
+    let t = Math.max(0, Math.min(100, e)) / 100;
     return {
-      brightnessScale: 1 - normalized * 0.24,
-      blurBoostPx: normalized * 0.8,
-      opacityScale: 1 - normalized * 0.55,
+      brightnessScale: 1 - t * 0.24,
+      blurBoostPx: t * 0.8,
+      opacityScale: 1 - t * 0.55,
     };
   }
-  function getEdgeVisualState({ probeOffsetX, probeOffsetY, pupilRadiusPx }) {
-    const edgeDimmingFactor = getEdgeDimmingFactor({
-      probeOffsetX,
-      probeOffsetY,
-      pupilRadiusPx,
-      profile: EDGE_DIMMING_PROFILE,
+  function qt({ probeOffsetX: e, probeOffsetY: t, pupilRadiusPx: a }) {
+    let i = Ra({
+      probeOffsetX: e,
+      probeOffsetY: t,
+      pupilRadiusPx: a,
+      profile: kt,
     });
     return {
-      edgeBlurBoostPx: (1 - edgeDimmingFactor) * EDGE_VISUAL_BLEND.blurBoostPx,
-      edgeBrightnessScale:
-        EDGE_VISUAL_BLEND.brightnessFloor +
-        edgeDimmingFactor * (1 - EDGE_VISUAL_BLEND.brightnessFloor),
-      edgeOpacityScale:
-        EDGE_VISUAL_BLEND.opacityFloor +
-        edgeDimmingFactor * (1 - EDGE_VISUAL_BLEND.opacityFloor),
+      edgeBlurBoostPx: (1 - i) * ve.blurBoostPx,
+      edgeBrightnessScale: ve.brightnessFloor + i * (1 - ve.brightnessFloor),
+      edgeOpacityScale: ve.opacityFloor + i * (1 - ve.opacityFloor),
     };
   }
-  function getMovementStatusHtml({
-    activeEye,
-    activeRefraction,
-    currentRefraction,
-    flags,
-    movementSign,
+  function zt({
+    activeEye: e,
+    activeRefraction: t,
+    currentRefraction: a,
+    flags: i,
+    movementSign: c,
   }) {
-    if (currentRefraction === REFRACTION_VALUES.ZERO) {
-      return "Neutral (0)";
+    if (a === L.ZERO) return "Neutral (0)";
+    if (i.anisometropiaCase) {
+      let u = e === "left" ? "RE" : "LE";
+      return t.includes(L.PLUS)
+        ? `<em>${u}</em> Fast With movement`
+        : `<em>${u}</em> Fast Against movement`;
     }
-    if (flags.anisometropiaCase) {
-      const eyeLabel = activeEye === "left" ? "RE" : "LE";
-      const withDirection = activeRefraction.includes(REFRACTION_VALUES.PLUS);
-      return withDirection
-        ? `<em>${eyeLabel}</em> Fast With movement`
-        : `<em>${eyeLabel}</em> Fast Against movement`;
-    }
-    if (flags.aphakiaCase) {
-      return "<em>Very slow</em> With movement (aphakia)";
-    }
-    if (flags.acgCase) {
-      return "<em>Vertical</em> Oval pupil (ACG)";
-    }
-    if (flags.aniridiaCase) {
-      return "<em>Large</em> Pupil (aniridia)";
-    }
-    if (flags.smallPupilsCase) {
-      return "<em>Small</em> Pupils";
-    }
-    if (flags.scissorsCase) {
-      return "<em>Small</em> Scissors reflex";
-    }
-    if (flags.keratoconusCase) {
-      return "<em>Irregular</em> Scissors reflex";
-    }
-    if (flags.cornealScarCase) {
-      return "<em>Diffuse</em> Corneal scar reflex";
-    }
-    if (flags.vitreousHaemorrhageCase) {
+    if (i.aphakiaCase) return "<em>Very slow</em> With movement (aphakia)";
+    if (i.acgCase) return "<em>Stylised</em> Vertical oval pupil (ACG)";
+    if (i.aniridiaCase) return "<em>Large</em> Pupil (aniridia)";
+    if (i.smallPupilsCase) return "<em>Small</em> Pupils";
+    if (i.scissorsCase) return "<em>Small</em> Scissors reflex";
+    if (i.keratoconusCase) return "<em>Irregular</em> Scissors reflex";
+    if (i.cornealScarCase) return "<em>Diffuse</em> Corneal scar reflex";
+    if (i.vitreousHaemorrhageCase)
       return "<em>Diffuse</em> Vitreous haemorrhage reflex";
-    }
-    if (flags.floatersCase) {
-      return "<em>Mobile</em> Floater shadows";
-    }
-    if (flags.partialRetinalDetachmentCase) {
-      return "<em>Sectoral</em> Dull reflex";
-    }
-    if (flags.poorTearFilmCase) {
-      return "<em>Variable</em> Tear film reflex";
-    }
-    if (flags.smallCorticalCataractCase) {
+    if (i.floatersCase) return "<em>Mobile</em> Floater shadows";
+    if (i.partialRetinalDetachmentCase) return "<em>Sectoral</em> Dull reflex";
+    if (i.poorTearFilmCase) return "<em>Variable</em> Tear film reflex";
+    if (i.smallCorticalCataractCase)
       return "<em>Dull</em> Small cortical cataract reflex";
-    }
-    if (flags.bigCorticalCataractCase) {
+    if (i.bigCorticalCataractCase)
       return "<em>Dull</em> Big cortical cataract reflex";
-    }
-    if (flags.centralSubCorticalCataractCase) {
+    if (i.centralSubCorticalCataractCase)
       return "<em>Dull</em> Posterior subcapsular cataract reflex";
-    }
-    if (flags.posteriorPoleCataractCase) {
+    if (i.posteriorPoleCataractCase)
       return "<em>Very dull</em> Posterior pole cataract reflex";
-    }
-    if (flags.posteriorCapsularThickeningCase) {
+    if (i.posteriorCapsularThickeningCase)
       return "<em>Dull</em> Posterior capsular thickening reflex";
-    }
-    if (flags.denseCataractCase) {
-      return "<em>Very dull</em> Dense cataract reflex";
-    }
-    if (flags.leucocoriaCase) {
-      return "<em>White</em> Pupil reflex";
-    }
-    if (flags.irisTransilluminationCase) {
+    if (i.denseCataractCase) return "<em>Very dull</em> Dense cataract reflex";
+    if (i.leucocoriaCase) return "<em>White</em> Pupil reflex";
+    if (i.irisTransilluminationCase)
       return "<em>Normal</em> Iris transillumination";
+    if (i.nasalColobomaCase) return "<em>Normal</em> Nasal coloboma pupil";
+    if (i.cylinderCase) {
+      if (Math.abs(c) < 0.08) return "Transition in stylised reflex";
+      let u = a === L.HIGH_CYLINDER,
+        d =
+          Math.pow(Math.abs(c), 0.9) * (u ? 0.75 : 0.58) >= 0.38
+            ? "Fast"
+            : "Slow";
+      return c > 0
+        ? `<em>${d}</em> With movement (astigmatism)`
+        : `<em>${d}</em> Against movement (astigmatism)`;
     }
-    if (flags.nasalColobomaCase) {
-      return "<em>Normal</em> Nasal coloboma pupil";
-    }
-    if (flags.cylinderCase) {
-      if (Math.abs(movementSign) < 0.08) {
-        return "Neutral meridian (astigmatism)";
-      }
-      const highCylinder =
-        currentRefraction === REFRACTION_VALUES.HIGH_CYLINDER;
-      const movementStrength =
-        Math.pow(Math.abs(movementSign), 0.9) * (highCylinder ? 0.75 : 0.58);
-      const speedWord = movementStrength >= 0.38 ? "Fast" : "Slow";
-      return movementSign > 0
-        ? `<em>${speedWord}</em> With movement (astigmatism)`
-        : `<em>${speedWord}</em> Against movement (astigmatism)`;
-    }
-    if (activeRefraction === REFRACTION_VALUES.HIGH_PLUS) {
-      return "<em>Slow</em> With movement (+)";
-    }
-    if (activeRefraction === REFRACTION_VALUES.HIGH_MINUS) {
-      return "<em>Slow</em> Against movement (-)";
-    }
-    if (activeRefraction === REFRACTION_VALUES.PLUS) {
-      return "<em>Fast</em> With movement (+)";
-    }
-    if (activeRefraction === REFRACTION_VALUES.MINUS) {
-      return "<em>Fast</em> Against movement (-)";
-    }
-    return "Neutral (0)";
+    return t === L.HIGH_PLUS
+      ? "<em>Slow</em> With movement (+)"
+      : t === L.HIGH_MINUS
+        ? "<em>Slow</em> Against movement (-)"
+        : t === L.PLUS
+          ? "<em>Fast</em> With movement (+)"
+          : t === L.MINUS
+            ? "<em>Fast</em> Against movement (-)"
+            : "Neutral (0)";
   }
-
-  // src/retinoscopy-pathology-overlays.js?v=20260506-2
-  function buildPathologyOverlayVisual({ flags, timeSec }) {
+  function He({ flags: e, timeSec: t }) {
     if (
-      !flags.floatersCase &&
-      !flags.vitreousHaemorrhageCase &&
-      !flags.partialRetinalDetachmentCase &&
-      !flags.leucocoriaCase
-    ) {
-      return {
-        background: "none",
-        blurPx: 0,
-        opacity: 0,
-        transform: "none",
-      };
-    }
-    if (flags.partialRetinalDetachmentCase) {
+      !e.floatersCase &&
+      !e.vitreousHaemorrhageCase &&
+      !e.partialRetinalDetachmentCase &&
+      !e.leucocoriaCase
+    )
+      return { background: "none", blurPx: 0, opacity: 0, transform: "none" };
+    if (e.partialRetinalDetachmentCase)
       return {
         background: `
         radial-gradient(
@@ -3164,8 +3070,7 @@
         opacity: 0.98,
         transform: "none",
       };
-    }
-    if (flags.leucocoriaCase) {
+    if (e.leucocoriaCase)
       return {
         background: `
         radial-gradient(
@@ -3316,8 +3221,7 @@
         opacity: 0.72,
         transform: "none",
       };
-    }
-    if (flags.vitreousHaemorrhageCase) {
+    if (e.vitreousHaemorrhageCase)
       return {
         background: `
         radial-gradient(
@@ -3353,12 +3257,8 @@
         opacity: 0.96,
         transform: "none",
       };
-    }
-    const driftX =
-      Math.sin(timeSec * 0.32) * 2.2 + Math.cos(timeSec * 0.21 + 0.4) * 1.1;
-    const driftY =
-      Math.cos(timeSec * 0.28 + 0.7) * 1.7 +
-      Math.sin(timeSec * 0.18 + 1.1) * 0.8;
+    let a = Math.sin(t * 0.32) * 2.2 + Math.cos(t * 0.21 + 0.4) * 1.1,
+      i = Math.cos(t * 0.28 + 0.7) * 1.7 + Math.sin(t * 0.18 + 1.1) * 0.8;
     return {
       background: `
       radial-gradient(
@@ -3392,89 +3292,84 @@
     `,
       blurPx: 0,
       opacity: 0.98,
-      transform: `translate(${driftX.toFixed(2)}px, ${driftY.toFixed(2)}px)`,
+      transform: `translate(${a.toFixed(2)}px, ${i.toFixed(2)}px)`,
     };
   }
-
-  // src/retinoscopy-active-reflex.js?v=20260506-3
-  function isWithMovement(currentRefraction) {
-    if (currentRefraction === REFRACTION_VALUES.ZERO) {
-      return null;
-    }
-    return currentRefraction.includes(REFRACTION_VALUES.PLUS);
+  function Ht(e) {
+    return e === L.ZERO ? null : e.includes(L.PLUS);
   }
-  function getReflexScale(currentRefraction) {
-    switch (currentRefraction) {
-      case REFRACTION_VALUES.HIGH_MINUS:
-      case REFRACTION_VALUES.HIGH_PLUS:
+  function Vt(e) {
+    switch (e) {
+      case L.HIGH_MINUS:
+      case L.HIGH_PLUS:
         return 0.1;
-      case REFRACTION_VALUES.MINUS:
-      case REFRACTION_VALUES.PLUS:
+      case L.MINUS:
+      case L.PLUS:
         return 0.3;
       default:
         return 0.2;
     }
   }
-  function buildActiveReflexVisual({
-    activeRefraction,
-    axisDeltaRad,
-    cataractLevel,
-    cylinderAxisDeg,
-    currentRefraction,
-    flags,
-    movementSign,
-    retStreakOffset,
-    timeSec,
+  function Ve({
+    activeRefraction: e,
+    axisDeltaRad: t,
+    cataractLevel: a,
+    cylinderAxisDeg: i,
+    currentRefraction: c,
+    flags: u,
+    movementSign: x,
+    retStreakOffset: d,
+    timeSec: E,
   }) {
-    let background = DEFAULT_REFLEX_BACKGROUND;
-    let shift = 0;
-    let opacity = Math.abs(retStreakOffset) < 1 ? 1 : 0.6;
-    let extraTransform = "";
-    let blurPx = 0;
-    if (flags.scissorsCase) {
-      const lobeSpread = Math.min(25, 10 + Math.abs(retStreakOffset) * 0.4);
-      const skew = Math.max(-16, Math.min(16, retStreakOffset * 0.22));
-      const leftX = (50 - lobeSpread + skew).toFixed(1);
-      const rightX = (50 + lobeSpread + skew).toFixed(1);
-      const upperY = (37 - skew * 0.35).toFixed(1);
-      const lowerY = (63 + skew * 0.35).toFixed(1);
-      background = `
+    let S = Ot,
+      p = 0,
+      v = Math.abs(d) < 1 ? 1 : 0.6,
+      h = "",
+      C = 0;
+    if (u.scissorsCase) {
+      let I = Math.min(25, 10 + Math.abs(d) * 0.4),
+        A = Math.max(-16, Math.min(16, d * 0.22)),
+        b = (50 - I + A).toFixed(1),
+        k = (50 + I + A).toFixed(1),
+        H = (37 - A * 0.35).toFixed(1),
+        R = (63 + A * 0.35).toFixed(1);
+      ((S = `
       radial-gradient(
-        ellipse 46% 42% at ${leftX}% ${upperY}%,
+        ellipse 46% 42% at ${b}% ${H}%,
         rgba(255, 255, 255, 0.86) 0%,
         rgba(255, 255, 255, 0.3) 34%,
         rgba(255, 255, 255, 0.05) 62%,
         rgba(255, 255, 255, 0) 76%
       ),
       radial-gradient(
-        ellipse 46% 42% at ${rightX}% ${lowerY}%,
+        ellipse 46% 42% at ${k}% ${R}%,
         rgba(255, 255, 255, 0.86) 0%,
         rgba(255, 255, 255, 0.3) 34%,
         rgba(255, 255, 255, 0.05) 62%,
         rgba(255, 255, 255, 0) 76%
       )
-    `;
-      shift = retStreakOffset * 0.05;
-      extraTransform = " scale(1.06, 1.02)";
-      blurPx = 0.62;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.8 : 0.74;
-    } else if (flags.keratoconusCase) {
-      const coneOscillation = Math.sin(timeSec * 3.2 + axisDeltaRad * 1.35);
-      const coneBias = 12 + 3.4 * Math.sin(timeSec * 0.65);
-      const apexX = (50 - coneBias).toFixed(1);
-      const apexY = (63 + coneOscillation * 4).toFixed(1);
-      const tailX = (52 + coneBias * 0.35).toFixed(1);
-      const tailY = (39 - coneOscillation * 2.6).toFixed(1);
-      background = `
+    `),
+        (p = d * 0.05),
+        (h = " scale(1.06, 1.02)"),
+        (C = 0.62),
+        (v = Math.abs(d) < 1 ? 0.8 : 0.74));
+    } else if (u.keratoconusCase) {
+      let I = Math.sin(E * 3.2 + t * 1.35),
+        A = 12 + 3.4 * Math.sin(E * 0.65),
+        b = (50 - A).toFixed(1),
+        k = (63 + I * 4).toFixed(1),
+        H = (52 + A * 0.35).toFixed(1),
+        R = (39 - I * 2.6).toFixed(1);
+      ((S = `
       radial-gradient(
-        ellipse 58% 50% at ${apexX}% ${apexY}%,
+        ellipse 58% 50% at ${b}% ${k}%,
         rgba(255, 255, 255, 0.98) 0%,
         rgba(255, 255, 255, 0.34) 28%,
         rgba(255, 255, 255, 0.06) 58%,
         rgba(255, 255, 255, 0) 74%
       ),
       radial-gradient(
-        ellipse 48% 44% at ${tailX}% ${tailY}%,
+        ellipse 48% 44% at ${H}% ${R}%,
         rgba(255, 255, 255, 0.62) 0%,
         rgba(255, 255, 255, 0.22) 34%,
         rgba(255, 255, 255, 0.04) 60%,
@@ -3486,15 +3381,13 @@
         rgba(0, 0, 0, 0.36) 44%,
         rgba(0, 0, 0, 0) 72%
       )
-    `;
-      shift =
-        retStreakOffset * movementSign * 0.18 +
-        Math.sin(timeSec * 5.9 + axisDeltaRad) * 1.3;
-      extraTransform = " scale(1.26, 1.14)";
-      blurPx = 1.12 + (1 - Math.abs(movementSign)) * 1.22;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.84 : 0.7;
-    } else if (flags.aphakiaCase) {
-      background = `
+    `),
+        (p = d * x * 0.18 + Math.sin(E * 5.9 + t) * 1.3),
+        (h = " scale(1.26, 1.14)"),
+        (C = 1.12 + (1 - Math.abs(x)) * 1.22),
+        (v = Math.abs(d) < 1 ? 0.84 : 0.7));
+    } else if (u.aphakiaCase)
+      ((S = `
       radial-gradient(
         ellipse 40% 48% at 50% 50%,
         rgba(255, 255, 255, 1) 0%,
@@ -3510,16 +3403,15 @@
         rgba(255, 255, 255, 0.14) 66%,
         rgba(255, 255, 255, 0) 88%
       )
-    `;
-      shift = retStreakOffset * 0.06;
-      extraTransform = " scale(1.02, 1.06)";
-      blurPx = 0.08;
-      opacity = Math.abs(retStreakOffset) < 1 ? 1 : 0.96;
-    } else if (flags.cornealScarCase) {
-      const scarAngle = ((cylinderAxisDeg + 22) % 180) * 2;
-      background = `
+    `),
+        (p = d * 0.06),
+        (h = " scale(1.02, 1.06)"),
+        (C = 0.08),
+        (v = Math.abs(d) < 1 ? 1 : 0.96));
+    else if (u.cornealScarCase)
+      ((S = `
       conic-gradient(
-        from ${scarAngle.toFixed(1)}deg at 50% 50%,
+        from ${(((i + 22) % 180) * 2).toFixed(1)}deg at 50% 50%,
         rgba(0, 0, 0, 1) 0deg,
         rgba(0, 0, 0, 0.96) 64deg,
         rgba(0, 0, 0, 0.78) 108deg,
@@ -3540,13 +3432,13 @@
         rgba(255, 255, 255, 0.015) 74%,
         rgba(255, 255, 255, 0) 82%
       )
-    `;
-      shift = retStreakOffset * 0.12;
-      extraTransform = " scale(1.09, 1.05)";
-      blurPx = 1.35;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.84 : 0.72;
-    } else if (flags.vitreousHaemorrhageCase) {
-      background = `
+    `),
+        (p = d * 0.12),
+        (h = " scale(1.09, 1.05)"),
+        (C = 1.35),
+        (v = Math.abs(d) < 1 ? 0.84 : 0.72));
+    else if (u.vitreousHaemorrhageCase)
+      ((S = `
       radial-gradient(
         ellipse 82% 70% at 50% 50%,
         rgba(255, 255, 255, 0.72) 0%,
@@ -3554,13 +3446,13 @@
         rgba(255, 255, 255, 0.04) 70%,
         rgba(255, 255, 255, 0) 86%
       )
-    `;
-      shift = retStreakOffset * 0.08;
-      extraTransform = " scale(1.04, 1.02)";
-      blurPx = 0.58;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.8 : 0.68;
-    } else if (flags.floatersCase) {
-      background = `
+    `),
+        (p = d * 0.08),
+        (h = " scale(1.04, 1.02)"),
+        (C = 0.58),
+        (v = Math.abs(d) < 1 ? 0.8 : 0.68));
+    else if (u.floatersCase)
+      ((S = `
       radial-gradient(
         ellipse 78% 66% at 50% 50%,
         rgba(255, 255, 255, 0.94) 0%,
@@ -3568,14 +3460,15 @@
         rgba(255, 255, 255, 0.04) 68%,
         rgba(255, 255, 255, 0) 84%
       )
-    `;
-      shift = retStreakOffset * 0.16;
-      extraTransform = " scale(1.03, 1.02)";
-      blurPx = 0.08;
-      opacity = Math.abs(retStreakOffset) < 1 ? 1 : 0.92;
-    } else if (flags.partialRetinalDetachmentCase) {
-      const rdOffsetAbs = Math.abs(retStreakOffset);
-      background = `
+    `),
+        (p = d * 0.16),
+        (h = " scale(1.03, 1.02)"),
+        (C = 0.08),
+        (v = Math.abs(d) < 1 ? 1 : 0.92));
+    else if (u.partialRetinalDetachmentCase) {
+      let I = Math.abs(d);
+      if (
+        ((S = `
       radial-gradient(
         ellipse 74% 60% at 56% 54%,
         rgba(255, 255, 255, 0.92) 0%,
@@ -3583,62 +3476,56 @@
         rgba(255, 255, 255, 0.08) 64%,
         rgba(255, 255, 255, 0) 82%
       )
-    `;
-      shift = 0;
-      extraTransform = " scale(1.06, 1.03)";
-      blurPx = 0.1;
-      if (rdOffsetAbs <= 20) {
-        opacity = 0.88;
-      } else if (rdOffsetAbs >= 42) {
-        opacity = 0.05;
-      } else {
-        const fadeT = (rdOffsetAbs - 20) / 22;
-        const smoothFadeT = fadeT * fadeT * (3 - 2 * fadeT);
-        opacity = 0.88 - smoothFadeT * 0.83;
+    `),
+        (p = 0),
+        (h = " scale(1.06, 1.03)"),
+        (C = 0.1),
+        I <= 20)
+      )
+        v = 0.88;
+      else if (I >= 42) v = 0.05;
+      else {
+        let A = (I - 20) / 22;
+        v = 0.88 - A * A * (3 - 2 * A) * 0.83;
       }
-    } else if (flags.poorTearFilmCase) {
-      const shimmerX =
-        50 +
-        Math.sin(timeSec * 2.2) * 6 +
-        Math.sin(timeSec * 3.7 + 1.2) * 2.2 +
-        Math.sin(timeSec * 0.7 + 0.4) * 1.4;
-      const shimmerY =
-        50 +
-        Math.cos(timeSec * 1.9 + 0.4) * 4 +
-        Math.sin(timeSec * 3.1 + 0.9) * 1.3;
-      const flickerRaw =
-        0.55 +
-        0.25 * Math.sin(timeSec * 2.6 + 0.9) +
-        0.2 * Math.sin(timeSec * 4.9 + 0.2);
-      const flicker = Math.max(0.08, Math.min(0.98, flickerRaw));
-      background = `
+    } else if (u.poorTearFilmCase) {
+      let I =
+          50 +
+          Math.sin(E * 2.2) * 6 +
+          Math.sin(E * 3.7 + 1.2) * 2.2 +
+          Math.sin(E * 0.7 + 0.4) * 1.4,
+        A = 50 + Math.cos(E * 1.9 + 0.4) * 4 + Math.sin(E * 3.1 + 0.9) * 1.3,
+        b =
+          0.55 + 0.25 * Math.sin(E * 2.6 + 0.9) + 0.2 * Math.sin(E * 4.9 + 0.2),
+        k = Math.max(0.08, Math.min(0.98, b));
+      ((S = `
       radial-gradient(
-        ellipse at ${shimmerX.toFixed(1)}% ${shimmerY.toFixed(1)}%,
+        ellipse at ${I.toFixed(1)}% ${A.toFixed(1)}%,
         rgba(255, 255, 255, 0.98) 14%,
-        rgba(255, 255, 255, ${(0.22 + flicker * 0.24).toFixed(2)}) 36%,
+        rgba(255, 255, 255, ${(0.22 + k * 0.24).toFixed(2)}) 36%,
         rgba(255, 255, 255, 0.04) 72%,
         rgba(255, 255, 255, 0) 82%
       )
-    `;
-      shift =
-        retStreakOffset * 0.18 +
-        Math.sin(timeSec * 3.8 + 0.6) * 1.2 +
-        Math.sin(timeSec * 7.1 + 2.1) * 0.55;
-      blurPx = 0.45 + flicker * 1.35;
-      opacity = 0.34 + flicker * 0.5;
-    } else if (flags.corticalCataractCase) {
-      shift = retStreakOffset * 0.2;
-      blurPx = flags.bigCorticalCataractCase ? 0.65 : 0.4;
-      opacity =
-        Math.abs(retStreakOffset) < 1
-          ? flags.bigCorticalCataractCase
-            ? 0.82
-            : 0.88
-          : flags.bigCorticalCataractCase
-            ? 0.7
-            : 0.78;
-    } else if (flags.centralSubCorticalCataractCase) {
-      background = `
+    `),
+        (p =
+          d * 0.18 +
+          Math.sin(E * 3.8 + 0.6) * 1.2 +
+          Math.sin(E * 7.1 + 2.1) * 0.55),
+        (C = 0.45 + k * 1.35),
+        (v = 0.34 + k * 0.5));
+    } else if (u.corticalCataractCase)
+      ((p = d * 0.2),
+        (C = u.bigCorticalCataractCase ? 0.65 : 0.4),
+        (v =
+          Math.abs(d) < 1
+            ? u.bigCorticalCataractCase
+              ? 0.82
+              : 0.88
+            : u.bigCorticalCataractCase
+              ? 0.7
+              : 0.78));
+    else if (u.centralSubCorticalCataractCase)
+      ((S = `
       radial-gradient(
         ellipse 74% 68% at 50% 50%,
         rgba(255, 255, 255, 0.52) 0%,
@@ -3646,12 +3533,12 @@
         rgba(255, 255, 255, 0.04) 58%,
         rgba(255, 255, 255, 0) 80%
       )
-    `;
-      shift = retStreakOffset * 0.2;
-      blurPx = 0.88 + cataractLevel * 5e-3;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.64 : 0.5;
-    } else if (flags.posteriorPoleCataractCase) {
-      background = `
+    `),
+        (p = d * 0.2),
+        (C = 0.88 + a * 0.005),
+        (v = Math.abs(d) < 1 ? 0.64 : 0.5));
+    else if (u.posteriorPoleCataractCase)
+      ((S = `
       radial-gradient(
         ellipse 74% 68% at 50% 50%,
         rgba(255, 255, 255, 0.58) 0%,
@@ -3659,12 +3546,12 @@
         rgba(255, 255, 255, 0.04) 54%,
         rgba(255, 255, 255, 0) 76%
       )
-    `;
-      shift = retStreakOffset * 0.18;
-      blurPx = 1;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.54 : 0.44;
-    } else if (flags.posteriorCapsularThickeningCase) {
-      background = `
+    `),
+        (p = d * 0.18),
+        (C = 1),
+        (v = Math.abs(d) < 1 ? 0.54 : 0.44));
+    else if (u.posteriorCapsularThickeningCase)
+      ((S = `
       radial-gradient(
         ellipse 104% 86% at 50% 50%,
         rgba(255, 255, 255, 0.56) 0%,
@@ -3702,12 +3589,12 @@
         rgba(255, 255, 255, 0.2) 40%,
         rgba(255, 255, 255, 0) 68%
       )
-    `;
-      shift = retStreakOffset * 0.08;
-      blurPx = 0.24;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.82 : 0.7;
-    } else if (flags.denseCataractCase) {
-      background = `
+    `),
+        (p = d * 0.08),
+        (C = 0.24),
+        (v = Math.abs(d) < 1 ? 0.82 : 0.7));
+    else if (u.denseCataractCase)
+      ((S = `
       radial-gradient(
         ellipse 96% 88% at 50% 50%,
         rgba(0, 0, 0, 0.96) 0%,
@@ -3762,13 +3649,13 @@
         rgba(255, 255, 255, 0.003) 56%,
         rgba(0, 0, 0, 0) 72%
       )
-    `;
-      shift = retStreakOffset * 0.08;
-      extraTransform = " scale(1.02, 1.02)";
-      blurPx = 1.16;
-      opacity = 0.82;
-    } else if (flags.leucocoriaCase) {
-      background = `
+    `),
+        (p = d * 0.08),
+        (h = " scale(1.02, 1.02)"),
+        (C = 1.16),
+        (v = 0.82));
+    else if (u.leucocoriaCase)
+      ((S = `
       radial-gradient(
         ellipse 58% 52% at 51% 50%,
         rgba(255, 251, 238, 0.98) 0%,
@@ -3784,23 +3671,16 @@
         rgba(224, 208, 182, 0.14) 72%,
         rgba(255, 245, 228, 0) 90%
       )
-    `;
-      shift = retStreakOffset * 0.03;
-      extraTransform = " scale(1.1, 1.08)";
-      blurPx = 0.12;
-      opacity = Math.abs(retStreakOffset) < 1 ? 0.9 : 0.74;
-    } else if (
-      currentRefraction === REFRACTION_VALUES.HIGH_PLUS ||
-      currentRefraction === REFRACTION_VALUES.HIGH_MINUS
-    ) {
-      const hotspotY =
-        currentRefraction === REFRACTION_VALUES.HIGH_PLUS ? 28 : 72;
-      const hotspotX = (
-        50 + Math.max(-8, Math.min(8, retStreakOffset * 0.06))
-      ).toFixed(1);
-      background = `
+    `),
+        (p = d * 0.03),
+        (h = " scale(1.1, 1.08)"),
+        (C = 0.12),
+        (v = Math.abs(d) < 1 ? 0.9 : 0.74));
+    else if (c === L.HIGH_PLUS || c === L.HIGH_MINUS) {
+      let I = c === L.HIGH_PLUS ? 28 : 72;
+      S = `
       radial-gradient(
-        ellipse 46% 30% at ${hotspotX}% ${hotspotY}%,
+        ellipse 46% 30% at ${(50 + Math.max(-8, Math.min(8, d * 0.06))).toFixed(1)}% ${I}%,
         rgba(255, 255, 255, 1) 0%,
         rgba(255, 255, 255, 0.64) 24%,
         rgba(255, 255, 255, 0.18) 52%,
@@ -3814,431 +3694,311 @@
         rgba(255, 255, 255, 0) 84%
       )
     `;
-      const shiftBase = retStreakOffset * getReflexScale(activeRefraction);
-      const withMovement = isWithMovement(activeRefraction);
-      shift =
-        withMovement === true
-          ? shiftBase
-          : withMovement === false
-            ? -shiftBase
-            : 0;
-      blurPx = 0.12;
-      opacity = Math.abs(retStreakOffset) < 1 ? 1 : 0.76;
-    } else if (flags.cylinderCase) {
-      const highCylinder =
-        currentRefraction === REFRACTION_VALUES.HIGH_CYLINDER;
-      const movementMagnitude =
-        Math.pow(Math.abs(movementSign), 0.9) * (highCylinder ? 0.75 : 0.58);
-      shift = retStreakOffset * movementSign * movementMagnitude;
-      const axisAlignment = Math.abs(Math.cos(axisDeltaRad));
-      const minScaleX = highCylinder ? 0.34 : 0.52;
-      const maxScaleX = highCylinder ? 1.45 : 1.24;
-      const scaleX = minScaleX + (1 - axisAlignment) * (maxScaleX - minScaleX);
-      const scaleY = highCylinder
-        ? 1.08 + (1 - axisAlignment) * 0.24
-        : 1.04 + (1 - axisAlignment) * 0.14;
-      extraTransform = ` scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
-      blurPx = (1 - axisAlignment) * (highCylinder ? 1.6 : 1.05);
-      opacity =
-        Math.abs(retStreakOffset) < 1
-          ? 1
-          : (highCylinder ? 0.28 : 0.38) +
-            axisAlignment * (highCylinder ? 0.62 : 0.46);
+      let b = d * Vt(e),
+        k = Ht(e);
+      ((p = k === !0 ? b : k === !1 ? -b : 0),
+        (C = 0.12),
+        (v = Math.abs(d) < 1 ? 1 : 0.76));
+    } else if (u.cylinderCase) {
+      let I = c === L.HIGH_CYLINDER,
+        A = Math.pow(Math.abs(x), 0.9) * (I ? 0.75 : 0.58);
+      p = d * x * A;
+      let b = Math.abs(Math.cos(t)),
+        k = I ? 0.34 : 0.52,
+        H = I ? 1.45 : 1.24,
+        R = k + (1 - b) * (H - k),
+        q = I ? 1.08 + (1 - b) * 0.24 : 1.04 + (1 - b) * 0.14;
+      ((h = ` scale(${R.toFixed(3)}, ${q.toFixed(3)})`),
+        (C = (1 - b) * (I ? 1.6 : 1.05)),
+        (v = Math.abs(d) < 1 ? 1 : (I ? 0.28 : 0.38) + b * (I ? 0.62 : 0.46)));
     } else {
-      const shiftBase = retStreakOffset * getReflexScale(activeRefraction);
-      const withMovement = isWithMovement(activeRefraction);
-      shift =
-        withMovement === true
-          ? shiftBase
-          : withMovement === false
-            ? -shiftBase
-            : 0;
+      let I = d * Vt(e),
+        A = Ht(e);
+      p = A === !0 ? I : A === !1 ? -I : 0;
     }
     return {
-      background,
-      blurPx,
-      extraTransform,
-      opacity,
-      shift,
+      background: S,
+      blurPx: C,
+      extraTransform: h,
+      opacity: v,
+      shift: p,
     };
   }
-
-  // src/structural-eye-effects.js
-  function clearMirroredReflex(reflexElement) {
-    if (!reflexElement) {
-      return;
-    }
-    reflexElement.style.opacity = "0";
-    reflexElement.style.background = "none";
-    reflexElement.style.transform = "none";
-    reflexElement.style.filter = "none";
+  function $e(e) {
+    e &&
+      ((e.style.opacity = "0"),
+      (e.style.background = "none"),
+      (e.style.transform = "none"),
+      (e.style.filter = "none"));
   }
-  function syncMirroredReflex({
-    eye,
-    reflexSelector,
-    shouldShow,
-    reflexBackground,
-    reflexTransform,
-    reflexOpacity,
-    reflexFilter,
+  function $t({
+    eye: e,
+    reflexSelector: t,
+    shouldShow: a,
+    reflexBackground: i,
+    reflexTransform: c,
+    reflexOpacity: u,
+    reflexFilter: x,
   }) {
-    const reflexElement =
-      eye == null ? void 0 : eye.querySelector(reflexSelector);
-    if (!reflexElement) {
-      return;
-    }
-    if (!shouldShow) {
-      clearMirroredReflex(reflexElement);
-      return;
-    }
-    reflexElement.style.background = reflexBackground;
-    reflexElement.style.transform = reflexTransform;
-    reflexElement.style.opacity = reflexOpacity;
-    reflexElement.style.filter = reflexFilter;
-  }
-  function applyStructuralEyeState({ eye, eyeType, flags, isActiveEye }) {
-    if (!eye) {
-      return;
-    }
-    eye.classList.toggle(
-      "is-corneal-scar",
-      flags.cornealScarCase && isActiveEye,
-    );
-    const pupilElement = eye.querySelector(".pupil");
-    const colobomaExtension = eye.querySelector(".coloboma-extension");
-    const colobomaReflex = eye.querySelector(".coloboma-extension-reflex");
-    const irisTransilluminationPatch = eye.querySelector(
-      ".iris-transillumination-patch",
-    );
-    const irisTransilluminationReflex = eye.querySelector(
-      ".iris-transillumination-reflex",
-    );
-    const baseSizePx = Math.max(
-      10,
-      parseFloat(
-        (pupilElement == null ? void 0 : pupilElement.dataset.baseSizePx) || "",
-      ) ||
-        (pupilElement == null ? void 0 : pupilElement.clientWidth) ||
-        32,
-    );
-    const applyAcg = flags.acgCase && isActiveEye;
-    const applyAniridia = flags.aniridiaCase;
-    const applyIrisTransillumination =
-      flags.irisTransilluminationCase && isActiveEye;
-    const applyNasalColoboma = flags.nasalColobomaCase && isActiveEye;
-    const applySmallPupils = flags.smallPupilsCase;
-    if (pupilElement) {
-      let targetWidthPx = baseSizePx;
-      let targetHeightPx = baseSizePx;
-      if (applyAniridia) {
-        const targetSizePx = Math.min(74, Math.max(66, baseSizePx * 2.25));
-        targetWidthPx = targetSizePx;
-        targetHeightPx = targetSizePx;
-      } else if (applySmallPupils) {
-        const targetSizePx = Math.max(18, Math.min(22, baseSizePx * 0.62));
-        targetWidthPx = targetSizePx;
-        targetHeightPx = targetSizePx;
-      } else if (applyAcg) {
-        targetWidthPx = Math.min(38, Math.max(34, baseSizePx * 1.08));
-        targetHeightPx = Math.min(46, Math.max(40, baseSizePx * 1.34));
+    let d = e == null ? void 0 : e.querySelector(t);
+    if (d) {
+      if (!a) {
+        $e(d);
+        return;
       }
-      pupilElement.style.width = `${targetWidthPx}px`;
-      pupilElement.style.height = `${targetHeightPx}px`;
-      pupilElement.style.left = `calc(50% - ${targetWidthPx / 2}px)`;
-      pupilElement.style.top = `calc(50% - ${targetHeightPx / 2}px)`;
-    }
-    if (colobomaExtension) {
-      colobomaExtension.classList.toggle("is-visible", applyNasalColoboma);
-      colobomaExtension.classList.toggle(
-        "is-screen-left",
-        applyNasalColoboma && eyeType === "left",
-      );
-      colobomaExtension.classList.toggle(
-        "is-screen-right",
-        applyNasalColoboma && eyeType === "right",
-      );
-    }
-    if (!applyNasalColoboma) {
-      clearMirroredReflex(colobomaReflex);
-    }
-    if (irisTransilluminationPatch) {
-      irisTransilluminationPatch.classList.toggle(
-        "is-visible",
-        applyIrisTransillumination,
-      );
-      irisTransilluminationPatch.classList.toggle(
-        "is-screen-left",
-        applyIrisTransillumination && eyeType === "left",
-      );
-      irisTransilluminationPatch.classList.toggle(
-        "is-screen-right",
-        applyIrisTransillumination && eyeType === "right",
-      );
-    }
-    if (!applyIrisTransillumination) {
-      clearMirroredReflex(irisTransilluminationReflex);
+      ((d.style.background = i),
+        (d.style.transform = c),
+        (d.style.opacity = u),
+        (d.style.filter = x));
     }
   }
-  function syncStructuralReflexApertures({
-    eye,
-    flags,
-    reflexBackground,
-    reflexTransform,
-    reflexOpacity,
-    reflexFilter,
+  function Ut({ eye: e, eyeType: t, flags: a, isActiveEye: i }) {
+    if (!e) return;
+    e.classList.toggle("is-corneal-scar", a.cornealScarCase && i);
+    let c = e.querySelector(".pupil"),
+      u = e.querySelector(".coloboma-extension"),
+      x = e.querySelector(".coloboma-extension-reflex"),
+      d = e.querySelector(".iris-transillumination-patch"),
+      E = e.querySelector(".iris-transillumination-reflex"),
+      S = Math.max(
+        10,
+        parseFloat((c == null ? void 0 : c.dataset.baseSizePx) || "") ||
+          (c == null ? void 0 : c.clientWidth) ||
+          32,
+      ),
+      p = a.acgCase && i,
+      v = a.aniridiaCase,
+      h = a.irisTransilluminationCase && i,
+      C = a.nasalColobomaCase && i,
+      I = a.smallPupilsCase;
+    if (c) {
+      let A = S,
+        b = S;
+      if (v) {
+        let k = Math.min(74, Math.max(66, S * 2.25));
+        ((A = k), (b = k));
+      } else if (I) {
+        let k = Math.max(18, Math.min(22, S * 0.62));
+        ((A = k), (b = k));
+      } else
+        p &&
+          ((A = Math.min(38, Math.max(34, S * 1.08))),
+          (b = Math.min(46, Math.max(40, S * 1.34))));
+      ((c.style.width = `${A}px`),
+        (c.style.height = `${b}px`),
+        (c.style.left = `calc(50% - ${A / 2}px)`),
+        (c.style.top = `calc(50% - ${b / 2}px)`));
+    }
+    (u &&
+      (u.classList.toggle("is-visible", C),
+      u.classList.toggle("is-screen-left", C && t === "left"),
+      u.classList.toggle("is-screen-right", C && t === "right")),
+      C || $e(x),
+      d &&
+        (d.classList.toggle("is-visible", h),
+        d.classList.toggle("is-screen-left", h && t === "left"),
+        d.classList.toggle("is-screen-right", h && t === "right")),
+      h || $e(E));
+  }
+  function Gt({
+    eye: e,
+    flags: t,
+    reflexBackground: a,
+    reflexTransform: i,
+    reflexOpacity: c,
+    reflexFilter: u,
   }) {
-    syncMirroredReflex({
-      eye,
+    ($t({
+      eye: e,
       reflexSelector: ".coloboma-extension-reflex",
-      shouldShow: flags.nasalColobomaCase,
-      reflexBackground,
-      reflexTransform,
-      reflexOpacity,
-      reflexFilter,
-    });
-    syncMirroredReflex({
-      eye,
-      reflexSelector: ".iris-transillumination-reflex",
-      shouldShow: flags.irisTransilluminationCase,
-      reflexBackground,
-      reflexTransform,
-      reflexOpacity,
-      reflexFilter,
-    });
+      shouldShow: t.nasalColobomaCase,
+      reflexBackground: a,
+      reflexTransform: i,
+      reflexOpacity: c,
+      reflexFilter: u,
+    }),
+      $t({
+        eye: e,
+        reflexSelector: ".iris-transillumination-reflex",
+        shouldShow: t.irisTransilluminationCase,
+        reflexBackground: a,
+        reflexTransform: i,
+        reflexOpacity: c,
+        reflexFilter: u,
+      }));
   }
-  function updateLightResponsivePupilScale({
-    eye,
-    flags,
-    isActiveEye,
-    pupilRadiusPx,
-    sweepX,
-    sweepY,
-    maxConstriction = 0.075,
+  function Wt({
+    eye: e,
+    flags: t,
+    isActiveEye: a,
+    pupilRadiusPx: i,
+    sweepX: c,
+    sweepY: u,
+    maxConstriction: x = 0.075,
+    isDilated: d = !1,
+    consensualScale: E = 1,
   }) {
-    const iris = eye == null ? void 0 : eye.querySelector(".iris");
-    if (!iris) {
+    let S = e == null ? void 0 : e.querySelector(".iris");
+    if (!S) return;
+    if (d || t.aniridiaCase || (t.acgCase && a)) {
+      S.style.setProperty("--light-pupil-scale", "1");
       return;
     }
-    if (flags.acgCase && isActiveEye) {
-      iris.style.setProperty("--light-pupil-scale", "1");
-      return;
-    }
-    const distancePx = Math.hypot(sweepX, sweepY);
-    const responseRadiusPx = Math.max(1, pupilRadiusPx * 1.18);
-    const rawT = Math.max(0, Math.min(1, distancePx / responseRadiusPx));
-    const smoothT = rawT * rawT * (3 - 2 * rawT);
-    const constrictionAmount = (1 - smoothT) * maxConstriction;
-    const pupilScale = 1 - constrictionAmount;
-    iris.style.setProperty("--light-pupil-scale", pupilScale.toFixed(3));
+    let p = Ue({ pupilRadiusPx: i, sweepX: c, sweepY: u, maxConstriction: x });
+    S.style.setProperty("--light-pupil-scale", Math.min(p, E).toFixed(3));
   }
-
-  // src/retinoscopy.js?v=20260506-8
-  function createRetinoscopyController({ state, dom }) {
-    const GLOBAL_REFLEX_BRIGHTNESS_BOOST = 1.12;
-    const GLOBAL_REFLEX_OPACITY_BOOST = 1.1;
-    const FELLOW_EYE_REFLEX_BACKGROUND =
-      "radial-gradient(ellipse at 50% 50%, rgba(94, 94, 94, 0.32) 14%, rgba(58, 58, 58, 0.08) 58%, rgba(40, 40, 40, 0.01) 76%, rgba(32, 32, 32, 0) 88%)";
-    const FELLOW_EYE_REFLEX_BRIGHTNESS_SCALE = 0.22;
-    const FELLOW_EYE_REFLEX_OPACITY_SCALE = 0.12;
-    const FELLOW_EYE_REFLEX_BLUR_PX = 0.5;
-    const CORNEAL_LIGHT_SHIFT_FACTOR = 0.02;
-    const CORNEAL_LIGHT_SHIFT_X_LIMIT_PX = 0.8;
-    const CORNEAL_LIGHT_SHIFT_Y_LIMIT_PX = 0.6;
-    let lastMovementStatusHtml = "";
-    let hasUserSweptSinceRefractionChange = false;
-    function setMovementStatusVisible(isVisible) {
-      if (!dom.movementStatusLabel) {
-        return;
-      }
-      dom.movementStatusLabel.classList.toggle(
-        "is-visible",
-        !state.isTestMode && isVisible,
-      );
+  function Ue({
+    pupilRadiusPx: e,
+    sweepX: t,
+    sweepY: a,
+    maxConstriction: i = 0.075,
+  }) {
+    let c = Math.hypot(t, a),
+      u = Math.max(1, e * 1.18),
+      x = Math.max(0, Math.min(1, c / u));
+    return 1 - (1 - x * x * (3 - 2 * x)) * i;
+  }
+  function Xt({ state: e, dom: t }) {
+    let c =
+        "radial-gradient(ellipse at 50% 50%, rgba(94, 94, 94, 0.32) 14%, rgba(58, 58, 58, 0.08) 58%, rgba(40, 40, 40, 0.01) 76%, rgba(32, 32, 32, 0) 88%)",
+      v = "",
+      h = !1;
+    function C(s) {
+      t.movementStatusLabel &&
+        t.movementStatusLabel.classList.toggle(
+          "is-visible",
+          !e.isTestMode && s,
+        );
     }
-    function updateMovementStatusLabel(html) {
-      if (!dom.movementStatusLabel || html === lastMovementStatusHtml) {
+    function I(s) {
+      if (!t.movementStatusLabel || s === v) return;
+      let y = s.match(/^<em>([^<]*)<\/em>\s*(.*)$/);
+      if (!y) {
+        ((t.movementStatusLabel.textContent = s), (v = s));
         return;
       }
-      const emphasisMatch = html.match(/^<em>([^<]*)<\/em>\s*(.*)$/);
-      if (!emphasisMatch) {
-        dom.movementStatusLabel.textContent = html;
-        lastMovementStatusHtml = html;
-        return;
-      }
-      const emphasis = document.createElement("em");
-      emphasis.textContent = emphasisMatch[1];
-      dom.movementStatusLabel.replaceChildren(
-        emphasis,
-        document.createTextNode(` ${emphasisMatch[2]}`),
-      );
-      lastMovementStatusHtml = html;
+      let M = document.createElement("em");
+      ((M.textContent = y[1]),
+        t.movementStatusLabel.replaceChildren(
+          M,
+          document.createTextNode(` ${y[2]}`),
+        ),
+        (v = s));
     }
-    function applyRetEyeClasses(activeEye) {
-      dom.eyes.forEach((eye) => {
-        const isActive = eye.dataset.eye === activeEye;
-        eye.classList.toggle("is-ret-active", isActive);
-        eye.classList.toggle("is-ret-fellow", !isActive);
+    function A(s) {
+      t.eyes.forEach((y) => {
+        let M = y.dataset.eye === s;
+        (y.classList.toggle("is-ret-active", M),
+          y.classList.toggle("is-ret-fellow", !M));
       });
     }
-    function clamp2(value, min, max) {
-      return Math.max(min, Math.min(max, value));
+    function b(s, y, M) {
+      return Math.max(y, Math.min(M, s));
     }
-    function getFellowEyeFocusBalance({
-      beamCentre,
-      eyeType,
-      pupilRadiusPx,
-      sweepX,
-      sweepY,
-      wrapperRect,
+    function k({
+      beamCentre: s,
+      eyeType: y,
+      pupilRadiusPx: M,
+      sweepX: P,
+      sweepY: r,
+      wrapperRect: o,
     }) {
-      const currentDistancePx = Math.hypot(sweepX, sweepY);
-      const fellowEye = eyeType === "left" ? dom.rightEye : dom.leftEye;
-      const fellowPupilCentre = getPupilCentreInWrapper(
-        fellowEye == null ? void 0 : fellowEye.querySelector(".pupil"),
-        wrapperRect,
-      );
-      const fellowDistancePx =
-        beamCentre && fellowPupilCentre
-          ? Math.hypot(
-              beamCentre.x - fellowPupilCentre.x,
-              beamCentre.y - fellowPupilCentre.y,
-            )
-          : currentDistancePx;
-      const distanceGapPx = Math.max(0, currentDistancePx - fellowDistancePx);
-      const responseRadiusPx = Math.max(72, pupilRadiusPx * 4.8);
-      const rawT = Math.max(0, Math.min(1, distanceGapPx / responseRadiusPx));
-      const smoothT = rawT * rawT * (3 - 2 * rawT);
-      return {
-        currentDistancePx,
-        fellowDistancePx,
-        smoothT,
-      };
+      let n = Math.hypot(P, r),
+        g = y === "left" ? t.rightEye : t.leftEye,
+        l = z(g == null ? void 0 : g.querySelector(".pupil"), o),
+        w = s && l ? Math.hypot(s.x - l.x, s.y - l.y) : n,
+        m = Math.max(0, n - w),
+        f = Math.max(72, M * 4.8),
+        O = Math.max(0, Math.min(1, m / f)),
+        D = O * O * (3 - 2 * O);
+      return { currentDistancePx: n, fellowDistancePx: w, smoothT: D };
     }
-    function updateCornealReflex({
-      beamCentre,
-      eye,
-      eyeType,
-      lightOffsetX = 0,
-      lightOffsetY = 0,
-      pupilRadiusPx,
-      sweepX,
-      sweepY,
-      wrapperRect,
+    function H({
+      beamCentre: s,
+      eye: y,
+      eyeType: M,
+      lightOffsetX: P = 0,
+      lightOffsetY: r = 0,
+      pupilRadiusPx: o,
+      sweepX: n,
+      sweepY: g,
+      wrapperRect: l,
     }) {
-      if (!eye) {
-        return;
-      }
-      const { currentDistancePx, fellowDistancePx } = getFellowEyeFocusBalance({
-        beamCentre,
-        eyeType,
-        pupilRadiusPx,
-        sweepX,
-        sweepY,
-        wrapperRect,
-      });
-      const responseRadiusPx = Math.max(72, pupilRadiusPx * 4.8);
-      const directionalGapPx = fellowDistancePx - currentDistancePx;
-      const rawT = Math.max(
-        0,
-        Math.min(1, Math.abs(directionalGapPx) / responseRadiusPx),
-      );
-      const smoothT = rawT * rawT * (3 - 2 * rawT);
-      const cornealReflexScale =
-        directionalGapPx > 0 ? 1 + smoothT * 0.2 : 1 - smoothT * 0.14;
-      eye.style.setProperty(
-        "--corneal-reflex-scale",
-        cornealReflexScale.toFixed(3),
-      );
-      eye.style.setProperty(
-        "--corneal-reflex-light-x",
-        `${clamp2(
-          lightOffsetX * CORNEAL_LIGHT_SHIFT_FACTOR,
-          -CORNEAL_LIGHT_SHIFT_X_LIMIT_PX,
-          CORNEAL_LIGHT_SHIFT_X_LIMIT_PX,
-        ).toFixed(2)}px`,
-      );
-      eye.style.setProperty(
-        "--corneal-reflex-light-y",
-        `${clamp2(
-          lightOffsetY * CORNEAL_LIGHT_SHIFT_FACTOR,
-          -CORNEAL_LIGHT_SHIFT_Y_LIMIT_PX,
-          CORNEAL_LIGHT_SHIFT_Y_LIMIT_PX,
-        ).toFixed(2)}px`,
-      );
+      if (!y) return;
+      let { currentDistancePx: w, fellowDistancePx: m } = k({
+          beamCentre: s,
+          eyeType: M,
+          pupilRadiusPx: o,
+          sweepX: n,
+          sweepY: g,
+          wrapperRect: l,
+        }),
+        f = Math.max(72, o * 4.8),
+        O = m - w,
+        D = Math.max(0, Math.min(1, Math.abs(O) / f)),
+        _ = D * D * (3 - 2 * D),
+        W = O > 0 ? 1 + _ * 0.2 : 1 - _ * 0.14;
+      (y.style.setProperty("--corneal-reflex-scale", W.toFixed(3)),
+        y.style.setProperty(
+          "--corneal-reflex-light-x",
+          `${b(P * 0.02, -0.8, 0.8).toFixed(2)}px`,
+        ),
+        y.style.setProperty(
+          "--corneal-reflex-light-y",
+          `${b(r * 0.02, -0.6, 0.6).toFixed(2)}px`,
+        ));
     }
-    function updateRetStreakPosition() {
-      const { retStreak, eyesWrapper } = dom;
-      if (!retStreak || !eyesWrapper) {
-        return;
-      }
-      const targetEye =
-        state.activeRetEye === "left" ? dom.leftEye : dom.rightEye;
-      if (!targetEye) {
-        return;
-      }
-      const pupil = targetEye.querySelector(".pupil");
-      if (!pupil) {
-        return;
-      }
-      const wrapperRect = eyesWrapper.getBoundingClientRect();
-      const pupilRect = pupil.getBoundingClientRect();
-      const pupilCentreX =
-        (pupilRect.left + pupilRect.right) / 2 - wrapperRect.left;
-      const pupilCentreY =
-        (pupilRect.top + pupilRect.bottom) / 2 - wrapperRect.top;
-      retStreak.style.left = `${pupilCentreX}px`;
-      retStreak.style.top = `${pupilCentreY}px`;
+    function R() {
+      let { retStreak: s, eyesWrapper: y } = t;
+      if (!s || !y) return;
+      let M = e.activeRetEye === "left" ? t.leftEye : t.rightEye;
+      if (!M) return;
+      let P = M.querySelector(".pupil");
+      if (!P) return;
+      let r = y.getBoundingClientRect(),
+        o = P.getBoundingClientRect(),
+        n = (o.left + o.right) / 2 - r.left,
+        g = (o.top + o.bottom) / 2 - r.top;
+      ((s.style.left = `${n}px`), (s.style.top = `${g}px`));
     }
-    function updateRetStreakTransform() {
-      const { retStreak } = dom;
-      if (!retStreak) {
-        return;
-      }
-      retStreak.style.transform = `
+    function q() {
+      let { retStreak: s } = t;
+      s &&
+        (s.style.transform = `
     translate(-50%, -50%)
-    rotate(${state.retStreakRotation}deg)
-    translateX(${state.retStreakOffset}px)
-  `;
+    rotate(${e.retStreakRotation}deg)
+    translateX(${e.retStreakOffset}px)
+  `);
     }
-    function getPupilCentreInWrapper(pupilElement, wrapperRect) {
-      if (!pupilElement || !wrapperRect) {
-        return null;
-      }
-      const pupilRect = pupilElement.getBoundingClientRect();
+    function z(s, y) {
+      if (!s || !y) return null;
+      let M = s.getBoundingClientRect();
       return {
-        x: (pupilRect.left + pupilRect.right) / 2 - wrapperRect.left,
-        y: (pupilRect.top + pupilRect.bottom) / 2 - wrapperRect.top,
+        x: (M.left + M.right) / 2 - y.left,
+        y: (M.top + M.bottom) / 2 - y.top,
       };
     }
-    function getRetStreakCentreInWrapper(wrapperRect) {
-      if (!dom.retStreak || !wrapperRect) {
-        return null;
-      }
-      const streakRect = dom.retStreak.getBoundingClientRect();
+    function $(s) {
+      if (!t.retStreak || !s) return null;
+      let y = t.retStreak.getBoundingClientRect();
       return {
-        x: (streakRect.left + streakRect.right) / 2 - wrapperRect.left,
-        y: (streakRect.top + streakRect.bottom) / 2 - wrapperRect.top,
+        x: (y.left + y.right) / 2 - s.left,
+        y: (y.top + y.bottom) / 2 - s.top,
       };
     }
-    function updateCorticalCataractMask(maskElement, isActiveEye, flags) {
-      if (!maskElement) {
+    function G(s, y, M) {
+      if (!s) return;
+      if (!(M.corticalCataractCase && y)) {
+        ((s.style.opacity = "0"),
+          (s.style.background = "none"),
+          (s.style.maskImage = "none"),
+          (s.style.webkitMaskImage = "none"));
         return;
       }
-      const shouldShowMask = flags.corticalCataractCase && isActiveEye;
-      if (!shouldShowMask) {
-        maskElement.style.opacity = "0";
-        maskElement.style.background = "none";
-        maskElement.style.maskImage = "none";
-        maskElement.style.webkitMaskImage = "none";
-        return;
-      }
-      const isLargePattern = flags.bigCorticalCataractCase;
-      const pattern =
-        state.corticalCataractPattern ||
-        createCorticalCataractPattern(isLargePattern);
-      state.corticalCataractPattern = pattern;
-      maskElement.style.background = buildCorticalCataractOverlay(pattern);
-      const maskImage = isLargePattern
+      let r = M.bigCorticalCataractCase,
+        o = e.corticalCataractPattern || ze(r);
+      ((e.corticalCataractPattern = o), (s.style.background = Bt(o)));
+      let n = r
         ? `radial-gradient(
           circle at 50% 50%,
           rgba(0, 0, 0, 0) 0%,
@@ -4255,511 +4015,390 @@
           rgba(0, 0, 0, 0.9) 76%,
           rgba(0, 0, 0, 1) 100%
         )`;
-      maskElement.style.maskImage = maskImage;
-      maskElement.style.webkitMaskImage = maskImage;
-      maskElement.style.filter = isLargePattern
-        ? "blur(0.36px)"
-        : "blur(0.24px)";
-      maskElement.style.opacity = isLargePattern ? "0.94" : "0.9";
+      ((s.style.maskImage = n),
+        (s.style.webkitMaskImage = n),
+        (s.style.filter = r ? "blur(0.36px)" : "blur(0.24px)"),
+        (s.style.opacity = r ? "0.94" : "0.9"));
     }
-    function clearPathologyOverlay(overlayElement) {
-      if (!overlayElement) {
-        return;
+    function j(s) {
+      s &&
+        ((s.style.opacity = "0"),
+        (s.style.background = "none"),
+        (s.style.transform = "none"),
+        (s.style.filter = "none"));
+    }
+    function X({ flags: s, pupilRadiusPx: y, sweepX: M, sweepY: P }) {
+      if (s.partialRetinalDetachmentCase) return 1;
+      if (s.leucocoriaCase) {
+        let O = Math.hypot(M, P),
+          D = y * 0.55,
+          _ = y * 2.8,
+          W = Math.max(1, _ - D),
+          Y = Math.max(0, Math.min(1, (O - D) / W)),
+          N = Y * Y * (3 - 2 * Y);
+        return 0.8 + (1 - Math.pow(N, 1.45)) * 0.16;
       }
-      overlayElement.style.opacity = "0";
-      overlayElement.style.background = "none";
-      overlayElement.style.transform = "none";
-      overlayElement.style.filter = "none";
+      if (!s.floatersCase && !s.vitreousHaemorrhageCase) return 0;
+      let r = Math.hypot(M, P),
+        o = y * (s.vitreousHaemorrhageCase ? 0.74 : 0.84),
+        n = y * (s.vitreousHaemorrhageCase ? 6.1 : 6.4),
+        g = Math.max(1, n - o),
+        l = Math.max(0, Math.min(1, (r - o) / g)),
+        w = l * l * (3 - 2 * l),
+        m = Math.pow(w, s.vitreousHaemorrhageCase ? 1.35 : 1.55),
+        f = s.vitreousHaemorrhageCase ? 0.26 : 0.18;
+      return f + (1 - m) * (1 - f);
     }
-    function getPathologyIlluminationFactor({
-      flags,
-      pupilRadiusPx,
-      sweepX,
-      sweepY,
+    function te({
+      flags: s,
+      isActiveEye: y,
+      overlayElement: M,
+      pupilRadiusPx: P,
+      sweepX: r,
+      sweepY: o,
+      timeSec: n,
     }) {
-      if (flags.partialRetinalDetachmentCase) {
-        return 1;
+      if (!M || !y) {
+        j(M);
+        return;
       }
-      if (flags.leucocoriaCase) {
-        const distancePx2 = Math.hypot(sweepX, sweepY);
-        const fadeStartPx2 = pupilRadiusPx * 0.55;
-        const fadeEndPx2 = pupilRadiusPx * 2.8;
-        const fadeRangePx2 = Math.max(1, fadeEndPx2 - fadeStartPx2);
-        const rawT2 = Math.max(
-          0,
-          Math.min(1, (distancePx2 - fadeStartPx2) / fadeRangePx2),
-        );
-        const smoothT2 = rawT2 * rawT2 * (3 - 2 * rawT2);
-        const shapedT2 = Math.pow(smoothT2, 1.45);
-        return 0.8 + (1 - shapedT2) * 0.16;
+      let g = He({ flags: s, timeSec: n });
+      if (g.opacity <= 0 || g.background === "none") {
+        j(M);
+        return;
       }
-      if (!flags.floatersCase && !flags.vitreousHaemorrhageCase) {
-        return 0;
+      let l = X({ flags: s, pupilRadiusPx: P, sweepX: r, sweepY: o });
+      if (l <= 0.01) {
+        j(M);
+        return;
       }
-      const distancePx = Math.hypot(sweepX, sweepY);
-      const fadeStartPx =
-        pupilRadiusPx * (flags.vitreousHaemorrhageCase ? 0.74 : 0.84);
-      const fadeEndPx =
-        pupilRadiusPx * (flags.vitreousHaemorrhageCase ? 6.1 : 6.4);
-      const fadeRangePx = Math.max(1, fadeEndPx - fadeStartPx);
-      const rawT = Math.max(
-        0,
-        Math.min(1, (distancePx - fadeStartPx) / fadeRangePx),
-      );
-      const smoothT = rawT * rawT * (3 - 2 * rawT);
-      const shapedT = Math.pow(
-        smoothT,
-        flags.vitreousHaemorrhageCase ? 1.35 : 1.55,
-      );
-      const minimumVisibility = flags.vitreousHaemorrhageCase ? 0.26 : 0.18;
-      return minimumVisibility + (1 - shapedT) * (1 - minimumVisibility);
+      ((M.style.background = g.background),
+        (M.style.transform = g.transform || "none"),
+        (M.style.filter =
+          g.blurPx > 0.01 ? `blur(${g.blurPx.toFixed(2)}px)` : "none"),
+        (M.style.opacity = Math.min(1, g.opacity * l).toFixed(3)));
     }
-    function updatePathologyOverlay({
-      flags,
-      isActiveEye,
-      overlayElement,
-      pupilRadiusPx,
-      sweepX,
-      sweepY,
-      timeSec,
+    function Z({
+      cataractVisual: s,
+      pupilRadiusPx: y,
+      reflex: M,
+      reflexCompX: P,
+      reflexCompY: r,
+      sweepX: o,
+      sweepY: n,
     }) {
-      if (!overlayElement || !isActiveEye) {
-        clearPathologyOverlay(overlayElement);
-        return;
-      }
-      const overlayVisual = buildPathologyOverlayVisual({ flags, timeSec });
-      if (overlayVisual.opacity <= 0 || overlayVisual.background === "none") {
-        clearPathologyOverlay(overlayElement);
-        return;
-      }
-      const illuminationFactor = getPathologyIlluminationFactor({
-        flags,
-        pupilRadiusPx,
-        sweepX,
-        sweepY,
+      let g = Math.hypot(o, n),
+        l = y * 0.02,
+        w = y * 0.62,
+        m = Math.max(1, w - l),
+        f = Math.max(0, Math.min(1, (g - l) / m)),
+        D = 1 - f * f * (3 - 2 * f),
+        _ = Math.pow(D, 2.6),
+        W = Math.pow(D, 2.15);
+      ((M.style.background = c),
+        (M.style.transform = `translate(${-P}px, ${-r}px) rotate(${e.retStreakRotation}deg)`),
+        (M.style.opacity = Math.min(
+          1,
+          0.085 * _ * s.opacityScale * 1.1 * 0.12,
+        )));
+      let Y = W * s.brightnessScale * 1.12 * 0.22,
+        N = [`blur(${(0.5).toFixed(2)}px)`];
+      (Math.abs(Y - 1) > 0.01 && N.push(`brightness(${Y.toFixed(2)})`),
+        (M.style.filter = N.join(" ")));
+    }
+    function U({
+      angleRad: s,
+      axisDeltaRad: y,
+      beamOffsetX: M,
+      beamOffsetY: P,
+      cataractVisual: r,
+      cylinderAxisDeg: o,
+      eye: n,
+      flags: g,
+      movementSign: l,
+      pupilRadiusPx: w,
+      reflex: m,
+      reflexCompX: f,
+      reflexCompY: O,
+      timeSec: D,
+    }) {
+      let _ = Ve({
+        activeRefraction: qe(e.currentRefraction, e.activeRetEye),
+        axisDeltaRad: y,
+        cataractLevel: e.cataractLevel,
+        cylinderAxisDeg: o,
+        currentRefraction: e.currentRefraction,
+        flags: g,
+        movementSign: l,
+        retStreakOffset: e.retStreakOffset,
+        timeSec: D,
       });
-      if (illuminationFactor <= 0.01) {
-        clearPathologyOverlay(overlayElement);
-        return;
-      }
-      overlayElement.style.background = overlayVisual.background;
-      overlayElement.style.transform = overlayVisual.transform || "none";
-      overlayElement.style.filter =
-        overlayVisual.blurPx > 0.01
-          ? `blur(${overlayVisual.blurPx.toFixed(2)}px)`
-          : "none";
-      overlayElement.style.opacity = Math.min(
-        1,
-        overlayVisual.opacity * illuminationFactor,
-      ).toFixed(3);
+      m.style.background = _.background;
+      let W = _.shift * Math.cos(s) - f,
+        Y = _.shift * Math.sin(s) - O,
+        N = Number.isFinite(M) ? M : e.retStreakOffset * Math.cos(s) - f,
+        ie = Number.isFinite(P) ? P : e.retStreakOffset * Math.sin(s) - O,
+        {
+          edgeBlurBoostPx: ne,
+          edgeBrightnessScale: re,
+          edgeOpacityScale: F,
+        } = qt({ probeOffsetX: N, probeOffsetY: ie, pupilRadiusPx: w }),
+        ue = `translate(${W}px, ${Y}px) rotate(${e.retStreakRotation}deg)`;
+      ((e.currentRefraction === L.HIGH_MINUS ||
+        e.currentRefraction === L.HIGH_PLUS) &&
+        (ue += " scale(0.6)"),
+        (ue += _.extraTransform),
+        (m.style.transform = ue));
+      let ce = _.opacity * F * r.opacityScale * 1.1;
+      m.style.opacity = Math.max(0.015, Math.min(ce, 1));
+      let V = _.blurPx + r.blurBoostPx + ne,
+        se = [];
+      V > 0.01 && se.push(`blur(${V.toFixed(2)}px)`);
+      let de = r.brightnessScale * re * 1.12;
+      (Math.abs(de - 1) > 0.01 && se.push(`brightness(${de.toFixed(2)})`),
+        (m.style.filter = se.length ? se.join(" ") : "none"),
+        Gt({
+          eye: n,
+          flags: g,
+          reflexBackground: m.style.background,
+          reflexTransform: m.style.transform,
+          reflexOpacity: m.style.opacity,
+          reflexFilter: m.style.filter,
+        }));
     }
-    function updateFellowEyeReflex({
-      cataractVisual,
-      pupilRadiusPx,
-      reflex,
-      reflexCompX,
-      reflexCompY,
-      sweepX,
-      sweepY,
-    }) {
-      const distancePx = Math.hypot(sweepX, sweepY);
-      const fadeStartPx = pupilRadiusPx * 0.02;
-      const fadeEndPx = pupilRadiusPx * 0.62;
-      const fadeRangePx = Math.max(1, fadeEndPx - fadeStartPx);
-      const rawT = Math.max(
-        0,
-        Math.min(1, (distancePx - fadeStartPx) / fadeRangePx),
-      );
-      const smoothT = rawT * rawT * (3 - 2 * rawT);
-      const sweepIllumination = 1 - smoothT;
-      const opacityVisibility = Math.pow(sweepIllumination, 2.6);
-      const brightnessVisibility = Math.pow(sweepIllumination, 2.15);
-      reflex.style.background = FELLOW_EYE_REFLEX_BACKGROUND;
-      reflex.style.transform = `translate(${-reflexCompX}px, ${-reflexCompY}px) rotate(${state.retStreakRotation}deg)`;
-      reflex.style.opacity = Math.min(
-        1,
-        0.085 *
-          opacityVisibility *
-          cataractVisual.opacityScale *
-          GLOBAL_REFLEX_OPACITY_BOOST *
-          FELLOW_EYE_REFLEX_OPACITY_SCALE,
-      );
-      const brightnessScale =
-        brightnessVisibility *
-        cataractVisual.brightnessScale *
-        GLOBAL_REFLEX_BRIGHTNESS_BOOST *
-        FELLOW_EYE_REFLEX_BRIGHTNESS_SCALE;
-      const filterParts = [`blur(${FELLOW_EYE_REFLEX_BLUR_PX.toFixed(2)}px)`];
-      if (Math.abs(brightnessScale - 1) > 0.01) {
-        filterParts.push(`brightness(${brightnessScale.toFixed(2)})`);
-      }
-      reflex.style.filter = filterParts.join(" ");
-    }
-    function updateActiveEyeReflex({
-      angleRad,
-      axisDeltaRad,
-      beamOffsetX,
-      beamOffsetY,
-      cataractVisual,
-      cylinderAxisDeg,
-      eye,
-      flags,
-      movementSign,
-      pupilRadiusPx,
-      reflex,
-      reflexCompX,
-      reflexCompY,
-      timeSec,
-    }) {
-      const reflexVisual = buildActiveReflexVisual({
-        activeRefraction: getActiveRefractionForMode(
-          state.currentRefraction,
-          state.activeRetEye,
-        ),
-        axisDeltaRad,
-        cataractLevel: state.cataractLevel,
-        cylinderAxisDeg,
-        currentRefraction: state.currentRefraction,
-        flags,
-        movementSign,
-        retStreakOffset: state.retStreakOffset,
-        timeSec,
-      });
-      reflex.style.background = reflexVisual.background;
-      const shiftX = reflexVisual.shift * Math.cos(angleRad) - reflexCompX;
-      const shiftY = reflexVisual.shift * Math.sin(angleRad) - reflexCompY;
-      const sweepX = Number.isFinite(beamOffsetX)
-        ? beamOffsetX
-        : state.retStreakOffset * Math.cos(angleRad) - reflexCompX;
-      const sweepY = Number.isFinite(beamOffsetY)
-        ? beamOffsetY
-        : state.retStreakOffset * Math.sin(angleRad) - reflexCompY;
-      const { edgeBlurBoostPx, edgeBrightnessScale, edgeOpacityScale } =
-        getEdgeVisualState({
-          probeOffsetX: sweepX,
-          probeOffsetY: sweepY,
-          pupilRadiusPx,
-        });
-      let transformStr = `translate(${shiftX}px, ${shiftY}px) rotate(${state.retStreakRotation}deg)`;
-      if (
-        state.currentRefraction === REFRACTION_VALUES.HIGH_MINUS ||
-        state.currentRefraction === REFRACTION_VALUES.HIGH_PLUS
-      ) {
-        transformStr += " scale(0.6)";
-      }
-      transformStr += reflexVisual.extraTransform;
-      reflex.style.transform = transformStr;
-      const adjustedOpacity =
-        reflexVisual.opacity *
-        edgeOpacityScale *
-        cataractVisual.opacityScale *
-        GLOBAL_REFLEX_OPACITY_BOOST;
-      reflex.style.opacity = Math.max(0.015, Math.min(adjustedOpacity, 1));
-      const totalBlurPx =
-        reflexVisual.blurPx + cataractVisual.blurBoostPx + edgeBlurBoostPx;
-      const filterParts = [];
-      if (totalBlurPx > 0.01) {
-        filterParts.push(`blur(${totalBlurPx.toFixed(2)}px)`);
-      }
-      const totalBrightnessScale =
-        cataractVisual.brightnessScale *
-        edgeBrightnessScale *
-        GLOBAL_REFLEX_BRIGHTNESS_BOOST;
-      if (Math.abs(totalBrightnessScale - 1) > 0.01) {
-        filterParts.push(`brightness(${totalBrightnessScale.toFixed(2)})`);
-      }
-      reflex.style.filter = filterParts.length ? filterParts.join(" ") : "none";
-      syncStructuralReflexApertures({
-        eye,
-        flags,
-        reflexBackground: reflex.style.background,
-        reflexTransform: reflex.style.transform,
-        reflexOpacity: reflex.style.opacity,
-        reflexFilter: reflex.style.filter,
-      });
-    }
-    function updateRetReflex() {
-      var _a;
-      const activeRefraction = getActiveRefractionForMode(
-        state.currentRefraction,
-        state.activeRetEye,
-      );
-      const flags = getCaseFlags(state.currentRefraction);
-      const cylinderAxisDeg =
-        typeof state.cylinderAxisDeg === "number" ? state.cylinderAxisDeg : 0;
-      const rotationNorm = normalizeTo180(state.retStreakRotation);
-      const axisDeltaDeg = smallestAxisDifference(
-        rotationNorm,
-        cylinderAxisDeg,
-      );
-      const axisDeltaRad = (axisDeltaDeg * Math.PI) / 180;
-      const movementSign = Math.cos(axisDeltaRad * 2);
-      const cataractVisual = getCataractVisualState(state.cataractLevel);
-      const hasActiveSweep =
-        hasUserSweptSinceRefractionChange &&
-        Math.abs(state.retStreakOffset) >= 1;
-      const angleRad = state.retStreakRotation * (Math.PI / 180);
-      const timeSec = performance.now() / 1e3;
-      const wrapperRect =
-        ((_a = dom.eyesWrapper) == null
-          ? void 0
-          : _a.getBoundingClientRect()) || null;
-      const activeEyeElement =
-        state.activeRetEye === "left" ? dom.leftEye : dom.rightEye;
-      const activePupilElement =
-        (activeEyeElement == null
-          ? void 0
-          : activeEyeElement.querySelector(".pupil")) || null;
-      const activePupilCentre = getPupilCentreInWrapper(
-        activePupilElement,
-        wrapperRect,
-      );
-      const renderedBeamCentre = getRetStreakCentreInWrapper(wrapperRect);
-      const fallbackBeamCentre = activePupilCentre
-        ? {
-            x: activePupilCentre.x + state.retStreakOffset * Math.cos(angleRad),
-            y: activePupilCentre.y + state.retStreakOffset * Math.sin(angleRad),
-          }
-        : null;
-      const beamCentre = renderedBeamCentre || fallbackBeamCentre;
-      setMovementStatusVisible(hasActiveSweep);
-      updateMovementStatusLabel(
-        getMovementStatusHtml({
-          activeEye: state.activeRetEye,
-          activeRefraction,
-          currentRefraction: state.currentRefraction,
-          flags,
-          movementSign,
-        }),
-      );
-      dom.retReflexElements.forEach((reflex) => {
-        var _a2, _b, _c, _d, _e, _f, _g, _h;
-        const eye = reflex.closest(".eye");
-        const eyeType = eye == null ? void 0 : eye.dataset.eye;
-        const isActiveEye = eyeType === state.activeRetEye;
-        applyStructuralEyeState({ eye, eyeType, flags, isActiveEye });
-        const iris = eye == null ? void 0 : eye.querySelector(".iris");
-        const pupil = eye == null ? void 0 : eye.querySelector(".pupil");
-        const corticalCataractMask =
-          eye == null ? void 0 : eye.querySelector(".cortical-cataract-mask");
-        const centralSubcorticalMask =
-          eye == null ? void 0 : eye.querySelector(".central-subcortical-mask");
-        const pathologyOverlay =
-          eye == null ? void 0 : eye.querySelector(".pathology-overlay");
-        const pupilRadiusPx = Math.max(
+    function Q() {
+      var ne;
+      let s = qe(e.currentRefraction, e.activeRetEye),
+        y = Fe(e.currentRefraction),
+        M = typeof e.cylinderAxisDeg == "number" ? e.cylinderAxisDeg : 0,
+        P = Pt(e.retStreakRotation),
+        o = (Dt(P, M) * Math.PI) / 180,
+        n = Math.cos(o * 2),
+        g = Ft(e.cataractLevel),
+        l = h && Math.abs(e.retStreakOffset) >= 1,
+        w = e.retStreakRotation * (Math.PI / 180),
+        m = performance.now() / 1e3,
+        f =
+          ((ne = t.eyesWrapper) == null
+            ? void 0
+            : ne.getBoundingClientRect()) || null,
+        O = e.activeRetEye === "left" ? t.leftEye : t.rightEye,
+        D = (O == null ? void 0 : O.querySelector(".pupil")) || null,
+        _ = z(D, f),
+        W = $(f),
+        Y = _
+          ? {
+              x: _.x + e.retStreakOffset * Math.cos(w),
+              y: _.y + e.retStreakOffset * Math.sin(w),
+            }
+          : null,
+        N = W || Y;
+      (C(l),
+        I(
+          zt({
+            activeEye: e.activeRetEye,
+            activeRefraction: s,
+            currentRefraction: e.currentRefraction,
+            flags: y,
+            movementSign: n,
+          }),
+        ));
+      let ie = Ue({
+        pupilRadiusPx: Math.max(
           8,
-          ((pupil == null ? void 0 : pupil.clientWidth) || 32) * 0.5,
-        );
-        const pupilCentre = getPupilCentreInWrapper(pupil, wrapperRect);
-        const totalEyeOffsetX =
-          (((_a2 = iris == null ? void 0 : iris.nystagmusOffset) == null
-            ? void 0
-            : _a2.x) || 0) +
-          (((_b = iris == null ? void 0 : iris.microOffset) == null
-            ? void 0
-            : _b.x) || 0) +
-          (((_c = iris == null ? void 0 : iris.backgroundOffset) == null
-            ? void 0
-            : _c.x) || 0) +
-          (((_d = iris == null ? void 0 : iris.gazeOffset) == null
-            ? void 0
-            : _d.x) || 0);
-        const totalEyeOffsetY =
-          (((_e = iris == null ? void 0 : iris.nystagmusOffset) == null
-            ? void 0
-            : _e.y) || 0) +
-          (((_f = iris == null ? void 0 : iris.microOffset) == null
-            ? void 0
-            : _f.y) || 0) +
-          (((_g = iris == null ? void 0 : iris.backgroundOffset) == null
-            ? void 0
-            : _g.y) || 0) +
-          (((_h = iris == null ? void 0 : iris.gazeOffset) == null
-            ? void 0
-            : _h.y) || 0);
-        const shouldCompensateEyeMotion =
-          state.nystagmusLevel > 0 || state.isGazeMode;
-        const reflexCompX = shouldCompensateEyeMotion ? totalEyeOffsetX : 0;
-        const reflexCompY = shouldCompensateEyeMotion ? totalEyeOffsetY : 0;
-        const beamOffsetX =
-          beamCentre && pupilCentre
-            ? beamCentre.x - pupilCentre.x
-            : state.retStreakOffset * Math.cos(angleRad) - reflexCompX;
-        const beamOffsetY =
-          beamCentre && pupilCentre
-            ? beamCentre.y - pupilCentre.y
-            : state.retStreakOffset * Math.sin(angleRad) - reflexCompY;
-        updateLightResponsivePupilScale({
-          eye,
-          flags,
-          isActiveEye,
-          pupilRadiusPx,
-          sweepX: beamOffsetX,
-          sweepY: beamOffsetY,
-        });
-        updateCornealReflex({
-          beamCentre,
-          eye,
-          eyeType,
-          lightOffsetX: beamOffsetX,
-          lightOffsetY: beamOffsetY,
-          pupilRadiusPx,
-          sweepX: beamOffsetX,
-          sweepY: beamOffsetY,
-          wrapperRect,
-        });
-        updateCentralMediaMask({
-          maskElement: centralSubcorticalMask,
-          flags,
-          isActiveEye,
-        });
-        updateCorticalCataractMask(corticalCataractMask, isActiveEye, flags);
-        updatePathologyOverlay({
-          flags,
-          isActiveEye,
-          overlayElement: pathologyOverlay,
-          pupilRadiusPx,
-          sweepX: beamOffsetX,
-          sweepY: beamOffsetY,
-          timeSec,
-        });
-        if (!isActiveEye) {
-          updateFellowEyeReflex({
-            cataractVisual,
-            pupilRadiusPx,
-            reflex,
-            reflexCompX,
-            reflexCompY,
-            sweepX: beamOffsetX,
-            sweepY: beamOffsetY,
+          ((D == null ? void 0 : D.clientWidth) || 32) * 0.5,
+        ),
+        sweepX: N && _ ? N.x - _.x : e.retStreakOffset,
+        sweepY: N && _ ? N.y - _.y : 0,
+      });
+      t.retReflexElements.forEach((re) => {
+        var Ye, je, Qe, Ke, Je, Ze, et, tt;
+        let F = re.closest(".eye"),
+          ue = F == null ? void 0 : F.dataset.eye,
+          ce = ue === e.activeRetEye;
+        Ut({ eye: F, eyeType: ue, flags: y, isActiveEye: ce });
+        let V = F == null ? void 0 : F.querySelector(".iris"),
+          se = F == null ? void 0 : F.querySelector(".pupil"),
+          de = F == null ? void 0 : F.querySelector(".cortical-cataract-mask"),
+          ra =
+            F == null ? void 0 : F.querySelector(".central-subcortical-mask"),
+          ia = F == null ? void 0 : F.querySelector(".pathology-overlay"),
+          xe = Math.max(
+            8,
+            ((se == null ? void 0 : se.clientWidth) || 32) * 0.5,
+          ),
+          Ee = z(se, f),
+          na =
+            (((Ye = V == null ? void 0 : V.nystagmusOffset) == null
+              ? void 0
+              : Ye.x) || 0) +
+            (((je = V == null ? void 0 : V.microOffset) == null
+              ? void 0
+              : je.x) || 0) +
+            (((Qe = V == null ? void 0 : V.backgroundOffset) == null
+              ? void 0
+              : Qe.x) || 0) +
+            (((Ke = V == null ? void 0 : V.gazeOffset) == null
+              ? void 0
+              : Ke.x) || 0),
+          oa =
+            (((Je = V == null ? void 0 : V.nystagmusOffset) == null
+              ? void 0
+              : Je.y) || 0) +
+            (((Ze = V == null ? void 0 : V.microOffset) == null
+              ? void 0
+              : Ze.y) || 0) +
+            (((et = V == null ? void 0 : V.backgroundOffset) == null
+              ? void 0
+              : et.y) || 0) +
+            (((tt = V == null ? void 0 : V.gazeOffset) == null
+              ? void 0
+              : tt.y) || 0),
+          Xe = e.nystagmusLevel > 0 || e.isGazeMode,
+          Le = Xe ? na : 0,
+          Ie = Xe ? oa : 0,
+          me = N && Ee ? N.x - Ee.x : e.retStreakOffset * Math.cos(w) - Le,
+          fe = N && Ee ? N.y - Ee.y : e.retStreakOffset * Math.sin(w) - Ie;
+        if (
+          (Wt({
+            isDilated: e.isDilatedMode,
+            consensualScale: ie,
+            eye: F,
+            flags: y,
+            isActiveEye: ce,
+            pupilRadiusPx: xe,
+            sweepX: me,
+            sweepY: fe,
+          }),
+          H({
+            beamCentre: N,
+            eye: F,
+            eyeType: ue,
+            lightOffsetX: me,
+            lightOffsetY: fe,
+            pupilRadiusPx: xe,
+            sweepX: me,
+            sweepY: fe,
+            wrapperRect: f,
+          }),
+          Rt({ maskElement: ra, flags: y, isActiveEye: ce }),
+          G(de, ce, y),
+          te({
+            flags: y,
+            isActiveEye: ce,
+            overlayElement: ia,
+            pupilRadiusPx: xe,
+            sweepX: me,
+            sweepY: fe,
+            timeSec: m,
+          }),
+          !ce)
+        ) {
+          Z({
+            cataractVisual: g,
+            pupilRadiusPx: xe,
+            reflex: re,
+            reflexCompX: Le,
+            reflexCompY: Ie,
+            sweepX: me,
+            sweepY: fe,
           });
           return;
         }
-        updateActiveEyeReflex({
-          angleRad,
-          axisDeltaRad,
-          beamOffsetX,
-          beamOffsetY,
-          cataractVisual,
-          cylinderAxisDeg,
-          eye,
-          flags,
-          movementSign,
-          pupilRadiusPx,
-          reflex,
-          reflexCompX,
-          reflexCompY,
-          timeSec,
+        U({
+          angleRad: w,
+          axisDeltaRad: o,
+          beamOffsetX: me,
+          beamOffsetY: fe,
+          cataractVisual: g,
+          cylinderAxisDeg: M,
+          eye: F,
+          flags: y,
+          movementSign: n,
+          pupilRadiusPx: xe,
+          reflex: re,
+          reflexCompX: Le,
+          reflexCompY: Ie,
+          timeSec: m,
         });
       });
     }
-    function updateRetinoscopy({ includePosition = true } = {}) {
-      if (includePosition) {
-        updateRetStreakPosition();
-      }
-      updateRetStreakTransform();
-      updateRetReflex();
+    function ee({ includePosition: s = !0 } = {}) {
+      (s && R(), q(), Q());
     }
-    function renderNow(includePosition = true) {
-      if (state.retinoscopyRafId) {
-        cancelAnimationFrame(state.retinoscopyRafId);
-        state.retinoscopyRafId = 0;
-      }
-      state.retinoscopyNeedsPosition = false;
-      updateRetinoscopy({ includePosition });
+    function ae(s = !0) {
+      (e.retinoscopyRafId &&
+        (cancelAnimationFrame(e.retinoscopyRafId), (e.retinoscopyRafId = 0)),
+        (e.retinoscopyNeedsPosition = !1),
+        ee({ includePosition: s }));
     }
-    function scheduleRetinoscopy(includePosition = false) {
-      state.retinoscopyNeedsPosition =
-        state.retinoscopyNeedsPosition || includePosition;
-      if (state.retinoscopyRafId) {
-        return;
-      }
-      state.retinoscopyRafId = requestAnimationFrame(() => {
-        updateRetinoscopy({ includePosition: state.retinoscopyNeedsPosition });
-        state.retinoscopyNeedsPosition = false;
-        state.retinoscopyRafId = 0;
-      });
+    function K(s = !1) {
+      ((e.retinoscopyNeedsPosition = e.retinoscopyNeedsPosition || s),
+        !e.retinoscopyRafId &&
+          (e.retinoscopyRafId = requestAnimationFrame(() => {
+            (ee({ includePosition: e.retinoscopyNeedsPosition }),
+              (e.retinoscopyNeedsPosition = !1),
+              (e.retinoscopyRafId = 0));
+          })));
     }
-    function setActiveRetEye(nextEye) {
-      if (nextEye !== "left" && nextEye !== "right") {
-        return;
-      }
-      state.activeRetEye = nextEye;
-      applyRetEyeClasses(nextEye);
-      dom.retEyeButtons.forEach((button) => {
-        button.classList.toggle("is-active", button.dataset.retEye === nextEye);
-      });
-      scheduleRetinoscopy(true);
+    function le(s) {
+      (s !== "left" && s !== "right") ||
+        ((e.activeRetEye = s),
+        A(s),
+        t.retEyeButtons.forEach((y) => {
+          (y.classList.toggle("is-active", y.dataset.retEye === s),
+            y.setAttribute("aria-pressed", String(y.dataset.retEye === s)));
+        }),
+        K(!0));
     }
-    function setRetStreakOffset(value) {
-      state.retStreakOffset = value;
-      hasUserSweptSinceRefractionChange = true;
-      scheduleRetinoscopy(false);
+    function oe(s) {
+      ((e.retStreakOffset = s), (h = !0), K(!1));
     }
-    function setRetStreakRotation(value) {
-      state.retStreakRotation = value;
-      scheduleRetinoscopy(false);
+    function ge(s) {
+      ((e.retStreakRotation = s), K(!1));
     }
-    function setRefraction(value) {
-      if (!REFRACTION_VALUE_SET2.has(value)) {
-        return;
-      }
-      state.currentRefraction = value;
-      const flags = getCaseFlags(value);
-      if (flags.corticalCataractCase) {
-        state.corticalCataractPattern = createCorticalCataractPattern(
-          value === REFRACTION_VALUES.BIG_CORTICAL_CATARACT,
-        );
-      } else {
-        state.corticalCataractPattern = null;
-      }
-      if (isAxisDependentCase(value)) {
-        state.cylinderAxisDeg = randomCylinderAxisDeg();
-        state.retStreakRotation =
-          state.cylinderAxisDeg > 90
-            ? state.cylinderAxisDeg - 180
-            : state.cylinderAxisDeg;
-      } else {
-        state.cylinderAxisDeg = null;
-        state.retStreakRotation = 0;
-      }
-      state.retStreakOffset = 0;
-      if (dom.retinoscopySlider) {
-        dom.retinoscopySlider.value = "0";
-      }
-      if (dom.retinoscopyRotationSlider) {
-        dom.retinoscopyRotationSlider.value = String(state.retStreakRotation);
-      }
-      hasUserSweptSinceRefractionChange = false;
-      setMovementStatusVisible(false);
-      scheduleRetinoscopy(true);
+    function T(s) {
+      if (!ut.has(s)) return;
+      ((e.currentRefraction = s),
+        Fe(s).corticalCataractCase
+          ? (e.corticalCataractPattern = ze(s === L.BIG_CORTICAL_CATARACT))
+          : (e.corticalCataractPattern = null),
+        _t(s)
+          ? ((e.cylinderAxisDeg = Nt()),
+            (e.retStreakRotation =
+              e.cylinderAxisDeg > 90
+                ? e.cylinderAxisDeg - 180
+                : e.cylinderAxisDeg))
+          : ((e.cylinderAxisDeg = null), (e.retStreakRotation = 0)),
+        (e.retStreakOffset = 0),
+        t.retinoscopySlider && (t.retinoscopySlider.value = "0"),
+        t.retinoscopyRotationSlider &&
+          (t.retinoscopyRotationSlider.value = String(e.retStreakRotation)),
+        (h = !1),
+        C(!1),
+        K(!0));
     }
-    function setCataractLevel(value) {
-      const parsed = Number.isFinite(value) ? value : parseInt(value, 10);
-      if (Number.isNaN(parsed)) {
-        return;
-      }
-      state.cataractLevel = Math.max(0, Math.min(100, parsed));
-      scheduleRetinoscopy(false);
+    function B(s) {
+      let y = Number.isFinite(s) ? s : parseInt(s, 10);
+      Number.isNaN(y) ||
+        ((e.cataractLevel = Math.max(0, Math.min(100, y))), K(!1));
     }
     return {
-      renderNow,
-      scheduleRetinoscopy,
-      setActiveRetEye,
-      setRetStreakOffset,
-      setRetStreakRotation,
-      setRefraction,
-      setCataractLevel,
+      renderNow: ae,
+      scheduleRetinoscopy: K,
+      setActiveRetEye: le,
+      setRetStreakOffset: oe,
+      setRetStreakRotation: ge,
+      setRefraction: T,
+      setCataractLevel: B,
     };
   }
-
-  // src/state.js?v=20260506-2
-  function createAppState() {
+  function Yt() {
     return {
-      baseReflexColor: { ...DEFAULT_BASE_REFLEX_COLOR2 },
-      ...DEFAULT_RETINOSCOPY_STATE,
+      baseReflexColor: { ...lt },
+      ...ct,
       retinoscopyRafId: 0,
-      retinoscopyNeedsPosition: true,
+      retinoscopyNeedsPosition: !0,
       activeMcqLevel: "primary",
       activeMcqQuestions: [],
       corticalCataractPattern: null,
@@ -4771,13 +4410,13 @@
       gazeShiftTimerId: 0,
       lastBlinkAtMs: 0,
       nystagmusRafId: 0,
-      isManualEyeMoveEnabled: false,
-      isGazeMode: false,
-      isDilatedMode: false,
-      isBabyMode: false,
+      isManualEyeMoveEnabled: !1,
+      isGazeMode: !1,
+      isDilatedMode: !1,
+      isBabyMode: !1,
       dilatedPreviousPupilValues: null,
-      isTestMode: false,
-      isTestRevealed: false,
+      isTestMode: !1,
+      isTestRevealed: !1,
       testCountdown: 0,
       testTimerId: 0,
       testConditionValue: null,
@@ -4787,720 +4426,732 @@
       testRoundIndex: 0,
     };
   }
-
-  // src/streak-controls.js
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
+  function Ge(e, t, a) {
+    return Math.max(t, Math.min(a, e));
   }
-  function createStreakControlsController({
-    state,
-    dom,
-    retinoscopyController,
-  }) {
-    const { retStreak, retStreakRotateHandle, retStreakSweepHandle } = dom;
-    const SWEEP_LIMIT = 50;
-    const ROTATION_LIMIT = 90;
-    const SWEEP_PIXELS_PER_UNIT = 2;
-    const ROTATION_PIXELS_PER_DEG = 1.15;
-    let hintTimerId = 0;
-    function hideHint() {
-      if (!retStreak) {
-        return;
-      }
-      if (hintTimerId) {
-        window.clearTimeout(hintTimerId);
-        hintTimerId = 0;
-      }
-      retStreak.classList.remove("is-hint-visible");
+  function jt({ state: e, dom: t, retinoscopyController: a }) {
+    let { retStreak: i, retStreakRotateHandle: c, retStreakSweepHandle: u } = t,
+      x = 50,
+      d = 90,
+      E = 2,
+      S = 1.15,
+      p = 0;
+    function v() {
+      i &&
+        (p && (window.clearTimeout(p), (p = 0)),
+        i.classList.remove("is-hint-visible"));
     }
-    function showHint() {
-      if (!retStreak) {
-        return;
-      }
-      retStreak.classList.add("is-hint-visible");
-      hintTimerId = window.setTimeout(() => {
-        retStreak.classList.remove("is-hint-visible");
-        hintTimerId = 0;
-      }, 3e3);
+    function h() {
+      i &&
+        (i.classList.add("is-hint-visible"),
+        (p = window.setTimeout(() => {
+          (i.classList.remove("is-hint-visible"), (p = 0));
+        }, 3e3)));
     }
-    function bindPointerDrag(
-      handle,
-      { getValue, max, min, pixelsPerUnit, setValue },
+    function C(
+      b,
+      { getValue: k, max: H, min: R, pixelsPerUnit: q, setValue: z },
     ) {
-      if (!handle) {
-        return;
+      if (!b) return;
+      let $ = null,
+        G = 0,
+        j = 0,
+        X = 0,
+        te = 0;
+      function Z(U) {
+        var Q;
+        $ !== null &&
+          ((U && U.pointerId !== $) ||
+            (($ = null),
+            (
+              ((Q = b.closest) == null ? void 0 : Q.call(b, ".ret-streak")) || b
+            ).classList.remove("is-dragging")));
       }
-      let activePointerId = null;
-      let startX = 0;
-      let startY = 0;
-      let startAngleRad = 0;
-      let startValue = 0;
-      function endDrag(event) {
-        var _a;
-        if (activePointerId === null) {
-          return;
-        }
-        if (event && event.pointerId !== activePointerId) {
-          return;
-        }
-        activePointerId = null;
-        (
-          ((_a = handle.closest) == null
-            ? void 0
-            : _a.call(handle, ".ret-streak")) || handle
-        ).classList.remove("is-dragging");
-      }
-      handle.addEventListener("pointerdown", (event) => {
-        var _a, _b;
-        if (event.button !== void 0 && event.button !== 0) {
-          return;
-        }
-        hideHint();
-        event.stopPropagation();
-        activePointerId = event.pointerId;
-        startX = event.clientX;
-        startY = event.clientY;
-        startAngleRad = (state.retStreakRotation * Math.PI) / 180;
-        startValue = getValue();
-        (
-          ((_a = handle.closest) == null
-            ? void 0
-            : _a.call(handle, ".ret-streak")) || handle
-        ).classList.add("is-dragging");
-        (_b = handle.setPointerCapture) == null
-          ? void 0
-          : _b.call(handle, event.pointerId);
-        event.preventDefault();
-      });
-      handle.addEventListener("pointermove", (event) => {
-        if (event.pointerId !== activePointerId) {
-          return;
-        }
-        const deltaX = event.clientX - startX;
-        const deltaY = event.clientY - startY;
-        const projectedDelta =
-          deltaX * Math.cos(startAngleRad) + deltaY * Math.sin(startAngleRad);
-        const nextValue = clamp(
-          startValue + projectedDelta / pixelsPerUnit,
-          min,
-          max,
-        );
-        setValue(Math.round(nextValue));
-      });
-      handle.addEventListener("pointerup", endDrag);
-      handle.addEventListener("pointercancel", endDrag);
-      handle.addEventListener("lostpointercapture", endDrag);
+      (b.addEventListener("pointerdown", (U) => {
+        var Q, ee;
+        (U.button !== void 0 && U.button !== 0) ||
+          (v(),
+          U.stopPropagation(),
+          ($ = U.pointerId),
+          (G = U.clientX),
+          (j = U.clientY),
+          (X = (e.retStreakRotation * Math.PI) / 180),
+          (te = k()),
+          (
+            ((Q = b.closest) == null ? void 0 : Q.call(b, ".ret-streak")) || b
+          ).classList.add("is-dragging"),
+          (ee = b.setPointerCapture) == null || ee.call(b, U.pointerId),
+          U.preventDefault());
+      }),
+        b.addEventListener("pointermove", (U) => {
+          if (U.pointerId !== $) return;
+          let Q = U.clientX - G,
+            ee = U.clientY - j,
+            ae = Q * Math.cos(X) + ee * Math.sin(X),
+            K = Ge(te + ae / q, R, H);
+          z(Math.round(K));
+        }),
+        b.addEventListener("pointerup", Z),
+        b.addEventListener("pointercancel", Z),
+        b.addEventListener("lostpointercapture", Z));
     }
-    function bindKeyboard(handle, { step, setNextValue }) {
-      if (!handle) {
-        return;
-      }
-      handle.addEventListener("keydown", (event) => {
-        if (
-          event.key !== "ArrowLeft" &&
-          event.key !== "ArrowRight" &&
-          event.key !== "Home" &&
-          event.key !== "End"
-        ) {
-          return;
-        }
-        hideHint();
-        event.preventDefault();
-        setNextValue(event.key, step);
-      });
+    function I(b, { step: k, setNextValue: H }) {
+      b &&
+        b.addEventListener("keydown", (R) => {
+          (R.key !== "ArrowLeft" &&
+            R.key !== "ArrowRight" &&
+            R.key !== "Home" &&
+            R.key !== "End") ||
+            (v(), R.preventDefault(), H(R.key, k));
+        });
     }
-    function init() {
-      if (!retStreak || !retStreakRotateHandle || !retStreakSweepHandle) {
-        return;
-      }
-      bindPointerDrag(retStreakSweepHandle, {
-        getValue: () => state.retStreakOffset,
-        max: SWEEP_LIMIT,
-        min: -SWEEP_LIMIT,
-        pixelsPerUnit: SWEEP_PIXELS_PER_UNIT,
-        setValue: (value) => retinoscopyController.setRetStreakOffset(value),
-      });
-      bindPointerDrag(retStreak, {
-        getValue: () => state.retStreakOffset,
-        max: SWEEP_LIMIT,
-        min: -SWEEP_LIMIT,
-        pixelsPerUnit: SWEEP_PIXELS_PER_UNIT,
-        setValue: (value) => retinoscopyController.setRetStreakOffset(value),
-      });
-      bindPointerDrag(retStreakRotateHandle, {
-        getValue: () => state.retStreakRotation,
-        max: ROTATION_LIMIT,
-        min: -ROTATION_LIMIT,
-        pixelsPerUnit: ROTATION_PIXELS_PER_DEG,
-        setValue: (value) => retinoscopyController.setRetStreakRotation(value),
-      });
-      bindKeyboard(retStreakSweepHandle, {
-        step: 5,
-        setNextValue: (key, step) => {
-          if (key === "Home") {
-            retinoscopyController.setRetStreakOffset(0);
-            return;
-          }
-          if (key === "End") {
-            retinoscopyController.setRetStreakOffset(SWEEP_LIMIT);
-            return;
-          }
-          const delta = key === "ArrowLeft" ? -step : step;
-          retinoscopyController.setRetStreakOffset(
-            clamp(state.retStreakOffset + delta, -SWEEP_LIMIT, SWEEP_LIMIT),
-          );
-        },
-      });
-      bindKeyboard(retStreakRotateHandle, {
-        step: 6,
-        setNextValue: (key, step) => {
-          if (key === "Home") {
-            retinoscopyController.setRetStreakRotation(0);
-            return;
-          }
-          if (key === "End") {
-            retinoscopyController.setRetStreakRotation(ROTATION_LIMIT);
-            return;
-          }
-          const delta = key === "ArrowLeft" ? -step : step;
-          retinoscopyController.setRetStreakRotation(
-            clamp(
-              state.retStreakRotation + delta,
-              -ROTATION_LIMIT,
-              ROTATION_LIMIT,
-            ),
-          );
-        },
-      });
-      showHint();
+    function A() {
+      !i ||
+        !c ||
+        !u ||
+        (C(u, {
+          getValue: () => e.retStreakOffset,
+          max: x,
+          min: -x,
+          pixelsPerUnit: E,
+          setValue: (b) => a.setRetStreakOffset(b),
+        }),
+        C(i, {
+          getValue: () => e.retStreakOffset,
+          max: x,
+          min: -x,
+          pixelsPerUnit: E,
+          setValue: (b) => a.setRetStreakOffset(b),
+        }),
+        C(c, {
+          getValue: () => e.retStreakRotation,
+          max: d,
+          min: -d,
+          pixelsPerUnit: S,
+          setValue: (b) => a.setRetStreakRotation(b),
+        }),
+        I(u, {
+          step: 5,
+          setNextValue: (b, k) => {
+            if (b === "Home") {
+              a.setRetStreakOffset(0);
+              return;
+            }
+            if (b === "End") {
+              a.setRetStreakOffset(x);
+              return;
+            }
+            let H = b === "ArrowLeft" ? -k : k;
+            a.setRetStreakOffset(Ge(e.retStreakOffset + H, -x, x));
+          },
+        }),
+        I(c, {
+          step: 6,
+          setNextValue: (b, k) => {
+            if (b === "Home") {
+              a.setRetStreakRotation(0);
+              return;
+            }
+            if (b === "End") {
+              a.setRetStreakRotation(d);
+              return;
+            }
+            let H = b === "ArrowLeft" ? -k : k;
+            a.setRetStreakRotation(Ge(e.retStreakRotation + H, -d, d));
+          },
+        }),
+        h());
     }
-    return {
-      hideHint,
-      init,
-    };
+    return { hideHint: v, init: A };
   }
-
-  // src/test-mode.js?v=20260506-3
-  function dispatchInput(element) {
-    if (!element) {
-      return;
-    }
-    element.dispatchEvent(new Event("input", { bubbles: true }));
+  var We = {
+      primary: {
+        label: "Primary cases",
+        shortLabel: "Primary",
+        marker: "P",
+        order: 1,
+      },
+      intermediate: {
+        label: "Intermediate cases",
+        shortLabel: "Intermediate",
+        marker: "I",
+        order: 2,
+      },
+      advanced: {
+        label: "Advanced cases",
+        shortLabel: "Advanced",
+        marker: "A",
+        order: 3,
+      },
+    },
+    Oa = {
+      "high-minus": "primary",
+      minus: "primary",
+      zero: "primary",
+      plus: "primary",
+      "high-plus": "primary",
+      "low-cylinder": "intermediate",
+      "high-cylinder": "intermediate",
+      anisometropia: "intermediate",
+      "small-pupils": "intermediate",
+      "small-scissors": "intermediate",
+      "poor-tear-film": "intermediate",
+      "small-cortical-cataract": "intermediate",
+      "big-cortical-cataract": "intermediate",
+      "dense-cataract": "intermediate",
+      floaters: "intermediate",
+      "central-sub-cortical-cataract": "advanced",
+      keratoconus: "advanced",
+      "corneal-scar": "advanced",
+      acg: "advanced",
+      aniridia: "advanced",
+      aphakia: "advanced",
+      "iris-transillumination": "advanced",
+      "nasal-coloboma": "advanced",
+      "posterior-pole-cataract": "advanced",
+      "vitreous-haemorrhage": "advanced",
+      leucocoria: "advanced",
+      "partial-retinal-detachment": "advanced",
+      "posterior-capsular-thickening": "advanced",
+    },
+    _a = Object.freeze({
+      acg: Object.freeze({
+        title: "Acute angle-closure warning",
+        body: "The exaggerated oval is a stylised teaching cue, not a diagnostic pupil shape. A painful red eye with a fixed or poorly reactive mid-dilated pupil is an ocular emergency. This simulation does not diagnose angle closure; arrange urgent ophthalmic assessment.",
+      }),
+      leucocoria: Object.freeze({
+        title: "Abnormal white reflex",
+        body: "A white or absent red reflex, particularly in a child, requires urgent ophthalmic assessment. Causes include cataract, retinal disease and intraocular tumour.",
+      }),
+      "vitreous-haemorrhage": Object.freeze({
+        title: "Vitreous haemorrhage warning",
+        body: "A suddenly darkened reflex with new floaters or loss of vision may reflect vitreous haemorrhage and underlying retinal pathology. Arrange urgent ophthalmic assessment.",
+      }),
+      "partial-retinal-detachment": Object.freeze({
+        title: "Retinal detachment warning",
+        body: "A fixed dark sector with symptoms suggesting retinal detachment requires urgent ophthalmic assessment. The simulator appearance is illustrative only.",
+      }),
+    }),
+    Pa = {
+      "high-minus": "Slow against movement with a narrow reflex.",
+      minus: "Against movement before neutralisation.",
+      zero: "No directional movement at neutrality.",
+      plus: "With movement before neutralisation.",
+      "high-plus": "Slow broad with movement requiring more plus.",
+      "low-cylinder":
+        "Stylised example: opposite movement in the two principal meridians.",
+      "high-cylinder":
+        "Stylised example: stronger change between the two principal meridians.",
+      anisometropia: "Different reflex behaviour between right and left eyes.",
+      "small-pupils": "Reduced aperture makes the reflex harder to judge.",
+      "small-scissors": "Subtle split reflex with irregular movement.",
+      "poor-tear-film": "Unstable shimmering reflex surface.",
+      "small-cortical-cataract":
+        "Peripheral cortical opacity crossing the reflex.",
+      "big-cortical-cataract": "More extensive cortical spokes.",
+      "central-sub-cortical-cataract":
+        "Central posterior opacity dulling the reflex.",
+      keratoconus: "Large scissors reflex with marked irregularity.",
+      "corneal-scar": "Diffuse corneal haze disrupting the streak.",
+      acg: "Stylised vertical oval pupil with abnormal reflex behaviour.",
+      aniridia: "Large abnormal aperture with unstable reflex detail.",
+      aphakia: "High plus behaviour with altered pupil optics.",
+      "iris-transillumination":
+        "Peripheral iris light leak alongside the reflex.",
+      "nasal-coloboma": "Notched pupil aperture affecting the reflex edge.",
+      "posterior-pole-cataract": "Dense central posterior pole defect.",
+      "dense-cataract": "Very dull reflex through dense media opacity.",
+      floaters: "Mobile vitreous shadows over the reflex.",
+      "vitreous-haemorrhage": "Dark vitreous opacity reducing the view.",
+      leucocoria: "White reflex appearance rather than normal red-orange.",
+      "partial-retinal-detachment":
+        "Fixed dark sector with remaining reflex visible.",
+      "posterior-capsular-thickening":
+        "IOL/capsule haze reducing reflex clarity.",
+    },
+    Da = new Set([
+      "zero",
+      "plus",
+      "high-plus",
+      "minus",
+      "low-cylinder",
+      "anisometropia",
+      "small-pupils",
+      "central-sub-cortical-cataract",
+      "dense-cataract",
+      "leucocoria",
+    ]),
+    Ba = [
+      "zero",
+      "minus",
+      "plus",
+      "high-minus",
+      "high-plus",
+      "low-cylinder",
+      "high-cylinder",
+      "anisometropia",
+      "small-pupils",
+      "small-scissors",
+      "poor-tear-film",
+      "small-cortical-cataract",
+      "big-cortical-cataract",
+      "dense-cataract",
+      "floaters",
+      "keratoconus",
+      "corneal-scar",
+      "acg",
+      "aniridia",
+      "aphakia",
+      "iris-transillumination",
+      "nasal-coloboma",
+      "central-sub-cortical-cataract",
+      "posterior-pole-cataract",
+      "vitreous-haemorrhage",
+      "leucocoria",
+      "partial-retinal-detachment",
+      "posterior-capsular-thickening",
+    ],
+    Na = new Map(Ba.map((e, t) => [e, t])),
+    Qt = he
+      .map((e) => {
+        var a;
+        let t = Oa[e.value] || "advanced";
+        return {
+          ...e,
+          order: (a = Na.get(e.value)) != null ? a : Number.MAX_SAFE_INTEGER,
+          level: t,
+          levelLabel: We[t].shortLabel,
+          levelMarker: We[t].marker,
+          summary: Pa[e.value] || e.label,
+          safetyNote: _a[e.value] || null,
+          thumbnailSrc: `assets/case-thumbnails/${e.value}.webp?v=20260507-fellow-corneal`,
+          isBabyCase: Da.has(e.value),
+        };
+      })
+      .sort((e, t) => e.order - t.order || e.label.localeCompare(t.label))
+      .map((e, t) => ({ ...e, index: t + 1 })),
+    Fr = Object.entries(We)
+      .map(([e, t]) => ({ value: e, ...t }))
+      .sort((e, t) => e.order - t.order);
+  function Kt({ babyOnly: e = !1 } = {}) {
+    return e ? Qt.filter((t) => t.isBabyCase) : Qt;
   }
-  function sampleRandomCondition(lastValue) {
-    const candidates =
-      TEST_REFRACTION_OPTIONS2.length > 1
-        ? TEST_REFRACTION_OPTIONS2.filter(
-            (option) => option.value !== lastValue,
-          )
-        : TEST_REFRACTION_OPTIONS2;
-    const pool = candidates.length ? candidates : TEST_REFRACTION_OPTIONS2;
-    const index = Math.floor(Math.random() * pool.length);
-    return pool[index];
+  function ye(e) {
+    e && e.dispatchEvent(new Event("input", { bubbles: !0 }));
   }
-  function getCountdownForRound(roundIndex) {
-    const safeIndex = Math.max(
-      0,
-      Math.min(roundIndex, TEST_COUNTDOWN_SEQUENCE.length - 1),
-    );
-    return TEST_COUNTDOWN_SEQUENCE[safeIndex];
+  function Fa({ babyOnly: e = !1 } = {}) {
+    if (!e) return Oe;
+    let t = new Set(Kt({ babyOnly: !0 }).map((a) => a.value));
+    return Oe.filter((a) => t.has(a.value));
   }
-  function createTestModeController({
-    state,
-    dom,
-    retinoscopyController,
-    onCaseChange,
-  }) {
-    const {
-      sideMenu,
-      testModeButton,
-      testStatusBanner,
-      testCountdownValue,
-      testAnswerText,
-      testNextButton,
-      reflexColorSlider,
-      gazeToggle,
-      dilatedToggle,
-      babyToggle,
-      manualEyeMoveToggle,
-      casePicker,
-      casePreviousButton,
-      caseNextButton,
-      caseTriggerButton,
-      refractionShell,
-      refractionMaskLabel,
-      refractionStateSelect,
-      cataractSlider,
-      nystagmusSlider,
-      pupilSizeSliders,
-      eyelidSliders,
-      retinoscopySlider,
-      retinoscopyRotationSlider,
-    } = dom;
-    const lockableControls = [
-      reflexColorSlider,
-      gazeToggle,
-      dilatedToggle,
-      babyToggle,
-      manualEyeMoveToggle,
-      casePreviousButton,
-      caseNextButton,
-      caseTriggerButton,
-      refractionStateSelect,
-      cataractSlider,
-      nystagmusSlider,
-      ...pupilSizeSliders,
-      ...eyelidSliders,
-    ].filter(Boolean);
-    function clearTestTimer() {
-      if (!state.testTimerId) {
-        return;
-      }
-      window.clearInterval(state.testTimerId);
-      state.testTimerId = 0;
+  function qa(e) {
+    let t = Number(e);
+    return Number.isFinite(t) ? Math.max(-90, Math.min(90, t)) : 0;
+  }
+  function za(e, { babyOnly: t = !1 } = {}) {
+    let a = Fa({ babyOnly: t }),
+      i = a.length > 1 ? a.filter((x) => x.value !== e) : a,
+      c = i.length ? i : a;
+    if (!c.length) return null;
+    let u = Math.floor(Math.random() * c.length);
+    return c[u];
+  }
+  function Ha(e) {
+    let t = Math.max(0, Math.min(e, Ce.length - 1));
+    return Ce[t];
+  }
+  function Jt({ state: e, dom: t, retinoscopyController: a, onCaseChange: i }) {
+    let {
+        sideMenu: c,
+        testModeButton: u,
+        testStatusBanner: x,
+        testCountdownValue: d,
+        testAnswerText: E,
+        testNextButton: S,
+        reflexColorSlider: p,
+        gazeToggle: v,
+        dilatedToggle: h,
+        babyToggle: C,
+        manualEyeMoveToggle: I,
+        casePicker: A,
+        casePreviousButton: b,
+        caseNextButton: k,
+        caseTriggerButton: H,
+        refractionShell: R,
+        refractionMaskLabel: q,
+        refractionStateSelect: z,
+        cataractSlider: $,
+        nystagmusSlider: G,
+        pupilSizeSliders: j,
+        eyelidSliders: X,
+        retinoscopySlider: te,
+        retinoscopyRotationSlider: Z,
+      } = t,
+      U = [p, v, h, C, I, b, k, H, z, $, G, ...j, ...X].filter(Boolean);
+    function Q() {
+      e.testTimerId &&
+        (window.clearInterval(e.testTimerId), (e.testTimerId = 0));
     }
-    function setSideMenuOpen(isOpen) {
-      if (!sideMenu) {
-        return;
-      }
-      sideMenu.classList.toggle("open", isOpen);
-      sideMenu.setAttribute("aria-hidden", String(!isOpen));
-      if (isOpen) {
-        sideMenu.removeAttribute("inert");
-      } else {
-        sideMenu.setAttribute("inert", "");
-      }
-      if (dom.burgerIcon) {
-        dom.burgerIcon.setAttribute("aria-expanded", String(isOpen));
-        dom.burgerIcon.setAttribute(
-          "aria-label",
-          isOpen ? "Close menu" : "Open menu",
-        );
-      }
+    function ee(n) {
+      c &&
+        (c.classList.toggle("open", n),
+        c.setAttribute("aria-hidden", String(!n)),
+        n ? c.removeAttribute("inert") : c.setAttribute("inert", ""),
+        t.burgerIcon &&
+          (t.burgerIcon.setAttribute("aria-expanded", String(n)),
+          t.burgerIcon.setAttribute(
+            "aria-label",
+            n ? "Close menu" : "Open menu",
+          )));
     }
-    function setTestTriggerLabel() {
-      if (!testModeButton) {
-        return;
-      }
-      testModeButton.textContent = "Test me";
+    function ae() {
+      u && (u.textContent = "Test me");
     }
-    function setRefractionMask(isMasked) {
-      if (!refractionShell || !refractionMaskLabel || !refractionStateSelect) {
-        return;
-      }
-      refractionShell.classList.toggle("is-masked", isMasked);
-      refractionMaskLabel.textContent = isMasked ? "Condition hidden" : "";
-      if (casePicker) {
-        casePicker.classList.toggle("is-masked", isMasked);
-      }
+    function K(n) {
+      !R ||
+        !q ||
+        !z ||
+        (R.classList.toggle("is-masked", n),
+        (q.textContent = n ? "Condition hidden" : ""),
+        A && A.classList.toggle("is-masked", n));
     }
-    function setObservationLock(isLocked) {
-      lockableControls.forEach((control) => {
-        control.disabled = isLocked;
+    function le(n) {
+      U.forEach((g) => {
+        g.disabled = n;
       });
     }
-    function renderBanner() {
-      if (!testStatusBanner || !testCountdownValue || !testAnswerText) {
-        return;
-      }
-      testStatusBanner.hidden = !state.isTestMode;
-      if (!state.isTestMode) {
-        return;
-      }
-      testCountdownValue.textContent = String(state.testCountdown);
-      if (state.isTestRevealed) {
-        testAnswerText.hidden = false;
-        testAnswerText.textContent = state.testRevealLabel;
-        if (testNextButton) {
-          testNextButton.hidden = false;
+    function oe() {
+      if (!(!x || !d || !E) && ((x.hidden = !e.isTestMode), !!e.isTestMode)) {
+        if (((d.textContent = String(e.testCountdown)), e.isTestRevealed)) {
+          ((E.hidden = !1),
+            (E.textContent = e.testRevealLabel),
+            S && (S.hidden = !1));
+          return;
         }
-        return;
-      }
-      testAnswerText.hidden = true;
-      testAnswerText.textContent = "";
-      if (testNextButton) {
-        testNextButton.hidden = true;
+        ((E.hidden = !0), (E.textContent = ""), S && (S.hidden = !0));
       }
     }
-    function captureSnapshot() {
-      var _a, _b, _c;
+    function ge() {
+      var n, g, l, w;
       return {
-        activeRetEye: state.activeRetEye,
-        corticalCataractPattern: state.corticalCataractPattern
-          ? JSON.parse(JSON.stringify(state.corticalCataractPattern))
+        activeRetEye: e.activeRetEye,
+        modifiers: [v, h, I].map((m) => !!(m != null && m.checked)),
+        dilatedPreviousPupilValues:
+          ((n = e.dilatedPreviousPupilValues) == null ? void 0 : n.slice()) ||
+          null,
+        corticalCataractPattern: e.corticalCataractPattern
+          ? JSON.parse(JSON.stringify(e.corticalCataractPattern))
           : null,
-        currentRefraction: state.currentRefraction,
-        cylinderAxisDeg: state.cylinderAxisDeg,
-        retStreakOffset: state.retStreakOffset,
-        retStreakRotation: state.retStreakRotation,
-        reflexColorValue:
-          (_a = reflexColorSlider == null ? void 0 : reflexColorSlider.value) !=
-          null
-            ? _a
-            : "",
-        cataractValue:
-          (_b = cataractSlider == null ? void 0 : cataractSlider.value) != null
-            ? _b
-            : "",
-        nystagmusValue:
-          (_c = nystagmusSlider == null ? void 0 : nystagmusSlider.value) !=
-          null
-            ? _c
-            : "",
-        pupilValues: pupilSizeSliders.map((slider) => slider.value),
-        eyelidValues: eyelidSliders.map((slider) => slider.value),
+        currentRefraction: e.currentRefraction,
+        cylinderAxisDeg: e.cylinderAxisDeg,
+        retStreakOffset: e.retStreakOffset,
+        retStreakRotation: e.retStreakRotation,
+        reflexColorValue: (g = p == null ? void 0 : p.value) != null ? g : "",
+        cataractValue: (l = $ == null ? void 0 : $.value) != null ? l : "",
+        nystagmusValue: (w = G == null ? void 0 : G.value) != null ? w : "",
+        pupilValues: j.map((m) => m.value),
+        eyelidValues: X.map((m) => m.value),
       };
     }
-    function restoreSnapshot() {
-      const snapshot = state.testPreviousState;
-      if (!snapshot) {
-        return;
-      }
-      if (reflexColorSlider && snapshot.reflexColorValue !== "") {
-        reflexColorSlider.value = snapshot.reflexColorValue;
-        dispatchInput(reflexColorSlider);
-      }
-      pupilSizeSliders.forEach((slider, index) => {
-        if (snapshot.pupilValues[index] === void 0) {
-          return;
-        }
-        slider.value = snapshot.pupilValues[index];
-        dispatchInput(slider);
-      });
-      eyelidSliders.forEach((slider, index) => {
-        if (snapshot.eyelidValues[index] === void 0) {
-          return;
-        }
-        slider.value = snapshot.eyelidValues[index];
-        dispatchInput(slider);
-      });
-      if (cataractSlider && snapshot.cataractValue !== "") {
-        cataractSlider.value = snapshot.cataractValue;
-        dispatchInput(cataractSlider);
-      }
-      if (nystagmusSlider && snapshot.nystagmusValue !== "") {
-        nystagmusSlider.value = snapshot.nystagmusValue;
-        dispatchInput(nystagmusSlider);
-      }
-      retinoscopyController.setActiveRetEye(snapshot.activeRetEye);
-      if (typeof onCaseChange === "function") {
-        onCaseChange(snapshot.currentRefraction);
-      } else {
-        retinoscopyController.setRefraction(snapshot.currentRefraction);
-      }
-      state.cylinderAxisDeg = snapshot.cylinderAxisDeg;
-      state.corticalCataractPattern = snapshot.corticalCataractPattern
-        ? JSON.parse(JSON.stringify(snapshot.corticalCataractPattern))
-        : null;
-      if (refractionStateSelect) {
-        refractionStateSelect.value = snapshot.currentRefraction;
-      }
-      if (retinoscopySlider) {
-        retinoscopySlider.value = String(snapshot.retStreakOffset);
-      }
-      retinoscopyController.setRetStreakOffset(snapshot.retStreakOffset);
-      if (retinoscopyRotationSlider) {
-        retinoscopyRotationSlider.value = String(snapshot.retStreakRotation);
-      }
-      retinoscopyController.setRetStreakRotation(snapshot.retStreakRotation);
+    function T() {
+      var g;
+      let n = e.testPreviousState;
+      n &&
+        ([v, h, I].forEach((l, w) => {
+          l &&
+            ((l.checked = n.modifiers[w]),
+            l.dispatchEvent(new Event("change", { bubbles: !0 })));
+        }),
+        (e.dilatedPreviousPupilValues =
+          ((g = n.dilatedPreviousPupilValues) == null ? void 0 : g.slice()) ||
+          null),
+        p &&
+          n.reflexColorValue !== "" &&
+          ((p.value = n.reflexColorValue), ye(p)),
+        j.forEach((l, w) => {
+          n.pupilValues[w] !== void 0 && ((l.value = n.pupilValues[w]), ye(l));
+        }),
+        X.forEach((l, w) => {
+          n.eyelidValues[w] !== void 0 &&
+            ((l.value = n.eyelidValues[w]), ye(l));
+        }),
+        $ && n.cataractValue !== "" && (($.value = n.cataractValue), ye($)),
+        G && n.nystagmusValue !== "" && ((G.value = n.nystagmusValue), ye(G)),
+        a.setActiveRetEye(n.activeRetEye),
+        typeof i == "function"
+          ? i(n.currentRefraction)
+          : a.setRefraction(n.currentRefraction),
+        (e.cylinderAxisDeg = n.cylinderAxisDeg),
+        (e.corticalCataractPattern = n.corticalCataractPattern
+          ? JSON.parse(JSON.stringify(n.corticalCataractPattern))
+          : null),
+        z && (z.value = n.currentRefraction),
+        te && (te.value = String(n.retStreakOffset)),
+        a.setRetStreakOffset(n.retStreakOffset),
+        Z && (Z.value = String(n.retStreakRotation)),
+        a.setRetStreakRotation(n.retStreakRotation));
     }
-    function buildRevealLabel(option) {
-      if (typeof state.cylinderAxisDeg === "number") {
-        if (
-          option.value === "low-cylinder" ||
-          option.value === "high-cylinder"
-        ) {
-          return `${option.label}, - cyl axis ${state.cylinderAxisDeg} deg`;
-        }
-        return `${option.label}, axis ${state.cylinderAxisDeg} deg`;
-      }
-      return option.label;
+    function B(n) {
+      return typeof e.cylinderAxisDeg == "number"
+        ? n.value === "low-cylinder" || n.value === "high-cylinder"
+          ? `${n.label}, - cyl axis ${e.cylinderAxisDeg} deg`
+          : `${n.label}, axis ${e.cylinderAxisDeg} deg`
+        : n.label;
     }
-    function revealAnswer() {
-      clearTestTimer();
-      state.isTestRevealed = true;
-      state.testCountdown = 0;
-      setRefractionMask(false);
-      renderBanner();
+    function s() {
+      (Q(), (e.isTestRevealed = !0), (e.testCountdown = 0), K(!1), oe());
     }
-    function startCountdown() {
-      clearTestTimer();
-      state.testTimerId = window.setInterval(() => {
-        if (state.testCountdown <= 1) {
-          revealAnswer();
-          return;
-        }
-        state.testCountdown -= 1;
-        renderBanner();
-      }, 1e3);
-    }
-    function startTestRound() {
-      if (!state.testPreviousState) {
-        state.testPreviousState = captureSnapshot();
-        state.testRoundIndex = 0;
-      } else {
-        state.testRoundIndex = Math.min(
-          state.testRoundIndex + 1,
-          TEST_COUNTDOWN_SEQUENCE.length - 1,
-        );
-      }
-      const nextCondition = sampleRandomCondition(state.testLastRefraction);
-      if (!nextCondition) {
-        return;
-      }
-      state.isTestMode = true;
-      state.isTestRevealed = false;
-      state.testConditionValue = nextCondition.value;
-      state.testCountdown = getCountdownForRound(state.testRoundIndex);
-      state.testLastRefraction = nextCondition.value;
-      setObservationLock(true);
-      setRefractionMask(true);
-      if (typeof onCaseChange === "function") {
-        onCaseChange(nextCondition.value);
-      } else {
-        retinoscopyController.setRefraction(nextCondition.value);
-        if (refractionStateSelect) {
-          refractionStateSelect.value = nextCondition.value;
-        }
-      }
-      state.testRevealLabel = buildRevealLabel(nextCondition);
-      renderBanner();
-      setTestTriggerLabel();
-      setSideMenuOpen(false);
-      startCountdown();
-    }
-    function closeTestMode() {
-      if (!state.isTestMode && !state.testPreviousState) {
-        return;
-      }
-      clearTestTimer();
-      setObservationLock(false);
-      setRefractionMask(false);
-      restoreSnapshot();
-      state.isTestMode = false;
-      state.isTestRevealed = false;
-      state.testCountdown = 0;
-      state.testConditionValue = null;
-      state.testRevealLabel = "";
-      state.testPreviousState = null;
-      state.testRoundIndex = 0;
-      renderBanner();
-      setTestTriggerLabel();
-    }
-    function handleTestRequest() {
-      startTestRound();
-    }
-    function init() {
-      if (testModeButton) {
-        testModeButton.addEventListener("click", handleTestRequest);
-      }
-      if (testNextButton) {
-        testNextButton.addEventListener("click", startTestRound);
-      }
-      renderBanner();
-      setTestTriggerLabel();
-    }
-    return {
-      closeTestMode,
-      init,
-      startTestRound,
-    };
-  }
-
-  // src/app.js?v=20260507-1
-  function populateRefractionOptions(selectElement) {
-    if (!selectElement) {
-      return;
-    }
-    selectElement.replaceChildren();
-    REFRACTION_GROUPS.forEach((group) => {
-      const optGroup = document.createElement("optgroup");
-      optGroup.label = group.label;
-      group.options.forEach((optionConfig) => {
-        const option = document.createElement("option");
-        option.value = optionConfig.value;
-        option.textContent = optionConfig.label;
-        option.dataset.cat = group.category;
-        option.selected = optionConfig.value === DEFAULT_REFRACTION_VALUE;
-        optGroup.appendChild(option);
-      });
-      selectElement.appendChild(optGroup);
-    });
-  }
-  function runStartupEyeAnimation({
-    dom,
-    eyesController,
-    retinoscopyController,
-  }) {
-    if (!prefersReducedMotion()) {
-      dom.irises.forEach((iris) => {
-        iris.style.transform = "translate(0, 0)";
-        iris.style.transition = "";
-      });
-    }
-    eyesController.startAmbientAnimations();
-    retinoscopyController.renderNow(true);
-  }
-  function initApp() {
-    const dom = getDomRefs();
-    const state = createAppState();
-    populateRefractionOptions(dom.refractionStateSelect);
-    if (dom.refractionStateSelect) {
-      dom.refractionStateSelect.value = state.currentRefraction;
-    }
-    const retinoscopyController = createRetinoscopyController({ state, dom });
-    const streakControlsController = createStreakControlsController({
-      state,
-      dom,
-      retinoscopyController,
-    });
-    const testModeController = createTestModeController({
-      state,
-      dom,
-      retinoscopyController,
-      onCaseChange: setCurrentRefraction,
-    });
-    const eyesController = createEyesController({
-      state,
-      dom,
-      onEyeGeometryChange: ({ includePosition = true } = {}) =>
-        retinoscopyController.scheduleRetinoscopy(includePosition),
-    });
-    let visualCasesController = null;
-    function setCurrentRefraction(value) {
-      retinoscopyController.setRefraction(value);
-      if (dom.refractionStateSelect) {
-        dom.refractionStateSelect.value = value;
-      }
-      if (visualCasesController) {
-        visualCasesController.update();
-      }
-    }
-    function setModifierButtonState(button, isPressed) {
-      if (!button) {
-        return;
-      }
-      button.checked = isPressed;
-    }
-    function syncModifierButtons() {
-      setModifierButtonState(dom.gazeToggle, state.isGazeMode);
-      setModifierButtonState(dom.dilatedToggle, state.isDilatedMode);
-      setModifierButtonState(dom.babyToggle, state.isBabyMode);
-    }
-    eyesController.init();
-    initInfoModal(dom);
-    streakControlsController.init();
-    testModeController.init();
-    initMenuMcq({
-      state,
-      dom,
-      onBeforeOpenMcq: () => testModeController.closeTestMode(),
-    });
-    visualCasesController = createVisualCasesController({
-      state,
-      dom,
-      onBeforeOpen: () => testModeController.closeTestMode(),
-      onSelectCase: setCurrentRefraction,
-    });
-    visualCasesController.init();
-    dom.retEyeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        retinoscopyController.setActiveRetEye(button.dataset.retEye);
-      });
-    });
-    retinoscopyController.setActiveRetEye(state.activeRetEye);
-    if (dom.reflexColorSlider) {
-      dom.reflexColorSlider.addEventListener("input", (event) => {
-        const sliderValue = parseInt(event.target.value, 10);
-        const newColor = getReflexColor(sliderValue);
-        eyesController.applyReflexColor(newColor);
-        state.baseReflexColor = parseRGB(newColor);
-      });
-      dom.reflexColorSlider.dispatchEvent(new Event("input"));
-    }
-    if (dom.manualEyeMoveToggle) {
-      dom.manualEyeMoveToggle.addEventListener("change", (event) => {
-        eyesController.setManualEyeMoveEnabled(event.target.checked);
-      });
-      dom.manualEyeMoveToggle.checked = state.isManualEyeMoveEnabled;
-      eyesController.setManualEyeMoveEnabled(state.isManualEyeMoveEnabled);
-    }
-    if (dom.refractionStateSelect) {
-      dom.refractionStateSelect.addEventListener("change", (event) => {
-        setCurrentRefraction(event.target.value);
-      });
-    }
-    if (dom.gazeToggle) {
-      dom.gazeToggle.addEventListener("change", (event) => {
-        eyesController.setGazeMode(event.target.checked);
-        syncModifierButtons();
-      });
-    }
-    if (dom.dilatedToggle) {
-      dom.dilatedToggle.addEventListener("change", (event) => {
-        eyesController.setDilatedMode(event.target.checked);
-        syncModifierButtons();
-      });
-    }
-    if (dom.babyToggle) {
-      dom.babyToggle.addEventListener("change", (event) => {
-        eyesController.setBabyMode(event.target.checked);
-        const visibleCases = getCaseList({ babyOnly: state.isBabyMode });
-        const currentCaseVisible = visibleCases.some(
-          (caseItem) => caseItem.value === state.currentRefraction,
-        );
-        if (!currentCaseVisible) {
-          const fallbackCase = getFallbackBabyCase();
-          if (fallbackCase) {
-            setCurrentRefraction(fallbackCase.value);
+    function y() {
+      (Q(),
+        (e.testTimerId = window.setInterval(() => {
+          if (e.testCountdown <= 1) {
+            s();
+            return;
           }
-        }
-        syncModifierButtons();
-        visualCasesController.update();
-      });
+          ((e.testCountdown -= 1), oe());
+        }, 1e3)));
     }
-    if (dom.retinoscopySlider) {
-      dom.retinoscopySlider.addEventListener("input", (event) => {
-        retinoscopyController.setRetStreakOffset(
-          parseInt(event.target.value, 10),
-        );
-      });
+    function M() {
+      e.testPreviousState
+        ? (e.testRoundIndex = Math.min(e.testRoundIndex + 1, Ce.length - 1))
+        : ((e.testPreviousState = ge()), (e.testRoundIndex = 0));
+      let n = qa(e.retStreakRotation),
+        g = za(e.testLastRefraction, { babyOnly: e.isBabyMode });
+      g &&
+        ((e.isTestMode = !0),
+        (e.isTestRevealed = !1),
+        (e.testConditionValue = g.value),
+        (e.testCountdown = Ha(e.testRoundIndex)),
+        (e.testLastRefraction = g.value),
+        [v, h, I].forEach((l) => {
+          l &&
+            ((l.checked = !1),
+            l.dispatchEvent(new Event("change", { bubbles: !0 })));
+        }),
+        [p, $, G, ...j, ...X].forEach((l) => {
+          l && ((l.value = l.defaultValue), ye(l));
+        }),
+        le(!0),
+        K(!0),
+        typeof i == "function"
+          ? i(g.value)
+          : (a.setRefraction(g.value), z && (z.value = g.value)),
+        Z && (Z.value = String(n)),
+        a.setRetStreakRotation(n),
+        (e.testRevealLabel = B(g)),
+        oe(),
+        ae(),
+        ee(!1),
+        y());
     }
-    if (dom.retinoscopyRotationSlider) {
-      dom.retinoscopyRotationSlider.addEventListener("input", (event) => {
-        retinoscopyController.setRetStreakRotation(
-          parseInt(event.target.value, 10),
-        );
-      });
+    function P() {
+      (!e.isTestMode && !e.testPreviousState) ||
+        (Q(),
+        le(!1),
+        K(!1),
+        T(),
+        (e.isTestMode = !1),
+        (e.isTestRevealed = !1),
+        (e.testCountdown = 0),
+        (e.testConditionValue = null),
+        (e.testRevealLabel = ""),
+        (e.testPreviousState = null),
+        (e.testRoundIndex = 0),
+        oe(),
+        ae());
     }
-    if (dom.cataractSlider) {
-      dom.cataractSlider.addEventListener("input", (event) => {
-        const value = parseInt(event.target.value, 10);
-        eyesController.setCataractLevel(value);
-        retinoscopyController.setCataractLevel(value);
-      });
-      dom.cataractSlider.dispatchEvent(new Event("input"));
+    function r() {
+      M();
     }
-    if (dom.nystagmusSlider) {
-      dom.nystagmusSlider.addEventListener("input", (event) => {
-        eyesController.setNystagmusLevel(parseInt(event.target.value, 10));
-      });
-      dom.nystagmusSlider.dispatchEvent(new Event("input"));
+    function o() {
+      (u && u.addEventListener("click", r),
+        S && S.addEventListener("click", M),
+        oe(),
+        ae());
     }
-    runStartupEyeAnimation({ dom, eyesController, retinoscopyController });
-    syncModifierButtons();
-    window.addEventListener("resize", () => {
-      retinoscopyController.scheduleRetinoscopy(true);
+    return { closeTestMode: P, init: o, startTestRound: M };
+  }
+  function Va(e = window.location, t = navigator) {
+    return "serviceWorker" in t && ["http:", "https:"].includes(e.protocol);
+  }
+  function Zt() {
+    Va() &&
+      window.addEventListener(
+        "load",
+        () => {
+          navigator.serviceWorker
+            .register("./sw.js", { scope: "./" })
+            .catch((e) => {
+              console.warn("Sauron offline support could not start.", e);
+            });
+        },
+        { once: !0 },
+      );
+  }
+  function ea(e, t = () => window.location.reload()) {
+    let a = e.resetSimulatorButton,
+      i = e.resetSimulatorStatus;
+    if (!a || !i) return;
+    let c = 0;
+    a.addEventListener("click", () => {
+      let u = Date.now();
+      if (u <= c) {
+        t();
+        return;
+      }
+      ((c = u + 8e3),
+        (a.textContent = "Confirm reset"),
+        (i.textContent =
+          "Press again within 8 seconds to restore the starting simulator state."),
+        window.setTimeout(() => {
+          Date.now() <= c ||
+            ((c = 0),
+            (a.textContent = "Reset simulator"),
+            (i.textContent = ""));
+        }, 8100));
     });
   }
-
-  // script.js
-  function startApp() {
-    initApp();
+  function $a(e) {
+    e &&
+      (e.replaceChildren(),
+      Re.forEach((t) => {
+        let a = document.createElement("optgroup");
+        ((a.label = t.label),
+          t.options.forEach((i) => {
+            let c = document.createElement("option");
+            ((c.value = i.value),
+              (c.textContent = i.label),
+              (c.dataset.cat = t.category),
+              (c.selected = i.value === nt),
+              a.appendChild(c));
+          }),
+          e.appendChild(a));
+      }));
   }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", startApp, { once: true });
-  } else {
-    startApp();
+  function Ua({ dom: e, eyesController: t, retinoscopyController: a }) {
+    (be() ||
+      e.irises.forEach((i) => {
+        ((i.style.transform = "translate(0, 0)"), (i.style.transition = ""));
+      }),
+      t.startAmbientAnimations(),
+      a.renderNow(!0));
   }
+  function ta() {
+    let e = ht(),
+      t = Yt();
+    ($a(e.refractionStateSelect),
+      e.refractionStateSelect &&
+        (e.refractionStateSelect.value = t.currentRefraction));
+    let a = Xt({ state: t, dom: e }),
+      i = jt({ state: t, dom: e, retinoscopyController: a }),
+      c = Jt({ state: t, dom: e, retinoscopyController: a, onCaseChange: d }),
+      u = bt({
+        state: t,
+        dom: e,
+        onEyeGeometryChange: ({ includePosition: p = !0 } = {}) =>
+          a.scheduleRetinoscopy(p),
+      }),
+      x = null;
+    function d(p) {
+      (a.setRefraction(p),
+        e.refractionStateSelect && (e.refractionStateSelect.value = p),
+        x && x.update());
+    }
+    function E(p, v) {
+      p && (p.checked = v);
+    }
+    function S() {
+      (E(e.gazeToggle, t.isGazeMode),
+        E(e.dilatedToggle, t.isDilatedMode),
+        E(e.babyToggle, t.isBabyMode));
+    }
+    (u.init(),
+      vt(e),
+      i.init(),
+      c.init(),
+      ea(e),
+      Tt({ state: t, dom: e, onBeforeOpenMcq: () => c.closeTestMode() }),
+      (x = It({
+        state: t,
+        dom: e,
+        onBeforeOpen: () => c.closeTestMode(),
+        onSelectCase: d,
+      })),
+      x.init(),
+      e.retEyeButtons.forEach((p) => {
+        p.addEventListener("click", () => {
+          a.setActiveRetEye(p.dataset.retEye);
+        });
+      }),
+      a.setActiveRetEye(t.activeRetEye),
+      e.reflexColorSlider &&
+        (e.reflexColorSlider.addEventListener("input", (p) => {
+          let v = parseInt(p.target.value, 10),
+            h = it(v);
+          (u.applyReflexColor(h), (t.baseReflexColor = at(h)));
+        }),
+        e.reflexColorSlider.dispatchEvent(new Event("input"))),
+      e.manualEyeMoveToggle &&
+        (e.manualEyeMoveToggle.addEventListener("change", (p) => {
+          u.setManualEyeMoveEnabled(p.target.checked);
+        }),
+        (e.manualEyeMoveToggle.checked = t.isManualEyeMoveEnabled),
+        u.setManualEyeMoveEnabled(t.isManualEyeMoveEnabled)),
+      e.refractionStateSelect &&
+        e.refractionStateSelect.addEventListener("change", (p) => {
+          d(p.target.value);
+        }),
+      e.gazeToggle &&
+        e.gazeToggle.addEventListener("change", (p) => {
+          (u.setGazeMode(p.target.checked), S());
+        }),
+      e.dilatedToggle &&
+        e.dilatedToggle.addEventListener("change", (p) => {
+          (u.setDilatedMode(p.target.checked), S());
+        }),
+      e.babyToggle &&
+        e.babyToggle.addEventListener("change", (p) => {
+          if (
+            (u.setBabyMode(p.target.checked),
+            !Ae({ babyOnly: t.isBabyMode }).some(
+              (C) => C.value === t.currentRefraction,
+            ))
+          ) {
+            let C = ft();
+            C && d(C.value);
+          }
+          (S(), x.update());
+        }),
+      e.retinoscopySlider &&
+        e.retinoscopySlider.addEventListener("input", (p) => {
+          a.setRetStreakOffset(parseInt(p.target.value, 10));
+        }),
+      e.retinoscopyRotationSlider &&
+        e.retinoscopyRotationSlider.addEventListener("input", (p) => {
+          a.setRetStreakRotation(parseInt(p.target.value, 10));
+        }),
+      e.cataractSlider &&
+        (e.cataractSlider.addEventListener("input", (p) => {
+          let v = parseInt(p.target.value, 10);
+          (u.setCataractLevel(v), a.setCataractLevel(v));
+        }),
+        e.cataractSlider.dispatchEvent(new Event("input"))),
+      e.nystagmusSlider &&
+        (e.nystagmusSlider.addEventListener("input", (p) => {
+          u.setNystagmusLevel(parseInt(p.target.value, 10));
+        }),
+        e.nystagmusSlider.dispatchEvent(new Event("input"))),
+      Ua({ dom: e, eyesController: u, retinoscopyController: a }),
+      S(),
+      window.addEventListener("resize", () => {
+        a.scheduleRetinoscopy(!0);
+      }),
+      Zt());
+  }
+  function aa() {
+    ta();
+  }
+  document.readyState === "loading"
+    ? document.addEventListener("DOMContentLoaded", aa, { once: !0 })
+    : aa();
 })();

@@ -1,5 +1,11 @@
 # Product Context
 
+## Current safety boundary (25/7/2026)
+
+Glaucoma remains a rapid operational risk calculator with a separate MCQ learning layer. Reset clears only the assessment. MCQ progress and cup achievement remain user-level teaching state.
+
+Operational output can be eye-specific when `RE` or `LE` is recorded but laterality must not block an approximate judgement from limited information. A suspicious rim or field finding must not collapse to routine follow-up. The rock-hard warning remains deliberately independent of complete grid entry. The report restates available findings and the current output but does not add a diagnosis. The current policy corrections await independent clinical sign-off.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -35,3 +41,7 @@ Clinical safety emphasis:
 - `Rock` digital palpation is treated as an acute emergency warning path.
 - Measured IOP takes precedence when both palpation and IOP are provided.
 - Incomplete/invalid pressure input should never produce a falsely reassuring normal output.
+
+## MCQ learner context — 26 July 2026
+
+Learners should integrate IOP, optic nerve structure, visual fields and risk context rather than rely on a single input. Feedback must explain the reasoning and preserve uncertainty. NICE supports the general case-finding framework, while the app-specific grid and referral actions still need an authorised clinical owner.

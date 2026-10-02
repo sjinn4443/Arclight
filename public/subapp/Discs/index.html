@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Discs is an optic disc teaching and triage app for disc findings, image cases and referral practice."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="21/5/26" />
+    <meta name="application-name" content="Discs" />
+    <meta name="theme-color" content="#000000" />
+    <title>Discs</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css?v=20260929-engine1" />
+    <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <button
+        id="menuButton"
+        class="icon-button"
+        type="button"
+        aria-label="Open menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
+      >
+        <span class="menu-lines" aria-hidden="true"></span>
+      </button>
+      <h1>Discs</h1>
+      <button
+        id="infoButton"
+        class="icon-button info-button"
+        type="button"
+        aria-label="Open quick guide"
+        aria-controls="infoPopup"
+        aria-expanded="false"
+      ></button>
+    </header>
+
+    <div id="drawerOverlay" class="drawer-overlay" hidden></div>
+
+    <nav
+      id="sideMenu"
+      class="side-menu"
+      aria-label="Main menu"
+      aria-hidden="true"
+      inert
+    >
+      <div class="drawer-header">
+        <div>
+          <p>Discs</p>
+          <span class="drawer-subtitle">20-case disc trainer</span>
+        </div>
+        <button
+          id="closeDrawerButton"
+          class="drawer-close"
+          type="button"
+          aria-label="Close menu"
+        >
+          &times;
+        </button>
+      </div>
+      <section class="drawer-section" aria-labelledby="practiceHeading">
+        <h2 id="practiceHeading">Practice</h2>
+        <button class="drawer-card" type="button" data-practice-open>
+          <span class="drawer-dot dot-blue"></span>
+          <span>20 disc cases</span>
+        </button>
+        <button class="drawer-card" type="button" data-mcq-level="primary">
+          <span class="drawer-dot dot-green"></span>
+          <span>Primary</span>
+        </button>
+        <button class="drawer-card" type="button" data-mcq-level="intermediate">
+          <span class="drawer-dot dot-orange"></span>
+          <span>Intermediate</span>
+        </button>
+        <button class="drawer-card" type="button" data-mcq-level="advanced">
+          <span class="drawer-dot dot-red"></span>
+          <span>Advanced</span>
+        </button>
+        <section
+          id="cupAchievement"
+          class="cup-achievement is-locked"
+          hidden
+          aria-hidden="true"
+          data-cup-app="Discs"
+        >
+          <span class="cup-achievement-icon" aria-hidden="true">&#9733;</span>
+          <span class="cup-achievement-details">
+            <span id="cupAchievementLabel"
+              >Cup locked: complete Advanced quiz</span
+            >
+            <span
+              id="cupAchievementCode"
+              class="cup-achievement-code"
+              hidden
+            ></span>
+          </span>
+          <button
+            id="downloadCupCertificateButton"
+            class="cup-download-button"
+            type="button"
+            disabled
+            data-locked="true"
+          >
+            Save
+          </button>
+        </section>
+      </section>
+      <section
+        class="drawer-section drawer-guide-section"
+        aria-labelledby="guideHeading"
+      >
+        <h2 id="guideHeading">Guide</h2>
+        <div class="drawer-guide-grid">
+          <button class="drawer-guide-card" type="button" data-guide="cases">
+            <strong>Cases</strong>
+            <small>20 cases and skin</small>
+          </button>
+          <button class="drawer-guide-card" type="button" data-guide="viewing">
+            <strong>View</strong>
+            <small>DO, BIO and cataract</small>
+          </button>
+          <button
+            class="drawer-guide-card"
+            type="button"
+            data-guide="recording"
+          >
+            <strong>Record</strong>
+            <small>RE and LE fields</small>
+          </button>
+          <button class="drawer-guide-card" type="button" data-guide="findings">
+            <strong>Signs</strong>
+            <small>Disc signs and glaucoma</small>
+          </button>
+          <button
+            class="drawer-guide-card drawer-guide-card--wide"
+            type="button"
+            data-guide="action"
+          >
+            <strong>Action</strong>
+            <small>Urgency and next step</small>
+          </button>
+        </div>
+      </section>
+      <section class="drawer-section" aria-labelledby="settingsHeading">
+        <h2 id="settingsHeading">Assessment</h2>
+        <button
+          id="newAssessmentButton"
+          class="drawer-card drawer-card--reset"
+          type="button"
+          aria-describedby="newAssessmentHint"
+        >
+          <span class="drawer-dot dot-orange"></span><span>New assessment</span>
+        </button>
+        <small id="newAssessmentHint" class="drawer-reset-hint"
+          >Press twice to clear the recorded examination.</small
+        >
+        <button class="drawer-card" type="button" data-guide="about">
+          <span class="drawer-dot dot-green"></span
+          ><span>Safety and local pathways</span>
+        </button>
+      </section>
+    </nav>
+
+    <section
+      id="infoPopup"
+      class="info-popup"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="infoTitle"
+      aria-hidden="true"
+      tabindex="-1"
+      hidden
+    >
+      <div class="popup-header">
+        <h2 id="infoTitle">Quick guide</h2>
+        <button
+          id="closeInfoButton"
+          class="soft-close"
+          type="button"
+          aria-label="Close quick guide"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="info-popup-body">
+        <section
+          class="info-guide-definition"
+          aria-labelledby="info-guide-title"
+        >
+          <p id="info-guide-title" class="info-look-title">
+            Optic disc assessment
+          </p>
+          <p class="info-purpose-copy">
+            Use the cases for practice, or while examining a patient record the
+            disc view and signs you actually see for RE and LE. The app suggests
+            a triage action; it does not diagnose the cause.
+          </p>
+        </section>
+        <hr />
+        <p>
+          Arclight (DO) gives a small direct view; Holo (BIO) gives a wider
+          view. Gaze, dilation, cataract and skin controls change only the
+          simulated view.
+        </p>
+        <hr />
+        <div class="info-look-guide">
+          <section
+            class="info-look-section info-look-section--basics"
+            aria-labelledby="info-basics-title"
+          >
+            <p id="info-basics-title" class="info-look-title">Basics</p>
+            <div class="info-basics-grid">
+              <span class="info-basics-cue"
+                ><strong>View</strong><small>quality and area</small></span
+              >
+              <span class="info-basics-cue"
+                ><strong>Signs</strong
+                ><small>swelling, pallor or cupping</small></span
+              >
+              <span class="info-basics-cue"
+                ><strong>Action</strong
+                ><small>urgency and next step</small></span
+              >
+            </div>
+          </section>
+          <details class="info-secondary-details">
+            <summary id="info-detail-title">More detail</summary>
+            <section
+              class="info-look-section info-look-section--detail"
+              aria-labelledby="info-detail-title"
+            >
+              <p>
+                <strong>Case sets:</strong> general disc signs, normal cups and
+                glaucoma sequence.
+              </p>
+              <p>
+                <strong>General disc signs:</strong> swelling, pallor, drusen,
+                anomalous discs, myelination and peripapillary change.
+              </p>
+              <p>
+                <strong>Cup context:</strong> C/D 0.3 and disc size help
+                interpretation but do not trigger referral by themselves.
+              </p>
+              <p>
+                <strong>Glaucoma disc signs:</strong> thin rim, rim notch,
+                splinter haemorrhage, exposed lamina, C/D 0.9 and vessel changes
+                need fast glaucoma review.
+              </p>
+              <p>
+                <strong>Red flags:</strong> true swelling, acute visual loss or
+                abnormal pupils need urgent review.
+              </p>
+              <p>
+                <strong>View only:</strong> gaze, cataract and skin controls
+                alter the simulation, not the diagnosis.
+              </p>
+            </section>
+          </details>
+        </div>
+        <hr />
+        <div class="info-points">
+          <p>
+            No signs means no referable disc signs were seen in the view
+            obtained.
+          </p>
+          <p>Symptoms, pupils, fields and local pathways still matter.</p>
+        </div>
+        <p
+          class="info-version"
+          style="
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 8px 0 0;
+            color: #6e7c95;
+            font:
+              700 10.5px/1.2 Inter,
+              Arial,
+              sans-serif;
+            text-align: right;
+            white-space: nowrap;
+          "
+        >
+          v1 · 30/9/2026
+        </p>
+      </div>
+    </section>
+
+    <main class="app-main">
+      <div class="mode-control-area">
+        <div class="mode-control-stack">
+          <div class="mode-tabs" role="tablist" aria-label="Viewing mode">
+            <button
+              id="arclightTab"
+              class="tab-btn active"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              tabindex="0"
+              data-mode="arclight-do"
+            >
+              Arclight <span>(DO)</span>
+            </button>
+            <button
+              id="holoTab"
+              class="tab-btn"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              tabindex="-1"
+              data-mode="holo-bio"
+            >
+              Holo <span>(BIO)</span>
+            </button>
+          </div>
+
+          <div class="viewer-quick-controls" aria-label="Viewing controls">
+            <label
+              class="advanced-switch viewer-gaze-switch"
+              for="gazeMoveToggle"
+            >
+              <input type="checkbox" id="gazeMoveToggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Gaze</span>
+            </label>
+            <label
+              class="advanced-switch viewer-dilation-switch"
+              for="viewerDilationToggle"
+            >
+              <input type="checkbox" id="viewerDilationToggle" />
+              <span class="advanced-switch-track" aria-hidden="true"></span>
+              <span class="advanced-toolbar-switch-text">Dilated</span>
+            </label>
+            <section
+              class="cataract-inline-control"
+              aria-label="Cataract viewing challenge"
+            >
+              <div class="cataract-inline-heading">
+                <span class="cataract-title">Cataract</span>
+                <div class="cataract-stops" aria-hidden="true">
+                  <span class="cataract-stop active">None</span>
+                  <span class="cataract-stop">Slight</span>
+                  <span class="cataract-stop">Med</span>
+                  <span class="cataract-stop">Dense</span>
+                </div>
+              </div>
+              <input
+                id="cataractSlider"
+                class="cataract-slider"
+                type="range"
+                min="0"
+                max="3"
+                step="1"
+                value="0"
+                aria-label="Cataract level"
+              />
+            </section>
+          </div>
+        </div>
+
+        <div class="skin-dock-control" aria-label="Skin pigmentation">
+          <span class="skin-dock-title">Skin</span>
+          <label
+            class="advanced-switch viewer-pigmentation-switch"
+            for="viewerPigmentationToggle"
+          >
+            <input
+              type="checkbox"
+              id="viewerPigmentationToggle"
+              aria-label="Use dark skin pigmentation"
+            />
+            <span class="advanced-switch-track" aria-hidden="true"></span>
+            <span
+              id="viewerPigmentationText"
+              class="advanced-toolbar-switch-text"
+              >Light</span
+            >
+          </label>
+        </div>
+      </div>
+
+      <section class="case-set-panel" aria-label="Image case set">
+        <div class="case-set-tabs" role="group" aria-label="Image case set">
+          <button
+            class="case-set-button active"
+            type="button"
+            data-case-set="neurology"
+            aria-pressed="true"
+            aria-label="General discs"
+          >
+            General
+          </button>
+          <span class="case-set-divider" aria-hidden="true"></span>
+          <span class="case-set-cup-group" aria-hidden="true"></span>
+          <button
+            class="case-set-button case-set-button--cup"
+            type="button"
+            data-case-set="normal-cups"
+            aria-pressed="false"
+          >
+            Normal cups
+          </button>
+          <button
+            class="case-set-button case-set-button--cup"
+            type="button"
+            data-case-set="glaucoma-loss"
+            aria-pressed="false"
+            aria-label="Glaucoma sequence"
+          >
+            Glaucoma
+          </button>
+        </div>
+      </section>
+
+      <section class="viewer-panel" aria-label="Disc image case">
+        <div class="canvas-container diabetic-viewer-stage">
+          <div
+            class="viewer-case-overlay canvas-case-nav"
+            aria-label="Disc image cases"
+          >
+            <div class="viewer-case-nav">
+              <button
+                id="previousCaseButton"
+                class="viewer-case-button"
+                type="button"
+                aria-label="Previous case"
+              >
+                &lt;
+              </button>
+              <span
+                id="viewerCaseLabel"
+                class="viewer-case-label"
+                aria-live="polite"
+                aria-label="General discs case 1 of 9"
+                >1/9</span
+              >
+              <button
+                id="nextCaseButton"
+                class="viewer-case-button"
+                type="button"
+                aria-label="Next case"
+              >
+                &gt;
+              </button>
+            </div>
+            <button
+              id="viewerCaseSummaryToggle"
+              class="viewer-case-summary-toggle"
+              type="button"
+              aria-label="Info: show case 1 description"
+              aria-expanded="false"
+              aria-controls="viewerCaseDescription"
+            >
+              <span id="viewerCaseShortLabel" hidden>Case information</span>
+              <span class="viewer-case-info-mark" aria-hidden="true">i</span>
+            </button>
+            <div
+              id="viewerCaseDescription"
+              class="viewer-case-description"
+              hidden
+            >
+              <p
+                id="viewerCaseDescriptionTitle"
+                class="viewer-case-description-title"
+              >
+                Case 1: Normal eye
+              </p>
+              <div
+                id="viewerCaseDescriptionBody"
+                class="viewer-case-description-body"
+              ></div>
+            </div>
+          </div>
+          <div class="eye-canvas-toggle" aria-label="Eye selection">
+            <span
+              id="eyeLabelRight"
+              class="toggle-label canvas-eye-label active"
+              >R</span
+            >
+            <label class="switch eye-stage-switch" aria-label="Switch eye">
+              <input type="checkbox" id="eyeToggle" />
+              <span class="slider"></span>
+            </label>
+            <span id="eyeLabelLeft" class="toggle-label canvas-eye-label"
+              >L</span
+            >
+          </div>
+          <canvas id="fundusCanvas"></canvas>
+        </div>
+
+        <div class="fov-control-hidden" aria-hidden="true">
+          <span id="fovLabelSmall">Small</span>
+          <span id="fovLabelLeft">Norm</span>
+          <span id="fovLabelRight">Dilated</span>
+          <input
+            id="fovToggle"
+            class="fov-triple-slider"
+            type="range"
+            min="0"
+            max="2"
+            step="1"
+            value="1"
+            tabindex="-1"
+            aria-label="Field of view"
+          />
+        </div>
+        <div id="viewerExplanation" hidden></div>
+      </section>
+
+      <section
+        class="recording-system-panel is-collapsed"
+        aria-labelledby="recordingSystemHeading"
+      >
+        <div class="recording-system-heading">
+          <div>
+            <p class="panel-kicker">RE / LE record</p>
+            <h2 id="recordingSystemHeading">Exam</h2>
+          </div>
+          <button
+            id="recordingSystemToggle"
+            class="recording-system-toggle"
+            type="button"
+            aria-controls="recordingSystemContent"
+            aria-expanded="false"
+            aria-label="Expand Exam"
+          >
+            +
+          </button>
+        </div>
+
+        <div
+          id="recordingSystemContent"
+          class="recording-system-content"
+          aria-hidden="true"
+          hidden
+        >
+          <div class="clinical-view-controls">
+            <label
+              >Exam method
+              <select id="clinicalMode">
+                <option value="arclight-do">DO</option>
+                <option value="holo-bio">BIO</option>
+              </select></label
+            >
+            <label
+              >Dilated
+              <select id="clinicalDilation">
+                <option value="">—</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select></label
+            >
+          </div>
+          <section
+            class="recording-section view-panel"
+            aria-label="VA and view"
+          >
+            <div class="view-cards" aria-label="VA and view">
+              <section class="view-card" aria-label="Right eye view">
+                <h3 class="view-card-title">RE</h3>
+                <label class="view-card-field">
+                  <span>VA</span>
+                  <select
+                    id="rightDistanceVA"
+                    class="compact-status-select"
+                    aria-label="Right distance VA"
+                  ></select>
+                </label>
+                <label class="view-card-field">
+                  <span>View</span>
+                  <select
+                    id="rightViewStatusSelect"
+                    class="compact-status-select compact-status-select--view-status"
+                    aria-label="Right view"
+                  ></select>
+                </label>
+              </section>
+
+              <section class="view-card" aria-label="Left eye view">
+                <h3 class="view-card-title">LE</h3>
+                <label class="view-card-field">
+                  <span>VA</span>
+                  <select
+                    id="leftDistanceVA"
+                    class="compact-status-select"
+                    aria-label="Left distance VA"
+                  ></select>
+                </label>
+                <label class="view-card-field">
+                  <span>View</span>
+                  <select
+                    id="leftViewStatusSelect"
+                    class="compact-status-select compact-status-select--view-status"
+                    aria-label="Left view"
+                  ></select>
+                </label>
+              </section>
+            </div>
+          </section>
+
+          <section
+            class="recording-section findings-panel"
+            aria-label="Findings"
+          >
+            <div
+              class="finding-mode-tabs"
+              role="tablist"
+              aria-label="Finding type"
+            >
+              <button
+                id="generalFindingsTab"
+                class="finding-mode-tab active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="findingsContainer"
+                tabindex="0"
+                data-finding-mode="general"
+              >
+                General discs
+              </button>
+              <button
+                id="glaucomaFindingsTab"
+                class="finding-mode-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="findingsContainer"
+                tabindex="-1"
+                data-finding-mode="glaucoma"
+              >
+                Glaucoma discs
+              </button>
+            </div>
+            <div
+              id="findingsContainer"
+              class="findings-container"
+              role="tabpanel"
+              aria-labelledby="generalFindingsTab"
+            ></div>
+          </section>
+
+          <section
+            class="recording-section action-panel is-collapsed"
+            aria-labelledby="actionHeading"
+          >
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">Outcome</p>
+                <h2 id="actionHeading">Action</h2>
+              </div>
+              <div class="action-heading-controls">
+                <span id="actionTone" class="action-tone tone-neutral"
+                  >Review</span
+                >
+                <button
+                  id="actionToggle"
+                  class="action-toggle"
+                  type="button"
+                  aria-controls="actionDetails"
+                  aria-expanded="false"
+                  aria-label="Show action details"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div id="actionDetails" class="action-details" hidden>
+              <div id="actionCard" class="action-card">
+                <h3 id="actionTitle">Record both eyes</h3>
+                <div id="actionReasons" class="action-list"></div>
+                <div
+                  id="actionLimitations"
+                  class="action-list action-list--muted"
+                ></div>
+                <p id="actionNext" class="next-step">
+                  Complete right and left eye view, VA and findings.
+                </p>
+                <p id="actionSafety" class="safety-copy">
+                  Compare with symptoms, pupils, fields and local pathways.
+                </p>
+              </div>
+              <div class="systemic-row" aria-label="Context checks">
+                <label class="check-line"
+                  ><input type="checkbox" data-systemic="bp" /><span
+                    >IOP checked</span
+                  ></label
+                >
+                <label class="check-line"
+                  ><input type="checkbox" data-systemic="lipids" /><span
+                    >Family history</span
+                  ></label
+                >
+                <label class="check-line"
+                  ><input type="checkbox" data-systemic="hba1c" /><span
+                    >High myopia</span
+                  ></label
+                >
+              </div>
+              <button
+                id="referralNoteButton"
+                class="secondary-action"
+                type="button"
+              >
+                Referral note
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div
+      id="referralModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="referralTitle"
+      aria-hidden="true"
+      hidden
+    >
+      <div id="referralModalContent" class="modal-content" tabindex="-1">
+        <div class="modal-header">
+          <h2 id="referralTitle">Referral note</h2>
+          <button
+            id="closeReferralButton"
+            class="soft-close"
+            type="button"
+            aria-label="Close referral note"
+          >
+            &times;
+          </button>
+        </div>
+        <textarea id="referralText" class="referral-text" readonly></textarea>
+        <div class="referral-actions" aria-label="Referral note actions">
+          <button
+            id="copyReferralButton"
+            class="note-icon-button"
+            type="button"
+            data-note-action="copy"
+            aria-label="Copy referral note"
+          ></button>
+          <button
+            id="shareReferralButton"
+            class="note-icon-button"
+            type="button"
+            data-note-action="share"
+            aria-label="Share referral note"
+          ></button>
+        </div>
+        <p id="copyStatus" class="copy-status" role="status"></p>
+      </div>
+    </div>
+
+    <div
+      id="practiceModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="practiceTitle"
+      aria-hidden="true"
+      hidden
+    >
+      <div
+        id="practiceModalContent"
+        class="modal-content modal-content--wide"
+        tabindex="-1"
+      >
+        <div class="modal-header">
+          <h2 id="practiceTitle">Image cases</h2>
+          <button
+            id="closePracticeButton"
+            class="soft-close"
+            type="button"
+            aria-label="Close image cases"
+          >
+            &times;
+          </button>
+        </div>
+        <div
+          class="practice-set-toolbar"
+          role="group"
+          aria-label="Image case set"
+        >
+          <button
+            class="case-set-button active"
+            type="button"
+            data-case-set="neurology"
+            aria-pressed="true"
+            aria-label="General discs"
+          >
+            General
+          </button>
+          <span class="case-set-divider" aria-hidden="true"></span>
+          <span class="case-set-cup-group" aria-hidden="true"></span>
+          <button
+            class="case-set-button case-set-button--cup"
+            type="button"
+            data-case-set="normal-cups"
+            aria-pressed="false"
+          >
+            Normal cups
+          </button>
+          <button
+            class="case-set-button case-set-button--cup"
+            type="button"
+            data-case-set="glaucoma-loss"
+            aria-pressed="false"
+            aria-label="Glaucoma sequence"
+          >
+            Glaucoma
+          </button>
+        </div>
+        <div id="practiceCases" class="practice-grid"></div>
+      </div>
+    </div>
+
+    <div
+      id="guideModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="guideTitle"
+      aria-hidden="true"
+      hidden
+    >
+      <div id="guideModalContent" class="modal-content" tabindex="-1">
+        <div class="modal-header">
+          <h2 id="guideTitle">Guide</h2>
+          <button
+            id="closeGuideButton"
+            class="soft-close"
+            type="button"
+            aria-label="Close guide"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="guideContent" class="guide-content"></div>
+      </div>
+    </div>
+
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqTitle"
+      aria-describedby="mcqIntro"
+      aria-hidden="true"
+      hidden
+    >
+      <div
+        id="mcqModalContent"
+        class="modal-content modal-content--wide"
+        tabindex="-1"
+      >
+        <div class="modal-header">
+          <div>
+            <h2 id="mcqTitle">MCQ</h2>
+            <p id="mcqIntro" class="mcq-intro"></p>
+          </div>
+          <button
+            id="closeMcqButton"
+            class="soft-close"
+            type="button"
+            aria-label="Close MCQ"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="mcqContainer" class="mcq-container"></div>
+        <div
+          id="mcqResult"
+          class="mcq-result"
+          role="status"
+          tabindex="-1"
+        ></div>
+        <div class="mcq-actions">
+          <button id="submitMcqButton" class="primary-action" type="button">
+            Submit answers
+          </button>
+          <button
+            id="restartMcqButton"
+            class="secondary-action"
+            type="button"
+            hidden
+          >
+            New attempt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.bundle.js?v=20260929-engine1-ui20260930-perf1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
+    <script src="../i18n-lo.js?v=20260901-2" defer></script>
+  </body>
+</html>

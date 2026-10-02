@@ -28,8 +28,12 @@
   }
 
   main {
-    padding: 0 8px;
+    padding: 0 10px;
     gap: 8px;
+  }
+
+  .results-panel {
+    width: 100%;
   }
 
   .eyes-wrapper {

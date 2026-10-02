@@ -660,22 +660,10 @@ export function createViewer({
   }
 
   function buildFundusFilter(cataract) {
-    const isMobileCataract =
-      VIEWER_PERF_PROFILE.isMobileLike && state.viewer.cataractLevel > 0;
-    const blurScale = isMobileCataract
-      ? VIEWER_PERF_PROFILE.cataractBlurScale
-      : 1;
-    const blurPx = Math.max(
-      0,
-      Math.min(isMobileCataract ? 0.25 : 6, cataract.blurPx * blurScale),
-    );
     const brightness = cataract.brightness * timedAugmentation.brightness;
     const contrast = cataract.contrast * timedAugmentation.contrast;
     const saturation = cataract.saturation * timedAugmentation.saturation;
-    if (isMobileCataract) {
-      return `brightness(${brightness})`;
-    }
-    return `blur(${blurPx}px) brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
+    return `blur(${Math.max(0, Math.min(6, cataract.blurPx))}px) brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
   }
 
   function setTimedAugmentation(augmentation) {
@@ -1520,6 +1508,12 @@ export function createViewer({
       const augmentedGeometry = buildTimedAugmentedDrawGeometry(geometry);
 
       ctx.save();
+      // BIO forms an inverted and laterally reversed retinal image.
+      if (viewerMode === "holo-bio") {
+        ctx.translate(augmentedGeometry.centreX, augmentedGeometry.centreY);
+        ctx.rotate(Math.PI);
+        ctx.translate(-augmentedGeometry.centreX, -augmentedGeometry.centreY);
+      }
       applyTimedAugmentationTransform(augmentedGeometry);
 
       ctx.filter = buildFundusFilter(cataract);
@@ -1914,7 +1908,7 @@ export function createViewer({
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    if (state.viewer.isRightEye) {
+    if (state.viewer.isRightEye !== (viewerMode === "holo-bio")) {
       ctx.save();
       ctx.translate(sideOffset, centreY);
       ctx.rotate(-Math.PI / 2);

@@ -2,7 +2,7 @@
 
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Current Memory Status (26/7/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -13,7 +13,7 @@
 - Favicon: current black-square app favicon with the app letter or letters centred.
 <!-- APP-DOC-STATUS:END -->
 
-_Last updated: 18/5/2026_
+_Last updated: 26/7/2026_
 
 ## Technologies Used
 
@@ -25,9 +25,9 @@ _Last updated: 18/5/2026_
 
 ## Development Setup
 
-- Static app served locally with `serve`
-- No bundler or transpiler required
-- Entry point: `index.html` with `<script type="module" src="script.js">`
+- Static app served locally with the dependency-free `local-server.mjs`
+- Source entry point: `script.js`; pinned esbuild generates the classic direct-file-compatible `app.bundle.js`
+- Browser entry point: `index.html` loads `app.bundle.js` once
 
 ## Technical Constraints
 
@@ -43,7 +43,7 @@ _Last updated: 18/5/2026_
 ## Dependencies
 
 - Runtime UI dependencies: no UI font/icon CDNs; the app uses local Quicksand for the app title, local Inter for UI text and CSS/Unicode glyphs for compact icons
-- Dev dependencies: `serve`, `eslint`, `prettier`
+- Dev dependencies: pinned esbuild, ESLint, Prettier and pinned `playwright-core`
 
 ## Tool Usage Patterns
 
@@ -63,3 +63,15 @@ _Last updated: 18/5/2026_
   - `npm run format:check`
   - `npm run smoke`
   - `npm run test:integration`
+
+# v1.1 technical context (23 July 2026)
+
+Normal runtime is static HTML, CSS, a classic generated JavaScript bundle, one local enhancement script, local WOFF2 fonts and adaptive WebP assets. `npm start` now uses the bounded dependency-free `local-server.mjs`; no third-party server is required. `manifest.webmanifest` and `service-worker.js` add the scoped offline shell. Test-only tooling includes ESLint, Prettier, Node checks and pinned `playwright-core` 1.55.0. `npm audit` reports no vulnerabilities.
+
+## Refactor verification — 26 July 2026
+
+Use `npm run build`, `npm test` and `npm run lint`. esbuild is pinned at `0.25.5` and the test chain verifies exact bundle parity. The current dependency audit reports five high-severity development-tree findings which were not auto-fixed because that could introduce breaking dependency changes.
+
+## MCQ quality verification — 26 July 2026
+
+`questions-qa.mjs` protects 30 stable IDs, exact one-tier ownership, explanations, source status and balanced answer keys. `mcq-unit-test.mjs` protects rationale propagation, unanswered counts and exported explanations. `browser-smoke.mjs` covers the unanswered guard, answer review, retry and Escape focus return at `360 x 740`.

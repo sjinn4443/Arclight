@@ -3,11 +3,19 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "esbuild src/app.js --bundle --minify --format=iife --target=es2018 --outfile=app.bundle.js --log-level=warning",
+    "build:check": "node tools/check-bundle.mjs",
+    "test": "npm run test:contracts && npm run audit",
+    "test:contracts": "node tests/app-contract.test.mjs && node tests/logic-regressions.test.mjs",
     "audit:acceptance": "node qa-cataract-acceptance.mjs",
     "audit:combination": "node qa-cataract-combination-audit.mjs",
     "audit:results": "node qa-cataract-result-output-audit.mjs",
     "audit:full": "node qa-cataract-full-audit.mjs",
     "audit:lmic": "node qa-cataract-lmic-content.mjs",
-    "audit": "npm run audit:acceptance && npm run audit:combination && npm run audit:results && npm run audit:full && npm run audit:lmic"
+    "audit": "npm run audit:acceptance && npm run audit:combination && npm run audit:results && npm run audit:full && npm run audit:lmic",
+    "check": "npm run test && npm run build:check"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5"
   }
 }

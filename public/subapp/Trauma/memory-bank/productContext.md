@@ -1,8 +1,16 @@
 # Product Context
 
+## Untouched-state rule
+
+Before a presenting VA is selected, the app must show an unassessed result rather than a routine or normal score. The heading and guidance must remain distinct and readable at `360 x 740`.
+
+## v1.1 safety boundary
+
+The app remains an OTS-style aid, not a diagnosis or treatment mandate. Reset restores the established calculator starting state and must not be interpreted as recording a patient result.
+
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Historical Memory Status (18/5/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -48,3 +56,7 @@ Users need to turn presenting VA and key risk findings into a quick, understanda
 ## Risk and Safety Framing
 
 - App should communicate that it is an aid, not a replacement for clinical judgement.
+
+## MCQ review experience — 26 July 2026
+
+Incomplete attempts should focus the first missing answer without grading. Completed attempts should mark every response and show the rationale and source status before `Try again` or `New attempt`. The source record supports review but does not imply clinical approval.

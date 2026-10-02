@@ -33,6 +33,21 @@
     });
   }
 
+  function syncNystagmusControls() {
+    const enabled = Boolean(
+      document.getElementById("toggle-nystagmus")?.checked,
+    );
+    ["nyst-direction", "nyst-wave", "nyst-rate"].forEach((id) => {
+      const control = document.getElementById(id);
+      if (!control) return;
+      control.disabled = !enabled;
+      control.setAttribute("aria-disabled", String(!enabled));
+      control
+        .closest(".toggle-item")
+        ?.classList.toggle("is-dependent-disabled", !enabled);
+    });
+  }
+
   function updateReflexSliderVisual(value) {
     const slider = document.getElementById("reflex-color-slider");
     if (!slider) return;
@@ -125,7 +140,10 @@
       AppStateRef.markManualInteraction();
       OutputWriterRef.updateAllOutputs();
     };
-    nystToggle?.addEventListener("change", nystUpdate);
+    nystToggle?.addEventListener("change", () => {
+      syncNystagmusControls();
+      nystUpdate();
+    });
     nystDirection?.addEventListener("change", nystUpdate);
     nystWave?.addEventListener("change", nystUpdate);
     nystRate?.addEventListener("change", nystUpdate);
@@ -137,22 +155,15 @@
     }
 
     function applyDilatedMode(isEnabled) {
-      const targetSize = isEnabled ? 50 : AppStateRef.BASE_PUPIL_SIZE;
+      // Display overlay only: never overwrite authored pupil sizes or physiology.
       document.body.classList.toggle("is-dilated-mode", Boolean(isEnabled));
-      document.querySelectorAll(".slider[data-eye]").forEach((slider) => {
-        slider.value = String(targetSize);
-        slider.dispatchEvent(new Event("input"));
-      });
+      globalObj.LightController?.refreshLightPupilResponse();
     }
 
     function updateOutputsAfterLayout() {
-      const refreshOutputs = () => {
-        OutputWriterRef.updateAllOutputs();
-      };
       requestAnimationFrame(() => {
-        refreshOutputs();
+        OutputWriterRef.updateAllOutputs();
       });
-      setTimeout(refreshOutputs, 280);
     }
 
     function syncBabyMode() {
@@ -187,7 +198,6 @@
     });
 
     dilatedToggle?.addEventListener("change", () => {
-      AppStateRef.markManualInteraction();
       applyDilatedMode(dilatedToggle.checked);
       OutputWriterRef.updateAllOutputs();
     });
@@ -277,16 +287,15 @@
     if (dilatedToggle?.checked) applyDilatedMode(true);
     syncBabyMode();
     syncManualEyeMove();
+    syncNystagmusControls();
     setAdvancedSignsOpen(false);
   }
 
   function resetEyes() {
     AppStateRef.clearDiagnosticHints();
     AppStateRef.state.activePresetKey = "";
-    AppStateRef.state.pupilReactivityByEye.left = 1;
-    AppStateRef.state.pupilReactivityByEye.right = 1;
-    AppStateRef.state.pupilModelByEye.left = "normal";
-    AppStateRef.state.pupilModelByEye.right = "normal";
+    AppStateRef.resetPupilPhysiology?.();
+    AppStateRef.state.nearActive = false;
     AppStateRef.clearGazeSamples?.();
     document.body.classList.remove("reflex-on");
     document.querySelectorAll(".pupil").forEach((pupil) => {
@@ -305,8 +314,10 @@
         iris.presetOffset = { x: 0, y: 0 };
         iris.gazeOffset = { x: 0, y: 0 };
         iris.liveGazeOffset = { x: 0, y: 0 };
+        iris.nearOffset = { x: 0, y: 0 };
         iris.coverOffset = { x: 0, y: 0 };
         iris.nystagmusOffset = { x: 0, y: 0 };
+        iris.conditionOffset = { x: 0, y: 0 };
         iris.microOffset = { x: 0, y: 0 };
         iris.backgroundOffset = { x: 0, y: 0 };
         iris.conditionApplied = false;
@@ -319,6 +330,7 @@
         `.fade-button[data-eye="${eyeType}"]`,
       );
       fadeButton?.classList.remove("active");
+      fadeButton?.setAttribute("aria-pressed", "false");
 
       const ptosisSlider = document.querySelector(
         `.vertical-eye-slider[data-eye="${eyeType}"]`,
@@ -345,7 +357,9 @@
       allowToggle: false,
       silent: true,
     });
+    globalObj.LightController?.setNearState(false, { silent: true });
     updateIrisColour();
+    OutputWriterRef.updateAllOutputs();
   }
 
   function clearModifiersOnly() {
@@ -381,6 +395,7 @@
     if (nystDirection) nystDirection.value = "horizontal";
     if (nystWave) nystWave.value = "jerk";
     if (nystRate) nystRate.value = "slow";
+    syncNystagmusControls();
     globalObj.EyeController?.applyHeadTiltVisual("none");
     globalObj.EyeController?.applyCycloVisual("left", "none");
     globalObj.EyeController?.applyCycloVisual("right", "none");
@@ -421,6 +436,7 @@
       if (active) iris.conditionApplied = true;
     }
     button?.classList.toggle("active", active);
+    button?.setAttribute("aria-pressed", String(Boolean(active)));
   }
 
   function setCyclo(eyeType, direction) {
@@ -445,6 +461,12 @@
     if (nystDirection) nystDirection.value = direction;
     if (nystWave) nystWave.value = wave;
     if (nystRate) nystRate.value = rate;
+    syncNystagmusControls();
+  }
+
+  function enableFatigable() {
+    const fatigableToggle = document.getElementById("toggle-fatigable");
+    if (fatigableToggle) fatigableToggle.checked = true;
   }
 
   function setPupilReactivity(eyeType, gain) {
@@ -511,6 +533,7 @@
         const traumaToggle = document.getElementById("toggle-trauma");
         if (traumaToggle) traumaToggle.checked = true;
       },
+      enableFatigable,
       setEyeTransform,
       setPtosis,
       setPupil,
@@ -540,6 +563,7 @@
     setPtosis,
     setPupil,
     setFaded,
+    syncNystagmusControls,
     applyCondition,
   };
 })(typeof globalThis !== "undefined" ? globalThis : window);

@@ -1,4 +1,16 @@
 const SIMPLE_CONDITION_RULES = [
+  [
+    /Bilateral Peripheral Constriction \(Tunnel Vision\)/g,
+    "Tunnel vision in both eyes",
+  ],
+  [
+    /Right Peripheral Constriction \(Tunnel Vision\)/g,
+    "Tunnel vision in right eye",
+  ],
+  [
+    /Left Peripheral Constriction \(Tunnel Vision\)/g,
+    "Tunnel vision in left eye",
+  ],
   [/Mixed\/Unclassified Field Defect/g, "Mixed pattern"],
   [/Mixed Altitudinal/g, "Mixed upper/lower-half pattern"],
   [/Additional left-eye defect/g, "extra left-eye change"],

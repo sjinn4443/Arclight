@@ -20,6 +20,7 @@ const helmet = require("helmet");
 const fs = require("fs");
 const crypto = require("crypto");
 const { execSync } = require("child_process");
+const { isSubappDevelopmentAsset } = require("./utils/subapp-assets.cjs");
 const { applyMainAppCsp, applyReportsCsp } = require("./security/csp.cjs");
 const {
   appVersionRateLimiter,
@@ -1027,10 +1028,20 @@ app.delete("/api/dev/users/:anonId", adminAccess, async (req, res) => {
 });
 
 app.use((req, res, next) => {
+  if (isSubappDevelopmentAsset(req.path)) return res.status(404).end();
+  next();
+});
+
+app.use((req, res, next) => {
   if (req.method !== "GET" && req.method !== "HEAD") return next();
 
-  const htmlFile = resolveStaticHtmlFile(staticRoot, req.path);
-  if (!htmlFile || !fs.existsSync(htmlFile)) return next();
+  const htmlFile = [
+    resolveStaticHtmlFile(staticRoot, req.path),
+    prod || serveDist
+      ? resolveStaticHtmlFile(`${staticRoot}-media`, req.path)
+      : null,
+  ].find((candidate) => candidate && fs.existsSync(candidate));
+  if (!htmlFile) return next();
 
   return sendHtmlFileWithNonce(req, res, htmlFile);
 });

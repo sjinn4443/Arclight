@@ -42,37 +42,42 @@ describe("experimental mini app notice", () => {
     localStorage.clear();
   });
 
-  it("shows once for an interactive learning flow and reopens after leaving that flow", () => {
-    showPage("interactiveLearningPage");
+  it.each(["cataractSimulatorPage", "discsInteractivePage"])(
+    "shows once for %s and reopens after leaving the interactive flow",
+    (simulatorPageId) => {
+      showPage("interactiveLearningPage");
 
-    const overlay = document.getElementById("experimentalMiniAppNoticeOverlay");
-    expect(overlay).toBeNull();
+      const overlay = document.getElementById(
+        "experimentalMiniAppNoticeOverlay",
+      );
+      expect(overlay).toBeNull();
 
-    showPage("cataractPage");
-    expect(
-      document.getElementById("experimentalMiniAppNoticeOverlay"),
-    ).toBeNull();
+      showPage("cataractPage");
+      expect(
+        document.getElementById("experimentalMiniAppNoticeOverlay"),
+      ).toBeNull();
 
-    showPage("cataractSimulatorPage");
-    const simulatorOverlay = document.getElementById(
-      "experimentalMiniAppNoticeOverlay",
-    );
-    expect(simulatorOverlay).not.toBeNull();
-    expect(simulatorOverlay.hidden).toBe(false);
-    expect(simulatorOverlay.textContent).toContain(
-      "Interactive learning notice",
-    );
+      showPage(simulatorPageId);
+      const simulatorOverlay = document.getElementById(
+        "experimentalMiniAppNoticeOverlay",
+      );
+      expect(simulatorOverlay).not.toBeNull();
+      expect(simulatorOverlay.hidden).toBe(false);
+      expect(simulatorOverlay.textContent).toContain(
+        "Interactive learning notice",
+      );
 
-    simulatorOverlay.querySelector("[data-experimental-miniapp-ok]").click();
-    expect(simulatorOverlay.hidden).toBe(true);
+      simulatorOverlay.querySelector("[data-experimental-miniapp-ok]").click();
+      expect(simulatorOverlay.hidden).toBe(true);
 
-    showPage("glaucomaACDInteractive");
-    expect(simulatorOverlay.hidden).toBe(true);
+      showPage("glaucomaACDInteractive");
+      expect(simulatorOverlay.hidden).toBe(true);
 
-    showPage("diseasesPage");
-    showPage("cataractSimulatorPage");
-    expect(simulatorOverlay.hidden).toBe(false);
-  });
+      showPage("diseasesPage");
+      showPage(simulatorPageId);
+      expect(simulatorOverlay.hidden).toBe(false);
+    },
+  );
 
   it("clears the acknowledgement after a non-experimental route load", () => {
     showPage("cataractSimulatorPage");

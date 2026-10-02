@@ -10,16 +10,13 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Squint" />
+    <meta name="theme-color" content="#0d47a1" />
     <title>Squint</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css?v=20260518-appbar" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="style.css?v=20260928-ui1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header class="app-bar">
@@ -28,6 +25,8 @@
         class="appbar-button appbar-button-left"
         type="button"
         aria-label="Open menu"
+        aria-controls="sidebar"
+        aria-expanded="false"
       >
         <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
       </button>
@@ -42,6 +41,9 @@
         class="appbar-button appbar-button-right"
         type="button"
         aria-label="Open information"
+        aria-controls="info-popup"
+        aria-expanded="false"
+        aria-haspopup="dialog"
       >
         <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
       </button>
@@ -49,7 +51,7 @@
 
     <div id="menu-backdrop" class="menu-backdrop" hidden></div>
 
-    <aside id="sidebar" class="side-menu" aria-hidden="true">
+    <aside id="sidebar" class="side-menu" aria-label="Menu" aria-hidden="true">
       <div class="side-menu-header">
         <h2 class="side-menu-title">Menu</h2>
         <button
@@ -64,6 +66,25 @@
 
       <section class="menu-section">
         <h3 class="menu-section-title">Presets</h3>
+        <div class="preset-filter-wrap">
+          <input
+            id="preset-filter"
+            class="preset-filter-input"
+            type="search"
+            placeholder="Find a preset"
+            aria-label="Find a preset"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <p
+            id="preset-filter-status"
+            class="preset-filter-status"
+            role="status"
+            aria-live="polite"
+          >
+            68 presets
+          </p>
+        </div>
         <details class="preset-group preset-group-shell" open>
           <summary class="preset-group-summary">Alignment / palsy</summary>
           <div class="preset-folders" data-preset-group="alignment">
@@ -202,9 +223,33 @@
           </button>
         </section>
       </section>
+
+      <section class="menu-section session-section">
+        <button
+          id="new-session-button"
+          class="menu-action-button session-reset-button"
+          type="button"
+        >
+          New session
+        </button>
+        <p
+          id="new-session-status"
+          class="new-session-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
     </aside>
 
-    <section id="mcq-card" class="mcq-overlay" hidden>
+    <section
+      id="mcq-card"
+      class="mcq-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcq-title"
+      aria-hidden="true"
+      hidden
+    >
       <div class="mcq-overlay-panel card">
         <div class="mcq-header">
           <h2 id="mcq-title" class="mcq-title">MCQ - Primary</h2>
@@ -214,25 +259,39 @@
         </div>
         <p id="mcq-meta" class="mcq-meta"></p>
         <form id="mcq-form" class="mcq-form"></form>
+        <p
+          id="mcq-result"
+          class="mcq-result"
+          role="status"
+          aria-live="polite"
+        ></p>
         <div class="mcq-actions">
           <button id="mcq-submit" class="mcq-action-button" type="button">
-            Submit
+            Submit answers
           </button>
           <button
             id="mcq-restart"
             class="mcq-action-button mcq-action-secondary"
             type="button"
+            hidden
           >
-            New set
+            Try again
           </button>
         </div>
-        <p id="mcq-result" class="mcq-result"></p>
       </div>
     </section>
 
-    <section id="info-popup" class="info-popup" hidden>
+    <section
+      id="info-popup"
+      class="info-popup"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="info-popup-title"
+      aria-hidden="true"
+      hidden
+    >
       <div class="info-popup-header">
-        <h2>About</h2>
+        <h2 id="info-popup-title">About</h2>
         <button id="info-close" type="button" aria-label="Close information">
           &times;
         </button>
@@ -240,7 +299,13 @@
       <div class="info-popup-body">
         <div class="info-look-guide">
           <section class="info-look-section">
-            <p>Quick teaching simulator for ocular motility and pupil signs.</p>
+            <p class="info-purpose-copy">
+              Use this while observing the patient: you drag each iris to match
+              the eye position you see. Use the Gaze tracker for conjugate
+              movement, cover controls for fixation responses and pupil controls
+              for light and near responses. It supports teaching; it does not
+              make a final diagnosis.
+            </p>
             <div class="info-basics-grid" aria-label="Basic scan">
               <div class="info-basics-cue">
                 <strong>Match</strong>
@@ -260,12 +325,22 @@
           <section class="info-look-section info-look-section--detail">
             <p class="info-look-title">More detail</p>
             <p>
-              <strong>Motility + lids:</strong> drag gaze, compare alignment and
-              look for ptosis.
+              <strong>Alignment:</strong> drag an iris.
+              <strong>Gaze tracker:</strong> moves both eyes and shows muscle
+              demand; RE is screen-left, LE screen-right.
             </p>
             <p>
-              <strong>Light + pupils:</strong> use moon/sun, reflex colour and
-              the swinging-light control.
+              <strong>Muscles:</strong> SR superior rectus · IR inferior rectus
+              · MR medial rectus · LR lateral rectus · SO superior oblique · IO
+              inferior oblique.
+            </p>
+            <p>
+              <strong>Light + pupils:</strong> use the swinging-light control.
+              Hold Near for pupil constriction and convergence.
+            </p>
+            <p>
+              <strong>Cover:</strong> cover-uncover observes manifest
+              re-fixation. Alternate cover reveals latent or total deviation.
             </p>
           </section>
 
@@ -275,486 +350,589 @@
               practice.
             </p>
             <p>
-              Hold about 3 seconds per eye, swing briskly and keep timing equal.
+              Hold about 3 seconds per eye, swing steadily and keep timing
+              equal.
             </p>
-            <p>
-              Teaching support only, not final diagnosis.
-              <span class="modal-version-inline">v1 - 18/5/2026</span>
-            </p>
+            <p>Teaching support only, not final diagnosis.</p>
           </section>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
+          </p>
         </div>
       </div>
     </section>
 
     <main class="main-shell">
-      <section class="card controls-card">
-        <div class="modifier-grid">
-          <div class="toggle-item toggle-item-compact toggle-item-main">
-            <span class="toggle-label">Gaze</span>
-            <label class="switch">
-              <input
-                type="checkbox"
-                id="gaze-toggle"
-                aria-label="Gaze control"
-              />
-              <span class="toggle-slider"></span>
+      <div class="fleet-input-column">
+        <section class="card controls-card">
+          <div class="modifier-grid">
+            <label class="toggle-item toggle-item-compact toggle-item-main">
+              <span class="toggle-label">Gaze</span>
+              <span class="switch">
+                <input
+                  type="checkbox"
+                  id="gaze-toggle"
+                  aria-label="Gaze control"
+                />
+                <span class="toggle-slider"></span>
+              </span>
+            </label>
+
+            <label class="toggle-item toggle-item-main">
+              <span class="toggle-label">Dilated</span>
+              <span class="switch">
+                <input
+                  type="checkbox"
+                  id="toggle-dilated"
+                  aria-label="Dilated pupils"
+                />
+                <span class="toggle-slider"></span>
+              </span>
+            </label>
+
+            <label class="toggle-item toggle-item-main">
+              <span class="toggle-label">Baby</span>
+              <span class="switch">
+                <input
+                  type="checkbox"
+                  id="baby-toggle"
+                  aria-label="Baby mode"
+                />
+                <span class="toggle-slider"></span>
+              </span>
             </label>
           </div>
 
-          <div class="toggle-item toggle-item-main">
-            <span class="toggle-label">Dilated</span>
-            <label class="switch">
-              <input
-                type="checkbox"
-                id="toggle-dilated"
-                aria-label="Dilated pupils"
-              />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-
-          <div class="toggle-item toggle-item-main">
-            <span class="toggle-label">Baby</span>
-            <label class="switch">
-              <input type="checkbox" id="baby-toggle" aria-label="Baby mode" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-        </div>
-
-        <button
-          id="advanced-signs-toggle"
-          class="toggle-item advanced-pill"
-          type="button"
-          aria-expanded="false"
-          aria-controls="advanced-signs-panel"
-        >
-          <span class="toggle-label">Adv</span>
-          <span
-            id="advanced-signs-glyph"
-            class="advanced-pill-glyph"
-            aria-hidden="true"
-            >+</span
-          >
-        </button>
-
-        <div id="advanced-signs-panel" class="advanced-signs-panel" hidden>
-          <div class="advanced-extra-modifiers">
-            <div class="toggle-item toggle-item-urgency">
-              <span class="toggle-label">Pain/HA</span>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="toggle-pain"
-                  aria-label="Pain or headache"
-                />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item toggle-item-urgency">
-              <span class="toggle-label" id="sudden-label">Sudden</span>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="toggle-sudden"
-                  aria-label="Sudden onset"
-                />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item toggle-item-urgency">
-              <span class="toggle-label">Trauma</span>
-              <label class="switch">
-                <input type="checkbox" id="toggle-trauma" aria-label="Trauma" />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item">
-              <span class="toggle-label">Diplopia</span>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="toggle-diplopia"
-                  aria-label="Diplopia"
-                />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Tilt</span>
-              <select id="head-tilt" aria-label="Head tilt">
-                <option value="none" selected>none</option>
-                <option value="right">R</option>
-                <option value="left">L</option>
-              </select>
-            </div>
-
-            <div class="toggle-item">
-              <span class="toggle-label">Tired</span>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="toggle-fatigable"
-                  aria-label="Fatigable symptoms"
-                />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item">
-              <span class="toggle-label">Manual</span>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="manual-eye-move-toggle"
-                  checked
-                  aria-label="Manual eye movement"
-                />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Iris</span>
-              <select id="iris-colour" aria-label="Iris colour">
-                <option value="dark-brown">dark</option>
-                <option value="light-brown">brown</option>
-                <option value="green" selected>green</option>
-                <option value="blue">blue</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="advanced-signs-grid">
-            <div class="toggle-item">
-              <span class="toggle-label">Nystagmus</span>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  id="toggle-nystagmus"
-                  aria-label="Nystagmus"
-                />
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Dir</span>
-              <select id="nyst-direction" aria-label="Nystagmus direction">
-                <option value="horizontal" selected>H</option>
-                <option value="vertical">V</option>
-                <option value="mixed">Mixed</option>
-              </select>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Wave</span>
-              <select id="nyst-wave" aria-label="Nystagmus wave">
-                <option value="jerk" selected>Jerk</option>
-                <option value="pendular">Pendular</option>
-              </select>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Rate</span>
-              <select id="nyst-rate" aria-label="Nystagmus rate">
-                <option value="slow" selected>Slow</option>
-                <option value="fast">Fast</option>
-              </select>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Cyclo RE</span>
-              <select id="cyclo-re" aria-label="Cyclo RE">
-                <option value="none" selected>0</option>
-                <option value="in">In</option>
-                <option value="out">Out</option>
-              </select>
-            </div>
-
-            <div class="toggle-item toggle-item-select">
-              <span class="toggle-label">Cyclo LE</span>
-              <select id="cyclo-le" aria-label="Cyclo LE">
-                <option value="none" selected>0</option>
-                <option value="in">In</option>
-                <option value="out">Out</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="advanced-signs-sliders slider-card">
-            <div class="slider-inline-row">
-              <h3 class="card-title slider-inline-title">Pupil size</h3>
-              <div
-                class="sliders-container slider-inline-controls pupil-size-grid"
-              >
-                <div class="slider-wrapper slider-wrapper-pupil">
-                  <span class="pupil-eye-label">RE</span>
-                  <input
-                    type="range"
-                    class="slider"
-                    min="10"
-                    max="55"
-                    value="32"
-                    data-eye="left"
-                    title="Right pupil size"
-                  />
-                  <button class="fade-button" data-eye="left" type="button">
-                    fade
-                  </button>
-                </div>
-                <div class="slider-wrapper slider-wrapper-pupil">
-                  <span class="pupil-eye-label">LE</span>
-                  <input
-                    type="range"
-                    class="slider"
-                    min="10"
-                    max="55"
-                    value="32"
-                    data-eye="right"
-                    title="Left pupil size"
-                  />
-                  <button class="fade-button" data-eye="right" type="button">
-                    fade
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="slider-inline-row">
-              <h3 class="card-title slider-inline-title">Upper lid</h3>
-              <div
-                class="sliders-container slider-inline-controls upper-lid-row"
-              >
-                <div class="slider-wrapper">
-                  <input
-                    type="range"
-                    class="vertical-eye-slider"
-                    min="0"
-                    max="30"
-                    value="0"
-                    data-eye="left"
-                    title="Left upper lid ptosis"
-                  />
-                </div>
-                <div class="slider-wrapper">
-                  <input
-                    type="range"
-                    class="vertical-eye-slider"
-                    min="0"
-                    max="30"
-                    value="0"
-                    data-eye="right"
-                    title="Right upper lid ptosis"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card eyes-card">
-        <div
-          id="preset-flash-label"
-          class="preset-flash-label"
-          aria-live="polite"
-        ></div>
-        <div class="cover-controls">
           <button
-            id="cover-re-btn"
-            class="cover-btn"
+            id="advanced-signs-toggle"
+            class="toggle-item advanced-pill"
             type="button"
-            aria-label="Cover RE"
+            aria-expanded="false"
+            aria-controls="advanced-signs-panel"
           >
-            RE
-          </button>
-          <div class="ambient-control" aria-label="Ambient light">
-            <span class="ambient-icon ambient-icon-moon" aria-hidden="true"
-              >Light</span
+            <span class="toggle-label">Adv</span>
+            <span
+              id="advanced-signs-glyph"
+              class="advanced-pill-glyph"
+              aria-hidden="true"
+              >+</span
             >
-            <label
-              class="switch ambient-switch"
-              aria-label="Ambient light toggle"
-            >
-              <input
-                id="ambient-toggle"
-                type="checkbox"
-                checked
-                aria-label="Toggle ambient light"
-                title="Ambient light"
-              />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <button
-            id="cover-le-btn"
-            class="cover-btn"
-            type="button"
-            aria-label="Cover LE"
-          >
-            LE
           </button>
-        </div>
-        <div
-          id="decomp-rest-countdown"
-          class="decomp-rest-countdown"
-          aria-live="polite"
-          hidden
-        ></div>
-        <div class="eyes-container">
-          <div class="eye" data-eye="left" id="left-eye">
-            <div class="eye-inner">
-              <div class="iris">
-                <div class="iris-cyclo-axis" aria-hidden="true">
-                  <span class="iris-cyclo-line"></span>
-                  <span class="iris-cyclo-mark iris-cyclo-mark-top"></span>
-                  <span class="iris-cyclo-mark iris-cyclo-mark-bottom"></span>
-                </div>
-                <div class="pupil"></div>
-              </div>
-              <div class="upper-eyelid"></div>
-              <div class="lower-eyelid"></div>
-            </div>
-            <div class="torch-patch" aria-hidden="true"></div>
-            <div class="eye-occluder" aria-hidden="true"></div>
-          </div>
 
-          <div class="eye" data-eye="right" id="right-eye">
-            <div class="eye-inner">
-              <div class="iris">
-                <div class="iris-cyclo-axis" aria-hidden="true">
-                  <span class="iris-cyclo-line"></span>
-                  <span class="iris-cyclo-mark iris-cyclo-mark-top"></span>
-                  <span class="iris-cyclo-mark iris-cyclo-mark-bottom"></span>
-                </div>
-                <div class="pupil"></div>
+          <div id="advanced-signs-panel" class="advanced-signs-panel" hidden>
+            <div class="advanced-extra-modifiers">
+              <div class="toggle-item toggle-item-urgency">
+                <span class="toggle-label">Pain / headache</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-pain"
+                    aria-label="Pain or headache"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
               </div>
-              <div class="upper-eyelid"></div>
-              <div class="lower-eyelid"></div>
+
+              <div class="toggle-item toggle-item-urgency">
+                <span class="toggle-label" id="sudden-label">Sudden</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-sudden"
+                    aria-label="Sudden onset"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item toggle-item-urgency">
+                <span class="toggle-label">Trauma</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-trauma"
+                    aria-label="Trauma"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item">
+                <span class="toggle-label">Diplopia</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-diplopia"
+                    aria-label="Diplopia"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">Head tilt</span>
+                <select id="head-tilt" aria-label="Head tilt">
+                  <option value="none" selected>None</option>
+                  <option value="right">Right</option>
+                  <option value="left">Left</option>
+                </select>
+              </div>
+
+              <div class="toggle-item">
+                <span class="toggle-label">Fatigue</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-fatigable"
+                    aria-label="Fatigable symptoms"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item">
+                <span class="toggle-label">Eye drag</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="manual-eye-move-toggle"
+                    checked
+                    aria-label="Manual eye movement"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">Iris</span>
+                <select id="iris-colour" aria-label="Iris colour">
+                  <option value="dark-brown">Dark</option>
+                  <option value="light-brown">Brown</option>
+                  <option value="green" selected>Green</option>
+                  <option value="blue">Blue</option>
+                </select>
+              </div>
             </div>
-            <div class="torch-patch" aria-hidden="true"></div>
-            <div class="eye-occluder" aria-hidden="true"></div>
+
+            <div class="advanced-signs-grid">
+              <div class="toggle-item">
+                <span class="toggle-label">Nystagmus</span>
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    id="toggle-nystagmus"
+                    aria-label="Nystagmus"
+                  />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">Direction</span>
+                <select id="nyst-direction" aria-label="Nystagmus direction">
+                  <option value="horizontal" selected>Horizontal</option>
+                  <option value="vertical">Vertical</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">Waveform</span>
+                <select id="nyst-wave" aria-label="Nystagmus wave">
+                  <option value="jerk" selected>Jerk</option>
+                  <option value="pendular">Pendular</option>
+                </select>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">Rate</span>
+                <select id="nyst-rate" aria-label="Nystagmus rate">
+                  <option value="slow" selected>Slow</option>
+                  <option value="fast">Fast</option>
+                </select>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">RE torsion</span>
+                <select id="cyclo-re" aria-label="RE torsion">
+                  <option value="none" selected>0</option>
+                  <option value="in">In</option>
+                  <option value="out">Out</option>
+                </select>
+              </div>
+
+              <div class="toggle-item toggle-item-select">
+                <span class="toggle-label">LE torsion</span>
+                <select id="cyclo-le" aria-label="LE torsion">
+                  <option value="none" selected>0</option>
+                  <option value="in">In</option>
+                  <option value="out">Out</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="advanced-signs-sliders slider-card">
+              <div class="slider-inline-row">
+                <h3 class="card-title slider-inline-title">Pupil size</h3>
+                <div
+                  class="sliders-container slider-inline-controls pupil-size-grid"
+                >
+                  <div class="slider-wrapper slider-wrapper-pupil">
+                    <span class="pupil-eye-label">RE</span>
+                    <input
+                      type="range"
+                      class="slider"
+                      min="10"
+                      max="55"
+                      value="32"
+                      data-eye="left"
+                      title="RE pupil size"
+                      aria-label="RE pupil size"
+                    />
+                    <button
+                      class="fade-button"
+                      data-eye="left"
+                      type="button"
+                      aria-label="Fade RE iris"
+                      aria-pressed="false"
+                    >
+                      Fade
+                    </button>
+                  </div>
+                  <div class="slider-wrapper slider-wrapper-pupil">
+                    <span class="pupil-eye-label">LE</span>
+                    <input
+                      type="range"
+                      class="slider"
+                      min="10"
+                      max="55"
+                      value="32"
+                      data-eye="right"
+                      title="LE pupil size"
+                      aria-label="LE pupil size"
+                    />
+                    <button
+                      class="fade-button"
+                      data-eye="right"
+                      type="button"
+                      aria-label="Fade LE iris"
+                      aria-pressed="false"
+                    >
+                      Fade
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slider-inline-row">
+                <h3 class="card-title slider-inline-title">Upper lid</h3>
+                <div
+                  class="sliders-container slider-inline-controls upper-lid-row"
+                >
+                  <div class="slider-wrapper slider-wrapper-lid">
+                    <span class="lid-eye-label">RE</span>
+                    <input
+                      type="range"
+                      class="vertical-eye-slider"
+                      min="0"
+                      max="30"
+                      value="0"
+                      data-eye="left"
+                      title="RE upper eyelid ptosis"
+                      aria-label="RE upper eyelid ptosis"
+                    />
+                  </div>
+                  <div class="slider-wrapper slider-wrapper-lid">
+                    <span class="lid-eye-label">LE</span>
+                    <input
+                      type="range"
+                      class="vertical-eye-slider"
+                      min="0"
+                      max="30"
+                      value="0"
+                      data-eye="right"
+                      title="LE upper eyelid ptosis"
+                      aria-label="LE upper eyelid ptosis"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="light-controls">
+        </section>
+
+        <section class="card eyes-card">
           <div
-            id="light-drag-zone"
-            class="light-drag-zone"
-            role="slider"
-            aria-label="Torch position"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          >
+            id="preset-flash-label"
+            class="preset-flash-label"
+            aria-live="polite"
+          ></div>
+          <div class="cover-controls">
             <button
-              id="light-pill"
-              class="light-pill"
+              id="cover-re-btn"
+              class="cover-btn"
               type="button"
-              aria-label="Toggle and drag torch"
+              aria-label="Cover RE"
+              aria-pressed="false"
             >
-              <span class="light-pill-icon" aria-hidden="true"></span>
-              <span
-                id="light-pill-arrow"
-                class="light-pill-arrow"
-                aria-hidden="true"
-                >&gt;</span
+              RE
+            </button>
+            <div class="ambient-control" aria-label="Ambient light">
+              <span class="ambient-icon ambient-icon-room" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M9 17h6M10 20h4M8.2 13.5a6 6 0 1 1 7.6 0c-1 .8-1.4 1.6-1.5 2.5h-4.6c-.1-.9-.5-1.7-1.5-2.5Z"
+                  ></path>
+                </svg>
+              </span>
+              <label
+                class="switch ambient-switch"
+                aria-label="Ambient light toggle"
               >
+                <input
+                  id="ambient-toggle"
+                  type="checkbox"
+                  checked
+                  aria-label="Toggle ambient light"
+                  title="Ambient light"
+                />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <button
+              id="cover-le-btn"
+              class="cover-btn"
+              type="button"
+              aria-label="Cover LE"
+              aria-pressed="false"
+            >
+              LE
             </button>
           </div>
-        </div>
-      </section>
+          <div
+            id="decomp-rest-countdown"
+            class="decomp-rest-countdown"
+            aria-live="polite"
+            hidden
+          ></div>
+          <div class="eyes-container">
+            <div class="eye" data-eye="left" id="left-eye">
+              <div class="eye-inner">
+                <div class="iris">
+                  <div class="iris-cyclo-axis" aria-hidden="true">
+                    <span class="iris-cyclo-line"></span>
+                    <span class="iris-cyclo-mark iris-cyclo-mark-top"></span>
+                    <span class="iris-cyclo-mark iris-cyclo-mark-bottom"></span>
+                  </div>
+                  <div class="pupil"></div>
+                </div>
+                <div class="upper-eyelid"></div>
+                <div class="lower-eyelid"></div>
+              </div>
+              <div class="torch-patch" aria-hidden="true"></div>
+              <div class="eye-occluder" aria-hidden="true"></div>
+            </div>
 
-      <section class="card gaze-card">
-        <div class="gaze-header">
-          <h2 class="card-title gaze-title">Gaze track pad</h2>
-        </div>
-        <div id="gaze-muscles" class="gaze-layout" aria-live="polite">
-          <div class="gaze-muscle-row gaze-muscle-column" data-eye="LE">
-            <span class="gaze-muscle-eye">LE</span>
-            <span class="gaze-muscle-chip" data-muscle="SR">SR</span>
-            <span class="gaze-muscle-chip" data-muscle="IR">IR</span>
-            <span class="gaze-muscle-chip" data-muscle="MR">MR</span>
-            <span class="gaze-muscle-chip" data-muscle="LR">LR</span>
-            <span class="gaze-muscle-chip" data-muscle="SO">SO</span>
-            <span class="gaze-muscle-chip" data-muscle="IO">IO</span>
-          </div>
-          <div class="gaze-trackpad-wrap">
-            <div
-              id="gaze-trackpad"
-              class="gaze-trackpad"
-              role="application"
-              aria-label="Drag to move gaze"
-            >
-              <div id="gaze-thumb" class="gaze-thumb" aria-hidden="true"></div>
+            <div class="eye" data-eye="right" id="right-eye">
+              <div class="eye-inner">
+                <div class="iris">
+                  <div class="iris-cyclo-axis" aria-hidden="true">
+                    <span class="iris-cyclo-line"></span>
+                    <span class="iris-cyclo-mark iris-cyclo-mark-top"></span>
+                    <span class="iris-cyclo-mark iris-cyclo-mark-bottom"></span>
+                  </div>
+                  <div class="pupil"></div>
+                </div>
+                <div class="upper-eyelid"></div>
+                <div class="lower-eyelid"></div>
+              </div>
+              <div class="torch-patch" aria-hidden="true"></div>
+              <div class="eye-occluder" aria-hidden="true"></div>
             </div>
           </div>
-          <div class="gaze-muscle-row gaze-muscle-column" data-eye="RE">
-            <span class="gaze-muscle-eye">RE</span>
-            <span class="gaze-muscle-chip" data-muscle="SR">SR</span>
-            <span class="gaze-muscle-chip" data-muscle="IR">IR</span>
-            <span class="gaze-muscle-chip" data-muscle="MR">MR</span>
-            <span class="gaze-muscle-chip" data-muscle="LR">LR</span>
-            <span class="gaze-muscle-chip" data-muscle="SO">SO</span>
-            <span class="gaze-muscle-chip" data-muscle="IO">IO</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="output" hidden>
-        <p id="right-output">RE: neutral</p>
-        <p id="left-output">LE: neutral</p>
-      </div>
-
-      <section class="card result-card">
-        <div class="result-header">
-          <div class="result-summary">
-            <h2 class="card-title result-title">Results:</h2>
-            <p id="raw-output-line" class="raw-output-line"></p>
-          </div>
-          <div class="result-header-right">
-            <button id="nextTestBtn" class="next-test-btn" type="button" hidden>
-              Next &gt;
+          <div class="light-controls">
+            <div id="light-drag-zone" class="light-drag-zone">
+              <button
+                id="light-pill"
+                class="light-pill"
+                type="button"
+                role="slider"
+                aria-label="Swinging light position"
+                aria-describedby="light-keyboard-help"
+                aria-keyshortcuts="ArrowLeft ArrowRight Home Escape"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="50"
+                aria-valuetext="Centred, torch off"
+              >
+                <span class="light-pill-icon" aria-hidden="true"></span>
+                <span
+                  id="light-pill-arrow"
+                  class="light-pill-arrow"
+                  aria-hidden="true"
+                  >&gt;</span
+                >
+              </button>
+            </div>
+            <button
+              id="near-target-btn"
+              class="near-target-btn"
+              type="button"
+              aria-label="Hold to demonstrate the near pupil response"
+              aria-pressed="false"
+            >
+              Near
             </button>
+            <p id="light-keyboard-help" class="visually-hidden">
+              Hold Left Arrow or Right Arrow to move and illuminate with the
+              torch. Release the key to centre the torch and switch it off.
+            </p>
           </div>
-        </div>
-        <div class="analysis-wrapper">
-          <div id="palsy-img-container"></div>
+        </section>
+      </div>
+      <div class="fleet-output-column">
+        <section class="card gaze-card">
+          <div class="gaze-header">
+            <h2 class="card-title gaze-title">Gaze tracker</h2>
+            <span id="gaze-status" class="gaze-status" aria-live="polite"
+              >Primary</span
+            >
+          </div>
+          <div id="gaze-muscles" class="gaze-layout" aria-live="polite">
+            <div class="gaze-muscle-row gaze-muscle-column" data-eye="RE">
+              <span class="gaze-muscle-eye">RE</span>
+              <span class="gaze-muscle-chip" data-muscle="SR">SR</span>
+              <span class="gaze-muscle-chip" data-muscle="IR">IR</span>
+              <span class="gaze-muscle-chip" data-muscle="MR">MR</span>
+              <span class="gaze-muscle-chip" data-muscle="LR">LR</span>
+              <span class="gaze-muscle-chip" data-muscle="SO">SO</span>
+              <span class="gaze-muscle-chip" data-muscle="IO">IO</span>
+            </div>
+            <div class="gaze-trackpad-wrap">
+              <div
+                id="gaze-trackpad"
+                class="gaze-trackpad"
+                role="application"
+                tabindex="0"
+                aria-label="Move gaze tracker"
+                aria-roledescription="two-dimensional gaze control"
+                aria-describedby="gaze-keyboard-help"
+                aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Home Escape"
+              >
+                <div
+                  id="gaze-thumb"
+                  class="gaze-thumb"
+                  aria-hidden="true"
+                ></div>
+              </div>
+              <p id="gaze-keyboard-help" class="visually-hidden">
+                Hold one or two arrow keys to move gaze. Release the keys, or
+                press Home or Escape, to return to primary gaze.
+              </p>
+            </div>
+            <div class="gaze-muscle-row gaze-muscle-column" data-eye="LE">
+              <span class="gaze-muscle-eye">LE</span>
+              <span class="gaze-muscle-chip" data-muscle="SR">SR</span>
+              <span class="gaze-muscle-chip" data-muscle="IR">IR</span>
+              <span class="gaze-muscle-chip" data-muscle="MR">MR</span>
+              <span class="gaze-muscle-chip" data-muscle="LR">LR</span>
+              <span class="gaze-muscle-chip" data-muscle="SO">SO</span>
+              <span class="gaze-muscle-chip" data-muscle="IO">IO</span>
+            </div>
+          </div>
+        </section>
 
-          <div class="analysis" id="analysisContainer">
-            <p id="analysis-output">Analysis: neutral</p>
-          </div>
-
-          <div class="analysis" id="analysisPlaceholder" hidden>
-            <p>Answer hidden</p>
-            <p id="testLevelLine" class="test-level-line" hidden></p>
-            <button id="showAnswerBtn" type="button">Show</button>
-          </div>
+        <div class="output" hidden>
+          <p id="right-output">RE: neutral</p>
+          <p id="left-output">LE: neutral</p>
         </div>
-      </section>
+
+        <section class="card result-card">
+          <div class="result-header">
+            <div class="result-summary">
+              <h2 class="card-title result-title">Results:</h2>
+              <p id="raw-output-line" class="raw-output-line"></p>
+            </div>
+            <div class="result-header-right">
+              <button
+                id="nextTestBtn"
+                class="next-test-btn"
+                type="button"
+                hidden
+              >
+                Next &gt;
+              </button>
+            </div>
+          </div>
+          <div class="analysis-wrapper">
+            <div id="palsy-img-container"></div>
+
+            <div class="analysis" id="analysisContainer">
+              <div id="analysis-output">
+                <div class="analysis-row analysis-pattern-row">
+                  <strong class="analysis-label">Pattern:</strong>
+                  <span class="analysis-value"
+                    >No alignment pattern detected.</span
+                  >
+                </div>
+                <div class="analysis-row analysis-observation-row">
+                  <strong class="analysis-label">Observations:</strong>
+                  <span class="analysis-value"
+                    ><span class="analysis-note"
+                      >No urgency modifiers selected.</span
+                    ></span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis" id="analysisPlaceholder" hidden>
+              <p>Answer hidden</p>
+              <p id="testLevelLine" class="test-level-line" hidden></p>
+              <button id="showAnswerBtn" type="button">Show</button>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
-    <script src="src/sim-core.js" defer></script>
-    <script src="src/preset-runner.js" defer></script>
-    <script src="src/state.js" defer></script>
-    <script src="src/output-writer.js" defer></script>
-    <script src="src/light-controller.js" defer></script>
-    <script src="src/eye-effects-controller.js" defer></script>
-    <script src="src/cover-controller.js" defer></script>
-    <script src="src/eye-controller.js" defer></script>
-    <script src="src/gaze-controller.js" defer></script>
-    <script src="src/controls-controller.js" defer></script>
-    <script src="src/ui-shell.js" defer></script>
-    <script src="script.js" defer></script>
-    <script src="src/analysis-core.js" defer></script>
-    <script src="analysis.js" defer></script>
-    <script src="src/mcq-data.js" defer></script>
-    <script src="mcq.js" defer></script>
-    <script src="cup-achievement.js" defer></script>
+    <script src="src/sim-core.js?v=20260929-logic2" defer></script>
+    <script src="src/preset-runner.js?v=20260929-logic2" defer></script>
+    <script src="src/state.js?v=20260929-logic2" defer></script>
+    <script src="src/output-writer.js?v=20260929-logic2" defer></script>
+    <script src="src/light-controller.js?v=20260929-logic2" defer></script>
+    <script
+      src="src/eye-effects-controller.js?v=20260929-logic2"
+      defer
+    ></script>
+    <script src="src/cover-controller.js?v=20260929-logic2" defer></script>
+    <script src="src/eye-controller.js?v=20260929-logic2" defer></script>
+    <script src="src/gaze-controller.js?v=20260929-logic2" defer></script>
+    <script src="src/controls-controller.js?v=20260929-logic2" defer></script>
+    <script src="src/ui-shell.js?v=20260929-logic2" defer></script>
+    <script src="script.js?v=20260929-logic2" defer></script>
+    <script src="src/analysis-core.js?v=20260929-logic2" defer></script>
+    <script src="analysis.js?v=20260929-logic2" defer></script>
+    <script src="src/mcq-data.js?v=20260726-mcqquality2" defer></script>
+    <script src="mcq.js?v=20260726-mcqquality2" defer></script>
+    <script src="cup-achievement.js?v=20260723-round1" defer></script>
+    <script src="session-reset.js" defer></script>
+    <script src="pwa.js" defer></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

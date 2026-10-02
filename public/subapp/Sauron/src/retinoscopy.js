@@ -20,6 +20,7 @@ import {
   applyStructuralEyeState,
   syncStructuralReflexApertures,
   updateLightResponsivePupilScale,
+  getLightResponsivePupilTargetScale,
 } from "./structural-eye-effects.js";
 
 export function createRetinoscopyController({ state, dom }) {
@@ -561,6 +562,17 @@ export function createRetinoscopyController({ state, dom }) {
       }),
     );
 
+    const consensualScale = getLightResponsivePupilTargetScale({
+      pupilRadiusPx: Math.max(8, (activePupilElement?.clientWidth || 32) * 0.5),
+      sweepX:
+        beamCentre && activePupilCentre
+          ? beamCentre.x - activePupilCentre.x
+          : state.retStreakOffset,
+      sweepY:
+        beamCentre && activePupilCentre
+          ? beamCentre.y - activePupilCentre.y
+          : 0,
+    });
     dom.retReflexElements.forEach((reflex) => {
       const eye = reflex.closest(".eye");
       const eyeType = eye?.dataset.eye;
@@ -601,6 +613,8 @@ export function createRetinoscopyController({ state, dom }) {
           : state.retStreakOffset * Math.sin(angleRad) - reflexCompY;
 
       updateLightResponsivePupilScale({
+        isDilated: state.isDilatedMode,
+        consensualScale,
         eye,
         flags,
         isActiveEye,
@@ -707,6 +721,10 @@ export function createRetinoscopyController({ state, dom }) {
     applyRetEyeClasses(nextEye);
     dom.retEyeButtons.forEach((button) => {
       button.classList.toggle("is-active", button.dataset.retEye === nextEye);
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.retEye === nextEye),
+      );
     });
     scheduleRetinoscopy(true);
   }

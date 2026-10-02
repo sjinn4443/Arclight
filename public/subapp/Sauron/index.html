@@ -10,27 +10,15 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Sauron" />
+    <meta name="theme-color" content="#000000" />
     <title>Sauron</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-
-    <link
-      rel="preload"
-      href="assets/fonts/inter-latin-400-800.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="assets/fonts/quicksand-latin-700.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="manifest" href="manifest.webmanifest" />
 
     <!-- Static app: open index.html directly for handover builds. -->
-    <link rel="stylesheet" href="style.css?v=20260507-3" />
+    <link rel="stylesheet" href="style.css?v=20260928-ui1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <!-- App Bar -->
@@ -71,17 +59,17 @@
     >
       <div class="mcq-level-menu">
         <button type="button" class="mcq-level-button" data-level="primary">
-          Primary MCQ
+          Primary
         </button>
         <button
           type="button"
           class="mcq-level-button"
           data-level="intermediate"
         >
-          Intermediate MCQ
+          Intermediate
         </button>
         <button type="button" class="mcq-level-button" data-level="advanced">
-          Advanced MCQ
+          Advanced
         </button>
         <section
           id="cupAchievement"
@@ -114,6 +102,18 @@
         <button type="button" id="test-mode-button" class="test-mode-button">
           Test me
         </button>
+        <button
+          type="button"
+          id="reset-simulator-button"
+          class="reset-simulator-button"
+        >
+          Reset simulator
+        </button>
+        <p
+          id="reset-simulator-status"
+          class="reset-simulator-status"
+          aria-live="polite"
+        ></p>
       </div>
     </nav>
 
@@ -140,6 +140,11 @@
           <h2 id="infoModalTitle">Quick guide</h2>
         </div>
         <div class="info-popup-body">
+          <p class="info-purpose-copy">
+            Explore retinoscopy reflexes: select a teaching case, then sweep and
+            rotate the streak across the pupil. Cases are illustrative, not a
+            trial-lens calculation or a measurement of a patient's refraction.
+          </p>
           <section
             class="info-look-section"
             aria-labelledby="info-basics-title"
@@ -173,14 +178,29 @@
           </section>
           <div class="info-points">
             <p>
-              Use <em>Advanced</em> for squint drag, pupil, lid, cataract and
-              nystagmus.
+              Use <strong>Advanced</strong> for squint drag, pupil, lid,
+              cataract and nystagmus.
             </p>
-            <p>
-              Teaching aid, not final refraction.
-              <span class="modal-version-inline">v1 - 18/5/2026</span>
-            </p>
+            <p>Teaching aid, not final refraction.</p>
           </div>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
+          </p>
         </div>
       </div>
     </div>
@@ -207,8 +227,14 @@
         <h2 id="mcqTitle">MCQ Test</h2>
         <p id="mcqIntro" class="mcq-intro"></p>
         <div id="mcqContainer"></div>
-        <button id="submitMcqButton" class="button-pass">Submit Test</button>
-        <div id="mcqResult" class="result-text" hidden></div>
+        <div
+          id="mcqResult"
+          class="result-text"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+        <button id="submitMcqButton" class="button-pass">Submit answers</button>
       </div>
     </div>
 
@@ -301,7 +327,8 @@
                   max="55"
                   value="32"
                   data-eye="left"
-                  title="Pupil size (small > large)"
+                  title="RE pupil size (small to large)"
+                  aria-label="RE pupil size"
                 />
               </div>
               <div class="slider-wrapper">
@@ -312,7 +339,8 @@
                   max="55"
                   value="32"
                   data-eye="right"
-                  title="Pupil size (small > large)"
+                  title="LE pupil size (small to large)"
+                  aria-label="LE pupil size"
                 />
               </div>
             </div>
@@ -329,7 +357,8 @@
                   max="30"
                   value="0"
                   data-eye="left"
-                  title="Upper eyelid ptosis"
+                  title="RE upper eyelid ptosis"
+                  aria-label="RE upper eyelid ptosis"
                 />
               </div>
               <div class="slider-wrapper">
@@ -340,7 +369,8 @@
                   max="30"
                   value="0"
                   data-eye="right"
-                  title="Upper eyelid ptosis"
+                  title="LE upper eyelid ptosis"
+                  aria-label="LE upper eyelid ptosis"
                 />
               </div>
             </div>
@@ -416,6 +446,40 @@
       </div>
     </div>
 
+    <div
+      id="caseSafetyModal"
+      class="modal case-safety-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="caseSafetyTitle"
+      aria-describedby="caseSafetyBody"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-content case-safety-modal-content"
+        id="caseSafetyModalContent"
+        tabindex="-1"
+      >
+        <button
+          id="closeCaseSafetyModal"
+          class="close"
+          type="button"
+          title="Close safety note"
+          aria-label="Close safety note"
+        >
+          &times;
+        </button>
+        <div class="case-safety-heading">
+          <span class="case-warning-symbol" aria-hidden="true"></span>
+          <h2 id="caseSafetyTitle">Safety note</h2>
+        </div>
+        <p id="caseSafetyBody"></p>
+        <p class="case-safety-disclaimer">
+          Teaching aid only. It does not diagnose.
+        </p>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <main>
       <div class="ret-eye-row">
@@ -428,10 +492,16 @@
             type="button"
             class="ret-eye-button is-active"
             data-ret-eye="left"
+            aria-pressed="true"
           >
             RE
           </button>
-          <button type="button" class="ret-eye-button" data-ret-eye="right">
+          <button
+            type="button"
+            class="ret-eye-button"
+            data-ret-eye="right"
+            aria-pressed="false"
+          >
             LE
           </button>
         </div>
@@ -507,6 +577,16 @@
                 data-level="primary"
                 aria-hidden="true"
               ></span>
+              <span
+                id="case-trigger-safety"
+                class="case-trigger-safety"
+                aria-hidden="true"
+                hidden
+              >
+                <span
+                  class="case-warning-symbol case-warning-symbol--small"
+                ></span>
+              </span>
               <span id="case-trigger-label" class="case-trigger-label"
                 >Neutral (0)</span
               >
@@ -626,8 +706,8 @@
     </main>
 
     <!-- Main JS -->
-    <script src="app.bundle.js"></script>
-    <script src="cup-achievement.js"></script>
+    <script src="app.bundle.js?v=20260929-logic2-perf1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

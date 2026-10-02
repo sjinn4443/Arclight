@@ -43,7 +43,7 @@ function getOptionalTelemetryOrigins() {
   ]);
 }
 
-function mainAppPolicy(nonce) {
+function mainAppPolicy(nonce, allowAmslerExportStyle = false) {
   const nonceToken = getNonceToken(nonce);
   return buildPolicy({
     "default-src": ["'self'"],
@@ -58,7 +58,15 @@ function mainAppPolicy(nonce) {
       "https://browser.sentry-cdn.com",
       ...getOptionalRuntimeOrigins(),
     ],
-    "style-src": ["'self'", nonceToken, "https://fonts.googleapis.com"],
+    "style-src": [
+      "'self'",
+      nonceToken,
+      "https://fonts.googleapis.com",
+      // html2canvas 1.4.1 adds this fixed pseudo-element hiding rule to its clone.
+      allowAmslerExportStyle
+        ? "'sha256-UP0QZg7irvSMvOBz9mH2PIIE28+57UiavRfeVea0l3g='"
+        : null,
+    ],
     "style-src-attr": ["'unsafe-inline'"],
     "img-src": ["'self'", "data:", "blob:"],
     "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
@@ -106,7 +114,13 @@ function reportsPolicy(nonce) {
 }
 
 function applyMainAppCsp(req, res, next) {
-  res.set("Content-Security-Policy", mainAppPolicy(res.locals?.cspNonce));
+  res.set(
+    "Content-Security-Policy",
+    mainAppPolicy(
+      res.locals?.cspNonce,
+      /^\/subapp\/Amsler\//.test(req.path || ""),
+    ),
+  );
   next();
 }
 

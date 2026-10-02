@@ -6,7 +6,6 @@ const OUTPUT_REPORT_FILE = 'result-output-audit-report.txt';
 
 const onsetOptions = ['gradual', 'sudden'];
 const ageOptions = [
-  '',
   'baby',
   'child',
   'adolescent',
@@ -110,10 +109,6 @@ const ISSUE_DEFINITIONS = {
   urgent_sudden_pain_not_red: {
     severity: 'P0',
     description: 'Sudden painful vision loss did not produce red urgent or posterior-first guidance.'
-  },
-  probable_label_visible_in_ui: {
-    severity: 'P1',
-    description: 'A UI-feasible state displayed a Probable cataract label.'
   },
   normal_reflex_cataract_referral: {
     severity: 'P1',
@@ -243,7 +238,7 @@ function buildVisibleNotes(decision) {
 }
 
 function getBackValuesForFundal(fundalSelection) {
-  return fundalSelection === 'white' ? ['poor view'] : backOptions;
+  return backOptions;
 }
 
 function createUiInput({
@@ -272,19 +267,14 @@ function createUiInput({
     pupilAbnormal,
     frontPresent,
     frontRecorded: true,
-    rapdPresent: neuroPresent,
-    rapdRecorded: true,
-    directionLightPoor: neuroPresent,
-    lightRecorded: true,
+    afferentConcern: neuroPresent,
+    afferentRecorded: true,
     fundalSelection,
     backSelection
   };
 }
 
 function expectedCataractType(combo, decision) {
-  if (POSTERIOR_BACK_VALUES.has(combo.backSelection)) {
-    return 'Nil';
-  }
   if (combo.fundalSelection === 'normal') {
     return 'Nil';
   }
@@ -293,17 +283,36 @@ function expectedCataractType(combo, decision) {
     dark: 'Nuclear',
     patches: 'Cortical',
     spots: 'Subcapsular',
-    white: 'Mature'
+    white: 'White reflex'
   };
   const phenotype = phenotypeByFundal[combo.fundalSelection] || '';
   if (!phenotype) {
     return '';
   }
-  if (combo.neuroPresent || (combo.onsetValue === 'sudden' && combo.painYes)) {
-    return `Possible ${phenotype} (other urgent pathology suspected)`;
+  const isTypicalProbableMature =
+    combo.fundalSelection === 'white' &&
+    combo.onsetValue === 'gradual' &&
+    !PAEDIATRIC_AGE_BANDS.has(combo.ageBand) &&
+    combo.ageBand !== 'unknown' &&
+    ['6/60', 'HM'].includes(combo.distanceVA) &&
+    !combo.painYes &&
+    !combo.pupilAbnormal &&
+    !combo.frontPresent &&
+    !combo.neuroPresent &&
+    !POSTERIOR_BACK_VALUES.has(combo.backSelection);
+  if (isTypicalProbableMature) {
+    return 'Probable Mature';
   }
-  if (combo.pupilAbnormal) {
-    return `Possible ${phenotype} (also pupil abnormality)`;
+  if (combo.fundalSelection === 'white') {
+    return 'White reflex';
+  }
+  if (
+    POSTERIOR_BACK_VALUES.has(combo.backSelection) ||
+    combo.neuroPresent ||
+    combo.onsetValue === 'sudden' ||
+    combo.pupilAbnormal
+  ) {
+    return `Possible ${phenotype}`;
   }
   return phenotype;
 }
@@ -405,9 +414,17 @@ function auditResult(combo, decision, panel) {
   const actionLower = panel.actionText.toLowerCase();
   const notesLower = panel.visibleNotes.join(' ').toLowerCase();
   const isPaediatric = PAEDIATRIC_AGE_BANDS.has(combo.ageBand);
-  const hasAcuteUrgency = combo.onsetValue === 'sudden' && combo.painYes;
+  const hasAcuteUrgency = combo.onsetValue === 'sudden';
 
-  if (hasPosteriorDisease && decision.actionCode !== 'posterior_disease_first') {
+  const posteriorActionIsAppropriate =
+    combo.backSelection === 'detached'
+      ? decision.actionCode === 'retinal_same_day'
+      : hasAcuteUrgency
+        ? decision.actionCode === 'urgent_same_day_investigation'
+        : (isPaediatric && combo.fundalSelection === 'white')
+          ? decision.actionCode === 'child_white_reflex_urgent'
+          : decision.actionCode === 'posterior_disease_first';
+  if (hasPosteriorDisease && !posteriorActionIsAppropriate) {
     addFinding(
       'posterior_missing_override',
       combo,
@@ -420,7 +437,7 @@ function auditResult(combo, decision, panel) {
   if (
     hasAcuteUrgency &&
     decision.actionColour !== 'red' &&
-    decision.actionCode !== 'posterior_disease_first'
+    decision.actionCode !== 'retinal_same_day'
   ) {
     addFinding(
       'urgent_sudden_pain_not_red',
@@ -428,16 +445,6 @@ function auditResult(combo, decision, panel) {
       decision,
       panel,
       'Sudden painful vision loss should surface red urgency unless posterior-first dominates.'
-    );
-  }
-
-  if (panel.cataractType.startsWith('Probable ')) {
-    addFinding(
-      'probable_label_visible_in_ui',
-      combo,
-      decision,
-      panel,
-      'The UI has no unknown pupil state, so probable labels should not be visible.'
     );
   }
 
@@ -474,7 +481,7 @@ function auditResult(combo, decision, panel) {
     combo.fundalSelection === 'white' &&
     !hasAcuteUrgency &&
     !hasPosteriorDisease &&
-    decision.actionCode !== 'child_cataract_prompt_referral'
+    decision.actionCode !== 'child_white_reflex_urgent'
   ) {
     addFinding(
       'child_dense_missing_paediatric_wording',
@@ -654,7 +661,7 @@ reportLines.push(`Near VA: ${nearOptions.join(', ')}`);
 reportLines.push('Pupils: normal, abnormal');
 reportLines.push('Front eye: normal, scar/distortion');
 reportLines.push('RAPD/light direction: normal, abnormal');
-reportLines.push('Fundal + Back: white reflex forces poor view; other reflexes allow all Back of Eye choices.');
+reportLines.push('Fundal + Back: all reflexes preserve recorded posterior findings; dense defaults to poor view only when blank.');
 reportLines.push('');
 reportLines.push('Issue Totals');
 reportLines.push('------------');

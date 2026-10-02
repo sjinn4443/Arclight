@@ -58,10 +58,26 @@ export function createMcqController(app) {
   let activeLevel = null;
   let questions = [];
   let isSubmitted = false;
+  let modalReturnFocus = null;
+
+  function getFocusable(container) {
+    return Array.from(
+      container.querySelectorAll(
+        "button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])",
+      ),
+    ).filter(
+      (element) => !element.hidden && element.getClientRects().length > 0,
+    );
+  }
 
   function setSideMenuOpen(isOpen) {
     sideMenu.classList.toggle("open", isOpen);
     sideMenuBackdrop.hidden = !isOpen;
+    sideMenu.hidden = !isOpen;
+    app.elements.burgerIcon.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) {
+      getFocusable(sideMenu)[0]?.focus();
+    }
   }
 
   function toggleSideMenu() {
@@ -69,11 +85,17 @@ export function createMcqController(app) {
   }
 
   function openModal() {
+    modalReturnFocus = app.elements.burgerIcon;
+    mcqModal.hidden = false;
     mcqModal.style.display = "block";
+    getFocusable(mcqModal)[0]?.focus();
   }
 
   function closeModal() {
     mcqModal.style.display = "none";
+    mcqModal.hidden = true;
+    modalReturnFocus?.focus?.();
+    modalReturnFocus = null;
   }
 
   function renderQuestionList() {
@@ -94,6 +116,7 @@ export function createMcqController(app) {
       const fieldset = document.createElement("fieldset");
       fieldset.className = "mcq-item";
       fieldset.dataset.questionIndex = String(questionIndex);
+      fieldset.dataset.questionId = question.id;
 
       const legend = document.createElement("legend");
       legend.textContent = `${questionIndex + 1}. ${question.prompt}`;
@@ -109,7 +132,7 @@ export function createMcqController(app) {
 
         const input = document.createElement("input");
         input.type = "radio";
-        input.name = `mcq-q-${questionIndex}`;
+        input.name = `mcq-${question.id}`;
         input.value = String(optionIndex);
 
         const textSpan = document.createElement("span");
@@ -153,6 +176,25 @@ export function createMcqController(app) {
     let unansweredCount = 0;
 
     const fieldsets = Array.from(mcqList.querySelectorAll(".mcq-item"));
+    fieldsets.forEach((fieldset) => {
+      if (!fieldset.querySelector("input:checked")) {
+        unansweredCount += 1;
+      }
+    });
+    if (unansweredCount > 0) {
+      setFeedbackText(
+        mcqFeedback,
+        "Not submitted:",
+        `answer all ${questions.length} questions first.`,
+      );
+      mcqFeedback.classList.remove("pass", "fail");
+      fieldsets
+        .find((fieldset) => !fieldset.querySelector("input:checked"))
+        ?.querySelector("input")
+        ?.focus();
+      return;
+    }
+
     fieldsets.forEach((fieldset, questionIndex) => {
       const question = questions[questionIndex];
       const selectedInput = fieldset.querySelector("input:checked");
@@ -163,10 +205,6 @@ export function createMcqController(app) {
       if (isCorrect) {
         score += 1;
       }
-      if (selectedIndex < 0) {
-        unansweredCount += 1;
-      }
-
       const optionLabels = Array.from(
         fieldset.querySelectorAll(".mcq-option-label"),
       );
@@ -194,29 +232,46 @@ export function createMcqController(app) {
 
     const total = questions.length;
     const scorePct = total > 0 ? Math.round((score / total) * 100) : 0;
-    const unansweredText =
-      unansweredCount > 0 ? ` Unanswered: ${unansweredCount}.` : "";
+    const passScore = Math.min(
+      activeLevel.passScore ?? Math.ceil(total * 0.75),
+      total,
+    );
+    const passed = score >= passScore;
     setFeedbackText(
       mcqFeedback,
       "Score:",
-      `${score}/${total} (${scorePct}%).${unansweredText}`,
+      `${score}/${total} (${scorePct}%). ${passed ? "Pass." : "Review and retry."} Pass mark ${passScore}/${total}.`,
     );
-    mcqProgress.textContent = `${activeLevel.label} complete`;
+    mcqFeedback.classList.toggle("pass", passed);
+    mcqFeedback.classList.toggle("fail", !passed);
+    const levelButton = document.querySelector(
+      `[data-level="${activeLevel.id}"]`,
+    );
+    levelButton?.classList.toggle("is-complete", passed);
+    if (levelButton) {
+      levelButton.dataset.complete = passed ? "true" : "false";
+    }
+    mcqProgress.textContent = `${activeLevel.label}: ${passed ? "passed" : "not yet passed"}`;
     mcqSubmitBtn.disabled = true;
+    mcqSubmitBtn.hidden = true;
     mcqRestartBtn.hidden = false;
     isSubmitted = true;
+    mcqFeedback.focus();
   }
 
   function restartLevel() {
     if (!activeLevel) {
       return;
     }
-    startLevel(activeLevel.id);
+    questions = sampleLevelQuestions(activeLevel);
+    renderQuestionList();
+    mcqList.querySelector("input")?.focus();
   }
 
   function handleBackdropClick(event) {
     if (event.target === sideMenuBackdrop) {
       setSideMenuOpen(false);
+      app.elements.burgerIcon.focus();
     }
   }
 
@@ -233,8 +288,26 @@ export function createMcqController(app) {
     }
     if (sideMenu.classList.contains("open")) {
       setSideMenuOpen(false);
+      app.elements.burgerIcon.focus();
     }
   }
+
+  function handleFocusTrap(event) {
+    if (event.key !== "Tab" || mcqModal.hidden) return;
+    const focusable = getFocusable(mcqModal);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  document.addEventListener("keydown", handleFocusTrap);
 
   return {
     startLevel,

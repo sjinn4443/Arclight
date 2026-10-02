@@ -7,6 +7,7 @@ export function initInfoPopupController() {
   const infoClose = $("#info-close");
   const sideMenu = $("#sideMenu");
   const burgerIcon = $("#burger-icon");
+  let restoreFocusOnClose = false;
 
   function hydrateInfoCopy() {
     const intro = $("#info-copy-intro");
@@ -33,7 +34,7 @@ export function initInfoPopupController() {
     }
   }
 
-  function setInfoPopupOpen(isOpen) {
+  function setInfoPopupOpen(isOpen, options = {}) {
     if (!infoPopup) {
       return;
     }
@@ -48,6 +49,17 @@ export function initInfoPopupController() {
     infoPopup.hidden = !isOpen;
     if (infoIcon) {
       infoIcon.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+    if (isOpen) {
+      restoreFocusOnClose = true;
+      window.requestAnimationFrame(() => infoClose?.focus());
+      return;
+    }
+    if (restoreFocusOnClose && options.restoreFocus !== false) {
+      restoreFocusOnClose = false;
+      infoIcon?.focus();
+    } else if (!isOpen) {
+      restoreFocusOnClose = false;
     }
   }
 

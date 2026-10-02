@@ -147,11 +147,20 @@
         const rect = element.getBoundingClientRect();
         if (rect.width === 0 && rect.height === 0) return false;
         const text = getText(element).toLowerCase();
-        return (
-          text.includes("complete") ||
-          text.includes("score") ||
-          text.includes("passed")
-        );
+        const explicitPassState =
+          element.classList.contains("pass") ||
+          element.classList.contains("is-pass") ||
+          element.dataset.passed === "true";
+        const explicitPassText =
+          text.includes("passed") ||
+          text.includes("pass recorded") ||
+          /(?:^|\s|[-:])pass[.!]?(?:\s|$)/.test(text);
+        const failureText =
+          text.includes("fail") ||
+          text.includes("review") ||
+          text.includes("try again") ||
+          text.includes("not yet pass");
+        return explicitPassState || (explicitPassText && !failureText);
       });
     }
 
@@ -161,9 +170,18 @@
     }
 
     function setupAdvancedMode() {
-      getAdvancedButtons().forEach((button) => {
+      const advancedButtons = getAdvancedButtons();
+      const levelButtons = Array.from(
+        new Set([
+          ...document.querySelectorAll(
+            "[data-level], [data-level-index], [data-mcq-level], .mcq-primary, .mcq-intermediate, .mcq-advanced",
+          ),
+          ...advancedButtons,
+        ]),
+      );
+      levelButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          advancedActive = true;
+          advancedActive = advancedButtons.includes(button);
           window.setTimeout(checkAdvancedCompletion, 300);
         });
       });

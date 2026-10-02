@@ -82,11 +82,15 @@ export async function downloadSelectedAssets() {
           patterns[key]?.test(decodeURIComponent(asset.url)),
         ),
     );
-    await cacheOfflineUrls({
+    const completed = await cacheOfflineUrls({
       urls: assets.map((asset) => asset.url),
       bytes: assets.reduce((n, asset) => n + asset.bytes, 0),
       label: "Selected content",
     });
+    if (completed === false) {
+      announce("Download paused");
+      return;
+    }
     announce("Download complete. Content is ready offline.");
   } catch (err) {
     console.error(err);

@@ -1,5 +1,41 @@
 # Active Context
 
+## Receiving host integration — 2 October 2026
+
+Host routes and locale hooks are retained. Service-worker reads remain app-scoped and shared locale assets are precached. Development material is excluded from deployment and offline manifests.
+
+Current receiving-host evidence is in [the integration report](../../../../docs/miniapps/20260930/INTEGRATION_REPORT.md). Earlier receipts below remain upstream historical evidence.
+
+## Performance review — 30 September 2026
+
+Runtime source retained. A suitably sized derived logo is a future asset-delivery opportunity; original artwork was not altered. Mobile Lighthouse performance: 95 → 95/100 in one paired lab run, not a physical-device speed guarantee.
+
+Shared verification: 24/24 regression jobs, all 15 HTTP and direct-file information/drawer reviews, all 14 Primary quiz workflows and 45 main-page responsive views passed. Selected completed states were also checked. No clinical rules or approved layout were deliberately changed. App-specific asset queries and caches were bumped only where shipped bundles changed. Direct-file checks do not test service workers. Full dead-code elimination, every workflow, offline cache migration and physical-device acceptance are not claimed. The retained Glaucoma tab's real toolbar was verified at 360 x 740 after switching away and back; this does not establish sibling-tab sizes or physical-device acceptance.
+
+[Evidence and remaining priorities](../../FLEET_PERFORMANCE_REVIEW_20260930.md). This entry supersedes older performance figures only; earlier clinical and feature history remains below.
+
+## Current fleet UI refinement receipt — 30 September 2026
+
+Control-card rounding aligned while preserving its dark theme and visual teaching layout; no MCQ bank exists.
+
+App-local versioned `fleet-ui-refinements.css` aligns quiz typography, answer rows, focus outlines and rounding where compatible. Information footers show `v1 · 30/9/2026`. Clinical engines, simulator geometry, authored questions, scoring and progression are unchanged. Earlier dated entries below are historical.
+
+Fleet evidence: 24/24 regression jobs, 45 main-page views, 15/15 HTTP information/drawer reviews, 15/15 direct-file information/drawer reviews and 18/18 selected expanded/completed-state checks. All 14 Primary quiz workflows pass individually; Cataract passed its isolated recheck after one transient connection warning. Automated viewports are temporary. Real Codex retained-toolbar verification remains blocked by the unavailable visible tab; physical-device acceptance and independent clinical sign-off remain pending. See the [full change and verification receipt](../../FLEET_UI_REFINEMENTS_2026-09-30.md).
+
+## Documentation refresh — 29 September 2026
+
+Current visible information footer: `v1 · 29/9/2026`, bottom right in the existing information popup. This entry records a documentation and popup-date synchronisation, not a new clinical audit. App behaviour and the previously recorded verification limits are unchanged. Older dated entries below are historical records, not the current popup date. Independent clinical sign-off and physical-device acceptance are not implied by this date.
+
+## Final Cup evidence — 26 July 2026
+
+Morph deliberately remains a zero-MCQ optical simulator. The conditions-mode Cup still requires Normal, Swollen disc, Cupped disc, CRVO and AMD. Eleven tests and the isolated `360 x 740` five-condition unlock flow pass without changing viewer logic or artwork.
+
+## Maintenance refactor (26/7/2026)
+
+`viewer-logic.js` is the tested boundary for viewer geometry, cataract presets, jitter state and single-loop animation ownership. The inline runtime uses one idempotent frame loop and stops it on page lifecycle exit. Ten tests and syntax checks pass. The UI, teaching artwork and clinical interpretation are unchanged.
+
+Fleet edge follow-up, 23 July 2026: the former `7px` override is corrected so controls and the black stage measure `x=10`, `width=340` at `360 x 740`; simulator geometry and logic are unchanged.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -50,3 +86,23 @@ A source-crop experiment for pathology artwork was reverted because it zoomed th
 - Review the app at 360 x 740 after any visual change.
 - Confirm no console errors after condition switching and dragging.
 - Keep artwork changes separate from engine or layout changes.
+
+# Active context: v1.1 complete locally (23 July 2026)
+
+The engineering and restrained UI upgrade is implemented and locally verified. Six contract checks pass. Isolated Chrome passed untouched, dense, transient menu, two-press reset and offline reload checks at 360 x 740 with no console or page errors. Independent clinical review and physical-device testing are still pending external gates.
+
+## MCQ and Cup status — 23 July 2026
+
+Morph has no MCQ by design. Its Cup is earned by trying every condition. Preserve that simulator-specific achievement contract and do not add quiz progression merely for fleet uniformity.
+
+## Maintenance refactor - 26 July 2026
+
+Viewer state now uses the pure `viewer-logic.js` module. Two animation loops were consolidated into one idempotent request-animation-frame owner. Viewer geometry, condition mappings, Cup behaviour and artwork remain unchanged.
+
+## MCQ exclusion audit — 26 July 2026
+
+Morph still has no MCQ by design. Its workflow is optical simulation rather than clinical action or referral. The Cup remains condition-completion based and requires the five unique targets: Normal, Swollen disc, Cupped disc, CRVO and AMD. Contracts now protect conditions mode, target uniqueness and the absence of MCQ controls.
+
+# Corrections — 29 September 2026
+
+BIO orientation is now inverted/reversed. Rx scaling is explicitly Direct-only; it is restored on return to Direct. Magnification and field sizes remain illustrative. Mobile cataract filtering now includes blur, contrast and saturation. Canvas-clipped aperture bounds, guide focus trap, 44px control heights and accessible selected states are corrected. Artwork and condition Cup progression unchanged. Tests: 11 source checks plus browser smoke and tests/logic-browser.mjs. Physical-device and clinical approval remain pending.

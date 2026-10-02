@@ -74,11 +74,6 @@ main {
   color: var(--text-strong);
 }
 
-.eye-label-age {
-  width: 34px;
-  flex-basis: 34px;
-}
-
 .age-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 68px;
@@ -89,7 +84,7 @@ main {
 
 .control-box {
   border: 1px solid #d8e0ea;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.92),
@@ -135,14 +130,6 @@ main {
 .mode-toggle-wrap {
   display: flex;
   justify-content: center;
-}
-
-.control-box-label {
-  color: var(--text-muted);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .top-toggle-group {
@@ -237,7 +224,7 @@ body.advanced-mode .output-row {
   width: 36px;
   height: 36px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius-control);
   background: linear-gradient(180deg, #eef3fb, #dfe7f3);
   color: #627289;
   display: inline-flex;
@@ -251,6 +238,12 @@ body.advanced-mode .output-row {
     transform 0.18s ease,
     color 0.18s ease,
     box-shadow 0.18s ease;
+}
+
+.transpose-glyph {
+  font-size: 1.18rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .transpose-button:hover {

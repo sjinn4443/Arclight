@@ -28,7 +28,8 @@ The application is a client-side web app using HTML, CSS and JavaScript modules.
 - Persist achievement state locally (`localStorage`) instead of adding backend state.
 - Apply timed-mode safety clamps in controller logic so scored rounds stay difficult but avoid impossible visual combinations.
 - Use cached mobile cataract overlay layers (per cataract level + canvas size) to decouple visual realism from per-frame computation cost.
-- Keep the Fundal Reflex visual language as the default UI baseline: black app bar with bright green title and icons, Quicksand title, Inter UI text, light clinical controls, restrained shadows, compact mobile rows and progressive disclosure.
+- Keep the Fundal Reflex visual language as the default UI baseline: black app bar with red title and icons, Quicksand title, Inter UI text, light clinical controls, restrained shadows, compact mobile rows and progressive disclosure.
+- At the compact review viewport, align the principal viewer stage with the surrounding control and interpretation edges unless a documented teaching constraint requires an inset stage.
 - Match range-control parts as a set: FOV and Cataract sliders should share track treatment and the same dark circular thumb.
 - Keep the RE/LE switch on the compact Fundal-style grey track with red checked state.
 
@@ -66,10 +67,26 @@ The application is a client-side web app using HTML, CSS and JavaScript modules.
 - Canvas pipeline: image load -> `draw()` -> jitter/gaze shift -> pointer drag updates.
 - Mobile cataract pipeline: build cached cataract layer (tint + occlusion patches) on level/size change -> reuse layer in draw path.
 - Asset-selection pipeline: detect query override / pointer type / viewport size -> choose image set -> apply condition button sources and timed image sources.
-- MCQ pipeline: select tier -> build tier-filtered randomised test -> render -> optional timer -> submit -> evaluate -> highlight -> export.
+- MCQ pipeline: select tier -> build tier-filtered randomised test -> render -> submit -> evaluate -> highlight -> explain -> retry or export.
 - Timed test pipeline: select tier -> apply tier profile + safety clamps (`8deg/15deg`, cataract `<= Slight`) + randomised augmentations (including guaranteed >=1 vertical flip per set) -> show image -> hide image -> collect guess -> round feedback -> final score.
 - Timed submit pipeline: enable submit only when an option is selected -> inline validation message for empty submit (no blocking modal alerts).
 - Accessibility pipeline: open modal/menu -> manage focus -> close and restore trigger focus.
 - Achievement pipeline: recompute MCQ/timed advanced completion -> unlock cup -> persist unique code -> enable certificate download.
 - Desktop realism-preview pipeline: toggle phone-preview mode -> apply CSS class -> persist local preference -> force viewer redraw.
 - Local UI verification pipeline: serve the folder -> check `360 x 740` and current review viewport -> inspect first screen, side menu, quick guide, MCQ modal and timed mode -> check console messages.
+
+# v1.1 system patterns (23 July 2026)
+
+- `index.html` loads the generated `app.bundle.js` once as a classic script so direct-file use remains supported. Source modules remain testable but are not double-loaded.
+- `fleet-enhancements.js` owns fleet-level drawer focus containment, focus restoration, two-step reset and HTTP(S)-only service-worker registration without altering the generated teaching bundle.
+- Runtime assets are local. The service worker is app-scoped and caches both full and mobile adaptive image sets.
+- Preserve the 18/16/12/10/8 px radius hierarchy, local typography, black and red identity, restrained borders and shadows.
+- The normal selected condition is a teaching comparison state and must not be reframed as a patient conclusion.
+
+## Maintenance pattern — 26 July 2026
+
+- Keep information-dialog state and focus ownership in the authored controller graph.
+- Generate the classic bundle from `script.js` with pinned esbuild and exact parity.
+- Preserve viewer listener teardown and do not add a second inline lifecycle.
+- Keep clinical timing in the separate timed-recognition mode. MCQs are untimed learning checks with rationales.
+- Keep question source status in `questions.js` and validate stable IDs, one-tier ownership, one keyed answer and rationale coverage in `questions-qa.mjs`.

@@ -1,0 +1,56 @@
+MCQ QA Report
+=============
+Generated: 2026-09-28T22:18:01.496Z
+
+Scope
+-----
+- Source: src/mcq-data/core.js, src/mcq-data/library.js, src/mcq-data/sets.js, src/mcq-data.js, home.html
+- Engine sanity: src/field-core.js, src/rules/helpers.js, src/rules/anterior.js, src/rules/chiasmal.js, src/rules/posterior.js, src/rules.js, src/summary.js
+- Checks: global identity and repetition + structure integrity + semantic pattern classification + pathway SVG mark resolution
+
+Counts
+------
+- Patterns: 26
+- Sites: 19
+- Text MCQs: 15
+- Field-loss MCQs: 14
+- Pathway MCQs: 14
+- Teaching cards: 18
+- Semantic patterns audited: 26
+- Pathway SVG IDs: 29
+- Pathway marks checked: 112
+
+Result
+------
+- Total issues: 0
+- Semantic mismatches: 0
+- Overall: PASS
+
+Semantic Matrix
+---------------
+- biNasal: OK | expected='Binasal Hemianopia' | got='Definite Binasal Hemianopia'
+- biTemp: OK | expected='Bitemporal Hemianopia' | got='Definite Bitemporal Hemianopia'
+- leftHom: OK | expected='Left Homonymous Hemianopia' | got='Definite Left Homonymous Hemianopia'
+- leftHomInc: OK | expected='Probable Left Homonymous Hemianopia (Incongruous)' | got='Probable Left Homonymous Hemianopia (Incongruous)'
+- leftInf: OK | expected='Left Inferior Quadrantanopia' | got='Definite Left Inferior Quadrantanopia'
+- leftInfInc: OK | expected='Probable Left Inferior Quadrantanopia' | got='Probable Left Inferior Quadrantanopia'
+- leftSup: OK | expected='Left Superior Quadrantanopia' | got='Definite Left Superior Quadrantanopia'
+- monoL: OK | expected='Left Monocular Blind Eye' | got='Definite Left Monocular Blind Eye'
+- monoR: OK | expected='Right Monocular Blind Eye' | got='Definite Right Monocular Blind Eye'
+- rightHom: OK | expected='Right Homonymous Hemianopia' | got='Definite Right Homonymous Hemianopia'
+- rightHomInc: OK | expected='Probable Right Homonymous Hemianopia (Incongruous)' | got='Probable Right Homonymous Hemianopia (Incongruous)'
+- rightInf: OK | expected='Right Inferior Quadrantanopia' | got='Definite Right Inferior Quadrantanopia'
+- rightSup: OK | expected='Right Superior Quadrantanopia' | got='Definite Right Superior Quadrantanopia'
+- rightSupInc: OK | expected='Probable Right Superior Quadrantanopia' | got='Probable Right Superior Quadrantanopia'
+- teachAltitudinalHemianopia: OK | expected='Binocular Superior Altitudinal' | got='Definite Binocular Superior Altitudinal'
+- teachBilateralCentralScotoma: OK | expected='Bilateral Central Scotoma' | got='Definite Bilateral Central Scotoma'
+- teachBinocularTotalLoss: OK | expected='Binocular Blindness' | got='Definite Binocular Blindness'
+- teachBitemporalQuadrantanopia: OK | expected='Superior Bitemporal Quadrantanopia' | got='Definite Superior Bitemporal Quadrantanopia'
+- teachGlaucomaSimple: OK | expected='Glaucoma-like Changes (Right Eye)' | got='Probable Glaucoma-like Changes (Right Eye)'
+- teachJunctionalScotoma: OK | expected='Junctional Scotoma' | got='Definite Junctional Scotoma (Right centre + Left ST)'
+- teachMonocularCecocentralLike: OK | expected='Right Monocular Cecocentral-like Defect' | got='Definite Right Monocular Cecocentral-like Defect'
+- teachMonocularCentralScotoma: OK | expected='Right Monocular Central Scotoma' | got='Definite Right Monocular Central Scotoma'
+- teachMonocularNasalHemianopia: OK | expected='Right Monocular Nasal Hemianopia' | got='Definite Right Monocular Nasal Hemianopia'
+- teachMonocularOtherDefect: OK | expected='Right Monocular Large Defect' | got='Probable Right Monocular Large Defect'
+- teachMonocularTemporalHemianopia: OK | expected='Right Monocular Temporal Hemianopia' | got='Definite Right Monocular Temporal Hemianopia'
+- teachTunnelVision: OK | expected='Tunnel Vision' | got='Definite Bilateral Peripheral Constriction (Tunnel Vision)'

@@ -1,0 +1,3116 @@
+{
+  "nodes": [
+    {
+      "id": "LEGEND",
+      "kind": "text",
+      "x": 300,
+      "y": 0,
+      "width": 950,
+      "height": 220,
+      "lines": [
+        "REFRACT — INTEGRATED WEIGHTED RULES",
+        "30 September 2026 · editable working chart · default settings",
+        "Amber: decision · blue: action · red: review · green: result",
+        "S: sphere · C: cylinder · Rx: prescription · q: confidence",
+        "All clamps below are 0–1 unless shown otherwise.",
+        "Provisional engineering policy; clinical sign-off pending."
+      ],
+      "rules": []
+    },
+    {
+      "id": "VISIBLE_WEIGHTS",
+      "kind": "text",
+      "x": 300,
+      "y": 260,
+      "width": 950,
+      "height": 900,
+      "lines": [
+        "WEIGHTINGS — CURRENT VALUES",
+        "Dimensionless unless marked D. Clamps in this panel limit to 0–1.",
+        "",
+        "Patient adjustment m: sum the selected effects",
+        "Calm / easy-going: +0.04",
+        "New to this practice (repeat = 0): −0.05",
+        "Returning (repeat = 1): +0.025",
+        "Poor health / frailty: −0.05",
+        "Age 65 or over: −0.05",
+        "Unknown / unselected: 0. New and returning are alternatives.",
+        "",
+        "Precise / demanding: resistance when selected, otherwise 0",
+        "Subtract 2.00 from component signal t.",
+        "Subtract 0.20 from larger-change pull p.",
+        "",
+        "Measurement confidence q",
+        "Recorded quality Q: q = clamp((Q − 5) / 3)",
+        "No valid Q: accurate → 1; inaccurate → 0; unknown → 0.25",
+        "",
+        "How the weights combine",
+        "Component signal: t = 1.50q + m − precise resistance",
+        "Larger-sphere branch: p = clamp(0.40 + 0.50q + m − precise resistance)",
+        "Then larger-change pull = clamp((p + 0.20) × q)",
+        "Larger-sphere weighting applies only at a sphere gap ≥1.25 D.",
+        "",
+        "Reading add: frailty +0.25 D only on the age-derived add.",
+        "Guards and step caps still take priority: follow the arrows below.",
+        "Provisional authored settings — not clinically validated."
+      ],
+      "rules": [],
+      "referencePanel": true,
+      "fontSize": 22,
+      "boldLines": [0, 3, 11, 15, 19, 25]
+    },
+    {
+      "id": "START",
+      "kind": "terminal",
+      "x": 1550,
+      "y": 30,
+      "width": 500,
+      "height": 70,
+      "lines": ["Patient assessment"],
+      "rules": []
+    },
+    {
+      "id": "INPUT",
+      "kind": "action",
+      "x": 1400,
+      "y": 170,
+      "width": 800,
+      "height": 140,
+      "lines": [
+        "Both eyes: current Rx and measured refraction",
+        "Age · quality per eye or accuracy fallback · good current VA",
+        "Precise · calm · health · new / returning / unknown · current/measured add"
+      ],
+      "rules": []
+    },
+    {
+      "id": "VALID",
+      "kind": "decision",
+      "x": 1515,
+      "y": 380,
+      "width": 570,
+      "height": 180,
+      "lines": [
+        "For eyes with a recorded sphere:",
+        "non-zero C has a valid",
+        "axis 0–180°?"
+      ],
+      "rules": ["W0_VALIDATE"]
+    },
+    {
+      "id": "INVALID",
+      "kind": "review",
+      "x": 2350,
+      "y": 415,
+      "width": 760,
+      "height": 110,
+      "lines": [
+        "Complete or correct the entries",
+        "No proposed Rx until the axis is valid"
+      ],
+      "rules": ["W0_VALIDATE"]
+    },
+    {
+      "id": "NORMALISE",
+      "kind": "action",
+      "x": 1400,
+      "y": 630,
+      "width": 800,
+      "height": 130,
+      "lines": [
+        "Normalise each recorded eye to minus cylinder",
+        "Missing sphere remains unassessed, not plano",
+        "Check discrepancy before any Simple-mode projection"
+      ],
+      "rules": ["W0_VALIDATE"]
+    },
+    {
+      "id": "SIMPLE",
+      "kind": "decision",
+      "x": 1570,
+      "y": 830,
+      "width": 460,
+      "height": 160,
+      "lines": ["Simple mode explicitly", "selected?"],
+      "rules": ["W2_SIMPLE"]
+    },
+    {
+      "id": "SPHERICAL",
+      "kind": "action",
+      "x": 2350,
+      "y": 855,
+      "width": 760,
+      "height": 110,
+      "lines": [
+        "Use spherical equivalent: S + C/2",
+        "Round to 0.25 D; leave output C and axis blank"
+      ],
+      "rules": ["W2_SIMPLE"]
+    },
+    {
+      "id": "PREPARED",
+      "kind": "action",
+      "x": 1400,
+      "y": 1060,
+      "width": 800,
+      "height": 110,
+      "lines": [
+        "Continue with the chosen input representation",
+        "Advanced retains S / C / axis; Simple uses the projection"
+      ],
+      "rules": ["W2_SIMPLE"]
+    },
+    {
+      "id": "DISCREPANCY",
+      "kind": "decision",
+      "x": 1570,
+      "y": 1240,
+      "width": 460,
+      "height": 180,
+      "lines": [
+        "Saved pre-projection check:",
+        "large discrepancy in either eye?"
+      ],
+      "rules": ["W1_LARGE_DISCREPANCY"]
+    },
+    {
+      "id": "PAIR_HOLD",
+      "kind": "review",
+      "x": 480,
+      "y": 1252.5,
+      "width": 820,
+      "height": 155,
+      "lines": [
+        "Keep both current distance prescriptions",
+        "ΔS ≥3 D or ΔC ≥2 D",
+        "or Δaxis ≥60° with both |C| ≥1 D",
+        "Verify measurements; preserve Simple-mode representation"
+      ],
+      "rules": ["W1_LARGE_DISCREPANCY"]
+    },
+    {
+      "id": "CONFIDENCE",
+      "kind": "action",
+      "x": 1400,
+      "y": 1490,
+      "width": 800,
+      "height": 160,
+      "lines": [
+        "Calculate each eye’s confidence q",
+        "Valid Q (0–10): q = clamp((Q − 5) / 3)",
+        "Otherwise accuracy true → 1; false → 0; unknown → 0.25",
+        "Apply the same patient context to each eye separately"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "OBJECTIVE",
+      "kind": "decision",
+      "x": 1570,
+      "y": 1720,
+      "width": 460,
+      "height": 160,
+      "lines": ["Measured sphere", "recorded for this eye?"],
+      "rules": ["W3_NO_OBJECTIVE"]
+    },
+    {
+      "id": "RETAIN_RECORDED",
+      "kind": "action",
+      "x": 480,
+      "y": 1745,
+      "width": 760,
+      "height": 110,
+      "lines": [
+        "Keep the recorded current eye",
+        "If neither sphere is recorded, leave this eye blank"
+      ],
+      "rules": ["W3_NO_OBJECTIVE"]
+    },
+    {
+      "id": "CURRENT",
+      "kind": "decision",
+      "x": 1570,
+      "y": 1950,
+      "width": 460,
+      "height": 160,
+      "lines": ["Current sphere recorded", "for this eye?"],
+      "rules": ["W4_NO_ANCHOR"]
+    },
+    {
+      "id": "NO_ANCHOR",
+      "kind": "review",
+      "x": 2350,
+      "y": 1917.5,
+      "width": 1120,
+      "height": 225,
+      "lines": [
+        "No recorded anchor: provisional seed",
+        "Precise S: round(S − sign(S) × min(|S|, 0.25 D)) to 0.25 D",
+        "Precise C: reduce |C| by 0.25 D, stop at zero, round 0.25 D",
+        "Missing or reduced |C| <0.25 D → leave C/axis blank",
+        "Otherwise round measured axis: 5° below 1.75 D, 1° otherwise",
+        "Not precise: measured S/C rounded to 0.25 D; measured axis unchanged",
+        "Current sphere absent clears current C/axis; no corroborated-C exception",
+        "Missing recorded Rx does not prove a first-ever pair"
+      ],
+      "rules": ["W4_NO_ANCHOR"]
+    },
+    {
+      "id": "GOOD_VA",
+      "kind": "decision",
+      "x": 1570,
+      "y": 2180,
+      "width": 460,
+      "height": 160,
+      "lines": ["Good current VA", "explicitly selected?"],
+      "rules": ["W5_GOOD_VA"]
+    },
+    {
+      "id": "VA_HOLD",
+      "kind": "action",
+      "x": 480,
+      "y": 2205,
+      "width": 820,
+      "height": 110,
+      "lines": [
+        "Keep the current eye",
+        "Only an explicit good-VA selection triggers this hold"
+      ],
+      "rules": ["W5_GOOD_VA"]
+    },
+    {
+      "id": "LOW_Q",
+      "kind": "decision",
+      "x": 1570,
+      "y": 2410,
+      "width": 460,
+      "height": 180,
+      "lines": ["Confidence q = 0?", "(quality Q ≤5 or accuracy false)"],
+      "rules": ["W6_LOW_CONFIDENCE"]
+    },
+    {
+      "id": "Q_HOLD",
+      "kind": "review",
+      "x": 480,
+      "y": 2445,
+      "width": 820,
+      "height": 110,
+      "lines": [
+        "Keep the current eye",
+        "Low confidence does not authorise a measured change"
+      ],
+      "rules": ["W6_LOW_CONFIDENCE"]
+    },
+    {
+      "id": "WEIGHTS",
+      "kind": "action",
+      "x": 1250,
+      "y": 2660,
+      "width": 1100,
+      "height": 210,
+      "lines": [
+        "Set adaptation modifier m and component signal t",
+        "m = calm +0.04; frailty −0.05; age ≥65 −0.05",
+        "New patient −0.05; returning +0.025; unknown 0",
+        "t = 1.5q + m − (2 if precise; otherwise 0)",
+        "Sphere pull = clamp((t + 1) / 4)",
+        "Cylinder pull = clamp((t + 1) / 2.6); axis pull = clamp(t / 3)"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "TARGETS",
+      "kind": "action",
+      "x": 1200,
+      "y": 2940,
+      "width": 1200,
+      "height": 225,
+      "lines": [
+        "Form component targets and bounded 0.25 D movements",
+        "Sphere target = round(S − sign(S) × min(|S|, 0.25 D)); S is measured",
+        "C target: same C if corroborated; otherwise reduce |C| by 0.25 D",
+        "Round targets to 0.25 D; target axis 5° below 1.75 D C, 1° otherwise",
+        "Movement = round(|target − current| × pull); never overshoot",
+        "Minimum 0.25 D when gap ≥0.25 D and pull ≥0.2 (S) / 0.25 (C)",
+        "Base S step cap: precise 0.25 D, otherwise 0.50 D; C cap 0.75 D"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "CURRENT_CYL",
+      "kind": "decision",
+      "x": 1570,
+      "y": 3235,
+      "width": 460,
+      "height": 160,
+      "lines": ["Current cylinder entered", "(including explicit zero)?"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "INTRODUCE_BASE_CYL",
+      "kind": "action",
+      "x": 2350,
+      "y": 3247.5,
+      "width": 960,
+      "height": 135,
+      "lines": [
+        "Move from 0 towards the cylinder target",
+        "Missing target or output |C| <0.25 D → C/axis blank",
+        "Otherwise use the target axis"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "TOKEN_CYL",
+      "kind": "decision",
+      "x": 1570,
+      "y": 3465,
+      "width": 460,
+      "height": 180,
+      "lines": ["Measured C explicitly 0", "and current |C| ≤0.25 D?"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "DROP_TOKEN",
+      "kind": "action",
+      "x": 2350,
+      "y": 3487.5,
+      "width": 880,
+      "height": 135,
+      "lines": [
+        "Remove the token current cylinder and axis",
+        "Sphere pull is at least 0.2 for this component step",
+        "Later sphere overrides still apply"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "CYLINDER_MOVE",
+      "kind": "action",
+      "x": 1290,
+      "y": 3715,
+      "width": 1020,
+      "height": 150,
+      "lines": [
+        "Apply the bounded cylinder movement",
+        "Use the target, pull and cap above",
+        "Missing cylinder target → keep current C, rounded to 0.25 D",
+        "Then test the established cylinder/axis exceptions"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "CORROBORATED_KEEP",
+      "kind": "decision",
+      "x": 1490,
+      "y": 3935,
+      "width": 620,
+      "height": 200,
+      "lines": [
+        "Precise, same current/measured C,",
+        "ΔS ≤0.25 D and Δaxis <8°?"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "KEEP_CORROBORATED",
+      "kind": "action",
+      "x": 2350,
+      "y": 3962.5,
+      "width": 900,
+      "height": 145,
+      "lines": [
+        "Keep current C; below 0.25 D leave C/axis blank",
+        "Otherwise keep identical axis exactly or round current axis",
+        "Axis rounding: 5° below 1.75 D cylinder, 1° otherwise"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "CORROBORATED_BLEND",
+      "kind": "decision",
+      "x": 1490,
+      "y": 4205,
+      "width": 620,
+      "height": 200,
+      "lines": [
+        "Precise, same current/measured C,",
+        "ΔS ≤0.25 D and Δaxis 8–20°?"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "BLEND_CORROBORATED",
+      "kind": "action",
+      "x": 2350,
+      "y": 4212.5,
+      "width": 1180,
+      "height": 185,
+      "lines": [
+        "Keep C except 0.75–<1 D: reduce by 0.25 D",
+        "Output |C| <0.25 D → leave C/axis blank",
+        "Off seam, output |C| ≤0.50 D and gap ≥10°: keep current axis exactly",
+        "Otherwise midpoint axis; across 0/180 seam use measured axis",
+        "Round only that changed axis: 5° below 1.75 D, 1° otherwise"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "SMALL_OUTPUT_C",
+      "kind": "decision",
+      "x": 1570,
+      "y": 4475,
+      "width": 460,
+      "height": 160,
+      "lines": ["Output |C| <0.25 D?"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "DROP_SMALL",
+      "kind": "action",
+      "x": 2350,
+      "y": 4507.5,
+      "width": 880,
+      "height": 95,
+      "lines": ["Leave output cylinder and axis blank"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "MISSING_AXIS",
+      "kind": "decision",
+      "x": 1570,
+      "y": 4705,
+      "width": 460,
+      "height": 160,
+      "lines": ["Current or target", "axis unavailable?"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "AVAILABLE_AXIS",
+      "kind": "action",
+      "x": 2350,
+      "y": 4730,
+      "width": 880,
+      "height": 110,
+      "lines": [
+        "Use the available axis",
+        "No current axis → target; no target axis → current"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "CYL_PROGRESS",
+      "kind": "action",
+      "x": 1240,
+      "y": 4935,
+      "width": 1120,
+      "height": 175,
+      "lines": [
+        "Measure cylinder progress towards its target",
+        "Progress = |output C − current C| / |target C − current C|",
+        "Clamp to 0–1; no target change → 0",
+        "Axis gaps/interpolation take the shortest route",
+        "“Across seam”: one axis within 0–15°, the other within 165–180°"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "LOW_CYL_AXIS",
+      "kind": "decision",
+      "x": 1490,
+      "y": 5180,
+      "width": 620,
+      "height": 200,
+      "lines": [
+        "Off seam, |output C| ≤0.50 D,",
+        "axis gap ≥10° and progress <0.5?"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "HOLD_LOW_AXIS",
+      "kind": "action",
+      "x": 2350,
+      "y": 5232.5,
+      "width": 880,
+      "height": 95,
+      "lines": ["Keep the current axis"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "FOLLOW_AXIS",
+      "kind": "decision",
+      "x": 1490,
+      "y": 5450,
+      "width": 620,
+      "height": 190,
+      "lines": ["Cylinder progress ≥0.5", "or not precise with axis gap ≤15°?"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "FOLLOW_AXIS_ACTION",
+      "kind": "action",
+      "x": 2350,
+      "y": 5472.5,
+      "width": 940,
+      "height": 145,
+      "lines": [
+        "Move axis with max(axis pull, cylinder progress)",
+        "Across the seam use measured axis directly",
+        "Round output axis: 5° below 1.75 D, 1° otherwise"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "COMPROMISE_AXIS",
+      "kind": "decision",
+      "x": 1570,
+      "y": 5710,
+      "width": 460,
+      "height": 170,
+      "lines": ["Axis pull ≥0.3", "and axis gap ≤20°?"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "MID_AXIS",
+      "kind": "action",
+      "x": 2350,
+      "y": 5727.5,
+      "width": 940,
+      "height": 135,
+      "lines": [
+        "Use midpoint current–target axis",
+        "Across the seam use measured axis directly",
+        "Round output axis: 5° below 1.75 D, 1° otherwise"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "KEEP_AXIS_DEFAULT",
+      "kind": "action",
+      "x": 1400,
+      "y": 5950,
+      "width": 800,
+      "height": 90,
+      "lines": ["Otherwise keep the current axis"],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "COMPONENT_READY",
+      "kind": "action",
+      "x": 550,
+      "y": 6620,
+      "width": 2500,
+      "height": 135,
+      "lines": [
+        "Component proposal for this eye",
+        "Apply the sphere overrides below in order",
+        "All cylinder/axis branch destinations join this one proposal"
+      ],
+      "rules": ["W7_WEIGHTED_COMPONENTS"]
+    },
+    {
+      "id": "SMALL_SPHERE",
+      "kind": "decision",
+      "x": 1570,
+      "y": 6825,
+      "width": 460,
+      "height": 170,
+      "lines": ["Measured–current sphere gap", "≤0.25 D?"],
+      "rules": ["W8_SMALL_SPHERE"]
+    },
+    {
+      "id": "SPHERE_HOLD",
+      "kind": "action",
+      "x": 480,
+      "y": 6862.5,
+      "width": 820,
+      "height": 95,
+      "lines": ["Keep current sphere exactly"],
+      "rules": ["W8_SMALL_SPHERE"]
+    },
+    {
+      "id": "LARGE_SPHERE",
+      "kind": "decision",
+      "x": 1570,
+      "y": 7065,
+      "width": 460,
+      "height": 170,
+      "lines": ["Measured–current sphere gap", "≥1.25 D?"],
+      "rules": ["W9_LARGE_SPHERE"]
+    },
+    {
+      "id": "LARGE_SPHERE_STEP",
+      "kind": "action",
+      "x": 2350,
+      "y": 7042.5,
+      "width": 1120,
+      "height": 215,
+      "lines": [
+        "Apply a proportional sphere step with a progressive cap",
+        "p = clamp(0.4 + 0.5q − (0.2 if precise; otherwise 0) + m)",
+        "Large-change pull = clamp((p + 0.2) × q)",
+        "Cap = min(1.5 D, ordinary step + max(0, gap − 1.25 D) × 1)",
+        "Ordinary step: 0.50 D if age <40 or not precise; otherwise 0.25 D",
+        "Either |S| ≥6 D → cap 0.25 D; never overshoot measured S",
+        "Step = min(gap, cap, rounded gap × pull); round final S to 0.25 D"
+      ],
+      "rules": ["W9_LARGE_SPHERE"]
+    },
+    {
+      "id": "YOUNGER_SPHERE",
+      "kind": "decision",
+      "x": 1570,
+      "y": 7305,
+      "width": 460,
+      "height": 170,
+      "lines": ["Age <40 and", "sphere gap ≥0.5 D?"],
+      "rules": ["W10_YOUNGER_SPHERE"]
+    },
+    {
+      "id": "YOUNGER_SPHERE_STEP",
+      "kind": "action",
+      "x": 2350,
+      "y": 7307.5,
+      "width": 1040,
+      "height": 165,
+      "lines": [
+        "Use the bounded younger half-change seed",
+        "Step = round(gap × 0.5 × q × clamp(1 + m, 0, 1.2))",
+        "Cap 0.5 D; either |S| ≥6 D → 0.25 D",
+        "Move towards measured S and round to 0.25 D"
+      ],
+      "rules": ["W10_YOUNGER_SPHERE"]
+    },
+    {
+      "id": "SPHERE_READY",
+      "kind": "action",
+      "x": 1000,
+      "y": 7675,
+      "width": 1600,
+      "height": 110,
+      "lines": [
+        "Sphere proposal ready",
+        "If none of the overrides applies, retain the component step"
+      ],
+      "rules": ["W8_SMALL_SPHERE", "W9_LARGE_SPHERE", "W10_YOUNGER_SPHERE"]
+    },
+    {
+      "id": "YOUNGER_CYL",
+      "kind": "decision",
+      "x": 1450,
+      "y": 7855,
+      "width": 700,
+      "height": 250,
+      "lines": [
+        "Age <40, current C blank",
+        "(not an explicit zero),",
+        "measured |C| ≥0.50 D",
+        "and still no output cylinder?"
+      ],
+      "rules": ["W11_YOUNGER_CYLINDER"]
+    },
+    {
+      "id": "YOUNGER_CYL_STEP",
+      "kind": "action",
+      "x": 2350,
+      "y": 7925,
+      "width": 880,
+      "height": 110,
+      "lines": ["Trial −0.25 D cylinder", "Use measured axis rounded to 5°"],
+      "rules": ["W11_YOUNGER_CYLINDER"]
+    },
+    {
+      "id": "CYL_READY",
+      "kind": "action",
+      "x": 1400,
+      "y": 8175,
+      "width": 800,
+      "height": 90,
+      "lines": ["Cylinder proposal ready"],
+      "rules": ["W11_YOUNGER_CYLINDER"]
+    },
+    {
+      "id": "HIGH_CYL",
+      "kind": "decision",
+      "x": 1490,
+      "y": 8335,
+      "width": 620,
+      "height": 190,
+      "lines": ["Current |C| ≥1.75 D,", "C unchanged and axis gap ≤5°?"],
+      "rules": ["W12_HIGH_CYLINDER_AXIS"]
+    },
+    {
+      "id": "HIGH_CYL_HOLD",
+      "kind": "action",
+      "x": 2350,
+      "y": 8382.5,
+      "width": 940,
+      "height": 95,
+      "lines": ["Keep the established current axis exactly"],
+      "rules": ["W12_HIGH_CYLINDER_AXIS"]
+    },
+    {
+      "id": "EYE_READY",
+      "kind": "action",
+      "x": 1400,
+      "y": 8595,
+      "width": 800,
+      "height": 110,
+      "lines": [
+        "Distance proposal for this eye",
+        "The same pathway is evaluated independently for RE and LE"
+      ],
+      "rules": ["W12_HIGH_CYLINDER_AXIS"]
+    },
+    {
+      "id": "DISTANCE",
+      "kind": "action",
+      "x": 600,
+      "y": 9035,
+      "width": 2400,
+      "height": 140,
+      "lines": [
+        "Combine RE and LE distance proposals",
+        "Keep flags from the pair-wide hold, missing-anchor and confidence paths"
+      ],
+      "rules": []
+    },
+    {
+      "id": "CURRENT_ADD",
+      "kind": "decision",
+      "x": 1570,
+      "y": 9245,
+      "width": 460,
+      "height": 170,
+      "lines": ["Current reading add", "entered, including zero?"],
+      "rules": ["WA_ADD"]
+    },
+    {
+      "id": "KEEP_ADD",
+      "kind": "action",
+      "x": 480,
+      "y": 9275,
+      "width": 820,
+      "height": 110,
+      "lines": [
+        "Keep the entered current add",
+        "Do not age-escalate an explicit add"
+      ],
+      "rules": ["WA_ADD", "RETAIN_ENTERED_ADD"]
+    },
+    {
+      "id": "MEASURED_ADD",
+      "kind": "decision",
+      "x": 1570,
+      "y": 9485,
+      "width": 460,
+      "height": 170,
+      "lines": ["Measured reading add", "entered?"],
+      "rules": ["WA_ADD"]
+    },
+    {
+      "id": "USE_ADD",
+      "kind": "action",
+      "x": 2350,
+      "y": 9522.5,
+      "width": 880,
+      "height": 95,
+      "lines": ["Use the measured reading add"],
+      "rules": ["WA_ADD", "MEASURED_ADD"]
+    },
+    {
+      "id": "ADD_AGE",
+      "kind": "decision",
+      "x": 1570,
+      "y": 9725,
+      "width": 460,
+      "height": 160,
+      "lines": ["Age known and ≥46?"],
+      "rules": ["WA_ADD"]
+    },
+    {
+      "id": "BLANK_ADD",
+      "kind": "action",
+      "x": 480,
+      "y": 9757.5,
+      "width": 820,
+      "height": 95,
+      "lines": ["Leave reading add blank"],
+      "rules": ["WA_ADD", "AGE_ESTIMATE"]
+    },
+    {
+      "id": "ESTIMATE_ADD",
+      "kind": "action",
+      "x": 1150,
+      "y": 9955,
+      "width": 1300,
+      "height": 150,
+      "lines": [
+        "Age-based reading add estimate (D)",
+        "46–47: 1.25 · 48–51: 1.25 · 52–55: 1.50 · 56–59: 1.75",
+        "60–63: 2.25 · 64–68: 2.25 · 69–77: 2.50 · 78+: 2.75",
+        "Use completed years; working distance and near task need review"
+      ],
+      "rules": ["WA_ADD", "AGE_ESTIMATE"]
+    },
+    {
+      "id": "FRAILTY_ADD",
+      "kind": "decision",
+      "x": 1570,
+      "y": 10175,
+      "width": 460,
+      "height": 160,
+      "lines": ["Frailty modifier", "selected?"],
+      "rules": ["WA_ADD"]
+    },
+    {
+      "id": "INCREMENT_ADD",
+      "kind": "action",
+      "x": 2350,
+      "y": 10200,
+      "width": 880,
+      "height": 110,
+      "lines": [
+        "Add +0.25 D to the age estimate",
+        "Only the age-derived add receives this increment"
+      ],
+      "rules": ["WA_ADD", "FRAILTY_INCREMENT"]
+    },
+    {
+      "id": "RESULT",
+      "kind": "result",
+      "x": 700,
+      "y": 10535,
+      "width": 2200,
+      "height": 160,
+      "lines": [
+        "Proposed prescription: RE + LE and reading add",
+        "Keep applied rule IDs, confidence basis and review flags",
+        "Age <18, either q <1 and missing recorded anchor remain review cues"
+      ],
+      "rules": []
+    },
+    {
+      "id": "END",
+      "kind": "terminal",
+      "x": 1320,
+      "y": 10765,
+      "width": 960,
+      "height": 95,
+      "lines": [
+        "Prescriber reviews the whole Rx",
+        "Engineering agreement is not clinical approval"
+      ],
+      "rules": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "START__INPUT",
+      "source": "START",
+      "target": "INPUT",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 100
+        },
+        {
+          "x": 1800,
+          "y": 170
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "INPUT__VALID",
+      "source": "INPUT",
+      "target": "VALID",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 310
+        },
+        {
+          "x": 1800,
+          "y": 380
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "VALID__INVALID",
+      "source": "VALID",
+      "target": "INVALID",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2085,
+          "y": 470
+        },
+        {
+          "x": 2350,
+          "y": 470
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 2140,
+        "y": 448
+      }
+    },
+    {
+      "id": "INVALID__INPUT",
+      "source": "INVALID",
+      "target": "INPUT",
+      "from": [1, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 3110,
+          "y": 470
+        },
+        {
+          "x": 3400,
+          "y": 470
+        },
+        {
+          "x": 3400,
+          "y": 240
+        },
+        {
+          "x": 2200,
+          "y": 240
+        }
+      ],
+      "label": {
+        "text": "Correct",
+        "x": 3470,
+        "y": 285
+      }
+    },
+    {
+      "id": "VALID__NORMALISE",
+      "source": "VALID",
+      "target": "NORMALISE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 560
+        },
+        {
+          "x": 1800,
+          "y": 630
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1832,
+        "y": 587
+      }
+    },
+    {
+      "id": "NORMALISE__SIMPLE",
+      "source": "NORMALISE",
+      "target": "SIMPLE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 760
+        },
+        {
+          "x": 1800,
+          "y": 830
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "SIMPLE__SPHERICAL",
+      "source": "SIMPLE",
+      "target": "SPHERICAL",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 910
+        },
+        {
+          "x": 2350,
+          "y": 910
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 888
+      }
+    },
+    {
+      "id": "SIMPLE__PREPARED",
+      "source": "SIMPLE",
+      "target": "PREPARED",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 990
+        },
+        {
+          "x": 1800,
+          "y": 1060
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 1017
+      }
+    },
+    {
+      "id": "SPHERICAL__PREPARED",
+      "source": "SPHERICAL",
+      "target": "PREPARED",
+      "from": [0.5, 1],
+      "to": [0.8, 0],
+      "points": [
+        {
+          "x": 2730,
+          "y": 965
+        },
+        {
+          "x": 2730,
+          "y": 1020
+        },
+        {
+          "x": 2040,
+          "y": 1020
+        },
+        {
+          "x": 2040,
+          "y": 1060
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "PREPARED__DISCREPANCY",
+      "source": "PREPARED",
+      "target": "DISCREPANCY",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 1170
+        },
+        {
+          "x": 1800,
+          "y": 1240
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "DISCREPANCY__PAIR_HOLD",
+      "source": "DISCREPANCY",
+      "target": "PAIR_HOLD",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 1330
+        },
+        {
+          "x": 1300,
+          "y": 1330
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1515,
+        "y": 1308
+      }
+    },
+    {
+      "id": "DISCREPANCY__CONFIDENCE",
+      "source": "DISCREPANCY",
+      "target": "CONFIDENCE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 1420
+        },
+        {
+          "x": 1800,
+          "y": 1490
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 1447
+      }
+    },
+    {
+      "id": "CONFIDENCE__OBJECTIVE",
+      "source": "CONFIDENCE",
+      "target": "OBJECTIVE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 1650
+        },
+        {
+          "x": 1800,
+          "y": 1720
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "OBJECTIVE__RETAIN_RECORDED",
+      "source": "OBJECTIVE",
+      "target": "RETAIN_RECORDED",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 1800
+        },
+        {
+          "x": 1240,
+          "y": 1800
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1515,
+        "y": 1778
+      }
+    },
+    {
+      "id": "OBJECTIVE__CURRENT",
+      "source": "OBJECTIVE",
+      "target": "CURRENT",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 1880
+        },
+        {
+          "x": 1800,
+          "y": 1950
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1832,
+        "y": 1907
+      }
+    },
+    {
+      "id": "CURRENT__NO_ANCHOR",
+      "source": "CURRENT",
+      "target": "NO_ANCHOR",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 2030
+        },
+        {
+          "x": 2350,
+          "y": 2030
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 2085,
+        "y": 2008
+      }
+    },
+    {
+      "id": "CURRENT__GOOD_VA",
+      "source": "CURRENT",
+      "target": "GOOD_VA",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 2110
+        },
+        {
+          "x": 1800,
+          "y": 2180
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1832,
+        "y": 2137
+      }
+    },
+    {
+      "id": "GOOD_VA__VA_HOLD",
+      "source": "GOOD_VA",
+      "target": "VA_HOLD",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 2260
+        },
+        {
+          "x": 1300,
+          "y": 2260
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1515,
+        "y": 2238
+      }
+    },
+    {
+      "id": "GOOD_VA__LOW_Q",
+      "source": "GOOD_VA",
+      "target": "LOW_Q",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 2340
+        },
+        {
+          "x": 1800,
+          "y": 2410
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 2367
+      }
+    },
+    {
+      "id": "LOW_Q__Q_HOLD",
+      "source": "LOW_Q",
+      "target": "Q_HOLD",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 2500
+        },
+        {
+          "x": 1300,
+          "y": 2500
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1515,
+        "y": 2478
+      }
+    },
+    {
+      "id": "LOW_Q__WEIGHTS",
+      "source": "LOW_Q",
+      "target": "WEIGHTS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 2590
+        },
+        {
+          "x": 1800,
+          "y": 2660
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 2617
+      }
+    },
+    {
+      "id": "WEIGHTS__TARGETS",
+      "source": "WEIGHTS",
+      "target": "TARGETS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 2870
+        },
+        {
+          "x": 1800,
+          "y": 2940
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "TARGETS__CURRENT_CYL",
+      "source": "TARGETS",
+      "target": "CURRENT_CYL",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 3165
+        },
+        {
+          "x": 1800,
+          "y": 3235
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "CURRENT_CYL__INTRODUCE_BASE_CYL",
+      "source": "CURRENT_CYL",
+      "target": "INTRODUCE_BASE_CYL",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 3315
+        },
+        {
+          "x": 2350,
+          "y": 3315
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 2085,
+        "y": 3293
+      }
+    },
+    {
+      "id": "CURRENT_CYL__TOKEN_CYL",
+      "source": "CURRENT_CYL",
+      "target": "TOKEN_CYL",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 3395
+        },
+        {
+          "x": 1800,
+          "y": 3465
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1832,
+        "y": 3422
+      }
+    },
+    {
+      "id": "TOKEN_CYL__DROP_TOKEN",
+      "source": "TOKEN_CYL",
+      "target": "DROP_TOKEN",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 3555
+        },
+        {
+          "x": 2350,
+          "y": 3555
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 3533
+      }
+    },
+    {
+      "id": "TOKEN_CYL__CYLINDER_MOVE",
+      "source": "TOKEN_CYL",
+      "target": "CYLINDER_MOVE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 3645
+        },
+        {
+          "x": 1800,
+          "y": 3715
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 3672
+      }
+    },
+    {
+      "id": "CYLINDER_MOVE__CORROBORATED_KEEP",
+      "source": "CYLINDER_MOVE",
+      "target": "CORROBORATED_KEEP",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 3865
+        },
+        {
+          "x": 1800,
+          "y": 3935
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "CORROBORATED_KEEP__KEEP_CORROBORATED",
+      "source": "CORROBORATED_KEEP",
+      "target": "KEEP_CORROBORATED",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2110,
+          "y": 4035
+        },
+        {
+          "x": 2350,
+          "y": 4035
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2165,
+        "y": 4013
+      }
+    },
+    {
+      "id": "CORROBORATED_KEEP__CORROBORATED_BLEND",
+      "source": "CORROBORATED_KEEP",
+      "target": "CORROBORATED_BLEND",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 4135
+        },
+        {
+          "x": 1800,
+          "y": 4205
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 4162
+      }
+    },
+    {
+      "id": "CORROBORATED_BLEND__BLEND_CORROBORATED",
+      "source": "CORROBORATED_BLEND",
+      "target": "BLEND_CORROBORATED",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2110,
+          "y": 4305
+        },
+        {
+          "x": 2350,
+          "y": 4305
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2165,
+        "y": 4283
+      }
+    },
+    {
+      "id": "CORROBORATED_BLEND__SMALL_OUTPUT_C",
+      "source": "CORROBORATED_BLEND",
+      "target": "SMALL_OUTPUT_C",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 4405
+        },
+        {
+          "x": 1800,
+          "y": 4475
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 4432
+      }
+    },
+    {
+      "id": "SMALL_OUTPUT_C__DROP_SMALL",
+      "source": "SMALL_OUTPUT_C",
+      "target": "DROP_SMALL",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 4555
+        },
+        {
+          "x": 2350,
+          "y": 4555
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 4533
+      }
+    },
+    {
+      "id": "SMALL_OUTPUT_C__MISSING_AXIS",
+      "source": "SMALL_OUTPUT_C",
+      "target": "MISSING_AXIS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 4635
+        },
+        {
+          "x": 1800,
+          "y": 4705
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 4662
+      }
+    },
+    {
+      "id": "MISSING_AXIS__AVAILABLE_AXIS",
+      "source": "MISSING_AXIS",
+      "target": "AVAILABLE_AXIS",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 4785
+        },
+        {
+          "x": 2350,
+          "y": 4785
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 4763
+      }
+    },
+    {
+      "id": "MISSING_AXIS__CYL_PROGRESS",
+      "source": "MISSING_AXIS",
+      "target": "CYL_PROGRESS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 4865
+        },
+        {
+          "x": 1800,
+          "y": 4935
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 4892
+      }
+    },
+    {
+      "id": "CYL_PROGRESS__LOW_CYL_AXIS",
+      "source": "CYL_PROGRESS",
+      "target": "LOW_CYL_AXIS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 5110
+        },
+        {
+          "x": 1800,
+          "y": 5180
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "LOW_CYL_AXIS__HOLD_LOW_AXIS",
+      "source": "LOW_CYL_AXIS",
+      "target": "HOLD_LOW_AXIS",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2110,
+          "y": 5280
+        },
+        {
+          "x": 2350,
+          "y": 5280
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2165,
+        "y": 5258
+      }
+    },
+    {
+      "id": "LOW_CYL_AXIS__FOLLOW_AXIS",
+      "source": "LOW_CYL_AXIS",
+      "target": "FOLLOW_AXIS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 5380
+        },
+        {
+          "x": 1800,
+          "y": 5450
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 5407
+      }
+    },
+    {
+      "id": "FOLLOW_AXIS__FOLLOW_AXIS_ACTION",
+      "source": "FOLLOW_AXIS",
+      "target": "FOLLOW_AXIS_ACTION",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2110,
+          "y": 5545
+        },
+        {
+          "x": 2350,
+          "y": 5545
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2165,
+        "y": 5523
+      }
+    },
+    {
+      "id": "FOLLOW_AXIS__COMPROMISE_AXIS",
+      "source": "FOLLOW_AXIS",
+      "target": "COMPROMISE_AXIS",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 5640
+        },
+        {
+          "x": 1800,
+          "y": 5710
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 5667
+      }
+    },
+    {
+      "id": "COMPROMISE_AXIS__MID_AXIS",
+      "source": "COMPROMISE_AXIS",
+      "target": "MID_AXIS",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 5795
+        },
+        {
+          "x": 2350,
+          "y": 5795
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 5773
+      }
+    },
+    {
+      "id": "COMPROMISE_AXIS__KEEP_AXIS_DEFAULT",
+      "source": "COMPROMISE_AXIS",
+      "target": "KEEP_AXIS_DEFAULT",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 5880
+        },
+        {
+          "x": 1800,
+          "y": 5950
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 5907
+      }
+    },
+    {
+      "id": "KEEP_AXIS_DEFAULT__COMPONENT_READY",
+      "source": "KEEP_AXIS_DEFAULT",
+      "target": "COMPONENT_READY",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 6040
+        },
+        {
+          "x": 1800,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "COMPONENT_READY__SMALL_SPHERE",
+      "source": "COMPONENT_READY",
+      "target": "SMALL_SPHERE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 6755
+        },
+        {
+          "x": 1800,
+          "y": 6825
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "SMALL_SPHERE__SPHERE_HOLD",
+      "source": "SMALL_SPHERE",
+      "target": "SPHERE_HOLD",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 6910
+        },
+        {
+          "x": 1300,
+          "y": 6910
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1515,
+        "y": 6888
+      }
+    },
+    {
+      "id": "SMALL_SPHERE__LARGE_SPHERE",
+      "source": "SMALL_SPHERE",
+      "target": "LARGE_SPHERE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 6995
+        },
+        {
+          "x": 1800,
+          "y": 7065
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 7022
+      }
+    },
+    {
+      "id": "LARGE_SPHERE__LARGE_SPHERE_STEP",
+      "source": "LARGE_SPHERE",
+      "target": "LARGE_SPHERE_STEP",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 7150
+        },
+        {
+          "x": 2350,
+          "y": 7150
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 7128
+      }
+    },
+    {
+      "id": "LARGE_SPHERE__YOUNGER_SPHERE",
+      "source": "LARGE_SPHERE",
+      "target": "YOUNGER_SPHERE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 7235
+        },
+        {
+          "x": 1800,
+          "y": 7305
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 7262
+      }
+    },
+    {
+      "id": "YOUNGER_SPHERE__YOUNGER_SPHERE_STEP",
+      "source": "YOUNGER_SPHERE",
+      "target": "YOUNGER_SPHERE_STEP",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 7390
+        },
+        {
+          "x": 2350,
+          "y": 7390
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 7368
+      }
+    },
+    {
+      "id": "YOUNGER_SPHERE__SPHERE_READY",
+      "source": "YOUNGER_SPHERE",
+      "target": "SPHERE_READY",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 7475
+        },
+        {
+          "x": 1800,
+          "y": 7675
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 7502
+      }
+    },
+    {
+      "id": "SPHERE_READY__YOUNGER_CYL",
+      "source": "SPHERE_READY",
+      "target": "YOUNGER_CYL",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 7785
+        },
+        {
+          "x": 1800,
+          "y": 7855
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "YOUNGER_CYL__YOUNGER_CYL_STEP",
+      "source": "YOUNGER_CYL",
+      "target": "YOUNGER_CYL_STEP",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2150,
+          "y": 7980
+        },
+        {
+          "x": 2350,
+          "y": 7980
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2205,
+        "y": 7958
+      }
+    },
+    {
+      "id": "YOUNGER_CYL__CYL_READY",
+      "source": "YOUNGER_CYL",
+      "target": "CYL_READY",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 8105
+        },
+        {
+          "x": 1800,
+          "y": 8175
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 8132
+      }
+    },
+    {
+      "id": "YOUNGER_CYL_STEP__CYL_READY",
+      "source": "YOUNGER_CYL_STEP",
+      "target": "CYL_READY",
+      "from": [0.5, 1],
+      "to": [0.8, 0],
+      "points": [
+        {
+          "x": 2790,
+          "y": 8035
+        },
+        {
+          "x": 2790,
+          "y": 8135
+        },
+        {
+          "x": 2040,
+          "y": 8135
+        },
+        {
+          "x": 2040,
+          "y": 8175
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "CYL_READY__HIGH_CYL",
+      "source": "CYL_READY",
+      "target": "HIGH_CYL",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 8265
+        },
+        {
+          "x": 1800,
+          "y": 8335
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "HIGH_CYL__HIGH_CYL_HOLD",
+      "source": "HIGH_CYL",
+      "target": "HIGH_CYL_HOLD",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2110,
+          "y": 8430
+        },
+        {
+          "x": 2350,
+          "y": 8430
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2165,
+        "y": 8408
+      }
+    },
+    {
+      "id": "HIGH_CYL__EYE_READY",
+      "source": "HIGH_CYL",
+      "target": "EYE_READY",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 8525
+        },
+        {
+          "x": 1800,
+          "y": 8595
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 8552
+      }
+    },
+    {
+      "id": "HIGH_CYL_HOLD__EYE_READY",
+      "source": "HIGH_CYL_HOLD",
+      "target": "EYE_READY",
+      "from": [0.5, 1],
+      "to": [0.8, 0],
+      "points": [
+        {
+          "x": 2820,
+          "y": 8477.5
+        },
+        {
+          "x": 2820,
+          "y": 8555
+        },
+        {
+          "x": 2040,
+          "y": 8555
+        },
+        {
+          "x": 2040,
+          "y": 8595
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "EYE_READY__DISTANCE",
+      "source": "EYE_READY",
+      "target": "DISTANCE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 8705
+        },
+        {
+          "x": 1800,
+          "y": 9035
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "DISTANCE__CURRENT_ADD",
+      "source": "DISTANCE",
+      "target": "CURRENT_ADD",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 9175
+        },
+        {
+          "x": 1800,
+          "y": 9245
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "CURRENT_ADD__KEEP_ADD",
+      "source": "CURRENT_ADD",
+      "target": "KEEP_ADD",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 9330
+        },
+        {
+          "x": 1300,
+          "y": 9330
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1515,
+        "y": 9308
+      }
+    },
+    {
+      "id": "CURRENT_ADD__MEASURED_ADD",
+      "source": "CURRENT_ADD",
+      "target": "MEASURED_ADD",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 9415
+        },
+        {
+          "x": 1800,
+          "y": 9485
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 9442
+      }
+    },
+    {
+      "id": "MEASURED_ADD__USE_ADD",
+      "source": "MEASURED_ADD",
+      "target": "USE_ADD",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 9570
+        },
+        {
+          "x": 2350,
+          "y": 9570
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 9548
+      }
+    },
+    {
+      "id": "MEASURED_ADD__ADD_AGE",
+      "source": "MEASURED_ADD",
+      "target": "ADD_AGE",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 9655
+        },
+        {
+          "x": 1800,
+          "y": 9725
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 9682
+      }
+    },
+    {
+      "id": "ADD_AGE__BLANK_ADD",
+      "source": "ADD_AGE",
+      "target": "BLANK_ADD",
+      "from": [0, 0.5],
+      "to": [1, 0.5],
+      "points": [
+        {
+          "x": 1570,
+          "y": 9805
+        },
+        {
+          "x": 1300,
+          "y": 9805
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1515,
+        "y": 9783
+      }
+    },
+    {
+      "id": "ADD_AGE__ESTIMATE_ADD",
+      "source": "ADD_AGE",
+      "target": "ESTIMATE_ADD",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 9885
+        },
+        {
+          "x": 1800,
+          "y": 9955
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 1832,
+        "y": 9912
+      }
+    },
+    {
+      "id": "ESTIMATE_ADD__FRAILTY_ADD",
+      "source": "ESTIMATE_ADD",
+      "target": "FRAILTY_ADD",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 10105
+        },
+        {
+          "x": 1800,
+          "y": 10175
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "FRAILTY_ADD__INCREMENT_ADD",
+      "source": "FRAILTY_ADD",
+      "target": "INCREMENT_ADD",
+      "from": [1, 0.5],
+      "to": [0, 0.5],
+      "points": [
+        {
+          "x": 2030,
+          "y": 10255
+        },
+        {
+          "x": 2350,
+          "y": 10255
+        }
+      ],
+      "label": {
+        "text": "Yes",
+        "x": 2085,
+        "y": 10233
+      }
+    },
+    {
+      "id": "FRAILTY_ADD__RESULT",
+      "source": "FRAILTY_ADD",
+      "target": "RESULT",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 10335
+        },
+        {
+          "x": 1800,
+          "y": 10535
+        }
+      ],
+      "label": {
+        "text": "No",
+        "x": 1832,
+        "y": 10362
+      }
+    },
+    {
+      "id": "INCREMENT_ADD__RESULT",
+      "source": "INCREMENT_ADD",
+      "target": "RESULT",
+      "from": [0.5, 1],
+      "to": [0.7, 0],
+      "points": [
+        {
+          "x": 2790,
+          "y": 10310
+        },
+        {
+          "x": 2790,
+          "y": 10355
+        },
+        {
+          "x": 2240,
+          "y": 10355
+        },
+        {
+          "x": 2240,
+          "y": 10535
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "RESULT__END",
+      "source": "RESULT",
+      "target": "END",
+      "from": [0.5, 1],
+      "to": [0.5, 0],
+      "points": [
+        {
+          "x": 1800,
+          "y": 10695
+        },
+        {
+          "x": 1800,
+          "y": 10765
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "PAIR_HOLD__DISTANCE",
+      "source": "PAIR_HOLD",
+      "target": "DISTANCE",
+      "from": [0, 0.5],
+      "to": [0.08, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 1330
+        },
+        {
+          "x": 40,
+          "y": 1330
+        },
+        {
+          "x": 40,
+          "y": 8970
+        },
+        {
+          "x": 792,
+          "y": 8970
+        },
+        {
+          "x": 792,
+          "y": 9035
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "RETAIN_RECORDED__DISTANCE",
+      "source": "RETAIN_RECORDED",
+      "target": "DISTANCE",
+      "from": [0, 0.5],
+      "to": [0.165, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 1800
+        },
+        {
+          "x": 130,
+          "y": 1800
+        },
+        {
+          "x": 130,
+          "y": 8920
+        },
+        {
+          "x": 996,
+          "y": 8920
+        },
+        {
+          "x": 996,
+          "y": 9035
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "VA_HOLD__DISTANCE",
+      "source": "VA_HOLD",
+      "target": "DISTANCE",
+      "from": [0, 0.5],
+      "to": [0.25, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 2260
+        },
+        {
+          "x": 220,
+          "y": 2260
+        },
+        {
+          "x": 220,
+          "y": 8870
+        },
+        {
+          "x": 1200,
+          "y": 8870
+        },
+        {
+          "x": 1200,
+          "y": 9035
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "Q_HOLD__DISTANCE",
+      "source": "Q_HOLD",
+      "target": "DISTANCE",
+      "from": [0, 0.5],
+      "to": [0.335, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 2500
+        },
+        {
+          "x": 310,
+          "y": 2500
+        },
+        {
+          "x": 310,
+          "y": 8820
+        },
+        {
+          "x": 1404,
+          "y": 8820
+        },
+        {
+          "x": 1404,
+          "y": 9035
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "NO_ANCHOR__DISTANCE",
+      "source": "NO_ANCHOR",
+      "target": "DISTANCE",
+      "from": [1, 0.5],
+      "to": [0.91, 0],
+      "points": [
+        {
+          "x": 3470,
+          "y": 2030
+        },
+        {
+          "x": 4840,
+          "y": 2030
+        },
+        {
+          "x": 4840,
+          "y": 8970
+        },
+        {
+          "x": 2784,
+          "y": 8970
+        },
+        {
+          "x": 2784,
+          "y": 9035
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "INTRODUCE_BASE_CYL__COMPONENT_READY",
+      "source": "INTRODUCE_BASE_CYL",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.94, 0],
+      "points": [
+        {
+          "x": 3310,
+          "y": 3315
+        },
+        {
+          "x": 4580,
+          "y": 3315
+        },
+        {
+          "x": 4580,
+          "y": 6555
+        },
+        {
+          "x": 2900,
+          "y": 6555
+        },
+        {
+          "x": 2900,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "DROP_TOKEN__COMPONENT_READY",
+      "source": "DROP_TOKEN",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.8959999999999999, 0],
+      "points": [
+        {
+          "x": 3230,
+          "y": 3555
+        },
+        {
+          "x": 4490,
+          "y": 3555
+        },
+        {
+          "x": 4490,
+          "y": 6505
+        },
+        {
+          "x": 2789.9999999999995,
+          "y": 6505
+        },
+        {
+          "x": 2789.9999999999995,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "KEEP_CORROBORATED__COMPONENT_READY",
+      "source": "KEEP_CORROBORATED",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.852, 0],
+      "points": [
+        {
+          "x": 3250,
+          "y": 4035
+        },
+        {
+          "x": 4400,
+          "y": 4035
+        },
+        {
+          "x": 4400,
+          "y": 6455
+        },
+        {
+          "x": 2680,
+          "y": 6455
+        },
+        {
+          "x": 2680,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "BLEND_CORROBORATED__COMPONENT_READY",
+      "source": "BLEND_CORROBORATED",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.8079999999999999, 0],
+      "points": [
+        {
+          "x": 3530,
+          "y": 4305
+        },
+        {
+          "x": 4310,
+          "y": 4305
+        },
+        {
+          "x": 4310,
+          "y": 6405
+        },
+        {
+          "x": 2570,
+          "y": 6405
+        },
+        {
+          "x": 2570,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "DROP_SMALL__COMPONENT_READY",
+      "source": "DROP_SMALL",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.764, 0],
+      "points": [
+        {
+          "x": 3230,
+          "y": 4555
+        },
+        {
+          "x": 4220,
+          "y": 4555
+        },
+        {
+          "x": 4220,
+          "y": 6355
+        },
+        {
+          "x": 2460,
+          "y": 6355
+        },
+        {
+          "x": 2460,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "AVAILABLE_AXIS__COMPONENT_READY",
+      "source": "AVAILABLE_AXIS",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.72, 0],
+      "points": [
+        {
+          "x": 3230,
+          "y": 4785
+        },
+        {
+          "x": 4130,
+          "y": 4785
+        },
+        {
+          "x": 4130,
+          "y": 6305
+        },
+        {
+          "x": 2350,
+          "y": 6305
+        },
+        {
+          "x": 2350,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "HOLD_LOW_AXIS__COMPONENT_READY",
+      "source": "HOLD_LOW_AXIS",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.6759999999999999, 0],
+      "points": [
+        {
+          "x": 3230,
+          "y": 5280
+        },
+        {
+          "x": 4040,
+          "y": 5280
+        },
+        {
+          "x": 4040,
+          "y": 6255
+        },
+        {
+          "x": 2240,
+          "y": 6255
+        },
+        {
+          "x": 2240,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "FOLLOW_AXIS_ACTION__COMPONENT_READY",
+      "source": "FOLLOW_AXIS_ACTION",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.6319999999999999, 0],
+      "points": [
+        {
+          "x": 3290,
+          "y": 5545
+        },
+        {
+          "x": 3950,
+          "y": 5545
+        },
+        {
+          "x": 3950,
+          "y": 6205
+        },
+        {
+          "x": 2130,
+          "y": 6205
+        },
+        {
+          "x": 2130,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "MID_AXIS__COMPONENT_READY",
+      "source": "MID_AXIS",
+      "target": "COMPONENT_READY",
+      "from": [1, 0.5],
+      "to": [0.588, 0],
+      "points": [
+        {
+          "x": 3290,
+          "y": 5795
+        },
+        {
+          "x": 3860,
+          "y": 5795
+        },
+        {
+          "x": 3860,
+          "y": 6155
+        },
+        {
+          "x": 2020,
+          "y": 6155
+        },
+        {
+          "x": 2020,
+          "y": 6620
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "SPHERE_HOLD__SPHERE_READY",
+      "source": "SPHERE_HOLD",
+      "target": "SPHERE_READY",
+      "from": [0, 0.5],
+      "to": [0.08, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 6910
+        },
+        {
+          "x": 380,
+          "y": 6910
+        },
+        {
+          "x": 380,
+          "y": 7610
+        },
+        {
+          "x": 1128,
+          "y": 7610
+        },
+        {
+          "x": 1128,
+          "y": 7675
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "LARGE_SPHERE_STEP__SPHERE_READY",
+      "source": "LARGE_SPHERE_STEP",
+      "target": "SPHERE_READY",
+      "from": [1, 0.5],
+      "to": [0.91, 0],
+      "points": [
+        {
+          "x": 3470,
+          "y": 7150
+        },
+        {
+          "x": 3580,
+          "y": 7150
+        },
+        {
+          "x": 3580,
+          "y": 7610
+        },
+        {
+          "x": 2456,
+          "y": 7610
+        },
+        {
+          "x": 2456,
+          "y": 7675
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "YOUNGER_SPHERE_STEP__SPHERE_READY",
+      "source": "YOUNGER_SPHERE_STEP",
+      "target": "SPHERE_READY",
+      "from": [1, 0.5],
+      "to": [0.79, 0],
+      "points": [
+        {
+          "x": 3390,
+          "y": 7390
+        },
+        {
+          "x": 3490,
+          "y": 7390
+        },
+        {
+          "x": 3490,
+          "y": 7560
+        },
+        {
+          "x": 2264,
+          "y": 7560
+        },
+        {
+          "x": 2264,
+          "y": 7675
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "KEEP_ADD__RESULT",
+      "source": "KEEP_ADD",
+      "target": "RESULT",
+      "from": [0, 0.5],
+      "to": [0.08, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 9330
+        },
+        {
+          "x": 140,
+          "y": 9330
+        },
+        {
+          "x": 140,
+          "y": 10470
+        },
+        {
+          "x": 876,
+          "y": 10470
+        },
+        {
+          "x": 876,
+          "y": 10535
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "BLANK_ADD__RESULT",
+      "source": "BLANK_ADD",
+      "target": "RESULT",
+      "from": [0, 0.5],
+      "to": [0.165, 0],
+      "points": [
+        {
+          "x": 480,
+          "y": 9805
+        },
+        {
+          "x": 230,
+          "y": 9805
+        },
+        {
+          "x": 230,
+          "y": 10420
+        },
+        {
+          "x": 1063,
+          "y": 10420
+        },
+        {
+          "x": 1063,
+          "y": 10535
+        }
+      ],
+      "label": null
+    },
+    {
+      "id": "USE_ADD__RESULT",
+      "source": "USE_ADD",
+      "target": "RESULT",
+      "from": [1, 0.5],
+      "to": [0.91, 0],
+      "points": [
+        {
+          "x": 3230,
+          "y": 9570
+        },
+        {
+          "x": 3580,
+          "y": 9570
+        },
+        {
+          "x": 3580,
+          "y": 10470
+        },
+        {
+          "x": 2702,
+          "y": 10470
+        },
+        {
+          "x": 2702,
+          "y": 10535
+        }
+      ],
+      "label": null
+    }
+  ],
+  "catalogueIds": [
+    "W0_VALIDATE",
+    "W1_LARGE_DISCREPANCY",
+    "W2_SIMPLE",
+    "W3_NO_OBJECTIVE",
+    "W4_NO_ANCHOR",
+    "W5_GOOD_VA",
+    "W6_LOW_CONFIDENCE",
+    "W7_WEIGHTED_COMPONENTS",
+    "W8_SMALL_SPHERE",
+    "W9_LARGE_SPHERE",
+    "W10_YOUNGER_SPHERE",
+    "W11_YOUNGER_CYLINDER",
+    "W12_HIGH_CYLINDER_AXIS",
+    "WA_ADD",
+    "RETAIN_ENTERED_ADD",
+    "MEASURED_ADD",
+    "AGE_ESTIMATE",
+    "FRAILTY_INCREMENT"
+  ],
+  "semanticChecks": {
+    "passed": true,
+    "examples": [
+      "Precise no-anchor reduction and axis rounding",
+      "No-anchor clears partial current C; no corroboration",
+      "Precise no-anchor seed precedes low-confidence hold",
+      "No-anchor reduced cylinder below 0.25 is blank",
+      "No-anchor high cylinder uses one-degree axis rounding",
+      "Non-precise no-anchor measured axis is unchanged",
+      "Positive sub-quarter sphere seed stops at zero",
+      "Negative sub-quarter sphere seed stops at zero",
+      "Token cylinder drops and sphere deadband still follows",
+      "Younger blank current cylinder permits introduction",
+      "Younger explicit-zero cylinder does not trigger blank-C seed",
+      "Corroborated small non-zero axis gap rounds current axis",
+      "Corroborated low-cylinder blend holds axis exactly",
+      "Corroborated 0.75 cylinder reduces before low-axis hold",
+      "Corroborated midpoint axis rounds after cylinder reduction",
+      "Corroborated seam branch follows measured axis",
+      "General low-cylinder axis hold is exact",
+      "High-cylinder final guard preserves current axis exactly",
+      "Entered zero add outranks measured and age-derived add",
+      "Measured add follows only when current add absent",
+      "No entered add uses the established age band",
+      "Frailty increment applies only to age-derived add"
+    ],
+    "scope": "Targeted examples support the manual source-to-chart comparison; they are not exhaustive proof or clinical validation."
+  },
+  "sources": [
+    {
+      "file": "src\\weighted-prescribing.js",
+      "sha256": "373611aa05022c59ba5b52495453dafd54cc8bc9d6039df7c8f7b9fd1b3ab8ce"
+    },
+    {
+      "file": "src\\prescribing-rules.js",
+      "sha256": "de2f68554a5166a1aeaf9293af3d3eabcf4dcfb14134979086ef3d652fae34aa"
+    },
+    {
+      "file": "src\\prescription-config.js",
+      "sha256": "a5682c4e6d9b1c517f884c2e95529a609107aec778730cb5caa99c7d450ec815"
+    },
+    {
+      "file": "src\\prescription-logic.js",
+      "sha256": "d1182b6b4db5700e4b8ed03f35d16a0081030b0412f958e0874866d9db505d1a"
+    }
+  ]
+}

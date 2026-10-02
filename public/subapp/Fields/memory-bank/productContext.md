@@ -2,7 +2,7 @@
 
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Current Memory Status (22/7/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -11,9 +11,10 @@
 - Shared side menu: left drawer under the appbar; `min(76vw, 284px)` width; `16px` padding; pale `#f8fbff` surface; blue-grey border; card-style actions with small level dots.
 - Appbar content colour: blue `#2f80ff` on a black appbar.
 - Favicon: current black-square app favicon with the app letter or letters centred.
+- Safety boundary: untouched controls are unassessed, not a recorded normal examination.
 <!-- APP-DOC-STATUS:END -->
 
-Last updated: 18/5/2026
+Last updated: 22/7/2026
 
 `Fields` is a rapid confrontation visual-field interpretation support tool.
 
@@ -42,7 +43,15 @@ Last updated: 18/5/2026
 3. Result is the primary answer and keeps enough reserved height to avoid jump.
 4. Pathway is supporting explanation.
 5. The raw state string is secondary and only appears through `Calc`.
-6. Context should never be required before field entry; a normal screen with no context is a valid starting state.
+6. Context should never be required before field entry. A completed normal screen with no context is valid, but an untouched screen must remain `Not assessed`.
+7. `Mark all seen` is the efficient explicit action for a completed normal examination. After partial entry it fills only remaining unassessed points.
+
+## Safety and Session Intent
+
+1. Teaching cards and MCQ progress remain separate from examination state.
+2. The two-step `New` action clears only the current examination.
+3. Direct-file operation remains a supported offline route. Installable PWA behaviour requires HTTP(S).
+4. Engineering consistency does not constitute clinical approval.
 
 ## Current Clinical Output Policy
 
@@ -57,3 +66,7 @@ Last updated: 18/5/2026
 6. Red-flag context can make a normal field screen urgent; the field pattern label should still describe the field result.
 7. Source-modifier hints should change likely anterior source where appropriate without moving posterior or chiasmal patterns away from their anatomical family.
 8. Keep named conditions to the Classic 18; more labels would imply precision the 5-point test cannot support.
+
+## MCQ experience — 26 July 2026
+
+Each MCQ set should retain its own teaching purpose while sharing one compact interaction: complete every item, review every rationale, then choose one New Set action. Intermediate and Advanced should add patterns or localisation decisions rather than replay Primary. Incomplete submission must not reveal any answer or alter the operational examination.

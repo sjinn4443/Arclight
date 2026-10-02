@@ -1,0 +1,18 @@
+{
+  "name": "Amsler",
+  "short_name": "Amsler",
+  "description": "A central-vision drawing, analysis and teaching tool.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

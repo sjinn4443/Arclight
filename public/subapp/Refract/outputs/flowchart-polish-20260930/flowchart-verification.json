@@ -1,0 +1,171 @@
+{
+  "date": "2026-09-30",
+  "nodes": 70,
+  "edges": 92,
+  "catalogueIds": [
+    "W0_VALIDATE",
+    "W1_LARGE_DISCREPANCY",
+    "W2_SIMPLE",
+    "W3_NO_OBJECTIVE",
+    "W4_NO_ANCHOR",
+    "W5_GOOD_VA",
+    "W6_LOW_CONFIDENCE",
+    "W7_WEIGHTED_COMPONENTS",
+    "W8_SMALL_SPHERE",
+    "W9_LARGE_SPHERE",
+    "W10_YOUNGER_SPHERE",
+    "W11_YOUNGER_CYLINDER",
+    "W12_HIGH_CYLINDER_AXIS",
+    "WA_ADD",
+    "RETAIN_ENTERED_ADD",
+    "MEASURED_ADD",
+    "AGE_ESTIMATE",
+    "FRAILTY_INCREMENT"
+  ],
+  "coveredRuleIds": [
+    "W0_VALIDATE",
+    "W2_SIMPLE",
+    "W1_LARGE_DISCREPANCY",
+    "W7_WEIGHTED_COMPONENTS",
+    "W3_NO_OBJECTIVE",
+    "W4_NO_ANCHOR",
+    "W5_GOOD_VA",
+    "W6_LOW_CONFIDENCE",
+    "W8_SMALL_SPHERE",
+    "W9_LARGE_SPHERE",
+    "W10_YOUNGER_SPHERE",
+    "W11_YOUNGER_CYLINDER",
+    "W12_HIGH_CYLINDER_AXIS",
+    "WA_ADD",
+    "RETAIN_ENTERED_ADD",
+    "MEASURED_ADD",
+    "AGE_ESTIMATE",
+    "FRAILTY_INCREMENT"
+  ],
+  "orthogonalRoutes": true,
+  "noSharedSegmentsOrCrossings": true,
+  "shapeOutline": 2.5,
+  "connectorWidth": 2,
+  "filledArrowheadSize": 14,
+  "issues": [],
+  "passed": true,
+  "limitations": [
+    "Geometry and semantic coverage checks do not establish rendered visual quality.",
+    "Clinical sign-off remains pending.",
+    "The draw.io browser snapshot must be deliberately reloaded after changes."
+  ],
+  "sources": [
+    {
+      "file": "src\\weighted-prescribing.js",
+      "sha256": "373611aa05022c59ba5b52495453dafd54cc8bc9d6039df7c8f7b9fd1b3ab8ce"
+    },
+    {
+      "file": "src\\prescribing-rules.js",
+      "sha256": "de2f68554a5166a1aeaf9293af3d3eabcf4dcfb14134979086ef3d652fae34aa"
+    },
+    {
+      "file": "src\\prescription-config.js",
+      "sha256": "a5682c4e6d9b1c517f884c2e95529a609107aec778730cb5caa99c7d450ec815"
+    },
+    {
+      "file": "src\\prescription-logic.js",
+      "sha256": "d1182b6b4db5700e4b8ed03f35d16a0081030b0412f958e0874866d9db505d1a"
+    }
+  ],
+  "semanticChecks": {
+    "passed": true,
+    "examples": [
+      "Precise no-anchor reduction and axis rounding",
+      "No-anchor clears partial current C; no corroboration",
+      "Precise no-anchor seed precedes low-confidence hold",
+      "No-anchor reduced cylinder below 0.25 is blank",
+      "No-anchor high cylinder uses one-degree axis rounding",
+      "Non-precise no-anchor measured axis is unchanged",
+      "Positive sub-quarter sphere seed stops at zero",
+      "Negative sub-quarter sphere seed stops at zero",
+      "Token cylinder drops and sphere deadband still follows",
+      "Younger blank current cylinder permits introduction",
+      "Younger explicit-zero cylinder does not trigger blank-C seed",
+      "Corroborated small non-zero axis gap rounds current axis",
+      "Corroborated low-cylinder blend holds axis exactly",
+      "Corroborated 0.75 cylinder reduces before low-axis hold",
+      "Corroborated midpoint axis rounds after cylinder reduction",
+      "Corroborated seam branch follows measured axis",
+      "General low-cylinder axis hold is exact",
+      "High-cylinder final guard preserves current axis exactly",
+      "Entered zero add outranks measured and age-derived add",
+      "Measured add follows only when current add absent",
+      "No entered add uses the established age band",
+      "Frailty increment applies only to age-derived add"
+    ],
+    "scope": "Targeted examples support the manual source-to-chart comparison; they are not exhaustive proof or clinical validation."
+  },
+  "chartBounds": {
+    "x": -5,
+    "y": -45,
+    "width": 4890,
+    "height": 10950
+  },
+  "detailReviewBands": [
+    {
+      "top": -45,
+      "bottom": 1155,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 1155,
+      "bottom": 2355,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 2355,
+      "bottom": 3555,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 3555,
+      "bottom": 4755,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 4755,
+      "bottom": 5955,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 5955,
+      "bottom": 7155,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 7155,
+      "bottom": 8355,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 8355,
+      "bottom": 9555,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 9555,
+      "bottom": 10755,
+      "left": -5,
+      "right": 4885
+    },
+    {
+      "top": 10755,
+      "bottom": 10905,
+      "left": -5,
+      "right": 4885
+    }
+  ]
+}

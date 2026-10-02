@@ -29,6 +29,14 @@ export function createModalManager({
       button.disabled = !isOpen || isLocked;
       button.tabIndex = isOpen && !isLocked ? 0 : -1;
     });
+
+    if (isOpen) {
+      queueMicrotask(() => {
+        focusFirstElement(sideMenu);
+      });
+    } else if (sideMenu.contains(document.activeElement)) {
+      burgerIcon.focus();
+    }
   }
 
   function toggleSideMenu() {
@@ -59,8 +67,8 @@ export function createModalManager({
     document.body.classList.toggle('modal-open', hasOpenModal);
 
     if (isOpen) {
-      queueMicrotask(() => {
-        focusFirstElement(modal);
+      requestAnimationFrame(() => {
+        if (isModalOpen(modal)) focusFirstElement(modal);
       });
       return;
     }

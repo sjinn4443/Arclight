@@ -1,7 +1,67 @@
 @import url("./styles/tokens.css?v=20260310-13");
 @import url("./styles/base.css?v=20260310-13");
-@import url("./styles/header.css?v=20260518-burger");
+@import url("./styles/header.css?v=20260726-info2");
 @import url("./styles/layout.css?v=20260310-13");
-@import url("./styles/forms.css?v=20260310-13");
-@import url("./styles/overlays.css?v=20260518-sidebar");
+@import url("./styles/forms.css?v=20260930-weighted3");
+@import url("./styles/overlays.css?v=20260930-ui1");
 @import url("./styles/responsive.css?v=20260518-sidebar");
+
+/* Fleet UI alignment: information card radius and close target. */
+#info-popup {
+  border-radius: 16px;
+}
+
+#info-popup .info-popup-header {
+  min-height: 44px;
+}
+
+#info-popup #close-popup {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  top: 0;
+  right: 0;
+}
+
+.prescribing-review,
+#prescribing-rule-list {
+  font:
+    400 12px/1.4 Inter,
+    Arial,
+    sans-serif;
+}
+.prescribing-review {
+  margin: 6px 0 0;
+  color: #8a4600;
+}
+#prescribing-rules {
+  margin-top: 4px;
+  font:
+    400 12px/1.4 Inter,
+    Arial,
+    sans-serif;
+}
+#prescribing-rules summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #245b8e;
+}
+#prescribing-rules summary::before {
+  content: "▸";
+  margin-right: 6px;
+}
+#prescribing-rules[open] summary::before {
+  content: "▾";
+}
+#prescribing-rule-list p {
+  margin: 4px 0 8px;
+}
+
+/* Match the default simple mode before the startup script arrives. */
+body:not(.advanced-mode) .spinner-container[data-placeholder="cyl"],
+body:not(.advanced-mode) .spinner-container[data-placeholder="axis"] {
+  display: none;
+}

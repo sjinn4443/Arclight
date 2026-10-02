@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta
       name="description"
-      content="Dermatology is a teaching app for skin lesions, rashes, dermoscopy clues and Wood's lamp practice."
+      content="Allan is a dermatology teaching app for skin lesions, rashes, dermoscopy clues and Wood's lamp practice."
     />
     <meta name="author" content="WJW" />
-    <meta name="date" content="18/5/2026" />
-    <meta name="application-name" content="Dermatology" />
-    <title>Dermatology</title>
+    <meta name="date" content="2026-07-10" />
+    <meta name="application-name" content="Allan" />
+    <meta name="application-version" content="1.2" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>Allan</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
-    />
-    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
-    <link rel="stylesheet" href="styles.css?v=20260517-21" />
+    <link rel="manifest" href="manifest.webmanifest?v=20260710-1" />
+    <link rel="stylesheet" href="styles.css?v=20260929-audit2" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header class="app-bar">
@@ -33,7 +32,7 @@
       >
         <span class="appbar-glyph-menu" aria-hidden="true"></span>
       </button>
-      <h1>Dermatology</h1>
+      <h1>Allan</h1>
       <button
         id="info-icon"
         class="icon-button"
@@ -68,17 +67,15 @@
         >
           <button class="reference-menu-card" type="button" data-tab="ABCDETab">
             <img
-              src="assets/images/abcde-su_light.webp"
+              data-src="assets/thumbnails/abcde-su-preview_light.webp"
               alt=""
               aria-hidden="true"
-              width="1254"
-              height="1254"
+              width="480"
+              height="480"
               loading="lazy"
               decoding="async"
             />
-            <span
-              ><strong>Lesion</strong><small>ABCDE-SU checklist</small></span
-            >
+            <span><strong>Lesion</strong><small>ABCDEFG + JFK</small></span>
           </button>
           <button
             class="reference-menu-card"
@@ -87,26 +84,26 @@
           >
             <img
               id="abcdeCardMenuThumb"
-              src="assets/images/abcde-su-card_light.webp"
+              data-src="assets/thumbnails/abcde-su-card_light.webp"
               alt=""
               aria-hidden="true"
-              width="1254"
-              height="1254"
+              width="960"
+              height="960"
               loading="lazy"
               decoding="async"
             />
             <span
-              ><strong>ABCDE-SU card</strong
+              ><strong>ABCDEFG card</strong
               ><small>Full-screen teaching card</small></span
             >
           </button>
           <button class="reference-menu-card" type="button" data-tab="BVPDSTab">
             <img
-              src="assets/images/chaos_light.webp"
+              data-src="assets/thumbnails/chaos_light.webp"
               alt=""
               aria-hidden="true"
-              width="1254"
-              height="1254"
+              width="960"
+              height="960"
               loading="lazy"
               decoding="async"
             />
@@ -119,11 +116,11 @@
           >
             <img
               id="chaosCardMenuThumb"
-              src="assets/images/chaos-card_light.webp"
+              data-src="assets/thumbnails/chaos-card_light.webp"
               alt=""
               aria-hidden="true"
-              width="1254"
-              height="1254"
+              width="960"
+              height="960"
               loading="lazy"
               decoding="async"
             />
@@ -146,11 +143,11 @@
                 aria-pressed="false"
               >
                 <img
-                  src="dermoscopy-examples/chaos-clues-01_light.webp"
+                  data-src="assets/thumbnails/chaos-clues-01_light.webp"
                   alt=""
                   aria-hidden="true"
-                  width="1254"
-                  height="1254"
+                  width="180"
+                  height="90"
                   loading="lazy"
                   decoding="async"
                 />
@@ -165,11 +162,11 @@
                 aria-pressed="false"
               >
                 <img
-                  src="dermoscopy-examples/chaos-clues-02_light.webp"
+                  data-src="assets/thumbnails/chaos-clues-02_light.webp"
                   alt=""
                   aria-hidden="true"
-                  width="1254"
-                  height="1254"
+                  width="180"
+                  height="90"
                   loading="lazy"
                   decoding="async"
                 />
@@ -184,11 +181,11 @@
                 aria-pressed="false"
               >
                 <img
-                  src="dermoscopy-examples/chaos-clues-03_light.webp"
+                  data-src="assets/thumbnails/chaos-clues-03_light.webp"
                   alt=""
                   aria-hidden="true"
-                  width="1254"
-                  height="1254"
+                  width="180"
+                  height="90"
                   loading="lazy"
                   decoding="async"
                 />
@@ -203,11 +200,11 @@
                 aria-pressed="false"
               >
                 <img
-                  src="dermoscopy-examples/chaos-clues-04_light.webp"
+                  data-src="assets/thumbnails/chaos-clues-04_light.webp"
                   alt=""
                   aria-hidden="true"
-                  width="1254"
-                  height="1254"
+                  width="180"
+                  height="90"
                   loading="lazy"
                   decoding="async"
                 />
@@ -222,11 +219,11 @@
                 aria-pressed="false"
               >
                 <img
-                  src="dermoscopy-examples/chaos-clues-05_light.webp"
+                  data-src="assets/thumbnails/chaos-clues-05_light.webp"
                   alt=""
                   aria-hidden="true"
-                  width="1254"
-                  height="1254"
+                  width="180"
+                  height="90"
                   loading="lazy"
                   decoding="async"
                 />
@@ -237,11 +234,11 @@
           </section>
           <button class="reference-menu-card" type="button" data-tab="DPICTab">
             <img
-              src="assets/images/dpic-r_raised-bumps_light.webp"
+              data-src="assets/thumbnails/dpic-r_raised-bumps_light.webp"
               alt=""
               aria-hidden="true"
-              width="1254"
-              height="1254"
+              width="960"
+              height="960"
               loading="lazy"
               decoding="async"
             />
@@ -249,11 +246,11 @@
           </button>
           <button class="reference-menu-card" type="button" data-tab="UVTab">
             <img
-              src="assets/images/uv-reference.webp"
+              data-src="assets/thumbnails/uv-reference.webp"
               alt=""
               aria-hidden="true"
-              width="1254"
-              height="1254"
+              width="960"
+              height="960"
               loading="lazy"
               decoding="async"
             />
@@ -270,7 +267,7 @@
           data-level-index="0"
           data-level="primary"
         >
-          Primary MCQ
+          Primary
         </button>
         <button
           class="mcq-level-button"
@@ -278,7 +275,7 @@
           data-level-index="1"
           data-level="intermediate"
         >
-          Intermediate MCQ
+          Intermediate
         </button>
         <button
           class="mcq-level-button"
@@ -286,7 +283,7 @@
           data-level-index="2"
           data-level="advanced"
         >
-          Advanced MCQ
+          Advanced
         </button>
         <section
           id="cupAchievement"
@@ -329,7 +326,7 @@
         aria-labelledby="infoModalTitle"
       >
         <div class="info-popup-header">
-          <h2 id="infoModalTitle">Dermatology</h2>
+          <h2 id="infoModalTitle">Allan</h2>
           <button
             id="closeModal"
             class="close"
@@ -342,14 +339,15 @@
         <div class="info-popup-body">
           <div class="info-look-guide">
             <section class="info-look-section info-look-section--intro">
-              <p class="info-look-title">Dermatology risk check</p>
-              <p>
-                Guides referral urgency. Supports pattern recognition, not final
-                diagnosis.
+              <p class="info-look-title">Dermatology photo + referral aid</p>
+              <p class="info-purpose-copy">
+                Add your patient's photos and observed findings to prepare a
+                referral prompt. You make the clinical decision; Allan does not
+                diagnose.
               </p>
             </section>
             <section class="info-look-section info-photo-guide">
-              <p><strong>Photos hospital usually wants</strong></p>
+              <p><strong>Useful referral photos</strong></p>
               <div class="info-basics-grid" aria-label="Required image set">
                 <div class="info-basics-cue">
                   <strong>Area/limb</strong>
@@ -365,42 +363,117 @@
                 </div>
               </div>
               <p class="info-photo-tip">
-                Good light, no shadow. Retake blurred or cropped images.
+                Good light, no shadow. Retake poor images. Add dermoscopy for a
+                lesion route if available.
               </p>
             </section>
-            <section class="info-route-grid" aria-label="Clinical routes">
-              <div class="info-route-card">
-                <p class="info-look-title">Skin cancer route</p>
+            <details class="info-secondary-details">
+              <summary>More detail</summary>
+              <div class="info-secondary-details-body">
+                <section class="info-route-grid" aria-label="Clinical routes">
+                  <div class="info-route-card">
+                    <p class="info-look-title">Lesion routes</p>
+                    <p>
+                      Lesion: clinical close-up. Dermoscopy: trained assessment
+                      of chaos, clues and exceptions.
+                    </p>
+                  </div>
+                  <div class="info-route-card">
+                    <p class="info-look-title">Rashes + Wood's lamp</p>
+                    <p>
+                      Record rash findings and red flags. Wood's lamp colours
+                      are supporting clues, not diagnoses.
+                    </p>
+                  </div>
+                </section>
                 <p>
-                  <strong>1. ABCDE-SU:</strong> close-up first for visible
-                  suspicious features.
-                </p>
-                <p>
-                  <strong>2. Dermoscopy:</strong> glare-free detail for chaos,
-                  clues and exceptions.
+                  <strong>Teaching totals:</strong> not validated referral
+                  scores.
                 </p>
               </div>
-              <div class="info-route-card">
-                <p class="info-look-title">Rashes + Wood's lamp</p>
-                <p>
-                  Rash triage for duration, pattern, itch, colour and red flags.
-                  Wood's lamp for fluorescence clues.
-                </p>
-              </div>
-            </section>
+            </details>
             <section class="info-points">
               <p>
-                <strong>Referral:</strong> use highest urgency shown.
-                <em>Skin cancer</em>: suspicious lesion score or dermoscopy
-                chaos plus clue/exception. <em>Rash</em>: same-day if
-                widespread, painful, blistering or feverish; emergency if
-                airway/facial swelling, mucosal involvement, peeling or
-                non-blanching with illness/sepsis.
+                <strong>Referral:</strong> highest recorded urgency wins.
+                Suspected melanoma or high-risk BCC needs an urgent pathway
+                regardless of this prompt.
               </p>
-              <p>Retake poor images.</p>
+              <p>
+                <strong>Emergency:</strong> airway/breathing trouble, severe
+                peeling/mucosal illness or an unwell patient with a
+                non-blanching rash needs emergency help.
+              </p>
+              <p>
+                <strong>Privacy:</strong> photos stay here until Share. Original
+                metadata may include location. Follow consent/privacy policy.
+                Use New between patients.
+              </p>
             </section>
+            <details class="info-sources">
+              <summary>Clinical sources and review</summary>
+              <ul>
+                <li>
+                  <a
+                    href="https://www.nice.org.uk/guidance/ng12/chapter/Recommendations-organised-by-site-of-cancer#skin-cancers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >NICE NG12: skin cancer referral</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.racgp.org.au/afp/2012/july/dermatoscopy-in-routine-practice/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >RACGP: Chaos and Clues</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.nice.org.uk/guidance/cg183/chapter/recommendations"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >NICE CG183: drug allergy recommendations</a
+                  >.
+                </li>
+                <li>
+                  <a
+                    href="https://www.nhs.uk/conditions/anaphylaxis/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >NHS: anaphylaxis emergency signs</a
+                  >.
+                </li>
+                <li>
+                  <a
+                    href="https://dermnetnz.org/topics/wood-lamp-skin-examination"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >DermNet: Wood lamp skin examination</a
+                  >.
+                </li>
+              </ul>
+              <p>Independent clinical sign-off is still required.</p>
+            </details>
           </div>
-          <p class="modal-version-inline">v1 - 18/5/2026</p>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
+          </p>
         </div>
       </div>
     </div>
@@ -421,7 +494,7 @@
             type="file"
             id="limbInput"
             data-capture-type="limb"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             capture="environment"
             hidden
           />
@@ -451,7 +524,7 @@
             type="file"
             id="closeInput"
             data-capture-type="close"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             capture="environment"
             hidden
           />
@@ -481,7 +554,7 @@
             type="file"
             id="dermoscopeInput"
             data-capture-type="dermoscope"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             capture="environment"
             hidden
           />
@@ -497,6 +570,13 @@
           </div>
         </div>
       </section>
+      <p
+        id="captureUploadStatus"
+        class="capture-upload-status"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></p>
 
       <section class="location-row" aria-label="Context">
         <div class="location-select">
@@ -609,11 +689,10 @@
                 role="option"
                 aria-selected="false"
                 data-value="Arm"
-                data-icon="fa-circle"
-                data-icon-style="elbow"
+                data-icon="fa-arm"
               >
-                <span class="location-option-icon location-option-icon--elbow"
-                  ><i class="fas fa-circle" aria-hidden="true"></i></span
+                <span class="location-option-icon"
+                  ><i class="fas fa-arm" aria-hidden="true"></i></span
                 ><span>Arm</span>
               </button>
               <button
@@ -634,10 +713,10 @@
                 role="option"
                 aria-selected="false"
                 data-value="Leg"
-                data-icon="fa-male"
+                data-icon="fa-legs"
               >
                 <span class="location-option-icon"
-                  ><i class="fas fa-male" aria-hidden="true"></i></span
+                  ><i class="fas fa-legs" aria-hidden="true"></i></span
                 ><span>Leg</span>
               </button>
               <button
@@ -647,10 +726,8 @@
                 aria-selected="false"
                 data-value="Foot"
                 data-icon="fa-shoe-prints"
-                data-icon-style="single-foot"
               >
-                <span
-                  class="location-option-icon location-option-icon--single-foot"
+                <span class="location-option-icon"
                   ><i class="fas fa-shoe-prints" aria-hidden="true"></i></span
                 ><span>Foot</span>
               </button>
@@ -693,17 +770,8 @@
         </label>
       </section>
 
-      <section class="button-row" role="tablist" aria-label="Assessment route">
-        <span
-          class="route-group-label route-group-label--cancer"
-          aria-hidden="true"
-          >Skin cancer</span
-        >
-        <span
-          class="route-group-label route-group-label--rash"
-          aria-hidden="true"
-          >Rash + Wood's</span
-        >
+      <div class="button-row" role="tablist" aria-label="Assessment route">
+        <span class="route-divider" aria-hidden="true"></span>
         <button
           class="tab-btn active"
           id="abcdeBtn"
@@ -712,7 +780,6 @@
           aria-selected="true"
           aria-controls="ABCDETab"
           tabindex="0"
-          data-route="cancer"
           data-tab-target="ABCDETab"
         >
           Lesion
@@ -725,7 +792,6 @@
           aria-selected="false"
           aria-controls="BVPDSTab"
           tabindex="-1"
-          data-route="cancer"
           data-tab-target="BVPDSTab"
         >
           Dermoscopy
@@ -738,7 +804,6 @@
           aria-selected="false"
           aria-controls="DPICTab"
           tabindex="-1"
-          data-route="rash"
           data-tab-target="DPICTab"
         >
           Rash
@@ -751,33 +816,36 @@
           aria-selected="false"
           aria-controls="UVTab"
           tabindex="-1"
-          data-route="rash"
           data-tab-target="UVTab"
         >
           Wood's
         </button>
-      </section>
+      </div>
 
       <section class="comparison-row" aria-label="Image comparison">
         <div class="image-card example-col">
           <div class="image-frame">
             <img
-              src="assets/images/abcde-su_light.webp"
+              src="assets/images/abcde-su-preview_light.webp"
               alt="Illustrative reference example"
               class="example-img"
               id="referencePreview"
-              width="1254"
-              height="1254"
+              width="480"
+              height="480"
               decoding="async"
               fetchpriority="high"
             />
+            <span
+              id="referenceStatus"
+              class="reference-status"
+              role="status"
+              hidden
+            ></span>
             <button
               class="image-expand-hold"
               type="button"
               aria-label="Enlarge illustrative reference image"
               title="Enlarge"
-              data-expand-target="referencePreview"
-              data-expand-label="Illustrative ref"
             >
               <i class="fas fa-expand-alt" aria-hidden="true"></i>
             </button>
@@ -849,8 +917,6 @@
               type="button"
               aria-label="Enlarge your image"
               title="Enlarge"
-              data-expand-target="userPreview"
-              data-expand-label="Your image"
             >
               <i class="fas fa-expand-alt" aria-hidden="true"></i>
             </button>
@@ -865,178 +931,294 @@
         aria-labelledby="abcdeBtn"
         tabindex="0"
       >
-        <div class="criteria-header">
-          <h3>ABCDE-SU</h3>
-        </div>
-        <div class="check-list">
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="2" />
-                <span>Asymmetry</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show asymmetry detail"
-                aria-expanded="false"
-                aria-controls="abcdeAsymmetryDetail"
-                data-detail-target="abcdeAsymmetryDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
+        <section
+          class="lesion-check-section"
+          aria-label="Melanoma-like ABCDEFG checks"
+        >
+          <div class="lesion-check-heading">Melanoma-like: ABCDEFG</div>
+          <div class="check-list">
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="2" />
+                  <span>Asymmetry</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show asymmetry detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeAsymmetryDetail"
+                  data-detail-target="abcdeAsymmetryDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeAsymmetryDetail" class="bucket-detail" hidden>
+                <p>Two halves do not broadly match in shape or colour.</p>
+              </div>
             </div>
-            <div id="abcdeAsymmetryDetail" class="bucket-detail" hidden>
-              <p>
-                Uneven shape or colour. If you draw an imaginary line through
-                the lesion, the two halves do not broadly match.
-              </p>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="2" />
+                  <span>Border irregular</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show border irregularity detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeBorderDetail"
+                  data-detail-target="abcdeBorderDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeBorderDetail" class="bucket-detail" hidden>
+                <p>
+                  Edge not smooth or even: uneven, blurred, notched or ragged.
+                </p>
+              </div>
+            </div>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="2" />
+                  <span>Colour variation</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show colour variation detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeColourDetail"
+                  data-detail-target="abcdeColourDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeColourDetail" class="bucket-detail" hidden>
+                <p>
+                  Several colours in one lesion, such as red, white, blue-grey
+                  or black.
+                </p>
+              </div>
+            </div>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="1" />
+                  <span>Dark</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show dark detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeDiameterDetail"
+                  data-detail-target="abcdeDiameterDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeDiameterDetail" class="bucket-detail" hidden>
+                <p>
+                  Unusually dark or darker than the patient's other lesions.
+                </p>
+              </div>
+            </div>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="2" />
+                  <span>Evolution / recent change</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show evolution or recent change detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeEvolutionDetail"
+                  data-detail-target="abcdeEvolutionDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeEvolutionDetail" class="bucket-detail" hidden>
+                <p>
+                  New or changing in size, shape, colour, surface, symptoms or
+                  pain.
+                </p>
+              </div>
+            </div>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="1" />
+                  <span>Funny-looking / ugly duckling</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show funny-looking detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeUglyDetail"
+                  data-detail-target="abcdeUglyDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeUglyDetail" class="bucket-detail" hidden>
+                <p>
+                  <strong>F: Funny-looking.</strong> Stands out from the
+                  patient's other moles or skin lesions.
+                </p>
+              </div>
+            </div>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input type="checkbox" class="abcde-input" data-score="1" />
+                  <span><em>Gives: itch, bleed, ooze, crust</em></span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show symptoms detail"
+                  aria-expanded="false"
+                  aria-controls="abcdeSymptomsDetail"
+                  data-detail-target="abcdeSymptomsDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="abcdeSymptomsDetail" class="bucket-detail" hidden>
+                <p>
+                  <strong>G: Gives symptoms.</strong> New itch, bleeding, oozing
+                  or crusting without a clear cause.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="2" />
-                <span>Border irregular</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show border irregularity detail"
-                aria-expanded="false"
-                aria-controls="abcdeBorderDetail"
-                data-detail-target="abcdeBorderDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
+        </section>
+        <section
+          class="lesion-check-section lesion-check-section--nmsc"
+          aria-label="BCC and SCC signs"
+        >
+          <div class="lesion-check-heading">BCC/SCC signs: JFK</div>
+          <div class="check-list bcc-check-list">
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input
+                    type="checkbox"
+                    class="bcc-input"
+                    data-bcc-kind="feature"
+                  />
+                  <span>J: rolled/pearly sore that will not heal</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show J sign detail"
+                  aria-expanded="false"
+                  aria-controls="bccRolledPearlyDetail"
+                  data-detail-target="bccRolledPearlyDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="bccRolledPearlyDetail" class="bucket-detail" hidden>
+                <p>
+                  Look for a shiny or translucent rim, or a sore that does not
+                  heal.
+                </p>
+              </div>
             </div>
-            <div id="abcdeBorderDetail" class="bucket-detail" hidden>
-              <p>
-                Edge not smooth or even: uneven, blurred, notched or ragged.
-              </p>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input
+                    type="checkbox"
+                    class="bcc-input"
+                    data-bcc-kind="feature"
+                  />
+                  <span>F: fine surface vessels</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show F sign detail"
+                  aria-expanded="false"
+                  aria-controls="bccVesselBleedingDetail"
+                  data-detail-target="bccVesselBleedingDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="bccVesselBleedingDetail" class="bucket-detail" hidden>
+                <p>Look for tiny branching vessels on or around the lesion.</p>
+              </div>
             </div>
-          </div>
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="2" />
-                <span>Colour variation</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show colour variation detail"
-                aria-expanded="false"
-                aria-controls="abcdeColourDetail"
-                data-detail-target="abcdeColourDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input
+                    type="checkbox"
+                    class="bcc-input"
+                    data-bcc-kind="scc"
+                  />
+                  <span>K: concerning keratinised lesion (SCC?)</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show K sign detail"
+                  aria-expanded="false"
+                  aria-controls="sccSurfaceDetail"
+                  data-detail-target="sccSurfaceDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="sccSurfaceDetail" class="bucket-detail" hidden>
+                <p>
+                  Consider SCC in a concerning hard, raised rough lump. Scale or
+                  tenderness alone is not enough.
+                </p>
+              </div>
             </div>
-            <div id="abcdeColourDetail" class="bucket-detail" hidden>
-              <p>
-                Mixed shades in the same lesion: light brown, dark brown, black,
-                pink, red, white or blue-grey.
-              </p>
-            </div>
-          </div>
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="1" />
-                <span>Diameter 7 mm or more</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show diameter detail"
-                aria-expanded="false"
-                aria-controls="abcdeDiameterDetail"
-                data-detail-target="abcdeDiameterDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div id="abcdeDiameterDetail" class="bucket-detail" hidden>
-              <p>
-                Use as a guide rather than a rule. Around 7 mm or larger, or
-                getting bigger, is more concerning.
-              </p>
-            </div>
-          </div>
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="2" />
-                <span>Evolution/recent change</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show evolution or recent change detail"
-                aria-expanded="false"
-                aria-controls="abcdeEvolutionDetail"
-                data-detail-target="abcdeEvolutionDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div id="abcdeEvolutionDetail" class="bucket-detail" hidden>
-              <p>
-                New or changing lesion. Size, shape, colour, surface, bleeding,
-                itch or pain can all count as change.
-              </p>
-            </div>
-          </div>
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="1" />
-                <span>Symptoms: itch, bleeding, oozing or crusting</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show symptoms detail"
-                aria-expanded="false"
-                aria-controls="abcdeSymptomsDetail"
-                data-detail-target="abcdeSymptomsDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div id="abcdeSymptomsDetail" class="bucket-detail" hidden>
-              <p>
-                New itch, bleeding, oozing or crusting not explained by
-                scratching, trauma or another clear cause.
-              </p>
+            <div class="check-item bucket-item detail-item">
+              <div class="detail-summary">
+                <label
+                  ><input
+                    type="checkbox"
+                    class="bcc-input"
+                    data-bcc-kind="scc"
+                  />
+                  <span>Fast growth, non-healing ulcer or bleed</span></label
+                >
+                <button
+                  class="bucket-detail-toggle"
+                  type="button"
+                  aria-label="Show additional SCC concern detail"
+                  aria-expanded="false"
+                  aria-controls="sccGrowthDetail"
+                  data-detail-target="sccGrowthDetail"
+                >
+                  <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="sccGrowthDetail" class="bucket-detail" hidden>
+                <p>
+                  Consider SCC when a lesion grows quickly, remains ulcerated or
+                  bleeds without a clear cause.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="check-item bucket-item detail-item">
-            <div class="detail-summary">
-              <label
-                ><input type="checkbox" class="abcde-input" data-score="1" />
-                <span>Ugly duckling sign</span></label
-              >
-              <button
-                class="bucket-detail-toggle"
-                type="button"
-                aria-label="Show ugly duckling sign detail"
-                aria-expanded="false"
-                aria-controls="abcdeUglyDetail"
-                data-detail-target="abcdeUglyDetail"
-              >
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
-            </div>
-            <div id="abcdeUglyDetail" class="bucket-detail" hidden>
-              <p>
-                Compare with the patient's other moles or skin lesions. This one
-                stands out as clearly different.
-              </p>
-            </div>
-          </div>
-        </div>
+        </section>
       </section>
 
       <section
@@ -1078,12 +1260,7 @@
               </div>
               <div id="bvpdsChaosDetail" class="bucket-detail" hidden>
                 <p>
-                  Compare the two halves of the dermoscopy image. Chaos means
-                  uneven colour or internal pattern from side to side.
-                </p>
-                <p>
-                  An irregular outline alone is not chaos if the inside looks
-                  organised.
+                  Uneven colour or structure from side to side on dermoscopy.
                 </p>
               </div>
             </div>
@@ -1168,10 +1345,7 @@
                 </button>
               </div>
               <div id="bvpdsEdgeGrowthDetail" class="bucket-detail" hidden>
-                <p>
-                  One-sided streaks or pseudopods at the edge. Think active
-                  growth at part of the border, not an even rim.
-                </p>
+                <p>One-sided streaks or pseudopods at the edge.</p>
               </div>
             </div>
             <div class="bucket-item check-item--clue">
@@ -1228,8 +1402,7 @@
               </div>
               <div id="bvpdsExceptionDetail" class="bucket-detail" hidden>
                 <p>
-                  These escalate even without clear chaos: changing pigmented
-                  lesion in an adult, pigmented nodule, grey on the head/neck or
+                  Escalate adult change, pigmented nodule, grey head/neck or
                   palm/sole ridge pigment.
                 </p>
               </div>
@@ -1258,8 +1431,9 @@
               <label
                 >Duration
                 <select id="dpicDuration">
+                  <option value="" selected>Not selected</option>
                   <option value="1">New or worsening</option>
-                  <option value="0" selected>Long-standing or stable</option>
+                  <option value="0">Long-standing or stable</option>
                 </select>
               </label>
               <button
@@ -1275,9 +1449,8 @@
             </div>
             <div id="dpicDurationDetail" class="bucket-detail" hidden>
               <p>
-                New or clearly worsening rashes are more concerning than stable
-                long-standing rashes. Check when it started and whether it is
-                spreading.
+                New, worsening or spreading rashes are more concerning than
+                stable ones.
               </p>
             </div>
           </div>
@@ -1286,10 +1459,11 @@
               <label
                 >Pattern
                 <select id="dpicPattern">
+                  <option value="" selected>Not selected</option>
                   <option value="2" data-reference-key="blisters-pustules">
                     Blisters or pustules
                   </option>
-                  <option value="1" data-reference-key="raised-bumps" selected>
+                  <option value="1" data-reference-key="raised-bumps">
                     Raised bumps
                   </option>
                   <option value="0" data-reference-key="flat-patches">
@@ -1316,14 +1490,8 @@
             </div>
             <div id="dpicPatternDetail" class="bucket-detail" hidden>
               <p>
-                Main visible surface pattern. Blisters/pustules contain fluid or
-                pus; raised bumps are palpable; flat patches are colour change
-                without a raised surface.
-              </p>
-              <p>
-                Eczema/dermatitis is often itchy, dry, patchy or flexural.
-                Psoriasis-type plaques are usually well-defined with thicker
-                scale.
+                Pick the main surface pattern: blister/pustule, bump, flat
+                patch, eczema or plaque.
               </p>
             </div>
           </div>
@@ -1332,8 +1500,9 @@
               <label
                 >Itch
                 <select id="dpicItch">
+                  <option value="" selected>Not selected</option>
                   <option value="1">Severe itch</option>
-                  <option value="0" selected>Mild or none</option>
+                  <option value="0">Mild or none</option>
                 </select>
               </label>
               <button
@@ -1349,9 +1518,8 @@
             </div>
             <div id="dpicItchDetail" class="bucket-detail" hidden>
               <p>
-                Severe itch can suggest active inflammation, infestation or
-                urticaria. It is a context clue rather than a diagnosis on its
-                own.
+                Severe itch suggests active inflammation, infestation or
+                urticaria.
               </p>
             </div>
           </div>
@@ -1360,10 +1528,11 @@
               <label
                 >Colour
                 <select id="dpicColour">
+                  <option value="" selected>Not selected</option>
                   <option id="dpicColourConcern" value="1">
                     Redness or swelling
                   </option>
-                  <option value="0" selected>Mild or unchanged</option>
+                  <option value="0">Mild or unchanged</option>
                 </select>
               </label>
               <button
@@ -1379,9 +1548,8 @@
             </div>
             <div id="dpicColourDetail" class="bucket-detail" hidden>
               <p>
-                Obvious inflammation or change. On darker skin this may look
-                purple-grey, darker than nearby skin or swollen rather than
-                bright red.
+                On darker skin, inflammation may look purple-grey, darker or
+                swollen.
               </p>
             </div>
           </div>
@@ -1393,9 +1561,15 @@
               <label
                 >Red flags
                 <select id="dpicRedFlags">
-                  <option value="0" selected>None</option>
-                  <option value="4">Same day: spread/pain/blister/fever</option>
-                  <option value="6">Emerg: airway/mucosa/sepsis</option>
+                  <option value="" selected>Not checked</option>
+                  <option value="0">None</option>
+                  <option value="4">
+                    Same day: rapid spread/severe pain/extensive
+                    blistering/fever
+                  </option>
+                  <option value="6">
+                    Emergency: airway, peeling/mucosal or unwell + non-blanching
+                  </option>
                 </select>
               </label>
               <button
@@ -1411,13 +1585,10 @@
             </div>
             <div id="dpicRedFlagsDetail" class="bucket-detail" hidden>
               <p>
-                <strong>Same day:</strong> widespread or rapidly spreading rash,
-                painful rash, blistering rash, fever or patient unwell.
-              </p>
-              <p>
-                <strong>Emergency:</strong> airway or facial swelling, breathing
-                symptoms, mucosal involvement, skin peeling, non-blanching rash
-                with illness or sepsis concern.
+                <strong>Same day:</strong> rapid spread, severe pain, extensive
+                blistering or fever/unwell. <strong>Emergency:</strong> airway
+                swelling or breathing difficulty, severe mucosal/peeling illness
+                or a non-blanching rash with serious illness.
               </p>
             </div>
           </div>
@@ -1439,6 +1610,29 @@
           <strong>Technique:</strong> use a blacked out room. Creams, deodorant,
           lint and surface products can fluoresce.
         </p>
+        <div class="select-list wood-assessment-list">
+          <div class="select-item bucket-item">
+            <label
+              >Assessment
+              <select id="woodLampFinding">
+                <option value="" selected>Not performed</option>
+                <option value="none">
+                  Performed: no characteristic fluorescence
+                </option>
+                <option value="blue-green">Blue-green fluorescence</option>
+                <option value="yellow-orange">
+                  Yellow-orange fluorescence
+                </option>
+                <option value="coral-red">Coral-red fluorescence</option>
+                <option value="bright-blue-white">
+                  Bright blue-white fluorescence
+                </option>
+                <option value="orange-red">Orange-red fluorescence</option>
+                <option value="white">White fluorescence</option>
+              </select>
+            </label>
+          </div>
+        </div>
         <div class="uv-row">
           <div class="uv-item bucket-item detail-item">
             <div class="detail-summary">
@@ -1460,8 +1654,8 @@
             </div>
             <div id="uvBlueGreenDetail" class="bucket-detail" hidden>
               <p>
-                Supports Microsporum tinea capitis. A negative Wood's lamp does
-                not exclude fungal scalp infection.
+                Supports Microsporum tinea capitis; a negative lamp does not
+                exclude fungus.
               </p>
             </div>
           </div>
@@ -1484,10 +1678,7 @@
               </button>
             </div>
             <div id="uvYellowOrangeDetail" class="bucket-detail" hidden>
-              <p>
-                Supports pityriasis versicolor when there is a scaly rash that
-                fits the clinical picture.
-              </p>
+              <p>Supports pityriasis versicolor if the scaly rash fits.</p>
             </div>
           </div>
           <div class="uv-item bucket-item detail-item">
@@ -1507,8 +1698,8 @@
             </div>
             <div id="uvCoralRedDetail" class="bucket-detail" hidden>
               <p>
-                Supports erythrasma, often in body folds. The fluorescence comes
-                from porphyrins made by Corynebacterium.
+                Supports erythrasma in folds; fluorescence comes from
+                Corynebacterium.
               </p>
             </div>
           </div>
@@ -1531,8 +1722,7 @@
             </div>
             <div id="uvBlueWhiteDetail" class="bucket-detail" hidden>
               <p>
-                Vitiligo often looks sharply brighter under Wood's lamp. This
-                can help show the edge and extent of depigmented patches.
+                Vitiligo often looks sharply brighter, showing edge and extent.
               </p>
             </div>
           </div>
@@ -1576,10 +1766,7 @@
               </button>
             </div>
             <div id="uvWhiteDetail" class="bucket-detail" hidden>
-              <p>
-                Nits may show white fluorescence. Confirm by looking for
-                attached eggs on hair shafts close to the scalp.
-              </p>
+              <p>Nits may fluoresce; confirm attached eggs on hair shafts.</p>
             </div>
           </div>
         </div>
@@ -1596,20 +1783,73 @@
             <span class="result-label"
               >Referral
               <button
+                id="referralLogicButton"
                 class="term-info-button term-info-button--inline"
                 type="button"
                 aria-label="Explain logic and sources"
                 aria-expanded="false"
-                data-term-body="Logic + sources: ABCDE-SU and dermoscopy are separate skin cancer checks; highest urgency shown, not an added total. | Skin cancer: ABCDE-SU 1-2 = safety-net review. ABCDE-SU 3+ = Susp cancer pathway (2 week wait). Dermoscopy uses a frontline Chaos + Clues compression: chaos plus any clue, or an exception, also triggers the Susp cancer pathway (2 week wait). | Rash: rash triage sets urgency. Emergency signs = emergency; same-day red flags or total 4+ = same day; 2-3 = soon. | DPIC-R is a dermatology teaching prompt, not a recognised formal score. | Wood's lamp: supportive fluorescence clue only; it does not change urgency by itself. | Sources: NICE NG12 suspected cancer, RACGP Chaos and Clues dermatoscopy, NICE CG183 drug allergy, NHS anaphylaxis and non-blanching rash advice, DermNet Wood lamp examination. Guide only, not final diagnosis."
+                data-term-body=""
               >
                 <i class="fas fa-info" aria-hidden="true"></i></button
-            ></span>
+              ><span
+                id="photoReadiness"
+                class="photo-readiness"
+                aria-live="polite"
+                >Photos 0/3</span
+              ></span
+            >
             <strong id="actionText">Not assessed yet</strong>
           </span>
         </div>
-        <button id="generateReportButton" class="generate-report" type="button">
-          Report
-        </button>
+        <div class="result-actions">
+          <button
+            id="newAssessmentButton"
+            class="new-assessment"
+            type="button"
+            data-confirming="false"
+            aria-label="Start a new assessment and clear current patient data"
+          >
+            New
+          </button>
+          <button
+            id="generateReportButton"
+            class="generate-report"
+            type="button"
+          >
+            <svg
+              class="generate-report-mark"
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="9.5"
+                fill="none"
+                stroke="#e83c31"
+                stroke-width="1.5"
+              ></circle>
+              <text
+                x="11"
+                y="14.5"
+                fill="#e83c31"
+                font-family="Inter, sans-serif"
+                font-size="10.5"
+                font-weight="800"
+                text-anchor="middle"
+              >
+                R
+              </text>
+            </svg>
+            <span>Report</span>
+          </button>
+        </div>
+        <p id="referralSafeguard" class="referral-safeguard" hidden>
+          Cancer suspected or high-risk BCC? Use urgent pathway.
+        </p>
       </section>
     </main>
 
@@ -1675,7 +1915,7 @@
                   ><span>4</span></span
                 >
                 <span class="abcde-callout abcde-callout--ugly"
-                  ><span>6</span></span
+                  ><span>F</span></span
                 >
               </div>
               <div
@@ -1705,7 +1945,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Look for uneven shape or colour. If you draw an imaginary line through the lesion, the two halves do not broadly match."
+                    data-term-body="Teaching prompt: compare the two halves. Concern means uneven shape or uneven internal colour distribution."
                   >
                     <span>1</span> Asymmetry
                   </button>
@@ -1715,7 +1955,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Look for an edge that is not smooth or even. It may look uneven, blurred, notched or ragged."
+                    data-term-body="Teaching prompt: look for an uneven, blurred, notched or ragged edge rather than a smooth border."
                   >
                     <span>2</span> Border irregular
                   </button>
@@ -1725,7 +1965,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Look for mixed shades within the same lesion such as light brown, dark brown, black, pink, red, white or blue-grey."
+                    data-term-body="Teaching prompt: look for several shades within one lesion, including brown, black, pink, red, white or blue-grey."
                   >
                     <span>3</span> Colour variation
                   </button>
@@ -1735,9 +1975,9 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Use this as a guide rather than a rule. A lesion around 7 mm or larger, or one that is getting bigger, is more concerning."
+                    data-term-body="Teaching prompt: compare with the patient's other lesions. Note an unusually dark or blue-grey lesion and ask whether it is changing."
                   >
-                    <span>4</span> Diameter 7 mm or more
+                    <span>4</span> Dark
                   </button>
                 </li>
                 <li>
@@ -1745,9 +1985,9 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Compare with the patient's other moles or skin lesions. This one stands out as clearly different in size, shape, colour or pattern."
+                    data-term-body="F: compare with the patient's other lesions. An ugly duckling stands out in size, shape, colour or pattern."
                   >
-                    <span>6</span> Ugly duckling sign
+                    <span>F</span> Funny-looking / ugly duckling
                   </button>
                 </li>
               </ol>
@@ -1755,10 +1995,10 @@
                 class="abcde-teaching-note term-info-trigger"
                 type="button"
                 aria-expanded="false"
-                data-term-body="New itch, bleeding, oozing or crusting that is not explained by scratching, trauma or another clear cause. Symptoms are often history rather than a visible image finding."
+                data-term-body="G: ask about new itch, bleeding, oozing or crusting without a clear cause. This is usually history or a surface change, not a reliable image-only finding."
               >
-                Symptoms: itch, bleeding, oozing or crusting is history or
-                visible crusting, not marked on this image.
+                <em>Gives: itch, bleed, ooze, crust</em> is history or visible
+                crusting, not marked on this image.
               </button>
             </div>
             <div id="bvpdsTeachingLegend" class="abcde-teaching-legend" hidden>
@@ -1768,7 +2008,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Chaos means asymmetry of colour or structure on dermoscopy. It is the first step before checking malignant clues."
+                    data-term-body="For trained dermoscopy users: chaos is uneven colour or structure from one side to the other. Chaos alone prompts further review, then check for clues."
                   >
                     <span>1</span> Chaos
                   </button>
@@ -1778,7 +2018,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Look for grey, blue or white areas, or black dots/clods at the lesion edge."
+                    data-term-body="After finding chaos, look for grey, blue or white areas or lines, or black dots or clods at the edge."
                   >
                     <span>2</span> Colour
                   </button>
@@ -1788,7 +2028,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Look for an off-centre blank-looking area, a thick dark network or thick branched lines."
+                    data-term-body="After finding chaos, look for an off-centre structureless area, a thick dark network or thick branched lines."
                   >
                     <span>3</span> Structure
                   </button>
@@ -1798,7 +2038,7 @@
                     class="abcde-teaching-link term-info-trigger"
                     type="button"
                     aria-expanded="false"
-                    data-term-body="Look for one-sided streaks or pseudopods at the edge."
+                    data-term-body="After finding chaos, look for one-sided streaks or pseudopods at the lesion edge."
                   >
                     <span>4</span> Edge growth
                   </button>
@@ -1808,7 +2048,7 @@
                 class="abcde-teaching-note term-info-trigger"
                 type="button"
                 aria-expanded="false"
-                data-term-body="Vessels / nail: mixed vessels or chaotic nail pigment. Exception: changing pigmented lesion in an adult, pigmented nodule, grey head/neck or palm/sole ridge pigment. These are not marked on this illustrative reference image."
+                data-term-body="Vessels or nail is a clue after chaos: look for mixed vessels or chaotic nail pigment. An exception can escalate without chaos: adult change, a pigmented nodule, grey head or neck pigment or palm/sole ridge pigment."
               >
                 Vessels/nail and exception are written checks, not marked on
                 this image.
@@ -1870,8 +2110,7 @@
         <img
           id="abcdeCardImage"
           class="teaching-card-image"
-          src="assets/images/abcde-su-card_light.webp"
-          alt="Illustrative ABCDE-SU lesion teaching card"
+          alt="Illustrative ABCDEFG lesion teaching card"
         />
       </div>
     </div>
@@ -1897,7 +2136,6 @@
         <img
           id="chaosCardImage"
           class="teaching-card-image"
-          src="assets/images/chaos-card_light.webp"
           alt="Illustrative Chaos and Clues dermoscopy teaching card"
         />
       </div>
@@ -1925,10 +2163,25 @@
         <h2 id="mcqTitle">MCQ Test</h2>
         <p id="mcqIntro" class="mcq-intro"></p>
         <div id="mcqContainer"></div>
-        <button id="submitMcqButton" class="button-pass" type="button">
-          Submit test
-        </button>
-        <div id="mcqResult" class="result-text" role="status"></div>
+        <div
+          id="mcqResult"
+          class="result-text"
+          role="status"
+          tabindex="-1"
+        ></div>
+        <div class="mcq-actions" aria-label="MCQ actions">
+          <button id="submitMcqButton" class="button-pass" type="button">
+            Submit answers
+          </button>
+          <button
+            id="retryMcqButton"
+            class="button-pass button-retry"
+            type="button"
+            hidden
+          >
+            Try fresh questions
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1990,8 +2243,10 @@
       </div>
     </div>
 
-    <script src="mcq-bank.js?v=20260517-20" defer></script>
-    <script src="script.js?v=20260517-20" defer></script>
+    <script src="referral-logic.js?v=20260929-audit2" defer></script>
+    <script src="mcq-bank.js?v=20260929-audit2" defer></script>
+    <script src="photo-file-store.js?v=20260929-audit2" defer></script>
+    <script src="script.js?v=20260930-loading1" defer></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

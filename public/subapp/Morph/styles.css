@@ -42,7 +42,7 @@
   --radius-pill: 999px;
   --tap-target-min: 44px;
   --shadow-soft: 0 6px 16px rgba(14, 19, 30, 0.12);
-  --shadow-strong: 0 14px 30px rgba(7, 10, 16, 0.28);
+  --shadow-strong: 0 10px 24px rgba(7, 10, 16, 0.24);
   --focus: #0f6bdc;
   --transition-fast: 0.18s ease;
   --transition-medium: 0.24s ease;
@@ -88,6 +88,31 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+.session-reset-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  border: 1px solid var(--accent-amber);
+  border-radius: var(--radius-control);
+  background: #fff8ee;
+  color: var(--text-strong);
+  font-weight: 700;
+}
+.session-reset-button[data-confirm="true"] {
+  background: #ffecd1;
+}
+.session-reset-hint {
+  display: block;
+  margin: 4px 2px 0;
+  color: var(--text-muted);
+  font-size: var(--type-caption);
+  line-height: 1.35;
+}
+.modal-content em,
+.modal-content i {
+  font-style: normal;
+}
+
 button:focus-visible,
 input:focus-visible {
   outline: 0;
@@ -105,9 +130,9 @@ input:focus-visible {
   display: grid;
   grid-template-columns: var(--tap-target-min) 1fr var(--tap-target-min);
   align-items: center;
-  background: #ffffff;
-  border-bottom: 1px solid #eceff4;
-  color: var(--ink);
+  background: linear-gradient(180deg, #000000, #050505);
+  border-bottom: 1px solid #111111;
+  color: var(--white);
 }
 
 .brand-lockup {
@@ -128,6 +153,7 @@ input:focus-visible {
   object-fit: contain;
   object-position: center;
   transform: translateY(-50%);
+  filter: invert(1);
 }
 
 .app-bar h1 {
@@ -140,7 +166,7 @@ input:focus-visible {
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0;
-  color: #000000;
+  color: var(--white);
   transform: translate(-50%, -50%);
 }
 
@@ -156,7 +182,7 @@ input:focus-visible {
   align-items: center;
   justify-content: center;
   background: transparent;
-  color: #111111;
+  color: var(--white);
   cursor: pointer;
   transition:
     background-color var(--transition-fast),
@@ -165,7 +191,7 @@ input:focus-visible {
 }
 
 .icon-button:hover {
-  background: #f0f3f8;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .icon-button:active {
@@ -173,8 +199,8 @@ input:focus-visible {
 }
 
 .icon-button:focus-visible {
-  background: #f0f3f8;
-  box-shadow: inset 0 0 0 2px rgba(15, 107, 220, 0.42);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55);
 }
 
 #burger-icon {
@@ -408,7 +434,7 @@ input:focus-visible {
   right: 0;
   min-width: 0;
   color: rgba(154, 239, 247, 0.86);
-  font-size: 0.49rem;
+  font-size: 0.625rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.06em;
@@ -440,6 +466,11 @@ input:focus-visible {
     background-color var(--transition-fast),
     box-shadow var(--transition-fast),
     color var(--transition-fast);
+}
+
+.refractive-button:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 .fov-button:hover,
@@ -848,7 +879,7 @@ canvas {
   overflow-y: auto;
   overscroll-behavior: contain;
   border: 1px solid var(--border-strong);
-  border-radius: 14px;
+  border-radius: var(--radius-stage);
   background: #f8fbff;
   color: var(--text-strong);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
@@ -873,6 +904,7 @@ canvas {
 }
 
 .close {
+  position: relative;
   flex: 0 0 auto;
   width: 30px;
   height: 30px;
@@ -887,6 +919,12 @@ canvas {
   line-height: 1;
   font-weight: 700;
   cursor: pointer;
+}
+
+#infoModal .close::after {
+  position: absolute;
+  inset: -7px;
+  content: "";
 }
 
 .close:hover {
@@ -990,12 +1028,19 @@ canvas {
   gap: 5px;
 }
 
-.modal-version-inline {
-  float: right;
-  color: #6e7c95;
-  font-size: 0.72rem;
+/* Shared fleet sidebar type hierarchy. */
+.side-menu::before {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 14px;
   font-weight: 700;
-  white-space: nowrap;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.side-menu-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 @supports (height: 100dvh) {
@@ -1013,7 +1058,7 @@ canvas {
 @media (max-width: 380px) {
   .main-content {
     gap: 8px;
-    padding-inline: 7px;
+    padding-inline: 10px;
   }
 
   .controls-deck {
@@ -1037,13 +1082,13 @@ canvas {
   .fov-button {
     flex-basis: 31px;
     width: 31px;
-    height: 31px;
+    height: 44px;
     font-size: var(--type-control-value);
   }
 
   .refractive-button {
     min-width: 38px;
-    min-height: 31px;
+    min-height: 44px;
     padding-inline: 6px;
     font-size: var(--type-control-compact);
   }
@@ -1094,4 +1139,77 @@ canvas {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Shared fleet information-card type hierarchy. */
+#infoModal .info-popup-header h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#infoModal .info-popup-body,
+#infoModal .info-popup-body p {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+#infoModal .info-popup-body p.info-look-title {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+#infoModal .info-basics-cue strong {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+#infoModal .info-basics-cue small {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+#infoModal .info-popup-body p.info-version {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+  color: #6e7c95;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Fleet UI alignment: information card radius and close target. */
+#infoModal .modal-content {
+  border-radius: 16px;
+}
+
+#infoModal .info-popup-header {
+  min-height: 44px;
+}
+
+#infoModal .close {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  top: 0;
+  right: 0;
 }

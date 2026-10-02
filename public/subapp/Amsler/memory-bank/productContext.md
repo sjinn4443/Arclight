@@ -1,5 +1,13 @@
 # Product Context
 
+## Descriptive Compute boundary (24/7/2026)
+
+Amsler records patient-reported marks rather than diagnosing them. Each eye has a deliberate assessment state. Percentages describe coverage of the recorded grid, central zone and outer zone using a viewport-independent engine. They are not validated disease-severity scores. Line, Missing and Red mark are explicit tools so the app no longer assigns a `wavy` or `dark` interpretation from drawing geometry.
+
+## v1.1 Product Boundary (22/7/2026)
+
+Amsler remains a mixed examination, documentation and teaching app. Operational drawing and report state is separate from MCQ learning and achievement. Compute is the deliberate completion signal, while the untouched screen remains neutral. The v1.1 pass does not change clinical interpretation, calculation thresholds or report wording.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -31,14 +39,14 @@ Clinicians need a quick way to record patient-reported Amsler distortions during
 - Fast startup with no install overhead
 - Clear fixation target and grid visibility controls
 - Separate recording for right eye and left eye
-- Simple ways to mark dark, missing, or hemorrhage-like regions
-- Basic defect summary text (`total`, `central`, `peripheral`) that can be copied into notes
+- Simple ways to mark distortion lines, missing or dim regions and red or colour-change regions
+- Descriptive whole-grid, central-zone and outer-zone coverage which remains stable across responsive resizing
 - Simple report capture for handoff or documentation
 - Optional staged MCQ learning from primary to advanced level
 
 ## Product Vision
 
-A practical, low-friction Amsler capture tool that runs anywhere in a browser, supports quick clinical communication, and includes lightweight competency reinforcement via tiered MCQs.
+A practical, low-friction Amsler capture tool that runs anywhere in a browser, supports quick clinical communication and includes lightweight competency reinforcement via tiered MCQs.
 
 ## UX Goals
 
@@ -49,3 +57,7 @@ A practical, low-friction Amsler capture tool that runs anywhere in a browser, s
 - Keep MCQ training discoverable but non-intrusive (burger menu).
 - Preserve predictable app bar sizing across devices.
 - Avoid blocking flows with unnecessary dialogs.
+
+## MCQ experience — 26 July 2026
+
+The education surface should feel like one compact assessment: answer every item, receive a clear result with rationale-based review, then choose one New attempt action. It must not reveal answers on an incomplete submission or alter the operational Amsler examination. Higher tiers should add technique, interpretation or limitation decisions rather than repeat Primary wording.

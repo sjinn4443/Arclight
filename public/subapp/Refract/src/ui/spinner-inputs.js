@@ -16,7 +16,7 @@ import { attachValidationHandlers } from "./spinner-validation.js?v=20260310-14"
 import { initVisualPlaceholder } from "./visual-placeholders.js?v=20260310-14";
 
 export function initSpinnerInputs(options = {}) {
-  const { onSimpleModeDisabled } = options;
+  const { onModeChange } = options;
   const editableInputs = document.querySelectorAll(
     'input[type="number"]:not([readonly])',
   );
@@ -30,7 +30,7 @@ export function initSpinnerInputs(options = {}) {
     initVisualPlaceholder(input);
   });
 
-  initializeSimpleModeToggle(onSimpleModeDisabled);
+  initializeSimpleModeToggle(onModeChange);
 }
 
 function initializeSpinnerInput(input) {

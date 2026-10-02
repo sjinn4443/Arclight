@@ -355,7 +355,7 @@ export function getMovementStatusHtml({
   }
 
   if (flags.acgCase) {
-    return "<em>Vertical</em> Oval pupil (ACG)";
+    return "<em>Stylised</em> Vertical oval pupil (ACG)";
   }
 
   if (flags.aniridiaCase) {
@@ -432,7 +432,7 @@ export function getMovementStatusHtml({
 
   if (flags.cylinderCase) {
     if (Math.abs(movementSign) < 0.08) {
-      return "Neutral meridian (astigmatism)";
+      return "Transition in stylised reflex";
     }
 
     const highCylinder = currentRefraction === REFRACTION_VALUES.HIGH_CYLINDER;

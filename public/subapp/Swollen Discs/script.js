@@ -65,6 +65,7 @@ const mcqTimer = document.getElementById('mcqTimer');
 const closeTestModalButton = document.getElementById('closeTestModal');
 const testContainer = document.getElementById('testContainer');
 const submitTestButton = document.getElementById('submitTestButton');
+const retryTestButton = document.getElementById('retryTestButton');
 const saveResultButton = document.getElementById('saveResultButton');
 const testResultDiv = document.getElementById('testResult');
 
@@ -179,6 +180,7 @@ const mcqController = createMcqController({
   triggerButton: burgerIcon,
   testContainer,
   submitTestButton,
+  retryTestButton,
   saveResultButton,
   testResultDiv,
   testModalTitle,
@@ -246,7 +248,7 @@ function renderLevelButtons(levelButtons, levelProgress) {
     button.dataset.locked = levelState.unlocked ? 'false' : 'true';
     button.classList.toggle('is-locked', !levelState.unlocked);
     button.classList.toggle('is-complete', levelState.completed);
-    button.textContent = `Level ${levelIndex + 1}: ${levelState.name}`;
+    button.textContent = levelState.name;
     button.setAttribute('aria-disabled', levelState.unlocked ? 'false' : 'true');
   });
 }
@@ -346,7 +348,11 @@ function unlockCupAchievementIfNeeded(hasCompletedBothFinalTiers) {
 }
 
 function hasLocalStorage() {
-  return typeof window !== 'undefined' && Boolean(window.localStorage);
+  try {
+    return typeof window !== 'undefined' && Boolean(window.localStorage);
+  } catch {
+    return false;
+  }
 }
 
 function loadJsonStorage(storageKey) {
@@ -598,6 +604,7 @@ function initialize() {
 
   addAppListener(closeTestModalButton, 'click', mcqController.closeTestModal);
   addAppListener(submitTestButton, 'click', mcqController.handleSubmitTest);
+  addAppListener(retryTestButton, 'click', mcqController.handleRetryTest);
   addAppListener(saveResultButton, 'click', mcqController.handleSaveResult);
   addAppListener(downloadCupCertificateButton, 'click', downloadCupCertificate);
 

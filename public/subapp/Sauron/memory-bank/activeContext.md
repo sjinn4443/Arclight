@@ -1,5 +1,57 @@
 # Active Context
 
+## Receiving host integration — 2 October 2026
+
+Host routes and locale hooks are retained. Service-worker reads remain app-scoped and shared locale assets are precached. Development material is excluded from deployment and offline manifests.
+
+Current receiving-host evidence is in [the integration report](../../../../docs/miniapps/20260930/INTEGRATION_REPORT.md). Earlier receipts below remain upstream historical evidence.
+
+## Performance review — 30 September 2026
+
+Production bundle minified from its canonical source. Shipped JavaScript: 211,173 → 121,120 bytes. Mobile Lighthouse performance: 85 → 94/100 in one paired lab run, not a physical-device speed guarantee.
+
+Shared verification: 24/24 regression jobs, all 15 HTTP and direct-file information/drawer reviews, all 14 Primary quiz workflows and 45 main-page responsive views passed. Selected completed states were also checked. No clinical rules or approved layout were deliberately changed. App-specific asset queries and caches were bumped only where shipped bundles changed. Direct-file checks do not test service workers. Full dead-code elimination, every workflow, offline cache migration and physical-device acceptance are not claimed. The retained Glaucoma tab's real toolbar was verified at 360 x 740 after switching away and back; this does not establish sibling-tab sizes or physical-device acceptance.
+
+[Evidence and remaining priorities](../../FLEET_PERFORMANCE_REVIEW_20260930.md). This entry supersedes older performance figures only; earlier clinical and feature history remains below.
+
+## Current fleet UI refinement receipt — 30 September 2026
+
+Refraction trigger enlarged; established teaching arrangement retained.
+
+App-local versioned `fleet-ui-refinements.css` aligns quiz typography, answer rows, focus outlines and rounding where compatible. Information footers show `v1 · 30/9/2026`. Clinical engines, simulator geometry, authored questions, scoring and progression are unchanged. Earlier dated entries below are historical.
+
+Fleet evidence: 24/24 regression jobs, 45 main-page views, 15/15 HTTP information/drawer reviews, 15/15 direct-file information/drawer reviews and 18/18 selected expanded/completed-state checks. All 14 Primary quiz workflows pass individually; Cataract passed its isolated recheck after one transient connection warning. Automated viewports are temporary. Real Codex retained-toolbar verification remains blocked by the unavailable visible tab; physical-device acceptance and independent clinical sign-off remain pending. See the [full change and verification receipt](../../FLEET_UI_REFINEMENTS_2026-09-30.md).
+
+## Fleet repair receipt — 30 September 2026
+
+Removed direct-file font preload CORS errors while retaining and verifying both local font families. Current information footer: `v1 · 30/9/2026`. Runtime HTML changes use an updated app-scoped cache; internal engine/package versions are retained.
+
+Information-panel and drawer checks pass over HTTP and direct-file routes at temporary `360 x 740`. Available popup checks and the Primary quiz state checks pass. Scoped automated test commands pass. See [fleet repair evidence](../../FLEET_FIXES_2026-09-30.md) for exact coverage and exclusions. Service workers do not run on `file://`; offline migration, physical-device acceptance and independent clinical sign-off are not established by this repair. The retained Codex flowchart tab was not changed.
+
+Older dated sections below are historical evidence. This receipt supersedes their release-date and verification-status claims, not their recorded clinical decisions.
+
+## Documentation refresh — 29 September 2026
+
+Current visible information footer: `v1 · 29/9/2026`, bottom right in the existing information popup. This entry records a documentation and popup-date synchronisation, not a new clinical audit. App behaviour and the previously recorded verification limits are unchanged. Older dated entries below are historical records, not the current popup date. Independent clinical sign-off and physical-device acceptance are not implied by this date.
+
+29 September 2026: five approved logic/teaching corrections implemented. See README for scope. Preserve the ACG oval. Test mode now uses a clean modifier baseline and restores prior settings including dilation history. Pupil responses include consensual illumination with fixed-aperture exceptions. All contracts, bundle parity and syntax checks pass; cache 20260929-logic2. Fresh rendered interaction verification and clinical sign-off remain pending.
+
+## Logic-integrity follow-up, 25 July 2026
+
+Timed tests now preserve the visible pre-round streak angle while keeping the generated answer axis hidden until reveal. Baby mode draws only from the Baby catalogue and the existing timed-test exclusions still apply. Stacked case and safety dialogs now suspend the underlying case dialog correctly. The exaggerated ACG vertical oval remains intentional and its wording now identifies it as a stylised teaching cue. Current browser-visible cache token: `20260725-logic1`.
+
+## Case curriculum and safety follow-up, 25 July 2026
+
+The case picker now has Primary `5`, Intermediate `10` and Advanced `13`. Low astigmatism is Intermediate, posterior subcapsular cataract is Advanced, dense cataract is Intermediate and vitreous floaters is Intermediate. ACG, leucocoria, vitreous haemorrhage and partial retinal detachment have separate accessible warning notes. Simulator maths, MCQ answers and timed-test selection are unchanged. Build, tests, lint and HTTP review at `360 x 740` pass. Clinical sign-off and physical-device testing remain pending.
+
+Eye-engine follow-up, 23 July 2026: the existing radial pupil-response target is now a pure tested helper and paired advanced controls announce examiner-facing RE and LE. The production bundle, contracts and 28-file syntax check pass. Response timing, simulator maths, cases and geometry are unchanged.
+
+Fleet edge follow-up, 23 July 2026: the control deck and stage measure `x=10`, `width=340` at `360 x 740`; simulator maths and internal geometry are unchanged.
+
+## Fleet upgrade, 23 July 2026
+
+Sauron v1.1 adds two-step reset safety, active-eye `aria-pressed` state, scoped PWA/offline support and automated contracts without changing simulator maths or teaching content. Exact `360 x 740` review is reproducible through `tests/browser-review.mjs`. Clinical sign-off and physical-device testing remain pending.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -173,3 +225,15 @@ Stabilise Sauron after the Fundal Reflex UI alignment and the latest engine pass
   - corneal reflex matching the live app
 - Review MCQ content for educator accuracy once the UI settles.
 - Continue targeted rendering cleanup only where module ownership is unclear.
+
+## MCQ consistency status — 23 July 2026
+
+Visible level names are Primary, Intermediate and Advanced. Existing random question and option selection, attempt sizes and retinoscopy teaching content remain unchanged. The Advanced teaching pass mark is 6/8, correcting the previous anomalous 4/8 threshold. Cup unlocking requires explicit Advanced pass evidence. Simulator and clinical decision logic are unchanged.
+
+## Maintenance refactor — 26 July 2026
+
+Offline contracts now compare the full generated thumbnail inventory with the canonical case catalogue. Exact bundle parity is mandatory. The established eye oval and all simulator behaviour remain frozen. Clinical and physical-device gates remain open.
+
+## MCQ quality pass — 26 July 2026
+
+All 26 questions now use stable IDs, rationales, named sources and explicit review status. Small-pupil advice is conditional and simulator-specific pathology observations say so. Unanswered focus, full explanations, source display and real retry are implemented. Simulator optics, attempt sizes, pass marks and Cup unlocking remain unchanged.

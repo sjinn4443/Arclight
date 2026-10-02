@@ -60,7 +60,7 @@ function shiftColumnForDiscSize(colNum, discSize) {
     return colNum + 1;
   }
 
-  if (discSize === "Large") {
+  if (discSize === "Large" && colNum < 4) {
     return colNum - 1;
   }
 
@@ -142,7 +142,15 @@ function resolvePressureInput({ iop, palpation }) {
   };
 }
 
-export function canCalculateRisk({ iop, palpation, cupDiscRatio }) {
+export function canCalculateRisk({
+  iop,
+  palpation,
+  cupDiscRatio,
+  thinRim,
+  suspiciousFields,
+  suspiciousPupils,
+  vision,
+}) {
   const hasValidIop = isValidIopBand(iop);
   const hasValidPalpation = isValidPalpation(palpation);
   const hasValidCupDiscRatio = isValidCupDiscRatio(cupDiscRatio);
@@ -150,6 +158,17 @@ export function canCalculateRisk({ iop, palpation, cupDiscRatio }) {
   if (!hasValidIop && palpation === "rock" && hasValidPalpation) {
     return true;
   }
+
+  const pressure = resolvePressureInput({ iop, palpation });
+  if (
+    thinRim ||
+    suspiciousFields ||
+    suspiciousPupils ||
+    (VISION_POINTS[vision] ?? 0) > 0 ||
+    cupDiscRatio === "0.9-1" ||
+    ["25-29", "gte30"].includes(pressure.iopBand)
+  )
+    return true;
 
   return Boolean((hasValidIop || hasValidPalpation) && hasValidCupDiscRatio);
 }
@@ -192,13 +211,13 @@ export function calculateRiskOutcome({
     );
   } else if (pressure.iopBand === "gte30") {
     riskScore += 3;
-    reasoningDetails.push("IOP >=30: +3");
+    reasoningDetails.push("IOP ≥30: +3");
   } else if (pressure.iopBand === "25-29") {
     riskScore += 2;
     reasoningDetails.push("IOP 25-29: +2");
-  } else if (pressure.iopBand === "20-24") {
+  } else if (pressure.iopBand === "21-24") {
     riskScore += 1;
-    reasoningDetails.push("IOP 20-24: +1");
+    reasoningDetails.push("IOP 21-24: +1");
   }
 
   if (suspiciousFields) {
@@ -259,10 +278,20 @@ export function calculateRiskOutcome({
   }
 
   const cellColour = resolveCellColour(rowNum, colNum);
-  const urgency = URGENCY_BY_COLOUR[cellColour] ?? URGENCY_BY_COLOUR.white;
+  let urgency = URGENCY_BY_COLOUR[cellColour] ?? URGENCY_BY_COLOUR.white;
   const cellId = rowNum && colNum ? `cell_r${rowNum}_c${colNum}` : null;
   const hasGridPlacement = rowNum !== null && colNum !== null;
   const isRockAcuteWarning = pressure.isProvisional && palpation === "rock";
+  const isEndStage = validCupDiscRatio === "0.9-1";
+  const hasReferralRedFlag = thinRim || suspiciousFields;
+  const hasReferralFloor =
+    hasReferralRedFlag && (cellColour === "white" || cellColour === "green");
+  if (hasReferralFloor) {
+    urgency = URGENCY_BY_COLOUR.orange;
+    reasoningDetails.push(
+      "Referral floor applied: suspicious rim or field finding",
+    );
+  }
   let urgencyMessage = "";
   let urgencyTextColour = "black";
 
@@ -281,6 +310,51 @@ export function calculateRiskOutcome({
       ? `${PROVISIONAL_URGENCY_PREFIX}Select C/D to complete risk grid`
       : "INCOMPLETE: Select C/D to complete risk grid";
   }
+
+  // A missing grid axis must not hide an independently concerning finding.
+  if (!isRockAcuteWarning && !hasGridPlacement) {
+    if (hasReferralRedFlag || ["25-29", "gte30"].includes(pressure.iopBand)) {
+      urgencyMessage = `${pressure.isProvisional ? PROVISIONAL_URGENCY_PREFIX : ""}${URGENCY_BY_COLOUR.orange.message}`;
+      urgencyTextColour = URGENCY_BY_COLOUR.orange.textColour;
+    } else if (!pressure.iopBand && !pressure.hasInvalidInput) {
+      urgencyMessage = "INCOMPLETE: Record pressure and C/D where available";
+    }
+  }
+  // Structural status persists independently of pressure and referral urgency.
+  if (isEndStage) {
+    if (isRockAcuteWarning || cellColour === "red") {
+      urgencyMessage += " · END-STAGE: Assess fellow eye";
+    } else {
+      urgencyMessage = `${pressure.isProvisional ? PROVISIONAL_URGENCY_PREFIX : ""}${URGENCY_BY_COLOUR.darkgrey.message}`;
+      urgencyTextColour = URGENCY_BY_COLOUR.darkgrey.textColour;
+    }
+  }
+  const hasOtherConcern = suspiciousPupils || visionPoints > 0;
+  if (hasOtherConcern) {
+    const cue =
+      "Assess reduced vision or abnormal pupils; cause may not be glaucoma.";
+    if (
+      !isRockAcuteWarning &&
+      !isEndStage &&
+      ((!hasGridPlacement &&
+        !hasReferralRedFlag &&
+        !["25-29", "gte30"].includes(pressure.iopBand)) ||
+        (hasGridPlacement &&
+          !hasReferralFloor &&
+          ["white", "green"].includes(cellColour)))
+    ) {
+      urgencyMessage = `CHECK: ${cue}`;
+      urgencyTextColour = "orange";
+    } else {
+      urgencyMessage += ` · ${cue}`;
+    }
+  }
+  const gridNote = !hasGridPlacement
+    ? "Grid incomplete — advice uses available findings."
+    : hasReferralFloor ||
+        (hasOtherConcern && ["white", "green"].includes(cellColour))
+      ? "Grid position shown; additional findings override routine advice."
+      : "";
 
   const pressureSource =
     pressure.iopBand === null
@@ -302,6 +376,9 @@ export function calculateRiskOutcome({
     isProvisionalPressure: pressure.isProvisional,
     isRockAcuteWarning,
     hasPressureConflict: pressure.hasConflict,
+    hasReferralFloor,
+    isEndStage,
+    gridNote,
     pressureSource,
     resolvedIopBand: pressure.iopBand,
     togglePoints: roundScore(togglePoints),
@@ -311,13 +388,19 @@ export function calculateRiskOutcome({
 }
 
 export function buildReasoningHtml({
+  eye = null,
   cupDiscRatio,
   discSize,
   reasoningDetails,
   riskFactorStrings,
   riskScore,
+  gridNote = "",
 }) {
   const parts = [];
+
+  if (eye) {
+    parts.push(`Eye: ${escapeHtml(eye)}`);
+  }
 
   if (cupDiscRatio) {
     parts.push(`C/D: ${escapeHtml(cupDiscRatio)}`);
@@ -334,5 +417,5 @@ export function buildReasoningHtml({
   }
 
   const head = parts.length > 0 ? parts.join("; ") : "";
-  return `${head}; Total Risk Score: <b>${formatScore(riskScore)}</b>`;
+  return `${gridNote ? `${escapeHtml(gridNote)}<br>` : ""}${head}; Supporting points (C/D shown on chart): <b>${formatScore(riskScore)}</b>`;
 }

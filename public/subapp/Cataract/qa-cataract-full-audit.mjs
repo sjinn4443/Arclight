@@ -194,9 +194,9 @@ const ISSUE_DEFINITIONS = {
     severity: 'P2',
     description: 'Red outputs should suppress near-VA detail notes to keep urgent messaging concise.'
   },
-  action_text_over_18_words: {
+  action_text_over_5_words: {
     severity: 'P3',
-    description: 'Core action text exceeds 18 words and may be too long for rapid use.'
+    description: 'Core action text exceeds five words.'
   },
   ui_unreachable_combo_returns_action: {
     severity: 'P3',
@@ -328,7 +328,7 @@ for (const onsetValue of onsetOptions) {
                     backSelection !== 'poor view'
                   );
                   const isComplete = Boolean(
-                    onsetValue && eyes && distanceVA && fundalSelection && backSelection
+                    onsetValue && ageBand && eyes && distanceVA && fundalSelection && backSelection
                   );
 
                   if (isWhiteConstraintReachable) {
@@ -385,20 +385,6 @@ for (const onsetValue of onsetOptions) {
                       `Missing fields: ${decision.requiredInputKeys
                         ?.filter((field) => !(combo[field] || combo[`${field}Value`]))
                         .join(', ') || 'unknown'}`
-                    );
-                  }
-
-                  if (
-                    !isWhiteConstraintReachable &&
-                    decision.hasResult &&
-                    !(Array.isArray(decision.flags) &&
-                      decision.flags.includes('normalized_white_back_forced_poor_view'))
-                  ) {
-                    addIssue(
-                      'ui_unreachable_combo_returns_action',
-                      combo,
-                      decision,
-                      'White reflex UI flow should force poor view.'
                     );
                   }
 
@@ -465,8 +451,8 @@ for (const onsetValue of onsetOptions) {
                   const hasRequiresRecheckFlag = decision.flags.includes('requires_recheck');
                   const hasRedTrigger =
                     effectiveBackSelection === 'detached' ||
-                    (fundalSelection === 'white' && !hasPosteriorPriorityDisease) ||
-                    (onsetValue === 'sudden' && Boolean(painYes));
+                    fundalSelection === 'white' ||
+                    onsetValue === 'sudden';
                   const allowsWhiteRelativelyGoodVaRecheckOverride =
                     fundalSelection === 'white' &&
                     effectiveBackSelection === 'poor view' &&
@@ -477,15 +463,31 @@ for (const onsetValue of onsetOptions) {
                     !frontPresent &&
                     !hasNeuroFlags &&
                     !isPaediatric &&
-                    decision.actionCode === 'recheck_investigate_first';
+                    decision.actionCode === 'white_reflex_recheck';
                   const allowsPaediatricWhiteAction =
                     isPaediatric &&
-                    decision.actionCode === 'child_cataract_prompt_referral' &&
+                    decision.actionCode === 'child_white_reflex_urgent' &&
                     decision.actionColour === 'red';
+                  const allowsGeneralWhiteAction =
+                    ['white_reflex_prompt_review', 'cataract_priority_white'].includes(
+                      decision.actionCode
+                    );
 
                   if (
                     hasPosteriorPriorityDisease &&
-                    decision.actionCode !== 'posterior_disease_first'
+                    !(
+                      (effectiveBackSelection === 'detached' &&
+                        decision.actionCode === 'retinal_same_day') ||
+                      (effectiveBackSelection !== 'detached' &&
+                        onsetValue === 'sudden' &&
+                        decision.actionCode === 'urgent_same_day_investigation') ||
+                      (effectiveBackSelection !== 'detached' &&
+                        onsetValue !== 'sudden' &&
+                        decision.actionCode === 'posterior_disease_first') ||
+                      (isPaediatric &&
+                        fundalSelection === 'white' &&
+                        decision.actionCode === 'child_white_reflex_urgent')
+                    )
                   ) {
                     addIssue(
                       'posterior_override_missing',
@@ -509,7 +511,7 @@ for (const onsetValue of onsetOptions) {
 
                   if (
                     effectiveBackSelection === 'detached' &&
-                    decision.actionCode === 'posterior_disease_first' &&
+                    decision.actionCode === 'retinal_same_day' &&
                     decision.actionColour !== 'red'
                   ) {
                     addIssue(
@@ -523,11 +525,10 @@ for (const onsetValue of onsetOptions) {
                   if (
                     fundalSelection === 'white' &&
                     effectiveBackSelection === 'poor view' &&
-                    decision.actionCode !== 'cataract_priority_white'
-                    &&
+                    !allowsGeneralWhiteAction &&
                     !allowsWhiteRelativelyGoodVaRecheckOverride &&
                     !allowsPaediatricWhiteAction &&
-                    !(onsetValue === 'sudden' && Boolean(painYes) && decision.actionCode === 'urgent_same_day_investigation')
+                    !(onsetValue === 'sudden' && decision.actionCode === 'urgent_same_day_investigation')
                   ) {
                     addIssue(
                       'white_reflex_priority_missing',
@@ -785,8 +786,9 @@ for (const onsetValue of onsetOptions) {
                       decision.actionCode === 'urgent_same_day_investigation') &&
                     !hasPosteriorPriorityDisease &&
                     fundalSelection !== 'normal' &&
+                    fundalSelection !== 'white' &&
                     decision.cataractType !== 'Nil' &&
-                    !decision.cataractType.includes('other urgent pathology suspected')
+                    !decision.cataractType.startsWith('Possible ')
                   ) {
                     addIssue(
                       'non_cataract_main_action_without_competing_confidence',
@@ -873,7 +875,10 @@ for (const onsetValue of onsetOptions) {
                     );
                   }
 
-                  if (decision.actionCode === 'posterior_disease_first') {
+                  if (
+                    decision.actionCode === 'posterior_disease_first' ||
+                    decision.actionCode === 'retinal_same_day'
+                  ) {
                     const posteriorExpectedNoteCode =
                       effectiveBackSelection === 'detached'
                         ? 'posterior_detached_same_day'
@@ -934,7 +939,8 @@ for (const onsetValue of onsetOptions) {
 
                   if (
                     pupilStatus === 'normal' &&
-                    decision.cataractType.toLowerCase().startsWith('probable ')
+                    decision.cataractType.toLowerCase().startsWith('probable ') &&
+                    decision.cataractPhenotype !== 'Mature'
                   ) {
                     addIssue(
                       'recorded_normal_pupil_downgraded_confidence',
@@ -948,9 +954,9 @@ for (const onsetValue of onsetOptions) {
                     .trim()
                     .split(/\s+/)
                     .filter(Boolean).length;
-                  if (actionWordCount > 18) {
+                  if (actionWordCount > 5) {
                     addIssue(
-                      'action_text_over_18_words',
+                      'action_text_over_5_words',
                       combo,
                       decision,
                       `Action text has ${actionWordCount} words.`
@@ -1134,7 +1140,7 @@ if (issues.has('routine_action_with_high_risk_checks')) {
 }
 if (issues.has('red_action_without_red_trigger')) {
   recommendations.push(
-    'P2: Red outputs should require explicit red trigger pathways (detached/white/sudden+pain).'
+    'P2: Red outputs should require explicit red trigger pathways (detached, white reflex or sudden loss).'
   );
 }
 if (issues.has('rapd_override_without_neuro_flags') || issues.has('missing_rapd_override_when_eligible')) {
@@ -1170,9 +1176,9 @@ if (issues.has('ui_unreachable_combo_returns_action')) {
     'P3: Engine accepts UI-unreachable white-reflex/back combinations. Consider input normalization for robustness.'
   );
 }
-if (issues.has('action_text_over_18_words')) {
+if (issues.has('action_text_over_5_words')) {
   recommendations.push(
-    'P3: Keep core action lines under 18 words to preserve fast bedside readability.'
+    'P3: Keep core action lines to five words where possible.'
   );
 }
 if (issues.has('missing_posterior_specific_note')) {
@@ -1234,10 +1240,10 @@ reportLines.push(
   '- UI reachability constraint: white reflex should force poor view in Back of Eye.'
 );
 reportLines.push(
-  '- Engine robustness normalization: if fundal=white and back!=poor view, engine normalizes back to poor view and flags normalized_white_back_forced_poor_view.'
+  '- Engine robustness normalization: white reflex with a normal back selection becomes poor view while explicit posterior findings are preserved.'
 );
 reportLines.push(
-  '- Required fields for definitive action: onset, eyes, distanceVA, fundal, back.'
+  '- Required fields for definitive action: onset, eyes, age, distanceVA, fundal and back.'
 );
 reportLines.push('');
 reportLines.push('Coverage');

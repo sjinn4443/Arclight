@@ -1,8 +1,22 @@
-export const MCQ_LEVELS = Object.freeze([
+export const MCQ_SOURCE_REGISTRY = Object.freeze({
+  "NICE-NG82": Object.freeze({
+    title: "NICE NG82: Age-related macular degeneration",
+    url: "https://www.nice.org.uk/guidance/ng82/chapter/Recommendations",
+  }),
+  "NCBI-AMSLER": Object.freeze({
+    title: "NCBI Bookshelf: Amsler Grid",
+    url: "https://www.ncbi.nlm.nih.gov/books/NBK538141/",
+  }),
+});
+
+const MCQ_REVIEW_STATUS = "Independent clinical sign-off pending";
+
+const MCQ_LEVEL_DEFINITIONS = [
   {
     id: "primary",
     label: "Primary",
     questionCount: 6,
+    passScore: 4,
     questions: [
       {
         prompt: "What is the main purpose of an Amsler grid test?",
@@ -41,16 +55,16 @@ export const MCQ_LEVELS = Object.freeze([
           "Waviness can reflect metamorphopsia, often from macular pathology.",
       },
       {
-        prompt: "Why might red mode help some users?",
+        prompt: "Which setup best supports a useful Amsler observation?",
         options: [
-          "It can improve contrast for subtle central changes",
-          "It guarantees a diagnosis",
-          "It tests eye pressure directly",
-          "It removes all fixation errors",
+          "Good lighting, usual near correction and a consistent reading distance",
+          "A dark room without near correction",
+          "Both eyes open at an unmeasured distance",
+          "Immediately after a bright fundus light",
         ],
         answerIndex: 0,
         explanation:
-          "Red mode is a contrast aid only. It can make subtle abnormalities easier to notice for some patients.",
+          "Consistent lighting, near correction and distance make subtle distortion or missing areas easier to compare.",
       },
       {
         prompt:
@@ -127,28 +141,29 @@ export const MCQ_LEVELS = Object.freeze([
           "Diagonals can help some patients keep oriented toward the centre when central vision is reduced.",
       },
       {
-        prompt: "Which tool is best for marking haemorrhage-like red areas?",
+        prompt: "Which description best represents metamorphopsia?",
         options: [
-          "The red haemorrhage tool",
-          "The erase tool",
-          "The patient details button",
-          "The report button",
+          "Straight lines appear bent, bowed or warped",
+          "The entire peripheral field is absent",
+          "Eye pressure feels raised",
+          "Colours are named incorrectly with an otherwise normal grid",
         ],
         answerIndex: 0,
         explanation:
-          "The red tool is intended for red or blood-like marks while black is for dark or wavy marks.",
+          "Metamorphopsia is distortion of visible form, commonly described as straight grid lines appearing bent or warped.",
       },
       {
-        prompt: "What does Nil mean in the result area?",
+        prompt:
+          "What should happen if a patient cannot see all four grid corners while fixating the centre?",
         options: [
-          "No drawn defect has been detected for that eye",
-          "The eye has perfect macular health",
-          "The test is invalid",
-          "The patient has no need for glasses",
+          "Arrange broader clinical and visual-field assessment rather than assuming a central-only defect",
+          "Record it as a normal Amsler result",
+          "Open both eyes and repeat until the corners appear",
+          "Treat the missing corners as proof of wet AMD",
         ],
         answerIndex: 0,
         explanation:
-          "Nil means the app has not found a drawn defect for that eye. It is not a clinical all-clear by itself.",
+          "Failure to see all four corners can reflect field loss beyond the central macular question and needs wider assessment.",
       },
     ],
   },
@@ -156,31 +171,32 @@ export const MCQ_LEVELS = Object.freeze([
     id: "intermediate",
     label: "Intermediate",
     questionCount: 8,
+    passScore: 6,
     questions: [
       {
-        prompt:
-          "Amsler abnormalities are most sensitive for dysfunction in which pathway segment?",
+        prompt: "Why does Amsler chart 4 use random dots without grid lines?",
         options: [
-          "Central macular visual processing",
-          "Vestibular pathways",
-          "Auditory cortex",
-          "Extraocular muscle tendon reflexes",
+          "To help distinguish a missing area from distortion of visible form",
+          "To measure intraocular pressure",
+          "To test colour naming",
+          "To map the far peripheral field",
         ],
         answerIndex: 0,
         explanation:
-          "The tool targets central visual perception linked to macular function.",
+          "Without visible lines to bend, the random-dot chart can help separate scotoma from metamorphopsia.",
       },
       {
-        prompt: "Why test one eye at a time with correction?",
+        prompt:
+          "Why is the physiological blind spot usually outside a standard Amsler result?",
         options: [
-          "To avoid binocular compensation masking monocular defects",
-          "Because binocular testing is always invalid",
-          "To increase pupil size",
-          "To reduce retinal blood-flow artefact",
+          "The grid reaches about 10 degrees temporal to fixation while the blind spot is usually near 15 degrees",
+          "The optic disc has no relationship to the visual field",
+          "Both eyes are tested together",
+          "The grid removes all physiological scotomas",
         ],
         answerIndex: 0,
         explanation:
-          "Binocular viewing can conceal unilateral deficits, while monocular testing improves detection.",
+          "At the standard distance, the grid covers roughly 10 degrees each side of fixation, short of the usual blind-spot location.",
       },
       {
         prompt:
@@ -209,17 +225,16 @@ export const MCQ_LEVELS = Object.freeze([
           "It supports symptom monitoring but does not replace structural clinical assessment.",
       },
       {
-        prompt:
-          "What is a practical reason to compare standard and red mode findings?",
+        prompt: "What is an important limitation of an Amsler grid?",
         options: [
-          "Concordant defects across modes increase confidence in a true perceptual change",
-          "One mode should always be ignored",
-          "Red mode should replace standard mode completely",
-          "Only standard mode can detect central loss",
+          "It is a subjective central-field screen and does not replace retinal examination or imaging",
+          "It measures intraocular pressure only",
+          "It reliably excludes all macular disease",
+          "It is a complete peripheral-field test",
         ],
         answerIndex: 0,
         explanation:
-          "Cross-mode consistency can reduce noise from attention or contrast preference effects.",
+          "Amsler findings depend on fixation and patient report. They should be interpreted with history and clinical assessment.",
       },
       {
         prompt: "Which history detail best supports urgency stratification?",
@@ -270,16 +285,16 @@ export const MCQ_LEVELS = Object.freeze([
       },
       {
         prompt:
-          "What does a central percentage in the result aim to summarise?",
+          "While fixating centrally, what should the patient compare across the grid?",
         options: [
-          "How much of the defect overlaps the central zone",
-          "The patient's visual acuity",
-          "The intraocular pressure",
-          "The size of the optic disc",
+          "Whether lines remain straight and continuous and whether any area is blurred or missing",
+          "Whether the pupil becomes larger",
+          "Whether peripheral finger counting improves",
+          "Whether the optic disc appears pale",
         ],
         answerIndex: 0,
         explanation:
-          "The central value estimates how much drawn defect burden lies in the central grid region.",
+          "The grid is used to report distortion, breaks, blur or missing areas while fixation stays on the centre.",
       },
       {
         prompt:
@@ -320,52 +335,51 @@ export const MCQ_LEVELS = Object.freeze([
           "Increasing central involvement is a meaningful change and should be correlated clinically.",
       },
       {
-        prompt: "Why does the app store drawings separately for RE and LE?",
+        prompt:
+          "Why should the patient mark the location of an abnormal region on the grid?",
         options: [
-          "To preserve monocular findings for comparison",
-          "To make the report longer",
-          "To force both eyes to look identical",
-          "To hide left-eye defects",
+          "A dated map can support comparison for progression, stability or improvement",
+          "The mark directly diagnoses the retinal cause",
+          "A drawing replaces the need to record symptoms",
+          "Only the number of marks matters",
         ],
         answerIndex: 0,
         explanation:
-          "Separate stroke stores keep each eye's perceived defects distinct.",
+          "Mapping the perceived area makes later change easier to compare, although the drawing remains subjective.",
       },
       {
-        prompt: "Which symptom is most aligned with metamorphopsia?",
+        prompt:
+          "Which description is most consistent with micropsia on an Amsler grid?",
         options: [
-          "Straight grid lines appearing bent or warped",
-          "A gritty lid sensation only",
-          "A headache without visual change",
-          "A brief sneeze during testing",
+          "Squares appear smaller as nearby lines seem drawn towards one another",
+          "Squares appear larger as lines curve away from one another",
+          "The whole grid becomes a pressure scale",
+          "Only the far peripheral field disappears",
         ],
         answerIndex: 0,
         explanation:
-          "Metamorphopsia is perceived distortion, often described as bending or warping of straight lines.",
+          "Micropsia can make grid spacing look compressed, while macropsia can make spacing appear widened.",
       },
       {
-        prompt: "Why might poor near correction reduce test quality?",
+        prompt:
+          "Why should the standard test usually be completed before pharmacological dilation?",
         options: [
-          "Blur can make grid detail harder to judge",
-          "It changes the macula's anatomy",
-          "It improves fixation reliability",
-          "It makes colour testing unnecessary",
+          "Dilation can reduce near-task clarity and change the standard test conditions",
+          "Dilation proves that a scotoma is absolute",
+          "Dilation converts the grid into perimetry",
+          "Dilation removes the need for monocular testing",
         ],
         answerIndex: 0,
         explanation:
-          "Uncorrected near blur can make subtle distortion or missing areas harder to report.",
+          "Standard technique uses near correction without dilating the pupil so that near viewing conditions remain suitable.",
       },
       {
-        prompt: "What does a report screenshot mainly provide?",
-        options: [
-          "A record of the drawn defects and computed summary",
-          "A definitive diagnosis",
-          "A replacement for visual acuity",
-          "A guarantee that fixation was perfect",
-        ],
+        prompt:
+          "At 33 cm, approximately how much visual angle does one standard 5 mm grid square subtend?",
+        options: ["1 degree", "10 degrees", "20 degrees", "45 degrees"],
         answerIndex: 0,
         explanation:
-          "The screenshot is documentation of the app session, not a diagnostic endpoint.",
+          "A standard 10 cm grid has 20 squares per side and spans about 20 degrees at 33 cm, so each square is about 1 degree.",
       },
       {
         prompt: "Which defect description is most useful in notes?",
@@ -385,19 +399,20 @@ export const MCQ_LEVELS = Object.freeze([
     id: "advanced",
     label: "Advanced",
     questionCount: 8,
+    passScore: 6,
     questions: [
       {
         prompt:
-          "For longitudinal monitoring, which parameter is most clinically useful from this app output?",
+          "At the usual test distance, an Amsler grid primarily samples which field?",
         options: [
-          "Trend in central involvement percentage over serial tests",
-          "Single-session screenshot colour tone",
-          "Screen brightness at time of test only",
-          "Whether the patient used left or right hand",
+          "The central visual field around fixation",
+          "The far peripheral field only",
+          "The binocular field with both eyes open",
+          "The field beyond the ora serrata",
         ],
         answerIndex: 0,
         explanation:
-          "Serial trend in central burden can support progression assessment alongside exam findings.",
+          "The standard grid is a central-field test designed to reveal distortion or scotoma near fixation.",
       },
       {
         prompt:
@@ -439,29 +454,28 @@ export const MCQ_LEVELS = Object.freeze([
       },
       {
         prompt:
-          "In structured follow-up, what improves reproducibility the most?",
+          "Which Amsler chart design is intended to reveal finer defects close to fixation?",
         options: [
-          "Consistent test distance, correction, fixation instruction and monocular sequence",
-          "Changing chart size each visit",
-          "Alternating random viewing angles",
-          "Testing only after prolonged dark adaptation",
+          "A central area with smaller squares subtending about 0.5 degrees",
+          "A chart with no fixation target",
+          "A chart viewed with both eyes open",
+          "A far-peripheral confrontation target",
         ],
         answerIndex: 0,
         explanation:
-          "Protocol consistency reduces measurement noise and improves comparability.",
+          "Amsler chart 7 uses smaller central squares to show fine metamorphopsia or small scotomas near fixation.",
       },
       {
-        prompt:
-          "Why can a central lesion be under-represented by purely centroid-based labelling?",
+        prompt: "Why can a central scotoma make the Amsler test less reliable?",
         options: [
-          "A straddling defect may have centroid outside fixation while still involving central retina",
-          "Centroids always overestimate central involvement",
-          "Centroids cannot be computed for polygons",
-          "Centroids only work in 3D retinal maps",
+          "The fixation target may be hard to see, encouraging eccentric fixation or scanning",
+          "A central scotoma always straightens distorted lines",
+          "It converts the test into a pressure measurement",
+          "It guarantees that both eyes give the same result",
         ],
         answerIndex: 0,
         explanation:
-          "Overlap-based zone analysis better captures central involvement for irregular shapes.",
+          "If central fixation is unstable, the patient may look around the defect and under-report it.",
       },
       {
         prompt: "Which statement about red-grid mode is most defensible?",
@@ -490,16 +504,16 @@ export const MCQ_LEVELS = Object.freeze([
       },
       {
         prompt:
-          "Why is convex-hull area only an approximation of Amsler defect burden?",
+          "Why should Amsler testing not follow immediately after intense retinal illumination?",
         options: [
-          "It encloses the drawn shape and may include space the patient did not mark",
-          "It measures photoreceptor density directly",
-          "It excludes every central defect",
-          "It cannot use two-dimensional points",
+          "A transient photostress effect can alter central visual perception",
+          "It permanently enlarges the optic cup",
+          "It makes near correction unnecessary",
+          "It converts metamorphopsia into a peripheral defect",
         ],
         answerIndex: 0,
         explanation:
-          "Hull methods are fast and useful for summaries but can overestimate irregular or crescent-shaped marks.",
+          "Bright retinal illumination can briefly affect central vision and confound the observation.",
       },
       {
         prompt: "Which scenario most risks a false negative Amsler result?",
@@ -514,53 +528,55 @@ export const MCQ_LEVELS = Object.freeze([
           "Scanning can compensate for a defect and make the grid seem more complete than it is.",
       },
       {
-        prompt: "Which documentation best supports clinical handover?",
+        prompt: "How may a relative scotoma appear on an Amsler grid?",
         options: [
-          "Eye, onset, progression, defect location and screenshot",
-          "Only the button colour used",
-          "Only whether the app opened",
-          "Only the patient's device type",
+          "As a veil or haze partly obscuring the smaller squares",
+          "As a reliable intraocular-pressure value",
+          "As an enlarged physiological blind spot on every test",
+          "As a normal result whenever lines remain visible",
         ],
         answerIndex: 0,
         explanation:
-          "Handover is stronger when the symptom, time course and mapped defect are all recorded.",
-      },
-      {
-        prompt: "What is the main limitation of using percentage area alone?",
-        options: [
-          "Small central defects can matter more than larger peripheral marks",
-          "Percentages cannot be displayed",
-          "Percentages always identify the diagnosis",
-          "Peripheral marks are always urgent",
-        ],
-        answerIndex: 0,
-        explanation:
-          "Location and symptom context matter; central involvement can carry high functional significance.",
-      },
-      {
-        prompt: "When comparing serial tests, which change is most concerning?",
-        options: [
-          "A new or enlarging central defect with matching symptoms",
-          "A different random option order in MCQs",
-          "A report generated on a different weekday",
-          "A patient using the same near glasses",
-        ],
-        answerIndex: 0,
-        explanation:
-          "A reproducible central change with symptoms is more clinically meaningful than app-session details.",
+          "A relative scotoma can reduce visibility without making the area completely absent.",
       },
       {
         prompt:
-          "Why should clinical advice avoid saying the app has diagnosed wet AMD?",
+          "Which mechanism can make a small scotoma less noticeable during Amsler testing?",
         options: [
-          "Amsler suggests functional change but cannot establish the cause",
-          "Wet AMD never causes distortion",
-          "Only colour mode can diagnose it",
-          "Amsler results are unrelated to the macula",
+          "Perceptual completion can fill in missing visual information",
+          "The grid directly restores photoreceptor function",
+          "Near correction removes retinal disease",
+          "Monocular viewing creates a new blind spot",
         ],
         answerIndex: 0,
         explanation:
-          "The app can flag concerning symptoms but diagnosis requires clinical examination and imaging where appropriate.",
+          "Cortically mediated filling-in can make a defect seem complete and contributes to false-negative reports.",
+      },
+      {
+        prompt:
+          "When can glaucomatous field loss become visible on an Amsler grid?",
+        options: [
+          "When an advanced defect reaches close to fixation",
+          "At the first microscopic retinal nerve fibre change",
+          "Only when intraocular pressure is normal",
+          "Whenever the physiological blind spot is plotted",
+        ],
+        answerIndex: 0,
+        explanation:
+          "The grid is a central test, so earlier peripheral glaucomatous defects may not be detected.",
+      },
+      {
+        prompt:
+          "Why is an Amsler grid not recommended as the sole screening test for hydroxychloroquine retinopathy?",
+        options: [
+          "Its sensitivity and mapping are insufficient for that screening purpose",
+          "Hydroxychloroquine never affects central vision",
+          "The grid only measures intraocular pressure",
+          "Red lines confirm toxicity without another assessment",
+        ],
+        answerIndex: 0,
+        explanation:
+          "Amsler may show a central defect but does not replace recommended retinal-toxicity screening methods.",
       },
       {
         prompt:
@@ -577,16 +593,16 @@ export const MCQ_LEVELS = Object.freeze([
       },
       {
         prompt:
-          "What is the safest use of the app's central and peripheral split?",
+          "Which additional assessment is appropriate when new metamorphopsia raises concern for wet active AMD?",
         options: [
-          "As a structured documentation aid alongside clinical judgement",
-          "As a stand-alone referral rule for every patient",
-          "As a replacement for symptoms",
-          "As proof that peripheral retina has been fully examined",
+          "Urgent macular assessment with fundus examination and OCT",
+          "Amsler self-testing alone for twelve months",
+          "Intraocular pressure measurement as the only test",
+          "Peripheral confrontation fields instead of macular assessment",
         ],
         answerIndex: 0,
         explanation:
-          "The split helps organise findings but should be interpreted with symptoms and examination.",
+          "NICE recommends urgent referral for suspected wet active AMD and OCT as part of assessment.",
       },
       {
         prompt: "Which patient group may need extra care with instructions?",
@@ -615,4 +631,32 @@ export const MCQ_LEVELS = Object.freeze([
       },
     ],
   },
-]);
+];
+
+function getQuestionSources(question) {
+  const wording = `${question.prompt} ${question.explanation}`.toLowerCase();
+  const refersToUrgency =
+    wording.includes("urgent") ||
+    wording.includes("wet active") ||
+    wording.includes("timely clinical") ||
+    wording.includes("new or progressive");
+  return refersToUrgency ? ["NICE-NG82", "NCBI-AMSLER"] : ["NCBI-AMSLER"];
+}
+
+export const MCQ_LEVELS = Object.freeze(
+  MCQ_LEVEL_DEFINITIONS.map((level) =>
+    Object.freeze({
+      ...level,
+      questions: Object.freeze(
+        level.questions.map((question, index) =>
+          Object.freeze({
+            ...question,
+            id: `amsler-${level.id}-${String(index + 1).padStart(2, "0")}`,
+            sourceIds: Object.freeze(getQuestionSources(question)),
+            reviewStatus: MCQ_REVIEW_STATUS,
+          }),
+        ),
+      ),
+    }),
+  ),
+);

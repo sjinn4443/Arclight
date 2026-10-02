@@ -1,6 +1,6 @@
 import { isAxisField, isCylinderField } from "./field-metadata.js";
 
-export function initializeSimpleModeToggle(onSimpleModeDisabled) {
+export function initializeSimpleModeToggle(onModeChange) {
   const simpleToggleCheckbox = document.getElementById("toggle-simple");
   if (!simpleToggleCheckbox) {
     return;
@@ -10,19 +10,16 @@ export function initializeSimpleModeToggle(onSimpleModeDisabled) {
   updateSimpleMode(simpleToggleCheckbox.checked);
 
   simpleToggleCheckbox.addEventListener("change", () => {
-    if (
-      !simpleToggleCheckbox.checked &&
-      typeof onSimpleModeDisabled === "function"
-    ) {
-      onSimpleModeDisabled();
-    }
-
     updateSimpleMode(simpleToggleCheckbox.checked);
+    if (typeof onModeChange === "function")
+      onModeChange(simpleToggleCheckbox.checked);
   });
 }
 
 function updateSimpleMode(isAdvancedModeEnabled) {
   document.body.classList.toggle("advanced-mode", isAdvancedModeEnabled);
+  const transpose = document.getElementById("transpose-btn");
+  if (transpose) transpose.disabled = !isAdvancedModeEnabled;
 
   document.querySelectorAll('input[type="number"]').forEach((input) => {
     if (!isAxisField(input) && !isCylinderField(input)) {

@@ -46,6 +46,7 @@ export function getDomRefs() {
     mcqIntro: document.getElementById("mcqIntro"),
     mcqContainer: document.getElementById("mcqContainer"),
     submitMcqButton: document.getElementById("submitMcqButton"),
+    retryMcqButton: document.getElementById("retryMcqButton"),
     mcqResult: document.getElementById("mcqResult"),
     mcqLevelButtons: Array.from(document.querySelectorAll(".mcq-level-button")),
     controlsDeck: document.querySelector(".controls-deck"),

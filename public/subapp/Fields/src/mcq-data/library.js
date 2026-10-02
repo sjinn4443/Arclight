@@ -471,7 +471,7 @@
       {
         id: "tp3",
         prompt:
-          "Only the left eye is severely reduced and the pupil defect is on the left. Best site?",
+          "Only the left eye is reduced, colour vision is impaired, the retina appears normal and RAPD is left. Best site?",
         answer: "leftNerve",
         options: [
           { key: "leftNerve", label: "Left optic nerve" },
@@ -483,7 +483,7 @@
       {
         id: "tp4",
         prompt:
-          "Only the right eye is severely reduced, sudden onset, no pupil defect. Best site?",
+          "Sudden flashes and a curtain-like defect affect only the right eye; retinal pathology is suspected. Best site?",
         answer: "rightRetina",
         options: [
           { key: "rightRetina", label: "Right retina" },
@@ -627,6 +627,32 @@
       },
     ],
   };
+
+  const TEXT_RATIONALES = Object.freeze({
+    tp1: "Loss of both temporal fields is the classic pattern of central optic-chiasm dysfunction.",
+    tp2: "The right visual hemifield travels in the left post-chiasmal pathway after fibres cross at the chiasm.",
+    tp3: "Monocular loss with dyschromatopsia, a matching RAPD and no retinal explanation localises most strongly to the left optic nerve.",
+    tp4: "A sudden monocular curtain-like defect with flashes is a retinal pattern which requires retinal assessment.",
+    tp5: "The left visual hemifield travels in the right post-chiasmal pathway after fibres cross at the chiasm.",
+    ti1: "Central chiasmal injury preferentially affects crossing nasal retinal fibres, producing temporal field loss in both eyes.",
+    ti2: "A right homonymous defect localises behind the chiasm on the left.",
+    ti3: "Right temporal optic radiations in Meyer loop carry the left superior visual field.",
+    ti4: "Left parietal optic radiations carry the right inferior visual field.",
+    ti5: "Binasal loss is uncommon and is not the classic pattern of central chiasmal compression.",
+    ta1: "The classic field pattern from a central chiasmal lesion is bitemporal hemianopia.",
+    ta2: "A left optic-tract lesion produces a contralateral right homonymous defect.",
+    ta3: "A right optic-nerve lesion causes monocular right-eye visual loss rather than a homonymous defect.",
+    ta4: "Left Meyer-loop injury produces a contralateral right superior quadrantanopia.",
+    ta5: "A homonymous defect respects the vertical meridian in both eyes and localises behind the optic chiasm.",
+  });
+
+  Object.values(TEXT_BANK).forEach((questions) => {
+    questions.forEach((question) => {
+      question.explanation = TEXT_RATIONALES[question.id];
+      question.sourceIds = ["VISUAL-PATHWAY-2023", "VISUAL-PATHWAY-2021"];
+      question.reviewStatus = "Independent clinical sign-off pending";
+    });
+  });
 
   const parts = (globalScope.MCQ_DATA_PARTS = globalScope.MCQ_DATA_PARTS || {});
   Object.assign(parts, { PATTERNS, SITES, TEXT_BANK });

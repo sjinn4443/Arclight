@@ -45,6 +45,9 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     sideMenu.setAttribute("aria-hidden", String(!isOpen));
     if (isOpen) {
       sideMenu.removeAttribute("inert");
+      sideMenu
+        .querySelector("button:not([disabled])")
+        ?.focus({ preventScroll: true });
     } else {
       sideMenu.setAttribute("inert", "");
     }
@@ -58,6 +61,7 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     initialFocusElement: closeMcqModalButton,
     modal: mcqModal,
   });
+  let mcqGraded = false;
 
   const openMcqLevel = (level, triggerElement) => {
     const meta = MCQ_LEVEL_META[level];
@@ -76,12 +80,14 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     mcqIntro.textContent = `${state.activeMcqQuestions.length} questions. Pass mark ${meta.passMark}.`;
     renderMcqQuestions(mcqContainer, state.activeMcqQuestions);
     mcqResult.textContent = "";
-    mcqResult.style.color = "";
+    mcqResult.className = "result-text";
     mcqResult.hidden = true;
+    mcqGraded = false;
+    submitMcqButton.textContent = "Submit answers";
     submitMcqButton.disabled = false;
 
     setSideMenuOpen(false);
-    mcqModalController.open({ triggerElement });
+    mcqModalController.open({ triggerElement: burgerIcon });
   };
 
   burgerIcon.addEventListener("click", () => {
@@ -102,18 +108,25 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     if (!state.activeMcqQuestions.length) {
       return;
     }
+    if (mcqGraded) {
+      openMcqLevel(state.activeMcqLevel, burgerIcon);
+      return;
+    }
 
     const answers = getMcqAnswers(state.activeMcqQuestions);
     if (!answers) {
       mcqResult.textContent = "Please answer all questions before submitting.";
-      mcqResult.style.color = "#c4171d";
+      mcqResult.className = "result-text is-review";
       mcqResult.hidden = false;
+      Array.from(mcqContainer.querySelectorAll("fieldset.question"))
+        .find((question) => !question.querySelector("input:checked"))
+        ?.querySelector("input")
+        ?.focus();
       return;
     }
 
     const score = gradeMcq(state.activeMcqQuestions, answers);
     revealMcqFeedback(mcqContainer, state.activeMcqQuestions, answers);
-    submitMcqButton.disabled = true;
     mcqResult.hidden = false;
 
     const passMark = MCQ_LEVEL_META[state.activeMcqLevel].passMark;
@@ -130,11 +143,14 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
         ),
         star,
       );
-      mcqResult.style.color = "#0f9644";
+      mcqResult.className = "result-text is-pass";
     } else {
-      mcqResult.textContent = `Score ${score}/${state.activeMcqQuestions.length} - Needs more practice`;
-      mcqResult.style.color = "#c4171d";
+      mcqResult.textContent = `Score ${score}/${state.activeMcqQuestions.length} - Review and retry`;
+      mcqResult.className = "result-text is-review";
     }
+    mcqGraded = true;
+    submitMcqButton.textContent = didPass ? "New attempt" : "Try again";
+    submitMcqButton.disabled = false;
   });
 
   document.addEventListener("click", (event) => {
@@ -158,7 +174,11 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
       return;
     }
 
+    const menuWasOpen = sideMenu.classList.contains("open");
     setSideMenuOpen(false);
+    if (menuWasOpen) {
+      burgerIcon.focus({ preventScroll: true });
+    }
     mcqModalController.close();
   });
 }

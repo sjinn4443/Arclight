@@ -121,3 +121,15 @@ _Last updated: 18/5/2026_
   - signed input/output rendering
   - drawer and info popup behavior
   - no unintended vertical overflow
+
+# Fleet upgrade tooling — 23 July 2026
+
+Runtime has no CDN dependency. Use `npm run build` with pinned esbuild 0.25.5 and `npm test` for contracts. Continue to run both workbook audit modes before and after any future heuristic work.
+
+## Refactor verification — 26 July 2026
+
+`npm run build` and `npm test` pass. The test command includes exact bundle parity after normalising only line endings. The new local lockfile records pinned esbuild `0.25.5`.
+
+The app-bar information-glyph correction uses stylesheet and cache version `20260726-info2`. `npm test` protects the shared `21px` size, blue app-bar accent and removal of the legacy inner ring.
+
+The MCQ quality pass uses browser-visible token and Refract-only cache token `20260726-mcqquality2`. The authored MCQ data remains outside `app.bundle.js` by design. `npm run build` and `npm test` pass, including stable-ID, source, rationale, interaction, retry-scroll and exact bundle-parity contracts.

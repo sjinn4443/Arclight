@@ -1,5 +1,17 @@
 # Product Context
 
+## Timed-test integrity, 25 July 2026
+
+Test me must conceal authored answers: a generated hidden axis must not move the visible streak before reveal. Baby mode must use only cases in the Baby catalogue while retaining the test pool's existing exclusions. The exaggerated ACG oval is an intentional teaching exaggeration and must remain, with wording that prevents it being mistaken for a diagnostic pupil shape.
+
+## Case curriculum and safety presentation, 25 July 2026
+
+Case tiers express teaching difficulty rather than clinical urgency. Urgent teaching examples use a separate red warning triangle so the tier and safety meanings are not conflated. The four warning notes are concise teaching prompts and do not turn Sauron into a diagnostic or referral tool.
+
+## v1.1 safety boundary
+
+The app remains a teaching simulator, not a final refraction or clinical decision tool. Reset is deliberate and confirmed. Offline packaging does not change the simulator's clinical or teaching scope.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -91,3 +103,7 @@ Sauron now covers:
 - `ACG`, aniridia, aphakia, iris transillumination and nasal coloboma
 - cortical cataract, posterior subcapsular cataract, posterior pole cataract, dense cataract and posterior capsular thickening after `IOL`
 - floaters, vitreous haemorrhage, leucocoria and partial retinal detachment
+
+## MCQ review experience — 26 July 2026
+
+An incomplete attempt must focus the first unanswered item without partial grading. A completed attempt should show result, correct-answer rationales and source status before `Try again` or `New attempt`. Clinical review of pathology visuals remains an external gate.

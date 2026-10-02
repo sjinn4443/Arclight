@@ -10,30 +10,15 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Trauma" />
+    <meta name="theme-color" content="#000000" />
     <title>Trauma</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="manifest" href="manifest.webmanifest" />
 
-    <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@700&display=swap"
-      />
-    </noscript>
-
-    <link rel="stylesheet" href="styles.css?v=20260518-sidebar" />
+    <link rel="stylesheet" href="styles.css?v=20260928-ui1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header class="app-bar">
@@ -42,6 +27,8 @@
         class="appbar-button appbar-button-left"
         type="button"
         aria-label="Open menu"
+        aria-controls="sidebar"
+        aria-expanded="false"
       >
         <span class="appbar-glyph appbar-glyph-menu" aria-hidden="true"></span>
       </button>
@@ -51,13 +38,16 @@
         class="appbar-button appbar-button-right"
         type="button"
         aria-label="Open information"
+        aria-controls="infoModal"
+        aria-expanded="false"
+        aria-haspopup="dialog"
       >
         <span class="appbar-glyph appbar-glyph-info" aria-hidden="true">i</span>
       </button>
     </header>
 
     <div id="menu-backdrop" class="menu-backdrop" hidden></div>
-    <aside id="sidebar" class="side-menu" inert>
+    <aside id="sidebar" class="side-menu" aria-hidden="true" inert>
       <div class="side-menu-header">
         <h2 class="side-menu-title">Menu</h2>
         <button
@@ -74,15 +64,12 @@
         <div class="mcq-level-menu" role="group" aria-label="MCQ levels">
           <button class="mcq-level-button" data-level-index="0" type="button">
             <span class="mcq-level-button-text">Primary</span>
-            <span class="mcq-level-button-meta">Core use</span>
           </button>
           <button class="mcq-level-button" data-level-index="1" type="button">
             <span class="mcq-level-button-text">Intermediate</span>
-            <span class="mcq-level-button-meta">Applied scoring</span>
           </button>
           <button class="mcq-level-button" data-level-index="2" type="button">
             <span class="mcq-level-button-text">Advanced</span>
-            <span class="mcq-level-button-meta">Boundary cases</span>
           </button>
         </div>
         <section
@@ -116,6 +103,14 @@
         <p class="mcq-menu-note">
           Start simple, then build scoring confidence.
         </p>
+        <button id="resetCaseButton" class="reset-case-button" type="button">
+          Reset case
+        </button>
+        <p
+          id="resetCaseStatus"
+          class="reset-case-status"
+          aria-live="polite"
+        ></p>
       </section>
     </aside>
 
@@ -223,8 +218,15 @@
       </section>
     </main>
 
-    <div id="mcqModal" class="modal">
-      <div class="modal-content mcq-modal-content">
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content mcq-modal-content" tabindex="-1">
         <button
           id="closeMcqModal"
           class="close-button"
@@ -236,6 +238,7 @@
         <h2 id="mcqModalTitle">MCQ Test</h2>
         <p id="mcqModalIntro" class="mcq-modal-intro"></p>
         <form id="mcqForm" class="mcq-form"></form>
+        <div id="mcqResult" class="mcq-result" aria-live="polite"></div>
         <div class="mcq-actions">
           <button id="submitMcqButton" class="mcq-action-button" type="button">
             Submit answers
@@ -246,15 +249,21 @@
             type="button"
             hidden
           >
-            Try another set
+            Try again
           </button>
         </div>
-        <div id="mcqResult" class="mcq-result" aria-live="polite"></div>
       </div>
     </div>
 
-    <div id="infoModal" class="modal">
-      <div class="modal-content">
+    <div
+      id="infoModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="infoModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" tabindex="-1">
         <button
           id="closeModal"
           class="close-button"
@@ -264,76 +273,70 @@
           &times;
         </button>
         <div class="info-popup-header">
-          <h2>Ocular Trauma Score</h2>
+          <h2 id="infoModalTitle">Ocular Trauma Score</h2>
         </div>
         <div class="info-popup-body">
-          <p>
-            Health workers in LMICs must manage eye trauma as best they can.
-            Predicted 6-month visual outcomes give realism for patients and
-            families and guide complex and expensive interventions. Accurate in
-            about 80% of mechanical injuries; excludes chemical, electrical,
-            heat and major facial injuries.
+          <section class="info-look-section info-look-section--intro">
+            <p class="info-section-title">Purpose</p>
+            <p class="info-purpose-copy">
+              Use this after an eye-injury assessment: you select the presenting
+              VA and risk findings you observed. The app estimates visual
+              prognosis using its configured OTS-style calculation. It does not
+              determine treatment urgency or replace trauma management.
+            </p>
+            <p>
+              Published OTS estimates are about 80% accurate for mechanical
+              injuries. This app excludes chemical, electrical, heat and major
+              facial injuries.
+            </p>
+          </section>
+          <section class="info-look-section info-look-section--method">
+            <p class="info-section-title">Use</p>
+            <p>
+              <strong>Select VA then pick risks</strong>
+              -&gt; computed score, category number and table are shown.
+            </p>
+          </section>
+          <section class="info-look-section info-look-section--reference">
+            <p class="info-section-title">Reference</p>
+            <p>
+              Read in-depth
+              <a
+                href="https://cehjournal.org/articles/497/files/65de03ec5f8e7.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                >CEHJ article</a
+              >
+              and always use calm and methodical judgement.
+            </p>
+          </section>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
           </p>
-          <p>
-            <strong>Select VA then pick risks</strong>
-            <em> -&gt; computed score, category number and table are shown.</em>
-          </p>
-          <p>
-            Read in-depth
-            <a
-              href="https://cehjournal.org/articles/497/files/65de03ec5f8e7.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              >CEHJ article</a
-            >
-            and always use calm and methodical judgement.
-          </p>
-          <div class="modal-version">v1 - 18/5/2026</div>
         </div>
       </div>
     </div>
 
-    <script src="script.js?v=20260509-symbols"></script>
-    <script>
-      const infoIcon = document.getElementById("info-icon");
-      const infoModal = document.getElementById("infoModal");
-      const closeModal = document.getElementById("closeModal");
-      const sidebarToggle = document.getElementById("sidebar-toggle");
-      const sidebar = document.getElementById("sidebar");
-      const closeSidebar = document.getElementById("close-sidebar");
-      const backdrop = document.getElementById("menu-backdrop");
-
-      function setModalState(open) {
-        infoModal.style.display = open ? "block" : "none";
-      }
-
-      function setSidebarState(open) {
-        sidebar.classList.toggle("is-open", open);
-        sidebar.inert = !open;
-        backdrop.hidden = !open;
-      }
-
-      infoIcon.addEventListener("click", () => {
-        setModalState(infoModal.style.display !== "block");
-      });
-
-      closeModal.addEventListener("click", () => setModalState(false));
-      sidebarToggle.addEventListener("click", () => setSidebarState(true));
-      closeSidebar.addEventListener("click", () => setSidebarState(false));
-      backdrop.addEventListener("click", () => setSidebarState(false));
-
-      window.addEventListener("click", (event) => {
-        if (event.target === infoModal) setModalState(false);
-      });
-
-      window.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          setSidebarState(false);
-          setModalState(false);
-        }
-      });
-    </script>
-    <script src="cup-achievement.js"></script>
+    <script src="scoring-engine.js?v=20260929-ots1"></script>
+    <script src="script.js?v=20260929-ots1"></script>
+    <script src="shell-controller.js?v=20260726-refactor1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
+    <script src="pwa.js"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

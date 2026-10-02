@@ -18,12 +18,14 @@
   const TONIC_CAPTURE_GAIN = 0.42;
   const TONIC_CAPTURE_BIAS = 0.55;
   const TONIC_REDILATION_TAU_MS = 2200;
+  const NEAR_CONSTRICTION_MAX = 9;
   const SEGMENTAL_WORMY_AMPLITUDE = 0.35;
   const SEGMENTAL_WORMY_AMPLITUDE_2 = 0.18;
   const SEGMENTAL_WORMY_FREQ_HZ = 2.3;
   const SEGMENTAL_WORMY_FREQ_2_HZ = 3.9;
-  const SWING_TRANSFER_MIN_MS = 320;
-  const SWING_TRANSFER_MAX_MS = 760;
+  const SWING_TRANSFER_MIN_MS = 460;
+  const SWING_TRANSFER_MAX_MS = 880;
+  const LIGHT_PILL_FULL_SWEEP_MS = 700;
   const SWING_REBOUND_MS = 460;
   const SWING_REBOUND_AMPLITUDE = 0.9;
   const SWING_STABILISE_MS = 3000;
@@ -68,6 +70,15 @@
     left: { carryPx: 0 },
     right: { carryPx: 0 },
   };
+  let lightPillSweepRafId = null;
+
+  function cancelLightPillSweep() {
+    if (lightPillSweepRafId !== null) {
+      cancelAnimationFrame(lightPillSweepRafId);
+      lightPillSweepRafId = null;
+    }
+    document.getElementById("light-pill")?.classList.remove("is-sweeping");
+  }
 
   function clampNumber(value, min, max) {
     return Math.min(Math.max(Number(value) || 0, min), max);
@@ -201,18 +212,21 @@
 
   function getLightPositionGain(lightSide) {
     const pos = getLightPillPosition();
+    let excursion = 0;
     if (lightSide === "left") {
-      return clampNumber(1 - 0.45 * pos, 0.55, 1);
+      excursion = clampNumber((0.5 - pos) * 2, 0, 1);
+    } else if (lightSide === "right") {
+      excursion = clampNumber((pos - 0.5) * 2, 0, 1);
+    } else {
+      return 0;
     }
-    if (lightSide === "right") {
-      return clampNumber(1 - 0.45 * (1 - pos), 0.55, 1);
-    }
-    return 0;
+    return excursion * excursion * (3 - 2 * excursion);
   }
 
   function getSideStimulus(side) {
     const lightSide = String(side || "none").toLowerCase();
     if (lightSide !== "left" && lightSide !== "right") return 0;
+    if (AppStateRef.state.coverEye === lightSide) return 0;
     const gain = getLightAfferentGain(lightSide);
     const positionGain = getLightPositionGain(lightSide);
     return gain * positionGain;
@@ -552,16 +566,21 @@
       arrow.textContent = side === "right" ? "<" : ">";
     }
 
-    zone.setAttribute("aria-valuenow", String(Math.round(position * 100)));
-    zone.setAttribute(
+    pill.setAttribute("aria-valuenow", String(Math.round(position * 100)));
+    pill.setAttribute(
       "aria-valuetext",
-      side === "right" ? "Left eye temporal side" : "Right eye temporal side",
+      isActive
+        ? side === "right"
+          ? "Left eye temporal side illuminated"
+          : "Right eye temporal side illuminated"
+        : "Centred, torch off",
     );
   }
 
   function setupLightPillControl() {
     const zone = document.getElementById("light-drag-zone");
     const pill = document.getElementById("light-pill");
+    setupNearControl();
     if (!zone || !pill) return;
     if (zone.dataset.boundLightPill === "1") {
       syncLightPillVisual();
@@ -573,7 +592,7 @@
     let dragMoved = false;
     let startX = 0;
     let startY = 0;
-    let wasActiveOnPress = false;
+    let activeSideOnPress = "none";
     let tapSide = getLightSideFromPosition(getLightPillPosition());
 
     function positionFromClientX(clientX) {
@@ -606,20 +625,88 @@
       }
     }
 
-    function snapPillBackToCentre() {
-      AppStateRef.state.lightPillPos = 0.5;
-      AppStateRef.state.lightPillSide = getLightSideFromPosition(0.5);
-      setLightState("none", { allowToggle: false });
+    function animatePillSweep(targetPosition, options = {}) {
+      const destination = clampNumber(targetPosition, 0, 1);
+      const startPosition = getLightPillPosition();
+      const targetSide =
+        options.targetSide === "left" || options.targetSide === "right"
+          ? options.targetSide
+          : getLightSideFromPosition(destination);
+      const turnOffAtEnd = Boolean(options.turnOffAtEnd);
+      const startingSide = String(
+        AppStateRef.state.activeLightSide || "none",
+      ).toLowerCase();
+      const distance = Math.abs(destination - startPosition);
+      const durationMs = prefersReducedMotion()
+        ? 120
+        : Math.max(220, LIGHT_PILL_FULL_SWEEP_MS * distance);
+      const startedAt = performance.now();
+      let sideTransferred =
+        startingSide === "none" || startingSide === targetSide;
+
+      cancelLightPillSweep();
+      pill.classList.add("is-sweeping");
+
+      if (!turnOffAtEnd && startingSide === "none") {
+        setLightState(targetSide, {
+          allowToggle: false,
+          silent: false,
+          preserveSweep: true,
+        });
+      }
+
+      const step = (now) => {
+        const progress = clampNumber(
+          (now - startedAt) / Math.max(durationMs, 1),
+          0,
+          1,
+        );
+        const eased = 0.5 - Math.cos(Math.PI * progress) / 2;
+        const position = startPosition + (destination - startPosition) * eased;
+        AppStateRef.state.lightPillPos = position;
+        AppStateRef.state.lightPillSide = getLightSideFromPosition(position);
+
+        if (!turnOffAtEnd && !sideTransferred && progress >= 0.5) {
+          sideTransferred = true;
+          setLightState(targetSide, {
+            allowToggle: false,
+            silent: false,
+            preserveSweep: true,
+          });
+        } else {
+          refreshLightVisualState();
+          refreshLightPupilResponse();
+        }
+
+        if (progress < 1) {
+          lightPillSweepRafId = requestAnimationFrame(step);
+          return;
+        }
+
+        lightPillSweepRafId = null;
+        pill.classList.remove("is-sweeping");
+        AppStateRef.state.lightPillPos = destination;
+        AppStateRef.state.lightPillSide = getLightSideFromPosition(destination);
+        if (turnOffAtEnd) {
+          setLightState("none", { allowToggle: false, preserveSweep: true });
+        } else {
+          setLightState(targetSide, {
+            allowToggle: false,
+            preserveSweep: true,
+          });
+        }
+      };
+
+      lightPillSweepRafId = requestAnimationFrame(step);
     }
 
-    function activateSideFromCentre(side) {
-      const targetSide =
-        side === "left" || side === "right"
-          ? side
-          : getLightSideFromPosition(0.5);
-      AppStateRef.state.lightPillPos = 0.5;
-      AppStateRef.state.lightPillSide = targetSide;
-      setLightState(targetSide, { allowToggle: false });
+    function sweepPillBackToCentre() {
+      animatePillSweep(0.5, { turnOffAtEnd: true });
+    }
+
+    function sweepPillToSide(side) {
+      const targetSide = side === "left" ? "left" : "right";
+      animatePillSweep(targetSide === "left" ? 0 : 1, { targetSide });
     }
 
     function onPointerMove(event) {
@@ -645,24 +732,25 @@
       pill.classList.remove("is-dragging");
 
       if (!dragMoved) {
-        if (wasActiveOnPress) {
-          snapPillBackToCentre();
+        if (activeSideOnPress === tapSide) {
+          sweepPillBackToCentre();
         } else {
-          activateSideFromCentre(tapSide);
+          sweepPillToSide(tapSide);
         }
       } else {
-        snapPillBackToCentre();
+        sweepPillBackToCentre();
       }
     }
 
     zone.addEventListener("pointerdown", (event) => {
-      AppStateRef.markManualInteraction();
+      cancelLightPillSweep();
       activePointerId = event.pointerId;
       dragMoved = false;
       startX = event.clientX;
       startY = event.clientY;
-      wasActiveOnPress =
-        String(AppStateRef.state.activeLightSide || "none") !== "none";
+      activeSideOnPress = String(
+        AppStateRef.state.activeLightSide || "none",
+      ).toLowerCase();
       tapSide = sideFromClientX(event.clientX);
       zone.setPointerCapture(activePointerId);
       zone.addEventListener("pointermove", onPointerMove);
@@ -670,7 +758,139 @@
       zone.addEventListener("pointercancel", onPointerEnd);
     });
 
+    pill.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        event.preventDefault();
+        if (event.repeat) return;
+        sweepPillToSide(event.key === "ArrowLeft" ? "left" : "right");
+        return;
+      }
+      if (event.key === "Home" || event.key === "Escape") {
+        event.preventDefault();
+        sweepPillBackToCentre();
+      }
+    });
+
+    pill.addEventListener("keyup", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      sweepPillBackToCentre();
+    });
+
+    pill.addEventListener("blur", () => {
+      if (String(AppStateRef.state.activeLightSide || "none") === "none")
+        return;
+      sweepPillBackToCentre();
+    });
+
     syncLightPillVisual();
+  }
+
+  function syncNearVisual() {
+    const button = document.getElementById("near-target-btn");
+    if (!button) return;
+    const active = Boolean(AppStateRef.state.nearActive);
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+
+  function applyNearConvergence(active) {
+    const amountPx = active ? 4 : 0;
+    document.querySelectorAll(".eye").forEach((eye) => {
+      const eyeType = String(eye.dataset.eye || "").toLowerCase();
+      const iris = eye.querySelector(".iris");
+      if (!iris) return;
+      const preset = String(
+        AppStateRef.state.activePresetKey || "",
+      ).toLowerCase();
+      // Match the authored LE adduction restrictions. INO deliberately retains
+      // convergence; Brown and the thyroid example restrict elevation, not this movement.
+      let nearGain = 1;
+      if (eyeType === "right") {
+        if (
+          [
+            "3rd nerve palsy",
+            "compressive 3rd nerve palsy",
+            "pupil-sparing 3rd nerve palsy",
+          ].includes(preset)
+        )
+          nearGain = 0.16;
+        if (preset === "duane type i-like") nearGain = 0.72;
+      }
+      iris.nearOffset = {
+        x: (eyeType === "left" ? amountPx : -amountPx) * nearGain,
+        y: 0,
+      };
+      globalObj.EyeController?.updateIrisTransform(iris);
+    });
+  }
+
+  function setNearState(active, options = {}) {
+    const next = Boolean(active);
+    if (
+      next &&
+      String(AppStateRef.state.activeLightSide || "none") !== "none"
+    ) {
+      setLightState("none", { allowToggle: false, silent: true });
+    }
+    AppStateRef.state.nearActive = next;
+    applyNearConvergence(next);
+    syncNearVisual();
+    refreshLightPupilResponse();
+    if (!options.silent) OutputWriterRef.updateAllOutputs();
+  }
+
+  function setupNearControl() {
+    const button = document.getElementById("near-target-btn");
+    if (!button || button.dataset.boundNear === "1") {
+      syncNearVisual();
+      return;
+    }
+    button.dataset.boundNear = "1";
+    let pointerId = null;
+
+    const release = (event) => {
+      if (
+        event?.pointerId !== undefined &&
+        pointerId !== null &&
+        event.pointerId !== pointerId
+      )
+        return;
+      if (pointerId !== null) {
+        try {
+          button.releasePointerCapture(pointerId);
+        } catch (_error) {
+          // Pointer capture may already have been released.
+        }
+      }
+      pointerId = null;
+      setNearState(false);
+    };
+
+    button.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      pointerId = event.pointerId;
+      button.setPointerCapture(pointerId);
+      setNearState(true);
+    });
+    button.addEventListener("pointerup", release);
+    button.addEventListener("pointercancel", release);
+    button.addEventListener("keydown", (event) => {
+      if (event.key === " " || event.key === "Enter") {
+        event.preventDefault();
+        setNearState(true);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        setNearState(false);
+      }
+    });
+    button.addEventListener("keyup", (event) => {
+      if (event.key !== " " && event.key !== "Enter") return;
+      event.preventDefault();
+      setNearState(false);
+    });
+    button.addEventListener("blur", () => setNearState(false));
+    syncNearVisual();
   }
 
   function refreshLightVisualState() {
@@ -759,11 +979,14 @@
       const iris = eye.querySelector(".iris");
       if (!slider || !pupil) return;
 
-      const baseSize = clampNumber(
+      const authoredSize = clampNumber(
         slider.value || AppStateRef.BASE_PUPIL_SIZE,
         10,
         55,
       );
+      const baseSize = document.body.classList.contains("is-dilated-mode")
+        ? 50
+        : authoredSize;
       const reactivity = getEyePupilReactivity(eyeType);
       const model = getEyePupilModel(eyeType);
       const ambientConstrictionPx = Number(
@@ -773,21 +996,30 @@
       const isPeakedModel = model === "peaked";
       const isHyporeactive = reactivity > 0 && reactivity < 0.5;
       const isTonicEye = isAdieModel && isHyporeactive;
-      const hasDirectLight = isLightActive && lightSide === eyeType;
+      const hasDirectLight =
+        isLightActive && lightSide === eyeType && getSideStimulus(eyeType) > 0;
+      const nearActive = Boolean(AppStateRef.state.nearActive);
+      let nearGain = reactivity;
+      if (model === "adie" || model === "argyll-robertson") nearGain = 0.92;
+      if (model === "pharmacological-mydriasis") nearGain = 0;
+      const nearConstriction = nearActive
+        ? NEAR_CONSTRICTION_MAX * nearGain
+        : 0;
+      const hasNearStimulus = nearActive && nearGain > 0;
       const coverFluctuationForEye =
         lightTransferState.coverPulseEye === "both" ||
         lightTransferState.coverPulseEye === eyeType
           ? coverFluctuation
           : 0;
-      const eyeConstriction = constrictionPx * reactivity;
+      const eyeConstriction = constrictionPx * reactivity + nearConstriction;
       const eyeAmbientConstriction = ambientConstrictionPx * reactivity;
       const eyeHippus = hippus * reactivity;
       const tonicEyeState = tonicPupilState[eyeType] || { carryPx: 0 };
 
       if (isTonicEye) {
-        if (hasDirectLight) {
-          const capture =
-            eyeConstriction * TONIC_CAPTURE_GAIN + TONIC_CAPTURE_BIAS;
+        if (hasDirectLight || hasNearStimulus) {
+          const captureGain = hasNearStimulus ? 0.86 : TONIC_CAPTURE_GAIN;
+          const capture = eyeConstriction * captureGain + TONIC_CAPTURE_BIAS;
           tonicEyeState.carryPx = Math.max(tonicEyeState.carryPx, capture);
         } else {
           const decay = Math.exp(-Math.max(dtMs, 0) / TONIC_REDILATION_TAU_MS);
@@ -798,7 +1030,8 @@
       }
       tonicPupilState[eyeType] = tonicEyeState;
 
-      const tonicCarryPx = hasDirectLight ? 0 : tonicEyeState.carryPx;
+      const tonicCarryPx =
+        hasDirectLight || hasNearStimulus ? 0 : tonicEyeState.carryPx;
       const allowSegmentalWormy =
         hasDirectLight && includeHippus && (isAdieModel || isPeakedModel);
       const wormyGain = isPeakedModel ? 1.22 : 1;
@@ -901,6 +1134,7 @@
       AppStateRef.state.activeLightSide || "none",
     ).toLowerCase();
     const isLightActive = lightSide === "left" || lightSide === "right";
+    const isNearActive = Boolean(AppStateRef.state.nearActive);
     const transferOrReboundActive =
       lightTransferState.active ||
       lightTransferState.reboundStartAt > 0 ||
@@ -918,6 +1152,7 @@
 
     if (
       !isLightActive &&
+      !isNearActive &&
       !transferOrReboundActive &&
       !coverFluctActive &&
       isSettled &&
@@ -943,6 +1178,7 @@
   }
 
   function setLightState(side, options = {}) {
+    if (!options.preserveSweep) cancelLightPillSweep();
     const target = String(side || "none").toLowerCase();
     const current = String(
       AppStateRef.state.activeLightSide || "none",
@@ -1022,6 +1258,7 @@
     setLightState,
     setRapdValue,
     setAmbientLevel,
+    setNearState,
     triggerCoverPupilFluctuation,
     triggerCoverPupilFluctuationForEye,
   };

@@ -1,0 +1,101 @@
+Context Modifier QA Report
+==========================
+Generated: 2026-09-28T22:18:01.065Z
+
+Scope
+-----
+- Checks that onset, stroke/HA, old known, night vision, flash/curtain and colour fade alter only the intended output layer.
+- Verifies severity, likely source category and visual pathway target IDs for representative anterior, chiasmal, posterior and normal-field cases.
+
+Result
+------
+- Cases: 14
+- Issues: 0
+- Overall: PASS
+
+Matrix
+------
+- OK | stroke/HA raises urgency without moving posterior pattern
+  Pattern: leftHom | RAPD: none | Modifiers: neuroFlags=yes
+  Primary: Definite Left Homonymous Hemianopia
+  Display: Definite Left Homonymous Hemianopia
+  Source: posterior/left/high | Severity: urgent
+  Targets: part-calcarine-fissure-right, part-calcarine-lower-right, part-calcarine-upper-right, part-occipital-pole-right, part-occipital-right, part-radiation-right-a, part-radiation-right-b, part-v1-right
+- OK | flash/curtain raises urgency without moving posterior pattern
+  Pattern: leftHom | RAPD: none | Modifiers: flashesCurtain=yes
+  Primary: Definite Left Homonymous Hemianopia
+  Display: Definite Left Homonymous Hemianopia
+  Source: posterior/left/high | Severity: urgent
+  Targets: part-calcarine-fissure-right, part-calcarine-lower-right, part-calcarine-upper-right, part-occipital-pole-right, part-occipital-right, part-radiation-right-a, part-radiation-right-b, part-v1-right
+- OK | old known adds record note without changing pathway
+  Pattern: leftHom | RAPD: none | Modifiers: knownOldDefect=yes
+  Primary: Definite Left Homonymous Hemianopia
+  Display: Definite Left Homonymous Hemianopia
+  Source: posterior/left/high | Severity: caution
+  Targets: part-calcarine-fissure-right, part-calcarine-lower-right, part-calcarine-upper-right, part-occipital-pole-right, part-occipital-right, part-radiation-right-a, part-radiation-right-b, part-v1-right
+- OK | gradual adds history note without changing pathway
+  Pattern: leftHom | RAPD: none | Modifiers: onset=gradual
+  Primary: Definite Left Homonymous Hemianopia
+  Display: Definite Left Homonymous Hemianopia
+  Source: posterior/left/high | Severity: caution
+  Targets: part-calcarine-fissure-right, part-calcarine-lower-right, part-calcarine-upper-right, part-occipital-pole-right, part-occipital-right, part-radiation-right-a, part-radiation-right-b, part-v1-right
+- OK | sudden monocular loss without RAPD points to retina
+  Pattern: monoR | RAPD: none | Modifiers: onset=sudden
+  Primary: Definite Right Monocular Blind Eye
+  Display: Definite Right Monocular Blind Eye
+  Source: retina_likely/right/moderate | Severity: urgent
+  Targets: part-retina-right
+- OK | sudden monocular loss with matching RAPD retains retinal and optic nerve sources
+  Pattern: monoR | RAPD: right | Modifiers: onset=sudden
+  Primary: Definite Right Monocular Blind Eye
+  Display: Definite Right Monocular Blind Eye
+  Source: anterior_mixed/right/moderate | Severity: urgent
+  Targets: part-nerve-right, part-retina-right
+- OK | flash/curtain single-eye pattern becomes retinal-detachment headline
+  Pattern: monoR | RAPD: none | Modifiers: flashesCurtain=yes
+  Primary: Definite Right Monocular Blind Eye
+  Display: Suspected Right eye retinal detachment Pattern: Definite Right Monocular Blind Eye
+  Source: retina_likely/right/moderate | Severity: urgent
+  Targets: part-retina-right
+- OK | colour fade central scotoma points to optic nerve
+  Pattern: teachMonocularCentralScotoma | RAPD: none | Modifiers: colourFade=yes
+  Primary: Definite Right Monocular Central Scotoma
+  Display: Definite Right Monocular Central Scotoma
+  Source: optic_nerve_likely/right/moderate | Severity: caution
+  Targets: part-nerve-right
+- OK | night vision in tunnel pattern points to retinal degeneration
+  Pattern: teachTunnelVision | RAPD: none | Modifiers: nightVisionPoor=yes
+  Primary: Definite Bilateral Peripheral Constriction (Tunnel Vision)
+  Display: Definite Bilateral Peripheral Constriction (Tunnel Vision)
+  Source: retina_likely/both/moderate | Severity: caution
+  Targets: part-retina-left, part-retina-right
+- OK | colour fade in tunnel pattern points to optic nerve
+  Pattern: teachTunnelVision | RAPD: none | Modifiers: colourFade=yes
+  Primary: Definite Bilateral Peripheral Constriction (Tunnel Vision)
+  Display: Definite Bilateral Peripheral Constriction (Tunnel Vision)
+  Source: optic_nerve_likely/both/low | Severity: caution
+  Targets: part-nerve-left, part-nerve-right
+- OK | RAPD mismatch keeps anterior source mixed
+  Pattern: monoR | RAPD: left | Modifiers: base
+  Primary: Definite Right Monocular Blind Eye
+  Display: Definite Right Monocular Blind Eye
+  Source: anterior_mixed/right/low | Severity: caution
+  Targets: part-nerve-right, part-retina-right
+- OK | RAPD support in homonymous pattern narrows to tract
+  Pattern: leftHom | RAPD: left | Modifiers: base
+  Primary: Definite Left Homonymous Hemianopia
+  Display: Definite Left Homonymous Hemianopia
+  Source: posterior/left/high | Severity: caution
+  Targets: part-tract-right
+- OK | chiasmal pattern resists colour-fade relocalisation
+  Pattern: biTemp | RAPD: none | Modifiers: colourFade=yes
+  Primary: Definite Bitemporal Hemianopia
+  Display: Definite Bitemporal Hemianopia
+  Source: chiasmal/both/high | Severity: caution
+  Targets: part-chiasm, part-chiasm-a, part-chiasm-b
+- OK | normal fields with flash/curtain still show urgent context
+  Pattern: normal | RAPD: none | Modifiers: flashesCurtain=yes
+  Primary: Normal Full Fields of Vision
+  Display: Normal Full Fields of Vision
+  Source: unknown/both/low | Severity: urgent
+  Targets: (none)

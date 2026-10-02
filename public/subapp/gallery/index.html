@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Lightweight gallery of the 15 Arclight mini apps with mobile thumbnails and short descriptions."
+    />
+    <meta name="author" content="WJW" />
+    <meta name="date" content="30/9/2026" />
+    <title>Arclight Mini Apps</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="icon-skin" viewBox="0 0 24 24">
+        <path
+          d="M12 3c4.6 0 8 3.5 8 8.2 0 5.3-8 9.8-8 9.8s-8-4.5-8-9.8C4 6.5 7.4 3 12 3z"
+        ></path>
+        <path d="M9 10.5h.01M15 9h.01M13.5 15h.01"></path>
+      </symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24">
+        <path d="M4 4h16v16H4z"></path>
+        <path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"></path>
+      </symbol>
+      <symbol id="icon-referral" viewBox="0 0 24 24">
+        <path d="M6 18h12M6 14h8M6 10h6"></path>
+        <path d="M14 6h5v5M13 12l6-6"></path>
+      </symbol>
+      <symbol id="icon-fields" viewBox="0 0 24 24">
+        <path d="M5 5h14v14H5z"></path>
+        <path d="M12 5v14M5 12h14M8.5 8.5l7 7"></path>
+      </symbol>
+      <symbol id="icon-reflex" viewBox="0 0 24 24">
+        <path d="M4 12s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z"></path>
+        <circle cx="12" cy="12" r="2.2"></circle>
+        <path d="M12 3.5v2M19.5 4.5l-1.5 1.5M21 12h-2"></path>
+      </symbol>
+      <symbol id="icon-calculator" viewBox="0 0 24 24">
+        <rect x="6" y="3.5" width="12" height="17" rx="2"></rect>
+        <path
+          d="M8.5 7h7M9 11h.01M12 11h.01M15 11h.01M9 14.5h.01M12 14.5h.01M15 14.5h.01M9 18h6"
+        ></path>
+      </symbol>
+      <symbol id="icon-mires" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="7.5"></circle>
+        <circle cx="12" cy="12" r="3.5"></circle>
+        <path d="M12 2.8v4M12 17.2v4M2.8 12h4M17.2 12h4"></path>
+      </symbol>
+      <symbol id="icon-fundus" viewBox="0 0 24 24">
+        <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 8v8M8 12h8M15 9.5l2-1.5M15 14.5l2 1.5"></path>
+      </symbol>
+      <symbol id="icon-streak" viewBox="0 0 24 24">
+        <path d="M4 12s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z"></path>
+        <path d="M7.5 16.5l9-9M11 13l2-2"></path>
+      </symbol>
+      <symbol id="icon-motility" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="2.3"></circle>
+        <path
+          d="M4 12h5M15 12h5M6.5 9.5L4 12l2.5 2.5M17.5 9.5L20 12l-2.5 2.5M12 4v4M12 16v4"
+        ></path>
+      </symbol>
+      <symbol id="icon-disc" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="7"></circle>
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M15 12h4M5 12h4M12 5v4"></path>
+      </symbol>
+      <symbol id="icon-warning" viewBox="0 0 24 24">
+        <path d="M12 4l8 15H4L12 4z"></path>
+        <path d="M12 9v4M12 17h.01"></path>
+      </symbol>
+      <symbol id="icon-refraction" viewBox="0 0 24 24">
+        <circle cx="8" cy="12" r="4"></circle>
+        <circle cx="16" cy="12" r="4"></circle>
+        <path d="M12 12h0M4 11l-2-1M20 11l2-1"></path>
+      </symbol>
+    </svg>
+    <main class="gallery-shell">
+      <header class="gallery-header">
+        <p class="gallery-kicker">Arclight</p>
+        <h1>Mini Apps</h1>
+        <p>
+          Fifteen compact assessment and teaching tools. Select an app to open
+          it.
+        </p>
+      </header>
+      <section class="app-grid" aria-label="Mini app gallery">
+        <a
+          class="app-card"
+          data-app="Allan"
+          style="--accent: #a855f7"
+          href="../Allan/index.html"
+          title="Photograph and record observed skin findings for referral prompts."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/allan.webp"
+              width="180"
+              height="370"
+              decoding="async"
+              fetchpriority="high"
+              alt="Allan app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Allan</h2>
+              <span
+                class="app-type"
+                aria-label="Dermatology referral aid"
+                title="Dermatology referral aid"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-skin"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Photograph and record observed skin findings for referral prompts.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Amsler"
+          style="--accent: #ff2a18"
+          href="../Amsler/index.html"
+          title="Record fixation and grid distortion patterns."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/amsler.webp"
+              width="180"
+              height="370"
+              decoding="async"
+              fetchpriority="high"
+              alt="Amsler app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Amsler</h2>
+              <span
+                class="app-type"
+                aria-label="Grid assessment"
+                title="Grid assessment"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-grid"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Record fixation and grid distortion patterns.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Cataract"
+          style="--accent: #ff8c00"
+          href="../Cataract/index.html"
+          title="Record lens appearance and referral prompts."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/cataract.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Cataract app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Cataract</h2>
+              <span
+                class="app-type"
+                aria-label="Referral prompts"
+                title="Referral prompts"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-referral"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Record lens appearance and referral prompts.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Diabetic"
+          style="--accent: #e53e3e"
+          href="../diabetic/index.html"
+          title="Record retinal signs in both eyes for triage prompts."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/diabetic.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Diabetic app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Diabetic</h2>
+              <span
+                class="app-type"
+                aria-label="Retinal assessment"
+                title="Retinal assessment"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-fundus"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Record retinal signs in both eyes for triage prompts.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Discs"
+          style="--accent: #ff8c00"
+          href="../Discs/index.html"
+          title="Compare optic disc appearances and referral clues."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/discs.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Discs app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Discs</h2>
+              <span
+                class="app-type"
+                aria-label="Disc comparison"
+                title="Disc comparison"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-disc"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Compare optic disc appearances and referral clues.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Fields"
+          style="--accent: #2a82cf"
+          href="../Fields/home.html"
+          title="Record observed confrontation-field patterns."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/fields.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Fields app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Fields</h2>
+              <span
+                class="app-type"
+                aria-label="Field patterns"
+                title="Field patterns"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-fields"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Record observed confrontation-field patterns.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Fundal Reflex"
+          style="--accent: #f03b2f"
+          href="../Fundal Reflex/index.html"
+          title="Match reflex brightness, colour and symmetry."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/fundal-reflex.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Fundal Reflex app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Fundal Reflex</h2>
+              <span
+                class="app-type"
+                aria-label="Reflex comparison"
+                title="Reflex comparison"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-reflex"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Match reflex brightness, colour and symmetry.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Glaucoma"
+          style="--accent: #00d632"
+          href="../Glaucoma/index.html"
+          title="Approximate risk from disc, pressure and observed signs."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/glaucoma.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Glaucoma app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Glaucoma</h2>
+              <span class="app-type" aria-label="Risk guide" title="Risk guide"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-calculator"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Approximate risk from disc, pressure and observed signs.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Mires"
+          style="--accent: #00e928"
+          href="../Mires/index.html"
+          title="Practise Goldmann mire alignment and IOP estimation."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/mires.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Mires app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Mires</h2>
+              <span
+                class="app-type"
+                aria-label="Tonometry simulator"
+                title="Tonometry simulator"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-mires"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Practise Goldmann mire alignment and IOP estimation.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Morph"
+          style="--accent: #111111; --icon: #657084"
+          href="../Morph/index.html"
+          title="Explore fundus-view and instrument appearance."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/morph.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Morph app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Morph</h2>
+              <span
+                class="app-type"
+                aria-label="Fundus simulator"
+                title="Fundus simulator"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-fundus"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Explore fundus-view and instrument appearance.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Refract"
+          style="--accent: #2a82cf"
+          href="../Refract/index.html"
+          title="Estimate a cautious spectacle prescription from measured inputs."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/refract.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Refract app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Refract</h2>
+              <span
+                class="app-type"
+                aria-label="Refraction guide"
+                title="Refraction guide"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-refraction"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Estimate a cautious spectacle prescription from measured inputs.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Sauron"
+          style="--accent: #ff8c00"
+          href="../Sauron/index.html"
+          title="Practise retinoscopy reflex and streak interpretation."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/sauron.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Sauron app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Sauron</h2>
+              <span
+                class="app-type"
+                aria-label="Retinoscopy simulator"
+                title="Retinoscopy simulator"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-streak"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Practise retinoscopy reflex and streak interpretation.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Squint"
+          style="--accent: #ffb000"
+          href="../Squint/index.html"
+          title="Drag observed eye positions and explore motility."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/squint.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Squint app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Squint</h2>
+              <span
+                class="app-type"
+                aria-label="Motility simulator"
+                title="Motility simulator"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-motility"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Drag observed eye positions and explore motility.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Swollen Discs"
+          style="--accent: #f03b2f"
+          href="../Swollen Discs/index.html"
+          title="Compare disc margins, vessels and swelling clues."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/swollen-discs.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Swollen Discs app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Swollen Discs</h2>
+              <span
+                class="app-type"
+                aria-label="Disc assessment"
+                title="Disc assessment"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-disc"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Compare disc margins, vessels and swelling clues.
+            </p>
+          </div>
+        </a>
+        <a
+          class="app-card"
+          data-app="Trauma"
+          style="--accent: #ff3030"
+          href="../Trauma/index.html"
+          title="Record presenting vision and urgent injury signs."
+        >
+          <div class="app-thumb">
+            <img
+              src="thumbnails/trauma.webp"
+              width="180"
+              height="370"
+              loading="lazy"
+              decoding="async"
+              alt="Trauma app at a 360 by 740 mobile viewport"
+            />
+          </div>
+          <div class="app-body">
+            <div class="app-heading">
+              <h2>Trauma</h2>
+              <span
+                class="app-type"
+                aria-label="Red-flag guide"
+                title="Red-flag guide"
+                ><svg class="app-icon" aria-hidden="true">
+                  <use href="#icon-warning"></use></svg
+              ></span>
+            </div>
+            <p class="app-description">
+              Record presenting vision and urgent injury signs.
+            </p>
+          </div>
+        </a>
+      </section>
+      <footer
+        style="
+          text-align: right;
+          font-size: 11px;
+          padding-top: 16px;
+          color: #666;
+        "
+      >
+        v1 · Updated 30/9/2026
+      </footer>
+    </main>
+  </body>
+</html>

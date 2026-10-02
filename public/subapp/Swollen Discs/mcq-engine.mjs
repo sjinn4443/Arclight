@@ -81,11 +81,14 @@ export function buildMcqTest(
       : -1;
 
     return {
-      id: `q${questionIndex}`,
+      id: sourceQuestion.id || `q${questionIndex}`,
       prompt: sourceQuestion.question,
       choices,
       correctChoiceId:
-        correctChoice && correctChoiceIndex >= 0 ? choices[correctChoiceIndex].id : null
+        correctChoice && correctChoiceIndex >= 0 ? choices[correctChoiceIndex].id : null,
+      explanation: sourceQuestion.explanation || '',
+      source: sourceQuestion.source || '',
+      reviewStatus: sourceQuestion.reviewStatus || ''
     };
   });
 }
@@ -118,18 +121,25 @@ export function evaluateMcqSubmission(
       selectedChoiceText: selectedChoice ? selectedChoice.text : null,
       correctChoiceId: question.correctChoiceId,
       correctChoiceText: correctChoice ? correctChoice.text : null,
-      isCorrect
+      isCorrect,
+      explanation: question.explanation || '',
+      source: question.source || '',
+      reviewStatus: question.reviewStatus || ''
     };
   });
 
   const maxScore = questions.length;
   const passThreshold = maxScore === 0 ? 0 : Math.max(1, Math.ceil(maxScore * passRatio));
-  const passed = maxScore > 0 && score >= passThreshold;
+  const unansweredCount = details.filter((detail) => detail.selectedChoiceId === null).length;
+  const isComplete = maxScore > 0 && unansweredCount === 0;
+  const passed = isComplete && score >= passThreshold;
 
   return {
     score,
     maxScore,
     passThreshold,
+    unansweredCount,
+    isComplete,
     passed,
     details
   };
@@ -188,6 +198,9 @@ export function formatMcqResultText(result) {
     lines.push(`Your answer: ${selectedText}`);
     lines.push(`Correct answer: ${correctText}`);
     lines.push(`Status: ${detail.isCorrect ? 'Correct' : 'Incorrect'}`);
+    if (detail.explanation) {
+      lines.push(`Why: ${detail.explanation}`);
+    }
     lines.push('');
   });
 

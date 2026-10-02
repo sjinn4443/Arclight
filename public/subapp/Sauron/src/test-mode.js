@@ -2,6 +2,7 @@ import {
   TEST_REFRACTION_OPTIONS,
   TEST_COUNTDOWN_SEQUENCE,
 } from "./constants.js";
+import { getCaseList } from "./case-catalog.js";
 
 function dispatchInput(element) {
   if (!element) {
@@ -11,13 +12,40 @@ function dispatchInput(element) {
   element.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
-function sampleRandomCondition(lastValue) {
-  const candidates =
-    TEST_REFRACTION_OPTIONS.length > 1
-      ? TEST_REFRACTION_OPTIONS.filter((option) => option.value !== lastValue)
-      : TEST_REFRACTION_OPTIONS;
+export function getTimedTestCasePool({ babyOnly = false } = {}) {
+  if (!babyOnly) {
+    return TEST_REFRACTION_OPTIONS;
+  }
 
-  const pool = candidates.length ? candidates : TEST_REFRACTION_OPTIONS;
+  const babyCaseValues = new Set(
+    getCaseList({ babyOnly: true }).map((caseItem) => caseItem.value),
+  );
+  return TEST_REFRACTION_OPTIONS.filter((option) =>
+    babyCaseValues.has(option.value),
+  );
+}
+
+export function getTestRoundStartRotation(value) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) {
+    return 0;
+  }
+
+  return Math.max(-90, Math.min(90, numericValue));
+}
+
+function sampleRandomCondition(lastValue, { babyOnly = false } = {}) {
+  const availableCases = getTimedTestCasePool({ babyOnly });
+  const candidates =
+    availableCases.length > 1
+      ? availableCases.filter((option) => option.value !== lastValue)
+      : availableCases;
+
+  const pool = candidates.length ? candidates : availableCases;
+  if (!pool.length) {
+    return null;
+  }
+
   const index = Math.floor(Math.random() * pool.length);
   return pool[index];
 }
@@ -165,6 +193,11 @@ export function createTestModeController({
   function captureSnapshot() {
     return {
       activeRetEye: state.activeRetEye,
+      modifiers: [gazeToggle, dilatedToggle, manualEyeMoveToggle].map(
+        (control) => Boolean(control?.checked),
+      ),
+      dilatedPreviousPupilValues:
+        state.dilatedPreviousPupilValues?.slice() || null,
       corticalCataractPattern: state.corticalCataractPattern
         ? JSON.parse(JSON.stringify(state.corticalCataractPattern))
         : null,
@@ -185,6 +218,15 @@ export function createTestModeController({
     if (!snapshot) {
       return;
     }
+    [gazeToggle, dilatedToggle, manualEyeMoveToggle].forEach(
+      (control, index) => {
+        if (!control) return;
+        control.checked = snapshot.modifiers[index];
+        control.dispatchEvent(new Event("change", { bubbles: true }));
+      },
+    );
+    state.dilatedPreviousPupilValues =
+      snapshot.dilatedPreviousPupilValues?.slice() || null;
 
     if (reflexColorSlider && snapshot.reflexColorValue !== "") {
       reflexColorSlider.value = snapshot.reflexColorValue;
@@ -288,7 +330,12 @@ export function createTestModeController({
       );
     }
 
-    const nextCondition = sampleRandomCondition(state.testLastRefraction);
+    const roundStartRotation = getTestRoundStartRotation(
+      state.retStreakRotation,
+    );
+    const nextCondition = sampleRandomCondition(state.testLastRefraction, {
+      babyOnly: state.isBabyMode,
+    });
     if (!nextCondition) {
       return;
     }
@@ -299,6 +346,22 @@ export function createTestModeController({
     state.testCountdown = getCountdownForRound(state.testRoundIndex);
     state.testLastRefraction = nextCondition.value;
 
+    [gazeToggle, dilatedToggle, manualEyeMoveToggle].forEach((control) => {
+      if (!control) return;
+      control.checked = false;
+      control.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    [
+      reflexColorSlider,
+      cataractSlider,
+      nystagmusSlider,
+      ...pupilSizeSliders,
+      ...eyelidSliders,
+    ].forEach((control) => {
+      if (!control) return;
+      control.value = control.defaultValue;
+      dispatchInput(control);
+    });
     setObservationLock(true);
     setRefractionMask(true);
     if (typeof onCaseChange === "function") {
@@ -309,6 +372,10 @@ export function createTestModeController({
         refractionStateSelect.value = nextCondition.value;
       }
     }
+    if (retinoscopyRotationSlider) {
+      retinoscopyRotationSlider.value = String(roundStartRotation);
+    }
+    retinoscopyController.setRetStreakRotation(roundStartRotation);
 
     state.testRevealLabel = buildRevealLabel(nextCondition);
     renderBanner();

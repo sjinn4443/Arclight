@@ -1,5 +1,17 @@
 # System Patterns
 
+## Weighted live path — 30 September 2026
+
+The current calculation path is form context → `src/prescription-engine.js` → `src/weighted-prescribing.js` → the established component functions in `src/prescription-logic.js`. The old `src/prescribing-rules.js` remains the canonicalisation/limits source and historical ordered engine. Runtime code does not import the case CSV, expected outputs or workbook calibration lookup.
+
+`context.rightQuality` and `leftQuality` are optional scores from 0 to 10. A recorded score overrides that eye's accuracy flag; null falls back to the per-eye/global flag. `context.calm` and `repeat` are optional booleans, not missing-as-false defaults. Practice familiarity affects a weak adaptation modifier only. Explicit good VA and the no-current route remain separate. Preserve quarter-dioptre rounding, circular axis handling, plus-cylinder equivalence and missing-versus-zero checks.
+
+The engine exports one `PARAMETERS` object, 14 main `WEIGHTED_RULES` records and a fuller four-column `RULE_CATALOGUE` used by the interface. Add trace IDs have their own catalogue entries. The weighted chart generator imports these production definitions; regenerate it with `node tools/build-weighted-flowchart.mjs`. Its reviewed output is now promoted as the main chart. Future promotion requires visual checks and an explicit backup because `--promote` overwrites the main file without creating one. Keep the one-chart continuous-route layout contract and use the regenerated launcher to replace stale browser snapshots.
+
+The large-sphere allowance is a ramp: `ordinaryStep + max(0, gap−1.25 D)`, limited to `1.5 D`, with the established `0.25 D` high-sphere cap. Do not restore the rejected abrupt threshold or a quality-specific branch that reverses spherical progress when confidence rises. Complete-lens optical distance is not globally monotonic under the inherited separate reduced-cylinder policy; test and describe that limitation instead of claiming otherwise.
+
+Use `npm run build` to regenerate the bundle, `npm test` for contracts and the three scripts under `outputs/weighted-20260930/` for development replay, robustness and independent review. The current rule-review input mapping now includes recorded per-eye quality and tri-state calm/repeat; older tooling and historical scores may use different mappings. Saved pre-change sources and baseline analysis anchor comparisons. The inherited sphere target is clamped at zero before rounding so fractional inputs cannot cross plano through bias alone. Older architecture notes below are historical where they conflict with this entry.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -122,3 +134,13 @@ Refract is a client-side static web app that uses browser ES modules. `index.htm
 - Remote CDN dependencies for fonts/icons remain an operational dependency
 - Generated workbook calibration data can drift if the local workbook export changes and the generator is not rerun
 - The simplified app still collapses per-eye workbook quality into one global `accurate` toggle
+
+## Maintenance pattern — 26 July 2026
+
+- Keep form recalculation on one `input` event path.
+- Generate `app.bundle.js` only from `scripts.js` and its imports.
+- Keep `mcq-controller.js` separate and protect this boundary in the parity contract.
+
+App-bar information glyphs use the shared plain `21px` form inside a `44 x 44px` touch target. Use Refract's blue `appbar-accent` and do not add an inner circular outline.
+
+MCQ records must retain a stable `refract-{tier}-{NN}` ID, four distinct options, one valid `answerIndex`, a useful rationale, a known source key and explicit review status. Do not grade partially when answers are missing. After grading, show the result before explanations and source status, then expose `Try again` or `New attempt`.

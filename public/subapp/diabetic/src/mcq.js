@@ -1,7 +1,8 @@
 import {
   MCQ_BANKS,
   MCQ_LEVEL_META,
-} from "./mcq-data.js?v=20260518-findingdropdown";
+  MCQ_SOURCE_REFERENCES,
+} from "./mcq-data.js?v=20260726-mcq2";
 
 function shuffle(items) {
   const copy = [...items];
@@ -35,6 +36,8 @@ function makeElement(tagName, className, text) {
 }
 
 export function validateMcqBanks() {
+  const seenIds = new Set();
+  const seenPrompts = new Set();
   return Object.entries(MCQ_LEVEL_META).map(([level, meta]) => {
     const bank = MCQ_BANKS[level] || [];
     const invalidAnswers = bank.filter((question) => {
@@ -44,26 +47,68 @@ export function validateMcqBanks() {
         question.answer >= question.options.length
       );
     });
+    const invalidQuestions = bank.filter((question) => {
+      const normalisedPrompt = question.question.trim().toLocaleLowerCase();
+      const normalisedOptions = question.options.map((option) =>
+        option.trim().toLocaleLowerCase(),
+      );
+      const invalid =
+        !question.id ||
+        seenIds.has(question.id) ||
+        !question.question.trim() ||
+        seenPrompts.has(normalisedPrompt) ||
+        new Set(normalisedOptions).size !== normalisedOptions.length ||
+        !question.explanation?.trim() ||
+        !MCQ_SOURCE_REFERENCES[question.source];
+      seenIds.add(question.id);
+      seenPrompts.add(normalisedPrompt);
+      return invalid;
+    });
     return {
       level,
       expected: meta.targetBankSize,
       actual: bank.length,
       invalidAnswers: invalidAnswers.length,
+      invalidQuestions: invalidQuestions.length,
     };
   });
+}
+
+export function evaluateMcqAttempt(questions, selectedIndexes, passMark) {
+  const answers = Array.isArray(selectedIndexes) ? selectedIndexes : [];
+  const isComplete =
+    questions.length > 0 &&
+    answers.length === questions.length &&
+    answers.every(Number.isInteger);
+  const score = questions.reduce((total, question, questionIndex) => {
+    return total + (answers[questionIndex] === question.answer ? 1 : 0);
+  }, 0);
+
+  return {
+    isComplete,
+    score,
+    passed: isComplete && score >= passMark,
+    missedTopics: questions
+      .filter(
+        (question, questionIndex) => answers[questionIndex] !== question.answer,
+      )
+      .map((question) => question.topic),
+  };
 }
 
 export function createMcqController(elements) {
   let currentQuestions = [];
   let currentMeta = null;
+  let currentLevel = null;
+  let isGraded = false;
 
   function close() {
-    elements.modal.setAttribute("aria-hidden", "true");
-    elements.modal.hidden = true;
+    elements.closeModal(elements.modal);
   }
 
   function renderQuestion(question, questionIndex) {
     const card = makeElement("fieldset", "mcq-question");
+    card.dataset.questionId = question.id;
     const legend = makeElement(
       "legend",
       "mcq-question-title",
@@ -82,6 +127,11 @@ export function createMcqController(elements) {
       card.append(label);
     });
 
+    const explanation = makeElement("p", "mcq-explanation");
+    explanation.hidden = true;
+    explanation.setAttribute("aria-live", "polite");
+    card.append(explanation);
+
     return card;
   }
 
@@ -90,7 +140,9 @@ export function createMcqController(elements) {
     const bank = MCQ_BANKS[level];
     if (!meta || !bank) return;
 
+    currentLevel = level;
     currentMeta = meta;
+    isGraded = false;
     currentQuestions = shuffle(bank)
       .slice(0, meta.questionCount)
       .map(prepareQuestion);
@@ -98,24 +150,53 @@ export function createMcqController(elements) {
     elements.intro.textContent = `${meta.questionCount} questions. Pass mark ${meta.passMark}.`;
     elements.result.textContent = "";
     elements.result.className = "mcq-result";
+    elements.submit.textContent = "Submit";
     elements.submit.disabled = false;
     elements.container.replaceChildren(...currentQuestions.map(renderQuestion));
-    elements.modal.hidden = false;
-    elements.modal.setAttribute("aria-hidden", "false");
-    elements.modalContent.focus();
+    elements.openModal(
+      elements.modal,
+      elements.modalContent,
+      elements.returnFocus,
+    );
   }
 
   function submit() {
     if (!currentMeta) return;
+    if (isGraded) {
+      open(currentLevel);
+      return;
+    }
 
-    let score = 0;
-    const missedTopics = new Set();
-
-    currentQuestions.forEach((question, questionIndex) => {
+    const selectedIndexes = currentQuestions.map((question, questionIndex) => {
       const selected = elements.container.querySelector(
         `input[name="mcq_${questionIndex}"]:checked`,
       );
-      const selectedIndex = selected ? Number(selected.value) : -1;
+      return selected ? Number(selected.value) : null;
+    });
+    const evaluation = evaluateMcqAttempt(
+      currentQuestions,
+      selectedIndexes,
+      currentMeta.passMark,
+    );
+
+    if (!evaluation.isComplete) {
+      elements.result.textContent =
+        "Please answer all questions before submitting.";
+      elements.result.className = "mcq-result is-review";
+      const firstUnansweredIndex = selectedIndexes.findIndex(
+        (index) => !Number.isInteger(index),
+      );
+      elements.container
+        .querySelector(`input[name="mcq_${firstUnansweredIndex}"]`)
+        ?.focus();
+      return;
+    }
+
+    currentQuestions.forEach((question, questionIndex) => {
+      const selectedIndex = selectedIndexes[questionIndex];
+      const questionCard = elements.container.querySelector(
+        `[data-question-id="${question.id}"]`,
+      );
       const optionLabels = elements.container.querySelectorAll(
         `input[name="mcq_${questionIndex}"]`,
       );
@@ -131,27 +212,29 @@ export function createMcqController(elements) {
           label.classList.add("is-wrong");
         }
       });
-
-      if (selectedIndex === question.answer) {
-        score += 1;
-      } else {
-        missedTopics.add(question.topic);
+      const explanation = questionCard?.querySelector(".mcq-explanation");
+      if (explanation) {
+        explanation.textContent = `Why: ${question.explanation}`;
+        explanation.hidden = false;
       }
     });
 
-    const passed = score >= currentMeta.passMark;
-    elements.result.textContent = `Score ${score}/${currentMeta.questionCount}. ${passed ? "Pass." : "Review and retry."}`;
-    if (missedTopics.size > 0) {
+    elements.result.textContent = `Score ${evaluation.score}/${currentMeta.questionCount}. ${evaluation.passed ? "Pass." : "Review and retry."}`;
+    if (evaluation.missedTopics.length > 0) {
       const topics = makeElement(
         "p",
         "mcq-topics",
-        `Review: ${[...missedTopics].join(", ")}.`,
+        `Review: ${[...new Set(evaluation.missedTopics)].join(", ")}.`,
       );
       elements.result.append(topics);
     }
-    elements.result.classList.toggle("is-pass", passed);
-    elements.result.classList.toggle("is-review", !passed);
-    elements.submit.disabled = true;
+    elements.result.classList.toggle("is-pass", evaluation.passed);
+    elements.result.classList.toggle("is-review", !evaluation.passed);
+    isGraded = true;
+    elements.submit.textContent = evaluation.passed
+      ? "New attempt"
+      : "Try again";
+    elements.submit.disabled = false;
   }
 
   elements.close.addEventListener("click", close);

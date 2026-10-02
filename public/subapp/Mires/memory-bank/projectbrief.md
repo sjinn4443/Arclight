@@ -1,5 +1,9 @@
 # Project Brief
 
+## v1.1 update (23/7/2026)
+
+The established Goldmann and Newton teaching workflow is preserved. v1.1 adds local runtime assets, full-session reset, overlay accessibility, scoped offline support, automated contracts and restrained hierarchy polish without changing scoring or sampling.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -27,9 +31,13 @@ Secondary objectives:
 Current learning structure:
 
 - Simulator practice in two drawers:
-  - `Variable IOP's`
+  - `Variable IOPs`
   - `Newton IOP`
 - MCQ tiers:
   - Primary
   - Intermediate
   - Advanced
+
+## MCQ quality constraint — 26 July 2026
+
+MCQs teach Goldmann principles, technique, artefact recognition and safe interpretation. They must not test trainer buttons, timers or Cup mechanics. Preserve the simulator purpose, Newton scoring and 5, 6 and 7-question attempts. Clinical corrections require a cited source and independent sign-off remains separate.

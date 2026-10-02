@@ -45,7 +45,7 @@
   --surface-soft: #f5f7fb;
   --text-muted: #5c6677;
   --text-strong: #0f1625;
-  --shadow-soft: 0 8px 20px rgba(18, 23, 34, 0.08);
+  --shadow-soft: 0 6px 16px rgba(18, 23, 34, 0.07);
   --shadow-strong: 0 12px 28px rgba(16, 22, 33, 0.16);
   --focus: #0f6bdc;
   --success: #07a43f;
@@ -71,8 +71,8 @@ body {
 body {
   font-family: var(--font-ui);
   background:
-    radial-gradient(1000px 520px at -5% -15%, rgba(237, 37, 43, 0.12), transparent 60%),
-    radial-gradient(900px 500px at 105% -20%, rgba(15, 107, 220, 0.08), transparent 55%),
+    radial-gradient(1000px 520px at -5% -15%, rgba(237, 37, 43, 0.085), transparent 60%),
+    radial-gradient(900px 500px at 105% -20%, rgba(15, 107, 220, 0.065), transparent 55%),
     linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
   color: var(--text-strong);
   line-height: 1.4;
@@ -142,16 +142,6 @@ header h1 {
   transition: color var(--transition-fast);
 }
 
-.icon-symbol {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.2em;
-  height: 1.2em;
-  font-weight: 700;
-  line-height: 1;
-}
-
 .appbar-glyph {
   font-size: 21px;
   line-height: 1;
@@ -194,15 +184,6 @@ header h1 {
   content: 'i';
   font-size: 21px;
   line-height: 1;
-}
-
-.info-symbol {
-  width: 1.15em;
-  height: 1.15em;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  font-size: 0.72rem;
-  font-family: Arial, sans-serif;
 }
 
 .icon-button:hover {
@@ -658,6 +639,21 @@ body.simulate-phone-frame #fundusCanvas {
   white-space: nowrap;
 }
 
+/* Shared fleet sidebar type hierarchy. */
+.side-menu::before {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.side-menu-heading {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
 .cataract-stop.active {
   display: block;
   color: var(--text-strong);
@@ -698,7 +694,7 @@ body.simulate-phone-frame #fundusCanvas {
   display: block;
   margin-top: 2px;
   color: #5f6d82;
-  font-size: 0.58rem;
+  font-size: 0.625rem;
   font-weight: 700;
 }
 
@@ -850,27 +846,6 @@ body.simulate-phone-frame #fundusCanvas {
   min-width: 0;
 }
 
-.explanation-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 10px;
-  text-align: left;
-}
-
-.explanation-icon {
-  width: 20px;
-  height: auto;
-  margin-top: 2px;
-}
-
-.explanation-alert {
-  font-weight: 900;
-  text-transform: uppercase;
-  text-decoration: underline;
-  letter-spacing: 0.01em;
-}
-
 .side-menu {
   position: fixed;
   top: calc(var(--header-height) + env(safe-area-inset-top));
@@ -975,15 +950,6 @@ body.simulate-phone-frame #fundusCanvas {
   margin-top: 0;
   padding-top: 0;
   border-top: 0;
-}
-
-.timed-level-title {
-  margin: 2px 0 10px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #5f6d82;
 }
 
 .mcq-level-button[data-level-index='0'],
@@ -1174,6 +1140,10 @@ body.simulate-phone-frame #fundusCanvas {
   display: block;
 }
 
+#testModal {
+  padding: 10px;
+}
+
 .modal-content {
   position: relative;
   margin: 0 auto;
@@ -1202,11 +1172,43 @@ body.simulate-phone-frame #fundusCanvas {
   max-height: calc(100vh - var(--header-height) - env(safe-area-inset-top) - 18px);
   padding: 10px 14px 12px;
   border: 1px solid #b8c7dc;
-  border-radius: 14px;
+  border-radius: var(--radius-stage);
   background: #f8fbff;
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+.session-reset-section {
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--control-border);
+}
+
+.side-menu .session-reset-button {
+  border-color: rgba(219, 138, 8, 0.62);
+  background: #fff9ef;
+  color: var(--text-strong);
+}
+
+.side-menu .session-reset-button::before {
+  background: var(--warning);
+}
+
+.side-menu .session-reset-button[data-confirm='true'] {
+  background: #ffedcf;
+}
+
+.session-reset-hint {
+  display: block;
+  margin: var(--space-4) 2px 0;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.modal-content em,
+.modal-content i {
+  font-style: normal;
 }
 
 .info-popup-header {
@@ -1277,7 +1279,7 @@ body.simulate-phone-frame #fundusCanvas {
 }
 
 .info-basics-cue:nth-child(3) strong {
-  color: #d61f1f;
+  color: #f03b2f;
 }
 
 .info-basics-cue small {
@@ -1295,29 +1297,24 @@ body.simulate-phone-frame #fundusCanvas {
   background: #f3f7fc;
 }
 
-.modal-version {
-  margin-top: 2px !important;
-  color: #6e7c95;
-  font-size: 0.74em;
-  font-weight: 700;
-  text-align: right;
-}
-
 .mcq-modal-content {
-  max-height: min(86vh, 720px);
-  padding: 16px;
+  width: min(calc(100vw - 20px), 430px);
+  max-height: calc(100dvh - 20px);
+  padding: 12px;
   display: flex;
   flex-direction: column;
 }
 
 .mcq-modal-content h2 {
+  margin-bottom: 4px;
   padding-right: 38px;
+  font-size: 1.05rem;
 }
 
 .mcq-modal-content #testContainer {
   flex: 1 1 auto;
   min-height: 0;
-  margin: 0 -4px 12px 0;
+  margin: 0 -4px 8px 0;
   padding-right: 4px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -1343,11 +1340,11 @@ body.simulate-phone-frame #fundusCanvas {
 }
 
 .mcq-timer {
-  min-height: 24px;
-  margin: 0 0 10px;
-  font-size: 0.95rem;
+  min-height: 18px;
+  margin: 0 0 7px;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: var(--text-strong);
+  color: var(--text-muted);
 }
 
 .mcq-timer.is-warning {
@@ -1399,6 +1396,7 @@ body.simulate-phone-frame #fundusCanvas {
 }
 
 #infoModal #closeInfoModal {
+  position: relative;
   width: 30px;
   height: 30px;
   min-width: 30px;
@@ -1408,6 +1406,12 @@ body.simulate-phone-frame #fundusCanvas {
   font-size: 22px;
   font-weight: 600;
   box-shadow: none;
+}
+
+#infoModal #closeInfoModal::after {
+  position: absolute;
+  inset: -7px;
+  content: '';
 }
 
 #infoModal #closeInfoModal:hover {
@@ -1427,16 +1431,17 @@ body.simulate-phone-frame #fundusCanvas {
 }
 
 .question {
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   border: 1px solid rgba(204, 214, 226, 0.8);
   border-radius: var(--radius-md);
-  padding: var(--space-12);
+  padding: 9px;
   background: rgba(248, 251, 255, 0.74);
   min-inline-size: 0;
 }
 
 .question legend {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
+  font-size: 0.86rem;
   font-weight: 700;
   line-height: 1.25;
   padding: 0;
@@ -1444,15 +1449,19 @@ body.simulate-phone-frame #fundusCanvas {
 
 .options label {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
-  margin: 4px 0;
-  min-height: 32px;
-  padding: 6px;
-  border-radius: var(--radius-sm);
+  margin: 3px 0;
+  min-height: var(--tap-target-min);
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
   cursor: pointer;
+  font-size: 0.8rem;
   line-height: 1.24;
-  transition: background-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .options label:hover {
@@ -1464,14 +1473,15 @@ body.simulate-phone-frame #fundusCanvas {
 }
 
 .test-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
 }
 
 .button-pass,
+.button-secondary,
 #submitTimedGuessButton {
-  min-height: 42px;
+  min-height: var(--tap-target-min);
   border: 0;
   border-radius: 10px;
   padding: 10px 14px;
@@ -1485,18 +1495,28 @@ body.simulate-phone-frame #fundusCanvas {
     filter var(--transition-fast);
 }
 
+.button-secondary {
+  border: 1px solid #c7d3e3;
+  background: #f5f8fc;
+  color: var(--text-strong);
+  box-shadow: none;
+}
+
 .button-pass:hover,
+.button-secondary:hover,
 #submitTimedGuessButton:hover {
   transform: translateY(-1px);
   filter: brightness(1.03);
 }
 
 .button-pass:active,
+.button-secondary:active,
 #submitTimedGuessButton:active {
   transform: translateY(0);
 }
 
-.button-pass[hidden] {
+.button-pass[hidden],
+.button-secondary[hidden] {
   display: none;
 }
 
@@ -1507,8 +1527,18 @@ body.simulate-phone-frame #fundusCanvas {
 }
 
 .result-text {
-  margin-top: 14px;
+  margin: 0 0 8px;
+  padding: 8px 9px;
+  border: 1px solid #d5dfed;
+  border-radius: var(--radius-control);
+  background: #f4f8fd;
+  font-size: 0.78rem;
+  line-height: 1.3;
   font-weight: 700;
+}
+
+.result-text:empty {
+  display: none;
 }
 
 .primary-star,
@@ -1578,14 +1608,32 @@ body.simulate-phone-frame #fundusCanvas {
   font-weight: 700;
 }
 
+.timed-test-result:empty {
+  display: none;
+}
+
 .correct-answer-label {
-  color: #0b8f0b;
+  border-color: rgba(7, 164, 63, 0.45) !important;
+  background: rgba(7, 164, 63, 0.09);
+  color: #08752f;
   font-weight: 700;
 }
 
 .wrong-answer-label {
-  color: #cf1111;
-  opacity: 0.8;
+  border-color: rgba(196, 23, 29, 0.42) !important;
+  background: rgba(196, 23, 29, 0.08);
+  color: #a71318;
+}
+
+.answer-explanation {
+  margin: 7px 0 0;
+  padding: 7px 8px;
+  border-left: 3px solid var(--app-bar-accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: #eef4fc;
+  color: #44536a;
+  font-size: 0.76rem;
+  line-height: 1.32;
 }
 
 .text-green {
@@ -1799,7 +1847,7 @@ a:focus-visible,
 
   .disc-observation-cue small {
     margin-top: 2px;
-    font-size: 0.58rem;
+    font-size: 0.625rem;
   }
 
   .explanation {
@@ -1810,13 +1858,13 @@ a:focus-visible,
 
   .canvas-container {
     width: 100%;
-    max-width: 300px;
+    max-width: none;
     margin: 0 auto;
   }
 
   #fundusCanvas {
     width: 100%;
-    max-width: 300px;
+    max-width: none;
   }
 
   .timed-guess-box {
@@ -1919,4 +1967,119 @@ a:focus-visible,
     animation: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Shared fleet information-card type hierarchy. */
+#infoModal .info-popup-header h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#infoModal .info-popup-body,
+#infoModal .info-popup-body p {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+#infoModal .info-popup-body p.info-look-title {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+#infoModal .info-basics-cue strong {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+#infoModal .info-basics-cue small {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+#infoModal .info-popup-body p.info-version {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+  color: #6e7c95;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.side-menu::before {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.side-menu-heading {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+/* Fleet UI alignment: information card and exact 360 x 740 fit. */
+#infoModal .modal-content {
+  border-radius: 16px;
+}
+
+#infoModal .info-popup-header {
+  min-height: 44px;
+}
+
+#infoModal #closeInfoModal {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  top: 0;
+  right: 0;
+}
+
+@media (max-width: 420px) and (max-height: 760px) {
+  .main-content {
+    padding-bottom: 3px;
+  }
+}
+/* Image readiness is separate from the selected teaching example. */
+.image-status {
+  position: absolute;
+  inset: 35% 12% auto;
+  padding: 12px;
+  text-align: center;
+  color: #fff;
+  background: #17212e;
+  border-radius: 12px;
+  z-index: 3;
+}
+.image-status[hidden] {
+  display: none;
+}
+.image-status button {
+  display: block;
+  min-height: 44px;
+  margin: 8px auto 0;
+}
+.image-status button[hidden] {
+  display: none;
 }

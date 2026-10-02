@@ -1,5 +1,23 @@
 # System Patterns
 
+## Maintenance boundary (26/7/2026)
+
+- Keep geometry and pathology calculations behind their existing pure modules and protect them with direct contracts.
+- Generated `app.bundle.js` must match the source entry exactly.
+- Remove dormant flags or CSS only after proving there is no live reference. Do not simplify the authored case catalogue or visual engine.
+
+## Eye-engine consistency pattern (23/7/2026)
+
+- Treat the retinoscopy light offset as a two-dimensional distance when deriving pupil response.
+- Keep the target calculation pure and directly tested, then preserve the app-specific temporal smoothing in the DOM update layer.
+- In examiner view, DOM `data-eye="left"` is screen-left patient RE and DOM `data-eye="right"` is screen-right patient LE. Fix labels and accessibility names without renaming internal keys.
+- Dense-cataract visual calibration is an engineering comparison only and does not establish clinical approval.
+
+## Fleet alignment pattern (23/7/2026)
+
+- For the shared image-led mobile family, use Swollen Discs' outer geometry at `360 x 740`: principal black stage `x=10`, `width=340`, `16px` radius and the shared strong shadow, followed by an aligned `18px` interpretation or action panel.
+- Preserve Fundal Reflex's internal teaching controls, bilateral eye geometry, workflow and clinical mappings when applying the shared outer shell.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -185,3 +203,11 @@ Apply these rules when copying this project structure to other local teaching ap
 - manual cache-busting query strings in `index.html` and module imports
 
 No urgent broad refactor is needed.
+
+## Maintenance pattern - 26 July 2026
+
+Keep dormant teaching state out of the live controller. Rebuild `app.bundle.js` from source after controller changes and require source/bundle parity. Preserve established eye geometry and clinical wording through focused contracts rather than duplicated state.
+
+## MCQ data contract — 26 July 2026
+
+Every authored question must have a stable `fundal-{tier}-{number}` ID, one best answer, a concise rationale, a known source key and matching review status. Shuffle options only with answer remapping. Manual submission must reject unanswered sets. Graded review must show correct and wrong states plus the rationale. New set must resample the same tier.

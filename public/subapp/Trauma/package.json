@@ -7,7 +7,9 @@
     "lint": "npm run lint:js && npm run lint:css && npm run lint:html",
     "lint:js": "eslint . --ext .js",
     "lint:css": "stylelint \"**/*.css\"",
-    "lint:html": "htmlhint \"**/*.html\""
+    "lint:html": "htmlhint \"**/*.html\"",
+    "test": "node tests/run-tests.cjs",
+    "browser:review": "node tests/browser-review.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

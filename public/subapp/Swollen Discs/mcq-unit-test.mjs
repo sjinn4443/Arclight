@@ -18,19 +18,31 @@ function sequenceRandom(values) {
 
 const sampleBank = [
   {
+    id: 'q01',
     question: 'Question one?',
     options: { a: 'One A', b: 'One B', c: 'One C' },
-    correct: 'b'
+    correct: 'b',
+    explanation: 'Question one explanation.',
+    source: 'source-one',
+    reviewStatus: 'reviewed'
   },
   {
+    id: 'q02',
     question: 'Question two?',
     options: { a: 'Two A', b: 'Two B', c: 'Two C' },
-    correct: 'c'
+    correct: 'c',
+    explanation: 'Question two explanation.',
+    source: 'source-two',
+    reviewStatus: 'reviewed'
   },
   {
+    id: 'q03',
     question: 'Question three?',
     options: { a: 'Three A', b: 'Three B', c: 'Three C' },
-    correct: 'a'
+    correct: 'a',
+    explanation: 'Question three explanation.',
+    source: 'source-three',
+    reviewStatus: 'reviewed'
   }
 ];
 
@@ -43,8 +55,11 @@ function runBuildTest() {
 
   built.forEach((question) => {
     assert.ok(question.correctChoiceId);
+    assert.match(question.id, /^q0[1-3]$/);
     assert.equal(question.choices.length, 3);
     assert.ok(question.choices.some((choice) => choice.id === question.correctChoiceId));
+    assert.match(question.explanation, /explanation/);
+    assert.match(question.source, /^source-/);
   });
 
   const easyBuilt = buildMcqTest(sampleBank, 2, random, 2);
@@ -70,11 +85,26 @@ function runEvaluationTest() {
   assert.equal(result.passed, false);
   assert.equal(result.details[0].isCorrect, false);
   assert.equal(result.details[1].isCorrect, true);
+  assert.match(result.details[0].explanation, /explanation/);
 
   const unansweredResult = evaluateMcqSubmission(built, [null, null]);
   assert.equal(unansweredResult.score, 0);
+  assert.equal(unansweredResult.unansweredCount, 2);
+  assert.equal(unansweredResult.isComplete, false);
+  assert.equal(unansweredResult.passed, false);
   assert.equal(unansweredResult.details[0].selectedChoiceText, null);
   assert.equal(unansweredResult.details[1].selectedChoiceText, null);
+
+  const partialPassAttempt = evaluateMcqSubmission(
+    built,
+    [firstQuestion.correctChoiceId, null],
+    0.5
+  );
+  assert.equal(partialPassAttempt.score, 1);
+  assert.equal(partialPassAttempt.passThreshold, 1);
+  assert.equal(partialPassAttempt.unansweredCount, 1);
+  assert.equal(partialPassAttempt.isComplete, false);
+  assert.equal(partialPassAttempt.passed, false);
 }
 
 function runExportTest() {
@@ -94,7 +124,8 @@ function runExportTest() {
         prompt: 'Question one?',
         selectedChoiceText: 'One B',
         correctChoiceText: 'One B',
-        isCorrect: true
+        isCorrect: true,
+        explanation: 'The stored rationale.'
       }
     ]
   });
@@ -104,6 +135,7 @@ function runExportTest() {
   assert.match(text, /Code: AAAA/);
   assert.match(text, /Question breakdown:/);
   assert.match(text, /Status: Correct/);
+  assert.match(text, /Why: The stored rationale/);
 }
 
 try {

@@ -37,8 +37,12 @@
   function startNystagmusEngine(updateIrisTransform) {
     let phase = 0;
     setInterval(() => {
+      const presetKey = String(
+        AppStateRef.state.activePresetKey || "",
+      ).toLowerCase();
+      const isInoPreset = presetKey === "ino-like pattern";
       const enabled = document.getElementById("toggle-nystagmus")?.checked;
-      if (!enabled) {
+      if (!enabled && !isInoPreset) {
         clearNystagmusOffset(updateIrisTransform);
         return;
       }
@@ -52,14 +56,10 @@
       const rate = String(
         document.getElementById("nyst-rate")?.value || "slow",
       ).toLowerCase();
-      const isLatentPreset =
-        String(AppStateRef.state.activePresetKey || "").toLowerCase() ===
-        "latent nystagmus-like";
-      const isGazeEvokedPreset =
-        String(AppStateRef.state.activePresetKey || "").toLowerCase() ===
-        "gaze-evoked nystagmus-like";
-      const coverActive =
-        String(AppStateRef.state.coverEye || "none") !== "none";
+      const isLatentPreset = presetKey === "latent nystagmus-like";
+      const isGazeEvokedPreset = presetKey === "gaze-evoked nystagmus-like";
+      const coverEye = String(AppStateRef.state.coverEye || "none");
+      const coverActive = coverEye !== "none";
       const gazeX = clamp(AppStateRef.state?.gazeVector?.x, -1, 1);
       const gazeY = clamp(AppStateRef.state?.gazeVector?.y, -1, 1);
       const gazeEccentricity = Math.min(
@@ -71,17 +71,34 @@
           ? Math.abs(gazeY)
           : direction === "mixed"
             ? gazeEccentricity
-            : Math.abs(gazeX);
+            : Math.max(Math.abs(gazeX), Math.max(-gazeY, 0));
+
+      if (isLatentPreset && !coverActive) {
+        AppStateRef.state.nystagmusFastPhase = "none";
+        clearNystagmusOffset(updateIrisTransform);
+        return;
+      }
+      if (isGazeEvokedPreset && gazeAxisDemand < 0.08) {
+        AppStateRef.state.nystagmusFastPhase = "none";
+        clearNystagmusOffset(updateIrisTransform);
+        return;
+      }
+      if (isInoPreset && gazeX >= -0.12) {
+        AppStateRef.state.nystagmusFastPhase = "none";
+        clearNystagmusOffset(updateIrisTransform);
+        return;
+      }
 
       const ampBase = rate === "fast" ? 4.2 : 2.8;
       // Most nystagmus increases towards eccentric gaze.
       // Gaze-evoked pattern has a stronger primary null zone.
       let ampGain = 0.82 + 0.58 * gazeEccentricity;
       if (isGazeEvokedPreset) {
-        ampGain = 0.18 + 1.42 * gazeAxisDemand;
+        ampGain = 0.02 + 1.58 * gazeAxisDemand;
       }
       let amp = ampBase * ampGain;
-      if (isLatentPreset && coverActive) amp *= 1.45;
+      if (isLatentPreset) amp *= 1.45;
+      if (isInoPreset) amp = 3.6 * Math.abs(gazeX);
       const ampMixedY = amp * 0.58;
       const step = rate === "fast" ? 0.16 : 0.09;
       phase += step;
@@ -97,14 +114,42 @@
         const p = phase % 1;
         valueX =
           p < 0.75
-            ? -amp + (p / 0.75) * (2 * amp)
-            : amp - ((p - 0.75) / 0.25) * (2 * amp);
+            ? amp - (p / 0.75) * (2 * amp)
+            : -amp + ((p - 0.75) / 0.25) * (2 * amp);
         if (direction === "mixed") {
           valueY = valueX >= 0 ? ampMixedY : -ampMixedY;
         }
       }
 
+      let directionSign = 1;
+      if (isLatentPreset) {
+        directionSign = coverEye === "left" ? 1 : -1;
+        AppStateRef.state.nystagmusFastPhase =
+          coverEye === "left" ? "towards-le" : "towards-re";
+      } else if (isGazeEvokedPreset) {
+        directionSign = Math.abs(gazeX) >= 0.08 ? Math.sign(gazeX) : -1;
+        AppStateRef.state.nystagmusFastPhase =
+          Math.abs(gazeX) >= 0.08
+            ? gazeX > 0
+              ? "with-right-gaze"
+              : "with-left-gaze"
+            : "with-upgaze";
+      } else if (isInoPreset) {
+        directionSign = -1;
+        AppStateRef.state.nystagmusFastPhase = "fellow-abducting-eye";
+      }
+      valueX *= directionSign;
+      valueY *= directionSign;
+
       document.querySelectorAll(".iris").forEach((iris) => {
+        const eyeType = String(
+          iris.closest(".eye")?.dataset.eye || "",
+        ).toLowerCase();
+        if (isInoPreset && eyeType !== "left") {
+          iris.nystagmusOffset = { x: 0, y: 0 };
+          updateIrisTransform(iris);
+          return;
+        }
         if (direction === "vertical") {
           iris.nystagmusOffset = { x: 0, y: valueX };
         } else if (direction === "mixed") {
@@ -115,6 +160,46 @@
         updateIrisTransform(iris);
       });
     }, 70);
+  }
+
+  function startConditionVariationEngine(updateIrisTransform) {
+    let phase = 0;
+    let wasActive = false;
+    setInterval(() => {
+      const active =
+        String(AppStateRef.state.activePresetKey || "").toLowerCase() ===
+          "myasthenic pattern" &&
+        Boolean(document.getElementById("toggle-fatigable")?.checked);
+      const eye = document.querySelector('.eye[data-eye="right"]');
+      const iris = eye?.querySelector(".iris");
+      const upperLid = eye?.querySelector(".upper-eyelid");
+      const slider = document.querySelector(
+        '.vertical-eye-slider[data-eye="right"]',
+      );
+      if (!iris || !upperLid || !slider) return;
+
+      if (!active) {
+        if (wasActive) {
+          iris.conditionOffset = { x: 0, y: 0 };
+          upperLid.style.height = `${parseFloat(slider.value || 0) * 1.5}px`;
+          updateIrisTransform(iris);
+        }
+        wasActive = false;
+        return;
+      }
+
+      wasActive = true;
+      phase += 0.19;
+      const slow = (Math.sin(phase) + 1) / 2;
+      const irregular = Math.sin(phase * 2.7 + 0.8);
+      iris.conditionOffset = {
+        x: parseFloat((irregular * 2.4).toFixed(2)),
+        y: parseFloat((slow * 4.2 + irregular * 0.8).toFixed(2)),
+      };
+      const baseLidHeight = parseFloat(slider.value || 0) * 1.5;
+      upperLid.style.height = `${(baseLidHeight + 2 + slow * 7).toFixed(2)}px`;
+      updateIrisTransform(iris);
+    }, 120);
   }
 
   function blinkEyes() {
@@ -187,6 +272,7 @@
   globalObj.EyeEffectsController = {
     startCycloJitterEngine,
     startNystagmusEngine,
+    startConditionVariationEngine,
     blinkEyes,
     startMicroSaccades,
     startBackgroundJitter,

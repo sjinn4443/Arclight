@@ -23,6 +23,11 @@ function run() {
     'index.html',
     'styles.css',
     'script.js',
+    'app.bundle.js',
+    'fleet-enhancements.js',
+    'manifest.webmanifest',
+    'service-worker.js',
+    'local-server.mjs',
     'app-state.js',
     'state-machine.js',
     'app-constants.js',
@@ -70,11 +75,49 @@ function run() {
     assert(hasId(html, id), `Missing required DOM id in index.html: #${id}`);
   });
 
-  const scriptRefs = [...html.matchAll(/<script\s+src="([^"]+)"\s+type="module"><\/script>/g)].map(
-    (match) => match[1]
+  const externalScripts = [
+    ...html.matchAll(/<script\b([^>]*)\bsrc="([^"]+)"([^>]*)><\/script>/g)
+  ].map((match) => ({ attributes: `${match[1]} ${match[3]}`, src: match[2] }));
+  const runtimeBundles = externalScripts.filter(
+    (script) => script.src.split('?')[0] === 'app.bundle.js'
   );
-  const scriptJsRefs = scriptRefs.filter((ref) => ref === 'script.js');
-  assert(scriptJsRefs.length === 1, 'index.html must load script.js exactly once as a module');
+  assert(runtimeBundles.length === 1, 'index.html must load app.bundle.js exactly once');
+  assert(
+    !runtimeBundles[0].attributes.includes('type="module"'),
+    'app.bundle.js must remain a classic bundle for direct-file compatibility'
+  );
+  assert(
+    !externalScripts.some((script) => script.src.split('?')[0] === 'script.js'),
+    'index.html must not load the source module alongside the generated bundle'
+  );
+  assert(
+    !html.includes('window.toggleInfoGuide'),
+    'The generated bundle must remain the single owner of the information-dialog lifecycle'
+  );
+  assert(
+    !/\bonclick\s*=/.test(html),
+    'Runtime controls must not depend on duplicate inline click handlers'
+  );
+  assert(
+    externalScripts.filter((script) => script.src.split('?')[0] === 'fleet-enhancements.js')
+      .length === 1,
+    'index.html must load fleet-enhancements.js exactly once'
+  );
+  const runtimeUrls = [...html.matchAll(/\b(?:src|href)="([^"]+)"/g)].map((match) => match[1]);
+  assert(
+    !runtimeUrls.some((url) => /^https?:\/\//i.test(url)),
+    'Normal runtime assets must be local'
+  );
+  assert(hasId(html, 'newSessionButton'), 'Missing deliberate session reset button');
+
+  const manifest = JSON.parse(readTextFile('manifest.webmanifest'));
+  assert(manifest.start_url === './index.html', 'Manifest start_url must remain app-scoped');
+  assert(manifest.scope === './', 'Manifest scope must remain local to Swollen Discs');
+  const serviceWorker = readTextFile('service-worker.js');
+  assert(
+    serviceWorker.includes("PREFIX = 'arclight-swollen-discs'"),
+    'Service worker cache must be app-scoped'
+  );
 
   const dataImageRefs = [...html.matchAll(/data-image="([^"]+)"/g)].map((match) => match[1]);
   const dataConditionRefs = [...html.matchAll(/data-condition="([^"]+)"/g)].map(

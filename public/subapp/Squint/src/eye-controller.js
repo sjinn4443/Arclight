@@ -23,19 +23,23 @@
       (iris.presetOffset?.x || 0) +
       (iris.gazeOffset?.x || 0) +
       (iris.liveGazeOffset?.x || 0) +
+      (iris.nearOffset?.x || 0) +
       (fixationOffset.x || 0) +
       (iris.coverOffset?.x || 0) +
       (iris.microOffset?.x || 0) +
-      (iris.backgroundOffset?.x || 0);
+      (iris.backgroundOffset?.x || 0) +
+      (iris.conditionOffset?.x || 0);
     const totalY =
       (iris.manualOffset?.y || 0) +
       (iris.presetOffset?.y || 0) +
       (iris.gazeOffset?.y || 0) +
       (iris.liveGazeOffset?.y || 0) +
+      (iris.nearOffset?.y || 0) +
       (fixationOffset.y || 0) +
       (iris.coverOffset?.y || 0) +
       (iris.microOffset?.y || 0) +
       (iris.backgroundOffset?.y || 0) +
+      (iris.conditionOffset?.y || 0) +
       (iris.nystagmusOffset?.y || 0);
     const xWithNyst = totalX + (iris.nystagmusOffset?.x || 0);
     iris.style.transform = `translate(calc(-50% + ${xWithNyst}px), calc(-50% + ${totalY}px))`;
@@ -229,8 +233,16 @@
     getEffectsController()?.startNystagmusEngine(updateIrisTransform);
   }
 
+  function startConditionVariationEngine() {
+    getEffectsController()?.startConditionVariationEngine(updateIrisTransform);
+  }
+
   function initPupilSlider(slider) {
     function updatePupil() {
+      if (!AppStateRef.state.isApplyingPreset) {
+        AppStateRef.resetPupilPhysiology?.();
+        getLightController()?.setRapdValue(0, { silent: true });
+      }
       AppStateRef.markManualInteraction();
       refreshLightPupilResponse();
       OutputWriterRef.updateAllOutputs();
@@ -274,6 +286,10 @@
       if (!eye || !iris) return;
       iris.classList.toggle("faded");
       button.classList.toggle("active");
+      button.setAttribute(
+        "aria-pressed",
+        String(iris.classList.contains("faded")),
+      );
       OutputWriterRef.updateOutputForEye(eye);
     });
   }
@@ -316,6 +332,7 @@
         startMicroSaccades();
         startBackgroundJitter();
         startNystagmusEngine();
+        startConditionVariationEngine();
         startCycloJitterEngine();
         refreshCoverVisualState();
         refreshCoverOffsets();

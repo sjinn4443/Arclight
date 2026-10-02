@@ -1,0 +1,18 @@
+{
+  "name": "Diabetic",
+  "short_name": "Diabetic",
+  "description": "Diabetic retinopathy teaching and triage aid",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef3fb",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

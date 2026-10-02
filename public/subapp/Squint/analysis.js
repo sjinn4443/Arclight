@@ -18,6 +18,7 @@ const TRANSFORM_IGNORED_EXACT = new Set([
   "trauma",
   "fatigable",
   "diplopia",
+  "near",
 ]);
 const TRANSFORM_IGNORED_PREFIX = [
   "hint:",
@@ -31,8 +32,6 @@ const TRANSFORM_IGNORED_PREFIX = [
 ];
 const SEVERE_VERTICAL_UP = ["med up", "medium up", "large up"];
 const SEVERE_VERTICAL_DOWN = ["med down", "medium down", "large down"];
-const ANALYSIS_REFRESH_MS = 500;
-
 function startsWithAny(text, prefixes) {
   return prefixes.some((prefix) => text.startsWith(prefix));
 }
@@ -137,11 +136,6 @@ function determineCondition(text) {
   const hasPtosis = content.includes("ptosis") || content.includes("lid");
   const hasSudden = content.includes("sudden");
   const hasPain = content.includes("pain");
-  const hasLargePupil =
-    content.includes("larger pupil") || content.includes("dilated pupil");
-
-  const hasMedOrLargePtosis =
-    content.includes("med ptosis") || content.includes("large ptosis");
 
   let horizontal = null;
   if (content.includes(" in") && !content.includes("out")) horizontal = "eso";
@@ -169,49 +163,22 @@ function determineCondition(text) {
     }
     if (!hasPtosis)
       return `<span style='color:red;'>possible 3rd nerve palsy</span>${info}`;
-    if (hasLargePupil && hasMedOrLargePtosis)
-      return `<span style='color:red;'>definite 3rd nerve palsy</span>${info}`;
     return `<span style='color:red;'>probable 3rd nerve palsy</span>${info}`;
   }
 
   if (vertical === "hyper" && horizontal === "exo") {
     const info = "; vertical diplopia/head-tilt pattern";
-    if (content.includes("small up")) return `possible 4th nerve palsy${info}`;
-    if (content.includes("med up") || content.includes("medium up"))
-      return `probable 4th nerve palsy${info}`;
-    if (content.includes("large up")) return `definite 4th nerve palsy${info}`;
-    return `4th nerve palsy${info}`;
-  }
-
-  if (
-    horizontal === "eso" &&
-    !includesAny(content, SEVERE_VERTICAL_UP) &&
-    !includesAny(content, SEVERE_VERTICAL_DOWN)
-  ) {
-    const isAcute = hasSudden || hasPain;
-    const info = isAcute
-      ? "; acute horizontal diplopia - <span style='color:red;'>raised ICP/SOL</span> possible"
-      : "; abduction-deficit pattern";
-    if (content.includes("small in"))
-      return `<span style='color:red;'>possible 6th nerve palsy</span>${info}`;
-    if (content.includes("med in") || content.includes("medium in"))
-      return `<span style='color:red;'>probable 6th nerve palsy</span>${info}`;
-    if (content.includes("large in"))
-      return `<span style='color:red;'>definite 6th nerve palsy</span>${info}`;
-    return `<span style='color:red;'>6th nerve palsy</span>${info}`;
-  }
-
-  if (content.includes("smaller pupil")) {
-    const info = "; carotid/stroke/apical lung causes; correlate clinically";
-    if (hasPtosis && content.includes("faded")) return `definite Horner${info}`;
-    if (hasPtosis) return `probable Horner${info}`;
-    return `possible Horner${info}`;
+    return `possible 4th nerve palsy${info}`;
   }
 
   if (horizontal && vertical)
     return `Mixed ${horizontal.toUpperCase()} & ${vertical.toUpperCase()}`;
   if (horizontal) return horizontal.toUpperCase();
   if (vertical) return vertical.toUpperCase();
+  if (content.includes("smaller pupil") || content.includes("pinhole pupil"))
+    return "Miosis pattern";
+  if (content.includes("larger pupil") || content.includes("dilated pupil"))
+    return "Mydriasis pattern";
   if (hasPtosis) return "Ptosis pattern";
   return "";
 }
@@ -234,7 +201,7 @@ function determinePupilCondition(rightText, leftText) {
     return "Left pinhole pupil - <i>severe miosis; consider drug, Horner or ocular cause</i>";
   }
   if (rText.includes("dilated pupil") && lText.includes("dilated pupil")) {
-    return "Bilateral dilated - <i>consider drugs or trauma</i>";
+    return "Bilateral dilated - <i>consider lighting, drugs, trauma and neurological context; confirm reactions</i>";
   }
 
   const scoreRight = getPupilScore(rText);
@@ -246,19 +213,19 @@ function determinePupilCondition(rightText, leftText) {
 
   const diff = Math.abs(scoreRight - scoreLeft);
   if (diff === 1) {
-    return "Small asymmetry - <i>benign anisocoria likely</i>";
+    return "Small asymmetry - <i>compare in light and dark, confirm reactions and establish stability; physiological anisocoria is possible</i>";
   }
   if (scoreRight <= -1 && scoreLeft >= 0) {
-    return "Right smaller pupil - <i>possible Horner/drug effect</i>";
+    return "Right smaller pupil - <i>unilateral miosis; compare in light and dark and assess lids, pain, drugs and ocular causes</i>";
   }
   if (scoreLeft <= -1 && scoreRight >= 0) {
-    return "Left smaller pupil - <i>possible Horner/drug effect</i>";
+    return "Left smaller pupil - <i>unilateral miosis; compare in light and dark and assess lids, pain, drugs and ocular causes</i>";
   }
   if (scoreRight > scoreLeft) {
-    return "Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>";
+    return "Right larger pupil - <i>compare in light and dark, test light and near reactions and assess motility, drugs and trauma</i>";
   }
   if (scoreLeft > scoreRight) {
-    return "Left larger pupil - <i>possible Adie's/3rd nerve pattern</i>";
+    return "Left larger pupil - <i>compare in light and dark, test light and near reactions and assess motility, drugs and trauma</i>";
   }
   return "";
 }
@@ -420,15 +387,26 @@ function updateAnalysisOutput() {
   }
 
   const pupilCondition = determinePupilCondition(rightText, leftText);
+  const suppressGenericPupilNote =
+    AnalysisCoreRef.shouldSuppressGenericPupilNote(rightText, leftText);
 
   const patternParts = [];
   if (finalConditionRight) patternParts.push(`RE: ${finalConditionRight}`);
   if (finalConditionLeft) patternParts.push(`LE: ${finalConditionLeft}`);
 
-  const fallbackPattern = `${clinicalRight.replace("RE: ", "")} | ${clinicalLeft.replace("LE: ", "")}`;
+  const fallbackValues = [
+    clinicalRight.replace("RE: ", "").trim(),
+    clinicalLeft.replace("LE: ", "").trim(),
+  ];
+  const fallbackPattern = fallbackValues.join(" | ");
+  const hasNeutralFallback = fallbackValues.every((value) =>
+    ["nil", "normal", "neutral", ""].includes(value.toLowerCase()),
+  );
   const patternHTML = patternParts.length
     ? patternParts.join(" / ")
-    : fallbackPattern;
+    : hasNeutralFallback
+      ? "No alignment pattern detected."
+      : fallbackPattern;
 
   const hasThird = [finalConditionRight, finalConditionLeft]
     .map((val) => String(val || "").toLowerCase())
@@ -444,18 +422,37 @@ function updateAnalysisOutput() {
   const gazeCue = globalThis.AppState?.state?.gazePatternCue || "";
 
   const notes = [];
-  if (pupilCondition && !hasThird) notes.push(pupilCondition);
+  if (pupilCondition && !hasThird && !suppressGenericPupilNote)
+    notes.push(pupilCondition);
   if (gazeDirection !== "primary")
     notes.push(`Gaze: ${formatGazeDirectionLabel(gazeDirection)}`);
   if (gazeCue) notes.push(gazeCue);
-  if (isReCovered || isLeCovered)
+  const coverObservation = String(
+    globalThis.AppState?.state?.coverObservation || "",
+  ).trim();
+  if (coverObservation) {
+    notes.push(coverObservation);
+  } else if (isReCovered || isLeCovered) {
     notes.push(`Cover test: ${isReCovered ? "RE" : "LE"} covered`);
+  }
   if (!modifierGuidance && modifierSummary)
     notes.push(`Modifiers: ${modifierSummary}`);
   if (modifierGuidance) notes.push(modifierGuidance);
-  if (!notes.length) notes.push("No high-risk modifiers flagged.");
+  if (!notes.length) notes.push("No urgency modifiers selected.");
 
-  const outputHTML = `<strong>Pattern:</strong> ${patternHTML}<br><strong>Notes:</strong> ${notes.join(" ")}`;
+  const observationHTML = notes
+    .map((note) => `<span class="analysis-note">${note}</span>`)
+    .join("");
+  const outputHTML = `
+    <div class="analysis-row analysis-pattern-row">
+      <strong class="analysis-label">Pattern:</strong>
+      <span class="analysis-value">${patternHTML}</span>
+    </div>
+    <div class="analysis-row analysis-observation-row">
+      <strong class="analysis-label">Observations:</strong>
+      <span class="analysis-value">${observationHTML}</span>
+    </div>
+  `;
 
   if (lastAnalysisHTML !== outputHTML) {
     analysisTextElement.innerHTML = outputHTML;
@@ -480,8 +477,18 @@ function updateAnalysisOutput() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateAnalysisOutput();
-  document.addEventListener("squint:outputs-updated", updateAnalysisOutput);
-  setInterval(updateAnalysisOutput, ANALYSIS_REFRESH_MS);
-});
+globalThis.SquintAnalysis = {
+  transformOutput,
+  determineCondition,
+  determinePupilCondition,
+  extractModifierState,
+  buildModifierSummary,
+  buildModifierGuidance,
+};
+
+if (typeof document !== "undefined") {
+  document.addEventListener("DOMContentLoaded", () => {
+    updateAnalysisOutput();
+    document.addEventListener("squint:outputs-updated", updateAnalysisOutput);
+  });
+}

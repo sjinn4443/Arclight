@@ -309,22 +309,22 @@ function checkTunnelVision(right, left) {
   if (rStatus && lStatus) {
     // If both eyes match tunnel vision, mention RP as a possibility
     if (rStatus === "Definite" && lStatus === "Definite") {
-      return "<em>Definite</em> <strong>Bilateral Advanced Glaucoma / Retinitis Pigmentosa (Tunnel Vision)</strong>";
+      return "<em>Definite</em> <strong>Bilateral Peripheral Constriction (Tunnel Vision)</strong>";
     }
     if (rStatus === "Possible" && lStatus === "Possible") {
-      return "<em>Possible</em> <strong>Bilateral Advanced Glaucoma / Retinitis Pigmentosa (Tunnel Vision)</strong>";
+      return "<em>Possible</em> <strong>Bilateral Peripheral Constriction (Tunnel Vision)</strong>";
     }
-    return "<em>Probable</em> <strong>Bilateral Advanced Glaucoma / Retinitis Pigmentosa (Tunnel Vision)</strong>";
+    return "<em>Probable</em> <strong>Bilateral Peripheral Constriction (Tunnel Vision)</strong>";
   }
 
   // If only the right eye matches, no mention of RP
   if (rStatus) {
-    return `<em>${rStatus}</em> <strong>Right Advanced Glaucoma (Tunnel Vision)</strong>`;
+    return `<em>${rStatus}</em> <strong>Right Peripheral Constriction (Tunnel Vision)</strong>`;
   }
 
   // If only the left eye matches, no mention of RP
   if (lStatus) {
-    return `<em>${lStatus}</em> <strong>Left Advanced Glaucoma (Tunnel Vision)</strong>`;
+    return `<em>${lStatus}</em> <strong>Left Peripheral Constriction (Tunnel Vision)</strong>`;
   }
 
   // No match

@@ -1,0 +1,18 @@
+# Fundal Reflex fleet-upgrade gap list
+
+Date: 23 July 2026
+
+Fundal Reflex is a teaching simulator, not an operational patient record or screening decision tool. Its zero-refraction starting case, progressive teaching levels, visual cases, MCQs, clinical mappings and red accent are intentional and were preserved.
+
+| Area            | Baseline gap                                                          | Resolution                                                                                                                                                                                                                       |
+| --------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recovery        | No app-level Git repository                                           | Conservative in-place edits only. No original asset or clinical source was replaced. Parent-level recovery status remains the fleet owner's responsibility.                                                                      |
+| State safety    | No deliberate way to abandon transient teaching state                 | Added a two-press **New session** action in the menu. It restores the starting case and does not erase the earned cup.                                                                                                           |
+| Offline         | No manifest or service worker                                         | Added install metadata and a local app-shell service worker. Runtime dependencies remain local.                                                                                                                                  |
+| Verification    | No automated contract or clinical-regression checks                   | Added a dependency-light Node suite covering default state, the established reassuring mapping, runtime locality and offline contracts.                                                                                          |
+| Build           | Generated bundle had no local build declaration                       | Added a pinned esbuild build command and rebuilt `app.bundle.js` from source.                                                                                                                                                    |
+| Mobile evidence | Existing guidance was manual only                                     | Added a bounded CDP evidence script. Exact `360 x 740` checks now pass over HTTP and direct-file routes for untouched, dense, transient, completed and two-step reset states, with `360px` document width and no runtime errors. |
+| Fleet alignment | The simulator stage used a narrower edge treatment than Swollen Discs | Aligned the stage and Action panel to `10px` mobile edges and `340px` width, with the shared `16px` stage and `18px` secondary-panel hierarchy. Internal teaching layout and logic were not changed.                             |
+| Governance      | Clinical and device statuses were implicit                            | Added explicit review and constrained-device checklists.                                                                                                                                                                         |
+
+Not applicable: patient-image handling, patient report export and operational unassessed-state semantics. The app does not accept patient files, store a patient encounter or present untouched controls as an examination conclusion.

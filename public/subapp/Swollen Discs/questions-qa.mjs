@@ -1,4 +1,4 @@
-import questionBank from './questions.js';
+import questionBank, { MCQ_SOURCE_REFERENCES } from './questions.js';
 import { MCQ_TIER_CONFIGS } from './app-constants.js';
 
 function assert(condition, message) {
@@ -14,8 +14,8 @@ function normalizeText(value) {
 function run() {
   assert(Array.isArray(questionBank), 'Question bank must be an array.');
   assert(
-    questionBank.length >= 30,
-    `Expected at least 30 questions, found ${questionBank.length}.`
+    questionBank.length === 30,
+    `Expected exactly 30 questions, found ${questionBank.length}.`
   );
 
   const questionTextMap = new Map();
@@ -28,11 +28,15 @@ function run() {
     const prefix = `Question #${index + 1}`;
 
     assert(
-      typeof question.id === 'string' && /^q\d{2}$/.test(question.id),
-      `${prefix} must have a stable id like "q01".`
+      typeof question.id === 'string' && /^swollen-discs-q\d{2}$/.test(question.id),
+      `${prefix} must have a stable app-scoped id.`
     );
     assert(!questionIds.has(question.id), `${prefix} duplicates question id "${question.id}".`);
     questionIds.add(question.id);
+    assert(
+      question.clinicalSignOff === 'pending-independent-review',
+      `${prefix} must declare clinical sign-off status.`
+    );
 
     assert(
       typeof question.question === 'string' && question.question.trim().length > 0,
@@ -43,6 +47,18 @@ function run() {
       `${prefix} is missing "options".`
     );
     assert(typeof question.correct === 'string', `${prefix} has an invalid "correct" value.`);
+    assert(
+      typeof question.explanation === 'string' && question.explanation.trim().length >= 40,
+      `${prefix} must have a concise explanatory rationale.`
+    );
+    assert(
+      typeof question.source === 'string' && Object.hasOwn(MCQ_SOURCE_REFERENCES, question.source),
+      `${prefix} must reference a known source.`
+    );
+    assert(
+      question.reviewStatus === MCQ_SOURCE_REFERENCES[question.source].status,
+      `${prefix} has inconsistent source-review status.`
+    );
 
     const normalizedQuestion = normalizeText(question.question);
     if (questionTextMap.has(normalizedQuestion)) {
@@ -105,6 +121,38 @@ function run() {
     assert(
       configuredIds.length >= tier.questionCount,
       `MCQ tier "${tier.name}" has fewer configured ids than required questions.`
+    );
+  });
+
+  const configuredTierIds = MCQ_TIER_CONFIGS.flatMap((tier) => tier.questionIds || []);
+  assert(
+    configuredTierIds.length === questionBank.length,
+    'Every question must belong to exactly one MCQ tier.'
+  );
+  assert(
+    new Set(configuredTierIds).size === configuredTierIds.length,
+    'A question must not appear in more than one MCQ tier.'
+  );
+  assert(
+    questionBank.every((question) => configuredTierIds.includes(question.id)),
+    'Every question must be reachable from an MCQ tier.'
+  );
+
+  const promptCorpus = questionBank.map((question) => question.question).join(' ');
+  assert(
+    !/\b(?:button|menu|screen|click|tap)\b/i.test(promptCorpus),
+    'Clinical MCQs must not test app-interface mechanics.'
+  );
+  assert(
+    !/\b(?:all|none) of the above\b/i.test(promptCorpus),
+    'MCQs must use one best answer rather than all/none-of-the-above shortcuts.'
+  );
+
+  Object.entries(MCQ_SOURCE_REFERENCES).forEach(([sourceId, source]) => {
+    assert(source.title && source.status, `Source "${sourceId}" is missing review metadata.`);
+    assert(
+      source.url === null || /^https:\/\//.test(source.url),
+      `Source "${sourceId}" must use an HTTPS URL or an explicit local null.`
     );
   });
 

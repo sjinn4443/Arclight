@@ -10,10 +10,13 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Morph" />
+    <meta name="theme-color" content="#000000" />
     <title>Morph</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="styles.css?v=20260518-sidebar" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css?v=20260929-logic1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header class="app-bar">
@@ -137,6 +140,16 @@
             Save
           </button>
         </section>
+        <button
+          id="newSessionButton"
+          class="session-reset-button"
+          type="button"
+        >
+          New training session
+        </button>
+        <small class="session-reset-hint"
+          >Press twice to reset controls and viewer.</small
+        >
       </div>
     </nav>
 
@@ -169,10 +182,11 @@
             <p id="info-definition-title" class="info-look-title">
               What it shows
             </p>
-            <p>
-              Morph simulates how DO and BIO fundus views change with cataract,
-              field size, refractive error and patient movement. It is a
-              teaching aid, not a diagnostic tool.
+            <p class="info-purpose-copy">
+              Use this simulator to practise direct ophthalmoscopy and BIO
+              views: you move the view over the model eye, adjust the controls
+              and choose a condition to see how it appears. It is not a patient
+              examination or diagnosis.
             </p>
           </section>
           <hr />
@@ -197,8 +211,8 @@
           >
             <p id="info-detail-title" class="info-look-title">Using the view</p>
             <p>
-              <strong>Field:</strong> 5, 8 and 15 deg are DO. 25, 35 and 45 deg
-              are BIO.
+              <strong>Field:</strong> illustrative sizes. Direct is upright; BIO
+              is inverted and reversed.
             </p>
             <p>
               <strong>Cataract:</strong> adds blur, tint, contrast loss and
@@ -212,11 +226,28 @@
           <hr />
           <div class="info-points">
             <p>
-              Wider fields make orientation easier. Narrow fields make small
-              changes harder to inspect.
+              Rx scaling is illustrative and Direct-only. Field size and
+              magnification are not calibrated.
             </p>
-            <p><span class="modal-version-inline">Updated 18/5/2026</span></p>
           </div>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
+          </p>
         </div>
       </div>
     </div>
@@ -444,6 +475,7 @@
       </section>
     </main>
 
+    <script src="viewer-logic.js?v=20260726-refactor1"></script>
     <script>
       const body = document.body;
       const canvas = document.getElementById("fundusCanvas");
@@ -462,19 +494,25 @@
       const conditionButtons = Array.from(
         document.querySelectorAll(".condition-button"),
       );
+      const newSessionButton = document.getElementById("newSessionButton");
+      let menuReturnFocus = null;
+      let resetConfirmationTimerId = 0;
 
       const img = new Image();
       img.decoding = "async";
       img.src = "assets/images/ret180.webp";
 
-      const fovRadiusByDegree = {
-        5: 38,
-        8: 48,
-        15: 68,
-        25: 92,
-        35: 114,
-        45: 136,
-      };
+      const {
+        CATARACT_PRESETS,
+        FOV_RADIUS_BY_DEGREE,
+        clamp,
+        createAnimationLoop,
+        getApertureRadius: calculateApertureRadius,
+        getCataractPreset,
+        getCataractPresetIndex,
+        getImageGeometry: calculateImageGeometry,
+        stepCornealJitter,
+      } = window.MorphViewerLogic;
 
       const refractiveScaleByType = {
         highPlus: 0.74,
@@ -491,49 +529,6 @@
         mediumMinus: "--",
         highMinus: "---",
       };
-
-      const CATARACT_PRESETS = [
-        {
-          label: "None",
-          blurPx: 0,
-          brightness: 1,
-          contrast: 1,
-          saturation: 1,
-          yellowTint: 0,
-          darkTint: 0,
-          hazeTint: 0,
-        },
-        {
-          label: "Slight",
-          blurPx: 0.45,
-          brightness: 0.92,
-          contrast: 0.95,
-          saturation: 0.9,
-          yellowTint: 0.05,
-          darkTint: 0.06,
-          hazeTint: 0.015,
-        },
-        {
-          label: "Medium",
-          blurPx: 1.65,
-          brightness: 0.7,
-          contrast: 0.76,
-          saturation: 0.58,
-          yellowTint: 0.2,
-          darkTint: 0.24,
-          hazeTint: 0.05,
-        },
-        {
-          label: "Dense",
-          blurPx: 3.2,
-          brightness: 0.56,
-          contrast: 0.66,
-          saturation: 0.46,
-          yellowTint: 0.34,
-          darkTint: 0.4,
-          hazeTint: 0.14,
-        },
-      ];
 
       const CATARACT_OCCLUSION_SPOTS = [
         [],
@@ -729,12 +724,7 @@
       let backgroundShiftTimeoutId = null;
       let backgroundShiftInProgress = false;
       let cornealJitterOffset = { x: 0, y: 0 };
-      let cornealTargetOffset = { x: 0, y: 0 };
-      let cornealAnimationId = null;
-
-      function clamp(value, min, max) {
-        return Math.min(max, Math.max(min, value));
-      }
+      let cornealAnimationActive = false;
 
       function buildViewerPerfProfile() {
         const hasWindow = typeof window !== "undefined";
@@ -759,88 +749,75 @@
       }
 
       function getApertureRadius() {
-        const requestedRadius =
-          fovRadiusByDegree[selectedDegree] || fovRadiusByDegree[5];
-        const maxRadius = Math.max(
-          28,
-          Math.min(canvasWidth, canvasHeight) * 0.43,
-        );
-        return Math.min(requestedRadius, maxRadius);
+        return calculateApertureRadius({
+          selectedDegree,
+          canvasWidth,
+          canvasHeight,
+          radiusByDegree: FOV_RADIUS_BY_DEGREE,
+        });
       }
 
       function getImageGeometry() {
-        if (!img.naturalWidth || !canvasWidth || !canvasHeight) {
-          return {
-            x: 0,
-            y: 0,
-            width: canvasWidth,
-            height: canvasHeight,
-          };
-        }
-
-        const coverScale = Math.max(
-          canvasWidth / img.naturalWidth,
-          canvasHeight / img.naturalHeight,
-        );
-        const renderScale = coverScale * imageScale * VIEWER_BASE_SCALE;
-        const width = img.naturalWidth * renderScale;
-        const height = img.naturalHeight * renderScale;
-
-        return {
-          x: (canvasWidth - width) / 2 + patientOffsetX,
-          y: (canvasHeight - height) / 2 + patientOffsetY,
-          width,
-          height,
-        };
+        return calculateImageGeometry({
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          canvasWidth,
+          canvasHeight,
+          imageScale: selectedDegree >= 25 ? 1 : imageScale,
+          baseScale: VIEWER_BASE_SCALE,
+          patientOffsetX,
+          patientOffsetY,
+        });
       }
 
       function checkBoundaries() {
         const radius = getApertureRadius();
         const geometry = getImageGeometry();
-        const minX = geometry.x + radius;
-        const maxX = geometry.x + geometry.width - radius;
-        const minY = geometry.y + radius;
-        const maxY = geometry.y + geometry.height - radius;
+        const imageX =
+          selectedDegree >= 25
+            ? canvasWidth - geometry.x - geometry.width
+            : geometry.x;
+        const imageY =
+          selectedDegree >= 25
+            ? canvasHeight - geometry.y - geometry.height
+            : geometry.y;
+        const minX = Math.max(radius, imageX + radius);
+        const maxX = Math.min(
+          canvasWidth - radius,
+          imageX + geometry.width - radius,
+        );
+        const minY = Math.max(radius, imageY + radius);
+        const maxY = Math.min(
+          canvasHeight - radius,
+          imageY + geometry.height - radius,
+        );
 
         if (maxX <= minX) {
-          viewX = geometry.x + geometry.width / 2;
+          viewX = canvasWidth / 2;
         } else {
           viewX = clamp(viewX, minX, maxX);
         }
 
         if (maxY <= minY) {
-          viewY = geometry.y + geometry.height / 2;
+          viewY = canvasHeight / 2;
         } else {
           viewY = clamp(viewY, minY, maxY);
         }
       }
 
       function getCataractLevelIndex() {
-        const maxIndex = CATARACT_PRESETS.length - 1;
-        return Math.round(clamp(Number(cataractLevel) || 0, 0, maxIndex));
+        return getCataractPresetIndex(cataractLevel);
       }
 
       function getCataractVisualState() {
-        return CATARACT_PRESETS[getCataractLevelIndex()] || CATARACT_PRESETS[0];
+        return getCataractPreset(cataractLevel);
       }
 
       function buildFundusFilter(cataract) {
-        const isMobileCataract =
-          VIEWER_PERF_PROFILE.isMobileLike && getCataractLevelIndex() > 0;
-        const blurScale = isMobileCataract
-          ? VIEWER_PERF_PROFILE.cataractBlurScale
-          : 1;
-        const blurPx = Math.max(
-          0,
-          Math.min(isMobileCataract ? 0.25 : 6, cataract.blurPx * blurScale),
-        );
+        const blurPx = Math.max(0, Math.min(6, cataract.blurPx));
         const brightness = cataract.brightness;
         const contrast = cataract.contrast;
         const saturation = cataract.saturation;
-
-        if (isMobileCataract) {
-          return `brightness(${brightness})`;
-        }
 
         return `blur(${blurPx}px) brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
       }
@@ -1209,6 +1186,16 @@
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         if (!img.naturalWidth) {
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "14px Inter, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(
+            imageLoadFailed
+              ? "Image unavailable. Choose a condition to retry."
+              : "Loading image…",
+            canvasWidth / 2,
+            canvasHeight / 2,
+          );
           return;
         }
 
@@ -1220,6 +1207,11 @@
         ctx.beginPath();
         ctx.arc(viewX, viewY, radius, 0, Math.PI * 2);
         ctx.clip();
+        ctx.save();
+        if (selectedDegree >= 25) {
+          ctx.translate(canvasWidth, canvasHeight);
+          ctx.rotate(Math.PI);
+        }
         ctx.filter = buildFundusFilter(cataract);
         ctx.drawImage(
           img,
@@ -1232,6 +1224,7 @@
           geometry.width,
           geometry.height,
         );
+        ctx.restore();
         ctx.filter = "none";
 
         applyCataractOverlays(cataract);
@@ -1281,6 +1274,7 @@
       }
 
       function setMenuOpen(isOpen) {
+        if (isOpen) menuReturnFocus = document.activeElement;
         sideMenu.classList.toggle("open", isOpen);
         sideMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
         burgerIcon.setAttribute("aria-expanded", isOpen ? "true" : "false");
@@ -1288,8 +1282,12 @@
 
         if (isOpen) {
           sideMenu.removeAttribute("inert");
+          requestAnimationFrame(() =>
+            sideMenu.querySelector("button")?.focus(),
+          );
         } else {
           sideMenu.setAttribute("inert", "");
+          menuReturnFocus?.focus?.();
         }
       }
 
@@ -1343,9 +1341,14 @@
         }
 
         syncConditionControls(imagePath);
+        imageLoadFailed = false;
 
         const currentImageName = img.src.split("/").pop() || "";
-        if (currentImageName === imagePath && img.complete) {
+        if (
+          currentImageName === imagePath.split("/").pop() &&
+          img.complete &&
+          img.naturalWidth
+        ) {
           resetViewAfterConditionLoad();
         } else {
           img.onload = () => {
@@ -1516,9 +1519,14 @@
       function updateAnimation(now) {
         updateBackgroundJitter(now);
         updateBackgroundShift(now);
+        if (!VIEWER_PERF_PROFILE.isMobileLike && cornealAnimationActive) {
+          cornealJitterOffset = stepCornealJitter({
+            offset: cornealJitterOffset,
+            isDragging,
+          });
+        }
 
         draw(now / 1000);
-        requestAnimationFrame(updateAnimation);
       }
 
       function getDragAnchorRadius() {
@@ -1548,41 +1556,12 @@
         if (VIEWER_PERF_PROFILE.isMobileLike) {
           return;
         }
-
-        if (cornealAnimationId !== null) {
-          return;
-        }
-
-        const animateReflex = () => {
-          if (!isDragging) {
-            cornealTargetOffset = { x: 0, y: 0 };
-          } else {
-            cornealTargetOffset = {
-              x: (Math.random() - 0.5) * 100,
-              y: (Math.random() - 0.5) * 100,
-            };
-          }
-
-          cornealJitterOffset.x +=
-            (cornealTargetOffset.x - cornealJitterOffset.x) * 0.1;
-          cornealJitterOffset.y +=
-            (cornealTargetOffset.y - cornealJitterOffset.y) * 0.1;
-
-          draw();
-          cornealAnimationId = requestAnimationFrame(animateReflex);
-        };
-
-        animateReflex();
+        cornealAnimationActive = true;
       }
 
       function stopCornealReflexAnimation() {
-        if (cornealAnimationId !== null) {
-          cancelAnimationFrame(cornealAnimationId);
-          cornealAnimationId = null;
-        }
-
+        cornealAnimationActive = false;
         cornealJitterOffset = { x: 0, y: 0 };
-        draw();
       }
 
       function startDrag(event) {
@@ -1673,6 +1652,35 @@
       });
 
       document.addEventListener("keydown", (event) => {
+        if (event.key === "Tab") {
+          const surface =
+            infoModal.getAttribute("aria-hidden") === "false"
+              ? infoModalContent
+              : sideMenu.classList.contains("open")
+                ? sideMenu
+                : null;
+          if (surface) {
+            const focusable = Array.from(
+              surface.querySelectorAll(
+                'button:not([disabled]), select:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+              ),
+            );
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (
+              event.shiftKey &&
+              (document.activeElement === first ||
+                document.activeElement === surface ||
+                !surface.contains(document.activeElement))
+            ) {
+              event.preventDefault();
+              last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first.focus();
+            }
+          }
+        }
         if (event.key !== "Escape") {
           return;
         }
@@ -1684,6 +1692,20 @@
         if (sideMenu.classList.contains("open")) {
           setMenuOpen(false);
         }
+      });
+
+      newSessionButton.addEventListener("click", () => {
+        if (newSessionButton.dataset.confirm !== "true") {
+          newSessionButton.dataset.confirm = "true";
+          newSessionButton.textContent = "Press again to reset";
+          clearTimeout(resetConfirmationTimerId);
+          resetConfirmationTimerId = setTimeout(() => {
+            delete newSessionButton.dataset.confirm;
+            newSessionButton.textContent = "New training session";
+          }, 5000);
+          return;
+        }
+        location.reload();
       });
 
       conditionSelect.addEventListener("change", () => {
@@ -1706,23 +1728,45 @@
       });
 
       document.querySelectorAll(".fov-button").forEach((button) => {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.classList.contains("active")),
+        );
         button.addEventListener("click", () => {
           document.querySelectorAll(".fov-button").forEach((item) => {
             item.classList.remove("active");
+            item.setAttribute("aria-pressed", "false");
           });
           button.classList.add("active");
+          button.setAttribute("aria-pressed", "true");
           selectedDegree = parseInt(button.dataset.degree, 10);
+          document.querySelectorAll(".refractive-button").forEach((item) => {
+            item.disabled = selectedDegree >= 25;
+            item.title =
+              selectedDegree >= 25 ? "Rx scaling is Direct-only" : "";
+            const active =
+              selectedDegree < 25 &&
+              item.dataset.refractive === currentRefractive;
+            item.classList.toggle("active", active);
+            item.setAttribute("aria-pressed", String(active));
+          });
           checkBoundaries();
           draw();
         });
       });
 
       document.querySelectorAll(".refractive-button").forEach((button) => {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.classList.contains("active")),
+        );
         button.addEventListener("click", () => {
           document.querySelectorAll(".refractive-button").forEach((item) => {
             item.classList.remove("active");
+            item.setAttribute("aria-pressed", "false");
           });
           button.classList.add("active");
+          button.setAttribute("aria-pressed", "true");
           currentRefractive = button.dataset.refractive || "plano";
           imageScale =
             refractiveScaleByType[currentRefractive] ||
@@ -1750,13 +1794,27 @@
         resizeCanvas();
       };
 
+      let imageLoadFailed = false;
+      img.onerror = () => {
+        imageLoadFailed = true;
+        draw();
+      };
+
       setMenuOpen(false);
       setInfoOpen(false, { restoreFocus: false });
       setCataractLevel(cataractLevel);
       resizeCanvas();
-      requestAnimationFrame(updateAnimation);
+      const animationLoop = createAnimationLoop({ onFrame: updateAnimation });
+      animationLoop.start();
+      window.addEventListener("pagehide", () => animationLoop.stop());
+      window.addEventListener("pageshow", () => animationLoop.start());
+      if (location.protocol === "http:" || location.protocol === "https:") {
+        window.addEventListener("load", () =>
+          navigator.serviceWorker?.register("./service-worker.js"),
+        );
+      }
     </script>
-    <script src="cup-achievement.js"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

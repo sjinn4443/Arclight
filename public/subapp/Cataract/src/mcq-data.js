@@ -1,6 +1,29 @@
 export const MCQ_STORAGE_KEY = "cataract_mcq_progress_v1";
 
-export const MCQ_LEVELS = [
+export const MCQ_SOURCE_REFERENCES = {
+  "nhs-adult-cataract-2025": {
+    label: "NHS cataracts in adults",
+    url: "https://www.nhs.uk/conditions/cataracts/",
+    status: "current-authoritative",
+  },
+  "nhs-childhood-cataract": {
+    label: "NHS childhood cataracts",
+    url: "https://www.nhs.uk/conditions/childhood-cataracts/",
+    status: "current-authoritative",
+  },
+  "cataract-app-scope-v1": {
+    label: "Cataract app scope and recording contract",
+    url: null,
+    status: "internal-engineering-contract",
+  },
+  "cataract-app-triage-v1": {
+    label: "Cataract app triage and referral wording",
+    url: null,
+    status: "pending-independent-clinical-sign-off",
+  },
+};
+
+const RAW_MCQ_LEVELS = [
   {
     name: "Primary",
     totalQuestions: 5,
@@ -8,15 +31,14 @@ export const MCQ_LEVELS = [
     timeSeconds: 90,
     questions: [
       {
-        prompt:
-          "Which reflex pattern most strongly suggests a mature cataract?",
+        prompt: "What is the safest interpretation of a white pupil reflex?",
         options: [
-          "Normal red reflex",
-          "White reflex",
-          "Dark reflex only",
-          "Patchy peripheral reflex",
+          "An abnormal sign needing eye assessment",
+          "Proof of mature cataract",
+          "Normal ageing",
+          "No action if painless",
         ],
-        answerIndex: 1,
+        answerIndex: 0,
       },
       {
         prompt:
@@ -55,14 +77,15 @@ export const MCQ_LEVELS = [
         answerIndex: 2,
       },
       {
-        prompt: "Fundal Reflex unlocks when the app has:",
+        prompt:
+          "Which history is least typical of simple age-related cataract?",
         options: [
-          "Age only",
-          "Onset, eyes and Dist VA",
-          "Near VA only",
-          "Back of Eye first",
+          "Gradual painless blur",
+          "Glare and faded colours",
+          "Sudden painful loss",
+          "Slowly worsening distance vision",
         ],
-        answerIndex: 1,
+        answerIndex: 2,
       },
       {
         prompt: "What does the Back of Eye section check for?",
@@ -123,14 +146,14 @@ export const MCQ_LEVELS = [
     timeSeconds: 80,
     questions: [
       {
-        prompt: "White reflex with poor back view generally indicates:",
+        prompt: "White reflex with a poor back view means:",
         options: [
-          "No visual relevance",
-          "Priority surgery / dense cataract pathway",
-          "Normal ageing only",
-          "Always glaucoma only",
+          "Posterior disease cannot be excluded",
+          "Dense cataract is confirmed",
+          "No eye assessment is needed",
+          "The retina is normal",
         ],
-        answerIndex: 1,
+        answerIndex: 0,
       },
       {
         prompt: "Back-of-eye finding of detached retina should usually be:",
@@ -173,14 +196,15 @@ export const MCQ_LEVELS = [
         answerIndex: 0,
       },
       {
-        prompt: "If fundal reflex is white, the back section becomes:",
+        prompt:
+          "If the reflex is white and the fundus cannot be seen, the safest record is:",
         options: [
-          "Forced open",
-          "Disabled with poor-view preselection",
-          "Hidden permanently",
-          "Unchanged but irrelevant",
+          "Poor view; posterior disease not excluded",
+          "Normal back of eye",
+          "Definite mature cataract only",
+          "No further assessment required",
         ],
-        answerIndex: 1,
+        answerIndex: 0,
       },
       {
         prompt: "A dense reflex with relatively good VA should make you:",
@@ -344,12 +368,12 @@ export const MCQ_LEVELS = [
         answerIndex: 1,
       },
       {
-        prompt: "Why are red outputs kept short?",
+        prompt: "Which wording is safest for a red-flag result?",
         options: [
-          "Urgent action should be clear",
-          "Near VA is never useful",
-          "The result is less important",
-          "The app cannot show notes",
+          "Urgent action, brief reason and next step",
+          "A long differential with no action",
+          "Definite cataract diagnosis",
+          "Reassurance before referral",
         ],
         answerIndex: 0,
       },
@@ -377,3 +401,166 @@ export const MCQ_LEVELS = [
     ],
   },
 ];
+
+const TOPICS_BY_LEVEL = {
+  Primary: [
+    "white-reflex",
+    "routine",
+    "assessment",
+    "va",
+    "acute-loss",
+    "acute-loss",
+    "posterior-view",
+    "red-reflex",
+    "posterior-view",
+    "reflex-pattern",
+    "va",
+    "recheck",
+  ],
+  Intermediate: [
+    "white-reflex",
+    "retinal-red-flag",
+    "near-va",
+    "pupils",
+    "cornea",
+    "posterior-view",
+    "recheck",
+    "refraction",
+    "posterior-view",
+    "cupping",
+    "retinal-comorbidity",
+    "paediatric",
+  ],
+  Advanced: [
+    "safety-scope",
+    "retinal-comorbidity",
+    "acute-loss",
+    "safety-scope",
+    "posterior-view",
+    "retinal-red-flag",
+    "rapd",
+    "posterior-view",
+    "acute-loss",
+    "urgent-wording",
+    "recheck",
+    "safety-scope",
+  ],
+};
+
+const TOPIC_METADATA = {
+  "white-reflex": {
+    explanation:
+      "A white reflex is abnormal but does not prove mature cataract. Record the visual context and arrange eye assessment because posterior causes must not be missed.",
+    source: "cataract-app-triage-v1",
+  },
+  routine: {
+    explanation:
+      "Cataract usually causes gradual visual difficulty. A normal reflex with good acuity does not by itself justify a cataract referral, though symptoms and daily function still matter.",
+    source: "nhs-adult-cataract-2025",
+  },
+  assessment: {
+    explanation:
+      "History, visual acuity, anterior findings and the available posterior view must be considered together before choosing a pathway.",
+    source: "cataract-app-scope-v1",
+  },
+  va: {
+    explanation:
+      "Visual acuity records functional severity and helps expose a mismatch between the reported vision and the observed reflex.",
+    source: "cataract-app-scope-v1",
+  },
+  "acute-loss": {
+    explanation:
+      "Age-related cataract is usually gradual and painless. Sudden loss, pain or redness needs assessment for another cause rather than a routine cataract assumption.",
+    source: "nhs-adult-cataract-2025",
+  },
+  "posterior-view": {
+    explanation:
+      "A limited or absent posterior view is a limitation, not a normal retinal finding. Cataract and posterior disease can coexist.",
+    source: "cataract-app-triage-v1",
+  },
+  "red-reflex": {
+    explanation:
+      "A bright clear red reflex is the comparison pattern in this teaching app. It must still be interpreted with visual acuity and the rest of the examination.",
+    source: "cataract-app-scope-v1",
+  },
+  "reflex-pattern": {
+    explanation:
+      "Patches are an anterior reflex pattern in this app. Back-of-eye choices are recorded separately to avoid mixing lens and posterior findings.",
+    source: "cataract-app-scope-v1",
+  },
+  recheck: {
+    explanation:
+      "Conflicting visual acuity and examination findings should be rechecked before a referral conclusion is recorded.",
+    source: "cataract-app-scope-v1",
+  },
+  "retinal-red-flag": {
+    explanation:
+      "A retinal red flag overrides a cataract-like reflex because delay could miss urgent or vision-limiting posterior disease.",
+    source: "cataract-app-triage-v1",
+  },
+  "near-va": {
+    explanation:
+      "Near acuity adds functional context but does not replace distance acuity or the eye examination.",
+    source: "cataract-app-scope-v1",
+  },
+  pupils: {
+    explanation:
+      "An abnormal pupil or light response is not explained safely by simple cataract alone and should prompt assessment for another cause.",
+    source: "cataract-app-triage-v1",
+  },
+  cornea: {
+    explanation:
+      "Corneal scar or distortion can limit the expected visual outcome and should be recorded alongside any cataract finding.",
+    source: "cataract-app-triage-v1",
+  },
+  refraction: {
+    explanation:
+      "A mismatch between distance and near acuity can reflect test method or refractive error, so the measurements should be checked before escalation.",
+    source: "cataract-app-scope-v1",
+  },
+  cupping: {
+    explanation:
+      "Marked disc cupping suggests a possible glaucoma pathway and should not be explained by cataract alone.",
+    source: "cataract-app-triage-v1",
+  },
+  "retinal-comorbidity": {
+    explanation:
+      "Retinal disease can coexist with cataract, alter urgency and limit the likely visual benefit from cataract surgery.",
+    source: "cataract-app-triage-v1",
+  },
+  paediatric: {
+    explanation:
+      "A cataract affecting a child can impair visual development. Prompt paediatric eye assessment is important when vision may be affected.",
+    source: "nhs-childhood-cataract",
+  },
+  "safety-scope": {
+    explanation:
+      "The app supports structured triage and signposting. It does not replace specialist diagnosis or prove that cataract is the cause of visual loss.",
+    source: "cataract-app-scope-v1",
+  },
+  rapd: {
+    explanation:
+      "RAPD or an abnormal light response suggests retinal or optic-nerve dysfunction and should not be attributed to routine cataract without assessment.",
+    source: "cataract-app-triage-v1",
+  },
+  "urgent-wording": {
+    explanation:
+      "Urgent results should put the action first, then give a brief reason and practical next step.",
+    source: "cataract-app-triage-v1",
+  },
+};
+
+export const MCQ_LEVELS = RAW_MCQ_LEVELS.map((level) => ({
+  ...level,
+  questions: level.questions.map((question, questionIndex) => {
+    const topic = TOPICS_BY_LEVEL[level.name][questionIndex];
+    const metadata = TOPIC_METADATA[topic];
+    return {
+      ...question,
+      id: `cataract-${level.name.toLowerCase()}-${String(questionIndex + 1).padStart(2, "0")}`,
+      topic,
+      explanation: metadata.explanation,
+      source: metadata.source,
+    };
+  }),
+}));

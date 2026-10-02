@@ -123,8 +123,6 @@ body:not(.app-ready) .eyes-wrapper {
 
 .iris {
   --light-pupil-scale: 1;
-  --iris-layout-x: 0px;
-  --iris-layout-y: 0px;
   position: absolute;
   width: 80px;
   height: 80px;

@@ -1,0 +1,11 @@
+{
+  "name": "squint-teaching-simulator",
+  "private": true,
+  "scripts": {
+    "test": "node tests/run-tests.cjs",
+    "parity": "node qa-refactor-check.cjs check",
+    "browser:review": "node tests/browser-review.mjs",
+    "audit:conditions": "node tests/condition-audit.mjs",
+    "test:interactions": "node tests/interaction-regression.mjs"
+  }
+}

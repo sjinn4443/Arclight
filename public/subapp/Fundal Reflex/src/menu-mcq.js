@@ -1,4 +1,4 @@
-import { MCQ_LEVEL_META } from "./mcq-bank.js?v=20260430-2";
+import { MCQ_LEVEL_META } from "./mcq-bank.js?v=20260726-mcq3";
 import { createModalController } from "./modal.js";
 import {
   getMcqAnswers,
@@ -6,7 +6,7 @@ import {
   renderMcqQuestions,
   revealMcqFeedback,
   sampleQuestions,
-} from "./mcq.js?v=20260430-2";
+} from "./mcq.js?v=20260726-mcq3";
 
 export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
   const {
@@ -20,6 +20,7 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     mcqIntro,
     mcqContainer,
     submitMcqButton,
+    retryMcqButton,
     mcqResult,
     mcqLevelButtons,
   } = dom;
@@ -45,6 +46,9 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     sideMenu.setAttribute("aria-hidden", String(!isOpen));
     if (isOpen) {
       sideMenu.removeAttribute("inert");
+      sideMenu
+        .querySelector("button:not([disabled])")
+        ?.focus({ preventScroll: true });
     } else {
       sideMenu.setAttribute("inert", "");
     }
@@ -58,6 +62,11 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     initialFocusElement: closeMcqModalButton,
     modal: mcqModal,
   });
+
+  const closeMcqModal = () => {
+    mcqModalController.close({ restoreFocus: false });
+    burgerIcon.focus({ preventScroll: true });
+  };
 
   const openMcqLevel = (level, triggerElement) => {
     const meta = MCQ_LEVEL_META[level];
@@ -78,9 +87,12 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     mcqResult.textContent = "";
     mcqResult.style.color = "";
     submitMcqButton.disabled = false;
+    if (retryMcqButton) {
+      retryMcqButton.hidden = true;
+    }
 
     setSideMenuOpen(false);
-    mcqModalController.open({ triggerElement });
+    mcqModalController.open({ triggerElement: burgerIcon });
   };
 
   burgerIcon.addEventListener("click", () => {
@@ -94,7 +106,7 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
   });
 
   closeMcqModalButton.addEventListener("click", () => {
-    mcqModalController.close();
+    closeMcqModal();
   });
 
   submitMcqButton.addEventListener("click", () => {
@@ -106,12 +118,19 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
     if (!answers) {
       mcqResult.textContent = "Please answer all questions before submitting.";
       mcqResult.style.color = "#c4171d";
+      const unanswered = [...mcqContainer.querySelectorAll(".question")].find(
+        (question) => !question.querySelector("input:checked"),
+      );
+      unanswered?.querySelector('input[type="radio"]')?.focus();
       return;
     }
 
     const score = gradeMcq(state.activeMcqQuestions, answers);
     revealMcqFeedback(mcqContainer, state.activeMcqQuestions, answers);
     submitMcqButton.disabled = true;
+    if (retryMcqButton) {
+      retryMcqButton.hidden = false;
+    }
 
     const passMark = MCQ_LEVEL_META[state.activeMcqLevel].passMark;
     const didPass = score >= passMark;
@@ -132,12 +151,23 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
       mcqResult.textContent = `Score ${score}/${state.activeMcqQuestions.length} - Needs more practice`;
       mcqResult.style.color = "#c4171d";
     }
+    mcqResult.focus({ preventScroll: true });
+  });
+
+  retryMcqButton?.addEventListener("click", () => {
+    if (!state.activeMcqLevel) {
+      return;
+    }
+    openMcqLevel(state.activeMcqLevel, retryMcqButton);
+    mcqContainer
+      .querySelector("input[type='radio']")
+      ?.focus({ preventScroll: true });
   });
 
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (target === mcqModal) {
-      mcqModalController.close();
+      closeMcqModal();
       return;
     }
 
@@ -155,7 +185,14 @@ export function initMenuMcq({ state, dom, onBeforeOpenMcq }) {
       return;
     }
 
-    setSideMenuOpen(false);
-    mcqModalController.close();
+    if (mcqModalController.isOpen()) {
+      closeMcqModal();
+      return;
+    }
+
+    if (sideMenu.classList.contains("open")) {
+      setSideMenuOpen(false);
+      burgerIcon.focus({ preventScroll: true });
+    }
   });
 }

@@ -1,4 +1,4 @@
-import { MCQ_BANK } from "./constants.js";
+import { MCQ_BANK, MCQ_SOURCE_REFERENCES } from "./constants.js";
 
 function shuffledCopy(items) {
   return items
@@ -37,6 +37,7 @@ export function renderMcqQuestions(container, questions) {
   questions.forEach((question, questionIndex) => {
     const fieldset = document.createElement("fieldset");
     fieldset.className = "question";
+    fieldset.dataset.questionId = question.id;
 
     const legend = document.createElement("legend");
     legend.textContent = `${questionIndex + 1}. ${question.question}`;
@@ -57,6 +58,18 @@ export function renderMcqQuestions(container, questions) {
     });
 
     fieldset.appendChild(options);
+    const review = document.createElement("div");
+    review.className = "mcq-item-review";
+    review.hidden = true;
+    const explanation = document.createElement("p");
+    explanation.className = "mcq-item-feedback";
+    explanation.textContent = `Why: ${question.explanation}`;
+    const source = document.createElement("p");
+    source.className = "mcq-item-source";
+    const sourceMeta = MCQ_SOURCE_REFERENCES[question.source];
+    source.textContent = `Source: ${sourceMeta?.label || question.source}. Status: ${question.reviewStatus}.`;
+    review.append(explanation, source);
+    fieldset.appendChild(review);
     fragment.appendChild(fieldset);
   });
 
@@ -124,5 +137,7 @@ export function revealMcqFeedback(container, questions, answers) {
     questionBlock.querySelectorAll("input[type='radio']").forEach((input) => {
       input.disabled = true;
     });
+    const review = questionBlock.querySelector(".mcq-item-review");
+    if (review) review.hidden = false;
   });
 }

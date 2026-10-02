@@ -12,38 +12,15 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Amsler" />
+    <meta name="theme-color" content="#000000" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-
-    <!-- Preconnect and DNS prefetch hints for performance optimisation -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-    <!-- Preload Google Fonts (Quicksand title, Inter UI) -->
-    <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@700&display=swap"
-      />
-    </noscript>
-
-    <!-- External CSS library (Font Awesome for icons) -->
-    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
 
     <!-- Link to the local CSS file -->
-    <link rel="stylesheet" href="styles.css?v=20260518-burger" />
-    <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="styles.css?v=20260929-logic1" />
+    <link rel="stylesheet" href="cup-achievement.css?v=20260722-v1.1" />
 
-    <!-- External JavaScript library (html2canvas) -->
-    <script src="/vendor/html2canvas/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui3" />
   </head>
   <body>
     <!-- Header section -->
@@ -51,8 +28,11 @@
       <button
         id="burger-icon"
         class="icon-button appbar-left-icon"
+        type="button"
         title="MCQ menu"
         aria-label="Open MCQ menu"
+        aria-controls="sideMenu"
+        aria-expanded="false"
       >
         <span class="appbar-glyph-menu" aria-hidden="true"></span>
       </button>
@@ -60,10 +40,13 @@
       <button
         id="info-icon"
         class="icon-button"
+        type="button"
         title="Click for instructions"
         aria-label="Open instructions"
+        aria-controls="infoModal"
+        aria-expanded="false"
       >
-        <i class="fas fa-info" aria-hidden="true"></i>
+        <span class="appbar-glyph-info" aria-hidden="true"></span>
       </button>
     </header>
 
@@ -78,22 +61,35 @@
         class="mcq-level-button mcq-primary"
         data-level="primary"
       >
-        Primary MCQs
+        Primary
       </button>
       <button
         id="mcqIntermediateBtn"
         class="mcq-level-button mcq-intermediate"
         data-level="intermediate"
       >
-        Intermediate MCQs
+        Intermediate
       </button>
       <button
         id="mcqAdvancedBtn"
         class="mcq-level-button mcq-advanced"
         data-level="advanced"
       >
-        Advanced MCQs
+        Advanced
       </button>
+      <button
+        id="newAssessmentBtn"
+        class="mcq-level-button assessment-reset-button"
+        type="button"
+        aria-describedby="assessmentResetStatus"
+      >
+        New assessment
+      </button>
+      <p
+        id="assessmentResetStatus"
+        class="assessment-reset-status"
+        aria-live="polite"
+      ></p>
       <section
         id="cupAchievement"
         class="cup-achievement is-locked"
@@ -125,17 +121,34 @@
     </nav>
 
     <!-- Instructions modal for the Amsler test -->
-    <div id="infoModal" class="modal">
+    <div
+      id="infoModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="infoModalTitle"
+      hidden
+    >
       <div class="modal-content">
-        <span id="closeModal" class="close" title="Close">&times;</span>
         <div class="info-popup-header">
-          <h2>Amsler Test</h2>
+          <h2 id="infoModalTitle">Amsler Test</h2>
+          <button
+            id="closeModal"
+            class="close"
+            type="button"
+            title="Close"
+            aria-label="Close instructions"
+          >
+            &times;
+          </button>
         </div>
 
         <div class="info-popup-body">
-          <p>
-            Use good near correction and keep fixation on the centre dot. The
-            macula is fist-sized at the usual reading distance.
+          <p class="info-purpose-copy">
+            Use the grid with the patient viewing one eye at a time. You mark
+            distortion, missing areas or colour change exactly where the patient
+            reports them. The marks describe the test; they do not diagnose
+            macular disease.
           </p>
 
           <div class="info-basics-grid" aria-label="Amsler basics">
@@ -156,143 +169,239 @@
           <div class="info-look-section info-look-section--detail">
             <p class="info-look-title">More detail</p>
             <p>
-              Use diagonals for central-loss fixation. Use red for subtle colour
-              or optic nerve change. Record wavy, dark, missing or red marks on
-              the grid.
+              Use Line for distortion, Missing for a missing or dim region and
+              Red mark for colour change. Compute records the selected eye.
+              Percentages describe recorded marks only; they are not a
+              diagnosis.
             </p>
           </div>
 
           <div class="info-popup-footer">
-            <span class="info-version">
-              <span>v1</span>
-              <time datetime="2026-05-18">18/5/2026</time>
+            <span
+              class="info-version"
+              style="
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 8px 0 0;
+                color: #6e7c95;
+                font:
+                  700 10.5px/1.2 Inter,
+                  Arial,
+                  sans-serif;
+                text-align: right;
+                white-space: nowrap;
+              "
+            >
+              <span>v1 ·</span>
+              <time datetime="2026-09-30">30/9/2026</time>
             </span>
           </div>
         </div>
       </div>
     </div>
 
-    <div id="mcqModal" class="modal">
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqTitle"
+      hidden
+    >
       <div class="modal-content mcq-modal-content">
-        <span id="closeMcqModal" class="close" title="Close">&times;</span>
+        <button
+          id="closeMcqModal"
+          class="close"
+          type="button"
+          title="Close"
+          aria-label="Close MCQ"
+        >
+          &times;
+        </button>
         <h2 id="mcqTitle">MCQ Test</h2>
         <p id="mcqProgress" class="mcq-progress"></p>
         <div id="mcqList" class="mcq-list"></div>
-        <p id="mcqFeedback" class="mcq-feedback"></p>
+        <p id="mcqFeedback" class="mcq-feedback" tabindex="-1"></p>
         <div class="mcq-actions">
-          <button id="mcqSubmitBtn" class="action-button">Submit</button>
-          <button id="mcqRestartBtn" class="action-button" hidden>
-            Restart
+          <button id="mcqSubmitBtn" class="action-button" type="button">
+            Submit answers
+          </button>
+          <button id="mcqRestartBtn" class="action-button" type="button" hidden>
+            New attempt
           </button>
         </div>
       </div>
     </div>
 
-    <div class="top-controls">
-      <!-- Tabs for right eye (RE) and left eye (LE) -->
-      <div class="tabs">
-        <button id="reTab" class="tab active">RE</button>
-        <button id="leTab" class="tab">LE</button>
-      </div>
-
-      <!-- Patient info icon triggers the patient details modal -->
-      <div class="patient-info-icon">
-        <button
-          id="patientInfoToggle"
-          class="patient-action"
-          title="Patient Information"
-          aria-label="Open patient information"
-        >
-          <i class="fas fa-user-circle" aria-hidden="true"></i>
-          <span>Patient</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Patient info modal -->
-    <div id="patientInfoModal" class="modal">
-      <div class="modal-content">
-        <span id="closePatientInfo" class="close" title="Close">&times;</span>
-        <div class="modal-field">
-          <label for="patientName">Name:</label>
-          <input type="text" id="patientName" name="patientName" />
+    <main>
+      <div class="top-controls">
+        <!-- Tabs for right eye (RE) and left eye (LE) -->
+        <div class="tabs" role="tablist" aria-label="Eye">
+          <button
+            id="reTab"
+            class="tab active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="gridCanvas"
+          >
+            RE
+          </button>
+          <button
+            id="leTab"
+            class="tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="gridCanvas"
+          >
+            LE
+          </button>
         </div>
-        <div class="modal-field">
-          <label for="patientDate">Date:</label>
-          <input type="date" id="patientDate" name="patientDate" />
-        </div>
-        <button id="savePatientInfo">Save</button>
-      </div>
-    </div>
 
-    <div class="control-panel">
-      <!-- Dot flash toggle button and the two new buttons -->
-      <div class="toggle-buttons">
-        <button id="flashToggle" class="mode-toggle">Flash</button>
-        <button id="redToggle" class="mode-toggle">Red</button>
-        <button id="diagToggle" class="mode-toggle">Diag</button>
-      </div>
-      <!-- Tool selectors, etc. remain unchanged -->
-      <div class="tool-selector">
-        <button id="toolPen" class="tool active" title="Pen"></button>
-        <button id="toolErase" class="tool" title="Erase"></button>
-        <button id="toolHaemorrhage" class="tool" title="Haemorrhage"></button>
-      </div>
-      <div class="stroke-settings">
-        <button
-          id="strokeSettingsToggle"
-          class="stroke-settings-toggle"
-          title="Stroke settings"
-          aria-label="Open stroke settings"
-          aria-expanded="false"
-          aria-controls="strokeSettingsPanel"
-        >
-          +
-        </button>
-        <div id="strokeSettingsPanel" class="stroke-settings-panel" hidden>
-          <label for="penWidthSlider">Pen width</label>
-          <input
-            id="penWidthSlider"
-            type="range"
-            min="1"
-            max="12"
-            step="1"
-            value="2"
-          />
-          <span id="penWidthValue">2px</span>
+        <!-- Patient info icon triggers the patient details modal -->
+        <div class="patient-info-icon">
+          <button
+            id="patientInfoToggle"
+            class="patient-action"
+            type="button"
+            title="Patient Information"
+            aria-label="Open patient information"
+            aria-controls="patientInfoModal"
+            aria-expanded="false"
+          >
+            <span class="local-icon local-icon-user" aria-hidden="true"></span>
+            <span>Patient</span>
+          </button>
         </div>
       </div>
-    </div>
 
-    <!-- Main canvas container for the Amsler grid -->
-    <div class="canvas-container">
-      <canvas id="gridCanvas"></canvas>
-    </div>
-
-    <!-- Results section -->
-    <div class="results">
-      <p>Results:</p>
-      <div class="results-actions">
-        <button id="analyzeBtn" class="action-button">Compute</button>
-        <button
-          id="reportBtn"
-          class="report-action-button"
-          title="Generate report"
-          aria-label="Generate report"
-          disabled
-        >
-          <i class="fas fa-file-medical" aria-hidden="true"></i>
-          <span>Report</span>
-        </button>
+      <!-- Patient info modal -->
+      <div
+        id="patientInfoModal"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="patientInfoTitle"
+        hidden
+      >
+        <div class="modal-content">
+          <button
+            id="closePatientInfo"
+            class="close"
+            type="button"
+            title="Close"
+            aria-label="Close patient information"
+          >
+            &times;
+          </button>
+          <h2 id="patientInfoTitle">Patient information</h2>
+          <div class="modal-field">
+            <label for="patientName">Name:</label>
+            <input type="text" id="patientName" name="patientName" />
+          </div>
+          <div class="modal-field">
+            <label for="patientDate">Date:</label>
+            <input type="date" id="patientDate" name="patientDate" />
+          </div>
+          <button id="savePatientInfo">Save</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Report section -->
-    <div id="reportSection" hidden></div>
+      <div class="control-panel">
+        <!-- Dot flash toggle button and the two new buttons -->
+        <div class="toggle-buttons">
+          <button id="flashToggle" class="mode-toggle">Flash</button>
+          <button id="redToggle" class="mode-toggle">Red</button>
+          <button id="diagToggle" class="mode-toggle">Diag</button>
+        </div>
+        <!-- Tool selectors, etc. remain unchanged -->
+        <div class="tool-selector">
+          <button
+            id="toolPen"
+            class="tool active"
+            type="button"
+            title="Line"
+            aria-label="Distortion line tool"
+          ></button>
+          <button
+            id="toolErase"
+            class="tool"
+            type="button"
+            title="Missing"
+            aria-label="Missing area tool"
+          ></button>
+          <button
+            id="toolHaemorrhage"
+            class="tool"
+            type="button"
+            title="Red mark"
+            aria-label="Red mark tool"
+          ></button>
+        </div>
+        <div class="stroke-settings">
+          <button
+            id="strokeSettingsToggle"
+            class="stroke-settings-toggle"
+            title="Stroke settings"
+            aria-label="Open stroke settings"
+            aria-expanded="false"
+            aria-controls="strokeSettingsPanel"
+          >
+            +
+          </button>
+          <div id="strokeSettingsPanel" class="stroke-settings-panel" hidden>
+            <label for="penWidthSlider">Pen width</label>
+            <input
+              id="penWidthSlider"
+              type="range"
+              min="1"
+              max="12"
+              step="1"
+              value="2"
+            />
+            <span id="penWidthValue">2px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main canvas container for the Amsler grid -->
+      <div class="canvas-container">
+        <canvas
+          id="gridCanvas"
+          role="img"
+          aria-label="Amsler grid drawing area for the selected eye"
+        ></canvas>
+      </div>
+
+      <!-- Results section -->
+      <div class="results">
+        <p aria-live="polite" aria-atomic="true">Results:</p>
+        <div class="results-actions">
+          <button id="analyzeBtn" class="action-button">Compute</button>
+          <button
+            id="reportBtn"
+            class="report-action-button"
+            title="Generate report"
+            aria-label="Generate report"
+            disabled
+          >
+            <span class="local-icon local-icon-report" aria-hidden="true"
+              >R</span
+            >
+            <span>Report</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Report section -->
+      <div id="reportSection" hidden></div>
+    </main>
 
     <!-- External script for additional functionalities -->
-    <script src="app.bundle.js"></script>
-    <script src="cup-achievement.js"></script>
+    <script src="app.bundle.js?v=20261002-host1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

@@ -1,3 +1,73 @@
+let reportCaptureLibraryPromise = null;
+let reportExportStylesPromise = null;
+
+function loadReportExportStyles() {
+  if (!/^https?:$/.test(window.location.protocol)) return Promise.resolve(null);
+  if (reportExportStylesPromise) return reportExportStylesPromise;
+  reportExportStylesPromise = (async () => {
+    let css = Array.from(document.styleSheets, (sheet) =>
+      Array.from(sheet.cssRules, (rule) => rule.cssText).join("\n"),
+    ).join("\n");
+    // The clone also needs self-contained fonts: its requests bypass the app's
+    // worker, while this document can fetch the installed local font assets.
+    for (const match of Array.from(
+      css.matchAll(/url\(["']?([^"')]+\.woff2)["']?\)/g),
+    )) {
+      const response = await fetch(new URL(match[1], document.baseURI));
+      if (!response.ok) throw new Error("Report font could not load.");
+      const blob = await response.blob();
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () =>
+          reject(new Error("Report font could not be read."));
+        reader.readAsDataURL(blob);
+      });
+      css = css.replaceAll(match[0], `url("${dataUrl}")`);
+    }
+    return css;
+  })().catch((error) => {
+    reportExportStylesPromise = null;
+    throw error;
+  });
+  return reportExportStylesPromise;
+}
+
+function loadReportCaptureLibrary() {
+  if (typeof window.html2canvas === "function")
+    return Promise.resolve(window.html2canvas);
+  if (reportCaptureLibraryPromise) return reportCaptureLibraryPromise;
+  reportCaptureLibraryPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = new URL("assets/html2canvas.min.js", document.baseURI).href;
+    script.async = true;
+    const timer = setTimeout(
+      () => finish(new Error("Report export loading timed out.")),
+      15000,
+    );
+    function finish(error) {
+      clearTimeout(timer);
+      script.onload = script.onerror = null;
+      if (error) {
+        script.remove();
+        reject(error);
+      } else resolve(window.html2canvas);
+    }
+    script.onload = () =>
+      finish(
+        typeof window.html2canvas === "function"
+          ? null
+          : new Error("Report export unavailable."),
+      );
+    script.onerror = () => finish(new Error("Report export could not load."));
+    document.head.append(script);
+  }).catch((error) => {
+    reportCaptureLibraryPromise = null;
+    throw error;
+  });
+  return reportCaptureLibraryPromise;
+}
+
 export function createReportController(app) {
   const { canvas, patientName, patientDate, reportSection } = app.elements;
   const REPORT_IMAGE_NAME = "amsler-report.webp";
@@ -5,11 +75,13 @@ export function createReportController(app) {
 
   function captureSnapshot(eye) {
     const originalEye = app.state.currentEye;
+    const originalDotVisible = app.state.dotVisible;
+    app.state.dotVisible = true;
     app.state.currentEye = eye;
     app.canvasController.redraw();
-    app.analysisController.drawMergedDefects();
     const dataURL = canvas.toDataURL(REPORT_IMAGE_TYPE, 0.92);
     app.state.currentEye = originalEye;
+    app.state.dotVisible = originalDotVisible;
     app.canvasController.redraw();
     return dataURL;
   }
@@ -28,9 +100,7 @@ export function createReportController(app) {
   }
 
   async function captureReportCanvas() {
-    if (!window.html2canvas) {
-      return null;
-    }
+    await loadReportCaptureLibrary();
 
     const footer = reportSection.querySelector(".amsler-report-footer");
     const previousDisplay = footer?.style.display ?? "";
@@ -39,8 +109,26 @@ export function createReportController(app) {
     }
 
     try {
+      // The export iframe has no service-worker controller. Carry the loaded
+      // local CSS into it so offline exports retain the report's presentation.
+      const exportCss = await loadReportExportStyles();
+      const inlineExportStyles = exportCss !== null;
+      const nonce = document.querySelector(
+        "script[nonce], style[nonce]",
+      )?.nonce;
       return await window.html2canvas(reportSection, {
         backgroundColor: "#ffffff",
+        ignoreElements: (element) =>
+          inlineExportStyles &&
+          element.tagName === "LINK" &&
+          element.rel === "stylesheet",
+        onclone: (clonedDocument) => {
+          if (!inlineExportStyles) return;
+          const style = clonedDocument.createElement("style");
+          if (nonce) style.nonce = nonce;
+          style.textContent = exportCss;
+          clonedDocument.head.appendChild(style);
+        },
       });
     } finally {
       if (footer) {
@@ -116,19 +204,32 @@ export function createReportController(app) {
     const shareButton = document.getElementById("shareReportBtn");
     const statusElement = document.getElementById("reportShareStatus");
 
-    downloadButton?.addEventListener("click", () => {
-      if (statusElement) {
-        statusElement.textContent = "";
+    async function runExport(action) {
+      if (downloadButton?.disabled || shareButton?.disabled) return;
+      if (downloadButton) downloadButton.disabled = true;
+      if (shareButton) shareButton.disabled = true;
+      if (statusElement) statusElement.textContent = "Preparing report image…";
+      try {
+        await action();
+      } catch {
+        if (statusElement)
+          statusElement.textContent =
+            "Report export could not load or complete. Please try again.";
+      } finally {
+        if (downloadButton) downloadButton.disabled = false;
+        if (shareButton) shareButton.disabled = false;
       }
-      downloadReportScreenshot();
-    });
-
-    shareButton?.addEventListener("click", () => {
-      if (statusElement) {
-        statusElement.textContent = "";
-        shareReportScreenshot(statusElement);
-      }
-    });
+    }
+    downloadButton?.addEventListener("click", () =>
+      runExport(async () => {
+        await downloadReportScreenshot();
+        if (statusElement)
+          statusElement.textContent = "Report image downloaded.";
+      }),
+    );
+    shareButton?.addEventListener("click", () =>
+      runExport(() => shareReportScreenshot(statusElement)),
+    );
   }
 
   function createMetaItem(label, value) {
@@ -176,16 +277,17 @@ export function createReportController(app) {
     return figure;
   }
 
-  function createReportActionButton(id, iconClass, label, action) {
+  function createReportActionButton(id, iconName, iconText, label, action) {
     const button = document.createElement("button");
     button.id = id;
     button.className = "amsler-report-action-btn";
     button.type = "button";
     button.dataset.resourceAction = action;
 
-    const icon = document.createElement("i");
-    icon.className = iconClass;
+    const icon = document.createElement("span");
+    icon.className = `local-icon local-icon-${iconName}`;
     icon.setAttribute("aria-hidden", "true");
+    icon.textContent = iconText;
 
     const text = document.createElement("span");
     text.textContent = label;
@@ -235,13 +337,15 @@ export function createReportController(app) {
 
     const downloadButton = createReportActionButton(
       "downloadReportBtn",
-      "fas fa-download",
+      "download",
+      "↓",
       "Download",
       "download",
     );
     const shareButton = createReportActionButton(
       "shareReportBtn",
-      "fas fa-share-alt",
+      "share",
+      "↗",
       "Share",
       "share",
     );

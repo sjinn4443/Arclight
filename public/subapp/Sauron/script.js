@@ -1,4 +1,4 @@
-import { initApp } from "./src/app.js?v=20260507-1";
+import { initApp } from "./src/app.js?v=20260725-logic1";
 
 function startApp() {
   initApp();

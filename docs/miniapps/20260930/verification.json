@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-02",
+  "sourceChecksumsVerified": 1200,
+  "sourceModulesCompared": 180,
+  "localSourceDifferences": [
+    "Amsler/js/report.js",
+    "Fundal Reflex/src/eyes-layout.js"
+  ],
+  "sourceClinicalLogicPreserved": true,
+  "appChecks": [
+    {
+      "app": "Allan",
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "app": "Amsler",
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "app": "Cataract",
+      "command": "npm run test:contracts && npm run audit:acceptance && npm run build:check",
+      "exit": 0
+    },
+    {
+      "app": "Diabetic",
+      "command": "npm test && npm run build:check",
+      "exit": 0
+    },
+    {
+      "app": "Discs",
+      "command": "npm test && npm run build:check",
+      "exit": 0
+    },
+    {
+      "app": "Mires",
+      "command": "npm run check",
+      "exit": 0
+    },
+    {
+      "app": "Morph",
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "app": "Glaucoma",
+      "command": "npm run check",
+      "exit": 0
+    },
+    {
+      "app": "Sauron",
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "app": "Refract",
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "app": "Fields",
+      "command": "npm run test:contracts && npm run lint",
+      "exit": 0
+    },
+    {
+      "app": "Squint",
+      "command": "npm test && npm run parity",
+      "exit": 0
+    },
+    {
+      "app": "Trauma",
+      "command": "npm test",
+      "exit": 0
+    },
+    {
+      "app": "Swollen Discs",
+      "command": "npm test",
+      "exit": 0
+    }
+  ],
+  "canonicalCompiler": {
+    "Refract": "esbuild 0.25.5: build, tests and parity passed",
+    "FundalReflex": "esbuild 0.25.5: build, 15 tests and parity passed",
+    "Amsler": "supplied custom builder: build, 22 tests and parity passed"
+  },
+  "informationHttp": {
+    "checked": 15,
+    "passed": 15
+  },
+  "informationFile": {
+    "checked": 15,
+    "passed": 15
+  },
+  "quizPrimary": {
+    "checked": 14,
+    "passed": 14
+  },
+  "loading": {
+    "checked": 10,
+    "passed": 10
+  },
+  "previousInstallation": {
+    "app": "Glaucoma",
+    "previousSource": "actual pre-integration backup",
+    "sameOrigin": true,
+    "updatedOfflineReload": true,
+    "progressRetained": true,
+    "siblingCachesRetained": true
+  },
+  "runtime": {
+    "apps": 15,
+    "precacheAssets": 404,
+    "privateDeployedFiles": 0,
+    "privateOfflineAssets": 0
+  },
+  "build": {
+    "command": "BUILD_OUTPUT_DIR=dist npm run build",
+    "status": "passed",
+    "deployedMiniappRuntimeFiles": 794
+  },
+  "browserRegression": {
+    "source": "3 tests passed",
+    "builtDeployment": "4 tests passed against final minified shell/media deployment",
+    "webkitIphone": "iris-centering regression passed"
+  },
+  "limits": [
+    "No deployment or commit",
+    "Clinical sign-off and physical devices unverified",
+    "Not exhaustive quiz-tier or historical-cache coverage",
+    "No native Share sheet; mocked Share only"
+  ],
+  "responsive": {
+    "views": 45,
+    "horizontalOverflow": 0,
+    "runtimeErrors": 0
+  },
+  "selectedExpandedStates": {
+    "checked": 18,
+    "passed": 18
+  },
+  "finalHostHtmlChecks": {
+    "tests": 3,
+    "passed": 3,
+    "coverage": "encoded and directory routes, scoped export CSP and external script nonces"
+  },
+  "interactiveLearningHost": {
+    "embeddedPages": 13,
+    "chromiumAndWebkitChecks": 28,
+    "passed": 28,
+    "coverage": "Discs card and keyboard launch, existing notice flow, menu and information actions, return navigation, top bar dimensions, CSP nonce and stylesheet imports",
+    "noticeAndHtmlUnitTests": 8,
+    "normalDistSmokeTestsPassed": 7,
+    "intentionalProjectSkips": 5,
+    "normalDistRefreshed": true
+  },
+  "embeddedTitleColours": {
+    "pages": 13,
+    "desktopAndIphoneChecksPassed": 28,
+    "coverage": "back arrow, menu button and glyph, information button and glyph match each visible title, including Squint's painted title",
+    "normalBuild": "passed"
+  }
+}

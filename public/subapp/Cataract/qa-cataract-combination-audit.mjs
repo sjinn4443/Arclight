@@ -93,7 +93,8 @@ for (const onsetValue of onsetOptions) {
                     for (const backSelection of backOptions) {
                   total += 1;
 
-                  const isReachable = !(fundalSelection === 'white' && backSelection !== 'poor view');
+                  // White + normal is normalised to poor view. Positive posterior findings remain selectable.
+                  const isReachable = !(fundalSelection === 'white' && backSelection === 'normal');
                   if (isReachable) {
                     reachable += 1;
                   } else {
@@ -116,7 +117,9 @@ for (const onsetValue of onsetOptions) {
                   };
 
                   const decision = evaluateCataractDecision(combo);
-                  const isComplete = Boolean(onsetValue && eyes && distanceVA && fundalSelection && backSelection);
+                  const isComplete = Boolean(
+                    onsetValue && ageBand && eyes && distanceVA && fundalSelection && backSelection
+                  );
                   if (!isComplete) {
                     if (decision.hasResult) {
                       addFinding('incomplete_result', combo, decision, 'Incomplete state returned a populated decision');
@@ -134,9 +137,7 @@ for (const onsetValue of onsetOptions) {
                   }
 
                   const actionLower = decision.actionText.toLowerCase();
-                  const cataractReferralAction =
-                    actionLower.includes('routine cataract referral') ||
-                    actionLower.includes('priority cataract referral');
+                  const cataractReferralAction = decision.actionCode.startsWith('cataract_');
                   const hasPosteriorPriorityDisease = ['cupping', 'diabetic', 'detached'].includes(
                     backSelection
                   );
@@ -154,11 +155,15 @@ for (const onsetValue of onsetOptions) {
                     !frontPresent &&
                     !hasNeuroFlags &&
                     !isPaediatric &&
-                    decision.actionCode === 'recheck_investigate_first';
+                    decision.actionCode === 'white_reflex_recheck';
                   const allowsPaediatricWhiteAction =
                     isPaediatric &&
-                    decision.actionCode === 'child_cataract_prompt_referral' &&
+                    decision.actionCode === 'child_white_reflex_urgent' &&
                     decision.actionColour === 'red';
+                  const allowsGeneralWhiteAction =
+                    ['white_reflex_prompt_review', 'cataract_priority_white'].includes(
+                      decision.actionCode
+                    );
 
                   if (!isReachable) {
                     continue;
@@ -198,10 +203,10 @@ for (const onsetValue of onsetOptions) {
                   if (
                     fundalSelection === 'white' &&
                     backSelection === 'poor view' &&
-                    !actionLower.includes('priority cataract referral') &&
+                    !allowsGeneralWhiteAction &&
                     !allowsWhiteRelativelyGoodVaRecheckOverride &&
                     !allowsPaediatricWhiteAction &&
-                    !(onsetValue === 'sudden' && painYes && actionLower.includes('urgent same-day'))
+                    !(onsetValue === 'sudden' && decision.actionColour === 'red')
                   ) {
                     addFinding(
                       'white_reflex_not_priority',
@@ -214,13 +219,17 @@ for (const onsetValue of onsetOptions) {
                   if (
                     fundalSelection === 'white' &&
                     ['6/6', '6/12'].includes(distanceVA) &&
-                    !decision.actionNoteCodes.includes('white_reflex_with_relatively_good_va')
+                    (!decision.flags.includes('consistency:white_reflex_with_relatively_good_va') ||
+                      !decision.recheckFieldKeys.includes('distanceVA') ||
+                      !decision.recheckFieldKeys.includes('fundal') ||
+                      (!decision.actionNoteCodes.includes('white_reflex_with_relatively_good_va') &&
+                        !decision.flags.includes('notes_trimmed')))
                   ) {
                     addFinding(
                       'dense_reflex_relatively_good_va_missing_recheck_note',
                       combo,
                       decision,
-                      'Dense/white reflex with relatively good BCVA should prompt re-check note.'
+                      'White reflex with relatively good VA must retain its consistency flag and re-check fields. The note may be trimmed only by the documented compact-output policy.'
                     );
                   }
 
@@ -244,8 +253,9 @@ for (const onsetValue of onsetOptions) {
                       decision.actionCode === 'urgent_same_day_investigation') &&
                     !['cupping', 'diabetic', 'detached'].includes(backSelection) &&
                     fundalSelection !== 'normal' &&
+                    fundalSelection !== 'white' &&
                     decision.cataractType !== 'Nil' &&
-                    !decision.cataractType.includes('other urgent pathology suspected')
+                    !decision.cataractType.startsWith('Possible ')
                   ) {
                     addFinding(
                       'non_cataract_main_action_without_competing_confidence',
@@ -257,7 +267,7 @@ for (const onsetValue of onsetOptions) {
 
                   if (
                     backSelection === 'detached' &&
-                    !actionLower.includes('posterior eye disease')
+                    decision.actionCode !== 'retinal_same_day'
                   ) {
                     addFinding(
                       'detached_without_posterior_override',
@@ -301,7 +311,8 @@ for (const onsetValue of onsetOptions) {
 
                   if (
                     pupilStatus === 'normal' &&
-                    decision.cataractType.toLowerCase().startsWith('probable ')
+                    decision.cataractType.toLowerCase().startsWith('probable ') &&
+                    decision.cataractPhenotype !== 'Mature'
                   ) {
                     addFinding(
                       'recorded_normal_pupil_downgraded_confidence',
@@ -315,9 +326,7 @@ for (const onsetValue of onsetOptions) {
                     onsetValue === 'sudden' &&
                     eyes === 'one' &&
                     painYes &&
-                    !actionLower.includes('urgent') &&
-                    !actionLower.includes('posterior eye disease') &&
-                    !decision.urgencyNote.toLowerCase().includes('urgent')
+                    decision.actionColour !== 'red'
                   ) {
                     addFinding(
                       'painful_sudden_unilateral_without_urgent_signal',
@@ -389,7 +398,7 @@ console.log('Cataract Combination Audit');
 console.log('=========================');
 console.log(`Total combos evaluated: ${total}`);
 console.log(`Reachable combos (UI-feasible): ${reachable}`);
-console.log(`Unreachable combos (white forces poor view): ${unreachable}`);
+console.log(`Normalised duplicate combos (white + normal becomes poor view): ${unreachable}`);
 console.log('');
 
 console.log('Top Actions (reachable combos)');

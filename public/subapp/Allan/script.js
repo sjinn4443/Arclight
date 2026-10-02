@@ -1,15 +1,21 @@
-let limbImage = "";
-let closeImage = "";
-let dermImage = "";
 let activeExpandButton = null;
 let activeTeachingCardTrigger = null;
 let selectedLesionVariationKey = "";
 let selectedDermoscopyExampleKey = "";
+let referenceImageRequestId = 0;
+let newAssessmentConfirmTimer = null;
+let locationRecorded = false;
+let reportReturnFocus = null;
+const photoRequests = { limb: 0, close: 0, dermoscope: 0 };
 
 const referenceImageMap = {
   ABCDETab: {
-    light: "assets/images/abcde-su_light.webp",
-    dark: "assets/images/abcde-su_dark.webp",
+    light: "assets/images/abcde-su-preview_light.webp",
+    dark: "assets/images/abcde-su-preview_dark.webp",
+    full: {
+      light: "assets/images/abcde-su_light.webp",
+      dark: "assets/images/abcde-su_dark.webp",
+    },
   },
   BVPDSTab: {
     light: "assets/images/chaos_light.webp",
@@ -43,7 +49,6 @@ const referenceImageMap = {
   UVTab: "assets/images/uv-reference.webp",
 };
 
-const DEFAULT_REFERENCE_IMAGE = referenceImageMap.ABCDETab.light;
 const LESION_VARIATION_KEYS = ["", "01", "02", "03", "04", "05"];
 const DERMOSCOPY_EXAMPLE_KEYS = ["", "01", "02", "03", "04", "05"];
 const DPIC_SELECT_IDS = [
@@ -53,6 +58,39 @@ const DPIC_SELECT_IDS = [
   "dpicColour",
   "dpicRedFlags",
 ];
+const CAPTURE_META = Object.freeze({
+  limb: Object.freeze({
+    label: "Area/limb",
+    slug: "area-limb",
+    previewId: "limbPreview",
+    captureId: "limbCapture",
+  }),
+  close: Object.freeze({
+    label: "Close-up",
+    slug: "close-up",
+    previewId: "closePreview",
+    captureId: "closeCapture",
+  }),
+  dermoscope: Object.freeze({
+    label: "Dermoscopy",
+    slug: "dermoscopy",
+    previewId: "dermoscopePreview",
+    captureId: "dermatCapture",
+  }),
+});
+const PHOTO_FILE_STORE = window.ALLAN_PHOTO_FILE_STORE;
+if (!PHOTO_FILE_STORE) {
+  throw new Error("Photo file store failed to load.");
+}
+const captureStore = PHOTO_FILE_STORE.createPhotoFileStore({
+  captureTypes: Object.keys(CAPTURE_META),
+});
+const REFERRAL_LOGIC = window.ALLAN_REFERRAL_LOGIC;
+if (!REFERRAL_LOGIC) {
+  throw new Error("Referral logic failed to load.");
+}
+const REFERRAL_ACTIONS = REFERRAL_LOGIC.ACTIONS;
+const REFERRAL_RULES = REFERRAL_LOGIC.RULES;
 
 const MCQ_LEVEL_META = {
   primary: {
@@ -62,7 +100,7 @@ const MCQ_LEVEL_META = {
     levelIndex: 0,
     passMark: 3,
     questionCount: 5,
-    intro: "Core dermatology workflow, image set and referral basics.",
+    intro: "Core safe workflow, image quality and referral basics.",
   },
   intermediate: {
     title: "Intermediate MCQ",
@@ -71,7 +109,7 @@ const MCQ_LEVEL_META = {
     levelIndex: 1,
     passMark: 4,
     questionCount: 6,
-    intro: "Rash route, Wood's lamp clues and common GP pattern checks.",
+    intro: "Common rash patterns, red flags and Wood's lamp limitations.",
   },
   advanced: {
     title: "Advanced MCQ",
@@ -81,7 +119,7 @@ const MCQ_LEVEL_META = {
     passMark: 6,
     questionCount: 8,
     intro:
-      "Urgency overrides, skin cancer route and higher-risk rash decisions.",
+      "NICE referral decisions, severe reactions and higher-risk clinical scenarios.",
   },
 };
 
@@ -98,66 +136,62 @@ const DEFAULT_CUP_ACHIEVEMENT_STATE = {
   unlockedAt: "",
 };
 const LOCKED_CUP_TEXT = "Cup locked: complete Advanced MCQ";
-const UNLOCKED_CUP_TEXT = "Dermatology cup unlocked";
+const UNLOCKED_CUP_TEXT = "Allan cup unlocked";
 
 const MCQ_BANK = window.ALLAN_MCQ_BANK || {};
-
-const REFERRAL_RULES = {
-  abcde: {
-    urgentScore: 3,
-    soonScore: 1,
-    urgentDriver: "ABCDE-SU suspicious lesion score 3 or more",
-    reviewDriver: "ABCDE-SU low-level lesion concern",
-  },
-  bvpds: {
-    urgentDriver: "dermoscopy chaos plus malignant clue",
-    exceptionDriver: "dermoscopy exception",
-    clueDriver: "dermoscopy clue recorded without chaos",
-    chaosDriver: "dermoscopy chaos recorded; clues not yet recorded",
-  },
-  dpic: {
-    emergencyRedFlagScore: 6,
-    sameDayRedFlagScore: 4,
-    sameDayScore: 4,
-    soonScore: 2,
-    emergencyDriver: "rash emergency signs",
-    sameDayRedFlagDriver: "rash same-day concern",
-    sameDayScoreDriver: "rash triage score 4 or more",
-    soonDriver: "rash triage concern",
-  },
-};
 
 let activeMcqQuestions = [];
 let activeMcqMeta = null;
 let activeMcqLevel = "";
 let mcqProgressState = { ...DEFAULT_MCQ_PROGRESS_STATE };
 let cupAchievementState = { ...DEFAULT_CUP_ACHIEVEMENT_STATE };
+let mcqReturnFocusElement = null;
 
-function setImageWithFallback(
-  imgEl,
-  src,
-  fallbackSrc = DEFAULT_REFERENCE_IMAGE,
-) {
+function setImageWithFallback(imgEl, src, fallbackSrc = "") {
   if (!imgEl) return;
-  if (!src) {
-    imgEl.dataset.pendingSrc = fallbackSrc;
-    imgEl.src = fallbackSrc;
-    return;
+  if (!imgEl.dataset.defaultAlt) {
+    imgEl.dataset.defaultAlt = imgEl.alt || "Illustrative reference example";
+  }
+  const requestId = String(++referenceImageRequestId);
+  const candidates = [...new Set([src, fallbackSrc].filter(Boolean))];
+  imgEl.dataset.loadRequest = requestId;
+  imgEl.hidden = true;
+  imgEl.removeAttribute("src");
+  const status =
+    imgEl.id === "referencePreview"
+      ? document.getElementById("referenceStatus")
+      : null;
+  if (status) {
+    status.hidden = false;
+    status.textContent = "Loading reference…";
   }
 
-  imgEl.dataset.pendingSrc = src;
-  const testImage = new Image();
-  testImage.onload = () => {
-    if (imgEl.dataset.pendingSrc === src) {
-      imgEl.src = src;
+  const tryCandidate = (index) => {
+    if (imgEl.dataset.loadRequest !== requestId) return;
+    const candidate = candidates[index];
+    if (!candidate) {
+      imgEl.removeAttribute("src");
+      imgEl.hidden = true;
+      imgEl.alt = "Reference image unavailable";
+      if (status)
+        status.textContent = "Reference unavailable. Try another example.";
+      return;
     }
+
+    const testImage = new Image();
+    testImage.onload = () => {
+      if (imgEl.dataset.loadRequest === requestId) {
+        imgEl.src = candidate;
+        imgEl.hidden = false;
+        imgEl.alt = imgEl.dataset.defaultAlt;
+        if (status) status.hidden = true;
+      }
+    };
+    testImage.onerror = () => tryCandidate(index + 1);
+    testImage.src = candidate;
   };
-  testImage.onerror = () => {
-    if (imgEl.dataset.pendingSrc === src) {
-      imgEl.src = fallbackSrc;
-    }
-  };
-  testImage.src = src;
+
+  tryCandidate(0);
 }
 
 function openTab(event, tabId) {
@@ -230,7 +264,57 @@ function setReferencePreviewImage(tabId) {
   const referencePreview = document.getElementById("referencePreview");
   if (!referencePreview) return;
 
-  setImageWithFallback(referencePreview, getReferenceImageSource(tabId));
+  const fullSrc = getReferenceFullImageSource(tabId);
+  if (fullSrc) {
+    referencePreview.dataset.fullSrc = fullSrc;
+  } else {
+    delete referencePreview.dataset.fullSrc;
+  }
+  setImageWithFallback(
+    referencePreview,
+    getReferenceImageSource(tabId),
+    getReferenceFallbackSource(tabId),
+  );
+}
+
+function getReferenceFallbackSource(tabId) {
+  const referenceEntry = referenceImageMap[tabId];
+  const toneKey = getSkinToneContext().toLowerCase();
+
+  if (!referenceEntry) return "";
+  if (typeof referenceEntry === "string") return referenceEntry;
+  if (tabId === "DPICTab") {
+    return (
+      referenceEntry.patterns?.[referenceEntry.defaultPattern]?.[toneKey] ||
+      referenceEntry.patterns?.[referenceEntry.defaultPattern]?.light ||
+      ""
+    );
+  }
+
+  if (tabId === "ABCDETab" && referenceEntry.full) {
+    return referenceEntry.full[toneKey] || referenceEntry.full.light || "";
+  }
+
+  return referenceEntry[toneKey] || referenceEntry.light || "";
+}
+
+function getReferenceFullImageSource(tabId) {
+  const referenceEntry = referenceImageMap[tabId];
+  const toneKey = getSkinToneContext().toLowerCase();
+
+  if (
+    tabId === "ABCDETab" &&
+    !selectedLesionVariationKey &&
+    referenceEntry?.full
+  ) {
+    return (
+      referenceEntry.full[toneKey] ||
+      referenceEntry.full.light ||
+      getReferenceImageSource(tabId)
+    );
+  }
+
+  return getReferenceImageSource(tabId);
 }
 
 function getReferenceImageSource(tabId) {
@@ -322,6 +406,17 @@ function getDermoscopyExampleImageSource(
   return `dermoscopy-examples/chaos-clues-${normalisedKey}_${normalisedTone}.webp`;
 }
 
+function teachingThumbnailSource(source) {
+  return `assets/thumbnails/${source.split("/").pop()}`;
+}
+
+function setMenuThumbnail(image, source) {
+  image.dataset.src = teachingThumbnailSource(source);
+  if (document.getElementById("sideMenu")?.classList.contains("open")) {
+    image.src = image.dataset.src;
+  }
+}
+
 function syncDermoscopyExampleMenuImages() {
   const toneKey = getSkinToneContext().toLowerCase();
   document
@@ -330,9 +425,12 @@ function syncDermoscopyExampleMenuImages() {
       const image = button.querySelector("img");
       if (!image) return;
 
-      image.src = getDermoscopyExampleImageSource(
-        button.dataset.dermoscopyExampleKey,
-        toneKey,
+      setMenuThumbnail(
+        image,
+        getDermoscopyExampleImageSource(
+          button.dataset.dermoscopyExampleKey,
+          toneKey,
+        ),
       );
     });
 }
@@ -404,10 +502,10 @@ function syncAbcdeTeachingCardImages() {
   const modalImage = document.getElementById("abcdeCardImage");
 
   if (thumbnail) {
-    thumbnail.src = source;
+    setMenuThumbnail(thumbnail, source);
   }
 
-  if (modalImage) {
+  if (modalImage && !modalImage.closest('[role="dialog"]').hidden) {
     modalImage.src = source;
   }
 }
@@ -418,10 +516,10 @@ function syncChaosTeachingCardImages() {
   const modalImage = document.getElementById("chaosCardImage");
 
   if (thumbnail) {
-    thumbnail.src = source;
+    setMenuThumbnail(thumbnail, source);
   }
 
-  if (modalImage) {
+  if (modalImage && !modalImage.closest('[role="dialog"]').hidden) {
     modalImage.src = source;
   }
 }
@@ -524,7 +622,6 @@ function getDPICPatternKey(defaultPattern = "raised-bumps") {
 }
 
 function handleDPICPatternChange() {
-  markDPICFieldTouched("dpicPattern");
   const activeTabId = document.querySelector(".tab-content.active")?.id || "";
   if (activeTabId === "DPICTab") {
     setReferencePreviewImage(activeTabId);
@@ -558,16 +655,16 @@ function setUserPreviewImage(tabId) {
 
   switch (tabId) {
     case "ABCDETab":
-      setUserImage(closeImage);
+      setUserImage(getCaptureObjectUrl("close"));
       break;
     case "BVPDSTab":
-      setUserImage(dermImage);
+      setUserImage(getCaptureObjectUrl("dermoscope"));
       break;
     case "DPICTab":
-      setUserImage(closeImage);
+      setUserImage(getCaptureObjectUrl("close"));
       break;
     case "UVTab":
-      setUserImage(closeImage);
+      setUserImage(getCaptureObjectUrl("close"));
       break;
     default:
       setUserImage("");
@@ -587,9 +684,9 @@ function updateCaptureRelevance(tabId) {
     UVTab: "closeCapture",
   };
   const captureHasImageMap = {
-    limbCapture: Boolean(limbImage),
-    closeCapture: Boolean(closeImage),
-    dermatCapture: Boolean(dermImage),
+    limbCapture: Boolean(getCaptureObjectUrl("limb")),
+    closeCapture: Boolean(getCaptureObjectUrl("close")),
+    dermatCapture: Boolean(getCaptureObjectUrl("dermoscope")),
   };
   const activeCaptureId = activeCaptureMap[tabId] || "";
 
@@ -656,44 +753,102 @@ function triggerFileDialog(type) {
   document.getElementById(`${type}Input`)?.click();
 }
 
-function handleFileSelection(event, type) {
+async function handleFileSelection(event, type) {
   const file = event.target.files && event.target.files[0];
   if (file) {
-    readImageFile(file, type);
+    const accepted = await readImageFile(file, type);
+    if (!accepted && event.target.files?.[0] === file) {
+      event.target.value = "";
+    }
   }
 }
 
-function readImageFile(file, type) {
-  const reader = new FileReader();
-  reader.onload = function (event) {
-    const dataURL = event.target.result;
-    const previewMap = {
-      limb: ["limbPreview", "#limbCapture .capture-label"],
-      close: ["closePreview", "#closeCapture .capture-label"],
-      dermoscope: ["dermoscopePreview", "#dermatCapture .capture-label"],
-    };
+function getCaptureObjectUrl(type) {
+  return captureStore.getObjectUrl(type);
+}
 
-    if (type === "limb") {
-      limbImage = dataURL;
-    } else if (type === "close") {
-      closeImage = dataURL;
-    } else if (type === "dermoscope") {
-      dermImage = dataURL;
-    }
+function replaceCaptureFile(type, file) {
+  return CAPTURE_META[type] && file ? captureStore.replace(type, file) : "";
+}
 
-    const previewConfig = previewMap[type];
-    if (previewConfig) {
-      updateTopPreview(previewConfig[0], dataURL);
-      const label = document.querySelector(previewConfig[1]);
-      if (label) {
-        label.hidden = true;
-      }
-    }
+function clearCaptureFiles() {
+  Object.keys(photoRequests).forEach((type) => {
+    photoRequests[type] += 1;
+  });
+  captureStore.clear();
+}
 
-    const activeTabId = document.querySelector(".tab-content.active")?.id || "";
-    setUserPreviewImage(activeTabId);
-  };
-  reader.readAsDataURL(file);
+function setCaptureUploadStatus(message = "", isError = false) {
+  const status = document.getElementById("captureUploadStatus");
+  if (!status) return;
+
+  status.textContent = message;
+  status.hidden = !message;
+  status.classList.toggle("is-error", Boolean(message && isError));
+}
+
+function getImageFileValidationError(file) {
+  return captureStore.validate(file);
+}
+
+async function readImageFile(file, type) {
+  if (!Object.hasOwn(photoRequests, type)) return false;
+  const request = ++photoRequests[type];
+  const validationError = getImageFileValidationError(file);
+  if (validationError) {
+    setCaptureUploadStatus(validationError, true);
+    return false;
+  }
+
+  const captureMeta = CAPTURE_META[type];
+  if (!captureMeta) {
+    setCaptureUploadStatus("This capture type is not supported.", true);
+    return false;
+  }
+
+  let candidateUrl;
+  const candidate = new Image();
+  try {
+    candidateUrl = URL.createObjectURL(file);
+    candidate.src = candidateUrl;
+    await candidate.decode();
+    if (!candidate.naturalWidth || !candidate.naturalHeight)
+      throw new Error("empty");
+    if (candidate.naturalWidth * candidate.naturalHeight > 48000000)
+      throw new Error("dimensions");
+  } catch (error) {
+    if (request === photoRequests[type])
+      setCaptureUploadStatus(
+        error.message === "dimensions"
+          ? "Image exceeds 48 megapixels. Use a smaller copy."
+          : "Image cannot be opened. Choose another photo.",
+        true,
+      );
+    return false;
+  } finally {
+    if (candidateUrl) URL.revokeObjectURL(candidateUrl);
+  }
+  if (request !== photoRequests[type]) return false;
+  let objectUrl;
+  try {
+    objectUrl = replaceCaptureFile(type, file);
+  } catch {
+    setCaptureUploadStatus("Photo could not be added. Try again.", true);
+    return false;
+  }
+  updateTopPreview(captureMeta.previewId, objectUrl);
+  const label = document.querySelector(
+    `#${captureMeta.captureId} .capture-label`,
+  );
+  if (label) {
+    label.hidden = true;
+  }
+
+  const activeTabId = document.querySelector(".tab-content.active")?.id || "";
+  setUserPreviewImage(activeTabId);
+  updatePhotoReadiness();
+  setCaptureUploadStatus("");
+  return true;
 }
 
 function updateTopPreview(previewId, dataURL) {
@@ -770,7 +925,10 @@ function openImageExpand(button) {
     return;
 
   activeExpandButton = button;
-  expandedReferenceImage.src = referenceImage.currentSrc || referenceImage.src;
+  expandedReferenceImage.src =
+    referenceImage.dataset.fullSrc ||
+    referenceImage.currentSrc ||
+    referenceImage.src;
   expandedReferenceImage.alt =
     referenceImage.alt || "Expanded illustrative reference image";
   expandedLabel.textContent = "Teaching view";
@@ -868,62 +1026,88 @@ function getCheckedLabelText(selector) {
     .filter(Boolean);
 }
 
-function formatList(items) {
-  if (!items.length) return "none";
-  return items.map((item) => `- ${item}`).join("\n");
-}
-
 function formatInlineList(items) {
   return items.length ? items.join("; ") : "none recorded";
 }
 
 function getImageStatus() {
   return [
-    `Area/limb: ${limbImage ? "attached" : "missing"}`,
-    `Close-up: ${closeImage ? "attached" : "missing"}`,
-    `Dermoscopy: ${dermImage ? "attached" : "missing"}`,
+    `Area/limb: ${captureStore.getFile("limb") ? "attached" : "missing"}`,
+    `Close-up: ${captureStore.getFile("close") ? "attached" : "missing"}`,
+    `Dermoscopy: ${captureStore.getFile("dermoscope") ? "attached" : "missing"}`,
   ].join("\n");
 }
 
 function getReportImageEntries() {
-  return [
-    { label: "Area/limb", slug: "area-limb", dataUrl: limbImage },
-    { label: "Close-up", slug: "close-up", dataUrl: closeImage },
-    { label: "Dermoscopy", slug: "dermoscopy", dataUrl: dermImage },
-  ].filter((entry) => Boolean(entry.dataUrl));
+  return Object.entries(CAPTURE_META)
+    .map(([type, meta]) => ({
+      ...meta,
+      type,
+      file: captureStore.getFile(type),
+    }))
+    .filter((entry) => Boolean(entry.file));
+}
+
+function getExpectedCaptureTypes(forReport = false) {
+  const activeTabId =
+    document.querySelector(".tab-content.active")?.id || "ABCDETab";
+  const hasLesionAssessment =
+    hasCheckedInput(".abcde-input") ||
+    hasCheckedInput(".bvpds-input") ||
+    hasCheckedInput(".bcc-input");
+  const lesionRouteActive =
+    activeTabId === "ABCDETab" || activeTabId === "BVPDSTab";
+  return hasLesionAssessment || (!forReport && lesionRouteActive)
+    ? ["limb", "close", "dermoscope"]
+    : ["limb", "close"];
+}
+
+function updatePhotoReadiness() {
+  const readiness = document.getElementById("photoReadiness");
+  if (!readiness) return;
+
+  const expectedTypes = getExpectedCaptureTypes();
+  const readyCount = expectedTypes.filter((type) =>
+    Boolean(captureStore.getFile(type)),
+  ).length;
+  const isReady = readyCount === expectedTypes.length;
+  readiness.textContent = isReady
+    ? `Photos ${readyCount}/${expectedTypes.length} ready`
+    : `Photos ${readyCount}/${expectedTypes.length}`;
+  readiness.classList.toggle("is-ready", isReady);
+  readiness.setAttribute(
+    "aria-label",
+    `${readyCount} of ${expectedTypes.length} expected photos ready`,
+  );
 }
 
 function getReportPhotoSummary() {
   const entries = getReportImageEntries();
   const ready = entries.map((entry) => entry.label).join("; ") || "none";
-  return `Photos ready in app: ${ready}. Expected set: area/limb, close-up and dermoscopy.`;
+  const expected = getExpectedCaptureTypes(true)
+    .map((type) => CAPTURE_META[type].label.toLowerCase())
+    .join(", ")
+    .replace(/, ([^,]*)$/, " and $1");
+  return `Photos ready in app: ${ready}. Suggested images: ${expected}. Copy includes text only.`;
 }
 
-function getReportRoute(abcdeItems, bvpdsItems) {
-  const activeTabId = document.querySelector(".tab-content.active")?.id || "";
+function getReportRoute(abcdeItems, bvpdsItems, bccItems) {
   const hasSkinCancerAssessment =
-    abcdeItems.length > 0 || bvpdsItems.length > 0;
+    abcdeItems.length > 0 || bvpdsItems.length > 0 || bccItems.length > 0;
   const hasRashAssessment = hasCurrentDPICConcern();
-  const usedWoodLamp = activeTabId === "UVTab";
+  const usedWoodLamp = hasWoodLampAssessment();
+  const routes = [];
 
-  if (hasSkinCancerAssessment && hasRashAssessment) {
-    return usedWoodLamp
-      ? "skin cancer + rash/Wood's lamp routes"
-      : "skin cancer + rash routes";
-  }
-  if (hasSkinCancerAssessment) return "skin cancer route";
-  if (hasRashAssessment)
-    return usedWoodLamp ? "rash + Wood's lamp route" : "rash route";
-  return "not selected";
+  if (hasSkinCancerAssessment) routes.push("lesion");
+  if (hasRashAssessment) routes.push("rash");
+  if (usedWoodLamp) routes.push("Wood's lamp");
+
+  if (!routes.length) return "not selected";
+  return `${routes.join(" + ")} ${routes.length === 1 ? "route" : "routes"}`;
 }
 
 function getReportLogicNote() {
-  return [
-    "Logic: ABCDE-SU and dermoscopy are assessed separately; referral uses the highest urgency, not an added total.",
-    "ABCDE-SU 1-2 means safety-net review; ABCDE-SU 3 or more triggers the Susp cancer pathway (2 week wait).",
-    "Dermoscopy uses a frontline Chaos + Clues compression: chaos plus any clue, or an exception, triggers the Susp cancer pathway (2 week wait). Chaos alone means check dermoscopy clues before relying on the route.",
-    "Rash triage sets rash urgency. DPIC-R is a dermatology teaching prompt, not a recognised formal score. Wood's lamp is linked to the rash route as a supportive fluorescence clue and does not change urgency by itself.",
-  ].join(" ");
+  return REFERRAL_LOGIC.getReportLogicNote();
 }
 
 function getBVPDSFindings() {
@@ -973,41 +1157,93 @@ function getDermoscopyReportLines() {
   ];
 }
 
+function getBCCFindings() {
+  const checkedInputs = Array.from(
+    document.querySelectorAll(".bcc-input:checked"),
+  );
+  const hasKind = (input, kind) =>
+    (input.dataset.bccKind || "").split(/\s+/).filter(Boolean).includes(kind);
+  const toText = (input) => input.closest("label")?.innerText.trim() || "";
+
+  const featureItems = checkedInputs
+    .filter((input) => hasKind(input, "feature"))
+    .map(toText)
+    .filter(Boolean);
+  const sccItems = checkedInputs
+    .filter((input) => hasKind(input, "scc"))
+    .map(toText)
+    .filter(Boolean);
+
+  return {
+    checkedInputs,
+    featureItems,
+    sccItems,
+    hasFeature: featureItems.length > 0,
+    hasSccConcern: sccItems.length > 0,
+  };
+}
+
+function getBCCReportLines() {
+  const findings = getBCCFindings();
+
+  if (!findings.checkedInputs.length) {
+    return ["BCC/SCC signs: not assessed"];
+  }
+
+  return [
+    "BCC/SCC signs",
+    `BCC features: ${findings.featureItems.length ? formatInlineList(findings.featureItems) : "none recorded"}`,
+    `SCC signs: ${findings.sccItems.length ? formatInlineList(findings.sccItems) : "none recorded"}`,
+  ];
+}
+
+function hasWoodLampAssessment() {
+  return Boolean(document.getElementById("woodLampFinding")?.value);
+}
+
 function buildReportText() {
   const referralEvaluation = getReferralEvaluation();
   applyReferralEvaluation(referralEvaluation);
 
-  const location =
-    document.getElementById("lesionLocation")?.value || "Not set";
+  const location = locationRecorded
+    ? document.getElementById("lesionLocation")?.value
+    : "Not recorded";
   const skinToneContext = getSkinToneContext();
   const abcdeScore = calculateABCDEScore();
   const dpicScore = calculateDPICScore();
   const abcdeItems = getCheckedLabelText(".abcde-input");
   const bvpdsItems = getCheckedLabelText(".bvpds-input");
-  const hasAssessmentInput = hasCurrentRiskAssessmentInput();
+  const bccItems = getCheckedLabelText(".bcc-input");
+  const hasReferralAssessmentInput = hasCurrentRiskAssessmentInput();
+  const hasAssessmentInput =
+    hasReferralAssessmentInput || hasWoodLampAssessment();
   const hasSkinCancerAssessment =
-    abcdeItems.length > 0 || bvpdsItems.length > 0;
+    abcdeItems.length > 0 || bvpdsItems.length > 0 || bccItems.length > 0;
   const hasRashAssessment = hasCurrentDPICConcern();
-  const requestedUrgency = hasAssessmentInput
-    ? referralEvaluation.action
-    : "Not assessed yet";
-  const urgencyDriver = !hasAssessmentInput
+  const requestedUrgency = getDisplayedAction(referralEvaluation);
+  const urgencyDriver = !hasReferralAssessmentInput
     ? "assessment not started"
-    : referralEvaluation.drivers.length
-      ? referralEvaluation.drivers.join("; ")
-      : "none recorded";
+    : requestedUrgency === "Check red flags"
+      ? "rash red flags not checked"
+      : referralEvaluation.drivers.length
+        ? referralEvaluation.drivers.join("; ")
+        : "none recorded";
   const activeRoute = hasAssessmentInput
-    ? getReportRoute(abcdeItems, bvpdsItems)
+    ? getReportRoute(abcdeItems, bvpdsItems, bccItems)
     : "not selected";
   const abcdeReportLine = abcdeItems.length
-    ? `ABCDE-SU ${abcdeScore}: ${formatInlineList(abcdeItems)}`
-    : "ABCDE-SU: not assessed";
+    ? `ABCDEFG ${abcdeScore}: ${formatInlineList(abcdeItems)}`
+    : "ABCDEFG: not assessed";
   const skinCancerPromptLines = hasSkinCancerAssessment
-    ? [abcdeReportLine, ...getDermoscopyReportLines()]
-    : ["ABCDE-SU: not assessed", "Dermoscopy: not assessed"];
+    ? [abcdeReportLine, ...getDermoscopyReportLines(), ...getBCCReportLines()]
+    : [
+        "ABCDEFG: not assessed",
+        "Dermoscopy: not assessed",
+        "BCC/SCC signs: not assessed",
+      ];
   const rashPromptLines = hasRashAssessment
     ? [
-        `Rash triage ${dpicScore}`,
+        `Rash teaching prompt ${dpicScore}`,
         `Duration: ${getSelectText("dpicDuration")}`,
         `Pattern: ${getSelectText("dpicPattern")}`,
         `Itch: ${getSelectText("dpicItch")}`,
@@ -1015,6 +1251,9 @@ function buildReportText() {
         `Red flags: ${getSelectText("dpicRedFlags")}`,
       ]
     : ["Rash triage: not assessed"];
+  rashPromptLines.push(
+    `Wood's lamp: ${hasWoodLampAssessment() ? getSelectText("woodLampFinding") : "not performed"}`,
+  );
 
   return [
     "Dermatology mini referral note",
@@ -1023,19 +1262,19 @@ function buildReportText() {
     `Reason: ${urgencyDriver}`,
     `Route used: ${activeRoute}`,
     `Location: ${location}`,
-    `Skin context: ${skinToneContext}`,
+    `Teaching skin-tone view: ${skinToneContext} (not a patient finding)`,
     "",
     "Photos",
     getImageStatus(),
     getReportPhotoSummary(),
     "",
-    "Skin cancer prompts",
+    "Lesion prompts",
     ...skinCancerPromptLines,
     "",
     "Rash triage prompts",
     ...rashPromptLines,
     "",
-    getReportLogicNote(),
+    "Clinical concern overrides this prompt. Suspected melanoma or high-risk BCC needs an appropriate urgent pathway.",
     "Sources: see in-app Logic + sources.",
     "Note: referral-aide only, not a final diagnosis.",
   ].join("\n");
@@ -1095,6 +1334,11 @@ function renderReportPreview(reportValue) {
 }
 
 function generateReport() {
+  reportReturnFocus = document
+    .getElementById("sideMenu")
+    ?.contains(document.activeElement)
+    ? document.getElementById("burger-icon")
+    : document.activeElement;
   const reportModal = document.getElementById("reportModal");
   const reportText = document.getElementById("reportText");
   const reportPreview = document.getElementById("reportPreview");
@@ -1123,17 +1367,11 @@ function generateReport() {
 function updateRiskReferral() {
   updateRedFlagControlState();
   applyReferralEvaluation(getReferralEvaluation());
+  updatePhotoReadiness();
 }
 
 function markRiskAssessmentStarted() {
   updateRiskReferral();
-}
-
-function markDPICFieldTouched(selectId) {
-  const select = document.getElementById(selectId);
-  if (select) {
-    select.dataset.touched = "true";
-  }
 }
 
 function updateRedFlagControlState() {
@@ -1142,7 +1380,7 @@ function updateRedFlagControlState() {
   if (!redFlagsSelect || !redFlagsItem) return;
 
   const redFlagsVal = parseInt(redFlagsSelect.value, 10);
-  const rules = REFERRAL_RULES.dpic;
+  const rules = REFERRAL_RULES.rash;
   redFlagsItem.classList.toggle(
     "is-same-day",
     redFlagsVal >= rules.sameDayRedFlagScore &&
@@ -1155,47 +1393,49 @@ function updateRedFlagControlState() {
 }
 
 function getReferralEvaluation() {
-  const abcdeScore = calculateABCDEScore();
-  const dpicScore = calculateDPICScore();
+  return REFERRAL_LOGIC.evaluateAssessment({
+    abcdeScore: calculateABCDEScore(),
+    dermoscopy: getBVPDSFindings(),
+    bccScc: getBCCFindings(),
+    rash: {
+      redFlagsValue:
+        parseInt(document.getElementById("dpicRedFlags")?.value || "0", 10) ||
+        0,
+      hasClinicalConcern: hasCurrentDPICClinicalConcern(),
+    },
+  });
+}
 
-  const evaluations = [
-    getABCDEReferral(abcdeScore),
-    getBVPDSReferral(),
-    getDPICReferral(dpicScore),
-  ];
-  const finalEvaluation = evaluations.reduce(
-    (highest, evaluation) =>
-      evaluation.priority > highest.priority ? evaluation : highest,
-    evaluations[0],
-  );
-  const drivers = evaluations
-    .filter(
-      (evaluation) =>
-        evaluation.priority === finalEvaluation.priority &&
-        evaluation.priority > 0,
-    )
-    .map((evaluation) => evaluation.driver);
-
-  return { ...finalEvaluation, drivers };
+function getDisplayedAction(evaluation) {
+  if (!hasCurrentRiskAssessmentInput()) return "Not assessed yet";
+  if (
+    evaluation.priority === 0 &&
+    hasCurrentDPICConcern() &&
+    document.getElementById("dpicRedFlags")?.value === ""
+  )
+    return "Check red flags";
+  return evaluation.action;
 }
 
 function applyReferralEvaluation(evaluation) {
   const isAssessed = hasCurrentRiskAssessmentInput();
-  const riskState = isAssessed
-    ? evaluation?.riskState || "routine"
-    : "unassessed";
-  const action = isAssessed
-    ? evaluation?.action || "Routine (weeks)"
-    : "Not assessed yet";
+  const action = getDisplayedAction(evaluation);
+  const riskState =
+    action === "Check red flags"
+      ? "soon"
+      : isAssessed
+        ? evaluation?.riskState || "routine"
+        : "unassessed";
+  const safeguard = document.getElementById("referralSafeguard");
+  if (safeguard)
+    safeguard.hidden = !(
+      hasCheckedInput(".abcde-input") || hasCheckedInput(".bcc-input")
+    );
 
   const riskIndicator = document.getElementById("riskIndicator");
   riskIndicator.className = `risk-dot ${riskState}`;
   riskIndicator.setAttribute("aria-label", action);
   document.getElementById("actionText").textContent = action;
-}
-
-function referralEvaluation(priority, riskState, action, driver) {
-  return { priority, riskState, action, driver };
 }
 
 function calculateCheckedScore(selector) {
@@ -1219,171 +1459,154 @@ function calculateABCDEScore() {
   return calculateCheckedScore(".abcde-input");
 }
 
-function getABCDEReferral(score) {
-  const rules = REFERRAL_RULES.abcde;
-  if (score >= rules.urgentScore) {
-    return referralEvaluation(
-      2,
-      "urgent",
-      "Susp cancer pathway (2 week wait)",
-      rules.urgentDriver,
-    );
-  }
-  if (score >= rules.soonScore) {
-    return referralEvaluation(
-      1,
-      "soon",
-      "Safety-net review",
-      rules.reviewDriver,
-    );
-  }
-
-  return referralEvaluation(0, "routine", "Routine (weeks)", "");
-}
-
-function getBVPDSReferral() {
-  const rules = REFERRAL_RULES.bvpds;
-  const findings = getBVPDSFindings();
-
-  if (findings.hasException) {
-    return referralEvaluation(
-      2,
-      "urgent",
-      "Susp cancer pathway (2 week wait)",
-      rules.exceptionDriver,
-    );
-  }
-  if (findings.hasChaos && findings.hasClue) {
-    return referralEvaluation(
-      2,
-      "urgent",
-      "Susp cancer pathway (2 week wait)",
-      rules.urgentDriver,
-    );
-  }
-  if (findings.hasClue) {
-    return referralEvaluation(
-      1,
-      "soon",
-      "Check dermoscopy sequence",
-      rules.clueDriver,
-    );
-  }
-  if (findings.hasChaos) {
-    return referralEvaluation(
-      1,
-      "soon",
-      "Check dermoscopy clues",
-      rules.chaosDriver,
-    );
-  }
-
-  return referralEvaluation(0, "routine", "Routine (weeks)", "");
-}
-
 function calculateDPICScore() {
-  const durationVal = parseInt(
-    document.getElementById("dpicDuration").value,
-    10,
-  );
-  const patternVal = parseInt(document.getElementById("dpicPattern").value, 10);
-  const itchVal = parseInt(document.getElementById("dpicItch").value, 10);
-  const colourVal = parseInt(document.getElementById("dpicColour").value, 10);
-  const redFlagsVal = parseInt(
-    document.getElementById("dpicRedFlags").value,
-    10,
-  );
+  const getValue = (selectId) =>
+    parseInt(document.getElementById(selectId)?.value || "0", 10) || 0;
+  const durationVal = getValue("dpicDuration");
+  const patternVal = getValue("dpicPattern");
+  const itchVal = getValue("dpicItch");
+  const colourVal = getValue("dpicColour");
+  const redFlagsVal = getValue("dpicRedFlags");
 
   return durationVal + patternVal + itchVal + colourVal + redFlagsVal;
 }
 
 function hasCurrentDPICConcern() {
-  const durationVal = parseInt(
-    document.getElementById("dpicDuration")?.value || "0",
-    10,
+  return DPIC_SELECT_IDS.some((selectId) =>
+    Boolean(document.getElementById(selectId)?.value),
   );
-  const patternVal = parseInt(
-    document.getElementById("dpicPattern")?.value || "0",
-    10,
-  );
-  const itchVal = parseInt(
-    document.getElementById("dpicItch")?.value || "0",
-    10,
-  );
-  const colourVal = parseInt(
-    document.getElementById("dpicColour")?.value || "0",
-    10,
-  );
-  const redFlagsVal = parseInt(
-    document.getElementById("dpicRedFlags")?.value || "0",
-    10,
-  );
-  const hasTouchedRashField = DPIC_SELECT_IDS.some(
-    (selectId) => document.getElementById(selectId)?.dataset.touched === "true",
-  );
+}
 
-  return (
-    hasTouchedRashField ||
-    durationVal > 0 ||
-    patternVal > 1 ||
-    itchVal > 0 ||
-    colourVal > 0 ||
-    redFlagsVal > 0
+function hasCurrentDPICClinicalConcern() {
+  const patternSelected = Boolean(
+    document.getElementById("dpicPattern")?.value,
   );
+  const scoredConcern = ["dpicDuration", "dpicItch", "dpicColour"].some(
+    (selectId) =>
+      (parseInt(document.getElementById(selectId)?.value || "0", 10) || 0) > 0,
+  );
+  return patternSelected || scoredConcern;
 }
 
 function hasCurrentRiskAssessmentInput() {
   return (
     hasCheckedInput(".abcde-input") ||
     hasCheckedInput(".bvpds-input") ||
+    hasCheckedInput(".bcc-input") ||
     hasCurrentDPICConcern()
   );
 }
 
-function getDPICReferral(score) {
-  const redFlagsVal = parseInt(
-    document.getElementById("dpicRedFlags").value,
-    10,
+function hasCurrentAssessmentData() {
+  return (
+    Object.keys(CAPTURE_META).some((type) =>
+      Boolean(captureStore.getFile(type)),
+    ) ||
+    hasCurrentRiskAssessmentInput() ||
+    hasWoodLampAssessment() ||
+    Boolean(document.getElementById("skinToneToggle")?.checked) ||
+    document.getElementById("lesionLocation")?.value !== "Head/Face"
   );
-  const rules = REFERRAL_RULES.dpic;
-
-  if (redFlagsVal >= rules.emergencyRedFlagScore) {
-    return referralEvaluation(
-      4,
-      "emergency",
-      "Emergency (now)",
-      rules.emergencyDriver,
-    );
-  }
-  if (redFlagsVal >= rules.sameDayRedFlagScore) {
-    return referralEvaluation(
-      3,
-      "urgent",
-      "Same day",
-      rules.sameDayRedFlagDriver,
-    );
-  }
-  if (score >= rules.sameDayScore) {
-    return referralEvaluation(
-      3,
-      "urgent",
-      "Same day",
-      rules.sameDayScoreDriver,
-    );
-  }
-  if (score >= rules.soonScore) {
-    return referralEvaluation(
-      1,
-      "soon",
-      "Soon (within a week)",
-      rules.soonDriver,
-    );
-  }
-
-  return referralEvaluation(0, "routine", "Routine (weeks)", "");
 }
 
-function closeSideMenu() {
+function resetNewAssessmentButton() {
+  const button = document.getElementById("newAssessmentButton");
+  if (!button) return;
+
+  button.textContent = "New";
+  button.dataset.confirming = "false";
+  button.classList.remove("is-confirming");
+  if (newAssessmentConfirmTimer) {
+    window.clearTimeout(newAssessmentConfirmTimer);
+    newAssessmentConfirmTimer = null;
+  }
+}
+
+function resetAssessment() {
+  clearCaptureFiles();
+  document
+    .querySelectorAll('input[type="file"][data-capture-type]')
+    .forEach((input) => {
+      input.value = "";
+    });
+  document.querySelectorAll(".capture-preview").forEach((preview) => {
+    preview.hidden = true;
+    preview.removeAttribute("src");
+  });
+  document.querySelectorAll(".capture-box").forEach((box) => {
+    box.classList.remove(
+      "capture-box--complete",
+      "capture-box--active-source",
+      "capture-box--muted-source",
+      "capture-box--context-source",
+    );
+    const label = box.querySelector(".capture-label");
+    if (label) label.hidden = false;
+  });
+
+  document
+    .querySelectorAll(".abcde-input, .bvpds-input, .bcc-input")
+    .forEach((input) => {
+      input.checked = false;
+    });
+  [...DPIC_SELECT_IDS, "woodLampFinding"].forEach((selectId) => {
+    const select = document.getElementById(selectId);
+    if (select) select.value = "";
+  });
+
+  const toneToggle = document.getElementById("skinToneToggle");
+  if (toneToggle) toneToggle.checked = false;
+  toggleSkinTone();
+
+  const defaultLocation = document.querySelector(
+    '.location-option[data-value="Head/Face"]',
+  );
+  if (defaultLocation) selectLocationOption(defaultLocation);
+  locationRecorded = false;
+
+  selectedLesionVariationKey = "";
+  clearDermoscopyExampleSelection();
+  closeDermoscopyBucketDetails();
+  setTeachingMode(false);
+  syncDermoscopyClueAvailability();
+
+  const lesionButton = document.getElementById("abcdeBtn");
+  if (lesionButton) {
+    openTab({ currentTarget: lesionButton }, "ABCDETab");
+  }
+
+  const reportText = document.getElementById("reportText");
+  const reportPreview = document.getElementById("reportPreview");
+  if (reportText) reportText.value = "";
+  if (reportPreview) reportPreview.textContent = "";
+  setReportStatus("");
+  resetReportActions();
+  resetNewAssessmentButton();
+  updateRiskReferral();
+  setCaptureUploadStatus("");
+  closeSideMenu();
+  closeReportModal();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function requestNewAssessment() {
+  const button = document.getElementById("newAssessmentButton");
+  if (!button) return;
+
+  if (!hasCurrentAssessmentData() || button.dataset.confirming === "true") {
+    resetAssessment();
+    return;
+  }
+
+  button.dataset.confirming = "true";
+  button.classList.add("is-confirming");
+  button.textContent = "Clear?";
+  newAssessmentConfirmTimer = window.setTimeout(() => {
+    resetNewAssessmentButton();
+  }, 4000);
+}
+
+function closeSideMenu({ restoreFocus = false } = {}) {
   const sideMenu = document.getElementById("sideMenu");
   const burgerIcon = document.getElementById("burger-icon");
   if (!sideMenu || !burgerIcon) return;
@@ -1393,6 +1616,9 @@ function closeSideMenu() {
   sideMenu.setAttribute("inert", "");
   burgerIcon.setAttribute("aria-expanded", "false");
   document.body.classList.remove("menu-open");
+  if (restoreFocus) {
+    burgerIcon.focus({ preventScroll: true });
+  }
 }
 
 function openSideMenu() {
@@ -1401,10 +1627,16 @@ function openSideMenu() {
   if (!sideMenu || !burgerIcon) return;
 
   sideMenu.classList.add("open");
+  sideMenu.querySelectorAll("img[data-src]").forEach((image) => {
+    image.src = image.dataset.src;
+  });
   sideMenu.setAttribute("aria-hidden", "false");
   sideMenu.removeAttribute("inert");
   burgerIcon.setAttribute("aria-expanded", "true");
   document.body.classList.add("menu-open");
+  sideMenu
+    .querySelector("button:not([disabled])")
+    ?.focus({ preventScroll: true });
 }
 
 function closeInfoModal() {
@@ -1412,16 +1644,21 @@ function closeInfoModal() {
   const infoIcon = document.getElementById("info-icon");
   if (!infoModal || !infoIcon) return;
 
+  const wasOpen = infoModal.classList.contains("open");
   infoModal.classList.remove("open");
   infoModal.setAttribute("aria-hidden", "true");
   infoIcon.setAttribute("aria-expanded", "false");
   document.body.classList.remove("modal-open");
+  if (wasOpen) {
+    infoIcon.focus();
+  }
 }
 
 function openInfoModal() {
   const infoModal = document.getElementById("infoModal");
   const infoIcon = document.getElementById("info-icon");
-  if (!infoModal || !infoIcon) return;
+  const closeModal = document.getElementById("closeModal");
+  if (!infoModal || !infoIcon || !closeModal) return;
 
   closeSideMenu();
   closeMcqModal();
@@ -1432,19 +1669,32 @@ function openInfoModal() {
   infoModal.setAttribute("aria-hidden", "false");
   infoIcon.setAttribute("aria-expanded", "true");
   document.body.classList.add("modal-open");
+  requestAnimationFrame(() => closeModal.focus());
 }
 
 function closeReportModal() {
   const reportModal = document.getElementById("reportModal");
   if (!reportModal) return;
 
+  const wasOpen = reportModal.classList.contains("open");
   reportModal.classList.remove("open");
   reportModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  if (wasOpen) {
+    const target = reportReturnFocus?.isConnected
+      ? reportReturnFocus
+      : document.getElementById("generateReportButton");
+    target?.focus({ preventScroll: true });
+    reportReturnFocus = null;
+  }
 }
 
 function hasLocalStorage() {
-  return typeof window !== "undefined" && Boolean(window.localStorage);
+  try {
+    return typeof window !== "undefined" && Boolean(window.localStorage);
+  } catch {
+    return false;
+  }
 }
 
 function loadJsonStorage(storageKey) {
@@ -1577,6 +1827,9 @@ function updateMcqProgress(passed) {
     progressLine = `Unlocked ${activeMcqMeta.label} star.`;
   } else if (passed && levelIndex <= mcqProgressState.unlockedTierIndex) {
     progressLine = `${activeMcqMeta.label} star already unlocked.`;
+  } else if (mcqProgressState.unlockedTierIndex >= MCQ_LEVEL_ORDER.length - 1) {
+    progressLine =
+      "All MCQ stars are already unlocked. This retry does not change your progress.";
   } else {
     const nextLevel =
       MCQ_LEVEL_ORDER[
@@ -1675,9 +1928,9 @@ function downloadCupCertificate() {
       ? unlockedAtDate.toLocaleString()
       : new Date().toLocaleString();
   const certificateText = [
-    "Dermatology",
-    "Dermatology MCQ Certificate of Achievement",
-    "(Local certificate - not externally verified)",
+    "Allan",
+    "Allan MCQ Certificate of Achievement",
+    "(Learning completion award only - not proof of clinical competence)",
     "",
     "Awarded for completing Advanced MCQ.",
     `Achievement code: ${cupAchievementState.code}`,
@@ -1693,7 +1946,7 @@ function downloadCupCertificate() {
     .replace(/[^a-z0-9-]/g, "");
 
   anchor.href = url;
-  anchor.download = `dermatology_certificate_${safeCode}.txt`;
+  anchor.download = `allan_certificate_${safeCode}.txt`;
   document.body.appendChild(anchor);
   anchor.click();
   document.body.removeChild(anchor);
@@ -1731,6 +1984,8 @@ function renderMcqQuestions(questions) {
     const fieldset = document.createElement("fieldset");
     fieldset.className = "question";
     fieldset.dataset.correctAnswer = question.answer;
+    fieldset.dataset.questionId =
+      question.id || `${activeMcqLevel}-${questionIndex + 1}`;
 
     const legend = document.createElement("legend");
     legend.textContent = `${questionIndex + 1}. ${question.question}`;
@@ -1740,7 +1995,7 @@ function renderMcqQuestions(questions) {
     options.className = "options";
 
     question.options.forEach((option, optionIndex) => {
-      const optionId = `mcq-${questionIndex}-${optionIndex}`;
+      const optionId = `mcq-${fieldset.dataset.questionId}-${optionIndex}`;
       const label = document.createElement("label");
       label.setAttribute("for", optionId);
 
@@ -1757,7 +2012,24 @@ function renderMcqQuestions(questions) {
       options.appendChild(label);
     });
 
-    fieldset.appendChild(options);
+    const explanation = document.createElement("div");
+    explanation.className = "mcq-explanation";
+    explanation.hidden = true;
+    explanation.setAttribute("role", "note");
+
+    const explanationText = document.createElement("p");
+    explanationText.textContent =
+      question.explanation || "Review the highlighted answer.";
+    explanation.appendChild(explanationText);
+
+    if (question.reference) {
+      const reference = document.createElement("p");
+      reference.className = "mcq-reference";
+      reference.textContent = `Reference: ${question.reference}`;
+      explanation.appendChild(reference);
+    }
+
+    fieldset.append(options, explanation);
     container.appendChild(fieldset);
   });
 }
@@ -1795,17 +2067,27 @@ function revealMcqFeedback() {
         }
         input.disabled = true;
       });
+
+      const explanation = fieldset.querySelector(".mcq-explanation");
+      if (explanation) {
+        explanation.hidden = false;
+      }
     });
 }
 
 function handleMcqSubmit() {
   const submitButton = document.getElementById("submitMcqButton");
+  const retryButton = document.getElementById("retryMcqButton");
   const result = document.getElementById("mcqResult");
   if (!activeMcqQuestions.length || !activeMcqMeta || !result) return;
 
   const answers = getMcqAnswers();
   if (answers.some((answer) => answer === null)) {
     result.textContent = "Answer every question before submitting.";
+    const firstUnansweredIndex = answers.findIndex((answer) => answer === null);
+    document
+      .querySelector(`input[name="mcq-${firstUnansweredIndex}"]`)
+      ?.focus();
     return;
   }
 
@@ -1816,21 +2098,55 @@ function handleMcqSubmit() {
   revealMcqFeedback();
   if (submitButton) {
     submitButton.disabled = true;
+    submitButton.hidden = true;
+  }
+  if (retryButton) {
+    retryButton.hidden = false;
   }
   result.innerHTML = [
     `Score ${score}/${activeMcqQuestions.length} - ${passed ? "Pass" : "Needs more practice"}.`,
     progressLine,
     unlockedStars ? `<br>${unlockedStars}` : "",
   ].join(" ");
+  result.focus({ preventScroll: true });
+}
+
+function retryActiveMcq() {
+  if (!activeMcqLevel || !activeMcqMeta) return;
+
+  const submitButton = document.getElementById("submitMcqButton");
+  const retryButton = document.getElementById("retryMcqButton");
+  const result = document.getElementById("mcqResult");
+  const container = document.getElementById("mcqContainer");
+  activeMcqQuestions = sampleMcqQuestions(activeMcqLevel);
+  renderMcqQuestions(activeMcqQuestions);
+  if (result) result.textContent = "";
+  if (submitButton) {
+    submitButton.hidden = false;
+    submitButton.disabled = false;
+  }
+  if (retryButton) retryButton.hidden = true;
+  if (container) container.scrollTop = 0;
+  container?.querySelector("input")?.focus({ preventScroll: true });
 }
 
 function closeMcqModal() {
   const mcqModal = document.getElementById("mcqModal");
   if (!mcqModal) return;
 
+  const wasOpen =
+    mcqModal.classList.contains("open") ||
+    mcqModal.getAttribute("aria-hidden") === "false";
   mcqModal.classList.remove("open");
   mcqModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  const returnFocusElement = mcqReturnFocusElement;
+  if (wasOpen && returnFocusElement?.isConnected) {
+    requestAnimationFrame(() =>
+      returnFocusElement.focus({ preventScroll: true }),
+    );
+  }
+  mcqReturnFocusElement = null;
 }
 
 function openMcqLevel(level) {
@@ -1840,6 +2156,7 @@ function openMcqLevel(level) {
   const title = document.getElementById("mcqTitle");
   const intro = document.getElementById("mcqIntro");
   const submitButton = document.getElementById("submitMcqButton");
+  const retryButton = document.getElementById("retryMcqButton");
   const result = document.getElementById("mcqResult");
   const closeButton = document.getElementById("closeMcqModal");
   const modalContent = document.getElementById("mcqModalContent");
@@ -1849,6 +2166,13 @@ function openMcqLevel(level) {
     return;
   }
 
+  const activeElement = document.activeElement;
+  const sideMenu = document.getElementById("sideMenu");
+  mcqReturnFocusElement = sideMenu?.contains(activeElement)
+    ? document.getElementById("burger-icon")
+    : activeElement instanceof HTMLElement
+      ? activeElement
+      : document.getElementById("burger-icon");
   activeMcqMeta = meta;
   activeMcqLevel = level;
   activeMcqQuestions = sampleMcqQuestions(level);
@@ -1859,7 +2183,11 @@ function openMcqLevel(level) {
     result.textContent = "";
   }
   if (submitButton) {
+    submitButton.hidden = false;
     submitButton.disabled = false;
+  }
+  if (retryButton) {
+    retryButton.hidden = true;
   }
 
   closeSideMenu();
@@ -1877,6 +2205,7 @@ function initMcqUi() {
   const mcqModal = document.getElementById("mcqModal");
   const closeButton = document.getElementById("closeMcqModal");
   const submitButton = document.getElementById("submitMcqButton");
+  const retryButton = document.getElementById("retryMcqButton");
   const downloadButton = document.getElementById(
     "downloadCupCertificateButton",
   );
@@ -1886,6 +2215,7 @@ function initMcqUi() {
   renderMcqAchievementMenu();
   closeButton?.addEventListener("click", closeMcqModal);
   submitButton?.addEventListener("click", handleMcqSubmit);
+  retryButton?.addEventListener("click", retryActiveMcq);
   downloadButton?.addEventListener("click", downloadCupCertificate);
   mcqModal?.addEventListener("click", (event) => {
     if (event.target === mcqModal) {
@@ -2005,29 +2335,25 @@ async function copyReportText() {
 }
 
 function getImageFileExtension(mimeType) {
-  if (mimeType === "image/png") return "png";
-  if (mimeType === "image/webp") return "webp";
-  return "jpg";
+  const extensions = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+  };
+  return extensions[mimeType] || "";
 }
 
 function reportImageEntryToFile(entry) {
-  if (!entry?.dataUrl || typeof File === "undefined") return null;
+  if (!entry?.file || typeof File === "undefined") return null;
 
-  const match = entry.dataUrl.match(/^data:([^;]+);base64,(.+)$/);
-  if (!match) return null;
+  const mimeType = entry.file.type;
+  const extension = getImageFileExtension(mimeType);
+  if (!extension) return null;
 
-  const mimeType = match[1];
-  const binary = atob(match[2]);
-  const bytes = new Uint8Array(binary.length);
-  for (let index = 0; index < binary.length; index += 1) {
-    bytes[index] = binary.charCodeAt(index);
-  }
-
-  return new File(
-    [bytes],
-    `dermatology-${entry.slug}.${getImageFileExtension(mimeType)}`,
-    { type: mimeType },
-  );
+  return new File([entry.file], `dermatology-${entry.slug}.${extension}`, {
+    type: mimeType,
+    lastModified: entry.file.lastModified,
+  });
 }
 
 function getReportPhotoFiles() {
@@ -2108,7 +2434,25 @@ function closeLocationPicker() {
   pickerMenu.hidden = true;
 }
 
-function openLocationPicker() {
+function getLocationOptions() {
+  return Array.from(
+    document.querySelectorAll("#locationPickerMenu .location-option"),
+  );
+}
+
+function focusLocationOption(position = "selected") {
+  const options = getLocationOptions();
+  if (!options.length) return;
+
+  let target =
+    options.find((option) => option.getAttribute("aria-selected") === "true") ||
+    options[0];
+  if (position === "first") target = options[0];
+  if (position === "last") target = options[options.length - 1];
+  target.focus({ preventScroll: true });
+}
+
+function openLocationPicker(focusPosition = "") {
   const pickerButton = document.getElementById("locationPickerButton");
   const pickerMenu = document.getElementById("locationPickerMenu");
   if (!pickerButton || !pickerMenu) return;
@@ -2116,6 +2460,9 @@ function openLocationPicker() {
   closeTermInfoPopover();
   pickerButton.setAttribute("aria-expanded", "true");
   pickerMenu.hidden = false;
+  if (focusPosition) {
+    focusLocationOption(focusPosition);
+  }
 }
 
 function toggleLocationPicker() {
@@ -2129,8 +2476,66 @@ function toggleLocationPicker() {
   }
 }
 
+function handleLocationPickerButtonKeydown(event) {
+  const openKeys = ["ArrowDown", "ArrowUp", "Home", "End"];
+  if (!openKeys.includes(event.key)) return;
+
+  event.preventDefault();
+  const focusPosition =
+    event.key === "ArrowUp" || event.key === "End"
+      ? "last"
+      : event.key === "Home"
+        ? "first"
+        : "selected";
+  openLocationPicker(focusPosition);
+}
+
+function handleLocationPickerMenuKeydown(event) {
+  const options = getLocationOptions();
+  if (!options.length) return;
+
+  const currentOption = event.target.closest(".location-option");
+  const currentIndex = Math.max(0, options.indexOf(currentOption));
+  let nextIndex = currentIndex;
+
+  if (event.key === "ArrowDown")
+    nextIndex = (currentIndex + 1) % options.length;
+  else if (event.key === "ArrowUp")
+    nextIndex = (currentIndex - 1 + options.length) % options.length;
+  else if (event.key === "Home") nextIndex = 0;
+  else if (event.key === "End") nextIndex = options.length - 1;
+  else if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    if (currentOption) selectLocationOption(currentOption);
+    return;
+  } else if (event.key === "Escape") {
+    event.preventDefault();
+    closeLocationPicker();
+    document
+      .getElementById("locationPickerButton")
+      ?.focus({ preventScroll: true });
+    return;
+  } else if (event.key === "Tab") {
+    closeLocationPicker();
+    return;
+  } else {
+    return;
+  }
+
+  event.preventDefault();
+  options[nextIndex].focus({ preventScroll: true });
+}
+
+function handleLocationPickerScroll(event) {
+  const pickerMenu = document.getElementById("locationPickerMenu");
+  if (pickerMenu?.contains(event.target)) return;
+  closeLocationPicker();
+}
+
 function selectLocationOption(optionButton) {
+  locationRecorded = true;
   const nativeSelect = document.getElementById("lesionLocation");
+  const pickerButton = document.getElementById("locationPickerButton");
   const pickerLabel = document.getElementById("locationPickerLabel");
   const pickerIconWrap = document.querySelector(
     "#locationPickerButton .location-option-icon",
@@ -2138,7 +2543,14 @@ function selectLocationOption(optionButton) {
   const pickerIcon = document.querySelector(
     "#locationPickerButton .location-option-icon i",
   );
-  if (!nativeSelect || !pickerLabel || !pickerIconWrap || !pickerIcon) return;
+  if (
+    !nativeSelect ||
+    !pickerButton ||
+    !pickerLabel ||
+    !pickerIconWrap ||
+    !pickerIcon
+  )
+    return;
 
   const value = optionButton.dataset.value || optionButton.textContent.trim();
   const icon = optionButton.dataset.icon || "fa-ellipsis-h";
@@ -2149,6 +2561,9 @@ function selectLocationOption(optionButton) {
   pickerIconWrap.classList.remove(
     "location-option-icon--elbow",
     "location-option-icon--single-foot",
+    "location-option-icon--arm",
+    "location-option-icon--leg",
+    "location-option-icon--foot",
   );
   if (iconStyle) {
     pickerIconWrap.classList.add(`location-option-icon--${iconStyle}`);
@@ -2162,6 +2577,7 @@ function selectLocationOption(optionButton) {
 
   nativeSelect.dispatchEvent(new Event("change", { bubbles: true }));
   closeLocationPicker();
+  pickerButton.focus({ preventScroll: true });
 }
 
 function closeTermInfoPopover() {
@@ -2291,7 +2707,80 @@ function openTermInfoPopover(button) {
   popover.style.top = `${Math.max(viewportPadding, top)}px`;
 }
 
+function registerOfflineSupport() {
+  const isServedPage =
+    window.location.protocol === "http:" ||
+    window.location.protocol === "https:";
+  if (!isServedPage || !("serviceWorker" in navigator)) return;
+
+  navigator.serviceWorker
+    .register("./service-worker.js?v=20260727-audit1")
+    .catch(() => {
+      // Offline installation is an enhancement; failure must not block clinical use.
+    });
+}
+
 function initShellUi() {
+  const modalRoots = [
+    "infoModal",
+    "mcqModal",
+    "reportModal",
+    "holdExpandOverlay",
+    "abcdeCardModal",
+    "chaosCardModal",
+  ];
+  const getOpenDialog = () =>
+    modalRoots
+      .map((id) => document.getElementById(id))
+      .reverse()
+      .find(
+        (el) => el && !el.hidden && el.getAttribute("aria-hidden") === "false",
+      );
+  const dialogControls = (dialog) =>
+    [
+      ...dialog.querySelectorAll(
+        "button, input, select, a[href], summary, [tabindex]",
+      ),
+    ].filter(
+      (el) =>
+        !el.disabled &&
+        el.tabIndex >= 0 &&
+        el.getClientRects().length &&
+        getComputedStyle(el).visibility !== "hidden",
+    );
+  document.addEventListener("focusin", (event) => {
+    const dialog = getOpenDialog();
+    if (dialog && !dialog.contains(event.target))
+      dialogControls(dialog)[0]?.focus();
+  });
+  document.addEventListener("keydown", (event) => {
+    const dialog = getOpenDialog();
+    if (!dialog || event.key !== "Tab") return;
+    const controls = dialogControls(dialog);
+    const index = controls.indexOf(document.activeElement);
+    if (!controls.length) {
+      event.preventDefault();
+      return;
+    }
+    if (event.shiftKey && index <= 0) {
+      event.preventDefault();
+      controls.at(-1).focus();
+    } else if (
+      !event.shiftKey &&
+      (index < 0 || index === controls.length - 1)
+    ) {
+      event.preventDefault();
+      controls[0].focus();
+    }
+  });
+  document.querySelectorAll("#infoModal details").forEach((details) =>
+    details.addEventListener("toggle", () => {
+      if (details.open)
+        document.querySelectorAll("#infoModal details").forEach((other) => {
+          if (other !== details) other.open = false;
+        });
+    }),
+  );
   const burgerIcon = document.getElementById("burger-icon");
   const sideMenu = document.getElementById("sideMenu");
   const infoIcon = document.getElementById("info-icon");
@@ -2307,6 +2796,12 @@ function initShellUi() {
   const shareReportButton = document.getElementById("shareReportButton");
   const skinToneToggle = document.getElementById("skinToneToggle");
   const generateReportButton = document.getElementById("generateReportButton");
+  const referralLogicButton = document.getElementById("referralLogicButton");
+  const newAssessmentButton = document.getElementById("newAssessmentButton");
+
+  if (referralLogicButton) {
+    referralLogicButton.dataset.termBody = REFERRAL_LOGIC.getLogicPopoverText();
+  }
 
   if (burgerIcon && sideMenu) {
     burgerIcon.addEventListener("click", (event) => {
@@ -2399,6 +2894,10 @@ function initShellUi() {
       event.stopPropagation();
       toggleLocationPicker();
     });
+    locationPickerButton.addEventListener(
+      "keydown",
+      handleLocationPickerButtonKeydown,
+    );
 
     locationPickerMenu.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -2407,7 +2906,13 @@ function initShellUi() {
         selectLocationOption(optionButton);
       }
     });
+    locationPickerMenu.addEventListener(
+      "keydown",
+      handleLocationPickerMenuKeydown,
+    );
   }
+
+  newAssessmentButton?.addEventListener("click", requestNewAssessment);
 
   if (infoIcon && infoModal && closeModal) {
     infoIcon.addEventListener("click", (event) => {
@@ -2496,6 +3001,10 @@ function initShellUi() {
     });
   });
 
+  document.querySelectorAll(".bcc-input").forEach((input) => {
+    input.addEventListener("change", markRiskAssessmentStarted);
+  });
+
   document.querySelectorAll(".bucket-detail-toggle").forEach((button) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -2509,7 +3018,6 @@ function initShellUi() {
   ["dpicDuration", "dpicItch", "dpicColour", "dpicRedFlags"].forEach(
     (selectId) => {
       document.getElementById(selectId)?.addEventListener("change", () => {
-        markDPICFieldTouched(selectId);
         markRiskAssessmentStarted();
       });
     },
@@ -2577,7 +3085,11 @@ function initShellUi() {
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      closeSideMenu();
+      closeSideMenu({
+        restoreFocus:
+          document.getElementById("sideMenu")?.classList.contains("open") ===
+          true,
+      });
       closeInfoModal();
       closeMcqModal();
       closeReportModal();
@@ -2594,7 +3106,7 @@ function initShellUi() {
   document.addEventListener("click", closeTermInfoPopover);
   window.addEventListener("resize", closeLocationPicker);
   window.addEventListener("resize", closeTermInfoPopover);
-  window.addEventListener("scroll", closeLocationPicker, true);
+  window.addEventListener("scroll", handleLocationPickerScroll, true);
   window.addEventListener("scroll", closeTermInfoPopover, true);
 
   toggleSkinTone();
@@ -2609,6 +3121,7 @@ function initShellUi() {
   setUserPreviewImage(activeTabId);
   updateCaptureRelevance(activeTabId);
   updateRiskReferral();
+  registerOfflineSupport();
 }
 
 document.addEventListener("DOMContentLoaded", initShellUi);

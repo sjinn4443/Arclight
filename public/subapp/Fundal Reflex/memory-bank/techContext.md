@@ -1,5 +1,11 @@
 # Technical Context
 
+## Refactor verification (26/7/2026)
+
+- `npm run check` rebuilds from source, runs 11 contracts and checks exact bundle parity.
+- The pinned local build dependency remains `esbuild 0.25.5`.
+- HTTP and direct-file runtime support are unchanged. Service workers still do not run on `file://`.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -147,3 +153,17 @@ The visible case order is defined by `CASE_LEVELS` in `src/case-catalog.js`, not
 - Advanced: 10 cases, more specialist or adult-skewed patterns, ordered from more likely introductory specialist patterns toward harder patterns
 
 When updating labels, keep the leading display number aligned with the case label. Avoid placing a case in more than one level. Case `2. Normal (blue) R & L` is a normal blue-white variant and should remain in the no-referral path. Cases `3` and `4` are technique cases and should stay in the `? Action: Repeat view / ask for help` path. Case `8. R normal, L dark` is not normal pigmentation variation; keep it in the reduced/dark reflex referral pathway. When updating Baby mode, keep the subset narrow, include the child/baby poor-view cases and ensure excluded active cases fall back cleanly.
+
+# Fleet upgrade tooling — 23 July 2026
+
+Use `npm run build` with pinned esbuild 0.25.5 in a normal development environment. In the managed Codex sandbox, npm-driven esbuild child-process launch returns `spawn EPERM`; direct invocation of the same local esbuild binary rebuilt the bundle successfully. Run contracts with `node tests/run-tests.mjs`.
+
+For the fleet receipt, `tools/mobile-browser-check.mjs` completed exact `360 x 740` HTTP and direct-file checks for untouched, dense, transient, completed and reset states with no horizontal overflow or runtime errors.
+
+## Maintenance verification - 26 July 2026
+
+Run `node tests/run-tests.mjs`, rebuild with the pinned local esbuild binary and run the parity check before browser review. The final maintenance state passed 11/11 contracts, build/parity and the fleet HTTP/direct-file sweeps.
+
+## MCQ verification — 26 July 2026
+
+Source-owned MCQ files are `src/mcq-bank.js`, `src/mcq.js` and `src/menu-mcq.js`. The browser token and scoped cache are `20260726-mcq6`. Run `npm test`, `npm run build` and `npm run test:bundle`. Final result: 12/12 tests, exact bundle parity and the isolated MCQ browser flow passed at `360 x 740`.

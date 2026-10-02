@@ -11,13 +11,12 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Mires" />
+    <meta name="theme-color" content="#000000" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Quicksand:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css?v=20260518-burger" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css?v=20260929-logic1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header id="appBar">
@@ -37,6 +36,9 @@
         class="icon-button"
         type="button"
         aria-label="Open instructions"
+        aria-controls="infoModal"
+        aria-expanded="false"
+        aria-haspopup="dialog"
       >
         <span class="icon-symbol info-symbol" aria-hidden="true">i</span>
       </button>
@@ -54,14 +56,24 @@
       <div class="side-menu-content">
         <h2>MCQ practice</h2>
         <button type="button" class="mcq-level-button" data-level-index="0">
-          Level 1: Primary
+          Primary
         </button>
         <button type="button" class="mcq-level-button" data-level-index="1">
-          Level 2: Intermediate
+          Intermediate
         </button>
         <button type="button" class="mcq-level-button" data-level-index="2">
-          Level 3: Advanced
+          Advanced
         </button>
+        <button
+          id="newSessionButton"
+          type="button"
+          class="session-reset-button"
+        >
+          New training session
+        </button>
+        <small class="session-reset-hint"
+          >Press twice to reset the simulator and exercises.</small
+        >
         <section
           id="cupAchievement"
           class="cup-achievement is-locked"
@@ -94,348 +106,362 @@
     </nav>
     <div id="menuBackdrop" class="menu-backdrop" hidden></div>
 
-    <button
-      id="newtonPanelToggle"
-      class="newton-panel-toggle"
-      type="button"
-      aria-controls="newtonPanel"
-      aria-expanded="false"
-      aria-label="Toggle Newton IOP panel"
-    >
-      Newton IOP
-    </button>
-
-    <section id="newtonPanel" aria-label="Newton IOP panel">
+    <main>
       <button
-        id="newtonPanelClose"
-        class="newton-panel-close"
+        id="newtonPanelToggle"
+        class="newton-panel-toggle"
         type="button"
-        aria-label="Close Newton IOP panel"
+        aria-controls="newtonPanel"
+        aria-expanded="false"
+        aria-label="Toggle Newton IOP panel"
       >
-        ×
+        Newton IOP
       </button>
-      <p class="newton-headline">
-        <span class="newton-title-inline">Newton IOP</span>
-        <span id="newtonStatus" class="newton-status-inline"
-          >Estimate closest IOP.</span
+
+      <section id="newtonPanel" aria-label="Newton IOP panel">
+        <button
+          id="newtonPanelClose"
+          class="newton-panel-close"
+          type="button"
+          aria-label="Close Newton IOP panel"
         >
-      </p>
-      <div
-        id="newtonPointGroup"
-        class="newton-point-group"
-        role="group"
-        aria-label="Newton point"
+          ×
+        </button>
+        <p class="newton-headline">
+          <span class="newton-title-inline">Newton IOP</span>
+          <span id="newtonStatus" class="newton-status-inline"
+            >Estimate closest IOP.</span
+          >
+        </p>
+        <div
+          id="newtonPointGroup"
+          class="newton-point-group"
+          role="group"
+          aria-label="Newton point"
+        >
+          <button
+            type="button"
+            class="newton-point-button is-active"
+            data-newton-point="20"
+          >
+            20
+          </button>
+          <button
+            type="button"
+            class="newton-point-button"
+            data-newton-point="25"
+          >
+            25
+          </button>
+          <button
+            type="button"
+            class="newton-point-button"
+            data-newton-point="30"
+          >
+            30
+          </button>
+        </div>
+        <div
+          id="newtonGuessGroup"
+          class="newton-guess-group"
+          role="group"
+          aria-label="IOP estimate"
+        >
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="very_below_20"
+            title="Below 16"
+          >
+            &lt;16
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="just_below_20"
+            title="16 to 19"
+          >
+            16-19
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="exactly_20"
+            title="20 exactly"
+          >
+            20
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="range_21_24"
+          >
+            21-24
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="exactly_25"
+            title="25 exactly"
+          >
+            25
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="range_26_29"
+          >
+            26-29
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="exactly_30"
+            title="30 exactly"
+          >
+            30
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="above_30_bit"
+            title="31 to 34"
+          >
+            31-34
+          </button>
+          <button
+            type="button"
+            class="newton-guess-button"
+            data-newton-guess="well_above"
+            title="35 or above"
+          >
+            35+
+          </button>
+        </div>
+        <div class="newton-actions">
+          <button
+            id="newtonNewCaseButton"
+            class="newton-action-button"
+            type="button"
+          >
+            New Case
+          </button>
+          <button
+            id="newtonSubmitButton"
+            class="newton-action-button"
+            type="button"
+            disabled
+          >
+            Submit
+          </button>
+        </div>
+        <p id="newtonResult" class="newton-result"></p>
+      </section>
+
+      <button
+        id="casePanelToggle"
+        class="case-panel-toggle"
+        type="button"
+        aria-controls="casePanel"
+        aria-expanded="false"
+        aria-label="Toggle Variable IOP panel"
       >
+        Variable IOPs
+      </button>
+
+      <section id="casePanel" aria-label="Variable IOP panel">
         <button
+          id="casePanelClose"
+          class="case-panel-close"
           type="button"
-          class="newton-point-button is-active"
-          data-newton-point="20"
+          aria-label="Close Variable IOP panel"
         >
-          20
+          ×
         </button>
-        <button
-          type="button"
-          class="newton-point-button"
-          data-newton-point="25"
-        >
-          25
-        </button>
-        <button
-          type="button"
-          class="newton-point-button"
-          data-newton-point="30"
-        >
-          30
-        </button>
-      </div>
-      <div
-        id="newtonGuessGroup"
-        class="newton-guess-group"
-        role="group"
-        aria-label="IOP estimate"
-      >
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="very_below_20"
-          title="Below 16"
-        >
-          &lt;16
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="just_below_20"
-          title="16 to 19"
-        >
-          16-19
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="exactly_20"
-          title="20 exactly"
-        >
-          20
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="range_21_24"
-        >
-          21-24
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="exactly_25"
-          title="25 exactly"
-        >
-          25
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="range_26_29"
-        >
-          26-29
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="exactly_30"
-          title="30 exactly"
-        >
-          30
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="above_30_bit"
-          title="31 to 34"
-        >
-          31-34
-        </button>
-        <button
-          type="button"
-          class="newton-guess-button"
-          data-newton-guess="well_above"
-          title="35 or above"
-        >
-          35+
-        </button>
-      </div>
-      <div class="newton-actions">
-        <button
-          id="newtonNewCaseButton"
-          class="newton-action-button"
-          type="button"
-        >
+        <div class="case-row">
+          <span class="eye-icon" aria-hidden="true">◐</span>
+          <div class="case-meta">
+            <p class="case-title">Variable IOPs</p>
+            <p id="iopValue" class="case-value">IOP: Hidden</p>
+          </div>
+        </div>
+        <button id="newCaseButton" class="new-case-button" type="button">
           New Case
         </button>
-        <button
-          id="newtonSubmitButton"
-          class="newton-action-button"
-          type="button"
-          disabled
-        >
-          Submit
-        </button>
-      </div>
-      <p id="newtonResult" class="newton-result"></p>
-    </section>
-
-    <button
-      id="casePanelToggle"
-      class="case-panel-toggle"
-      type="button"
-      aria-controls="casePanel"
-      aria-expanded="false"
-      aria-label="Toggle Variable IOP panel"
-    >
-      Variable IOP's
-    </button>
-
-    <section id="casePanel" aria-label="Variable IOP panel">
-      <button
-        id="casePanelClose"
-        class="case-panel-close"
-        type="button"
-        aria-label="Close Variable IOP panel"
-      >
-        ×
-      </button>
-      <div class="case-row">
-        <span class="eye-icon" aria-hidden="true">◐</span>
-        <div class="case-meta">
-          <p class="case-title">Variable IOP's</p>
-          <p id="iopValue" class="case-value">IOP: Hidden</p>
-        </div>
-      </div>
-      <button id="newCaseButton" class="new-case-button" type="button">
-        New Case
-      </button>
-      <div id="caseStatus" class="case-status" aria-live="polite">
-        <span id="centerStatus" class="case-status-line">Centre: not yet</span>
-        <span id="edgeStatus" class="case-status-line"
-          >Inner edges: not touching</span
-        >
-      </div>
-      <div
-        id="caseTierGroup"
-        class="case-tier"
-        role="group"
-        aria-label="Case tier"
-        data-active-tier="primary"
-      >
-        <button
-          type="button"
-          class="case-tier-button is-active"
-          data-case-tier="primary"
-        >
-          Primary
-        </button>
-        <button
-          type="button"
-          class="case-tier-button"
-          data-case-tier="intermediate"
-        >
-          Int
-        </button>
-        <button
-          type="button"
-          class="case-tier-button"
-          data-case-tier="advanced"
-        >
-          Advanced
-        </button>
-        <p id="caseRangeHint" class="case-range-hint">10-30 mmHg</p>
-      </div>
-    </section>
-
-    <aside id="controlDock" aria-label="Simulation controls">
-      <div class="dock-header">
-        <h2>Controls</h2>
-      </div>
-      <div class="dock-actions">
-        <button id="toggleButton" class="on" type="button">
-          Blue light + NaFl
-        </button>
-        <button id="resetControlsButton" class="utility-button" type="button">
-          Reset
-        </button>
-      </div>
-      <div id="separationControlRow" class="slider-row primary-slider">
-        <label for="separationSlider">Separation</label>
-        <input
-          type="range"
-          id="separationSlider"
-          min="0"
-          max="60"
-          step="1"
-          value="20"
-        />
-      </div>
-      <div class="slider-row primary-slider">
-        <label for="zoomSlider">Zoom</label>
-        <input
-          type="range"
-          id="zoomSlider"
-          min="0.5"
-          max="2"
-          step="0.05"
-          value="1"
-        />
-      </div>
-      <button
-        id="advancedMotionButton"
-        class="advanced-toggle-button"
-        type="button"
-        aria-controls="advancedControls"
-        aria-expanded="false"
-      >
-        Advanced motion
-      </button>
-      <div id="advancedControls" class="advanced-controls-panel" hidden>
-        <div class="slider-row">
-          <label for="jitterSlider"
-            >Jitter <span id="jitterValue">1.0</span></label
+        <div id="caseStatus" class="case-status" aria-live="polite">
+          <span id="centerStatus" class="case-status-line"
+            >Centre: not yet</span
           >
+          <span id="edgeStatus" class="case-status-line"
+            >Inner edges: not touching</span
+          >
+        </div>
+        <div
+          id="caseTierGroup"
+          class="case-tier"
+          role="group"
+          aria-label="Case tier"
+          data-active-tier="primary"
+        >
+          <button
+            type="button"
+            class="case-tier-button is-active"
+            data-case-tier="primary"
+          >
+            Primary
+          </button>
+          <button
+            type="button"
+            class="case-tier-button"
+            data-case-tier="intermediate"
+          >
+            Int
+          </button>
+          <button
+            type="button"
+            class="case-tier-button"
+            data-case-tier="advanced"
+          >
+            Advanced
+          </button>
+          <p id="caseRangeHint" class="case-range-hint">10-30 mmHg</p>
+        </div>
+      </section>
+
+      <aside id="controlDock" aria-label="Simulation controls">
+        <div class="dock-header">
+          <h2>Controls</h2>
+        </div>
+        <div class="dock-actions">
+          <button id="toggleButton" class="on" type="button">
+            Blue light + NaFl
+          </button>
+          <button id="resetControlsButton" class="utility-button" type="button">
+            Reset
+          </button>
+        </div>
+        <div id="separationControlRow" class="slider-row primary-slider">
+          <label for="separationSlider">Separation</label>
           <input
             type="range"
-            id="jitterSlider"
+            id="separationSlider"
             min="0"
-            max="3"
-            step="0.1"
+            max="60"
+            step="1"
+            value="20"
+          />
+        </div>
+        <div class="slider-row primary-slider">
+          <label for="zoomSlider">Zoom</label>
+          <input
+            type="range"
+            id="zoomSlider"
+            min="0.5"
+            max="2"
+            step="0.05"
             value="1"
           />
         </div>
-        <div class="slider-row">
-          <label for="suddenSlider"
-            >Sudden <span id="suddenValue">0.5</span></label
-          >
-          <input
-            type="range"
-            id="suddenSlider"
-            min="0"
-            max="3"
-            step="0.1"
-            value="0.5"
-          />
-        </div>
-        <div class="slider-row">
-          <label for="driftSlider"
-            >Drift <span id="driftValue">0.5</span></label
-          >
-          <input
-            type="range"
-            id="driftSlider"
-            min="0"
-            max="5"
-            step="0.1"
-            value="0.5"
-          />
-        </div>
-        <div class="slider-row">
-          <label for="thicknessSlider"
-            >Thickness <span id="thicknessValue">10</span></label
-          >
-          <input
-            type="range"
-            id="thicknessSlider"
-            min="1"
-            max="20"
-            step="1"
-            value="10"
-          />
-        </div>
-      </div>
-    </aside>
-
-    <div id="content">
-      <div id="gameArea">
-        <div id="blueCircle">
-          <div id="mires">
-            <svg viewBox="0 0 140 140">
-              <path class="semi-circle top" d="M 20 70 A 50 50 0 0 1 120 70" />
-              <path
-                class="semi-circle bottom"
-                d="M 120 70 A 50 50 0 0 1 20 70"
-              />
-            </svg>
+        <button
+          id="advancedMotionButton"
+          class="advanced-toggle-button"
+          type="button"
+          aria-controls="advancedControls"
+          aria-expanded="false"
+        >
+          Advanced motion
+        </button>
+        <div id="advancedControls" class="advanced-controls-panel" hidden>
+          <div class="slider-row">
+            <label for="jitterSlider"
+              >Jitter <span id="jitterValue">1.0</span></label
+            >
+            <input
+              type="range"
+              id="jitterSlider"
+              min="0"
+              max="3"
+              step="0.1"
+              value="1"
+            />
+          </div>
+          <div class="slider-row">
+            <label for="suddenSlider"
+              >Sudden <span id="suddenValue">0.5</span></label
+            >
+            <input
+              type="range"
+              id="suddenSlider"
+              min="0"
+              max="3"
+              step="0.1"
+              value="0.5"
+            />
+          </div>
+          <div class="slider-row">
+            <label for="driftSlider"
+              >Drift <span id="driftValue">0.5</span></label
+            >
+            <input
+              type="range"
+              id="driftSlider"
+              min="0"
+              max="5"
+              step="0.1"
+              value="0.5"
+            />
+          </div>
+          <div class="slider-row">
+            <label for="thicknessSlider"
+              >Thickness <span id="thicknessValue">10</span></label
+            >
+            <input
+              type="range"
+              id="thicknessSlider"
+              min="1"
+              max="20"
+              step="1"
+              value="10"
+            />
           </div>
         </div>
-        <div id="crosshair" aria-hidden="true">
-          <div class="line horizontal"></div>
-          <div class="line vertical"></div>
+      </aside>
+
+      <div id="content">
+        <div id="gameArea">
+          <div id="blueCircle">
+            <div id="mires">
+              <svg viewBox="0 0 140 140">
+                <path
+                  class="semi-circle top"
+                  d="M 20 70 A 50 50 0 0 1 120 70"
+                />
+                <path
+                  class="semi-circle bottom"
+                  d="M 120 70 A 50 50 0 0 1 20 70"
+                />
+              </svg>
+            </div>
+          </div>
+          <div id="crosshair" aria-hidden="true">
+            <div class="line horizontal"></div>
+            <div class="line vertical"></div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <div id="infoModal" class="modal" aria-hidden="true">
-      <div class="modal-content">
+    <div
+      id="infoModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="infoModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" tabindex="-1">
         <div class="info-popup-header">
-          <h2>Goldmann Quick Guide</h2>
+          <h2 id="infoModalTitle">Goldmann Quick Guide</h2>
           <button
             id="closeInfoModal"
             class="close-button"
@@ -447,7 +473,12 @@
         </div>
         <div class="info-popup-body">
           <section class="info-look-section info-look-section--detail">
-            <p>Keep the endpoint simple: Centre / Touch / Steady.</p>
+            <p class="info-purpose-copy">
+              Use this Goldmann applanation teaching simulator: you move the
+              mires to match the view, then adjust separation until their inner
+              edges just touch. It helps you practise alignment and estimating
+              IOP; it does not measure a patient's IOP.
+            </p>
           </section>
           <hr />
           <div class="info-points">
@@ -457,8 +488,8 @@
             </p>
             <p>Use topical anaesthetic plus a small amount of fluorescein.</p>
             <p>
-              Too much NaFl: thick mires, high bias. Too little: thin mires, low
-              bias.
+              Wide or faint mires: correct the tear film and repeat before
+              reading.
             </p>
             <p>
               Endpoint: centre the mires, make the inner edges just touch and
@@ -469,13 +500,37 @@
               looking straight ahead.
             </p>
           </div>
-          <p class="modal-version">v1 - 18/5/2026</p>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
+          </p>
         </div>
       </div>
     </div>
 
-    <div id="testModal" class="modal" aria-hidden="true">
-      <div class="modal-content test-modal-content">
+    <div
+      id="testModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="testModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content test-modal-content" tabindex="-1">
         <button
           id="closeTestModal"
           class="close-button"
@@ -490,9 +545,24 @@
           0 questions.
         </p>
         <div id="testContainer"></div>
+        <div
+          id="testResult"
+          class="result-text"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+        ></div>
         <div class="test-actions">
           <button id="submitTestButton" class="action-button" type="button">
-            Submit Test
+            Submit answers
+          </button>
+          <button
+            id="retryTestButton"
+            class="action-button secondary"
+            type="button"
+            hidden
+          >
+            New set
           </button>
           <button
             id="saveResultButton"
@@ -500,15 +570,14 @@
             type="button"
             hidden
           >
-            Save Result
+            Save result
           </button>
         </div>
-        <div id="testResult" class="result-text"></div>
       </div>
     </div>
 
-    <script src="app.bundle.js"></script>
-    <script src="cup-achievement.js"></script>
+    <script src="app.bundle.js?v=20260929-logic1-perf1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

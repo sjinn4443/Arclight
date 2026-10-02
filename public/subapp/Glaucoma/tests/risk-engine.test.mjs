@@ -18,7 +18,7 @@ function runRiskEngineTests() {
   })
   assert.equal(baseline.cellId, 'cell_r4_c1')
   assert.equal(baseline.cellColour, 'white')
-  assert.equal(baseline.urgencyMessage, 'NORMAL: Routine check-up only')
+  assert.equal(baseline.urgencyMessage, 'LOW GRID CONCERN: Routine check-up')
 
   const urgent = calculateRiskOutcome({
     iop: 'gte30',
@@ -27,10 +27,10 @@ function runRiskEngineTests() {
   })
   assert.equal(urgent.cellId, 'cell_r1_c4')
   assert.equal(urgent.cellColour, 'red')
-  assert.equal(urgent.urgencyMessage, 'URGENT: See specialist within 3 weeks')
+  assert.equal(urgent.urgencyMessage, 'URGENT: See specialist within 3 weeks · END-STAGE: Assess fellow eye')
 
   const shiftedRow = calculateRiskOutcome({
-    iop: '20-24',
+    iop: '21-24',
     cupDiscRatio: '0.6-0.8',
     discSize: 'Medium',
     thinRim: true,
@@ -45,7 +45,7 @@ function runRiskEngineTests() {
     discSize: 'Medium'
   })
   assert.equal(endStage.cellColour, 'darkgrey')
-  assert.equal(endStage.urgencyMessage, 'END-STAGE: Check other eye')
+  assert.equal(endStage.urgencyMessage, 'END-STAGE: Escalate affected eye and assess fellow eye')
 
   const palpationOnly = calculateRiskOutcome({
     iop: null,
@@ -80,7 +80,7 @@ function runRiskEngineTests() {
   assert.match(rockWithoutCupDisc.urgencyMessage, /^EMERGENCY WARNING:/)
 
   const measuredIopOverridesPalpation = calculateRiskOutcome({
-    iop: '20-24',
+    iop: '21-24',
     palpation: 'rock',
     cupDiscRatio: '0.6-0.8',
     discSize: 'Medium'
@@ -105,7 +105,7 @@ function runRiskEngineTests() {
   assert.equal(invalidPressureInput.urgencyMessage, 'INCOMPLETE: Select a valid pressure input')
 
   const invalidCupDiscInput = calculateRiskOutcome({
-    iop: '20-24',
+    iop: '21-24',
     cupDiscRatio: 'bad-ratio',
     discSize: 'Small'
   })
@@ -131,7 +131,27 @@ function runRiskEngineTests() {
   assert.equal(invalidRiskFactorsAreIgnored.riskScore, 0.2)
   assert.deepEqual(invalidRiskFactorsAreIgnored.riskFactorStrings, ['Age: +0.2'])
 
+  const suspiciousFieldFloor = calculateRiskOutcome({
+    iop: 'lte20',
+    cupDiscRatio: '0-0.2',
+    discSize: 'Medium',
+    suspiciousFields: true
+  })
+  assert.equal(suspiciousFieldFloor.cellId, 'cell_r4_c1')
+  assert.equal(suspiciousFieldFloor.hasReferralFloor, true)
+  assert.equal(suspiciousFieldFloor.urgencyMessage, 'SOON: See specialist within 2 months')
+
+  const suspiciousRimFloor = calculateRiskOutcome({
+    iop: 'lte20',
+    cupDiscRatio: '0-0.2',
+    discSize: 'Medium',
+    thinRim: true
+  })
+  assert.equal(suspiciousRimFloor.hasReferralFloor, true)
+  assert.equal(suspiciousRimFloor.urgencyMessage, 'SOON: See specialist within 2 months')
+
   const reasoning = buildReasoningHtml({
+    eye: 'RE',
     cupDiscRatio: '0.3-0.5',
     discSize: 'Small',
     reasoningDetails: ['IOP 25-29: +2', 'Small disc: +2'],
@@ -139,8 +159,9 @@ function runRiskEngineTests() {
     riskScore: 4.2
   })
   assert.match(reasoning, /C\/D: 0\.3-0\.5/)
+  assert.match(reasoning, /Eye: RE/)
   assert.match(reasoning, /DS: Small/)
-  assert.match(reasoning, /Total Risk Score: <b>4\.2<\/b>/)
+  assert.match(reasoning, /Supporting points \(C\/D shown on chart\): <b>4\.2<\/b>/)
 
   const escapedReasoning = buildReasoningHtml({
     cupDiscRatio: '<img src=x onerror=alert(1)>',
@@ -151,6 +172,66 @@ function runRiskEngineTests() {
   })
   assert.doesNotMatch(escapedReasoning, /<script|<img|<b>bad<\/b>/)
   assert.match(escapedReasoning, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/)
+
+  const iopBands = [null, 'lte20', '21-24', '25-29', 'gte30']
+  const palpationStates = [null, 'normal', 'firm', 'rock']
+  const cupDiscRatios = [null, '0-0.2', '0.3-0.5', '0.6-0.8', '0.9-1']
+  const discSizes = ['Small', 'Medium', 'Large']
+  const flagStates = [
+    [false, false, false],
+    [true, false, false],
+    [false, true, false],
+    [false, false, true],
+    [true, true, false],
+    [true, false, true],
+    [false, true, true],
+    [true, true, true]
+  ]
+  const visions = ['', '6/6', '6/12', '6/36', '6/60', 'HM']
+  const riskFactorSets = [
+    [],
+    ['Age'],
+    ['Race'],
+    ['Family Hist'],
+    ['Myopia'],
+    ['Age', 'Race', 'Family Hist', 'Myopia', 'Diabetes/BP']
+  ]
+  let combinationCount = 0
+
+  for (const iop of iopBands) {
+    for (const palpation of palpationStates) {
+      for (const cupDiscRatio of cupDiscRatios) {
+        for (const discSize of discSizes) {
+          for (const [thinRim, suspiciousFields, suspiciousPupils] of flagStates) {
+            for (const vision of visions) {
+              for (const riskFactors of riskFactorSets) {
+                const outcome = calculateRiskOutcome({
+                  iop,
+                  palpation,
+                  cupDiscRatio,
+                  discSize,
+                  thinRim,
+                  suspiciousFields,
+                  suspiciousPupils,
+                  vision,
+                  riskFactors
+                })
+                combinationCount += 1
+                assert.ok(Number.isFinite(outcome.riskScore))
+                assert.ok(outcome.rowNum === null || (outcome.rowNum >= 1 && outcome.rowNum <= 4))
+                assert.ok(outcome.colNum === null || (outcome.colNum >= 1 && outcome.colNum <= 4))
+                assert.ok(outcome.urgencyMessage.length > 0)
+                if (!iop && palpation === 'rock') {
+                  assert.equal(outcome.isRockAcuteWarning, true)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  assert.equal(combinationCount, 86400)
 }
 
 export { runRiskEngineTests }

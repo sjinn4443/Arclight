@@ -2,9 +2,9 @@
 
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Current Memory Status (21/7/2026)
 
-- Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
+- Static packaging: open `index.html` directly, or use HTTP for installable offline support and service-worker testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
 - Shared appbar: `54px` high; `Quicksand` `25px`/`700` title; `44 x 44` burger and info buttons set `12px` from the edges.
 - Burger glyph: shared CSS three-bar mark, `18px` wide with `2px` strokes, so no app depends on a bold font glyph.
@@ -13,7 +13,7 @@
 - Favicon: current black-square app favicon with the app letter or letters centred.
 <!-- APP-DOC-STATUS:END -->
 
-_Last updated: 18/5/2026_
+_Last updated: 21/7/2026_
 
 ## User
 
@@ -38,7 +38,7 @@ The app then shows:
 
 The illustrative reference image is an AI-generated aide-memoire, not a real patient photograph. The user still makes the clinical judgement.
 
-Expanded illustrative reference images can show optional teaching overlays for the skin cancer route. Teaching overlays are visual aids only and must not make the app feel diagnostic.
+Expanded illustrative reference images can show optional teaching overlays for the pigmented lesion route. Teaching overlays are visual aids only and must not make the app feel diagnostic.
 
 The side menu can carry additional illustrative examples for learning. These are teaching variants, not extra scoring routes.
 
@@ -46,19 +46,19 @@ The side menu can carry additional illustrative examples for learning. These are
 
 ### Lesion
 
-Uses the close-up image. Supports ABCDE-SU lesion risk assessment using visible clinical signs:
+Uses the close-up image. Supports the ABCDEFG teaching checklist using visible clinical signs:
 
 - asymmetry
 - border irregular
 - colour
-- diameter
+- dark appearance
 - evolution/recent change
-- symptoms
 - ugly duckling sign
+- symptoms
 
 Expanded teaching mode marks visible callouts for the image-based signs. Symptoms stay as a separate note because itch, bleeding, oozing or crusting is often history rather than a visible feature in the reference image.
 
-ABCDE-SU score 1-2 maps to `Safety-net review`; score 3 or more maps to `Susp cancer pathway (2 week wait)`.
+ABCDEFG is an internal visual teaching prompt, not the NICE weighted 7-point checklist. Any recorded ABCDEFG concern maps to `Photo + Review`; its internal total must never set a suspected cancer pathway. Explicit SCC concerns and qualifying dermoscopy findings remain separate pathway triggers.
 
 ### Dermoscopy
 
@@ -85,6 +85,8 @@ Uses the close-up image. Supports rash triage. The internal DPIC-R mnemonic is a
 
 Reference image changes with the Pattern dropdown and Skin type switch.
 
+Every rash field starts unselected. Benign selections remain routine, a selected rash pattern or other clinically concerning non-red-flag feature maps to `Photo + Review` and only explicit red flags set same-day or emergency urgency. The DPIC-R total may be shown for teaching but must not drive operational urgency.
+
 ### Wood's lamp
 
 Uses the close-up image. Supports Wood's lamp fluorescence memory:
@@ -97,6 +99,8 @@ Uses the close-up image. Supports Wood's lamp fluorescence memory:
 - white for head lice nits
 
 Wood's lamp remains a reference grid. It should not get a local teaching overlay because the learning point is colour recognition rather than a lesion feature.
+
+An explicit assessment selector records whether Wood's lamp was performed and the observed fluorescence. Opening the tab must not count as use, switching away must not erase a recorded finding and Wood's lamp must not change referral urgency by itself.
 
 ## Tone
 
@@ -115,3 +119,10 @@ Wood's lamp remains a reference grid. It should not get a local teaching overlay
 - Prefer the image comparison stage as the main focus.
 - Keep the normal reference image clean; teaching belongs in the expanded view.
 - Avoid adding more top-level tabs unless the workflow genuinely needs them.
+
+## MCQ experience
+
+- Keep source-labelled explanations visible only after marking.
+- Use full-row answer targets of at least `44px` and return incomplete attempts to the first missing answer.
+- A retry must start a fresh unanswered attempt without erasing the learner's earned tier progress.
+- Engineering source checks do not constitute independent clinical approval.

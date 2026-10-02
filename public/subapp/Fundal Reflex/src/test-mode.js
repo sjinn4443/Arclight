@@ -2,6 +2,7 @@ import {
   TEST_REFRACTION_OPTIONS,
   TEST_COUNTDOWN_SEQUENCE,
 } from "./constants.js?v=20260430-6";
+import { BABY_REFRACTION_OPTIONS } from "./case-catalog.js";
 
 function dispatchInput(element) {
   if (!element) {
@@ -19,13 +20,16 @@ function dispatchChange(element) {
   element.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
-function sampleRandomCondition(lastValue) {
+function sampleRandomCondition(lastValue, babyMode = false) {
+  const available = babyMode
+    ? BABY_REFRACTION_OPTIONS
+    : TEST_REFRACTION_OPTIONS;
   const candidates =
-    TEST_REFRACTION_OPTIONS.length > 1
-      ? TEST_REFRACTION_OPTIONS.filter((option) => option.value !== lastValue)
-      : TEST_REFRACTION_OPTIONS;
+    available.length > 1
+      ? available.filter((option) => option.value !== lastValue)
+      : available;
 
-  const pool = candidates.length ? candidates : TEST_REFRACTION_OPTIONS;
+  const pool = candidates.length ? candidates : available;
   const index = Math.floor(Math.random() * pool.length);
   return pool[index];
 }
@@ -189,6 +193,15 @@ export function createTestModeController({
 
   function captureSnapshot() {
     return {
+      contextOnsetMode: state.contextOnsetMode,
+      contextGlareOn: state.contextGlareOn,
+      toggles: [liveToggle, dilatedToggle, manualEyeMoveToggle].map((control) =>
+        Boolean(control?.checked),
+      ),
+      irisColourValue: irisColourSelect?.value,
+      manualOffsets: (dom.irises || []).map((iris) => ({
+        ...iris.manualOffset,
+      })),
       corticalCataractPattern: state.corticalCataractPattern
         ? JSON.parse(JSON.stringify(state.corticalCataractPattern))
         : null,
@@ -211,6 +224,19 @@ export function createTestModeController({
     const snapshot = state.testPreviousState;
     if (!snapshot) {
       return;
+    }
+
+    [liveToggle, dilatedToggle, manualEyeMoveToggle].forEach(
+      (control, index) => {
+        if (control) {
+          control.checked = snapshot.toggles[index];
+          dispatchChange(control);
+        }
+      },
+    );
+    if (irisColourSelect && snapshot.irisColourValue) {
+      irisColourSelect.value = snapshot.irisColourValue;
+      dispatchChange(irisColourSelect);
     }
 
     if (reflexColorSlider && snapshot.reflexColorValue !== "") {
@@ -274,15 +300,20 @@ export function createTestModeController({
     if (typeof setConditionContext === "function") {
       setConditionContext(snapshot.currentRefraction);
     }
-    eyesController.syncRefractionPose();
-    state.cylinderAxisDeg = snapshot.cylinderAxisDeg;
-    state.corticalCataractPattern = snapshot.corticalCataractPattern
-      ? JSON.parse(JSON.stringify(snapshot.corticalCataractPattern))
-      : null;
     if (refractionStateSelect) {
       refractionStateSelect.value = snapshot.currentRefraction;
       dispatchChange(refractionStateSelect);
     }
+    state.contextOnsetMode = snapshot.contextOnsetMode;
+    state.contextGlareOn = snapshot.contextGlareOn;
+    state.cylinderAxisDeg = snapshot.cylinderAxisDeg;
+    state.corticalCataractPattern = snapshot.corticalCataractPattern
+      ? JSON.parse(JSON.stringify(snapshot.corticalCataractPattern))
+      : null;
+    (dom.irises || []).forEach((iris, index) => {
+      iris.manualOffset = { ...snapshot.manualOffsets[index] };
+    });
+    eyesController.syncRefractionPose();
 
     retinoscopyController.setRetStreakOffset(
       snapshot.retStreakOffset,
@@ -337,7 +368,10 @@ export function createTestModeController({
       );
     }
 
-    const nextCondition = sampleRandomCondition(state.testLastRefraction);
+    const nextCondition = sampleRandomCondition(
+      state.testLastRefraction,
+      state.isBabyMode,
+    );
     if (!nextCondition) {
       return;
     }
@@ -350,6 +384,34 @@ export function createTestModeController({
 
     setObservationLock(true);
     setRefractionMask(true);
+    for (const control of [
+      liveToggle,
+      dilatedToggle,
+      manualEyeMoveToggle,
+    ].filter(Boolean)) {
+      control.checked = false;
+      dispatchChange(control);
+    }
+    if (irisColourSelect) {
+      irisColourSelect.value = "dark-brown";
+      dispatchChange(irisColourSelect);
+    }
+    (dom.irises || []).forEach((iris) => {
+      iris.manualOffset = { x: 0, y: 0 };
+    });
+    for (const slider of [
+      ...pupilSizeSliders,
+      ...eyelidSliders,
+      cataractSlider,
+      reflexColorSlider,
+    ].filter(Boolean)) {
+      slider.value = slider.defaultValue;
+      dispatchInput(slider);
+    }
+    if (nystagmusToggle) {
+      nystagmusToggle.checked = false;
+      dispatchChange(nystagmusToggle);
+    }
     retinoscopyController.setRefraction(nextCondition.value);
     if (typeof setConditionContext === "function") {
       setConditionContext(nextCondition.value);
@@ -379,6 +441,7 @@ export function createTestModeController({
     clearTestTimer();
     setObservationLock(false);
     setRefractionMask(false);
+    state.isTestMode = false;
     restoreSnapshot();
 
     state.isTestMode = false;
@@ -388,10 +451,6 @@ export function createTestModeController({
     state.testRevealLabel = "";
     state.testPreviousState = null;
     state.testRoundIndex = 0;
-
-    if (typeof setConditionContext === "function" && state.currentRefraction) {
-      setConditionContext(state.currentRefraction);
-    }
 
     renderBanner();
     setTestTriggerLabel();

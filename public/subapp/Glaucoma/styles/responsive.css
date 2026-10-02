@@ -104,7 +104,7 @@
   }
 
   .main {
-    padding: 6px 7px 6px;
+    padding: 6px 10px 6px;
     gap: 4px;
   }
 
@@ -134,10 +134,10 @@
   }
 
   .palpation-button {
-    min-height: 18px;
+    min-height: 24px;
     padding: 0 4px;
     border-radius: var(--radius-sm);
-    font-size: 0.62rem;
+    font-size: 0.65625rem;
   }
 
   .iop-options {
@@ -153,7 +153,13 @@
   .iop-radio label {
     gap: 3px;
     font-size: 0.76rem;
-    min-height: 20px;
+    min-height: 24px;
+  }
+
+  .iop-radio input[type="radio"] {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
   }
 
   .risk-grid-table tbody .no-border,
@@ -190,13 +196,13 @@
   }
 
   .disc-size-buttons .info-icon[data-popup-target="sizes-popup"] {
-    margin: 14px 0 0;
+    margin: 8px 0 0;
     align-self: center;
   }
 
   .disc-button {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     font-size: 10px;
   }
 
@@ -212,8 +218,8 @@
   }
 
   .questionnaire-section-container {
-    gap: 10px;
-    padding: 9px 11px;
+    gap: 8px;
+    padding: 7px 11px;
   }
 
   .questionnaire-section-container > .inline-questions + .question {
@@ -255,11 +261,11 @@
   }
 
   .risk-grid-container {
-    padding: 19px 4px 8px;
+    padding: 10px 4px 5px;
   }
 
   .risk-grid-wrapper {
-    width: 94%;
+    width: 92%;
     max-width: 332px;
   }
 
@@ -287,23 +293,23 @@
   .reasoning-window {
     width: min(100%, 334px);
     max-width: 334px;
-    margin: 3px auto 0;
-    padding: 6px 7px;
-    font-size: 10.2px;
-    line-height: 1.16;
+    margin: 0 auto;
+    padding: 4px 7px;
+    font-size: 10.5px;
+    line-height: 1.18;
   }
 
   .final-message {
     font-size: 14px;
-    padding-bottom: 4px;
+    padding-bottom: 0;
   }
 
   #info-popup {
     top: calc(var(--header-height) + env(safe-area-inset-top) + 5px);
-    right: 7px;
-    left: 7px;
+    right: 10px;
+    left: 10px;
     width: auto;
-    padding: 8px 9px;
+    padding: 12px 14px;
     max-height: none;
     overflow: visible;
     font-size: 12px;
@@ -414,8 +420,63 @@
     margin: 0;
   }
 
-  #info-popup .info-logic-list,
-  #info-popup .info-logic-version {
+  #info-popup .info-logic-list {
     display: none;
   }
+}
+
+/* Shared fleet information-card type hierarchy. */
+#info-popup .info-popup-header h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#info-popup .info-popup-body,
+#info-popup .info-popup-body p {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+#info-popup .info-popup-body p.info-look-title,
+#info-popup .info-scoring-summary {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+#info-popup .info-basics-cue strong {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+#info-popup .info-basics-cue small {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+#info-popup p.info-version {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+  color: #6e7c95;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
 }

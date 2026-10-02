@@ -128,6 +128,35 @@
   box-shadow: 0 6px 14px rgba(18, 23, 34, 0.1);
 }
 
+.new-session-button {
+  width: 100%;
+  min-height: var(--tap-target-min);
+  margin-top: var(--space-12);
+  padding: 10px 12px;
+  border: 1px solid rgba(110, 124, 149, 0.32);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: #3b4962;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.new-session-button[data-armed="true"] {
+  border-color: rgba(190, 52, 42, 0.42);
+  background: #fff2f0;
+  color: #8c2822;
+}
+
+.new-session-status {
+  min-height: 1.25rem;
+  margin: 6px 4px 0;
+  color: #596780;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
 .test-mode-button:active {
   transform: translateY(0);
 }
@@ -473,4 +502,13 @@
   background: var(--surface-stage);
   transform: scale(1.035);
   transform-origin: center;
+}
+
+/* Shared fleet sidebar type hierarchy. */
+.side-menu::before {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
 }

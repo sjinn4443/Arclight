@@ -1,5 +1,21 @@
 # Technical Context
 
+## Netlify folder configuration, 3 September 2026
+
+Upload the existing `Sauron` folder. Its `netlify.toml` sets `build.command` to `npm run build` and `build.publish` to `.` because the bundle and `index.html` live at the project root. The existing build continues to write `app.bundle.js` beside `index.html`. The app also retains its already-built files for manual uploads that publish files as supplied. No separate distribution folder is required.
+
+## Logic-follow-up verification, 25 July 2026
+
+The current generated bundle and service-worker cache use `20260725-logic1`. Contract coverage protects Baby-mode timed-test filtering, preservation of the pre-round visible angle, stacked-dialog suspension and the ACG teaching-cue wording. Isolated browser review at `360 x 740` confirmed an 18-degree visible angle remained distinct from a hidden 51-degree answer, Baby sampling stayed within its catalogue and the exaggerated ACG oval remained approximately 32 by 40 pixels.
+
+## Case follow-up verification, 25 July 2026
+
+The earlier case-curriculum pass used `20260725-cases2`; it was superseded by the `20260725-logic1` logic-integrity follow-up. Run `npm run build`, `npm test` and `npm run lint` after case-catalogue, timed-test or safety-dialog changes. At `360 x 740`, verify exact `5 / 10 / 13` tier counts, four warning controls, one selected warning triangle, Baby-mode test filtering, hidden-axis concealment, dialog focus behaviour, zero horizontal overflow and an empty error console. Direct-file use remains functional but Chromium may block local WOFF2 fonts and never runs the service worker on `file://`.
+
+## v1.1 commands
+
+Use `npm run build`, `npm run lint` and `npm test`. Direct-file use remains supported. Service-worker behaviour requires HTTP(S). `npm run browser:review` expects an isolated Chrome debugging endpoint and records exact `360 x 740` evidence.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -132,3 +148,9 @@ Get-ChildItem src\*.js | ForEach-Object { node --check $_.FullName }
 - Last eyelid timing check found a visible blink closing to about `44px` upper and `19px` lower, then returning to `0px`.
 - Last `Gaze` plus `Baby` check found droop and face tilt during motion, then open lids after both switches were disabled.
 - Last case-order check found the picker starting with `1 Neutral (0)`, then `Minus`, `Plus`, `High minus`, `High plus` and `Low astigmatism`.
+
+## Refactor verification — 26 July 2026
+
+`npm run build`, `npm test` and `npm run lint` pass. Tests include exact bundle parity and exact canonical thumbnail coverage in the app-scoped service-worker shell.
+
+The MCQ quality pass uses browser-visible and Sauron-cache token `20260726-mcqquality1`. `npm run build`, `npm test` and `npm run lint` pass after the change. The contract covers all 26 stable IDs, rationales, sources, review states, unanswered focus, source rendering and retry labels.

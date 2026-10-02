@@ -674,7 +674,7 @@ textarea {
 .container {
   width: min(100%, 430px);
   margin: 0 auto;
-  padding: 64px 8px 14px;
+  padding: 64px 10px 14px;
 }
 
 .instruction-card,
@@ -769,7 +769,7 @@ textarea {
 .legend-text {
   display: inline-block;
   flex: 0 0 auto;
-  font-size: clamp(8px, 2.4vw, 10px);
+  font-size: clamp(9.5px, 2.6vw, 10px);
   font-weight: 700;
   color: #0f172a;
   white-space: nowrap;
@@ -849,6 +849,30 @@ textarea {
   font-weight: 700;
   color: #0f172a;
   white-space: nowrap;
+}
+
+/* Shared fleet sidebar type hierarchy. */
+.side-menu-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.side-menu-subtitle {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.side-menu-summary {
+  font-size: 12.5px;
+}
+
+.side-menu-close {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 22px;
+  line-height: 1;
 }
 
 .modifier-switch {
@@ -1090,7 +1114,7 @@ textarea {
   position: absolute;
   inset: 0;
   z-index: 20;
-  pointer-events: none;
+  pointer-events: auto;
   opacity: 0;
   transition: opacity 3s ease;
 }
@@ -1533,7 +1557,7 @@ textarea {
   margin-top: 6px;
   color: #334155;
   font-size: 13px;
-  font-style: italic;
+  font-style: normal;
   line-height: 1.35;
 }
 
@@ -1606,7 +1630,7 @@ textarea {
 .pathway-viewport {
   position: relative;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   background: #ffffff;
@@ -2179,7 +2203,7 @@ textarea {
 
 @media (max-width: 380px) {
   .mode-toggle-label {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .mode-switch {
@@ -2223,7 +2247,7 @@ textarea {
   }
 
   .modifier-option {
-    font-size: 9.5px;
+    font-size: 10px;
     padding: 5px 7px;
     min-width: 30px;
   }
@@ -2241,7 +2265,7 @@ textarea {
   }
 
   #onset-switch .modifier-option {
-    font-size: 9.5px;
+    font-size: 10px;
     padding: 5px 8px;
     min-width: 32px;
   }
@@ -2272,7 +2296,7 @@ textarea {
   --fields-radius-control: 10px;
   --fields-radius-card: 12px;
   --fields-radius-stage: 16px;
-  --fields-radius-panel: 18px;
+  --fields-radius-panel: 12px;
   --fields-radius-shell: 18px;
 }
 
@@ -2804,7 +2828,7 @@ html {
 .quadrant-label {
   color: #c6d0dc;
   font-weight: 500;
-  opacity: 0.62;
+  opacity: 0.72;
 }
 
 .macula-circle {
@@ -2827,6 +2851,20 @@ html {
   border-color: #166534;
 }
 
+.color-button[data-state="unassessed"] {
+  border-color: #66758a;
+  background: #f8fafc;
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.color-button[data-state="unassessed"] .icon {
+  color: #66758a;
+  font-size: 18px;
+  transform: translateY(-1px);
+}
+
 .color-button[data-state="suspect"] {
   border-color: #a15c00;
 }
@@ -2839,6 +2877,7 @@ html {
 }
 
 .rapd-switch {
+  order: 1;
   width: 82px;
   height: 30px;
   border-color: rgba(48, 56, 65, 0.42);
@@ -2849,8 +2888,9 @@ html {
 }
 
 .rapd-toggle {
-  top: -8px;
-  gap: 0;
+  top: 2px;
+  flex-direction: column;
+  gap: 1px;
   opacity: 0.96;
   transition: opacity 0.12s ease;
 }
@@ -2861,9 +2901,15 @@ html {
 }
 
 .rapd-title {
-  font-size: 8.5px;
+  order: 2;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(248, 250, 252, 0.82);
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.035em;
   color: #1f2b3a;
-  opacity: 0.9;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
@@ -2932,6 +2978,27 @@ html {
   border-top: 1px solid #e2e8f0;
 }
 
+.complete-assessment {
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid #8eadd6;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #1f5ea8;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.complete-assessment:hover {
+  background: #e2edfc;
+}
+
+.complete-assessment[hidden] {
+  display: none;
+}
+
 .raw-output {
   color: #7a8495;
 }
@@ -2964,6 +3031,11 @@ html {
 .analysis-output.status-normal,
 .analysis-site.status-normal {
   color: #237348;
+}
+
+.analysis-output.status-unassessed,
+.analysis-site.status-unassessed {
+  color: var(--fields-muted);
 }
 
 .analysis-output.status-caution,
@@ -3054,6 +3126,31 @@ html {
 
 .side-menu-subtitle {
   color: var(--fields-muted);
+}
+
+.assessment-menu-actions {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #d8e1ed;
+}
+
+.new-assessment {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #9eacc0;
+  border-radius: var(--fields-radius-card);
+  background: #ffffff;
+  color: #24324a;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.new-assessment.is-confirming {
+  border-color: #d07a7a;
+  background: #fff1f2;
+  color: #9b1c1c;
 }
 
 .side-menu-details {
@@ -3270,6 +3367,10 @@ html {
 
 .mcq-modal-content {
   padding: 12px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 20px);
+  overflow: hidden;
   background: #ffffff;
   color: var(--fields-ink);
   border-color: #c7d1df;
@@ -3278,7 +3379,7 @@ html {
 
 .mcq-header {
   min-height: 32px;
-  padding-right: 38px;
+  padding-right: 52px;
   border-bottom: 1px solid #e3e9f1;
 }
 
@@ -3293,8 +3394,8 @@ html {
 .mcq-close {
   top: 8px;
   right: 8px;
-  width: 30px;
-  height: 30px;
+  width: 44px;
+  height: 44px;
   color: var(--fields-ink);
   font-size: 22px;
   border-radius: 999px;
@@ -3311,6 +3412,10 @@ html {
 
 .mcq-form {
   gap: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 3px;
 }
 
 .mcq-question {
@@ -3339,7 +3444,7 @@ html {
 }
 
 .mcq-option {
-  min-height: 36px;
+  min-height: 44px;
   margin: 0;
   align-items: center;
   gap: 9px;
@@ -3380,6 +3485,50 @@ html {
   box-shadow: inset 3px 0 0 #c1121f;
 }
 
+.mcq-question-feedback {
+  margin: 8px 2px 0;
+  color: var(--fields-muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.mcq-question-feedback strong {
+  color: var(--fields-ink);
+}
+
+.mcq-result {
+  display: grid;
+  gap: 2px;
+  min-height: 0;
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid #94a3b8;
+  border-radius: var(--fields-radius-tight);
+  background: #f8fafc;
+}
+
+.mcq-result.pass {
+  border-left-color: #22a559;
+  background: #f3fbf6;
+}
+
+.mcq-result.fail {
+  border-left-color: #c1121f;
+  background: #fff6f5;
+}
+
+.mcq-result-heading {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.mcq-result-score {
+  color: var(--fields-muted);
+  font-size: 12px;
+}
+
 .mcq-actions {
   margin-top: 10px;
   padding-top: 8px;
@@ -3394,6 +3543,7 @@ html {
 }
 
 .mcq-action-button {
+  min-height: 44px;
   border-radius: var(--fields-radius-card);
   background: #1f2a3d;
 }
@@ -3406,9 +3556,6 @@ html {
 
 .info-popup {
   color: var(--fields-ink);
-}
-
-.info-popup {
   top: 62px;
   right: 10px;
   left: 10px;
@@ -3474,7 +3621,7 @@ html {
 }
 
 .info-look-title {
-  color: var(--fields-red-dark);
+  color: #f03b2f;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -3522,7 +3669,7 @@ html {
 }
 
 .info-basics-cue-absent strong {
-  color: #b91c1c;
+  color: #f03b2f;
 }
 
 .info-look-section--detail {
@@ -3541,7 +3688,7 @@ html {
 }
 
 .info-close {
-  position: static;
+  position: relative;
   flex: 0 0 auto;
   width: 30px;
   height: 30px;
@@ -3549,6 +3696,12 @@ html {
   color: var(--fields-ink);
   font-size: 22px;
   box-shadow: none;
+}
+
+.info-close::after {
+  position: absolute;
+  inset: -7px;
+  content: "";
 }
 
 .info-method {
@@ -3575,7 +3728,9 @@ html {
 .modifier-option:focus-visible,
 .mode-toggle-label:focus-visible,
 .mode-switch input:focus-visible + .mode-slider,
-.rapd-segment:focus-visible {
+.rapd-segment:focus-visible,
+.complete-assessment:focus-visible,
+.new-assessment:focus-visible {
   outline: 2px solid var(--fields-red);
   outline-offset: 2px;
   box-shadow: 0 0 0 4px var(--fields-focus);
@@ -3593,7 +3748,7 @@ html {
 
 @media (max-width: 420px) {
   .container {
-    padding: 58px 8px 4px;
+    padding: 58px 10px 4px;
   }
 
   .instruction-card,
@@ -3721,6 +3876,13 @@ html {
   .result-top-row {
     margin-top: 4px;
     padding-top: 4px;
+    gap: 4px;
+  }
+
+  .complete-assessment {
+    min-height: 26px;
+    padding: 4px 7px;
+    font-size: 10px;
   }
 
   .raw-output {
@@ -3742,19 +3904,20 @@ html {
   }
 
   .pathway-viewport {
-    max-height: 116px;
+    max-height: none;
     padding: 4px;
+    overflow: hidden;
   }
 
   .pathway-canvas {
-    width: 72%;
+    width: 82%;
     margin: 0 auto;
   }
 
   .pathway-structures {
     margin-top: 3px;
-    font-size: 9.2px;
-    line-height: 1.1;
+    font-size: 10.5px;
+    line-height: 1.18;
     gap: 1px 3px;
   }
 
@@ -3790,5 +3953,125 @@ html {
     margin-top: 3px;
     font-size: 9.4px;
     line-height: 1.1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .eye-container {
+    padding-top: 64px;
+    padding-bottom: 18px;
+  }
+
+  .eye .label {
+    top: calc(var(--eye-size) * -0.16);
+  }
+
+  .eye .ut,
+  .eye .un {
+    top: calc(var(--eye-size) * -0.12);
+  }
+
+  .eye .lt,
+  .eye .ln {
+    bottom: calc(var(--eye-size) * -0.09);
+  }
+
+  body:has(#context-panel[open]) .eye-container {
+    padding-top: 66px;
+    padding-bottom: 20px;
+  }
+}
+
+/* Shared fleet information-card type hierarchy. */
+#info-popup .info-popup-header h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#info-popup .info-popup-body,
+#info-popup .info-popup-body p {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+#info-popup .info-popup-body p.info-look-title {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+#info-popup .info-basics-cue strong {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+#info-popup .info-basics-cue small {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+#info-popup .info-version {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0 0;
+  color: #6e7c95;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Fleet UI alignment: information card and exact 360 x 740 fit. */
+#info-popup {
+  border-radius: 16px;
+}
+
+#info-popup .info-popup-header {
+  min-height: 44px;
+}
+
+#info-popup .info-close {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  top: 0;
+  right: 0;
+}
+
+@media (max-width: 420px) {
+  main.container {
+    padding-bottom: 1px;
+  }
+
+  main.container > .pathway-panel:last-child {
+    margin-bottom: 0;
   }
 }

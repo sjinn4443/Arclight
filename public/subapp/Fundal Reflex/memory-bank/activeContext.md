@@ -1,5 +1,59 @@
 # Active Context
 
+## Receiving host integration — 2 October 2026
+
+Host routes and locale hooks are retained. Service-worker reads remain app-scoped and shared locale assets are precached. Development material is excluded from deployment and offline manifests. The existing iPhone iris-layout fix is preserved in source and its canonically rebuilt bundle.
+
+Current receiving-host evidence is in [the integration report](../../../../docs/miniapps/20260930/INTEGRATION_REPORT.md). Earlier receipts below remain upstream historical evidence.
+
+## Performance review — 30 September 2026
+
+Already-minified canonical bundle retained. The fleet build now uses this app's own builder rather than bypassing it. Mobile Lighthouse performance: 84 → 84/100 in one paired lab run, not a physical-device speed guarantee.
+
+Shared verification: 24/24 regression jobs, all 15 HTTP and direct-file information/drawer reviews, all 14 Primary quiz workflows and 45 main-page responsive views passed. Selected completed states were also checked. No clinical rules or approved layout were deliberately changed. App-specific asset queries and caches were bumped only where shipped bundles changed. Direct-file checks do not test service workers. Full dead-code elimination, every workflow, offline cache migration and physical-device acceptance are not claimed. The retained Glaucoma tab's real toolbar was verified at 360 x 740 after switching away and back; this does not establish sibling-tab sizes or physical-device acceptance.
+
+[Evidence and remaining priorities](../../FLEET_PERFORMANCE_REVIEW_20260930.md). This entry supersedes older performance figures only; earlier clinical and feature history remains below.
+
+## Current fleet UI refinement receipt — 30 September 2026
+
+Context switches and chooser controls enlarged; marked quiz result appears before the retry actions.
+
+App-local versioned `fleet-ui-refinements.css` aligns quiz typography, answer rows, focus outlines and rounding where compatible. Information footers show `v1 · 30/9/2026`. Clinical engines, simulator geometry, authored questions, scoring and progression are unchanged. Earlier dated entries below are historical.
+
+Fleet evidence: 24/24 regression jobs, 45 main-page views, 15/15 HTTP information/drawer reviews, 15/15 direct-file information/drawer reviews and 18/18 selected expanded/completed-state checks. All 14 Primary quiz workflows pass individually; Cataract passed its isolated recheck after one transient connection warning. Automated viewports are temporary. Real Codex retained-toolbar verification remains blocked by the unavailable visible tab; physical-device acceptance and independent clinical sign-off remain pending. See the [full change and verification receipt](../../FLEET_UI_REFINEMENTS_2026-09-30.md).
+
+## Fleet repair receipt — 30 September 2026
+
+Restored quiz and Learn-panel focus to the visible menu control. Blank quiz submission now focuses the first unanswered question. Rebuilt the UI bundle. Current information footer: `v1 · 30/9/2026`. Runtime HTML changes use an updated app-scoped cache; internal engine/package versions are retained.
+
+Information-panel and drawer checks pass over HTTP and direct-file routes at temporary `360 x 740`. Available popup checks and the Primary quiz state checks pass. Scoped automated test commands pass. See [fleet repair evidence](../../FLEET_FIXES_2026-09-30.md) for exact coverage and exclusions. Service workers do not run on `file://`; offline migration, physical-device acceptance and independent clinical sign-off are not established by this repair. The retained Codex flowchart tab was not changed.
+
+Older dated sections below are historical evidence. This receipt supersedes their release-date and verification-status claims, not their recorded clinical decisions.
+
+## Documentation refresh — 29 September 2026
+
+Current visible information footer: `v1 · 29/9/2026`, bottom right in the existing information popup. This entry records a documentation and popup-date synchronisation, not a new clinical audit. App behaviour and the previously recorded verification limits are unchanged. Older dated entries below are historical records, not the current popup date. Independent clinical sign-off and physical-device acceptance are not implied by this date.
+
+## 29 September 2026 — audit fixes
+
+Test mode must start from clean modifiers, use the Baby pool when selected and restore the actual previous context and generated pattern after the final case-change event. Preserve manual offsets too. Action wording is explicitly an example, not patient triage. Infant high hypermetropia escalates once; abnormal infant dark/corneal reflex examples prompt urgent eye referral through local pathways. This is not a retinal BIO viewer: do not rotate its anterior-eye scene. Current checks: 15 tests, bundle parity and isolated-browser restoration plus all 32 catalogue outputs. See `../AUDIT_2026-09-29.md`. Independent clinical and physical-device acceptance remain pending.
+
+## Final MCQ evidence — 26 July 2026
+
+The 16/26/26 question banks now avoid adjacent restatements by using distinct recognition, examination-quality, differentiation, limitation and application prompts. The 5/6/8 attempt sizes, simulator logic and clinical action logic are unchanged. Final source tests, bundle parity and the isolated `360 x 740` MCQ flow pass. Independent clinical sign-off and physical-device acceptance remain open.
+
+## Maintenance refactor (26/7/2026)
+
+The current maintenance boundary is narrow: remove only proved-unused retinoscopy state and orphan presentation rules, keep the authored cases and eye engine unchanged and require exact bundle parity. The expanded suite passes 11/11 contracts. Independent clinical sign-off and physical-device acceptance are still open.
+
+## Eye-engine consistency follow-up (23/7/2026)
+
+Light-responsive pupil targets now use `Math.hypot(sweepX, sweepY)`, so equal vertical and horizontal beam offsets behave equally. Existing smoothing and the acute-angle-closure bypass are preserved. Paired advanced controls announce examiner-facing RE and LE. The rebuilt bundle passes 7/7 tests and a fresh `360 x 740` HTTP review with no browser warnings or errors.
+
+## Fleet alignment update (23/7/2026)
+
+Swollen Discs is the shared outer-edge reference for the related image-led mobile apps. At `360 x 740`, Fundal Reflex now uses a `340px` black stage and Action panel with `10px` outer margins. The stage retains a `16px` radius and shared strong shadow while Action remains an `18px` secondary panel. Teaching controls, cases, mappings, IDs and layout inside the stage are unchanged.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -262,3 +316,28 @@ Keep the current teaching flow stable:
 - Keep Crescent guide placement tied to the actual pupil edge, not a generic pupil-centre marker.
 - Keep the current radius hierarchy as a design-system rule, especially in Cases and MCQ: panel > section/action > card > inner media/option.
 - Keep `Case 8. R normal, L dark` out of normal-variation teaching; dark unilateral/reduced reflex stays in the referral/reduced-reflex pathway.
+
+# Fleet upgrade context — 23 July 2026
+
+Fundal Reflex remains a teaching simulator. The fleet upgrade preserved its zero-refraction starting case and all clinical content, while adding deliberate session reset, PWA/offline scaffolding and automated contracts. Exact `360 x 740` CDP checks pass over HTTP and direct-file routes. Independent clinical sign-off, installed-offline verification and physical-device testing remain open external gates. See `FUNDAL_REFLEX_V1.1_EVIDENCE_RECEIPT.md`.
+
+## MCQ consistency status — 23 July 2026
+
+Visible levels use Primary, Intermediate and Advanced. The existing reflex question bank, grading and simulator behaviour are unchanged. Cup unlocking requires explicit Advanced pass evidence.
+
+## Maintenance refactor - 26 July 2026
+
+Unused retinoscopy state and orphan Advanced styles were removed. Geometry and pathology behaviour remains unchanged and is protected by 11 passing contracts plus source/bundle parity. Untouched, dense, transient, completed and reset browser states pass at `360 x 740`.
+
+## MCQ quality pass — 26 July 2026
+
+The active bank has 68 questions: 16 Primary, 26 Intermediate and 26 Advanced, with attempt sizes 5, 6 and 8. Stable IDs, rationales, source keys and review status are mandatory. The NHS NIPE source covers screening fundamentals. Simulator-specific cases and local escalation wording remain pending independent clinical sign-off. Review, unanswered guard, New set and 44px rows are implemented. Isolated MCQ browser evidence is still to be recorded for this pass.
+
+## 27 July 2026 - Lighthouse bundle remediation
+
+- The production build and parity checker now both use esbuild minification.
+- The bundle was rebuilt with the pinned local binary and exact SHA-256 parity was confirmed.
+- All 13 tests pass.
+- Untouched and Advanced states remain `360px` wide at `360 x 740` with no console errors.
+- Lighthouse performance improved from `77` to `85` and transfer fell from about `542 KiB` to `390 KiB`.
+- Simulator, case and referral-teaching logic were not changed.

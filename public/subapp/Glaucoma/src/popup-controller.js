@@ -41,6 +41,8 @@ export function initPopupController(root = document) {
   const sideMenu = $("#sideMenu", root);
   const burgerIcon = $("#burger-icon", root);
   const anchoredPopups = $$(".popup", root);
+  let infoReturnFocus = null;
+  let anchoredReturnFocus = null;
 
   renderInfoLogicSection(root);
 
@@ -50,12 +52,17 @@ export function initPopupController(root = document) {
 
   function closeAnchoredPopups() {
     anchoredPopups.forEach((popup) => popup.classList.remove("active"));
+    $$(".info-icon[data-popup-target]", root).forEach((trigger) =>
+      trigger.setAttribute("aria-expanded", "false"),
+    );
   }
 
   function closeInfoPopup() {
     if (infoPopup) {
       infoPopup.classList.remove("active");
       infoIcon?.setAttribute("aria-expanded", "false");
+      if (infoReturnFocus instanceof HTMLElement) infoReturnFocus.focus();
+      infoReturnFocus = null;
     }
   }
 
@@ -94,7 +101,10 @@ export function initPopupController(root = document) {
     }
 
     popup.classList.add("active");
+    trigger.setAttribute("aria-expanded", "true");
+    anchoredReturnFocus = trigger;
     positionPopupNearTrigger(popup, trigger);
+    popup.querySelector(".popup-close-button")?.focus();
   }
 
   if (infoIcon && infoPopup) {
@@ -106,6 +116,10 @@ export function initPopupController(root = document) {
       closeSideMenu();
       infoPopup.classList.toggle("active", !wasOpen);
       infoIcon.setAttribute("aria-expanded", !wasOpen ? "true" : "false");
+      if (!wasOpen) {
+        infoReturnFocus = infoIcon;
+        infoPopup.querySelector(".popup-close-button")?.focus();
+      }
     });
   }
 
@@ -122,6 +136,9 @@ export function initPopupController(root = document) {
         closeInfoPopup();
       } else if (popup) {
         popup.classList.remove("active");
+        if (anchoredReturnFocus instanceof HTMLElement)
+          anchoredReturnFocus.focus();
+        anchoredReturnFocus = null;
       }
       return;
     }
@@ -161,5 +178,16 @@ export function initPopupController(root = document) {
       return;
     }
     positionPopupNearTrigger(activePopup, trigger);
+  });
+
+  root.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const hadInfo = Boolean(infoPopup?.classList.contains("active"));
+    const hadAnchored = Boolean(root.querySelector(".popup.active"));
+    closeAllPopups();
+    if (hadAnchored && anchoredReturnFocus instanceof HTMLElement)
+      anchoredReturnFocus.focus();
+    anchoredReturnFocus = null;
+    if (hadInfo || hadAnchored) event.preventDefault();
   });
 }

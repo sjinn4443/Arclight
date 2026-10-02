@@ -252,6 +252,8 @@ function getPathwayTargetIds(
       "part-retina-left",
       "part-nerve-right",
       "part-nerve-left",
+      "part-v1-left",
+      "part-v1-right",
     ];
   }
 
@@ -334,7 +336,9 @@ function getPathwayTargetIds(
     lesionText.includes("macular");
 
   if (preChiasmalByCondition || preChiasmalByLesion) {
-    const side = getSideFromText(conditionText || lesionText);
+    const side = conditionText.includes("mixed altitudinal")
+      ? "both"
+      : getSideFromText(conditionText || lesionText);
     const targets = getPreChiasmalSegments(side);
     return dedupeIds(targets);
   }
@@ -349,46 +353,160 @@ function getPathwayTargetIds(
   ];
 }
 
+const PATHWAY_LEGEND_DEFAULTS = Object.freeze({
+  retina: "Retina",
+  nerve: "Nerve",
+  chiasm: "Chiasm",
+  tract: "Tract",
+  lgn: "LGN",
+  radiations: "Radiations",
+  cortex: "V1",
+});
+
+function getPathwayLegendState(targetIds) {
+  const ids = Array.isArray(targetIds) ? targetIds : [];
+  const targetSet = new Set(ids);
+  const labels = { ...PATHWAY_LEGEND_DEFAULTS };
+  const activeKeys = [];
+  const activate = (key, label) => {
+    labels[key] = label;
+    activeKeys.push(key);
+  };
+
+  const rightRetina = targetSet.has("part-retina-right");
+  const leftRetina = targetSet.has("part-retina-left");
+  if (rightRetina || leftRetina) {
+    activate(
+      "retina",
+      rightRetina && leftRetina
+        ? "Both Retina"
+        : rightRetina
+          ? "RE Retina"
+          : "LE Retina",
+    );
+  }
+
+  const rightNerve = targetSet.has("part-nerve-right");
+  const leftNerve = targetSet.has("part-nerve-left");
+  if (rightNerve || leftNerve) {
+    activate(
+      "nerve",
+      rightNerve && leftNerve
+        ? "Both Nerves"
+        : rightNerve
+          ? "RE Nerve"
+          : "LE Nerve",
+    );
+  }
+
+  const chiasmIds = ids.filter((id) => id.includes("chiasm"));
+  if (chiasmIds.length) {
+    const lateralOnly = chiasmIds.every((id) => id.includes("lateral"));
+    activate("chiasm", lateralOnly ? "Lateral chiasm" : "Chiasm");
+  }
+
+  const leftTract = targetSet.has("part-tract-left");
+  const rightTract = targetSet.has("part-tract-right");
+  if (leftTract || rightTract) {
+    activate(
+      "tract",
+      leftTract && rightTract
+        ? "Both Tracts"
+        : leftTract
+          ? "L Tract"
+          : "R Tract",
+    );
+  }
+
+  const leftLgn = targetSet.has("part-lgn-left");
+  const rightLgn = targetSet.has("part-lgn-right");
+  if (leftLgn || rightLgn) {
+    activate(
+      "lgn",
+      leftLgn && rightLgn ? "Both LGN" : leftLgn ? "L LGN" : "R LGN",
+    );
+  }
+
+  const leftRadiationA = targetSet.has("part-radiation-left-a");
+  const leftRadiationB = targetSet.has("part-radiation-left-b");
+  const rightRadiationA = targetSet.has("part-radiation-right-a");
+  const rightRadiationB = targetSet.has("part-radiation-right-b");
+  const leftRadiations = leftRadiationA || leftRadiationB;
+  const rightRadiations = rightRadiationA || rightRadiationB;
+  if (leftRadiations || rightRadiations) {
+    let radiationLabel = "Both Radiations";
+    if (leftRadiations && !rightRadiations) {
+      radiationLabel =
+        leftRadiationA && leftRadiationB
+          ? "L Radiations"
+          : leftRadiationB
+            ? "L Meyer"
+            : "L Parietal";
+    } else if (rightRadiations && !leftRadiations) {
+      radiationLabel =
+        rightRadiationA && rightRadiationB
+          ? "R Radiations"
+          : rightRadiationB
+            ? "R Meyer"
+            : "R Parietal";
+    }
+    activate("radiations", radiationLabel);
+  }
+
+  const leftCortex = ids.some(
+    (id) =>
+      id === "part-occipital-left" ||
+      id === "part-v1-left" ||
+      (id.endsWith("-left") &&
+        (id.includes("calcarine") || id.includes("occipital-pole"))),
+  );
+  const rightCortex = ids.some(
+    (id) =>
+      id === "part-occipital-right" ||
+      id === "part-v1-right" ||
+      (id.endsWith("-right") &&
+        (id.includes("calcarine") || id.includes("occipital-pole"))),
+  );
+  if (leftCortex || rightCortex) {
+    let cortexLabel = "Both V1";
+    if (leftCortex && !rightCortex) {
+      const upper = targetSet.has("part-calcarine-upper-left");
+      const lower = targetSet.has("part-calcarine-lower-left");
+      cortexLabel =
+        upper && !lower
+          ? "L upper V1"
+          : lower && !upper
+            ? "L lower V1"
+            : "L V1";
+    } else if (rightCortex && !leftCortex) {
+      const upper = targetSet.has("part-calcarine-upper-right");
+      const lower = targetSet.has("part-calcarine-lower-right");
+      cortexLabel =
+        upper && !lower
+          ? "R upper V1"
+          : lower && !upper
+            ? "R lower V1"
+            : "R V1";
+    }
+    activate("cortex", cortexLabel);
+  }
+
+  return { labels, activeKeys };
+}
+
 function updatePathwayLegend(targetIds) {
   const legendRoot = document.getElementById("pathway-structures");
   if (!legendRoot) return;
 
+  const { labels, activeKeys } = getPathwayLegendState(targetIds);
   const segments = legendRoot.querySelectorAll(".pathway-segment");
-  segments.forEach((segment) =>
-    segment.classList.remove("pathway-segment-active"),
-  );
-
-  if (!targetIds.length) return;
-
-  const active = {
-    retina: false,
-    nerve: false,
-    chiasm: false,
-    tract: false,
-    lgn: false,
-    radiations: false,
-    cortex: false,
-  };
-
-  targetIds.forEach((id) => {
-    if (id.includes("retina")) active.retina = true;
-    if (id.includes("nerve")) active.nerve = true;
-    if (id.includes("chiasm")) active.chiasm = true;
-    if (id.includes("tract")) active.tract = true;
-    if (id.includes("lgn")) active.lgn = true;
-    if (id.includes("radiation")) active.radiations = true;
-    if (
-      id.includes("occipital") ||
-      id.includes("v1") ||
-      id.includes("calcarine") ||
-      id.includes("pole")
-    ) {
-      active.cortex = true;
-    }
+  segments.forEach((segment) => {
+    const key = segment.dataset.legend;
+    segment.textContent = labels[key] || segment.textContent;
+    segment.classList.remove("pathway-segment-active");
   });
 
-  Object.entries(active).forEach(([key, isActive]) => {
-    if (!isActive) return;
+  activeKeys.forEach((key) => {
     const segment = legendRoot.querySelector(`[data-legend="${key}"]`);
     if (segment) {
       segment.classList.add("pathway-segment-active");

@@ -5,7 +5,7 @@
 (function attachCoverController(globalObj) {
   const AppStateRef = globalObj.AppState;
   const OutputWriterRef = globalObj.OutputWriter;
-  const COVER_SETTLE_MS = 340;
+  const COVER_SETTLE_MS = 1080;
   const PHORIA_BREAK_DELAY_MS = COVER_SETTLE_MS + 160;
   const PHORIA_BREAK_MS = 1280;
   const FIXATION_SHIFT_MS = 1250;
@@ -23,11 +23,54 @@
   let lastPresetKey = "";
   let decompRecoveryTimer = null;
   let decompCountdownTimer = null;
+  let coverObservationTimer = null;
+  let coverPhase = "Cover-uncover";
+  let coverRevision = 0;
   let coverCountByEye = { left: 0, right: 0 };
   const phoriaReturnTimers = { left: null, right: null };
 
   function resetCoverCounters() {
     coverCountByEye = { left: 0, right: 0 };
+  }
+
+  function patientEyeLabel(eyeType) {
+    return String(eyeType || "").toLowerCase() === "left" ? "RE" : "LE";
+  }
+
+  function fellowEyeType(eyeType) {
+    return String(eyeType || "").toLowerCase() === "left" ? "right" : "left";
+  }
+
+  function setCoverObservation(message, options = {}) {
+    if (coverObservationTimer) {
+      clearTimeout(coverObservationTimer);
+      coverObservationTimer = null;
+    }
+    AppStateRef.state.coverObservation = String(message || "").trim();
+    const holdMs = Number(options.holdMs || 0);
+    if (holdMs > 0 && AppStateRef.state.coverObservation) {
+      coverObservationTimer = setTimeout(() => {
+        AppStateRef.state.coverObservation = "";
+        coverObservationTimer = null;
+        OutputWriterRef.updateAllOutputs();
+      }, holdMs);
+    }
+  }
+
+  function clearCoverObservation() {
+    setCoverObservation("");
+  }
+
+  function describeCoverOffset(eyeType, offset) {
+    const x = Number(offset?.x || 0);
+    const y = Number(offset?.y || 0);
+    const parts = [];
+    if (Math.abs(x) > 2) {
+      const outward = eyeType === "left" ? x < 0 : x > 0;
+      parts.push(outward ? "outward" : "inward");
+    }
+    if (Math.abs(y) > 2) parts.push(y < 0 ? "upward" : "downward");
+    return parts.join(" and ");
   }
 
   function syncCoverCountersWithPreset() {
@@ -142,10 +185,22 @@
       return { kind: "horizontal", mode: "eso", magnitude: 16, delayed: true };
     }
     if (key === "hyperphoria (decompensating)") {
-      return { kind: "vertical", mode: "hyper", magnitude: 14, delayed: true };
+      return {
+        kind: "vertical",
+        affectedEye: "left",
+        mode: "hyper",
+        magnitude: 14,
+        delayed: true,
+      };
     }
     if (key === "hypophoria (decompensating)") {
-      return { kind: "vertical", mode: "hypo", magnitude: 14, delayed: true };
+      return {
+        kind: "vertical",
+        affectedEye: "left",
+        mode: "hypo",
+        magnitude: 14,
+        delayed: true,
+      };
     }
     if (key === "right hyperphoria") {
       return {
@@ -215,16 +270,14 @@
       return { x: 0, y: 0 };
     }
 
-    // During cover, fellow eye takes fixation by recentring main offsets.
+    // Correct deviation relative to the target, not the target's gaze position.
     const baseX =
       (iris.manualOffset?.x || 0) +
       (iris.presetOffset?.x || 0) +
-      (iris.gazeOffset?.x || 0) +
       (iris.backgroundOffset?.x || 0);
     const baseY =
       (iris.manualOffset?.y || 0) +
       (iris.presetOffset?.y || 0) +
-      (iris.gazeOffset?.y || 0) +
       (iris.backgroundOffset?.y || 0);
 
     return { x: -baseX, y: -baseY };
@@ -251,13 +304,11 @@
         return { x: dx, y: 0 };
       }
       if (phoriaProfile.kind === "vertical") {
-        if (
-          phoriaProfile.affectedEye &&
-          phoriaProfile.affectedEye !== eyeType
-        ) {
-          return { x: 0, y: 0 };
-        }
-        const sign = phoriaProfile.mode === "hypo" ? 1 : -1;
+        // One relative vertical deviation: the fellow eye drifts oppositely
+        // when the affected eye takes fixation. This is not bilateral DVD.
+        const affectedSign = phoriaProfile.mode === "hypo" ? 1 : -1;
+        const sign =
+          eyeType === phoriaProfile.affectedEye ? affectedSign : -affectedSign;
         return { x: 0, y: sign * (phoriaProfile.magnitude * factor) };
       }
     }
@@ -301,6 +352,8 @@
     // Patient-facing mapping: DOM left eye = RE, DOM right eye = LE.
     reButton?.classList.toggle("is-active", coveredEye === "left");
     leButton?.classList.toggle("is-active", coveredEye === "right");
+    reButton?.setAttribute("aria-pressed", String(coveredEye === "left"));
+    leButton?.setAttribute("aria-pressed", String(coveredEye === "right"));
 
     if (fixationShiftTimer) {
       clearTimeout(fixationShiftTimer);
@@ -315,11 +368,16 @@
       // Delay fixation handover until occluder has settled over covered eye.
       fixationHandoverActive = false;
       const expectedCoveredEye = coveredEye;
+      const expectedRevision = coverRevision;
       fixationHandoverTimer = setTimeout(() => {
         const currentCoveredEye = String(
           AppStateRef.state.coverEye || "none",
         ).toLowerCase();
-        if (currentCoveredEye !== expectedCoveredEye) return;
+        if (
+          currentCoveredEye !== expectedCoveredEye ||
+          coverRevision !== expectedRevision
+        )
+          return;
 
         const fellowEye = document.querySelector(
           `.eye[data-eye="${expectedCoveredEye === "left" ? "right" : "left"}"]`,
@@ -330,8 +388,33 @@
 
         // Apply fixation recapture on next frame so slower CSS transition is honoured.
         requestAnimationFrame(() => {
+          if (
+            AppStateRef.state.coverEye !== expectedCoveredEye ||
+            coverRevision !== expectedRevision
+          )
+            return;
           fixationHandoverActive = true;
           refreshAllIrisTransforms(updateIrisTransform);
+          const fellowIris = fellowEye?.querySelector(".iris");
+          const movementMagnitude = Math.hypot(
+            Number(fellowIris?.manualOffset?.x || 0) +
+              Number(fellowIris?.presetOffset?.x || 0),
+            Number(fellowIris?.manualOffset?.y || 0) +
+              Number(fellowIris?.presetOffset?.y || 0),
+          );
+          const phoriaProfile = getPhoriaProfile(
+            AppStateRef.state.activePresetKey || "",
+          );
+          if (!phoriaProfile) {
+            const label = patientEyeLabel(
+              expectedCoveredEye === "left" ? "right" : "left",
+            );
+            setCoverObservation(
+              movementMagnitude > 3
+                ? `${coverPhase}: ${label} moved to take fixation.`
+                : `${coverPhase}: no refixation movement in ${label}.`,
+            );
+          }
           OutputWriterRef.updateAllOutputs();
         });
 
@@ -360,6 +443,7 @@
   }
 
   function applyCoverState(eyeType, updateIrisTransform, options = {}) {
+    coverRevision += 1;
     syncCoverCountersWithPreset();
     maybeResetDecompFromRest();
     const value = String(eyeType || "none").toLowerCase();
@@ -368,6 +452,24 @@
       value === "left" || value === "right" ? value : "none";
     AppStateRef.state.coverEye = nextCoveredEye;
     if (nextCoveredEye !== previous) {
+      coverPhase =
+        previous !== "none" && nextCoveredEye !== "none"
+          ? "Alternate cover"
+          : "Cover-uncover";
+      if (previous === "none" && nextCoveredEye !== "none") {
+        setCoverObservation(
+          `Cover-uncover: observe ${patientEyeLabel(fellowEyeType(nextCoveredEye))} for refixation.`,
+        );
+      } else if (previous !== "none" && nextCoveredEye === "none") {
+        setCoverObservation(
+          "Uncover: observe alignment as binocular fixation returns.",
+          { holdMs: 4500 },
+        );
+      } else if (previous !== "none" && nextCoveredEye !== "none") {
+        setCoverObservation(
+          `Alternate cover: observe ${patientEyeLabel(previous)} as fixation transfers.`,
+        );
+      }
       lastCoverActivityAt = performance.now();
       if (nextCoveredEye === "left" || nextCoveredEye === "right") {
         coverCountByEye[nextCoveredEye] =
@@ -429,6 +531,13 @@
           }, PHORIA_BREAK_MS);
         }
         refreshCoverOffsets(updateIrisTransform);
+        const coverOffset = computeCoverOffset(targetCoveredEye);
+        const drift = describeCoverOffset(targetCoveredEye, coverOffset);
+        setCoverObservation(
+          drift
+            ? `Under cover: ${patientEyeLabel(targetCoveredEye)} drifted ${drift}. Uncover to observe recovery.`
+            : `Under cover: ${patientEyeLabel(targetCoveredEye)} remained aligned.`,
+        );
         OutputWriterRef.updateAllOutputs();
         phoriaBreakTimer = null;
       }, PHORIA_BREAK_DELAY_MS);
@@ -447,6 +556,8 @@
     }
     if (!options.silent) {
       OutputWriterRef.updateAllOutputs();
+    } else if (nextCoveredEye === "none") {
+      setCoverObservation("");
     }
   }
 
@@ -470,5 +581,6 @@
     refreshCoverOffsets,
     applyCoverState,
     toggleCover,
+    clearCoverObservation,
   };
 })(typeof globalThis !== "undefined" ? globalThis : window);

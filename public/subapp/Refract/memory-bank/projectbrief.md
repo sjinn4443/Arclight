@@ -87,3 +87,7 @@ Maintain a fast, static refraction support tool that helps clinicians estimate a
 - Ophthalmic clinicians and trainees
 - Arclight collaborators
 - Future maintainers of the Refract codebase
+
+## MCQ quality boundary — 26 July 2026
+
+The teaching bank should assess refraction knowledge rather than knowledge of app controls. Question review and interface improvements must not alter the prescription calculation, clinical thresholds or simulator behaviour.

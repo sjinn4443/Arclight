@@ -32,3 +32,11 @@ The intended page size for design review is 360 x 740.
 - Corneal reflex and cataract behaviour should follow Swollen Discs.
 - Background patient movement should follow Swollen Discs, including the irregular jerky motion.
 - Artwork scale should not be corrected in code; image artwork quality and framing is a source-asset issue.
+
+# v1.1 fleet upgrade (23 July 2026)
+
+Morph remains a teaching-only fundus-view simulator. The upgrade adds keyboard focus containment, a deliberate full-session reset, a local-only installable offline shell and proportional automated checks. It does not change the inline canvas engine, clinical teaching content, control order, image assets or established white app bar, black title and cartoon accent.
+
+## MCQ exclusion constraint — 26 July 2026
+
+Morph is not a referral or decision app. Preserve its simulator workflow and do not add quiz progression without a separately approved educational design and clinically reviewed bank. The existing Cup rewards exploration of every condition rather than test performance.

@@ -42,7 +42,7 @@ Create an interactive educational tool that helps learners recognize and differe
 - Adaptive retina image assets for mobile vs larger screens, while preserving the same UI/interaction layout.
 - Mobile-optimised cataract rendering path that preserves realism while reducing redraw cost.
 - Desktop-only phone-size preview toggle for realism checks on laptop.
-- MCQ module with `Primary/Intermediate/Advanced` tiers, tier-specific pools/timers/pass criteria.
+- Untimed MCQ module with `Primary/Intermediate/Advanced` tiers, tier-specific pools, rationales and pass criteria.
 - Timed recognition module with `Primary/Intermediate/Advanced` tiers and round-based scoring.
 - Timed scoring safeguards that prevent impossible combinations (`Small 4deg` + dense cataract) in core timed tests.
 - Timed anti-cheat behavior that avoids blocking dialogs and keeps countdown flow continuous.
@@ -79,3 +79,11 @@ Create an interactive educational tool that helps learners recognize and differe
 - Medical educators and ophthalmology trainers.
 - Students and clinicians learning disc assessment.
 - Arclight Project collaborators.
+
+# v1.1 fleet upgrade (23 July 2026)
+
+Swollen Discs remains an adaptive optic-disc teaching app with normal, suspicious and swollen comparison states, tiered MCQs, timed practice, exports and local cup achievement. The fleet pass adds a deliberate training-session reset, a local installable offline shell, improved drawer focus behaviour and constrained browser evidence without changing the teaching logic, catalogue, viewer mathematics, images, exports, workflow or stable IDs. The normal selection is a teaching baseline, not a patient assessment.
+
+## MCQ quality scope — 26 July 2026
+
+The MCQs teach Modified Frisén features and their limitations. Primary covers recognition, Intermediate covers discriminating features and pitfalls and Advanced covers exact grading distinctions. Timing remains in the separate image-recognition mode. Scale-source review does not approve the app's referral wording, images or three-state simulator mapping.

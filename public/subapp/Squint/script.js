@@ -28,10 +28,12 @@ function init() {
     iris.presetOffset = { x: 0, y: 0 };
     iris.gazeOffset = { x: 0, y: 0 };
     iris.liveGazeOffset = { x: 0, y: 0 };
+    iris.nearOffset = { x: 0, y: 0 };
     iris.coverOffset = { x: 0, y: 0 };
     iris.microOffset = { x: 0, y: 0 };
     iris.backgroundOffset = { x: 0, y: 0 };
     iris.nystagmusOffset = { x: 0, y: 0 };
+    iris.conditionOffset = { x: 0, y: 0 };
     iris.isDragging = false;
     iris.conditionApplied = false;
     EyeControllerRef.initDraggable(iris);

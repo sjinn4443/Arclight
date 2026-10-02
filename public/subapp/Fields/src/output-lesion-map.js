@@ -10,7 +10,8 @@
     }
     // If it's binocular total loss
     if (cond.includes("Binocular Blindness")) {
-      const bilateralBase = "Likely bilateral severe pre-chiasmal disease.";
+      const bilateralBase =
+        "Bilateral severe field loss: retinal, optic nerve or cortical cause.";
       return applyBilateralRapdConsistencyNote(bilateralBase, rapdState);
     }
     if (cond.includes("Monocular Blind Eye")) {
@@ -63,6 +64,12 @@
       return applyBilateralRapdConsistencyNote(bilateralBase, rapdState);
     }
     // -- Insert these for altitudinal patterns --
+    if (
+      cond.includes("Superior Altitudinal") &&
+      cond.includes("Inferior Altitudinal")
+    ) {
+      return "Opposite altitudinal defects: inferior retina/optic nerve fibres for upper field loss; superior fibres for lower field loss.";
+    }
     if (cond.includes("Superior Altitudinal")) {
       // Superior field lost => lesion typically in the inferior retina / inferior nerve supply
       return "Likely optic nerve/retinal perfusion defect of the inferior half.";
@@ -83,7 +90,7 @@
         return "Likely peripheral retinal or advanced optic nerve disease.";
       } else {
         // Unilateral
-        return "Likely advanced optic nerve disease.";
+        return "Peripheral field constriction: retinal or optic nerve disease, including glaucoma.";
       }
     }
     if (cond.includes("Bitemporal Hemianopia")) {

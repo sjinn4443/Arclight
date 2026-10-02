@@ -3,7 +3,7 @@ export const DEFAULT_DISC_SIZE = "Medium";
 export const IOP_ROW_MAP = {
   gte30: 1,
   "25-29": 2,
-  "20-24": 3,
+  "21-24": 3,
   lte20: 4,
 };
 
@@ -23,19 +23,19 @@ export const VISION_POINTS = {
 
 export const PALPATION_TO_IOP_MAP = {
   normal: {
-    iopBand: "20-24",
+    iopBand: "21-24",
     points: 1,
-    note: "Palpation normal: provisional IOP <=24 (scored as 20-24)",
+    note: "Palpation normal: provisional IOP ≤24 (conservatively scored as 21-24)",
   },
   firm: {
     iopBand: "gte30",
     points: 3,
-    note: "Palpation firm: provisional IOP >=30",
+    note: "Palpation firm: provisional IOP ≥30",
   },
   rock: {
     iopBand: "gte30",
     points: 3,
-    note: "Palpation rock-hard: provisional IOP >=30",
+    note: "Palpation rock-hard: provisional IOP ≥30",
   },
 };
 
@@ -64,7 +64,7 @@ function formatPointValue(value) {
 }
 
 const palpationSummary = [
-  `Normal +${formatPointValue(PALPATION_TO_IOP_MAP.normal.points)} (treated as 20-24)`,
+  `Normal +${formatPointValue(PALPATION_TO_IOP_MAP.normal.points)} (treated as 21-24)`,
   `Firm +${formatPointValue(PALPATION_TO_IOP_MAP.firm.points)}`,
   `Rock +${formatPointValue(PALPATION_TO_IOP_MAP.rock.points)}`,
 ].join(", ");
@@ -75,15 +75,15 @@ const visionSummary = Object.entries(VISION_POINTS)
   .join(", ");
 
 export const INFO_LOGIC_ITEMS = [
-  "Main grid needs pressure + C/D; exception: Rock palp triggers emergency warning even without C/D.",
-  "Pressure points: <=20 +0, 20-24 +1, 25-29 +2, >=30 +3.",
+  "Grid needs pressure + C/D. Concerning findings still give advice if the grid is incomplete.",
+  "Pressure points: ≤20 +0, 21-24 +1, 25-29 +2, ≥30 +3.",
   `Without tonometer, palp substitutes pressure: ${palpationSummary}.`,
   `Add-ons: Thin rim +1, Susp fields +1, Susp pupils +0.5, VA up to +1 (${visionSummary}), each risk factor +${formatPointValue(RISK_FACTOR_POINT)}.`,
   `If add-ons (not pressure/disc size) total >=${formatPointValue(TOGGLE_ROW_SHIFT_THRESHOLD)}, one IOP row shifts up.`,
-  "Disc size: Small +2 and right-shift from low C/D bands; Large -2 and left-shift. Measured IOP overrides palpation.",
+  "Disc size: Small +2 and right-shift from low C/D bands; Large -2 and left-shift except C/D 0.9-1. Measured IOP overrides palpation.",
 ];
 
-export const INFO_LOGIC_VERSION = "v1 - 18/5/2026";
+export const INFO_LOGIC_VERSION = "v1 · 30/9/2026";
 
 export const GRID_CELL_COLOURS = [
   ["orange", "red", "red", "red"],
@@ -106,11 +106,11 @@ export const URGENCY_BY_COLOUR = {
     textColour: "green",
   },
   darkgrey: {
-    message: "END-STAGE: Check other eye",
+    message: "END-STAGE: Escalate affected eye and assess fellow eye",
     textColour: "black",
   },
   white: {
-    message: "NORMAL: Routine check-up only",
+    message: "LOW GRID CONCERN: Routine check-up",
     textColour: "black",
   },
 };

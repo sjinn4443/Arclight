@@ -5,6 +5,24 @@
 (function attachOutputWriter(globalObj) {
   const AppStateRef = globalObj.AppState;
 
+  function getDiagnosticOffset(iris) {
+    if (!iris) return { x: 0, y: 0 };
+
+    // The gaze trackpad examines motility. Its conjugate gazeOffset must not
+    // become a primary-position squint finding. Manual drag, presets and the
+    // established cover-test displacement remain part of diagnostic output.
+    return {
+      x:
+        (iris.manualOffset?.x || 0) +
+        (iris.presetOffset?.x || 0) +
+        (iris.coverOffset?.x || 0),
+      y:
+        (iris.manualOffset?.y || 0) +
+        (iris.presetOffset?.y || 0) +
+        (iris.coverOffset?.y || 0),
+    };
+  }
+
   function updateEyeOutput(eye, dx, dy) {
     const neutralThreshold = 3;
     const eyeType = eye.getAttribute("data-eye");
@@ -94,6 +112,9 @@
     if (lightSide === eyeType) {
       outputs.push(`LIGHT:${eyeType === "left" ? "RE" : "LE"}`);
     }
+    if (AppStateRef.state.nearActive) {
+      outputs.push("NEAR");
+    }
 
     const rapd = Number(AppStateRef.state.rapdValue || 0);
     // Patient-facing mapping:
@@ -164,17 +185,8 @@
     const iris = eye?.querySelector(".iris");
     if (!eye || !iris) return;
 
-    const dx =
-      (iris.manualOffset?.x || 0) +
-      (iris.presetOffset?.x || 0) +
-      (iris.gazeOffset?.x || 0) +
-      (iris.coverOffset?.x || 0);
-    const dy =
-      (iris.manualOffset?.y || 0) +
-      (iris.presetOffset?.y || 0) +
-      (iris.gazeOffset?.y || 0) +
-      (iris.coverOffset?.y || 0);
-    updateEyeOutput(eye, dx, dy);
+    const diagnosticOffset = getDiagnosticOffset(iris);
+    updateEyeOutput(eye, diagnosticOffset.x, diagnosticOffset.y);
   }
 
   function updateAllOutputs() {
@@ -183,6 +195,7 @@
   }
 
   globalObj.OutputWriter = {
+    getDiagnosticOffset,
     updateOutputForEye,
     updateAllOutputs,
   };

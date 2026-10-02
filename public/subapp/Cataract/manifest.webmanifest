@@ -1,0 +1,19 @@
+{
+  "name": "Cataract",
+  "short_name": "Cataract",
+  "description": "Compact cataract assessment and triage teaching support.",
+  "lang": "en-GB",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

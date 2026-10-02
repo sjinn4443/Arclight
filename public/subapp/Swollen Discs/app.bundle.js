@@ -1,811 +1,907 @@
 'use strict';
 (() => {
-  // questions.js
-  var questionBank = [
-    {
-      id: 'q01',
-      question: 'Which sign is commonly observed in a completely normal disc?',
-      options: {
-        a: 'Mild peripapillary halo that slightly obscures vessels',
-        b: 'Blurred nasal edge with mild haemorrhages in the nerve fibre layer',
-        c: 'Clearly visible physiological cup with sharp margins',
-        d: 'High disc elevation suggestive of optic disc drusen',
-        e: 'Prominent cotton wool spots near the disc margin'
+  var _i = Object.freeze({
+      'frisen-1982': Object.freeze({
+        title: 'Swelling of the optic nerve head: a staging scheme',
+        url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC491259/',
+        status: 'primary-source-reviewed'
+      }),
+      'modified-frisen-2010': Object.freeze({
+        title: 'Diagnosis and grading of papilledema using OCT versus the Modified Fris\xE9n Scale',
+        url: 'https://jamanetwork.com/journals/jamaophthalmology/fullarticle/425762',
+        status: 'primary-source-reviewed'
+      }),
+      'iihtt-reading-centre-2015': Object.freeze({
+        title: 'IIHTT Photographic Reading Center methods and baseline results',
+        url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4453296/',
+        status: 'primary-source-reviewed'
+      }),
+      'svp-icp-2019': Object.freeze({
+        title: 'Association of intracranial pressure and spontaneous retinal venous pulsation',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/31498376/',
+        status: 'primary-source-reviewed'
+      }),
+      'svp-frequency-2007': Object.freeze({
+        title: 'Frequency of spontaneous pulsations of the central retinal vein',
+        url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1857679/',
+        status: 'primary-source-reviewed'
+      }),
+      'swollen-discs-teaching-scope-v1': Object.freeze({
+        title: 'Swollen Discs teaching-state and documentation contract',
+        url: null,
+        status: 'app-aligned-pending-independent-clinical-review'
+      })
+    }),
+    Fi = [
+      {
+        id: 'q01',
+        question: 'Which finding best supports the Grade 0 comparison state?',
+        options: {
+          a: 'A circumferential grey halo',
+          b: 'A major vessel segment obscured at the rim',
+          c: 'No disc oedema or peripapillary halo',
+          d: 'Elevation of every disc border',
+          e: 'A vessel segment obscured on the disc'
+        },
+        correct: 'c',
+        explanation:
+          'Grade 0 means no papilloedema. Disc anatomy varies, so the absence of oedema is safer than requiring one cup shape.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q02',
-      question: 'A suspicious disc often shows:',
-      options: {
-        a: 'Completely clear margins and spontaneous venous pulsations',
-        b: 'Mild nasal blurring without major vessel obscuration',
-        c: 'Absolutely no rim blur or any signs of oedema',
-        d: 'Deep, well-demarcated physiological cup with no swelling',
-        e: 'Severe haemorrhages with total vessel obscuration'
+      {
+        id: 'q02',
+        question: 'Which finding should make a disc look suspicious for early swelling?',
+        options: {
+          a: 'A sharp temporal and nasal margin with no halo',
+          b: 'Subtle nasal blur or a C-shaped halo with a temporal gap',
+          c: 'Complete obscuration of every major vessel',
+          d: 'A deep cup with no rim change',
+          e: 'An isolated macular pigment change'
+        },
+        correct: 'b',
+        explanation:
+          'Minimal papilloedema begins with nasal margin change and a subtle C-shaped halo that spares the temporal side.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q03',
-      question: 'Which feature typically indicates definite swelling (Fris\xE9n Grade 3 or more)?',
-      options: {
-        a: 'Slight blur confined to one segment of the nasal rim only',
-        b: 'Totally sharp disc margins with normal colour and vessels',
-        c: 'At least partial obscuration of the major vessels crossing the margin',
-        d: 'A vertically tilted disc with normal neuroretinal rim',
-        e: 'A shallow but still visible physiological cup in all quadrants'
+      {
+        id: 'q03',
+        question: 'What is the defining Grade 1 pattern?',
+        options: {
+          a: 'A subtle C-shaped halo with a temporal gap',
+          b: 'A complete halo with all vessels obscured',
+          c: 'Total obscuration of a vessel on the disc',
+          d: 'Elevation of the whole nerve head including the cup',
+          e: 'A normal margin with a deep physiological cup'
+        },
+        correct: 'a',
+        explanation:
+          'Grade 1 is minimal papilloedema: a subtle C-shaped halo, disrupted nerve-fibre striations and a normal temporal margin.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q04',
-      question: 'What might you see in advanced papilloedema (Grade 4-5)?',
-      options: {
-        a: 'Edges largely crisp with subtle nasal elevation only',
-        b: "Severe disc elevation, possible Paton's lines and scattered haemorrhages",
-        c: 'A well-defined rim and normal colour despite slight tilt',
-        d: 'Minimal nerve fibre elevation but clear vessel pathways',
-        e: 'A shallow cup and normal ocular pressure readings'
+      {
+        id: 'q04',
+        question: 'Which feature best distinguishes Grade 2 from Grade 1?',
+        options: {
+          a: 'Haemorrhage becomes compulsory',
+          b: 'Every vessel becomes hidden',
+          c: 'The physiological cup becomes deeper',
+          d: 'The halo becomes circumferential',
+          e: 'The disc becomes pale'
+        },
+        correct: 'd',
+        explanation:
+          'At Grade 2 the halo closes around the full circumference. Major vessel obscuration is not a defining feature.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q05',
-      question: "Which disc appearance is most consistent with a 'normal' Fris\xE9n Grade 0?",
-      options: {
-        a: 'Diffuse blurred margins across all quadrants with a full halo',
-        b: 'Swelling of at least 1 dioptre nasally plus haemorrhages temporally',
-        c: 'Total obscuration of the lamina cribrosa with fluid exudates',
-        d: 'Sharp, well-defined boundary and a clearly visible physiological cup',
-        e: 'Extensive peripapillary haemorrhages around the disc'
+      {
+        id: 'q05',
+        question: 'What does the term papilloedema mean?',
+        options: {
+          a: 'Any blurred optic disc margin',
+          b: 'Any swollen optic disc from any cause',
+          c: 'A small physiological cup',
+          d: 'Optic disc pallor after visual loss',
+          e: 'Optic disc swelling caused by raised intracranial pressure'
+        },
+        correct: 'e',
+        explanation:
+          'Papilloedema is optic disc swelling caused by raised intracranial pressure. Other causes of disc oedema need a differential diagnosis.',
+        source: 'swollen-discs-teaching-scope-v1'
       },
-      correct: 'd'
-    },
-    {
-      id: 'q06',
-      question: 'What is an early indicator that a disc is suspicious (not fully swollen)?',
-      options: {
-        a: 'Large haemorrhages bridging the macula and disc margins',
-        b: 'Partial rim blur with no major obscuration of vessels',
-        c: 'Completely crisp disc margin with robust venous pulsations',
-        d: 'Marked circumferential swelling in all quadrants',
-        e: 'Full disc elevation with exudates in the peripapillary region'
+      {
+        id: 'q06',
+        question: 'At Grade 2, what should happen to the major vessels?',
+        options: {
+          a: 'All must be totally hidden',
+          b: 'One must disappear on the disc',
+          c: 'No major vessel should be totally obscured',
+          d: 'Only arteries should remain visible',
+          e: 'Only veins should remain visible'
+        },
+        correct: 'c',
+        explanation:
+          'Grade 2 has a circumferential halo and nasal elevation but no defining total obscuration of a major vessel.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q07',
-      question: 'Which finding strongly suggests definite disc swelling?',
-      options: {
-        a: 'Slight blurring only at the nasal pole but vessels remain distinct',
-        b: 'Fully obscured vessels as they cross the disc margin',
-        c: 'A large but normal physiological cup with sharp edges',
-        d: 'Disc pallor with no obvious oedema or haemorrhages',
-        e: 'No haemorrhages or exudates near the disc margin'
+      {
+        id: 'q07',
+        question: 'What is the safest interpretation of absent spontaneous venous pulsation?',
+        options: {
+          a: 'It proves severe papilloedema',
+          b: 'It raises concern but is not diagnostic by itself',
+          c: 'It proves that intracranial pressure is normal',
+          d: 'It fixes the Fris\xE9n grade at 2',
+          e: 'It excludes pseudopapilloedema'
+        },
+        correct: 'b',
+        explanation:
+          'Absent venous pulsation is associated with higher intracranial pressure but it can also be absent in healthy eyes.',
+        source: 'svp-icp-2019'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q08',
-      question: 'In normal discs, which vessels should remain clearly visible?',
-      options: {
-        a: 'All veins are hidden by mild halo, but arteries remain visible',
-        b: 'Only the nasal vessels can be identified \u2013 temporal side is generally obscured',
-        c: 'Major vessels crossing the disc margin without significant blurring',
-        d: 'No vessels cross the disc margin in normal eyes',
-        e: 'All vessels except the superior vein become indistinct'
+      {
+        id: 'q08',
+        question: 'If the disc margin cannot be seen clearly, what is the safest record?',
+        options: {
+          a: 'Grade 0 because swelling is unconfirmed',
+          b: 'Grade 5 because the vessels are hard to see',
+          c: 'Normal because the cup is uncertain',
+          d: 'Poor view or uncertain, then seek a better examination',
+          e: 'Papilloedema excluded'
+        },
+        correct: 'd',
+        explanation:
+          'Poor image quality must not be converted into a normal or swollen finding. Record the limitation and improve the view.',
+        source: 'swollen-discs-teaching-scope-v1'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q09',
-      question:
-        'Which Fris\xE9n grade usually indicates moderate papilloedema with some haemorrhages?',
-      options: {
-        a: 'Grade 0 (completely normal)',
-        b: 'Grade 1 (minimal nasal blur only)',
-        c: 'Grade 2 (partial halo or mild swelling)',
-        d: 'Grade 3 or higher',
-        e: 'Grade 5 only (most severe form)'
+      {
+        id: 'q09',
+        question: 'Which feature is most useful when separating Grade 1 from Grade 2?',
+        options: {
+          a: 'Whether the peripapillary halo has a temporal gap',
+          b: 'Whether the physiological cup is large',
+          c: 'Whether one small haemorrhage is present',
+          d: 'Whether the pupil is round',
+          e: 'Whether visual acuity is written in Snellen notation'
+        },
+        correct: 'a',
+        explanation:
+          'Grade 1 has a C-shaped halo with a temporal gap. At Grade 2 the halo becomes circumferential.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'd'
-    },
-    {
-      id: 'q10',
-      question: 'A suspicious disc might be described if:',
-      options: {
-        a: 'All vessels and disc margins are fully distinct with no haze',
-        b: 'Severe swelling in all quadrants plus large haemorrhages',
-        c: 'Minimal oedema, usually nasal, without major haemorrhages',
-        d: 'A near-complete halo with exudates partially obscuring vessels',
-        e: 'Disc drusen creating a pseudo-oedema that looks elevated'
+      {
+        id: 'q10',
+        question: 'What does a Fris\xE9n grade describe?',
+        options: {
+          a: 'The cause of raised intracranial pressure',
+          b: 'The patient\u2019s visual acuity',
+          c: 'The duration of symptoms',
+          d: 'The correct treatment',
+          e: 'The visible severity of papilloedema'
+        },
+        correct: 'e',
+        explanation:
+          'The scale describes visible papilloedema severity. It does not diagnose the cause, measure vision or choose treatment.',
+        source: 'frisen-1982'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q11',
-      question: 'One hallmark of a definitely swollen disc is:',
-      options: {
-        a: 'Sharp cup and healthy pinkish colour without any blur',
-        b: 'Full halo or definite rim swelling around most of the disc',
-        c: 'A tilt that gives the appearance of mild nasal elevation',
-        d: 'Zero dioptre difference between disc and retina on direct measurement',
-        e: 'Multiple spontaneous arterial pulsations near the rim'
+      {
+        id: 'q11',
+        question: 'Which feature defines Grade 3 on the Modified Fris\xE9n Scale?',
+        options: {
+          a: 'A segment of a major vessel is obscured as it leaves the disc',
+          b: 'Every major vessel is obscured on the disc',
+          c: 'A temporal gap remains in the halo',
+          d: 'The disc is normal apart from absent venous pulsation',
+          e: 'Haemorrhage is present without disc oedema'
+        },
+        correct: 'a',
+        explanation:
+          'Grade 3 adds obscuration of at least one major vessel segment as it leaves the disc, with elevation of all borders.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q12',
-      question: 'Which is least likely in a normal optic disc examination?',
-      options: {
-        a: 'Clear boundary between disc and retina when viewed directly',
-        b: 'Visible spontaneous venous pulsations in some eyes',
-        c: 'A crisp physiological cup with a healthy neuroretinal rim',
-        d: 'Significant obscuration of the nerve fibre layer by fluid',
-        e: 'Absence of haemorrhages in or around the disc'
+      {
+        id: 'q12',
+        question: 'Which feature defines Grade 4 rather than Grade 3?',
+        options: {
+          a: 'A C-shaped halo with a temporal gap',
+          b: 'A major vessel segment is totally obscured on the disc',
+          c: 'No major vessel is obscured',
+          d: 'A normal temporal margin',
+          e: 'An isolated flame haemorrhage'
+        },
+        correct: 'b',
+        explanation:
+          'Grade 4 includes total obscuration of a segment of a major vessel on the disc, not only as it leaves the disc.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'd'
-    },
-    {
-      id: 'q13',
-      question: 'An elevated disc with haemorrhages but no visible cup might indicate:',
-      options: {
-        a: 'A normal Grade 0 disc or physiological variant',
-        b: 'A suspicious disc with borderline swelling only',
-        c: 'Advanced papilloedema or a very swollen disc',
-        d: 'A hyperopic disc tilt without true swelling',
-        e: 'A normal variation found in many healthy individuals'
+      {
+        id: 'q13',
+        question: 'Which feature defines Grade 5 on the Modified Fris\xE9n Scale?',
+        options: {
+          a: 'One vessel is obscured at the nasal rim',
+          b: 'The halo first becomes circumferential',
+          c: 'All major vessels have obscured segments on and leaving the disc',
+          d: 'A physiological cup is clearly visible',
+          e: 'A single haemorrhage is present'
+        },
+        correct: 'c',
+        explanation:
+          'Grade 5 is severe papilloedema with obscuration of all major vessels on the disc and as they leave it.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q14',
-      question: 'Which description fits a suspicious disc rather than definitely swollen?',
-      options: {
-        a: 'Complete obscuration of vessels in all quadrants with haemorrhages',
-        b: 'Full disc halo and exudates around the margin',
-        c: 'Mild blur, often nasally, without extensive haemorrhages',
-        d: 'Diffuse swelling so severe that no margin is visible',
-        e: 'Deep physiological cup with absolutely no rim blur'
+      {
+        id: 'q14',
+        question: 'How should haemorrhages and exudates affect Fris\xE9n grading?',
+        options: {
+          a: 'Any haemorrhage makes the disc Grade 3',
+          b: 'Exudates make the disc Grade 4',
+          c: 'Both are required for Grade 5',
+          d: 'They may occur but do not define the grade',
+          e: 'Their absence proves Grade 0'
+        },
+        correct: 'd',
+        explanation:
+          'Fris\xE9n grade is defined mainly by halo, elevation and vessel obscuration. Haemorrhages and exudates can occur but are not grade thresholds.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q15',
-      question: 'Fris\xE9n Grade 2 is often associated with:',
-      options: {
-        a: 'Zero disc swelling with totally crisp edges and normal vasculature',
-        b: 'Massive haemorrhages overshadowing the entire optic nerve',
-        c: 'Minimal nasal blur or an incomplete halo around the disc margin',
-        d: 'Extensive swelling and obscured vessels across all quadrants',
-        e: 'Significantly deeper physiological cup than in Grade 0'
+      {
+        id: 'q15',
+        question: 'What is the safest interpretation of a poorly visible physiological cup?',
+        options: {
+          a: 'It proves Grade 5',
+          b: 'It proves raised intracranial pressure',
+          c: 'It proves the disc was previously normal',
+          d: 'It excludes pseudopapilloedema',
+          e: 'It can accompany swelling but is not diagnostic alone'
+        },
+        correct: 'e',
+        explanation:
+          'Cup filling can accompany more marked swelling, but cup size varies. Grade the defining disc and vessel features instead.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q16',
-      question: "When do we classify a disc as 'normal'?",
-      options: {
-        a: 'Edges are crisp, vessels remain clearly visible at the margin, and there is no oedema',
-        b: 'Minor blur only in one quadrant with scattered haemorrhages',
-        c: 'Partial halo around the entire disc boundary with fluid exudates',
-        d: 'Elevated disc by 2 dioptres nasally but no haemorrhages present',
-        e: 'Obscuration of vessels crossing the superior and inferior rims'
+      {
+        id: 'q16',
+        question: 'Which description best separates suspicious early change from Grade 3?',
+        options: {
+          a: 'Early change lacks the defining major-vessel obscuration of Grade 3',
+          b: 'Early change always has more haemorrhages',
+          c: 'Grade 3 has a normal temporal margin',
+          d: 'Grade 3 has no halo',
+          e: 'Early change always has a visible venous pulsation'
+        },
+        correct: 'a',
+        explanation:
+          'Grade 3 requires obscuration of a major vessel segment as it leaves the disc. Subtle early change does not meet that defining feature.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'a'
-    },
-    {
-      id: 'q17',
-      question: 'A definitely swollen disc (Grade 3\u20135) often includes:',
-      options: {
-        a: 'Only very slight nasal elevation, with no haemorrhages or exudates',
-        b: 'A full or nearly full halo and partially obscured vessels crossing the rim',
-        c: 'A large, distinct cup with absolutely no margin blur',
-        d: 'Complete absence of any disc swelling or vessel changes',
-        e: 'Minimal tilt or drusen giving a pseudo-swelling appearance'
+      {
+        id: 'q17',
+        question: 'Which is a recognised reason for a raised-looking disc without papilloedema?',
+        options: {
+          a: 'A normal blood pressure reading',
+          b: 'Optic disc drusen or a crowded disc',
+          c: 'A clear cornea',
+          d: 'A normal macula',
+          e: 'A round pupil'
+        },
+        correct: 'b',
+        explanation:
+          'Pseudopapilloedema from optic disc drusen or a crowded disc can mimic swelling. Appearance alone may not establish the cause.',
+        source: 'swollen-discs-teaching-scope-v1'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q18',
-      question: 'Which sign is NOT a common feature of a suspicious disc?',
-      options: {
-        a: 'Minor nasal blurring that does not extend temporally',
-        b: 'Mild or questionable swelling raising clinical concern',
-        c: 'Completely sharp margin with normal vessels throughout',
-        d: 'Lack of any large haemorrhages at this stage',
-        e: 'Partial halo suggesting borderline papilloedema'
+      {
+        id: 'q18',
+        question: 'Which statement about optic disc oedema is most accurate?',
+        options: {
+          a: 'Every oedematous disc is papilloedema',
+          b: 'Only bilateral discs can swell',
+          c: 'Papilloedema is one cause-specific form of optic disc oedema',
+          d: 'A normal visual acuity excludes disc swelling',
+          e: 'Disc oedema always causes a relative afferent pupil defect'
+        },
+        correct: 'c',
+        explanation:
+          'Optic disc oedema has several causes. The term papilloedema is reserved for swelling caused by raised intracranial pressure.',
+        source: 'swollen-discs-teaching-scope-v1'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q19',
-      question: 'Grade 4 papilloedema typically shows:',
-      options: {
-        a: 'Marked disc elevation with a near-complete halo and possible haemorrhages',
-        b: 'Crisp edges and a deep physiological cup in the centre',
-        c: 'No haemorrhages or exudates anywhere on the disc',
-        d: 'Mild tilt creating slight nasal blur only',
-        e: 'Barely elevated rim but normal overall disc colour'
+      {
+        id: 'q19',
+        question: 'What is an important limitation of Fris\xE9n grading?',
+        options: {
+          a: 'It cannot be used with photographs',
+          b: 'It has no ordered severity levels',
+          c: 'It requires haemorrhage at every grade',
+          d: 'Observers may disagree, especially by one grade',
+          e: 'It directly measures intracranial pressure'
+        },
+        correct: 'd',
+        explanation:
+          'In the IIHTT reading centre, exact agreement was imperfect although most assessments were within one grade.',
+        source: 'iihtt-reading-centre-2015'
       },
-      correct: 'a'
-    },
-    {
-      id: 'q20',
-      question: 'If a disc appears normal but has no spontaneous venous pulsations, it could be:',
-      options: {
-        a: 'Mild papilloedema that is always present in normal eyes',
-        b: 'Still a normal variant \u2013 some healthy eyes lack venous pulsations',
-        c: 'Definite papilloedema if the disc colour is also pale',
-        d: 'High-grade swelling completely blocking venous outflow',
-        e: 'An artefact from improper ophthalmoscopic technique'
+      {
+        id: 'q20',
+        question: 'What makes serial disc comparison most dependable?',
+        options: {
+          a: 'Changing camera and view each time',
+          b: 'Judging colour alone',
+          c: 'Using only the cup-to-disc ratio',
+          d: 'Ignoring the fellow eye',
+          e: 'Using comparable views and recording the defining features'
+        },
+        correct: 'e',
+        explanation:
+          'Standardised photographs and explicit feature recording reduce variation when severity is compared over time.',
+        source: 'iihtt-reading-centre-2015'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q21',
-      question: 'A normal disc rarely shows:',
-      options: {
-        a: 'A distinct edge around the physiological cup',
-        b: 'A clearly visible central cup with a pinkish neuroretinal rim',
-        c: 'No significant haemorrhages anywhere near the disc',
-        d: 'Major vessel obscuration at the rim, indicating fluid',
-        e: 'Minimal pallor that remains within normal limits'
+      {
+        id: 'q21',
+        question:
+          'A hazy photograph hides vessels both on and away from the disc. What is the best next step before grading?',
+        options: {
+          a: 'Improve the view and reassess the defining features',
+          b: 'Record Grade 5 because vessels are hard to see',
+          c: 'Record Grade 0 because no halo is clear',
+          d: 'Grade using disc colour alone',
+          e: 'Use the haemorrhage count instead'
+        },
+        correct: 'a',
+        explanation:
+          'Poor image quality can obscure vessels without oedema. Improve the view and record uncertainty rather than treating optical blur as swelling.',
+        source: 'swollen-discs-teaching-scope-v1'
       },
-      correct: 'd'
-    },
-    {
-      id: 'q22',
-      question: 'Which sign suggests borderline suspicious rather than fully swollen?',
-      options: {
-        a: 'A large haemorrhage bridging the temporal disc margin',
-        b: 'Obscured vessels in nearly all quadrants with massive exudates',
-        c: 'Faint or partial blur at the nasal boundary only, with normal macula',
-        d: 'A ring of exudates concealing the rim entirely',
-        e: 'Severe disc elevation so no clear cup is visible'
+      {
+        id: 'q22',
+        question:
+          'A disc has a circumferential halo and nasal elevation. All major vessels remain visible. Which finding would support progression to Grade 3?',
+        options: {
+          a: 'A brighter photographic exposure',
+          b: 'Obscuration of a major-vessel segment leaving the disc',
+          c: 'A single haemorrhage with unchanged vessels',
+          d: 'A change in pupil size',
+          e: 'A smaller visible cup without vessel obscuration'
+        },
+        correct: 'b',
+        explanation:
+          'The starting features fit Grade 2. Obscuration of a major-vessel segment leaving the disc is the defining additional feature of Grade 3.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q23',
-      question: 'Definite papilloedema with Fris\xE9n Grade 3 or more may exhibit:',
-      options: {
-        a: 'No difference from a normal disc, except mild tilt',
-        b: 'A fully visible lamina cribrosa and normal disc margins',
-        c: 'Multiple haemorrhages, exudates, or clearly obscured vessels',
-        d: 'A crisp boundary with a healthy, deep cup centrally',
-        e: 'A subtle halo only nasally, with no vascular changes'
+      {
+        id: 'q23',
+        question:
+          'Serial photographs differ in exposure and apparent grade by one step. What best supports a reliable comparison?',
+        options: {
+          a: 'Accept the higher grade without checking features',
+          b: 'Compare disc colour alone',
+          c: 'Obtain comparable views and document changes in defining features',
+          d: 'Assume any one-grade change proves deterioration',
+          e: 'Discard the earlier photograph'
+        },
+        correct: 'c',
+        explanation:
+          'Image quality and observer variation affect grading. Comparable views and recorded structural features strengthen interpretation of a small serial change.',
+        source: 'iihtt-reading-centre-2015'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q24',
-      question: 'Suspicious discs are sometimes confused with normal variants if:',
-      options: {
-        a: 'All edges are heavily blurred with large peripapillary haemorrhages',
-        b: 'Minimal nasal blur is subtle, and no haemorrhages are present',
-        c: 'Vessels appear almost completely obscured by dense exudates',
-        d: 'There is a staphyloma or high myopia giving the illusion of swelling',
-        e: 'Fris\xE9n scale findings exceed Grade 4 in some quadrants'
+      {
+        id: 'q24',
+        question:
+          'A crowded elevated disc resembles swelling, but the photograph does not establish its cause. Which interpretation is most appropriate?',
+        options: {
+          a: 'Raised intracranial pressure is confirmed',
+          b: 'The disc is normal because it is crowded',
+          c: 'Disc colour alone distinguishes the cause',
+          d: 'Pseudopapilloedema is possible, but further assessment is needed',
+          e: 'Fris\xE9n grading identifies the underlying cause'
+        },
+        correct: 'd',
+        explanation:
+          'Crowded discs or optic disc drusen can mimic swelling. A teaching photograph alone cannot confirm pseudopapilloedema or exclude true oedema.',
+        source: 'swollen-discs-teaching-scope-v1'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q25',
-      question: 'A definitely swollen disc often leads to:',
-      options: {
-        a: 'Improved visual acuity due to better vascular perfusion',
-        b: 'Partial or complete loss of the physiological cup contour',
-        c: 'A reduction in intracranial pressure for each eye individually',
-        d: 'Absolutely no change in the retina surrounding the disc',
-        e: 'Spontaneous venous pulsations becoming more prominent'
+      {
+        id: 'q25',
+        question: 'What separates Grade 5 from Grade 4 in the Modified Fris\xE9n Scale?',
+        options: {
+          a: 'The first appearance of a halo',
+          b: 'Nasal border elevation',
+          c: 'The first obscured vessel leaving the disc',
+          d: 'The presence of any haemorrhage',
+          e: 'Obscured segments of all major vessels on and leaving the disc'
+        },
+        correct: 'e',
+        explanation:
+          'Grade 5 requires obscuration of all major vessels on the disc and as they leave it.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'b'
-    },
-    {
-      id: 'q26',
-      question: 'Which change is characteristic of Grade 1 papilloedema?',
-      options: {
-        a: 'Slight nasal blur without total vessel obscuration',
-        b: 'Extensive swelling in all quadrants plus haemorrhages',
-        c: 'Multiple exudates near the disc margin in every quadrant',
-        d: 'Very sharp margins with a deep and obvious cup',
-        e: 'Marked pallor of the disc overshadowing any swelling'
+      {
+        id: 'q26',
+        question: 'Which observation favours Grade 3 over Grade 4?',
+        options: {
+          a: 'A vessel is obscured leaving the disc but remains visible on the disc',
+          b: 'All major vessels are obscured on the disc',
+          c: 'The halo still has a temporal gap',
+          d: 'No disc border is elevated',
+          e: 'There is no peripapillary halo'
+        },
+        correct: 'a',
+        explanation:
+          'Grade 3 obscures a vessel segment as it leaves the disc. Grade 4 extends defining obscuration onto the disc itself.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'a'
-    },
-    {
-      id: 'q27',
-      question: 'When describing normal discs, one should expect:',
-      options: {
-        a: 'Thick exudates on the rim blocking major vessels',
-        b: 'Moderate blurring of boundaries in at least one quadrant',
-        c: 'Clearly visible vessels crossing an undistorted margin',
-        d: 'Peripapillary flame haemorrhages overshadowing the cup',
-        e: 'A Fris\xE9n Grade 2 halo without haemorrhages'
+      {
+        id: 'q27',
+        question: 'Which conclusion cannot be made from the Fris\xE9n grade alone?',
+        options: {
+          a: 'Whether vessel obscuration is present',
+          b: 'The cause of raised intracranial pressure',
+          c: 'Whether a halo is circumferential',
+          d: 'Whether the whole nerve head is elevated',
+          e: 'Whether all major vessels are obscured'
+        },
+        correct: 'b',
+        explanation:
+          'The grade describes optic disc appearance. Identifying why intracranial pressure is raised requires clinical assessment and investigation.',
+        source: 'frisen-1982'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q28',
-      question: 'Suspicious disc changes can progress if:',
-      options: {
-        a: 'Intracranial pressure remains elevated and untreated',
-        b: 'They were entirely normal variants in the first place',
-        c: 'The disc is already fully swollen and cannot progress further',
-        d: 'Fris\xE9n scale spontaneously reverts to Grade 0',
-        e: 'Mild venous pulsations become more pronounced'
+      {
+        id: 'q28',
+        question: 'Why should a one-grade change be interpreted cautiously?',
+        options: {
+          a: 'The scale is unordered',
+          b: 'The scale uses visual acuity only',
+          c: 'Observer grading can vary by about one grade',
+          d: 'Grade 0 and Grade 5 are identical',
+          e: 'Photographs cannot be graded'
+        },
+        correct: 'c',
+        explanation:
+          'Photographic grading is useful but observer variation is real. Comparable images and recorded features strengthen serial interpretation.',
+        source: 'iihtt-reading-centre-2015'
       },
-      correct: 'a'
-    },
-    {
-      id: 'q29',
-      question: 'Which statement accurately describes definite papilloedema?',
-      options: {
-        a: 'No overshadowing of any part of the disc or vessels at all',
-        b: 'Minimal or questionable rim blur exclusively in the nasal quadrant',
-        c: 'Significant oedema with or without haemorrhages, typically Grade \u22653',
-        d: 'A normal ocular pressure with crisp, unwavering disc margins',
-        e: 'A faint halo that spares the vessels crossing the temporal side'
+      {
+        id: 'q29',
+        question: 'Can severe papilloedema be present without haemorrhages?',
+        options: {
+          a: 'No, haemorrhage defines every severe grade',
+          b: 'No, Grade 4 requires exudates',
+          c: 'Only when venous pulsation is present',
+          d: 'Yes, vessel obscuration and elevation define the grade',
+          e: 'Only in a Grade 0 disc'
+        },
+        correct: 'd',
+        explanation:
+          'Haemorrhages may accompany papilloedema but are not required. Vessel obscuration, halo and elevation determine the Modified Fris\xE9n grade.',
+        source: 'modified-frisen-2010'
       },
-      correct: 'c'
-    },
-    {
-      id: 'q30',
-      question: 'A normal disc always shows:',
-      options: {
-        a: 'Severe disc elevation if the cup is shallow',
-        b: 'Multiple haemorrhages near the macula or rim',
-        c: 'Cotton wool spots in at least one quadrant',
-        d: 'A dense peripapillary halo completely hiding vessels',
-        e: 'A crisp boundary with no fluid obscuration'
-      },
-      correct: 'e'
-    }
-  ];
-  var questions_default = questionBank;
-
-  // mcq-engine.mjs
-  var DEFAULT_PASS_RATIO = 0.7;
-  function shuffleArray(items, randomFn = Math.random) {
-    const shuffled = [...items];
-    for (let i = shuffled.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(randomFn() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }
-  function pickTierOptions(optionEntries, correctKey, optionCount, randomFn) {
-    if (!Number.isInteger(optionCount) || optionCount <= 0 || optionCount >= optionEntries.length) {
-      return shuffleArray(optionEntries, randomFn);
-    }
-    const correctEntry = optionEntries.find(([optionKey]) => optionKey === correctKey);
-    if (!correctEntry) {
-      return shuffleArray(optionEntries, randomFn).slice(0, optionCount);
-    }
-    const distractors = optionEntries.filter(([optionKey]) => optionKey !== correctKey);
-    const selectedDistractors = shuffleArray(distractors, randomFn).slice(
-      0,
-      Math.max(0, optionCount - 1)
-    );
-    return shuffleArray([correctEntry, ...selectedDistractors], randomFn);
-  }
-  function buildMcqTest(
-    questionBank2,
-    questionCount = 7,
-    randomFn = Math.random,
-    optionCount = null
-  ) {
-    if (!Array.isArray(questionBank2) || questionBank2.length === 0) {
-      return [];
-    }
-    const remainingQuestions = [...questionBank2];
-    const totalQuestions = Math.max(0, Math.min(questionCount, remainingQuestions.length));
-    const hasOptionCount = optionCount !== null && optionCount !== void 0;
-    const normalizedOptionCount = hasOptionCount
-      ? Number.isInteger(optionCount)
-        ? Math.max(2, optionCount)
-        : Number.isFinite(Number(optionCount))
-          ? Math.max(2, Math.floor(Number(optionCount)))
-          : null
-      : null;
-    const pickedQuestions = [];
-    for (let i = 0; i < totalQuestions; i += 1) {
-      const randomIndex = Math.floor(randomFn() * remainingQuestions.length);
-      pickedQuestions.push(remainingQuestions.splice(randomIndex, 1)[0]);
-    }
-    return pickedQuestions.map((sourceQuestion, questionIndex) => {
-      const optionEntries = Object.entries(sourceQuestion.options || {});
-      const shuffledOptionEntries = pickTierOptions(
-        optionEntries,
-        sourceQuestion.correct,
-        normalizedOptionCount,
-        randomFn
-      );
-      const choices = shuffledOptionEntries.map(([sourceKey, text], optionIndex) => {
-        return {
-          id: `q${questionIndex}o${optionIndex}${sourceKey}`,
-          text
-        };
-      });
-      const correctChoice = shuffledOptionEntries.find(([sourceKey]) => {
-        return sourceKey === sourceQuestion.correct;
-      });
-      const correctChoiceIndex = correctChoice
-        ? shuffledOptionEntries.findIndex(([sourceKey]) => sourceKey === sourceQuestion.correct)
-        : -1;
-      return {
-        id: `q${questionIndex}`,
-        prompt: sourceQuestion.question,
-        choices,
-        correctChoiceId:
-          correctChoice && correctChoiceIndex >= 0 ? choices[correctChoiceIndex].id : null
-      };
-    });
-  }
-  function evaluateMcqSubmission(testQuestions, selectedChoiceIds, passRatio = DEFAULT_PASS_RATIO) {
-    const questions = Array.isArray(testQuestions) ? testQuestions : [];
-    const selected = Array.isArray(selectedChoiceIds) ? selectedChoiceIds : [];
-    let score = 0;
-    const details = questions.map((question, index) => {
-      const selectedChoiceId = selected[index] || null;
-      const selectedChoice =
-        question.choices.find((choice) => choice.id === selectedChoiceId) || null;
-      const correctChoice =
-        question.choices.find((choice) => choice.id === question.correctChoiceId) || null;
-      const isCorrect = selectedChoiceId !== null && selectedChoiceId === question.correctChoiceId;
-      if (isCorrect) {
-        score += 1;
+      {
+        id: 'q30',
+        question:
+          'If visible features do not fit one grade confidently, what is the safest approach?',
+        options: {
+          a: 'Choose Grade 0 automatically',
+          b: 'Choose the highest grade without explanation',
+          c: 'Ignore vessel visibility',
+          d: 'Use haemorrhage count as the grade',
+          e: 'Record the features, the uncertainty and seek review'
+        },
+        correct: 'e',
+        explanation:
+          'The app is a teaching aid. Uncertainty should remain visible rather than being converted into false certainty.',
+        source: 'swollen-discs-teaching-scope-v1'
       }
+    ].map((e) =>
+      Object.freeze({
+        ...e,
+        legacyId: e.id,
+        id: `swollen-discs-${e.id}`,
+        clinicalSignOff: 'pending-independent-review',
+        reviewStatus: _i[e.source].status
+      })
+    ),
+    Bt = Object.freeze(Fi);
+  function lt(e, t = Math.random) {
+    let r = [...e];
+    for (let a = r.length - 1; a > 0; a -= 1) {
+      let l = Math.floor(t() * (a + 1));
+      [r[a], r[l]] = [r[l], r[a]];
+    }
+    return r;
+  }
+  function $i(e, t, r, a) {
+    if (!Number.isInteger(r) || r <= 0 || r >= e.length) return lt(e, a);
+    let l = e.find(([b]) => b === t);
+    if (!l) return lt(e, a).slice(0, r);
+    let m = e.filter(([b]) => b !== t),
+      f = lt(m, a).slice(0, Math.max(0, r - 1));
+    return lt([l, ...f], a);
+  }
+  function jt(e, t = 7, r = Math.random, a = null) {
+    if (!Array.isArray(e) || e.length === 0) return [];
+    let l = [...e],
+      m = Math.max(0, Math.min(t, l.length)),
+      b =
+        a != null
+          ? Number.isInteger(a)
+            ? Math.max(2, a)
+            : Number.isFinite(Number(a))
+              ? Math.max(2, Math.floor(Number(a)))
+              : null
+          : null,
+      p = [];
+    for (let y = 0; y < m; y += 1) {
+      let I = Math.floor(r() * l.length);
+      p.push(l.splice(I, 1)[0]);
+    }
+    return p.map((y, I) => {
+      let N = Object.entries(y.options || {}),
+        R = $i(N, y.correct, b, r),
+        k = R.map(([q, Y], i) => ({ id: `q${I}o${i}${q}`, text: Y })),
+        T = R.find(([q]) => q === y.correct),
+        B = T ? R.findIndex(([q]) => q === y.correct) : -1;
       return {
-        index,
-        prompt: question.prompt,
-        selectedChoiceId,
-        selectedChoiceText: selectedChoice ? selectedChoice.text : null,
-        correctChoiceId: question.correctChoiceId,
-        correctChoiceText: correctChoice ? correctChoice.text : null,
-        isCorrect
+        id: y.id || `q${I}`,
+        prompt: y.question,
+        choices: k,
+        correctChoiceId: T && B >= 0 ? k[B].id : null,
+        explanation: y.explanation || '',
+        source: y.source || '',
+        reviewStatus: y.reviewStatus || ''
       };
     });
-    const maxScore = questions.length;
-    const passThreshold = maxScore === 0 ? 0 : Math.max(1, Math.ceil(maxScore * passRatio));
-    const passed = maxScore > 0 && score >= passThreshold;
+  }
+  function Gt(e, t, r = 0.7) {
+    let a = Array.isArray(e) ? e : [],
+      l = Array.isArray(t) ? t : [],
+      m = 0,
+      f = a.map((R, k) => {
+        let T = l[k] || null,
+          B = R.choices.find((i) => i.id === T) || null,
+          q = R.choices.find((i) => i.id === R.correctChoiceId) || null,
+          Y = T !== null && T === R.correctChoiceId;
+        return (
+          Y && (m += 1),
+          {
+            index: k,
+            prompt: R.prompt,
+            selectedChoiceId: T,
+            selectedChoiceText: B ? B.text : null,
+            correctChoiceId: R.correctChoiceId,
+            correctChoiceText: q ? q.text : null,
+            isCorrect: Y,
+            explanation: R.explanation || '',
+            source: R.source || '',
+            reviewStatus: R.reviewStatus || ''
+          }
+        );
+      }),
+      b = a.length,
+      p = b === 0 ? 0 : Math.max(1, Math.ceil(b * r)),
+      y = f.filter((R) => R.selectedChoiceId === null).length,
+      I = b > 0 && y === 0,
+      N = I && m >= p;
     return {
-      score,
-      maxScore,
-      passThreshold,
-      passed,
-      details
+      score: m,
+      maxScore: b,
+      passThreshold: p,
+      unansweredCount: y,
+      isComplete: I,
+      passed: N,
+      details: f
     };
   }
-  function generatePassCode(length = 8, randomFn = Math.random) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i += 1) {
-      const randomIndex = Math.floor(randomFn() * chars.length);
-      result += chars.charAt(randomIndex);
+  function It(e = 8, t = Math.random) {
+    let r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+      a = '';
+    for (let l = 0; l < e; l += 1) {
+      let m = Math.floor(t() * r.length);
+      a += r.charAt(m);
     }
-    return result;
+    return a;
   }
-  function formatMcqResultText(result) {
-    if (!result) {
-      return '';
-    }
-    const lines = [];
-    const completedAt = result.completedAt || /* @__PURE__ */ new Date().toISOString();
-    const takenAtLocal = new Date(completedAt);
-    const takenAtLine = Number.isNaN(takenAtLocal.valueOf())
-      ? completedAt
-      : takenAtLocal.toLocaleString();
-    lines.push('Swollen Discs - MCQ Test Result');
-    lines.push(`Taken: ${takenAtLine}`);
-    lines.push(`Score: ${result.score}/${result.maxScore}`);
-    lines.push(`Result: ${result.passed ? 'PASS' : 'FAIL'}`);
-    lines.push(`Pass threshold: ${result.passThreshold}/${result.maxScore}`);
-    if (typeof result.tierName === 'string' && result.tierName.length > 0) {
-      lines.push(`Level: ${result.tierName}`);
-    }
-    if (result.timed) {
-      lines.push(`Timed: ${result.timedOut ? 'Yes (time expired)' : 'Yes'}`);
-    } else {
-      lines.push('Timed: No');
-    }
-    if (result.passCode) {
-      lines.push(`Code: ${result.passCode}`);
-    }
-    lines.push('');
-    lines.push('Question breakdown:');
-    result.details.forEach((detail) => {
-      const selectedText = detail.selectedChoiceText || 'No answer selected';
-      const correctText = detail.correctChoiceText || 'Unknown';
-      lines.push(`${detail.index + 1}. ${detail.prompt}`);
-      lines.push(`Your answer: ${selectedText}`);
-      lines.push(`Correct answer: ${correctText}`);
-      lines.push(`Status: ${detail.isCorrect ? 'Correct' : 'Incorrect'}`);
-      lines.push('');
-    });
-    return lines.join('\n').trimEnd();
+  function Wt(e) {
+    if (!e) return '';
+    let t = [],
+      r = e.completedAt || new Date().toISOString(),
+      a = new Date(r),
+      l = Number.isNaN(a.valueOf()) ? r : a.toLocaleString();
+    return (
+      t.push('Swollen Discs - MCQ Test Result'),
+      t.push(`Taken: ${l}`),
+      t.push(`Score: ${e.score}/${e.maxScore}`),
+      t.push(`Result: ${e.passed ? 'PASS' : 'FAIL'}`),
+      t.push(`Pass threshold: ${e.passThreshold}/${e.maxScore}`),
+      typeof e.tierName == 'string' && e.tierName.length > 0 && t.push(`Level: ${e.tierName}`),
+      e.timed ? t.push(`Timed: ${e.timedOut ? 'Yes (time expired)' : 'Yes'}`) : t.push('Timed: No'),
+      e.passCode && t.push(`Code: ${e.passCode}`),
+      t.push(''),
+      t.push('Question breakdown:'),
+      e.details.forEach((m) => {
+        let f = m.selectedChoiceText || 'No answer selected',
+          b = m.correctChoiceText || 'Unknown';
+        (t.push(`${m.index + 1}. ${m.prompt}`),
+          t.push(`Your answer: ${f}`),
+          t.push(`Correct answer: ${b}`),
+          t.push(`Status: ${m.isCorrect ? 'Correct' : 'Incorrect'}`),
+          m.explanation && t.push(`Why: ${m.explanation}`),
+          t.push(''));
+      }),
+      t
+        .join(
+          `
+`
+        )
+        .trimEnd()
+    );
   }
-
-  // app-constants.js
-  var IMAGE_ASSET_SETS = Object.freeze({
-    full: Object.freeze({
-      normal: 'assets/images/ret180.webp',
-      suspicious: 'assets/images/ret180_2.webp',
-      swollen: 'assets/images/ret180_4.webp'
+  var Ge = Object.freeze({
+      full: Object.freeze({
+        normal: 'assets/images/ret180.webp',
+        suspicious: 'assets/images/ret180_2.webp',
+        swollen: 'assets/images/ret180_4.webp'
+      }),
+      mobile: Object.freeze({
+        normal: 'assets/images/ret180_2048.webp',
+        suspicious: 'assets/images/ret180_2_2048.webp',
+        swollen: 'assets/images/ret180_4_2048.webp'
+      })
     }),
-    mobile: Object.freeze({
-      normal: 'assets/images/ret180_2048.webp',
-      suspicious: 'assets/images/ret180_2_2048.webp',
-      swollen: 'assets/images/ret180_4_2048.webp'
-    })
-  });
-  var DEFAULT_IMAGE_SRC = IMAGE_ASSET_SETS.full.normal;
-  var TIMED_IMAGES = [
-    { src: IMAGE_ASSET_SETS.full.normal, label: 'normal' },
-    { src: IMAGE_ASSET_SETS.full.suspicious, label: 'suspicious' },
-    { src: IMAGE_ASSET_SETS.full.swollen, label: 'swollen' }
-  ];
-  var TIMED_ROUNDS_PER_CATEGORY = 4;
-  var TIMED_SET_SIZE = 4;
-  var MCQ_TIER_CONFIGS = [
-    {
-      name: 'Primary',
-      className: 'primary-star',
-      questionCount: 4,
-      optionCount: 3,
-      passRatio: 0.5,
-      timeLimitSeconds: 0,
-      questionIds: ['q01', 'q02', 'q06', 'q08', 'q11', 'q16', 'q26', 'q30']
-    },
-    {
-      name: 'Intermediate',
-      className: 'intermediate-star',
-      questionCount: 5,
-      optionCount: 4,
-      passRatio: 0.6,
-      timeLimitSeconds: 110,
-      questionIds: ['q03', 'q05', 'q07', 'q10', 'q12', 'q14', 'q18', 'q22', 'q25', 'q27']
-    },
-    {
-      name: 'Advanced',
-      className: 'advanced-star',
-      questionCount: 7,
-      optionCount: 5,
-      passRatio: 0.7,
-      timeLimitSeconds: 80,
-      questionIds: [
-        'q04',
-        'q09',
-        'q13',
-        'q15',
-        'q17',
-        'q19',
-        'q20',
-        'q21',
-        'q23',
-        'q24',
-        'q28',
-        'q29'
+    Ut = Ge.full.normal,
+    Vt = [
+      { src: Ge.full.normal, label: 'normal' },
+      { src: Ge.full.suspicious, label: 'suspicious' },
+      { src: Ge.full.swollen, label: 'swollen' }
+    ],
+    Yt = 4,
+    Xt = 4,
+    zt = [
+      {
+        name: 'Primary',
+        className: 'primary-star',
+        questionCount: 4,
+        optionCount: 3,
+        passRatio: 0.75,
+        timeLimitSeconds: 0,
+        questionIds: ['q01', 'q02', 'q03', 'q04', 'q05', 'q06', 'q07', 'q08', 'q09', 'q10'].map(
+          (e) => `swollen-discs-${e}`
+        )
+      },
+      {
+        name: 'Intermediate',
+        className: 'intermediate-star',
+        questionCount: 5,
+        optionCount: 4,
+        passRatio: 0.8,
+        timeLimitSeconds: 0,
+        questionIds: ['q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20'].map(
+          (e) => `swollen-discs-${e}`
+        )
+      },
+      {
+        name: 'Advanced',
+        className: 'advanced-star',
+        questionCount: 7,
+        optionCount: 5,
+        passRatio: 0.8,
+        timeLimitSeconds: 0,
+        questionIds: ['q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30'].map(
+          (e) => `swollen-discs-${e}`
+        )
+      }
+    ],
+    Ht = [
+      { seconds: 8, isDilated: !0, cataractLevel: 0 },
+      { seconds: 6, isDilated: !1, cataractLevel: 0 },
+      { seconds: 5, isDilated: !1, cataractLevel: 1 }
+    ],
+    Jt = 4e3,
+    Qt = [
+      {
+        label: 'None',
+        blurPx: 0,
+        brightness: 1,
+        contrast: 1,
+        saturation: 1,
+        yellowTint: 0,
+        darkTint: 0,
+        hazeTint: 0
+      },
+      {
+        label: 'Slight',
+        blurPx: 0.45,
+        brightness: 0.92,
+        contrast: 0.95,
+        saturation: 0.9,
+        yellowTint: 0.05,
+        darkTint: 0.06,
+        hazeTint: 0.015
+      },
+      {
+        label: 'Medium',
+        blurPx: 1.65,
+        brightness: 0.7,
+        contrast: 0.76,
+        saturation: 0.58,
+        yellowTint: 0.2,
+        darkTint: 0.24,
+        hazeTint: 0.05
+      },
+      {
+        label: 'Dense',
+        blurPx: 3.2,
+        brightness: 0.56,
+        contrast: 0.66,
+        saturation: 0.46,
+        yellowTint: 0.34,
+        darkTint: 0.4,
+        hazeTint: 0.14
+      }
+    ],
+    Kt = [
+      [],
+      [
+        {
+          x: -0.34,
+          y: -0.2,
+          r: 0.2,
+          alpha: 0.13,
+          blur: 0.95,
+          coreAlpha: 0.05,
+          stretchX: 1.45,
+          stretchY: 0.8,
+          angle: -0.45
+        },
+        {
+          x: 0.4,
+          y: 0.22,
+          r: 0.16,
+          alpha: 0.11,
+          blur: 0.9,
+          coreAlpha: 0.04,
+          stretchX: 1.35,
+          stretchY: 0.82,
+          angle: 0.35
+        },
+        {
+          x: 0.06,
+          y: 0.34,
+          r: 0.13,
+          alpha: 0.09,
+          blur: 0.82,
+          coreAlpha: 0.03,
+          stretchX: 1.3,
+          stretchY: 0.9,
+          angle: -0.1
+        }
+      ],
+      [
+        {
+          x: -0.46,
+          y: -0.3,
+          r: 0.28,
+          alpha: 0.26,
+          blur: 1.2,
+          coreAlpha: 0.1,
+          stretchX: 1.75,
+          stretchY: 0.74,
+          angle: -0.62
+        },
+        {
+          x: 0.4,
+          y: -0.16,
+          r: 0.24,
+          alpha: 0.23,
+          blur: 1.12,
+          coreAlpha: 0.09,
+          stretchX: 1.6,
+          stretchY: 0.78,
+          angle: 0.52
+        },
+        {
+          x: 0.08,
+          y: 0.34,
+          r: 0.22,
+          alpha: 0.21,
+          blur: 1.08,
+          coreAlpha: 0.08,
+          stretchX: 1.55,
+          stretchY: 0.8,
+          angle: -0.22
+        },
+        {
+          x: -0.18,
+          y: 0.02,
+          r: 0.19,
+          alpha: 0.18,
+          blur: 1,
+          coreAlpha: 0.07,
+          stretchX: 1.5,
+          stretchY: 0.85,
+          angle: 0.12
+        },
+        {
+          x: 0.26,
+          y: 0.1,
+          r: 0.16,
+          alpha: 0.16,
+          blur: 0.94,
+          coreAlpha: 0.06,
+          stretchX: 1.4,
+          stretchY: 0.88,
+          angle: -0.35
+        }
+      ],
+      [
+        {
+          x: -0.5,
+          y: -0.34,
+          r: 0.34,
+          alpha: 0.42,
+          blur: 1.55,
+          coreAlpha: 0.18,
+          stretchX: 2,
+          stretchY: 0.66,
+          angle: -0.72
+        },
+        {
+          x: 0.42,
+          y: -0.22,
+          r: 0.31,
+          alpha: 0.39,
+          blur: 1.46,
+          coreAlpha: 0.17,
+          stretchX: 1.9,
+          stretchY: 0.68,
+          angle: 0.58
+        },
+        {
+          x: 0.14,
+          y: 0.4,
+          r: 0.29,
+          alpha: 0.37,
+          blur: 1.4,
+          coreAlpha: 0.16,
+          stretchX: 1.82,
+          stretchY: 0.7,
+          angle: -0.26
+        },
+        {
+          x: -0.1,
+          y: 0.04,
+          r: 0.27,
+          alpha: 0.34,
+          blur: 1.34,
+          coreAlpha: 0.15,
+          stretchX: 1.75,
+          stretchY: 0.74,
+          angle: 0.08
+        },
+        {
+          x: 0.32,
+          y: 0.18,
+          r: 0.24,
+          alpha: 0.31,
+          blur: 1.28,
+          coreAlpha: 0.14,
+          stretchX: 1.7,
+          stretchY: 0.78,
+          angle: -0.42
+        },
+        {
+          x: -0.3,
+          y: 0.24,
+          r: 0.21,
+          alpha: 0.28,
+          blur: 1.2,
+          coreAlpha: 0.12,
+          stretchX: 1.62,
+          stretchY: 0.82,
+          angle: 0.44
+        }
       ]
-    }
-  ];
-  var TIMED_ROUND_PROFILES = [
-    { seconds: 8, isDilated: true, cataractLevel: 0 },
-    { seconds: 6, isDilated: false, cataractLevel: 0 },
-    { seconds: 5, isDilated: false, cataractLevel: 1 }
-  ];
-  var SHIFT_INTERVAL = 4e3;
-  var CATARACT_PRESETS = [
-    {
-      label: 'None',
-      blurPx: 0,
-      brightness: 1,
-      contrast: 1,
-      saturation: 1,
-      yellowTint: 0,
-      darkTint: 0,
-      hazeTint: 0
-    },
-    {
-      label: 'Slight',
-      blurPx: 0.45,
-      brightness: 0.92,
-      contrast: 0.95,
-      saturation: 0.9,
-      yellowTint: 0.05,
-      darkTint: 0.06,
-      hazeTint: 0.015
-    },
-    {
-      label: 'Medium',
-      blurPx: 1.65,
-      brightness: 0.7,
-      contrast: 0.76,
-      saturation: 0.58,
-      yellowTint: 0.2,
-      darkTint: 0.24,
-      hazeTint: 0.05
-    },
-    {
-      label: 'Dense',
-      blurPx: 3.2,
-      brightness: 0.56,
-      contrast: 0.66,
-      saturation: 0.46,
-      yellowTint: 0.34,
-      darkTint: 0.4,
-      hazeTint: 0.14
-    }
-  ];
-  var CATARACT_OCCLUSION_SPOTS = [
-    [],
-    [
-      {
-        x: -0.34,
-        y: -0.2,
-        r: 0.2,
-        alpha: 0.13,
-        blur: 0.95,
-        coreAlpha: 0.05,
-        stretchX: 1.45,
-        stretchY: 0.8,
-        angle: -0.45
-      },
-      {
-        x: 0.4,
-        y: 0.22,
-        r: 0.16,
-        alpha: 0.11,
-        blur: 0.9,
-        coreAlpha: 0.04,
-        stretchX: 1.35,
-        stretchY: 0.82,
-        angle: 0.35
-      },
-      {
-        x: 0.06,
-        y: 0.34,
-        r: 0.13,
-        alpha: 0.09,
-        blur: 0.82,
-        coreAlpha: 0.03,
-        stretchX: 1.3,
-        stretchY: 0.9,
-        angle: -0.1
-      }
     ],
-    [
-      {
-        x: -0.46,
-        y: -0.3,
-        r: 0.28,
-        alpha: 0.26,
-        blur: 1.2,
-        coreAlpha: 0.1,
-        stretchX: 1.75,
-        stretchY: 0.74,
-        angle: -0.62
-      },
-      {
-        x: 0.4,
-        y: -0.16,
-        r: 0.24,
-        alpha: 0.23,
-        blur: 1.12,
-        coreAlpha: 0.09,
-        stretchX: 1.6,
-        stretchY: 0.78,
-        angle: 0.52
-      },
-      {
-        x: 0.08,
-        y: 0.34,
-        r: 0.22,
-        alpha: 0.21,
-        blur: 1.08,
-        coreAlpha: 0.08,
-        stretchX: 1.55,
-        stretchY: 0.8,
-        angle: -0.22
-      },
-      {
-        x: -0.18,
-        y: 0.02,
-        r: 0.19,
-        alpha: 0.18,
-        blur: 1,
-        coreAlpha: 0.07,
-        stretchX: 1.5,
-        stretchY: 0.85,
-        angle: 0.12
-      },
-      {
-        x: 0.26,
-        y: 0.1,
-        r: 0.16,
-        alpha: 0.16,
-        blur: 0.94,
-        coreAlpha: 0.06,
-        stretchX: 1.4,
-        stretchY: 0.88,
-        angle: -0.35
-      }
-    ],
-    [
-      {
-        x: -0.5,
-        y: -0.34,
-        r: 0.34,
-        alpha: 0.42,
-        blur: 1.55,
-        coreAlpha: 0.18,
-        stretchX: 2,
-        stretchY: 0.66,
-        angle: -0.72
-      },
-      {
-        x: 0.42,
-        y: -0.22,
-        r: 0.31,
-        alpha: 0.39,
-        blur: 1.46,
-        coreAlpha: 0.17,
-        stretchX: 1.9,
-        stretchY: 0.68,
-        angle: 0.58
-      },
-      {
-        x: 0.14,
-        y: 0.4,
-        r: 0.29,
-        alpha: 0.37,
-        blur: 1.4,
-        coreAlpha: 0.16,
-        stretchX: 1.82,
-        stretchY: 0.7,
-        angle: -0.26
-      },
-      {
-        x: -0.1,
-        y: 0.04,
-        r: 0.27,
-        alpha: 0.34,
-        blur: 1.34,
-        coreAlpha: 0.15,
-        stretchX: 1.75,
-        stretchY: 0.74,
-        angle: 0.08
-      },
-      {
-        x: 0.32,
-        y: 0.18,
-        r: 0.24,
-        alpha: 0.31,
-        blur: 1.28,
-        coreAlpha: 0.14,
-        stretchX: 1.7,
-        stretchY: 0.78,
-        angle: -0.42
-      },
-      {
-        x: -0.3,
-        y: 0.24,
-        r: 0.21,
-        alpha: 0.28,
-        blur: 1.2,
-        coreAlpha: 0.12,
-        stretchX: 1.62,
-        stretchY: 0.82,
-        angle: 0.44
-      }
-    ]
-  ];
-  var EXPLANATION_TEMPLATES = {
-    normal: `
+    Zt = {
+      normal: `
     <div class="interpretation-summary interpretation-summary--normal">
-      <span class="interpretation-kicker">Referral</span>
+      <span class="interpretation-kicker">Teaching example</span>
       <strong class="interpretation-referral text-green">No urgent referral</strong>
     </div>
     <p class="interpretation-detail">
@@ -816,9 +912,9 @@
       <span>Next: compare with suspicious and swollen</span>
     </div>
   `,
-    suspicious: `
+      suspicious: `
     <div class="interpretation-summary interpretation-summary--suspicious">
-      <span class="interpretation-kicker">Referral</span>
+      <span class="interpretation-kicker">Teaching example</span>
       <strong class="interpretation-referral text-orange">Same-day advice</strong>
     </div>
     <p class="interpretation-detail">
@@ -829,88 +925,61 @@
       <span>Next: seek urgent advice today</span>
     </div>
   `,
-    swollen: `
+      swollen: `
     <div class="interpretation-summary interpretation-summary--swollen">
-      <span class="interpretation-kicker">Referral</span>
+      <span class="interpretation-kicker">Teaching example</span>
       <strong class="interpretation-referral text-red">Emergency now</strong>
     </div>
     <p class="interpretation-detail">
-      Why: elevated disc with obscured major vessels or haemorrhages around the disc.
+      Why: disc elevation and vessel obscuration; haemorrhages may accompany swelling.
     </p>
     <div class="interpretation-meta">
       <span>Likely: definite disc swelling</span>
       <span>Next: arrange emergency review</span>
     </div>
   `
-  };
-
-  // image-assets.js
-  var IMAGE_SET_QUERY_PARAM = 'images';
-  var MOBILE_IMAGE_MAX_VIEWPORT_EDGE = 1100;
-  function resolveImageAssetSet({
-    imageAssetSets,
-    queryValue: queryValue2,
-    hasCoarsePointer: hasCoarsePointer2,
-    viewportEdge: viewportEdge2
-  }) {
-    const normalizedQueryValue =
-      typeof queryValue2 === 'string' ? queryValue2.trim().toLowerCase() : '';
-    if (normalizedQueryValue === 'full') {
-      return imageAssetSets.full;
-    }
-    if (normalizedQueryValue === 'mobile') {
-      return imageAssetSets.mobile;
-    }
-    const safeViewportEdge = Number.isFinite(Number(viewportEdge2)) ? Number(viewportEdge2) : 0;
-    const shouldUseMobileAssets =
-      Boolean(hasCoarsePointer2) || safeViewportEdge <= MOBILE_IMAGE_MAX_VIEWPORT_EDGE;
-    return shouldUseMobileAssets ? imageAssetSets.mobile : imageAssetSets.full;
+    };
+  var en = 'images';
+  function tn({ imageAssetSets: e, queryValue: t, hasCoarsePointer: r, viewportEdge: a }) {
+    let l = typeof t == 'string' ? t.trim().toLowerCase() : '';
+    if (l === 'full') return e.full;
+    if (l === 'mobile') return e.mobile;
+    let m = Number.isFinite(Number(a)) ? Number(a) : 0;
+    return !!r || m <= 1100 ? e.mobile : e.full;
   }
-  function buildTimedImagesFromSet(imageSet, fallbackTimedImages) {
-    if (!imageSet || typeof imageSet !== 'object') {
-      return fallbackTimedImages;
-    }
-    return [
-      { src: imageSet.normal || fallbackTimedImages[0].src, label: 'normal' },
-      { src: imageSet.suspicious || fallbackTimedImages[1].src, label: 'suspicious' },
-      { src: imageSet.swollen || fallbackTimedImages[2].src, label: 'swollen' }
-    ];
+  function nn(e, t) {
+    return !e || typeof e != 'object'
+      ? t
+      : [
+          { src: e.normal || t[0].src, label: 'normal' },
+          { src: e.suspicious || t[1].src, label: 'suspicious' },
+          { src: e.swollen || t[2].src, label: 'swollen' }
+        ];
   }
-  function applyConditionButtonImageSet(imageSet, conditionButtons2) {
-    if (!imageSet || typeof imageSet !== 'object') {
-      return;
-    }
-    conditionButtons2.forEach((button) => {
-      const condition = button.getAttribute('data-condition');
-      const nextSource = imageSet[condition];
-      if (typeof nextSource === 'string' && nextSource.length > 0) {
-        button.setAttribute('data-image', nextSource);
-      }
-    });
+  function on(e, t) {
+    !e ||
+      typeof e != 'object' ||
+      t.forEach((r) => {
+        let a = r.getAttribute('data-condition'),
+          l = e[a];
+        typeof l == 'string' && l.length > 0 && r.setAttribute('data-image', l);
+      });
   }
-
-  // app-state.js
-  function createAppState({ defaultImageSrc }) {
+  function rn({ defaultImageSrc: e }) {
     return {
-      ui: {
-        sideMenuOpen: false,
-        activeModal: null
-      },
+      ui: { sideMenuOpen: !1, activeModal: null },
       viewer: {
-        activeImageSrc: defaultImageSrc,
-        conditionImageSrc: defaultImageSrc,
+        activeImageSrc: e,
+        conditionImageSrc: e,
         activeCondition: 'normal',
-        isRightEye: true,
-        isDiscVisible: true,
+        isRightEye: !0,
+        isDiscVisible: !0,
         cataractLevel: 0,
-        shiftInProgress: false
+        shiftInProgress: !1
       },
-      mcq: {
-        selectedQuestions: [],
-        lastResult: null
-      },
+      mcq: { selectedQuestions: [], lastResult: null },
       timed: {
-        isActive: false,
+        isActive: !1,
         round: 0,
         score: 0,
         currentLabel: '',
@@ -919,1449 +988,1102 @@
       }
     };
   }
-
-  // state-machine.js
-  function createStateMachine(state) {
-    function setSideMenuOpen(isOpen) {
-      state.ui.sideMenuOpen = Boolean(isOpen);
-      return state.ui.sideMenuOpen;
+  function an(e) {
+    function t(y) {
+      return ((e.ui.sideMenuOpen = !!y), e.ui.sideMenuOpen);
     }
-    function setActiveModal(modalName) {
-      state.ui.activeModal = modalName || null;
+    function r(y) {
+      e.ui.activeModal = y || null;
     }
-    function beginMcqSession() {
-      if (state.timed.isActive) {
-        return false;
-      }
-      state.mcq.selectedQuestions = [];
-      state.mcq.lastResult = null;
-      return true;
+    function a() {
+      return e.timed.isActive
+        ? !1
+        : ((e.mcq.selectedQuestions = []), (e.mcq.lastResult = null), !0);
     }
-    function endMcqSession() {
-      state.mcq.selectedQuestions = [];
+    function l() {
+      e.mcq.selectedQuestions = [];
     }
-    function beginTimedSession() {
-      if (state.timed.isActive) {
-        return false;
-      }
-      state.timed.isActive = true;
-      state.timed.round = 0;
-      state.timed.score = 0;
-      state.timed.currentLabel = '';
-      return true;
+    function m() {
+      return e.timed.isActive
+        ? !1
+        : ((e.timed.isActive = !0),
+          (e.timed.round = 0),
+          (e.timed.score = 0),
+          (e.timed.currentLabel = ''),
+          !0);
     }
-    function endTimedSession() {
-      if (!state.timed.isActive) {
-        return false;
-      }
-      state.timed.isActive = false;
-      state.timed.currentLabel = '';
-      return true;
+    function f() {
+      return e.timed.isActive ? ((e.timed.isActive = !1), (e.timed.currentLabel = ''), !0) : !1;
     }
-    function setTimedCountdownTimer(timerId) {
-      state.timed.countdownTimer = timerId || null;
+    function b(y) {
+      e.timed.countdownTimer = y || null;
     }
-    function setTimedFeedbackTimer(timerId) {
-      state.timed.feedbackTimer = timerId || null;
+    function p(y) {
+      e.timed.feedbackTimer = y || null;
     }
     return {
-      setSideMenuOpen,
-      setActiveModal,
-      beginMcqSession,
-      endMcqSession,
-      beginTimedSession,
-      endTimedSession,
-      setTimedCountdownTimer,
-      setTimedFeedbackTimer
+      setSideMenuOpen: t,
+      setActiveModal: r,
+      beginMcqSession: a,
+      endMcqSession: l,
+      beginTimedSession: m,
+      endTimedSession: f,
+      setTimedCountdownTimer: b,
+      setTimedFeedbackTimer: p
     };
   }
-
-  // viewer-math.js
-  function computeDrawGeometry({
-    canvasWidth,
-    canvasHeight,
-    imageNaturalWidth,
-    imageNaturalHeight,
-    imageScale,
-    zoomFactor,
-    bgOffsetX,
-    bgOffsetY,
-    circleRadius,
-    circleX,
-    isRightEye
+  function ln({
+    canvasWidth: e,
+    canvasHeight: t,
+    imageNaturalWidth: r,
+    imageNaturalHeight: a,
+    imageScale: l,
+    zoomFactor: m,
+    bgOffsetX: f,
+    bgOffsetY: b,
+    circleRadius: p,
+    circleX: y,
+    isRightEye: I
   }) {
-    const scaleFactor = canvasHeight / imageNaturalHeight;
-    const drawnImageWidth = imageNaturalWidth * scaleFactor;
-    const drawnImageHeight = canvasHeight;
-    const imageDrawOffsetX = (canvasWidth - drawnImageWidth) / 2;
-    const imageDrawOffsetY = 0;
-    const backgroundScale = imageScale * zoomFactor;
-    const scaledWidth = drawnImageWidth * backgroundScale;
-    const scaledHeight = drawnImageHeight * backgroundScale;
-    const offsetXPos = imageDrawOffsetX + (drawnImageWidth - scaledWidth) / 2 + bgOffsetX;
-    const offsetYPos = imageDrawOffsetY + (drawnImageHeight - scaledHeight) / 2 + bgOffsetY;
-    const windowScale = zoomFactor;
-    const effectiveCircleRadius = circleRadius * windowScale * scaleFactor;
-    const flippedCircleX = isRightEye ? circleX : canvasWidth - circleX;
+    let N = t / a,
+      R = r * N,
+      k = t,
+      T = (e - R) / 2,
+      B = 0,
+      q = l * m,
+      Y = R * q,
+      i = k * q,
+      C = T + (R - Y) / 2 + f,
+      w = B + (k - i) / 2 + b,
+      S = m,
+      J = p * S * N,
+      U = I ? y : e - y;
     return {
-      scaleFactor,
-      drawnImageWidth,
-      imageDrawOffsetX,
-      scaledWidth,
-      scaledHeight,
-      offsetXPos,
-      offsetYPos,
-      windowScale,
-      effectiveCircleRadius,
-      flippedCircleX
+      scaleFactor: N,
+      drawnImageWidth: R,
+      imageDrawOffsetX: T,
+      scaledWidth: Y,
+      scaledHeight: i,
+      offsetXPos: C,
+      offsetYPos: w,
+      windowScale: S,
+      effectiveCircleRadius: J,
+      flippedCircleX: U
     };
   }
-  function normaliseBoundsAxis(min, max) {
-    if (min <= max) {
-      return { min, max };
-    }
-    const centre = (min + max) / 2;
-    return { min: centre, max: centre };
+  function sn(e, t) {
+    if (e <= t) return { min: e, max: t };
+    let r = (e + t) / 2;
+    return { min: r, max: r };
   }
-  function computeViewerBounds({
-    canvasWidth,
-    canvasHeight,
-    imageNaturalWidth,
-    imageNaturalHeight,
-    circleRadius,
-    zoomFactor
+  function cn({
+    canvasWidth: e,
+    canvasHeight: t,
+    imageNaturalWidth: r,
+    imageNaturalHeight: a,
+    circleRadius: l,
+    zoomFactor: m
   }) {
-    const scaleFactor = canvasHeight / imageNaturalHeight;
-    const drawnImageWidth = imageNaturalWidth * scaleFactor;
-    const imageDrawOffsetX = (canvasWidth - drawnImageWidth) / 2;
-    const effectiveCircleRadius = circleRadius * zoomFactor * scaleFactor;
-    const minX = imageDrawOffsetX + effectiveCircleRadius;
-    const maxX = imageDrawOffsetX + drawnImageWidth - effectiveCircleRadius;
-    const minY = effectiveCircleRadius;
-    const maxY = canvasHeight - effectiveCircleRadius;
-    const xBounds = normaliseBoundsAxis(minX, maxX);
-    const yBounds = normaliseBoundsAxis(minY, maxY);
+    let f = t / a,
+      b = r * f,
+      p = (e - b) / 2,
+      y = l * m * f,
+      I = p + y,
+      N = p + b - y,
+      R = y,
+      k = t - y,
+      T = sn(I, N),
+      B = sn(R, k);
+    return { minX: T.min, maxX: T.max, minY: B.min, maxY: B.max };
+  }
+  function un({ circleX: e, circleY: t, velocityX: r, velocityY: a, bounds: l }) {
+    let m = e,
+      f = t,
+      b = r,
+      p = a;
+    return (
+      m < l.minX && ((m = l.minX), (b *= -0.5)),
+      m > l.maxX && ((m = l.maxX), (b *= -0.5)),
+      f < l.minY && ((f = l.minY), (p *= -0.5)),
+      f > l.maxY && ((f = l.maxY), (p *= -0.5)),
+      { circleX: m, circleY: f, velocityX: b, velocityY: p }
+    );
+  }
+  function dn({ cataractLevel: e, darkTint: t, yellowTint: r }) {
+    let a = e === 3 ? 0.3 : 0.55,
+      l = 1 - t * 2.8 - r * 1.2;
+    return Math.max(a, l);
+  }
+  var Ee = Object.freeze({
+      rotateDegrees: 0,
+      scale: 1,
+      panXRatio: 0,
+      panYRatio: 0,
+      brightness: 1,
+      contrast: 1,
+      saturation: 1,
+      flipVertical: !1
+    }),
+    me = Object.freeze({
+      rotateDegrees: { min: -7, max: 7 },
+      scale: { min: 0.85, max: 1.2 },
+      panRatio: { min: -0.08, max: 0.08 },
+      brightness: { min: 0.78, max: 1.22 },
+      contrast: { min: 0.78, max: 1.22 },
+      saturation: { min: 0.78, max: 1.22 }
+    }),
+    We = Object.freeze({ jitterMultiplier: 1, shiftDistanceMultiplier: 1, shiftDurationMs: 600 }),
+    Pe = Object.freeze({
+      jitterMultiplier: { min: 1, max: 4 },
+      shiftDistanceMultiplier: { min: 1, max: 3.2 },
+      shiftDurationMs: { min: 250, max: 2500 }
+    });
+  function Bi() {
+    let e = typeof window != 'undefined',
+      t =
+        e && typeof window.matchMedia == 'function'
+          ? window.matchMedia('(pointer: coarse)').matches
+          : !1,
+      r = e ? Math.max(window.innerWidth || 0, window.innerHeight || 0) : 0,
+      a = t || r <= 1100;
     return {
-      minX: xBounds.min,
-      maxX: xBounds.max,
-      minY: yBounds.min,
-      maxY: yBounds.max
+      isMobileLike: a,
+      canvasScale: a ? 0.5 : 1,
+      cataractBlurScale: a ? 0.42 : 1,
+      occlusionSpotRatio: 1,
+      occlusionBlurScale: a ? 0.45 : 1,
+      baseJitterIntervalMs: a ? 24 : 16,
+      cataractJitterIntervalMs: a ? 72 : 16
     };
   }
-  function clampCircleToBounds({ circleX, circleY, velocityX, velocityY, bounds }) {
-    let nextX = circleX;
-    let nextY = circleY;
-    let nextVelocityX = velocityX;
-    let nextVelocityY = velocityY;
-    if (nextX < bounds.minX) {
-      nextX = bounds.minX;
-      nextVelocityX *= -0.5;
-    }
-    if (nextX > bounds.maxX) {
-      nextX = bounds.maxX;
-      nextVelocityX *= -0.5;
-    }
-    if (nextY < bounds.minY) {
-      nextY = bounds.minY;
-      nextVelocityY *= -0.5;
-    }
-    if (nextY > bounds.maxY) {
-      nextY = bounds.maxY;
-      nextVelocityY *= -0.5;
-    }
-    return {
-      circleX: nextX,
-      circleY: nextY,
-      velocityX: nextVelocityX,
-      velocityY: nextVelocityY
-    };
+  function mn(e) {
+    return typeof e != 'string' || e.length === 0 ? '' : e.split('?')[0].split('/').pop() || '';
   }
-  function computeReflexOpacity({ cataractLevel, darkTint, yellowTint }) {
-    const minimumOpacity = cataractLevel === 3 ? 0.3 : 0.55;
-    const tintAdjustedOpacity = 1 - darkTint * 2.8 - yellowTint * 1.2;
-    return Math.max(minimumOpacity, tintAdjustedOpacity);
-  }
-
-  // viewer.js
-  var TIMED_AUGMENTATION_DEFAULTS = Object.freeze({
-    rotateDegrees: 0,
-    scale: 1,
-    panXRatio: 0,
-    panYRatio: 0,
-    brightness: 1,
-    contrast: 1,
-    saturation: 1,
-    flipVertical: false
-  });
-  var TIMED_AUGMENTATION_LIMITS = Object.freeze({
-    rotateDegrees: { min: -7, max: 7 },
-    scale: { min: 0.85, max: 1.2 },
-    panRatio: { min: -0.08, max: 0.08 },
-    brightness: { min: 0.78, max: 1.22 },
-    contrast: { min: 0.78, max: 1.22 },
-    saturation: { min: 0.78, max: 1.22 }
-  });
-  var TIMED_MOTION_DEFAULTS = Object.freeze({
-    jitterMultiplier: 1,
-    shiftDistanceMultiplier: 1,
-    shiftDurationMs: 600
-  });
-  var TIMED_MOTION_LIMITS = Object.freeze({
-    jitterMultiplier: { min: 1, max: 4 },
-    shiftDistanceMultiplier: { min: 1, max: 3.2 },
-    shiftDurationMs: { min: 250, max: 2500 }
-  });
-  function buildViewerPerfProfile() {
-    const hasWindow = typeof window !== 'undefined';
-    const hasCoarsePointer2 =
-      hasWindow && typeof window.matchMedia === 'function'
-        ? window.matchMedia('(pointer: coarse)').matches
-        : false;
-    const viewportEdge2 = hasWindow ? Math.max(window.innerWidth || 0, window.innerHeight || 0) : 0;
-    const isMobileLike = hasCoarsePointer2 || viewportEdge2 <= 1100;
-    return {
-      isMobileLike,
-      canvasScale: isMobileLike ? 0.5 : 1,
-      cataractBlurScale: isMobileLike ? 0.42 : 1,
-      occlusionSpotRatio: isMobileLike ? 1 : 1,
-      occlusionBlurScale: isMobileLike ? 0.45 : 1,
-      baseJitterIntervalMs: isMobileLike ? 24 : 16,
-      cataractJitterIntervalMs: isMobileLike ? 72 : 16
-    };
-  }
-  function extractImageFilename(path) {
-    if (typeof path !== 'string' || path.length === 0) {
-      return '';
-    }
-    const withoutQuery = path.split('?')[0];
-    return withoutQuery.split('/').pop() || '';
-  }
-  function getJpegFallbackPath(path) {
+  function hn(e) {
     return null;
   }
-  function resolvePreferredImagePath(path, shouldFallbackFromWebp) {
-    if (typeof path !== 'string') {
-      return '';
-    }
-    if (!shouldFallbackFromWebp) {
-      return path;
-    }
-    return getJpegFallbackPath(path) || path;
+  function ji(e, t) {
+    return typeof e != 'string' ? '' : (t && hn(e)) || e;
   }
-  function clampNumber(value, min, max, fallback) {
-    const numeric = Number(value);
-    if (!Number.isFinite(numeric)) {
-      return fallback;
-    }
-    return Math.max(min, Math.min(max, numeric));
+  function xe(e, t, r, a) {
+    let l = Number(e);
+    return Number.isFinite(l) ? Math.max(t, Math.min(r, l)) : a;
   }
-  function normalizeTimedAugmentation(augmentation) {
-    const candidate = augmentation && typeof augmentation === 'object' ? augmentation : {};
+  function Gi(e) {
+    let t = e && typeof e == 'object' ? e : {};
     return {
-      rotateDegrees: clampNumber(
-        candidate.rotateDegrees,
-        TIMED_AUGMENTATION_LIMITS.rotateDegrees.min,
-        TIMED_AUGMENTATION_LIMITS.rotateDegrees.max,
-        TIMED_AUGMENTATION_DEFAULTS.rotateDegrees
+      rotateDegrees: xe(
+        t.rotateDegrees,
+        me.rotateDegrees.min,
+        me.rotateDegrees.max,
+        Ee.rotateDegrees
       ),
-      scale: clampNumber(
-        candidate.scale,
-        TIMED_AUGMENTATION_LIMITS.scale.min,
-        TIMED_AUGMENTATION_LIMITS.scale.max,
-        TIMED_AUGMENTATION_DEFAULTS.scale
-      ),
-      panXRatio: clampNumber(
-        candidate.panXRatio,
-        TIMED_AUGMENTATION_LIMITS.panRatio.min,
-        TIMED_AUGMENTATION_LIMITS.panRatio.max,
-        TIMED_AUGMENTATION_DEFAULTS.panXRatio
-      ),
-      panYRatio: clampNumber(
-        candidate.panYRatio,
-        TIMED_AUGMENTATION_LIMITS.panRatio.min,
-        TIMED_AUGMENTATION_LIMITS.panRatio.max,
-        TIMED_AUGMENTATION_DEFAULTS.panYRatio
-      ),
-      brightness: clampNumber(
-        candidate.brightness,
-        TIMED_AUGMENTATION_LIMITS.brightness.min,
-        TIMED_AUGMENTATION_LIMITS.brightness.max,
-        TIMED_AUGMENTATION_DEFAULTS.brightness
-      ),
-      contrast: clampNumber(
-        candidate.contrast,
-        TIMED_AUGMENTATION_LIMITS.contrast.min,
-        TIMED_AUGMENTATION_LIMITS.contrast.max,
-        TIMED_AUGMENTATION_DEFAULTS.contrast
-      ),
-      saturation: clampNumber(
-        candidate.saturation,
-        TIMED_AUGMENTATION_LIMITS.saturation.min,
-        TIMED_AUGMENTATION_LIMITS.saturation.max,
-        TIMED_AUGMENTATION_DEFAULTS.saturation
-      ),
-      flipVertical: Boolean(candidate.flipVertical)
+      scale: xe(t.scale, me.scale.min, me.scale.max, Ee.scale),
+      panXRatio: xe(t.panXRatio, me.panRatio.min, me.panRatio.max, Ee.panXRatio),
+      panYRatio: xe(t.panYRatio, me.panRatio.min, me.panRatio.max, Ee.panYRatio),
+      brightness: xe(t.brightness, me.brightness.min, me.brightness.max, Ee.brightness),
+      contrast: xe(t.contrast, me.contrast.min, me.contrast.max, Ee.contrast),
+      saturation: xe(t.saturation, me.saturation.min, me.saturation.max, Ee.saturation),
+      flipVertical: !!t.flipVertical
     };
   }
-  function normalizeTimedMotionProfile(profile) {
-    const candidate = profile && typeof profile === 'object' ? profile : {};
+  function Wi(e) {
+    let t = e && typeof e == 'object' ? e : {};
     return {
-      jitterMultiplier: clampNumber(
-        candidate.jitterMultiplier,
-        TIMED_MOTION_LIMITS.jitterMultiplier.min,
-        TIMED_MOTION_LIMITS.jitterMultiplier.max,
-        TIMED_MOTION_DEFAULTS.jitterMultiplier
+      jitterMultiplier: xe(
+        t.jitterMultiplier,
+        Pe.jitterMultiplier.min,
+        Pe.jitterMultiplier.max,
+        We.jitterMultiplier
       ),
-      shiftDistanceMultiplier: clampNumber(
-        candidate.shiftDistanceMultiplier,
-        TIMED_MOTION_LIMITS.shiftDistanceMultiplier.min,
-        TIMED_MOTION_LIMITS.shiftDistanceMultiplier.max,
-        TIMED_MOTION_DEFAULTS.shiftDistanceMultiplier
+      shiftDistanceMultiplier: xe(
+        t.shiftDistanceMultiplier,
+        Pe.shiftDistanceMultiplier.min,
+        Pe.shiftDistanceMultiplier.max,
+        We.shiftDistanceMultiplier
       ),
-      shiftDurationMs: clampNumber(
-        candidate.shiftDurationMs,
-        TIMED_MOTION_LIMITS.shiftDurationMs.min,
-        TIMED_MOTION_LIMITS.shiftDurationMs.max,
-        TIMED_MOTION_DEFAULTS.shiftDurationMs
+      shiftDurationMs: xe(
+        t.shiftDurationMs,
+        Pe.shiftDurationMs.min,
+        Pe.shiftDurationMs.max,
+        We.shiftDurationMs
       )
     };
   }
-  function createViewer({
-    state,
-    canvas: canvas2,
-    fovToggleCheckbox: fovToggleCheckbox2,
-    fovLabelSmall: fovLabelSmall2,
-    fovLabelLeft: fovLabelLeft2,
-    fovLabelRight: fovLabelRight2,
-    eyeToggleCheckbox: eyeToggleCheckbox2,
-    eyeLabelRight: eyeLabelRight2,
-    eyeLabelLeft: eyeLabelLeft2,
-    cataractSlider: cataractSlider2,
-    cataractStops: cataractStops2,
-    viewSummary: viewSummary2,
-    explanation: explanation2,
-    conditionButtons: conditionButtons2,
-    defaultImageSrc,
-    explanationTemplates,
-    cataractPresets,
-    cataractOcclusionSpots
+  function fn({
+    state: e,
+    canvas: t,
+    fovToggleCheckbox: r,
+    fovLabelSmall: a,
+    fovLabelLeft: l,
+    fovLabelRight: m,
+    eyeToggleCheckbox: f,
+    eyeLabelRight: b,
+    eyeLabelLeft: p,
+    cataractSlider: y,
+    cataractStops: I,
+    viewSummary: N,
+    explanation: R,
+    conditionButtons: k,
+    defaultImageSrc: T,
+    explanationTemplates: B,
+    cataractPresets: q,
+    cataractOcclusionSpots: Y
   }) {
-    const ctx = canvas2.getContext('2d');
-    const initialDegree = 5;
-    const initialRadius = 80;
-    const FOV_LEVELS = Object.freeze([4, 8, 15]);
-    const FOV_SUMMARY_LABELS = Object.freeze({
-      4: 'Normal (4\xB0)',
-      8: 'Nil (8\xB0)',
-      15: 'Dilated (15\xB0)'
-    });
-    const DEFAULT_FOV_INDEX = 1;
-    let circleRadius = (8 / 5) * initialRadius;
-    let circleX = 0;
-    let circleY = 0;
-    let bgOffsetX = 0;
-    let bgOffsetY = 0;
-    let isDragging = false;
-    let activePointerId = null;
-    let velocityX = 0;
-    let velocityY = 0;
-    let cornealJitterOffset = { x: 0, y: 0 };
-    let cornealTargetOffset = { x: 0, y: 0 };
-    let cornealAnimationId = null;
-    const imageScale = 1;
-    const zoomFactor = 3;
-    const VIEWER_PERF_PROFILE = buildViewerPerfProfile();
-    let timedAugmentation = { ...TIMED_AUGMENTATION_DEFAULTS };
-    let timedMotionProfile = { ...TIMED_MOTION_DEFAULTS };
-    const SHIFT_DISTANCE = 400;
-    let shiftTimeoutId = null;
-    let jitterAnimationId = null;
-    let drawAnimationId = null;
-    let lastJitterRenderAt = 0;
-    let lastDrawRenderAt = 0;
-    const jitterAmplitude = 2;
-    const occlusionTextureCache = /* @__PURE__ */ new Map();
-    const mobileCataractLayerCache = /* @__PURE__ */ new Map();
-    const MOBILE_OCCLUSION_TEXTURE_SIZE = 640;
-    const listenerDisposers = [];
-    let shouldFallbackFromWebp = false;
-    const img = new Image();
-    img.onload = () => {
-      reCentreEverything();
-      if (jitterAnimationId === null) {
-        jitterAnimationId = requestAnimationFrame(jitter);
-      }
-    };
-    img.onerror = () => {
-      const fallbackPath = getJpegFallbackPath(state.viewer.activeImageSrc);
-      if (!fallbackPath || fallbackPath === state.viewer.activeImageSrc) {
-        return;
-      }
-      shouldFallbackFromWebp = true;
-      if (state.viewer.conditionImageSrc === state.viewer.activeImageSrc) {
-        state.viewer.conditionImageSrc = fallbackPath;
-      }
-      state.viewer.activeImageSrc = fallbackPath;
-      img.src = fallbackPath;
-    };
-    function addDomListener(target, eventName, handler, options) {
-      target.addEventListener(eventName, handler, options);
-      listenerDisposers.push(() => {
-        target.removeEventListener(eventName, handler, options);
-      });
+    let i = t.getContext('2d'),
+      C = 5,
+      w = 80,
+      S = Object.freeze([4, 8, 15]),
+      J = Object.freeze({ 4: 'Normal (4\xB0)', 8: 'Nil (8\xB0)', 15: 'Dilated (15\xB0)' }),
+      U = 1,
+      Q = (8 / 5) * w,
+      j = 0,
+      _ = 0,
+      K = 0,
+      F = 0,
+      Z = !1,
+      le = null,
+      re = 0,
+      X = 0,
+      ye = { x: 0, y: 0 },
+      de = { x: 0, y: 0 },
+      z = null,
+      we = 1,
+      Se = 3,
+      ie = Bi(),
+      V = { ...Ee },
+      fe = { ...We },
+      Ve = 400,
+      pe = null,
+      oe = null,
+      ge = null,
+      _e = 0,
+      Fe = 0,
+      $e = 2,
+      Te = new Map(),
+      Ie = new Map(),
+      Le = 640,
+      Ne = [],
+      Oe = !1,
+      D = new Image(),
+      c = !1,
+      M = {},
+      x = document.getElementById('imageStatus'),
+      L = document.getElementById('imageStatusText'),
+      W = document.getElementById('retryImage');
+    function ae(n, o = !1) {
+      (x && (x.hidden = !n), L && (L.textContent = n), W && (W.hidden = !o));
     }
-    function requestDraw() {
-      if (drawAnimationId !== null) {
-        return;
-      }
-      drawAnimationId = requestAnimationFrame((timestamp) => {
-        drawAnimationId = null;
-        const minDrawIntervalMs =
-          VIEWER_PERF_PROFILE.isMobileLike && state.viewer.cataractLevel > 0 ? 34 : 0;
-        const now =
-          typeof timestamp === 'number'
-            ? timestamp
-            : typeof window !== 'undefined' && window.performance
-              ? window.performance.now()
-              : Date.now();
-        if (minDrawIntervalMs > 0 && now - lastDrawRenderAt < minDrawIntervalMs) {
-          requestDraw();
+    ((D.onload = () => {
+      var o;
+      ((c = !0), ae(''), rt(), oe === null && (oe = requestAnimationFrame(Ye)));
+      let n = M;
+      ((M = {}), (o = n.onReady) == null || o.call(n));
+    }),
+      (D.onerror = () => {
+        var o;
+        let n = hn(e.viewer.activeImageSrc);
+        if (!n || n === e.viewer.activeImageSrc) {
+          ((c = !1), i.clearRect(0, 0, t.width, t.height), ae('Image unavailable', !0));
+          let s = M;
+          ((M = {}), (o = s.onError) == null || o.call(s));
           return;
         }
-        lastDrawRenderAt = now;
-        draw();
-      });
+        ((Oe = !0),
+          e.viewer.conditionImageSrc === e.viewer.activeImageSrc &&
+            (e.viewer.conditionImageSrc = n),
+          (e.viewer.activeImageSrc = n),
+          (D.src = n));
+      }));
+    function u(n, o, s, d) {
+      (n.addEventListener(o, s, d),
+        Ne.push(() => {
+          n.removeEventListener(o, s, d);
+        }));
     }
-    function initialize2() {
-      state.viewer.activeImageSrc = defaultImageSrc;
-      state.viewer.conditionImageSrc = defaultImageSrc;
-      state.viewer.activeCondition = 'normal';
-      state.viewer.isRightEye = true;
-      state.viewer.isDiscVisible = true;
-      state.viewer.cataractLevel = 0;
-      state.viewer.shiftInProgress = false;
-      timedAugmentation = { ...TIMED_AUGMENTATION_DEFAULTS };
-      timedMotionProfile = { ...TIMED_MOTION_DEFAULTS };
-      fovToggleCheckbox2.value = String(DEFAULT_FOV_INDEX);
-      circleRadius = fovDegreesToCircleRadius(FOV_LEVELS[DEFAULT_FOV_INDEX]);
-      updateConditionButtonState('normal');
-      setExplanation('normal');
-      setImageSource(defaultImageSrc);
-      updateFovLabels();
-      updateEyeLabels();
-      updateCataractUi();
-      bindViewerControlEvents();
-      setupCanvasPointerEvents();
-    }
-    function bindViewerControlEvents() {
-      const onFovChange = () => {
-        applyFovIndex(getCurrentFovIndex());
-      };
-      addDomListener(fovToggleCheckbox2, 'input', onFovChange);
-      addDomListener(fovToggleCheckbox2, 'change', onFovChange);
-      const onEyeChange = () => {
-        state.viewer.isRightEye = !eyeToggleCheckbox2.checked;
-        reCentreEverything();
-        updateEyeLabels();
-      };
-      addDomListener(eyeToggleCheckbox2, 'change', onEyeChange);
-      const onCataractInput = () => {
-        state.viewer.cataractLevel = Number(cataractSlider2.value);
-        updateCataractUi();
-        requestDraw();
-      };
-      addDomListener(cataractSlider2, 'input', onCataractInput);
-      conditionButtons2.forEach((button) => {
-        const onConditionClick = () => {
-          if (button.disabled) {
+    function h() {
+      ge === null &&
+        (ge = requestAnimationFrame((n) => {
+          ge = null;
+          let o = ie.isMobileLike && e.viewer.cataractLevel > 0 ? 34 : 0,
+            s =
+              typeof n == 'number'
+                ? n
+                : typeof window != 'undefined' && window.performance
+                  ? window.performance.now()
+                  : Date.now();
+          if (o > 0 && s - Fe < o) {
+            h();
             return;
           }
-          const condition = button.getAttribute('data-condition') || 'normal';
-          const imagePath = button.getAttribute('data-image') || defaultImageSrc;
-          updateConditionButtonState(condition);
-          state.viewer.activeCondition = condition;
-          state.viewer.conditionImageSrc = imagePath;
-          state.viewer.isDiscVisible = true;
-          setImageSource(imagePath);
-          setExplanation(condition);
-        };
-        addDomListener(button, 'click', onConditionClick);
-      });
+          ((Fe = s), pi());
+        }));
     }
-    function updateConditionButtonState(activeCondition) {
-      conditionButtons2.forEach((button) => {
-        const condition = button.getAttribute('data-condition') || 'normal';
-        const isActive = condition === activeCondition;
-        button.classList.toggle('active', isActive);
-        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      });
+    function g() {
+      (W && u(W, 'click', () => Ae(e.viewer.activeImageSrc)),
+        (e.viewer.activeImageSrc = T),
+        (e.viewer.conditionImageSrc = T),
+        (e.viewer.activeCondition = 'normal'),
+        (e.viewer.isRightEye = !0),
+        (e.viewer.isDiscVisible = !0),
+        (e.viewer.cataractLevel = 0),
+        (e.viewer.shiftInProgress = !1),
+        (V = { ...Ee }),
+        (fe = { ...We }),
+        (r.value = String(U)),
+        (Q = Pt(S[U])),
+        O('normal'),
+        Rt('normal'),
+        Ae(T),
+        qt(),
+        yt(),
+        Mt(),
+        A(),
+        G());
     }
-    function setupCanvasPointerEvents() {
-      addDomListener(canvas2, 'pointerdown', handlePointerDown);
-      addDomListener(canvas2, 'pointermove', handlePointerMove);
-      addDomListener(canvas2, 'pointerup', stopDragging);
-      addDomListener(canvas2, 'pointercancel', stopDragging);
-      const onPointerLeave = (event) => {
-        if (event.pointerType === 'mouse') {
-          stopDragging(event);
-        }
+    function A() {
+      let n = () => {
+        kt(gt());
       };
-      addDomListener(canvas2, 'pointerleave', onPointerLeave);
-      addDomListener(window, 'pointerup', stopDragging);
-      if (typeof document !== 'undefined') {
-        addDomListener(document, 'visibilitychange', handleVisibilityChange);
-      }
+      (u(r, 'input', n),
+        u(r, 'change', n),
+        u(f, 'change', () => {
+          ((e.viewer.isRightEye = !f.checked), rt(), yt());
+        }),
+        u(y, 'input', () => {
+          ((e.viewer.cataractLevel = Number(y.value)), Mt(), h());
+        }),
+        k.forEach((d) => {
+          u(d, 'click', () => {
+            if (d.disabled) return;
+            let E = d.getAttribute('data-condition') || 'normal',
+              P = d.getAttribute('data-image') || T;
+            (O(E),
+              (e.viewer.activeCondition = E),
+              (e.viewer.conditionImageSrc = P),
+              (e.viewer.isDiscVisible = !0),
+              Ae(P),
+              Rt(E));
+          });
+        }));
     }
-    function handleVisibilityChange() {
-      if (typeof document === 'undefined') {
-        return;
-      }
-      if (document.hidden) {
-        if (jitterAnimationId !== null) {
-          cancelAnimationFrame(jitterAnimationId);
-          jitterAnimationId = null;
+    function O(n) {
+      k.forEach((o) => {
+        let d = (o.getAttribute('data-condition') || 'normal') === n;
+        (o.classList.toggle('active', d), o.setAttribute('aria-pressed', d ? 'true' : 'false'));
+      });
+    }
+    function G() {
+      (u(t, 'pointerdown', Me),
+        u(t, 'pointermove', te),
+        u(t, 'pointerup', ce),
+        u(t, 'pointercancel', ce),
+        u(t, 'pointerleave', (o) => {
+          o.pointerType === 'mouse' && ce(o);
+        }),
+        u(window, 'pointerup', ce),
+        typeof document != 'undefined' && u(document, 'visibilitychange', ee));
+    }
+    function ee() {
+      if (typeof document != 'undefined') {
+        if (document.hidden) {
+          (oe !== null && (cancelAnimationFrame(oe), (oe = null)),
+            ge !== null && (cancelAnimationFrame(ge), (ge = null)),
+            z !== null && (cancelAnimationFrame(z), (z = null)));
+          return;
         }
-        if (drawAnimationId !== null) {
-          cancelAnimationFrame(drawAnimationId);
-          drawAnimationId = null;
-        }
-        if (cornealAnimationId !== null) {
-          cancelAnimationFrame(cornealAnimationId);
-          cornealAnimationId = null;
-        }
+        (D.complete && oe === null && (oe = requestAnimationFrame(Ye)), h());
+      }
+    }
+    function Me(n) {
+      (n.button !== void 0 && n.button !== 0) ||
+        ((Z = !0),
+        (le = n.pointerId),
+        (re = 0),
+        (X = 0),
+        t.setPointerCapture(n.pointerId),
+        (t.style.cursor = 'none'),
+        ue(n),
+        hi());
+    }
+    function te(n) {
+      !Z || n.pointerId !== le || ue(n);
+    }
+    function ce(n) {
+      Z &&
+        ((typeof n.pointerId == 'number' && n.pointerId !== le) ||
+          (typeof n.pointerId == 'number' &&
+            t.hasPointerCapture(n.pointerId) &&
+            t.releasePointerCapture(n.pointerId),
+          (Z = !1),
+          (le = null),
+          (t.style.cursor = 'crosshair'),
+          fi()));
+    }
+    function ue(n) {
+      let o = t.getBoundingClientRect();
+      if (o.width === 0 || o.height === 0) return;
+      let s = t.width / o.width,
+        d = t.height / o.height,
+        v = (n.clientX - o.left) * s,
+        E = (n.clientY - o.top) * d,
+        P = ot(),
+        $ = Math.max(18, Math.min(64, P * 0.12));
+      ((j = v), (_ = E - P - $), Xe(), h());
+    }
+    function ot() {
+      if (!D.naturalHeight || t.height <= 0) return Q * Se;
+      let n = t.height / D.naturalHeight;
+      return Q * Se * n;
+    }
+    function Ae(n, o = {}) {
+      var E;
+      let s = ji(n, Oe);
+      e.viewer.activeImageSrc = s;
+      let d = mn(D.src),
+        v = mn(s);
+      if (c && D.complete && D.naturalWidth && d === v) {
+        (rt(), (E = o.onReady) == null || E.call(o));
         return;
       }
-      if (img.complete && jitterAnimationId === null) {
-        jitterAnimationId = requestAnimationFrame(jitter);
-      }
-      requestDraw();
+      ((c = !1),
+        (M = o),
+        i.clearRect(0, 0, t.width, t.height),
+        ae('Loading image\u2026'),
+        (D.src = s));
     }
-    function handlePointerDown(event) {
-      if (event.button !== void 0 && event.button !== 0) {
-        return;
-      }
-      isDragging = true;
-      activePointerId = event.pointerId;
-      velocityX = 0;
-      velocityY = 0;
-      canvas2.setPointerCapture(event.pointerId);
-      canvas2.style.cursor = 'none';
-      updatePositionFromPointer(event);
-      startCornealReflexAnimation();
-    }
-    function handlePointerMove(event) {
-      if (!isDragging || event.pointerId !== activePointerId) {
-        return;
-      }
-      updatePositionFromPointer(event);
-    }
-    function stopDragging(event) {
-      if (!isDragging) {
-        return;
-      }
-      if (typeof event.pointerId === 'number' && event.pointerId !== activePointerId) {
-        return;
-      }
-      if (typeof event.pointerId === 'number' && canvas2.hasPointerCapture(event.pointerId)) {
-        canvas2.releasePointerCapture(event.pointerId);
-      }
-      isDragging = false;
-      activePointerId = null;
-      canvas2.style.cursor = 'crosshair';
-      stopCornealReflexAnimation();
-    }
-    function updatePositionFromPointer(event) {
-      const rect = canvas2.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) {
-        return;
-      }
-      const scaleX = canvas2.width / rect.width;
-      const scaleY = canvas2.height / rect.height;
-      const pointerX = (event.clientX - rect.left) * scaleX;
-      const pointerY = (event.clientY - rect.top) * scaleY;
-      const dragAnchorRadius = getDragAnchorRadius();
-      const dragAnchorExtraOffset = Math.max(18, Math.min(64, dragAnchorRadius * 0.12));
-      circleX = pointerX;
-      circleY = pointerY - dragAnchorRadius - dragAnchorExtraOffset;
-      checkBoundaries();
-      requestDraw();
-    }
-    function getDragAnchorRadius() {
-      if (!img.naturalHeight || canvas2.height <= 0) {
-        return circleRadius * zoomFactor;
-      }
-      const scaleFactor = canvas2.height / img.naturalHeight;
-      return circleRadius * zoomFactor * scaleFactor;
-    }
-    function setImageSource(path) {
-      const nextPath = resolvePreferredImagePath(path, shouldFallbackFromWebp);
-      state.viewer.activeImageSrc = nextPath;
-      const loadedImageName = extractImageFilename(img.src);
-      const requestedImageName = extractImageFilename(nextPath);
-      if (img.complete && loadedImageName === requestedImageName) {
-        reCentreEverything();
-        return;
-      }
-      img.src = nextPath;
-    }
-    function buildTimedAugmentedDrawGeometry(geometry) {
-      const panX = timedAugmentation.panXRatio * geometry.scaledWidth;
-      const panY = timedAugmentation.panYRatio * geometry.scaledHeight;
-      const offsetXPos = geometry.offsetXPos + panX;
-      const offsetYPos = geometry.offsetYPos + panY;
+    function ei(n) {
+      let o = V.panXRatio * n.scaledWidth,
+        s = V.panYRatio * n.scaledHeight,
+        d = n.offsetXPos + o,
+        v = n.offsetYPos + s;
       return {
-        offsetXPos,
-        offsetYPos,
-        scaledWidth: geometry.scaledWidth,
-        scaledHeight: geometry.scaledHeight,
-        centreX: offsetXPos + geometry.scaledWidth / 2,
-        centreY: offsetYPos + geometry.scaledHeight / 2
+        offsetXPos: d,
+        offsetYPos: v,
+        scaledWidth: n.scaledWidth,
+        scaledHeight: n.scaledHeight,
+        centreX: d + n.scaledWidth / 2,
+        centreY: v + n.scaledHeight / 2
       };
     }
-    function applyTimedAugmentationTransform(augmentedGeometry) {
-      const rotationRadians = (timedAugmentation.rotateDegrees * Math.PI) / 180;
-      const isVerticalFlip = timedAugmentation.flipVertical === true;
-      if (rotationRadians === 0 && timedAugmentation.scale === 1 && !isVerticalFlip) {
-        return;
-      }
-      ctx.translate(augmentedGeometry.centreX, augmentedGeometry.centreY);
-      if (rotationRadians !== 0) {
-        ctx.rotate(rotationRadians);
-      }
-      if (timedAugmentation.scale !== 1 || isVerticalFlip) {
-        const yScale = isVerticalFlip ? timedAugmentation.scale * -1 : timedAugmentation.scale;
-        ctx.scale(timedAugmentation.scale, yScale);
-      }
-      ctx.translate(-augmentedGeometry.centreX, -augmentedGeometry.centreY);
-    }
-    function buildFundusFilter(cataract) {
-      const isMobileCataract = VIEWER_PERF_PROFILE.isMobileLike && state.viewer.cataractLevel > 0;
-      const blurScale = isMobileCataract ? VIEWER_PERF_PROFILE.cataractBlurScale : 1;
-      const blurPx = Math.max(
-        0,
-        Math.min(isMobileCataract ? 0.25 : 6, cataract.blurPx * blurScale)
-      );
-      const brightness = cataract.brightness * timedAugmentation.brightness;
-      const contrast = cataract.contrast * timedAugmentation.contrast;
-      const saturation = cataract.saturation * timedAugmentation.saturation;
-      if (isMobileCataract) {
-        return `brightness(${brightness})`;
-      }
-      return `blur(${blurPx}px) brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
-    }
-    function setTimedAugmentation(augmentation) {
-      timedAugmentation = normalizeTimedAugmentation(augmentation);
-    }
-    function clearTimedAugmentation() {
-      timedAugmentation = { ...TIMED_AUGMENTATION_DEFAULTS };
-    }
-    function setTimedMotionProfile(profile) {
-      timedMotionProfile = normalizeTimedMotionProfile(profile);
-    }
-    function clearTimedMotionProfile() {
-      timedMotionProfile = { ...TIMED_MOTION_DEFAULTS };
-    }
-    function setExplanation(condition) {
-      explanation2.innerHTML = explanationTemplates[condition] || explanationTemplates.normal;
-    }
-    function updateFovLabels() {
-      const fovIndex = getCurrentFovIndex();
-      if (fovLabelSmall2) {
-        fovLabelSmall2.classList.toggle('active', fovIndex === 0);
-      }
-      fovLabelLeft2.classList.toggle('active', fovIndex === 1);
-      fovLabelRight2.classList.toggle('active', fovIndex === 2);
-      fovToggleCheckbox2.setAttribute('aria-valuetext', `${getCurrentFovDegrees()} degrees`);
-      updateViewSummary();
-    }
-    function normalizeFovIndex(index) {
-      const numericIndex = Number(index);
-      if (!Number.isFinite(numericIndex)) {
-        return DEFAULT_FOV_INDEX;
-      }
-      return Math.max(0, Math.min(FOV_LEVELS.length - 1, Math.round(numericIndex)));
-    }
-    function getCurrentFovIndex() {
-      return normalizeFovIndex(fovToggleCheckbox2.value);
-    }
-    function getCurrentFovDegrees() {
-      return FOV_LEVELS[getCurrentFovIndex()] || 8;
-    }
-    function resolveClosestFovIndex(degrees) {
-      const numericDegrees = Number(degrees);
-      if (!Number.isFinite(numericDegrees)) {
-        return DEFAULT_FOV_INDEX;
-      }
-      let closestIndex = DEFAULT_FOV_INDEX;
-      let smallestDistance = Infinity;
-      FOV_LEVELS.forEach((candidateDegrees, index) => {
-        const distance = Math.abs(candidateDegrees - numericDegrees);
-        if (distance < smallestDistance) {
-          smallestDistance = distance;
-          closestIndex = index;
+    function Lt(n) {
+      let o = (V.rotateDegrees * Math.PI) / 180,
+        s = V.flipVertical === !0;
+      if (!(o === 0 && V.scale === 1 && !s)) {
+        if ((i.translate(n.centreX, n.centreY), o !== 0 && i.rotate(o), V.scale !== 1 || s)) {
+          let d = s ? V.scale * -1 : V.scale;
+          i.scale(V.scale, d);
         }
-      });
-      return closestIndex;
-    }
-    function fovDegreesToCircleRadius(degrees) {
-      return (degrees / initialDegree) * initialRadius;
-    }
-    function applyFovIndex(index) {
-      const normalizedIndex = normalizeFovIndex(index);
-      const nextFov = FOV_LEVELS[normalizedIndex] || 8;
-      fovToggleCheckbox2.value = String(normalizedIndex);
-      circleRadius = fovDegreesToCircleRadius(nextFov);
-      checkBoundaries();
-      requestDraw();
-      updateFovLabels();
-    }
-    function setFovDegrees(degrees) {
-      applyFovIndex(resolveClosestFovIndex(degrees));
-    }
-    function getFovDegrees() {
-      return getCurrentFovDegrees();
-    }
-    function updateEyeLabels() {
-      eyeLabelRight2.classList.toggle('active', state.viewer.isRightEye);
-      eyeLabelLeft2.classList.toggle('active', !state.viewer.isRightEye);
-      updateViewSummary();
-    }
-    function updateCataractUi() {
-      const maxIndex = cataractPresets.length - 1;
-      const clampedLevel = Math.max(0, Math.min(maxIndex, Number(cataractSlider2.value) || 0));
-      state.viewer.cataractLevel = clampedLevel;
-      cataractSlider2.value = String(clampedLevel);
-      const preset = cataractPresets[state.viewer.cataractLevel];
-      cataractSlider2.setAttribute('aria-valuetext', preset.label);
-      cataractStops2.forEach((stop, index) => {
-        stop.classList.toggle('active', index === clampedLevel);
-      });
-      updateViewSummary();
-    }
-    function updateViewSummary() {
-      if (!viewSummary2) {
-        return;
+        i.translate(-n.centreX, -n.centreY);
       }
-      const eyeText = state.viewer.isRightEye ? 'RE' : 'LE';
-      const fovDegrees = getCurrentFovDegrees();
-      const fovText = FOV_SUMMARY_LABELS[fovDegrees] || `${fovDegrees} degrees`;
-      const cataractPreset = cataractPresets[state.viewer.cataractLevel] || cataractPresets[0];
-      const cataractText = cataractPreset.label === 'None' ? 'No cataract' : cataractPreset.label;
-      const summaryText = `${eyeText} - ${fovText} - ${cataractText}`;
-      viewSummary2.textContent = summaryText;
-      viewSummary2.setAttribute('aria-label', `Current viewing setup: ${summaryText}`);
     }
-    function buildOcclusionRenderConfig(level, minDimension) {
-      const isDenseLevel = level === 3;
-      const patchProfileLevel = level === 3 ? 2 : level;
-      const spots = cataractOcclusionSpots[patchProfileLevel];
-      if (!spots || spots.length === 0) {
-        return null;
-      }
-      const spotRatio = Math.max(0.2, Math.min(1, VIEWER_PERF_PROFILE.occlusionSpotRatio));
-      const maxSpots = Math.max(1, Math.round(spots.length * spotRatio));
-      const spotsToRender = spotRatio >= 1 ? spots : spots.slice(0, maxSpots);
+    function ti(n) {
+      let o = Math.max(0, Math.min(6, n.blurPx)),
+        s = n.brightness * V.brightness,
+        d = n.contrast * V.contrast,
+        v = n.saturation * V.saturation;
+      return `blur(${o}px) brightness(${s}) contrast(${d}) saturate(${v})`;
+    }
+    function ni(n) {
+      V = Gi(n);
+    }
+    function ii() {
+      V = { ...Ee };
+    }
+    function oi(n) {
+      fe = Wi(n);
+    }
+    function ri() {
+      fe = { ...We };
+    }
+    function Rt(n) {
+      R.innerHTML = B[n] || B.normal;
+    }
+    function qt() {
+      let n = gt();
+      (a && a.classList.toggle('active', n === 0),
+        l.classList.toggle('active', n === 1),
+        m.classList.toggle('active', n === 2),
+        r.setAttribute('aria-valuetext', `${Be()} degrees`),
+        xt());
+    }
+    function Dt(n) {
+      let o = Number(n);
+      return Number.isFinite(o) ? Math.max(0, Math.min(S.length - 1, Math.round(o))) : U;
+    }
+    function gt() {
+      return Dt(r.value);
+    }
+    function Be() {
+      return S[gt()] || 8;
+    }
+    function ai(n) {
+      let o = Number(n);
+      if (!Number.isFinite(o)) return U;
+      let s = U,
+        d = 1 / 0;
+      return (
+        S.forEach((v, E) => {
+          let P = Math.abs(v - o);
+          P < d && ((d = P), (s = E));
+        }),
+        s
+      );
+    }
+    function Pt(n) {
+      return (n / C) * w;
+    }
+    function kt(n) {
+      let o = Dt(n),
+        s = S[o] || 8;
+      ((r.value = String(o)), (Q = Pt(s)), Xe(), h(), qt());
+    }
+    function bt(n) {
+      kt(ai(n));
+    }
+    function si() {
+      return Be();
+    }
+    function yt() {
+      (b.classList.toggle('active', e.viewer.isRightEye),
+        p.classList.toggle('active', !e.viewer.isRightEye),
+        xt());
+    }
+    function Mt() {
+      let n = q.length - 1,
+        o = Math.max(0, Math.min(n, Number(y.value) || 0));
+      ((e.viewer.cataractLevel = o), (y.value = String(o)));
+      let s = q[e.viewer.cataractLevel];
+      (y.setAttribute('aria-valuetext', s.label),
+        I.forEach((d, v) => {
+          d.classList.toggle('active', v === o);
+        }),
+        xt());
+    }
+    function xt() {
+      if (!N) return;
+      let n = e.viewer.isRightEye ? 'RE' : 'LE',
+        o = Be(),
+        s = J[o] || `${o} degrees`,
+        d = q[e.viewer.cataractLevel] || q[0],
+        v = d.label === 'None' ? 'No cataract' : d.label,
+        E = `${n} - ${s} - ${v}`;
+      ((N.textContent = E), N.setAttribute('aria-label', `Current viewing setup: ${E}`));
+    }
+    function vt(n, o) {
+      let s = n === 3,
+        d = n === 3 ? 2 : n,
+        v = Y[d];
+      if (!v || v.length === 0) return null;
+      let E = Math.max(0.2, Math.min(1, ie.occlusionSpotRatio)),
+        P = Math.max(1, Math.round(v.length * E)),
+        $ = E >= 1 ? v : v.slice(0, P);
       return {
-        isDenseLevel,
-        patchProfileLevel,
-        spotsToRender,
-        minDimension,
-        levelBoost: [1, 1.3, 1.75][patchProfileLevel] || 1,
-        blurMultiplier: [1, 1, 0.68][patchProfileLevel] || 1,
-        blurCap: [14, 14, 11][patchProfileLevel] || 14,
-        outerAlphaCap: [0.72, 0.76, 0.8][patchProfileLevel] || 0.72,
-        coreAlphaCap: [0.8, 0.84, 0.88][patchProfileLevel] || 0.8,
-        coreBoost: [1.7, 1.9, 2.25][patchProfileLevel] || 1.7,
-        hardCoreStrengthBase: [0, 0, 0.36][patchProfileLevel] || 0,
-        hardCoreRadiusX: [0, 0, 0.3][patchProfileLevel] || 0,
-        hardCoreRadiusY: [0, 0, 0.2][patchProfileLevel] || 0,
-        coreBlurMultiplier: [0.45, 0.45, 0.28][patchProfileLevel] || 0.45
+        isDenseLevel: s,
+        patchProfileLevel: d,
+        spotsToRender: $,
+        minDimension: o,
+        levelBoost: [1, 1.3, 1.75][d] || 1,
+        blurMultiplier: [1, 1, 0.68][d] || 1,
+        blurCap: [14, 14, 11][d] || 14,
+        outerAlphaCap: [0.72, 0.76, 0.8][d] || 0.72,
+        coreAlphaCap: [0.8, 0.84, 0.88][d] || 0.8,
+        coreBoost: [1.7, 1.9, 2.25][d] || 1.7,
+        hardCoreStrengthBase: [0, 0, 0.36][d] || 0,
+        hardCoreRadiusX: [0, 0, 0.3][d] || 0,
+        hardCoreRadiusY: [0, 0, 0.2][d] || 0,
+        coreBlurMultiplier: [0.45, 0.45, 0.28][d] || 0.45
       };
     }
-    function drawOcclusionSpotsToContext(
-      drawingContext,
-      config,
-      imageX,
-      imageY,
-      imageWidth,
-      imageHeight
-    ) {
-      const radiusBoost = config.radiusBoost || 1;
-      const occlusionBlurScale =
-        typeof config.occlusionBlurScaleOverride === 'number'
-          ? config.occlusionBlurScaleOverride
-          : VIEWER_PERF_PROFILE.occlusionBlurScale;
-      config.spotsToRender.forEach((spot) => {
-        const spotX = imageX + (0.5 + spot.x * 0.5) * imageWidth;
-        const spotY = imageY + (0.5 + spot.y * 0.5) * imageHeight;
-        const patchSizeMultiplier = config.isDenseLevel ? 2 : 1;
-        const spotRadius = spot.r * config.minDimension * 0.3 * patchSizeMultiplier * radiusBoost;
-        const stretchX = spot.stretchX || 1;
-        const stretchY = spot.stretchY || 1;
-        const angle = spot.angle || 0;
-        const blurPxRaw =
-          spot.blur * (config.minDimension / 900) * config.blurMultiplier * occlusionBlurScale;
-        const blurPx = Math.max(0.45, Math.min(config.blurCap, blurPxRaw));
-        const outerAlpha = Math.min(config.outerAlphaCap, spot.alpha * config.levelBoost);
-        const coreAlpha = Math.min(
-          config.coreAlphaCap,
-          spot.coreAlpha * config.levelBoost * config.coreBoost
-        );
-        drawingContext.save();
-        drawingContext.translate(spotX, spotY);
-        drawingContext.rotate(angle);
-        drawingContext.scale(stretchX, stretchY);
-        drawingContext.filter = `blur(${blurPx}px)`;
-        const outerGradient = drawingContext.createRadialGradient(0, 0, 0, 0, 0, spotRadius);
-        outerGradient.addColorStop(0, `rgba(4, 3, 2, ${outerAlpha})`);
-        outerGradient.addColorStop(0.55, `rgba(8, 6, 4, ${outerAlpha * 0.82})`);
-        outerGradient.addColorStop(1, 'rgba(12, 8, 5, 0)');
-        drawingContext.fillStyle = outerGradient;
-        drawingContext.beginPath();
-        drawingContext.arc(0, 0, spotRadius, 0, 2 * Math.PI);
-        drawingContext.fill();
-        if (coreAlpha > 0) {
-          const coreGradient = drawingContext.createRadialGradient(
-            0,
-            0,
-            0,
-            0,
-            0,
-            spotRadius * 0.46
-          );
-          coreGradient.addColorStop(0, `rgba(0, 0, 0, ${coreAlpha})`);
-          coreGradient.addColorStop(0.8, `rgba(6, 4, 2, ${coreAlpha * 0.46})`);
-          coreGradient.addColorStop(1, 'rgba(8, 5, 2, 0)');
-          drawingContext.fillStyle = coreGradient;
-          drawingContext.beginPath();
-          drawingContext.arc(0, 0, spotRadius * 0.46, 0, 2 * Math.PI);
-          drawingContext.fill();
-          drawingContext.filter = `blur(${Math.max(0.1, blurPx * config.coreBlurMultiplier)}px)`;
-          drawingContext.fillStyle = `rgba(0, 0, 0, ${Math.min(0.88, coreAlpha * 0.95)})`;
-          drawingContext.beginPath();
-          drawingContext.ellipse(0, 0, spotRadius * 0.26, spotRadius * 0.16, 0, 0, 2 * Math.PI);
-          drawingContext.fill();
-          const hardCoreStrength = VIEWER_PERF_PROFILE.isMobileLike
-            ? config.hardCoreStrengthBase * 0.55
-            : config.hardCoreStrengthBase;
-          if (hardCoreStrength > 0) {
-            drawingContext.filter = 'none';
-            drawingContext.fillStyle = `rgba(0, 0, 0, ${Math.min(
-              hardCoreStrength,
-              coreAlpha * 1.4
-            )})`;
-            drawingContext.beginPath();
-            drawingContext.ellipse(
-              0,
-              0,
-              spotRadius * config.hardCoreRadiusX,
-              spotRadius * config.hardCoreRadiusY,
-              0,
-              0,
-              2 * Math.PI
-            );
-            drawingContext.fill();
-          }
+    function Tt(n, o, s, d, v, E) {
+      let P = o.radiusBoost || 1,
+        $ =
+          typeof o.occlusionBlurScaleOverride == 'number'
+            ? o.occlusionBlurScaleOverride
+            : ie.occlusionBlurScale;
+      o.spotsToRender.forEach((H) => {
+        let qe = s + (0.5 + H.x * 0.5) * v,
+          De = d + (0.5 + H.y * 0.5) * E,
+          je = o.isDenseLevel ? 2 : 1,
+          be = H.r * o.minDimension * 0.3 * je * P,
+          Pi = H.stretchX || 1,
+          ki = H.stretchY || 1,
+          Ni = H.angle || 0,
+          Oi = H.blur * (o.minDimension / 900) * o.blurMultiplier * $,
+          _t = Math.max(0.45, Math.min(o.blurCap, Oi)),
+          Ft = Math.min(o.outerAlphaCap, H.alpha * o.levelBoost),
+          ze = Math.min(o.coreAlphaCap, H.coreAlpha * o.levelBoost * o.coreBoost);
+        (n.save(),
+          n.translate(qe, De),
+          n.rotate(Ni),
+          n.scale(Pi, ki),
+          (n.filter = `blur(${_t}px)`));
+        let at = n.createRadialGradient(0, 0, 0, 0, 0, be);
+        if (
+          (at.addColorStop(0, `rgba(4, 3, 2, ${Ft})`),
+          at.addColorStop(0.55, `rgba(8, 6, 4, ${Ft * 0.82})`),
+          at.addColorStop(1, 'rgba(12, 8, 5, 0)'),
+          (n.fillStyle = at),
+          n.beginPath(),
+          n.arc(0, 0, be, 0, 2 * Math.PI),
+          n.fill(),
+          ze > 0)
+        ) {
+          let st = n.createRadialGradient(0, 0, 0, 0, 0, be * 0.46);
+          (st.addColorStop(0, `rgba(0, 0, 0, ${ze})`),
+            st.addColorStop(0.8, `rgba(6, 4, 2, ${ze * 0.46})`),
+            st.addColorStop(1, 'rgba(8, 5, 2, 0)'),
+            (n.fillStyle = st),
+            n.beginPath(),
+            n.arc(0, 0, be * 0.46, 0, 2 * Math.PI),
+            n.fill(),
+            (n.filter = `blur(${Math.max(0.1, _t * o.coreBlurMultiplier)}px)`),
+            (n.fillStyle = `rgba(0, 0, 0, ${Math.min(0.88, ze * 0.95)})`),
+            n.beginPath(),
+            n.ellipse(0, 0, be * 0.26, be * 0.16, 0, 0, 2 * Math.PI),
+            n.fill());
+          let $t = ie.isMobileLike ? o.hardCoreStrengthBase * 0.55 : o.hardCoreStrengthBase;
+          $t > 0 &&
+            ((n.filter = 'none'),
+            (n.fillStyle = `rgba(0, 0, 0, ${Math.min($t, ze * 1.4)})`),
+            n.beginPath(),
+            n.ellipse(0, 0, be * o.hardCoreRadiusX, be * o.hardCoreRadiusY, 0, 0, 2 * Math.PI),
+            n.fill());
         }
-        drawingContext.restore();
+        n.restore();
       });
     }
-    function getMobileOcclusionTexture(level) {
-      if (!VIEWER_PERF_PROFILE.isMobileLike || level <= 0) {
-        return null;
-      }
-      if (occlusionTextureCache.has(level)) {
-        return occlusionTextureCache.get(level);
-      }
-      if (typeof document === 'undefined' || typeof document.createElement !== 'function') {
-        occlusionTextureCache.set(level, null);
-        return null;
-      }
-      const renderConfig = buildOcclusionRenderConfig(level, MOBILE_OCCLUSION_TEXTURE_SIZE);
-      if (!renderConfig) {
-        occlusionTextureCache.set(level, null);
-        return null;
-      }
-      const textureCanvas = document.createElement('canvas');
-      textureCanvas.width = MOBILE_OCCLUSION_TEXTURE_SIZE;
-      textureCanvas.height = MOBILE_OCCLUSION_TEXTURE_SIZE;
-      const textureContext = textureCanvas.getContext('2d');
-      if (!textureContext) {
-        occlusionTextureCache.set(level, null);
-        return null;
-      }
-      textureContext.save();
-      textureContext.globalCompositeOperation = 'source-over';
-      drawOcclusionSpotsToContext(
-        textureContext,
-        renderConfig,
-        0,
-        0,
-        MOBILE_OCCLUSION_TEXTURE_SIZE,
-        MOBILE_OCCLUSION_TEXTURE_SIZE
-      );
-      textureContext.filter = 'none';
-      textureContext.restore();
-      occlusionTextureCache.set(level, textureCanvas);
-      return textureCanvas;
+    function li(n) {
+      if (!ie.isMobileLike || n <= 0) return null;
+      if (Te.has(n)) return Te.get(n);
+      if (typeof document == 'undefined' || typeof document.createElement != 'function')
+        return (Te.set(n, null), null);
+      let o = vt(n, Le);
+      if (!o) return (Te.set(n, null), null);
+      let s = document.createElement('canvas');
+      ((s.width = Le), (s.height = Le));
+      let d = s.getContext('2d');
+      return d
+        ? (d.save(),
+          (d.globalCompositeOperation = 'source-over'),
+          Tt(d, o, 0, 0, Le, Le),
+          (d.filter = 'none'),
+          d.restore(),
+          Te.set(n, s),
+          s)
+        : (Te.set(n, null), null);
     }
-    function getMobileCataractLayer(level, cataract) {
+    function ci(n, o) {
+      if (!ie.isMobileLike || n <= 0 || t.width <= 0 || t.height <= 0) return null;
+      let s = `${n}:${t.width}x${t.height}`;
+      if (Ie.has(s)) return Ie.get(s);
+      if (typeof document == 'undefined' || typeof document.createElement != 'function')
+        return (Ie.set(s, null), null);
+      let d = document.createElement('canvas');
+      ((d.width = t.width), (d.height = t.height));
+      let v = d.getContext('2d');
+      if (!v) return (Ie.set(s, null), null);
+      (o.yellowTint > 0 &&
+        ((v.fillStyle = `rgba(226, 188, 92, ${o.yellowTint})`),
+        v.fillRect(0, 0, d.width, d.height)),
+        o.darkTint > 0 &&
+          ((v.fillStyle = `rgba(35, 24, 5, ${o.darkTint})`), v.fillRect(0, 0, d.width, d.height)),
+        o.hazeTint > 0 &&
+          ((v.fillStyle = `rgba(250, 236, 208, ${o.hazeTint})`),
+          v.fillRect(0, 0, d.width, d.height)));
+      let E = Se * 1.12,
+        P = d.width * E,
+        $ = d.height * E,
+        H = (d.width - P) / 2,
+        qe = (d.height - $) / 2,
+        De = vt(n, Math.max(1, Math.min(P, $)));
+      return (
+        De &&
+          ((De.radiusBoost = 1.08),
+          (De.occlusionBlurScaleOverride = 0.92),
+          Tt(v, De, H, qe, P, $),
+          (v.filter = 'none')),
+        Ie.set(s, d),
+        d
+      );
+    }
+    function ui(n, o) {
+      let s = ci(n, o);
+      s &&
+        (i.save(),
+        (i.globalCompositeOperation = 'source-over'),
+        i.drawImage(s, 0, 0, t.width, t.height),
+        i.restore());
+    }
+    function di(n, o, s, d, v) {
+      let E = li(v);
+      if (E) {
+        (i.save(),
+          (i.globalCompositeOperation = 'source-over'),
+          i.drawImage(E, n, o, s, d),
+          i.restore());
+        return;
+      }
+      let P = Math.min(s, d),
+        $ = vt(v, P);
+      $ &&
+        (i.save(),
+        (i.globalCompositeOperation = 'source-over'),
+        Tt(i, $, n, o, s, d),
+        (i.filter = 'none'),
+        i.restore());
+    }
+    function Ye(n) {
+      let o =
+          typeof n == 'number'
+            ? n
+            : typeof window != 'undefined' && window.performance
+              ? window.performance.now()
+              : Date.now(),
+        s = ie.isMobileLike && e.viewer.cataractLevel > 0,
+        d = s ? ie.cataractJitterIntervalMs : ie.baseJitterIntervalMs;
+      if (s && Z) {
+        oe = requestAnimationFrame(Ye);
+        return;
+      }
+      if (o - _e < d) {
+        oe = requestAnimationFrame(Ye);
+        return;
+      }
+      _e = o;
+      let v = s ? 0.58 : 1,
+        E = $e * fe.jitterMultiplier * v,
+        P = Math.max(0.72, 0.85 - (fe.jitterMultiplier - 1) * 0.04),
+        $ = (Math.random() - 0.5) * E,
+        H = (Math.random() - 0.5) * E;
+      ((re += $),
+        (X += H),
+        (re *= P),
+        (X *= P),
+        (K += re),
+        (F += X),
+        Xe(),
+        h(),
+        (oe = requestAnimationFrame(Ye)));
+    }
+    function mi(n = {}) {
+      e.viewer.shiftInProgress = !0;
+      let o = Z,
+        s = re,
+        d = X;
+      ((Z = !1), (re = 0), (X = 0));
+      let v = K,
+        E = F,
+        P = xe(n.distanceMultiplier, 0.25, 4, 1) * fe.shiftDistanceMultiplier,
+        $ = Ve * P,
+        H = xe(n.returnDelayMs, Pe.shiftDurationMs.min, Pe.shiftDurationMs.max, fe.shiftDurationMs),
+        qe = Math.random() * 2 * Math.PI;
+      ((K += $ * Math.cos(qe)),
+        (F += $ * Math.sin(qe)),
+        Xe(),
+        h(),
+        pe !== null && (clearTimeout(pe), (pe = null)),
+        (pe = setTimeout(() => {
+          ((K = v),
+            (F = E),
+            Xe(),
+            h(),
+            (Z = o),
+            (re = s),
+            (X = d),
+            (e.viewer.shiftInProgress = !1),
+            (pe = null));
+        }, H)));
+    }
+    function hi() {
+      if (ie.isMobileLike || z !== null) return;
+      let n = () => {
+        (Z
+          ? (de = { x: (Math.random() - 0.5) * 100, y: (Math.random() - 0.5) * 100 })
+          : (de = { x: 0, y: 0 }),
+          (ye.x += (de.x - ye.x) * 0.1),
+          (ye.y += (de.y - ye.y) * 0.1),
+          h(),
+          (z = requestAnimationFrame(n)));
+      };
+      n();
+    }
+    function fi() {
+      (z !== null && (cancelAnimationFrame(z), (z = null)), (ye = { x: 0, y: 0 }), h());
+    }
+    function rt() {
+      if (!D.naturalWidth || !D.naturalHeight) return;
+      let n = Math.max(0.45, Math.min(1, ie.canvasScale));
+      ((t.width = Math.max(1, Math.round(D.naturalWidth * n))),
+        (t.height = Math.max(1, Math.round(D.naturalHeight * n))),
+        (i.imageSmoothingEnabled = !0),
+        (i.imageSmoothingQuality = ie.isMobileLike ? 'medium' : 'high'),
+        (j = t.width / 2),
+        (_ = t.height / 2),
+        (re = 0),
+        (X = 0),
+        (K = 0),
+        (F = 0),
+        Ie.clear(),
+        h());
+    }
+    function pi() {
+      if (!c || !D.naturalWidth || !D.naturalHeight) return;
+      i.clearRect(0, 0, t.width, t.height);
+      let n = ln({
+          canvasWidth: t.width,
+          canvasHeight: t.height,
+          imageNaturalWidth: D.naturalWidth,
+          imageNaturalHeight: D.naturalHeight,
+          imageScale: we,
+          zoomFactor: Se,
+          bgOffsetX: K,
+          bgOffsetY: F,
+          circleRadius: Q,
+          circleX: j,
+          isRightEye: e.viewer.isRightEye
+        }),
+        o = q[e.viewer.cataractLevel] || q[0];
+      (gi(n, o), yi(n, o), xi(n), vi());
+    }
+    function Nt(n, o, s) {
+      (i.beginPath(), i.arc(n, o, s, 0, 2 * Math.PI, !0), i.closePath(), i.clip());
+    }
+    function gi(n, o) {
       if (
-        !VIEWER_PERF_PROFILE.isMobileLike ||
-        level <= 0 ||
-        canvas2.width <= 0 ||
-        canvas2.height <= 0
+        (i.save(),
+        e.viewer.isRightEye || (i.translate(t.width, 0), i.scale(-1, 1)),
+        Nt(n.flippedCircleX, _, n.effectiveCircleRadius),
+        e.viewer.isDiscVisible)
       ) {
-        return null;
-      }
-      const cacheKey = `${level}:${canvas2.width}x${canvas2.height}`;
-      if (mobileCataractLayerCache.has(cacheKey)) {
-        return mobileCataractLayerCache.get(cacheKey);
-      }
-      if (typeof document === 'undefined' || typeof document.createElement !== 'function') {
-        mobileCataractLayerCache.set(cacheKey, null);
-        return null;
-      }
-      const layerCanvas = document.createElement('canvas');
-      layerCanvas.width = canvas2.width;
-      layerCanvas.height = canvas2.height;
-      const layerContext = layerCanvas.getContext('2d');
-      if (!layerContext) {
-        mobileCataractLayerCache.set(cacheKey, null);
-        return null;
-      }
-      if (cataract.yellowTint > 0) {
-        layerContext.fillStyle = `rgba(226, 188, 92, ${cataract.yellowTint})`;
-        layerContext.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
-      }
-      if (cataract.darkTint > 0) {
-        layerContext.fillStyle = `rgba(35, 24, 5, ${cataract.darkTint})`;
-        layerContext.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
-      }
-      if (cataract.hazeTint > 0) {
-        layerContext.fillStyle = `rgba(250, 236, 208, ${cataract.hazeTint})`;
-        layerContext.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
-      }
-      const virtualImageScale = zoomFactor * 1.12;
-      const virtualImageWidth = layerCanvas.width * virtualImageScale;
-      const virtualImageHeight = layerCanvas.height * virtualImageScale;
-      const virtualImageX = (layerCanvas.width - virtualImageWidth) / 2;
-      const virtualImageY = (layerCanvas.height - virtualImageHeight) / 2;
-      const renderConfig = buildOcclusionRenderConfig(
-        level,
-        Math.max(1, Math.min(virtualImageWidth, virtualImageHeight))
-      );
-      if (renderConfig) {
-        renderConfig.radiusBoost = 1.08;
-        renderConfig.occlusionBlurScaleOverride = 0.92;
-        drawOcclusionSpotsToContext(
-          layerContext,
-          renderConfig,
-          virtualImageX,
-          virtualImageY,
-          virtualImageWidth,
-          virtualImageHeight
-        );
-        layerContext.filter = 'none';
-      }
-      mobileCataractLayerCache.set(cacheKey, layerCanvas);
-      return layerCanvas;
+        let s = ei(n);
+        (i.save(),
+          Lt(s),
+          (i.filter = ti(o)),
+          i.drawImage(
+            D,
+            0,
+            0,
+            D.naturalWidth,
+            D.naturalHeight,
+            s.offsetXPos,
+            s.offsetYPos,
+            s.scaledWidth,
+            s.scaledHeight
+          ),
+          (i.filter = 'none'),
+          i.restore(),
+          ie.isMobileLike && e.viewer.cataractLevel > 0
+            ? ui(e.viewer.cataractLevel, o)
+            : (bi(o),
+              i.save(),
+              Lt(s),
+              di(s.offsetXPos, s.offsetYPos, s.scaledWidth, s.scaledHeight, e.viewer.cataractLevel),
+              i.restore()));
+      } else ((i.fillStyle = 'black'), i.fillRect(0, 0, t.width, t.height));
+      i.restore();
     }
-    function drawMobileCataractLayer(level, cataract) {
-      const layer = getMobileCataractLayer(level, cataract);
-      if (!layer) {
-        return;
-      }
-      ctx.save();
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(layer, 0, 0, canvas2.width, canvas2.height);
-      ctx.restore();
+    function bi(n) {
+      (n.yellowTint > 0 &&
+        ((i.fillStyle = `rgba(226, 188, 92, ${n.yellowTint})`),
+        i.fillRect(0, 0, t.width, t.height)),
+        n.darkTint > 0 &&
+          ((i.fillStyle = `rgba(35, 24, 5, ${n.darkTint})`), i.fillRect(0, 0, t.width, t.height)),
+        n.hazeTint > 0 &&
+          ((i.fillStyle = `rgba(250, 236, 208, ${n.hazeTint})`),
+          i.fillRect(0, 0, t.width, t.height)));
     }
-    function drawCataractOcclusions(imageX, imageY, imageWidth, imageHeight, level) {
-      const mobileTexture = getMobileOcclusionTexture(level);
-      if (mobileTexture) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(mobileTexture, imageX, imageY, imageWidth, imageHeight);
-        ctx.restore();
-        return;
-      }
-      const minDimension = Math.min(imageWidth, imageHeight);
-      const renderConfig = buildOcclusionRenderConfig(level, minDimension);
-      if (!renderConfig) {
-        return;
-      }
-      ctx.save();
-      ctx.globalCompositeOperation = 'source-over';
-      drawOcclusionSpotsToContext(ctx, renderConfig, imageX, imageY, imageWidth, imageHeight);
-      ctx.filter = 'none';
-      ctx.restore();
+    function yi(n, o) {
+      (i.save(),
+        Nt(j, _, n.effectiveCircleRadius),
+        e.viewer.isDiscVisible && Mi(n.effectiveCircleRadius, o),
+        i.restore());
     }
-    function jitter(timestamp) {
-      const now =
-        typeof timestamp === 'number'
-          ? timestamp
-          : typeof window !== 'undefined' && window.performance
-            ? window.performance.now()
-            : Date.now();
-      const isMobileCataract = VIEWER_PERF_PROFILE.isMobileLike && state.viewer.cataractLevel > 0;
-      const minJitterIntervalMs = isMobileCataract
-        ? VIEWER_PERF_PROFILE.cataractJitterIntervalMs
-        : VIEWER_PERF_PROFILE.baseJitterIntervalMs;
-      if (isMobileCataract && isDragging) {
-        jitterAnimationId = requestAnimationFrame(jitter);
-        return;
-      }
-      if (now - lastJitterRenderAt < minJitterIntervalMs) {
-        jitterAnimationId = requestAnimationFrame(jitter);
-        return;
-      }
-      lastJitterRenderAt = now;
-      const jitterStrength = isMobileCataract ? 0.58 : 1;
-      const activeJitterAmplitude =
-        jitterAmplitude * timedMotionProfile.jitterMultiplier * jitterStrength;
-      const damping = Math.max(0.72, 0.85 - (timedMotionProfile.jitterMultiplier - 1) * 0.04);
-      const accelX = (Math.random() - 0.5) * activeJitterAmplitude;
-      const accelY = (Math.random() - 0.5) * activeJitterAmplitude;
-      velocityX += accelX;
-      velocityY += accelY;
-      velocityX *= damping;
-      velocityY *= damping;
-      bgOffsetX += velocityX;
-      bgOffsetY += velocityY;
-      checkBoundaries();
-      requestDraw();
-      jitterAnimationId = requestAnimationFrame(jitter);
+    function Mi(n, o) {
+      let s = dn({
+          cataractLevel: e.viewer.cataractLevel,
+          darkTint: o.darkTint,
+          yellowTint: o.yellowTint
+        }),
+        v =
+          375 * (D.naturalHeight > 0 ? Math.max(0.45, Math.min(1, t.height / D.naturalHeight)) : 1),
+        E = 1.3,
+        P = 0.6 * v * E,
+        $ = 0.5 * v * E,
+        H = 0.7,
+        qe = P * H,
+        De = $ * H,
+        je = j + ye.x,
+        be = _ + 0.3 * n + ye.y;
+      (i.save(),
+        i.translate(je, be),
+        i.scale(1, -1),
+        i.translate(-je, -be),
+        Ot(je, be, P, $, 0.5 * s),
+        Ot(je, be, qe, De, s),
+        i.restore());
     }
-    function doGazeShift(options = {}) {
-      state.viewer.shiftInProgress = true;
-      const previousDragging = isDragging;
-      const previousVelocityX = velocityX;
-      const previousVelocityY = velocityY;
-      isDragging = false;
-      velocityX = 0;
-      velocityY = 0;
-      const originalX = bgOffsetX;
-      const originalY = bgOffsetY;
-      const distanceMultiplier =
-        clampNumber(options.distanceMultiplier, 0.25, 4, 1) *
-        timedMotionProfile.shiftDistanceMultiplier;
-      const shiftDistance = SHIFT_DISTANCE * distanceMultiplier;
-      const returnDelayMs = clampNumber(
-        options.returnDelayMs,
-        TIMED_MOTION_LIMITS.shiftDurationMs.min,
-        TIMED_MOTION_LIMITS.shiftDurationMs.max,
-        timedMotionProfile.shiftDurationMs
-      );
-      const angle = Math.random() * 2 * Math.PI;
-      bgOffsetX += shiftDistance * Math.cos(angle);
-      bgOffsetY += shiftDistance * Math.sin(angle);
-      checkBoundaries();
-      requestDraw();
-      if (shiftTimeoutId !== null) {
-        clearTimeout(shiftTimeoutId);
-        shiftTimeoutId = null;
-      }
-      shiftTimeoutId = setTimeout(() => {
-        bgOffsetX = originalX;
-        bgOffsetY = originalY;
-        checkBoundaries();
-        requestDraw();
-        isDragging = previousDragging;
-        velocityX = previousVelocityX;
-        velocityY = previousVelocityY;
-        state.viewer.shiftInProgress = false;
-        shiftTimeoutId = null;
-      }, returnDelayMs);
+    function Ot(n, o, s, d, v) {
+      let E = s / 2,
+        P = d / 2,
+        $ = P * 0.6;
+      (i.beginPath(),
+        i.ellipse(n, o, E, P, 0, Math.PI, 2 * Math.PI, !1),
+        i.ellipse(n, o, E, $, 0, 0, Math.PI, !1),
+        i.closePath(),
+        (i.fillStyle = `rgba(255,255,255,${v})`),
+        i.fill());
     }
-    function startCornealReflexAnimation() {
-      if (VIEWER_PERF_PROFILE.isMobileLike) {
-        return;
-      }
-      if (cornealAnimationId !== null) {
-        return;
-      }
-      const animateReflex = () => {
-        if (!isDragging) {
-          cornealTargetOffset = { x: 0, y: 0 };
-        } else {
-          cornealTargetOffset = {
-            x: (Math.random() - 0.5) * 100,
-            y: (Math.random() - 0.5) * 100
-          };
-        }
-        cornealJitterOffset.x += (cornealTargetOffset.x - cornealJitterOffset.x) * 0.1;
-        cornealJitterOffset.y += (cornealTargetOffset.y - cornealJitterOffset.y) * 0.1;
-        requestDraw();
-        cornealAnimationId = requestAnimationFrame(animateReflex);
-      };
-      animateReflex();
+    function xi(n) {
+      let o = 18 * n.windowScale * n.scaleFactor;
+      (i.save(),
+        i.beginPath(),
+        i.arc(j, _, n.effectiveCircleRadius, 0, 2 * Math.PI, !0),
+        (i.strokeStyle = 'rgba(255, 255, 255, 0.24)'),
+        (i.lineWidth = o * 2),
+        i.stroke(),
+        i.beginPath(),
+        i.arc(j, _, n.effectiveCircleRadius, 0, 2 * Math.PI, !0),
+        (i.strokeStyle = 'rgba(255, 255, 255, 0.66)'),
+        (i.lineWidth = o),
+        i.stroke(),
+        i.beginPath(),
+        i.arc(j, _, n.effectiveCircleRadius, 0, 2 * Math.PI, !0),
+        (i.strokeStyle = 'rgba(255, 255, 255, 0.92)'),
+        (i.lineWidth = Math.max(2, o * 0.5)),
+        i.stroke(),
+        i.restore());
     }
-    function stopCornealReflexAnimation() {
-      if (cornealAnimationId !== null) {
-        cancelAnimationFrame(cornealAnimationId);
-        cornealAnimationId = null;
-      }
-      cornealJitterOffset = { x: 0, y: 0 };
-      requestDraw();
+    function vi() {
+      let n = Math.max(1, t.clientWidth || t.width),
+        o = Math.max(1, t.clientHeight || t.height),
+        s = t.width / n,
+        d = t.height / o,
+        v = Math.max(10, Math.min(16, n * 0.02)),
+        E = Math.max(10, Math.min(13, n * 0.011)),
+        P = v * s,
+        $ = o * 0.5 * d,
+        H = E * s;
+      (i.save(),
+        (i.fillStyle = 'white'),
+        (i.font = `600 ${H}px 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif`),
+        (i.textAlign = 'center'),
+        (i.textBaseline = 'middle'),
+        e.viewer.isRightEye
+          ? (i.save(),
+            i.translate(P, $),
+            i.rotate(-Math.PI / 2),
+            i.fillText('Temporal', 0, 0),
+            i.restore(),
+            i.save(),
+            i.translate(t.width - P, $),
+            i.rotate(Math.PI / 2),
+            i.fillText('Nasal', 0, 0),
+            i.restore())
+          : (i.save(),
+            i.translate(P, $),
+            i.rotate(-Math.PI / 2),
+            i.fillText('Nasal', 0, 0),
+            i.restore(),
+            i.save(),
+            i.translate(t.width - P, $),
+            i.rotate(Math.PI / 2),
+            i.fillText('Temporal', 0, 0),
+            i.restore()),
+        i.restore());
     }
-    function reCentreEverything() {
-      if (!img.naturalWidth || !img.naturalHeight) {
-        return;
-      }
-      const renderScale = Math.max(0.45, Math.min(1, VIEWER_PERF_PROFILE.canvasScale));
-      canvas2.width = Math.max(1, Math.round(img.naturalWidth * renderScale));
-      canvas2.height = Math.max(1, Math.round(img.naturalHeight * renderScale));
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = VIEWER_PERF_PROFILE.isMobileLike ? 'medium' : 'high';
-      circleX = canvas2.width / 2;
-      circleY = canvas2.height / 2;
-      velocityX = 0;
-      velocityY = 0;
-      bgOffsetX = 0;
-      bgOffsetY = 0;
-      mobileCataractLayerCache.clear();
-      requestDraw();
+    function Xe() {
+      if (!D.naturalWidth || !D.naturalHeight) return;
+      let n = cn({
+          canvasWidth: t.width,
+          canvasHeight: t.height,
+          imageNaturalWidth: D.naturalWidth,
+          imageNaturalHeight: D.naturalHeight,
+          circleRadius: Q,
+          zoomFactor: Se
+        }),
+        o = un({ circleX: j, circleY: _, velocityX: re, velocityY: X, bounds: n });
+      ((j = o.circleX), (_ = o.circleY), (re = o.velocityX), (X = o.velocityY));
     }
-    function draw() {
-      if (!img.naturalWidth || !img.naturalHeight) {
-        return;
-      }
-      ctx.clearRect(0, 0, canvas2.width, canvas2.height);
-      const geometry = computeDrawGeometry({
-        canvasWidth: canvas2.width,
-        canvasHeight: canvas2.height,
-        imageNaturalWidth: img.naturalWidth,
-        imageNaturalHeight: img.naturalHeight,
-        imageScale,
-        zoomFactor,
-        bgOffsetX,
-        bgOffsetY,
-        circleRadius,
-        circleX,
-        isRightEye: state.viewer.isRightEye
-      });
-      const cataract = cataractPresets[state.viewer.cataractLevel] || cataractPresets[0];
-      drawFundusLayer(geometry, cataract);
-      drawCornealReflexLayer(geometry, cataract);
-      drawWindowRing(geometry);
-      drawCanvasEdgeLabels();
+    function Ti() {
+      Be() !== 8 && bt(8);
     }
-    function clipViewingWindow(centerX, centerY, radius) {
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, true);
-      ctx.closePath();
-      ctx.clip();
+    function Ii(n) {
+      let o = !!n;
+      (Be() === 15) !== o && bt(o ? 15 : 8);
     }
-    function drawFundusLayer(geometry, cataract) {
-      ctx.save();
-      if (!state.viewer.isRightEye) {
-        ctx.translate(canvas2.width, 0);
-        ctx.scale(-1, 1);
-      }
-      clipViewingWindow(geometry.flippedCircleX, circleY, geometry.effectiveCircleRadius);
-      if (state.viewer.isDiscVisible) {
-        const augmentedGeometry = buildTimedAugmentedDrawGeometry(geometry);
-        ctx.save();
-        applyTimedAugmentationTransform(augmentedGeometry);
-        ctx.filter = buildFundusFilter(cataract);
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          img.naturalWidth,
-          img.naturalHeight,
-          augmentedGeometry.offsetXPos,
-          augmentedGeometry.offsetYPos,
-          augmentedGeometry.scaledWidth,
-          augmentedGeometry.scaledHeight
-        );
-        ctx.filter = 'none';
-        ctx.restore();
-        const isMobileCachedCataract =
-          VIEWER_PERF_PROFILE.isMobileLike && state.viewer.cataractLevel > 0;
-        if (isMobileCachedCataract) {
-          drawMobileCataractLayer(state.viewer.cataractLevel, cataract);
-        } else {
-          applyCataractOverlays(cataract);
-          ctx.save();
-          applyTimedAugmentationTransform(augmentedGeometry);
-          drawCataractOcclusions(
-            augmentedGeometry.offsetXPos,
-            augmentedGeometry.offsetYPos,
-            augmentedGeometry.scaledWidth,
-            augmentedGeometry.scaledHeight,
-            state.viewer.cataractLevel
-          );
-          ctx.restore();
-        }
-      } else {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
-      }
-      ctx.restore();
+    function wi() {
+      return Be() === 15;
     }
-    function applyCataractOverlays(cataract) {
-      if (cataract.yellowTint > 0) {
-        ctx.fillStyle = `rgba(226, 188, 92, ${cataract.yellowTint})`;
-        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
-      }
-      if (cataract.darkTint > 0) {
-        ctx.fillStyle = `rgba(35, 24, 5, ${cataract.darkTint})`;
-        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
-      }
-      if (cataract.hazeTint > 0) {
-        ctx.fillStyle = `rgba(250, 236, 208, ${cataract.hazeTint})`;
-        ctx.fillRect(0, 0, canvas2.width, canvas2.height);
-      }
+    function Si(n) {
+      let o = !!n;
+      e.viewer.isRightEye !== o && ((f.checked = !o), (e.viewer.isRightEye = o), rt(), yt());
     }
-    function drawCornealReflexLayer(geometry, cataract) {
-      ctx.save();
-      clipViewingWindow(circleX, circleY, geometry.effectiveCircleRadius);
-      if (state.viewer.isDiscVisible) {
-        drawCornealReflex(geometry.effectiveCircleRadius, cataract);
-      }
-      ctx.restore();
+    function Ai() {
+      return e.viewer.isRightEye;
     }
-    function drawCornealReflex(effectiveCircleRadius, cataract) {
-      const reflexOpacity = computeReflexOpacity({
-        cataractLevel: state.viewer.cataractLevel,
-        darkTint: cataract.darkTint,
-        yellowTint: cataract.yellowTint
-      });
-      const renderResolutionScale =
-        img.naturalHeight > 0 ? Math.max(0.45, Math.min(1, canvas2.height / img.naturalHeight)) : 1;
-      const reflexBaseRadius = 375 * renderResolutionScale;
-      const reflexScaleFactor = 1.3;
-      const ellipseWidth = 0.6 * reflexBaseRadius * reflexScaleFactor;
-      const ellipseHeight = 0.5 * reflexBaseRadius * reflexScaleFactor;
-      const smallerReflexScaleFactor = 0.7;
-      const smallerEllipseWidth = ellipseWidth * smallerReflexScaleFactor;
-      const smallerEllipseHeight = ellipseHeight * smallerReflexScaleFactor;
-      const ellipseCenterX = circleX + cornealJitterOffset.x;
-      const ellipseCenterY = circleY + 0.3 * effectiveCircleRadius + cornealJitterOffset.y;
-      ctx.save();
-      ctx.translate(ellipseCenterX, ellipseCenterY);
-      ctx.scale(1, -1);
-      ctx.translate(-ellipseCenterX, -ellipseCenterY);
-      drawReflexEllipse(
-        ellipseCenterX,
-        ellipseCenterY,
-        ellipseWidth,
-        ellipseHeight,
-        0.5 * reflexOpacity
-      );
-      drawReflexEllipse(
-        ellipseCenterX,
-        ellipseCenterY,
-        smallerEllipseWidth,
-        smallerEllipseHeight,
-        reflexOpacity
-      );
-      ctx.restore();
+    function Ei(n) {
+      let o = q.length - 1,
+        s = Math.max(0, Math.min(o, Number(n) || 0));
+      Number(y.value) !== s && ((y.value = String(s)), Mt(), h());
     }
-    function drawReflexEllipse(centerX, centerY, width, height, alpha) {
-      const rx = width / 2;
-      const ry = height / 2;
-      const flatterRy = ry * 0.6;
-      ctx.beginPath();
-      ctx.ellipse(centerX, centerY, rx, ry, 0, Math.PI, 2 * Math.PI, false);
-      ctx.ellipse(centerX, centerY, rx, flatterRy, 0, 0, Math.PI, false);
-      ctx.closePath();
-      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-      ctx.fill();
+    function Ci() {
+      return Number(y.value) || 0;
     }
-    function drawWindowRing(geometry) {
-      const baseLineWidth = 18 * geometry.windowScale * geometry.scaleFactor;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(circleX, circleY, geometry.effectiveCircleRadius, 0, 2 * Math.PI, true);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.24)';
-      ctx.lineWidth = baseLineWidth * 2;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(circleX, circleY, geometry.effectiveCircleRadius, 0, 2 * Math.PI, true);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.66)';
-      ctx.lineWidth = baseLineWidth;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(circleX, circleY, geometry.effectiveCircleRadius, 0, 2 * Math.PI, true);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.92)';
-      ctx.lineWidth = Math.max(2, baseLineWidth * 0.5);
-      ctx.stroke();
-      ctx.restore();
+    function Li(n) {
+      ((e.viewer.isDiscVisible = n), h());
     }
-    function drawCanvasEdgeLabels() {
-      const displayWidth = Math.max(1, canvas2.clientWidth || canvas2.width);
-      const displayHeight = Math.max(1, canvas2.clientHeight || canvas2.height);
-      const canvasScaleX = canvas2.width / displayWidth;
-      const canvasScaleY = canvas2.height / displayHeight;
-      const sideOffsetCss = Math.max(10, Math.min(16, displayWidth * 0.02));
-      const fontSizeCss = Math.max(10, Math.min(13, displayWidth * 0.011));
-      const sideOffset = sideOffsetCss * canvasScaleX;
-      const centreY = displayHeight * 0.5 * canvasScaleY;
-      const fontSize = fontSizeCss * canvasScaleX;
-      ctx.save();
-      ctx.fillStyle = 'white';
-      ctx.font = `600 ${fontSize}px 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      if (state.viewer.isRightEye) {
-        ctx.save();
-        ctx.translate(sideOffset, centreY);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText('Temporal', 0, 0);
-        ctx.restore();
-        ctx.save();
-        ctx.translate(canvas2.width - sideOffset, centreY);
-        ctx.rotate(Math.PI / 2);
-        ctx.fillText('Nasal', 0, 0);
-        ctx.restore();
-      } else {
-        ctx.save();
-        ctx.translate(sideOffset, centreY);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText('Nasal', 0, 0);
-        ctx.restore();
-        ctx.save();
-        ctx.translate(canvas2.width - sideOffset, centreY);
-        ctx.rotate(Math.PI / 2);
-        ctx.fillText('Temporal', 0, 0);
-        ctx.restore();
-      }
-      ctx.restore();
+    function Ri(n) {
+      (k.forEach((o) => {
+        o.disabled = n;
+      }),
+        (r.disabled = n),
+        (f.disabled = n),
+        (y.disabled = n));
     }
-    function checkBoundaries() {
-      if (!img.naturalWidth || !img.naturalHeight) {
-        return;
-      }
-      const bounds = computeViewerBounds({
-        canvasWidth: canvas2.width,
-        canvasHeight: canvas2.height,
-        imageNaturalWidth: img.naturalWidth,
-        imageNaturalHeight: img.naturalHeight,
-        circleRadius,
-        zoomFactor
-      });
-      const clamped = clampCircleToBounds({
-        circleX,
-        circleY,
-        velocityX,
-        velocityY,
-        bounds
-      });
-      circleX = clamped.circleX;
-      circleY = clamped.circleY;
-      velocityX = clamped.velocityX;
-      velocityY = clamped.velocityY;
+    function qi() {
+      return e.viewer.conditionImageSrc || T;
     }
-    function ensureUndilated() {
-      if (getCurrentFovDegrees() !== 8) {
-        setFovDegrees(8);
-      }
-    }
-    function setDilated(isDilated) {
-      const nextIsDilated = Boolean(isDilated);
-      const currentIsDilated = getCurrentFovDegrees() === 15;
-      if (currentIsDilated === nextIsDilated) {
-        return;
-      }
-      setFovDegrees(nextIsDilated ? 15 : 8);
-    }
-    function getIsDilated() {
-      return getCurrentFovDegrees() === 15;
-    }
-    function setRightEye(isRightEye) {
-      const nextIsRightEye = Boolean(isRightEye);
-      if (state.viewer.isRightEye === nextIsRightEye) {
-        return;
-      }
-      eyeToggleCheckbox2.checked = !nextIsRightEye;
-      state.viewer.isRightEye = nextIsRightEye;
-      reCentreEverything();
-      updateEyeLabels();
-    }
-    function getIsRightEye() {
-      return state.viewer.isRightEye;
-    }
-    function setCataractLevel(level) {
-      const maxIndex = cataractPresets.length - 1;
-      const nextLevel = Math.max(0, Math.min(maxIndex, Number(level) || 0));
-      if (Number(cataractSlider2.value) === nextLevel) {
-        return;
-      }
-      cataractSlider2.value = String(nextLevel);
-      updateCataractUi();
-      requestDraw();
-    }
-    function getCataractLevel() {
-      return Number(cataractSlider2.value) || 0;
-    }
-    function setDiscVisible(visible) {
-      state.viewer.isDiscVisible = visible;
-      requestDraw();
-    }
-    function setViewerControlsDisabled(disabled) {
-      conditionButtons2.forEach((button) => {
-        button.disabled = disabled;
-      });
-      fovToggleCheckbox2.disabled = disabled;
-      eyeToggleCheckbox2.disabled = disabled;
-      cataractSlider2.disabled = disabled;
-    }
-    function getActiveConditionImagePath() {
-      return state.viewer.conditionImageSrc || defaultImageSrc;
-    }
-    function destroy() {
-      listenerDisposers.splice(0).forEach((dispose) => {
-        dispose();
-      });
-      if (jitterAnimationId !== null) {
-        cancelAnimationFrame(jitterAnimationId);
-        jitterAnimationId = null;
-      }
-      if (drawAnimationId !== null) {
-        cancelAnimationFrame(drawAnimationId);
-        drawAnimationId = null;
-      }
-      if (cornealAnimationId !== null) {
-        cancelAnimationFrame(cornealAnimationId);
-        cornealAnimationId = null;
-      }
-      if (shiftTimeoutId !== null) {
-        clearTimeout(shiftTimeoutId);
-        shiftTimeoutId = null;
-      }
-      state.viewer.shiftInProgress = false;
-      occlusionTextureCache.clear();
-      mobileCataractLayerCache.clear();
+    function Di() {
+      ((c = !1),
+        (M = {}),
+        (D.onload = null),
+        (D.onerror = null),
+        Ne.splice(0).forEach((n) => {
+          n();
+        }),
+        oe !== null && (cancelAnimationFrame(oe), (oe = null)),
+        ge !== null && (cancelAnimationFrame(ge), (ge = null)),
+        z !== null && (cancelAnimationFrame(z), (z = null)),
+        pe !== null && (clearTimeout(pe), (pe = null)),
+        (e.viewer.shiftInProgress = !1),
+        Te.clear(),
+        Ie.clear());
     }
     return {
-      initialize: initialize2,
-      doGazeShift,
-      setDiscVisible,
-      setImageSource,
-      setViewerControlsDisabled,
-      ensureUndilated,
-      setDilated,
-      getIsDilated,
-      setRightEye,
-      getIsRightEye,
-      setCataractLevel,
-      getCataractLevel,
-      setTimedAugmentation,
-      clearTimedAugmentation,
-      setTimedMotionProfile,
-      clearTimedMotionProfile,
-      setFovDegrees,
-      getFovDegrees,
-      getActiveConditionImagePath,
-      destroy
+      initialize: g,
+      doGazeShift: mi,
+      setDiscVisible: Li,
+      setImageSource: Ae,
+      setViewerControlsDisabled: Ri,
+      ensureUndilated: Ti,
+      setDilated: Ii,
+      getIsDilated: wi,
+      setRightEye: Si,
+      getIsRightEye: Ai,
+      setCataractLevel: Ei,
+      getCataractLevel: Ci,
+      setTimedAugmentation: ni,
+      clearTimedAugmentation: ii,
+      setTimedMotionProfile: oi,
+      clearTimedMotionProfile: ri,
+      setFovDegrees: bt,
+      getFovDegrees: si,
+      getActiveConditionImagePath: qi,
+      destroy: Di
     };
   }
-
-  // modal-manager.js
-  var FOCUSABLE_SELECTOR = [
+  var Ui = [
     'a[href]',
     'button:not([disabled])',
     'input:not([disabled]):not([type="hidden"])',
@@ -2369,157 +2091,114 @@
     'textarea:not([disabled])',
     '[tabindex]:not([tabindex="-1"])'
   ].join(',');
-  function createModalManager({
-    state,
-    stateMachine: stateMachine2,
-    sideMenu: sideMenu2,
-    sideMenuButtons: sideMenuButtons2,
-    burgerIcon: burgerIcon2,
-    infoIcon: infoIcon2,
-    infoModal: infoModal2,
-    testModal: testModal2
+  function pn({
+    state: e,
+    stateMachine: t,
+    sideMenu: r,
+    sideMenuButtons: a,
+    burgerIcon: l,
+    infoIcon: m,
+    infoModal: f,
+    testModal: b
   }) {
-    function setSideMenuOpen(isOpen) {
-      stateMachine2.setSideMenuOpen(isOpen);
-      sideMenu2.classList.toggle('open', isOpen);
-      sideMenu2.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-      burgerIcon2.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      sideMenu2.inert = !isOpen;
-      sideMenuButtons2.forEach((button) => {
-        var _a2;
-        const isLocked = ((_a2 = button.dataset) == null ? void 0 : _a2.locked) === 'true';
-        button.disabled = !isOpen || isLocked;
-        button.tabIndex = isOpen && !isLocked ? 0 : -1;
-      });
+    function p(i) {
+      (t.setSideMenuOpen(i),
+        r.classList.toggle('open', i),
+        r.setAttribute('aria-hidden', i ? 'false' : 'true'),
+        l.setAttribute('aria-expanded', i ? 'true' : 'false'),
+        (r.inert = !i),
+        a.forEach((C) => {
+          var S;
+          let w = ((S = C.dataset) == null ? void 0 : S.locked) === 'true';
+          ((C.disabled = !i || w), (C.tabIndex = i && !w ? 0 : -1));
+        }),
+        i
+          ? queueMicrotask(() => {
+              T(r);
+            })
+          : r.contains(document.activeElement) && l.focus());
     }
-    function toggleSideMenu() {
-      setSideMenuOpen(!state.ui.sideMenuOpen);
+    function y() {
+      p(!e.ui.sideMenuOpen);
     }
-    function isModalOpen(modal) {
-      return modal.classList.contains('is-open');
+    function I(i) {
+      return i.classList.contains('is-open');
     }
-    function setModalState(modal, isOpen, triggerButton) {
-      if (isOpen) {
-        const returnFocusEl2 =
-          triggerButton ||
-          (document.activeElement instanceof HTMLElement ? document.activeElement : null);
-        modal.returnFocusEl = returnFocusEl2;
+    function N(i, C, w) {
+      if (C) {
+        let U =
+          w || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+        i.returnFocusEl = U;
       }
-      modal.classList.toggle('is-open', isOpen);
-      modal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-      stateMachine2.setActiveModal(isOpen ? modal.id : null);
-      if (triggerButton) {
-        triggerButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      }
-      const hasOpenModal = isModalOpen(infoModal2) || isModalOpen(testModal2);
-      document.body.classList.toggle('modal-open', hasOpenModal);
-      if (isOpen) {
-        queueMicrotask(() => {
-          focusFirstElement(modal);
+      (i.classList.toggle('is-open', C),
+        i.setAttribute('aria-hidden', C ? 'false' : 'true'),
+        t.setActiveModal(C ? i.id : null),
+        w && w.setAttribute('aria-expanded', C ? 'true' : 'false'));
+      let S = I(f) || I(b);
+      if ((document.body.classList.toggle('modal-open', S), C)) {
+        requestAnimationFrame(() => {
+          I(i) && T(i);
         });
         return;
       }
-      const returnFocusEl = modal.returnFocusEl;
-      modal.returnFocusEl = null;
-      if (returnFocusEl && typeof returnFocusEl.focus === 'function' && returnFocusEl.isConnected) {
-        returnFocusEl.focus();
-      }
+      let J = i.returnFocusEl;
+      ((i.returnFocusEl = null), J && typeof J.focus == 'function' && J.isConnected && J.focus());
     }
-    function getTopOpenModal() {
-      if (isModalOpen(testModal2)) {
-        return testModal2;
-      }
-      if (isModalOpen(infoModal2)) {
-        return infoModal2;
-      }
-      return null;
+    function R() {
+      return I(b) ? b : I(f) ? f : null;
     }
-    function getFocusableElements(container) {
-      return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter((element) => {
-        return element.getClientRects().length > 0;
-      });
+    function k(i) {
+      return Array.from(i.querySelectorAll(Ui)).filter((C) => C.getClientRects().length > 0);
     }
-    function focusFirstElement(modal) {
-      const focusableElements = getFocusableElements(modal);
-      if (focusableElements.length > 0) {
-        focusableElements[0].focus();
+    function T(i) {
+      let C = k(i);
+      if (C.length > 0) {
+        C[0].focus();
         return;
       }
-      modal.setAttribute('tabindex', '-1');
-      modal.focus();
+      (i.setAttribute('tabindex', '-1'), i.focus());
     }
-    function trapFocusInModal(event, modal) {
-      const focusableElements = getFocusableElements(modal);
-      if (focusableElements.length === 0) {
-        event.preventDefault();
-        modal.focus();
+    function B(i, C) {
+      let w = k(C);
+      if (w.length === 0) {
+        (i.preventDefault(), C.focus());
         return;
       }
-      const first = focusableElements[0];
-      const last = focusableElements[focusableElements.length - 1];
-      const activeElement = document.activeElement;
-      if (!modal.contains(activeElement)) {
-        event.preventDefault();
-        if (event.shiftKey) {
-          last.focus();
-        } else {
-          first.focus();
-        }
+      let S = w[0],
+        J = w[w.length - 1],
+        U = document.activeElement;
+      if (!C.contains(U)) {
+        (i.preventDefault(), i.shiftKey ? J.focus() : S.focus());
         return;
       }
-      if (event.shiftKey && activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
+      i.shiftKey && U === S
+        ? (i.preventDefault(), J.focus())
+        : !i.shiftKey && U === J && (i.preventDefault(), S.focus());
     }
-    function handleDocumentClick(event, { closeTestModal }) {
-      const target = event.target;
-      if (target === infoModal2) {
-        setModalState(infoModal2, false, infoIcon2);
-      }
-      if (target === testModal2) {
-        closeTestModal();
-      }
-      if (state.ui.sideMenuOpen && !sideMenu2.contains(target) && !burgerIcon2.contains(target)) {
-        setSideMenuOpen(false);
-      }
+    function q(i, { closeTestModal: C }) {
+      let w = i.target;
+      (w === f && N(f, !1, m),
+        w === b && C(),
+        e.ui.sideMenuOpen && !r.contains(w) && !l.contains(w) && p(!1));
     }
-    function handleDocumentKeyDown(event, { closeTestModal }) {
-      if (event.key === 'Tab') {
-        const openModal = getTopOpenModal();
-        if (openModal) {
-          trapFocusInModal(event, openModal);
-        }
+    function Y(i, { closeTestModal: C }) {
+      if (i.key === 'Tab') {
+        let w = R();
+        w && B(i, w);
       }
-      if (event.key !== 'Escape') {
-        return;
-      }
-      if (isModalOpen(infoModal2)) {
-        setModalState(infoModal2, false, infoIcon2);
-      }
-      if (isModalOpen(testModal2)) {
-        closeTestModal();
-      }
-      if (state.ui.sideMenuOpen) {
-        setSideMenuOpen(false);
-      }
+      i.key === 'Escape' && (I(f) && N(f, !1, m), I(b) && C(), e.ui.sideMenuOpen && p(!1));
     }
     return {
-      setSideMenuOpen,
-      toggleSideMenu,
-      isModalOpen,
-      setModalState,
-      handleDocumentClick,
-      handleDocumentKeyDown,
+      setSideMenuOpen: p,
+      toggleSideMenu: y,
+      isModalOpen: I,
+      setModalState: N,
+      handleDocumentClick: q,
+      handleDocumentKeyDown: Y,
       destroy: () => {}
     };
   }
-
-  // mcq-controller.js
-  var DEFAULT_MCQ_TIER = {
+  var gn = {
     name: 'Advanced',
     className: 'advanced-star',
     questionCount: 7,
@@ -2529,1729 +2208,1324 @@
     questionIds: [],
     questionPrompts: []
   };
-  function normalizeTierConfig(rawTier, index) {
-    const tier = rawTier && typeof rawTier === 'object' ? rawTier : {};
-    const normalizedName = String(tier.name || `Level ${index + 1}`);
-    const normalizedClassName = String(tier.className || '');
-    const normalizedQuestionCount = Math.max(1, Number(tier.questionCount) || 7);
-    const normalizedOptionCount = Math.max(2, Number(tier.optionCount) || 5);
-    const normalizedPassRatio = Math.min(1, Math.max(0.5, Number(tier.passRatio) || 0.7));
-    const normalizedTimeLimitSeconds = Math.max(0, Number(tier.timeLimitSeconds) || 0);
-    const normalizedQuestionIds = Array.isArray(tier.questionIds)
-      ? tier.questionIds.filter(
-          (questionId) => typeof questionId === 'string' && questionId.trim().length > 0
-        )
-      : [];
-    const normalizedQuestionPrompts = Array.isArray(tier.questionPrompts)
-      ? tier.questionPrompts.filter(
-          (prompt) => typeof prompt === 'string' && prompt.trim().length > 0
-        )
-      : [];
+  function Vi(e, t) {
+    let r = e && typeof e == 'object' ? e : {},
+      a = String(r.name || `Level ${t + 1}`),
+      l = String(r.className || ''),
+      m = Math.max(1, Number(r.questionCount) || 7),
+      f = Math.max(2, Number(r.optionCount) || 5),
+      b = Math.min(1, Math.max(0.5, Number(r.passRatio) || 0.7)),
+      p = Math.max(0, Number(r.timeLimitSeconds) || 0),
+      y = Array.isArray(r.questionIds)
+        ? r.questionIds.filter((N) => typeof N == 'string' && N.trim().length > 0)
+        : [],
+      I = Array.isArray(r.questionPrompts)
+        ? r.questionPrompts.filter((N) => typeof N == 'string' && N.trim().length > 0)
+        : [];
     return {
-      name: normalizedName,
-      className: normalizedClassName,
-      questionCount: normalizedQuestionCount,
-      optionCount: normalizedOptionCount,
-      passRatio: normalizedPassRatio,
-      timeLimitSeconds: normalizedTimeLimitSeconds,
-      questionIds: normalizedQuestionIds,
-      questionPrompts: normalizedQuestionPrompts
+      name: a,
+      className: l,
+      questionCount: m,
+      optionCount: f,
+      passRatio: b,
+      timeLimitSeconds: p,
+      questionIds: y,
+      questionPrompts: I
     };
   }
-  function normalizeProgressState(rawState, tierCount) {
-    const safeTierCount = Math.max(1, Number(tierCount) || 1);
-    const rawNextTierIndex = Number(rawState == null ? void 0 : rawState.nextTierIndex);
-    const rawUnlockedTierIndex = Number(rawState == null ? void 0 : rawState.unlockedTierIndex);
-    const nextTierIndex = Number.isFinite(rawNextTierIndex)
-      ? Math.max(0, Math.min(safeTierCount, Math.floor(rawNextTierIndex)))
-      : 0;
-    const maxUnlockedForNext =
-      nextTierIndex >= safeTierCount ? safeTierCount - 1 : Math.max(-1, nextTierIndex - 1);
-    const unlockedTierIndex = Number.isFinite(rawUnlockedTierIndex)
-      ? Math.min(
-          maxUnlockedForNext,
-          Math.max(-1, Math.min(safeTierCount - 1, Math.floor(rawUnlockedTierIndex)))
-        )
-      : -1;
-    return {
-      nextTierIndex,
-      unlockedTierIndex
-    };
+  function Yi(e, t) {
+    let r = Math.max(1, Number(t) || 1),
+      a = Number(e == null ? void 0 : e.nextTierIndex),
+      l = Number(e == null ? void 0 : e.unlockedTierIndex),
+      m = Number.isFinite(a) ? Math.max(0, Math.min(r, Math.floor(a))) : 0,
+      f = m >= r ? r - 1 : Math.max(-1, m - 1),
+      b = Number.isFinite(l) ? Math.min(f, Math.max(-1, Math.min(r - 1, Math.floor(l)))) : -1;
+    return { nextTierIndex: m, unlockedTierIndex: b };
   }
-  function buildQuestionCatalog(questionBank2) {
-    if (!Array.isArray(questionBank2)) {
-      return [];
-    }
-    return questionBank2
-      .map((sourceQuestion, index) => {
-        if (!sourceQuestion || typeof sourceQuestion !== 'object') {
-          return null;
-        }
-        const fallbackId = `q${String(index + 1).padStart(2, '0')}`;
-        const id =
-          typeof sourceQuestion.id === 'string' && sourceQuestion.id.trim().length > 0
-            ? sourceQuestion.id
-            : fallbackId;
-        const prompt = typeof sourceQuestion.question === 'string' ? sourceQuestion.question : '';
-        return {
-          id,
-          prompt,
-          sourceQuestion
-        };
-      })
-      .filter(Boolean);
+  function Xi(e) {
+    return Array.isArray(e)
+      ? e
+          .map((t, r) => {
+            if (!t || typeof t != 'object') return null;
+            let a = `q${String(r + 1).padStart(2, '0')}`,
+              l = typeof t.id == 'string' && t.id.trim().length > 0 ? t.id : a,
+              m = typeof t.question == 'string' ? t.question : '';
+            return { id: l, prompt: m, sourceQuestion: t };
+          })
+          .filter(Boolean)
+      : [];
   }
-  function formatSeconds(totalSeconds) {
-    const safeSeconds = Math.max(0, Number(totalSeconds) || 0);
-    const minutes = Math.floor(safeSeconds / 60)
-      .toString()
-      .padStart(2, '0');
-    const seconds = Math.floor(safeSeconds % 60)
-      .toString()
-      .padStart(2, '0');
-    return `${minutes}:${seconds}`;
+  function zi(e) {
+    let t = Math.max(0, Number(e) || 0),
+      r = Math.floor(t / 60)
+        .toString()
+        .padStart(2, '0'),
+      a = Math.floor(t % 60)
+        .toString()
+        .padStart(2, '0');
+    return `${r}:${a}`;
   }
-  function createMcqController({
-    state,
-    stateMachine: stateMachine2,
-    questionBank: questionBank2,
-    buildMcqTest: buildMcqTest2,
-    evaluateMcqSubmission: evaluateMcqSubmission2,
-    generatePassCode: generatePassCode2,
-    formatMcqResultText: formatMcqResultText2,
-    setModalState,
-    testModal: testModal2,
-    triggerButton,
-    testContainer: testContainer2,
-    submitTestButton: submitTestButton2,
-    saveResultButton: saveResultButton2,
-    testResultDiv: testResultDiv2,
-    testModalTitle: testModalTitle2,
-    mcqTimer: mcqTimer2,
-    mcqTierConfigs,
-    initialProgressState,
-    onProgressChange
+  function bn({
+    state: e,
+    stateMachine: t,
+    questionBank: r,
+    buildMcqTest: a,
+    evaluateMcqSubmission: l,
+    generatePassCode: m,
+    formatMcqResultText: f,
+    setModalState: b,
+    testModal: p,
+    triggerButton: y,
+    testContainer: I,
+    submitTestButton: N,
+    retryTestButton: R,
+    saveResultButton: k,
+    testResultDiv: T,
+    testModalTitle: B,
+    mcqTimer: q,
+    mcqTierConfigs: Y,
+    initialProgressState: i,
+    onProgressChange: C
   }) {
-    const doc = testContainer2.ownerDocument || document;
-    const tierConfigs =
-      Array.isArray(mcqTierConfigs) && mcqTierConfigs.length > 0
-        ? mcqTierConfigs.map((tier, index) => normalizeTierConfig(tier, index))
-        : [DEFAULT_MCQ_TIER];
-    const questionCatalog = buildQuestionCatalog(questionBank2);
-    const normalizedInitialProgress = normalizeProgressState(
-      initialProgressState,
-      tierConfigs.length
-    );
-    let activeTierIndex = Math.min(normalizedInitialProgress.nextTierIndex, tierConfigs.length - 1);
-    let unlockedTierIndex = normalizedInitialProgress.unlockedTierIndex;
-    let nextTierIndex = normalizedInitialProgress.nextTierIndex;
-    let mcqCountdownTimerId = null;
-    let secondsRemaining = 0;
-    function getQuestionsByIds(questionIds) {
-      if (questionCatalog.length === 0) {
-        return [];
-      }
-      const allowedIds = new Set(questionIds);
-      return questionCatalog
-        .filter((entry) => allowedIds.has(entry.id))
-        .map((entry) => entry.sourceQuestion);
+    let w = I.ownerDocument || document,
+      S = Array.isArray(Y) && Y.length > 0 ? Y.map((c, M) => Vi(c, M)) : [gn],
+      J = Xi(r),
+      U = Yi(i, S.length),
+      Q = Math.min(U.nextTierIndex, S.length - 1),
+      j = U.unlockedTierIndex,
+      _ = U.nextTierIndex,
+      K = null,
+      F = 0;
+    function Z(c) {
+      if (J.length === 0) return [];
+      let M = new Set(c);
+      return J.filter((x) => M.has(x.id)).map((x) => x.sourceQuestion);
     }
-    function getQuestionsByPrompts(questionPrompts) {
-      if (questionCatalog.length === 0) {
-        return [];
-      }
-      const allowedPrompts = new Set(questionPrompts);
-      return questionCatalog
-        .filter((entry) => allowedPrompts.has(entry.prompt))
-        .map((entry) => entry.sourceQuestion);
+    function le(c) {
+      if (J.length === 0) return [];
+      let M = new Set(c);
+      return J.filter((x) => M.has(x.prompt)).map((x) => x.sourceQuestion);
     }
-    function validateTierQuestionPools() {
-      tierConfigs.forEach((tierConfig) => {
-        const hasQuestionIds =
-          Array.isArray(tierConfig.questionIds) && tierConfig.questionIds.length > 0;
-        const hasQuestionPrompts =
-          Array.isArray(tierConfig.questionPrompts) && tierConfig.questionPrompts.length > 0;
-        if (!hasQuestionIds && !hasQuestionPrompts) {
-          return;
-        }
-        const configuredPool = hasQuestionIds
-          ? getQuestionsByIds(tierConfig.questionIds)
-          : getQuestionsByPrompts(tierConfig.questionPrompts);
-        if (configuredPool.length < tierConfig.questionCount) {
+    function re() {
+      S.forEach((c) => {
+        let M = Array.isArray(c.questionIds) && c.questionIds.length > 0,
+          x = Array.isArray(c.questionPrompts) && c.questionPrompts.length > 0;
+        if (!M && !x) return;
+        let L = M ? Z(c.questionIds) : le(c.questionPrompts);
+        if (L.length < c.questionCount)
           throw new Error(
-            `MCQ tier "${tierConfig.name}" has ${configuredPool.length} configured questions but requires at least ${tierConfig.questionCount}.`
+            `MCQ tier "${c.name}" has ${L.length} configured questions but requires at least ${c.questionCount}.`
           );
-        }
       });
     }
-    validateTierQuestionPools();
-    function notifyProgressChange() {
-      if (typeof onProgressChange === 'function') {
-        onProgressChange(getLevelProgress());
-      }
+    re();
+    function X() {
+      typeof C == 'function' && C(Oe());
     }
-    function resolveRequestedTierIndex(tierIndex) {
-      const fallbackTierIndex = Math.min(nextTierIndex, tierConfigs.length - 1);
-      const requestedTierIndex = typeof tierIndex === 'number' ? tierIndex : fallbackTierIndex;
-      if (!Number.isInteger(requestedTierIndex)) {
-        return null;
-      }
-      if (requestedTierIndex < 0 || requestedTierIndex >= tierConfigs.length) {
-        return null;
-      }
-      if (requestedTierIndex > nextTierIndex) {
-        return null;
-      }
-      return requestedTierIndex;
+    function ye(c) {
+      let M = Math.min(_, S.length - 1),
+        x = typeof c == 'number' ? c : M;
+      return !Number.isInteger(x) || x < 0 || x >= S.length || x > _ ? null : x;
     }
-    function getActiveTierConfig() {
-      return tierConfigs[Math.min(activeTierIndex, tierConfigs.length - 1)] || DEFAULT_MCQ_TIER;
+    function de() {
+      return S[Math.min(Q, S.length - 1)] || gn;
     }
-    function clearMcqTimer() {
-      if (mcqCountdownTimerId) {
-        clearInterval(mcqCountdownTimerId);
-        mcqCountdownTimerId = null;
-      }
+    function z() {
+      K && (clearInterval(K), (K = null));
     }
-    function updateTimerDisplay() {
-      if (!mcqTimer2) {
+    function we() {
+      if (!q) return;
+      let c = de();
+      if (e.mcq.lastResult) {
+        ((q.hidden = !0), (q.textContent = ''), q.classList.remove('is-warning'));
         return;
       }
-      const tierConfig = getActiveTierConfig();
-      if (tierConfig.timeLimitSeconds <= 0 || state.mcq.lastResult) {
-        mcqTimer2.hidden = true;
-        mcqTimer2.textContent = '';
-        mcqTimer2.classList.remove('is-warning');
+      let M = Math.max(1, Math.ceil(c.questionCount * c.passRatio));
+      if (((q.hidden = !1), c.timeLimitSeconds <= 0)) {
+        ((q.textContent = `Pass mark ${M}/${c.questionCount} \xB7 Untimed`),
+          q.classList.remove('is-warning'));
         return;
       }
-      mcqTimer2.hidden = false;
-      mcqTimer2.textContent = `Time left: ${formatSeconds(secondsRemaining)}`;
-      mcqTimer2.classList.toggle('is-warning', secondsRemaining <= 15);
+      ((q.textContent = `Pass mark ${M}/${c.questionCount} \xB7 ${zi(F)} left`),
+        q.classList.toggle('is-warning', F <= 15));
     }
-    function startMcqTimer() {
-      clearMcqTimer();
-      const tierConfig = getActiveTierConfig();
-      secondsRemaining = Math.max(0, Number(tierConfig.timeLimitSeconds) || 0);
-      updateTimerDisplay();
-      if (secondsRemaining <= 0) {
-        return;
-      }
-      mcqCountdownTimerId = setInterval(() => {
-        secondsRemaining -= 1;
-        updateTimerDisplay();
-        if (secondsRemaining > 0) {
-          return;
-        }
-        clearMcqTimer();
-        handleSubmitTest({ autoSubmitted: true });
-      }, 1e3);
+    function Se() {
+      z();
+      let c = de();
+      ((F = Math.max(0, Number(c.timeLimitSeconds) || 0)),
+        we(),
+        !(F <= 0) &&
+          (K = setInterval(() => {
+            ((F -= 1), we(), !(F > 0) && (z(), $e({ autoSubmitted: !0 })));
+          }, 1e3)));
     }
-    function applyTierUiState() {
-      if (!testModalTitle2) {
-        return;
-      }
-      const tierConfig = getActiveTierConfig();
-      testModalTitle2.textContent = `MCQ Test - ${tierConfig.name}`;
+    function ie() {
+      if (!B) return;
+      let c = de();
+      B.textContent = `${c.name} MCQ`;
     }
-    function openTestModal({ beforeOpen, tierIndex } = {}) {
-      if (typeof beforeOpen === 'function') {
-        beforeOpen();
-      }
-      if (!stateMachine2.beginMcqSession()) {
-        return false;
-      }
-      const requestedTierIndex = resolveRequestedTierIndex(tierIndex);
-      if (requestedTierIndex === null) {
-        stateMachine2.endMcqSession();
-        return false;
-      }
-      activeTierIndex = requestedTierIndex;
-      testResultDiv2.textContent = '';
-      submitTestButton2.hidden = false;
-      submitTestButton2.disabled = false;
-      saveResultButton2.hidden = true;
-      applyTierUiState();
-      generateTest();
-      startMcqTimer();
-      notifyProgressChange();
-      setModalState(testModal2, true, triggerButton);
-      return true;
+    function V() {
+      var c;
+      ((T.textContent = ''),
+        (T.className = 'result-text'),
+        (c = T.removeAttribute) == null || c.call(T, 'tabindex'),
+        (N.hidden = !1),
+        (N.disabled = !1),
+        R && (R.hidden = !0),
+        (k.hidden = !0));
     }
-    function closeTestModal() {
-      stateMachine2.endMcqSession();
-      clearMcqTimer();
-      setModalState(testModal2, false, null);
-      testContainer2.innerHTML = '';
-      updateTimerDisplay();
+    function fe({ beforeOpen: c, tierIndex: M } = {}) {
+      if ((typeof c == 'function' && c(), !t.beginMcqSession())) return !1;
+      let x = ye(M);
+      return x === null
+        ? (t.endMcqSession(), !1)
+        : ((Q = x), V(), ie(), pe(), Se(), X(), b(p, !0, y), !0);
     }
-    function generateTest() {
-      const tierConfig = getActiveTierConfig();
-      const sourceQuestionPool = getQuestionPoolForTier(tierConfig);
-      state.mcq.selectedQuestions = buildMcqTest2(
-        sourceQuestionPool,
-        tierConfig.questionCount,
-        Math.random,
-        tierConfig.optionCount
-      );
-      renderQuestions();
+    function Ve() {
+      (t.endMcqSession(), z(), b(p, !1, null), (I.innerHTML = ''), we());
     }
-    function getQuestionPoolForTier(tierConfig) {
-      if (!Array.isArray(questionBank2) || questionBank2.length === 0) {
-        return [];
-      }
-      if (Array.isArray(tierConfig.questionIds) && tierConfig.questionIds.length > 0) {
-        return getQuestionsByIds(tierConfig.questionIds);
-      }
-      if (!Array.isArray(tierConfig.questionPrompts) || tierConfig.questionPrompts.length === 0) {
-        return questionBank2;
-      }
-      return getQuestionsByPrompts(tierConfig.questionPrompts);
+    function pe() {
+      let c = de(),
+        M = oe(c);
+      ((e.mcq.selectedQuestions = a(M, c.questionCount, Math.random, c.optionCount)), ge());
     }
-    function renderQuestions() {
-      testContainer2.innerHTML = '';
-      state.mcq.selectedQuestions.forEach((question, index) => {
-        const questionFieldset = doc.createElement('fieldset');
-        questionFieldset.className = 'question';
-        const prompt = doc.createElement('legend');
-        prompt.textContent = `${index + 1}. ${question.prompt}`;
-        questionFieldset.appendChild(prompt);
-        const optionsDiv = doc.createElement('div');
-        optionsDiv.className = 'options';
-        question.choices.forEach((choice, choiceIndex) => {
-          const label = doc.createElement('label');
-          const radio = doc.createElement('input');
-          const optionPrefix = String.fromCharCode(65 + choiceIndex);
-          const optionText = doc.createElement('span');
-          radio.type = 'radio';
-          radio.name = `question${index}`;
-          radio.value = choice.id;
-          label.appendChild(radio);
-          optionText.textContent = ` ${optionPrefix}) ${choice.text}`;
-          label.appendChild(optionText);
-          optionsDiv.appendChild(label);
-        });
-        questionFieldset.appendChild(optionsDiv);
-        testContainer2.appendChild(questionFieldset);
-      });
+    function oe(c) {
+      return !Array.isArray(r) || r.length === 0
+        ? []
+        : Array.isArray(c.questionIds) && c.questionIds.length > 0
+          ? Z(c.questionIds)
+          : !Array.isArray(c.questionPrompts) || c.questionPrompts.length === 0
+            ? r
+            : le(c.questionPrompts);
     }
-    function calculateTierProgression({ passed, score, maxScore, passThreshold }) {
-      let starLine = '';
-      let progressionChanged = false;
-      if (passed && activeTierIndex === nextTierIndex && nextTierIndex < tierConfigs.length) {
-        unlockedTierIndex = Math.max(unlockedTierIndex, nextTierIndex);
-        starLine = `Unlocked ${tierConfigs[nextTierIndex].name} star.`;
-        nextTierIndex += 1;
-        progressionChanged = true;
-      } else if (nextTierIndex >= tierConfigs.length) {
-        unlockedTierIndex = tierConfigs.length - 1;
-        starLine = 'All MCQ levels already unlocked.';
-      } else {
-        const nextTier = tierConfigs[Math.min(nextTierIndex, tierConfigs.length - 1)];
-        starLine = `Need ${passThreshold}/${maxScore} to unlock ${nextTier.name}.`;
-      }
-      if (!passed) {
-        starLine = `Scored ${score}/${maxScore}. ${starLine}`;
-      }
-      if (progressionChanged) {
-        notifyProgressChange();
-      }
-      return { starLine };
+    function ge() {
+      ((I.innerHTML = ''),
+        e.mcq.selectedQuestions.forEach((c, M) => {
+          let x = w.createElement('fieldset');
+          ((x.className = 'question'), (x.dataset.questionId = c.id));
+          let L = w.createElement('legend');
+          ((L.textContent = `${M + 1}. ${c.prompt}`), x.appendChild(L));
+          let W = w.createElement('div');
+          ((W.className = 'options'),
+            c.choices.forEach((u, h) => {
+              let g = w.createElement('label'),
+                A = w.createElement('input'),
+                O = String.fromCharCode(65 + h),
+                G = w.createElement('span');
+              ((A.type = 'radio'),
+                (A.name = `question${M}`),
+                (A.value = u.id),
+                g.appendChild(A),
+                (G.textContent = ` ${O}) ${u.text}`),
+                g.appendChild(G),
+                W.appendChild(g));
+            }),
+            x.appendChild(W));
+          let ae = w.createElement('p');
+          ((ae.className = 'answer-explanation'),
+            (ae.hidden = !0),
+            x.appendChild(ae),
+            I.appendChild(x));
+        }));
     }
-    function renderUnlockedTierStars() {
-      const unlockedTiers = tierConfigs.slice(0, unlockedTierIndex + 1);
-      return unlockedTiers
-        .map((tier) => {
-          return `<span class="${tier.className}" aria-label="${tier.name} star">&#9733; ${tier.name}</span>`;
-        })
-        .join(' ');
+    function _e({ passed: c, score: M, maxScore: x, passThreshold: L }) {
+      let W = '',
+        ae = !1;
+      if (c && Q === _ && _ < S.length)
+        ((j = Math.max(j, _)), (W = `Unlocked ${S[_].name} star.`), (_ += 1), (ae = !0));
+      else if (_ >= S.length) ((j = S.length - 1), (W = 'All MCQ levels already unlocked.'));
+      else {
+        let u = S[Math.min(_, S.length - 1)];
+        W = `Need ${L}/${x} to unlock ${u.name}.`;
+      }
+      return (c || (W = `Scored ${M}/${x}. ${W}`), ae && X(), { starLine: W });
     }
-    function handleSubmitTest({ autoSubmitted = false } = {}) {
-      if (state.mcq.selectedQuestions.length === 0 || state.mcq.lastResult) {
-        return;
-      }
-      const selectedChoiceIds = state.mcq.selectedQuestions.map((_, index) => {
-        const chosen = testContainer2.querySelector(`input[name="question${index}"]:checked`);
-        return chosen ? chosen.value : null;
-      });
-      const tierConfig = getActiveTierConfig();
-      const evaluation = evaluateMcqSubmission2(
-        state.mcq.selectedQuestions,
-        selectedChoiceIds,
-        tierConfig.passRatio
-      );
-      evaluation.details.forEach((detail) => {
-        if (detail.selectedChoiceId && !detail.isCorrect) {
-          const selectedRadio = testContainer2.querySelector(
-            `input[name="question${detail.index}"][value="${detail.selectedChoiceId}"]`
-          );
-          if (selectedRadio) {
-            selectedRadio.parentElement.classList.add('wrong-answer-label');
-          }
-        }
-        const correctRadio = testContainer2.querySelector(
-          `input[name="question${detail.index}"][value="${detail.correctChoiceId}"]`
-        );
-        if (correctRadio) {
-          correctRadio.parentElement.classList.add('correct-answer-label');
-        }
-      });
-      const allRadios = testContainer2.querySelectorAll('input[type="radio"]');
-      allRadios.forEach((radio) => {
-        radio.disabled = true;
-      });
-      clearMcqTimer();
-      state.mcq.lastResult = {
-        ...evaluation,
-        passCode: evaluation.passed ? generatePassCode2(8) : null,
-        completedAt: /* @__PURE__ */ new Date().toISOString(),
-        tierName: tierConfig.name,
-        tierIndex: activeTierIndex,
-        timed: tierConfig.timeLimitSeconds > 0,
-        timedOut: autoSubmitted
-      };
-      const progression = calculateTierProgression({
-        passed: evaluation.passed,
-        score: evaluation.score,
-        maxScore: evaluation.maxScore,
-        passThreshold: evaluation.passThreshold
-      });
-      submitTestButton2.hidden = true;
-      showTestResult(state.mcq.lastResult, progression.starLine);
-      saveResultButton2.hidden = false;
-      updateTimerDisplay();
-    }
-    function handleSaveResult() {
-      if (!state.mcq.lastResult) {
-        return;
-      }
-      const content = formatMcqResultText2(state.mcq.lastResult);
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = doc.createElement('a');
-      a.href = url;
-      a.download = getResultFilename(state.mcq.lastResult.completedAt);
-      doc.body.appendChild(a);
-      a.click();
-      doc.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-    function showTestResult(result, starLine) {
-      const unlockedStarsMarkup = renderUnlockedTierStars();
-      let resultText = `Level ${result.tierIndex + 1} (${result.tierName}): ${result.score}/${result.maxScore}. `;
-      if (result.passed) {
-        resultText += 'Pass. ';
-        if (result.passCode) {
-          resultText += `Code: ${result.passCode}. `;
-        }
-      } else {
-        resultText += 'Fail. ';
-      }
-      if (result.timed && result.timedOut) {
-        resultText += 'Time expired. ';
-      }
-      resultText += starLine;
-      if (unlockedStarsMarkup) {
-        resultText += `<br>${unlockedStarsMarkup}`;
-      }
-      testResultDiv2.innerHTML = resultText;
-    }
-    function getResultFilename(completedAtIsoString) {
-      const timestamp = completedAtIsoString
-        ? completedAtIsoString.replace(/[:-]/g, '').replace(/\.\d{3}Z$/, 'Z')
-        : 'unknown';
-      return `mcq_result_${timestamp}.txt`;
-    }
-    function getLevelProgress() {
-      return tierConfigs.map((tier, index) => ({
-        index,
-        name: tier.name,
-        unlocked: index <= nextTierIndex,
-        completed: index <= unlockedTierIndex,
-        active: index === Math.min(nextTierIndex, tierConfigs.length - 1)
-      }));
-    }
-    function getProgressState() {
-      return {
-        nextTierIndex,
-        unlockedTierIndex
-      };
-    }
-    return {
-      openTestModal,
-      closeTestModal,
-      handleSubmitTest,
-      handleSaveResult,
-      getLevelProgress,
-      getProgressState,
-      destroy: () => {
-        clearMcqTimer();
-        stateMachine2.endMcqSession();
-        testContainer2.innerHTML = '';
-        testResultDiv2.textContent = '';
-        updateTimerDisplay();
-        unlockedTierIndex = -1;
-        nextTierIndex = 0;
-        activeTierIndex = 0;
-        notifyProgressChange();
-      }
-    };
-  }
-
-  // timed-test.js
-  var PASS_RATIO = 0.75;
-  var ROUNDS_PER_SET = 4;
-  var STAR_TIERS = Object.freeze([
-    { name: 'Primary', className: 'primary-star' },
-    { name: 'Intermediate', className: 'intermediate-star' },
-    { name: 'Advanced', className: 'advanced-star' }
-  ]);
-  var DEFAULT_ROUND_SECONDS = 5;
-  var TIMED_SAFE_FOV_DEGREES = Object.freeze({
-    undilated: 8,
-    dilated: 15
-  });
-  var TIMED_TEST_MAX_CATARACT_LEVEL = 1;
-  var DEFAULT_ROUND_PROFILE = Object.freeze({
-    seconds: DEFAULT_ROUND_SECONDS,
-    isDilated: false,
-    fovDegrees: TIMED_SAFE_FOV_DEGREES.undilated,
-    cataractLevel: 0
-  });
-  var TIMED_AUGMENTATION_PROFILES = Object.freeze([
-    {
-      rotateMaxDegrees: 2.4,
-      rotateMinDegrees: 0.9,
-      scaleMin: 0.94,
-      scaleMax: 1.07,
-      minScaleDelta: 0.02,
-      panMaxRatio: 0.025,
-      panMinRatio: 8e-3,
-      brightnessJitter: 0.035,
-      brightnessMinJitter: 0.015,
-      contrastJitter: 0.035,
-      contrastMinJitter: 0.015,
-      saturationJitter: 0.03,
-      saturationMinJitter: 0.01,
-      verticalFlipChance: 0.18
-    },
-    {
-      rotateMaxDegrees: 4.2,
-      rotateMinDegrees: 1.6,
-      scaleMin: 0.91,
-      scaleMax: 1.1,
-      minScaleDelta: 0.03,
-      panMaxRatio: 0.04,
-      panMinRatio: 0.012,
-      brightnessJitter: 0.06,
-      brightnessMinJitter: 0.025,
-      contrastJitter: 0.06,
-      contrastMinJitter: 0.025,
-      saturationJitter: 0.06,
-      saturationMinJitter: 0.025,
-      verticalFlipChance: 0.28
-    },
-    {
-      rotateMaxDegrees: 5.2,
-      rotateMinDegrees: 1.9,
-      scaleMin: 0.89,
-      scaleMax: 1.12,
-      minScaleDelta: 0.04,
-      panMaxRatio: 0.048,
-      panMinRatio: 0.015,
-      brightnessJitter: 0.07,
-      brightnessMinJitter: 0.03,
-      contrastJitter: 0.07,
-      contrastMinJitter: 0.03,
-      saturationJitter: 0.07,
-      saturationMinJitter: 0.03,
-      verticalFlipChance: 0.38
-    }
-  ]);
-  var TIMED_MOTION_PROFILES = Object.freeze([
-    {
-      jitterMultiplierMin: 1.9,
-      jitterMultiplierMax: 2.4,
-      shiftDistanceMin: 1.15,
-      shiftDistanceMax: 1.45,
-      shiftDurationMinMs: 580,
-      shiftDurationMaxMs: 800
-    },
-    {
-      jitterMultiplierMin: 2.3,
-      jitterMultiplierMax: 2.9,
-      shiftDistanceMin: 1.35,
-      shiftDistanceMax: 1.7,
-      shiftDurationMinMs: 540,
-      shiftDurationMaxMs: 760
-    },
-    {
-      jitterMultiplierMin: 2.6,
-      jitterMultiplierMax: 3.1,
-      shiftDistanceMin: 1.45,
-      shiftDistanceMax: 1.9,
-      shiftDurationMinMs: 520,
-      shiftDurationMaxMs: 740
-    }
-  ]);
-  function randomInRange(min, max) {
-    return min + Math.random() * (max - min);
-  }
-  function randomSignedWithMinimum(maxAbs, minAbs) {
-    const safeMax = Math.max(0, Number(maxAbs) || 0);
-    const safeMin = Math.max(0, Math.min(safeMax, Number(minAbs) || 0));
-    if (safeMax === 0) {
-      return 0;
-    }
-    const magnitude = randomInRange(safeMin, safeMax);
-    return Math.random() >= 0.5 ? magnitude : -magnitude;
-  }
-  function randomScaleWithMinimumDelta(minScale, maxScale, minDelta) {
-    const lower = Math.min(Number(minScale) || 1, Number(maxScale) || 1);
-    const upper = Math.max(Number(minScale) || 1, Number(maxScale) || 1);
-    const requiredDelta = Math.max(0, Number(minDelta) || 0);
-    if (lower === upper) {
-      return lower;
-    }
-    for (let attempt = 0; attempt < 10; attempt += 1) {
-      const candidate = randomInRange(lower, upper);
-      if (Math.abs(candidate - 1) >= requiredDelta) {
-        return candidate;
-      }
-    }
-    return Math.abs(lower - 1) >= Math.abs(upper - 1) ? lower : upper;
-  }
-  function randomToneValue(maxJitter, minJitter) {
-    return 1 + randomSignedWithMinimum(maxJitter, minJitter);
-  }
-  function clampTimedCataractLevel(level) {
-    const numericLevel = Number(level);
-    const roundedLevel = Number.isFinite(numericLevel)
-      ? Math.round(numericLevel)
-      : DEFAULT_ROUND_PROFILE.cataractLevel;
-    return Math.max(0, Math.min(TIMED_TEST_MAX_CATARACT_LEVEL, roundedLevel));
-  }
-  function normalizeProgressState2(rawState, tierCount) {
-    const safeTierCount = Math.max(1, Number(tierCount) || 1);
-    const rawNextTierIndex = Number(rawState == null ? void 0 : rawState.nextTierIndex);
-    const rawUnlockedTierIndex = Number(rawState == null ? void 0 : rawState.unlockedTierIndex);
-    const next = Number.isFinite(rawNextTierIndex)
-      ? Math.max(0, Math.min(safeTierCount, Math.floor(rawNextTierIndex)))
-      : 0;
-    const maxUnlockedForNext = next >= safeTierCount ? safeTierCount - 1 : Math.max(-1, next - 1);
-    const unlocked = Number.isFinite(rawUnlockedTierIndex)
-      ? Math.min(
-          maxUnlockedForNext,
-          Math.max(-1, Math.min(safeTierCount - 1, Math.floor(rawUnlockedTierIndex)))
-        )
-      : -1;
-    return {
-      nextTierIndex: next,
-      unlockedTierIndex: unlocked
-    };
-  }
-  function createTimedTestController({
-    state,
-    stateMachine: stateMachine2,
-    timedImages,
-    timedRoundsPerCategory,
-    timedTotalRounds,
-    timedRoundProfiles,
-    initialProgressState,
-    onProgressChange,
-    closeTestModal,
-    setModalState,
-    infoModal: infoModal2,
-    infoIcon: infoIcon2,
-    explanationDiv: explanationDiv2,
-    timedGuessBox: timedGuessBox2,
-    timedMessage: timedMessage2,
-    timedCountdown: timedCountdown2,
-    submitTimedGuessButton: submitTimedGuessButton2,
-    timedTestResult: timedTestResult2,
-    viewer: viewer2
-  }) {
-    const guessQuery = 'input[name="timedGuess"]';
-    const roundProfiles = Array.isArray(timedRoundProfiles) ? timedRoundProfiles : [];
-    const totalRounds = Math.max(1, Number(timedTotalRounds) || ROUNDS_PER_SET);
-    const roundsPerCategory = Math.max(1, Number(timedRoundsPerCategory) || 1);
-    const normalizedInitialProgress = normalizeProgressState2(
-      initialProgressState,
-      STAR_TIERS.length
-    );
-    let viewerStateBeforeTimed = null;
-    let timedRoundQueue = [];
-    let timedRoundEyes = [];
-    let unlockedTierIndex = normalizedInitialProgress.unlockedTierIndex;
-    let nextTierIndex = normalizedInitialProgress.nextTierIndex;
-    let activeTierIndex = Math.min(normalizedInitialProgress.nextTierIndex, STAR_TIERS.length - 1);
-    let revealIsActive = false;
-    let timedSetFlipApplied = false;
-    const timedGuessListenerDisposers = [];
-    function notifyProgressChange() {
-      if (typeof onProgressChange === 'function') {
-        onProgressChange(getLevelProgress());
-      }
-    }
-    function startTimedTest({ tierIndex } = {}) {
-      if (!stateMachine2.beginTimedSession()) {
-        return false;
-      }
-      closeTestModal();
-      setModalState(infoModal2, false, infoIcon2);
-      clearTimedTimers();
-      clearTimedGuessSelections();
-      if (typeof viewer2.clearTimedAugmentation === 'function') {
-        viewer2.clearTimedAugmentation();
-      }
-      if (typeof viewer2.clearTimedMotionProfile === 'function') {
-        viewer2.clearTimedMotionProfile();
-      }
-      viewerStateBeforeTimed = {
-        fovDegrees: typeof viewer2.getFovDegrees === 'function' ? viewer2.getFovDegrees() : null,
-        isDilated: typeof viewer2.getIsDilated === 'function' ? viewer2.getIsDilated() : false,
-        cataractLevel:
-          typeof viewer2.getCataractLevel === 'function' ? viewer2.getCataractLevel() : 0,
-        isRightEye: typeof viewer2.getIsRightEye === 'function' ? viewer2.getIsRightEye() : true
-      };
-      const requestedTierIndex = resolveRequestedTierIndex(tierIndex);
-      if (requestedTierIndex === null) {
-        stateMachine2.endTimedSession();
-        return false;
-      }
-      timedRoundQueue = buildTimedRoundQueue(timedImages, roundsPerCategory, totalRounds);
-      timedRoundEyes = buildTimedEyeSequence(timedRoundQueue.length || totalRounds);
-      activeTierIndex = requestedTierIndex;
-      revealIsActive = false;
-      timedSetFlipApplied = false;
-      viewer2.setDiscVisible(true);
-      timedTestResult2.innerHTML = '';
-      timedMessage2.textContent = '';
-      timedCountdown2.textContent = '';
-      timedGuessBox2.hidden = false;
-      explanationDiv2.hidden = true;
-      viewer2.setViewerControlsDisabled(true);
-      disableTimedGuess(true);
-      notifyProgressChange();
-      nextTimedRound();
-      return true;
-    }
-    function nextTimedRound() {
-      state.timed.round += 1;
-      const activeTotalRounds = getTotalRounds();
-      if (state.timed.round > activeTotalRounds) {
-        finishTimedTest();
-        return;
-      }
-      const roundProfile = getRoundProfile();
-      const roundEye = timedRoundEyes[state.timed.round - 1];
-      applyRoundProfile(roundProfile, roundEye);
-      const roundSeconds = Math.max(1, Number(roundProfile.seconds) || DEFAULT_ROUND_SECONDS);
-      const pick =
-        timedRoundQueue[state.timed.round - 1] ||
-        timedImages[Math.floor(Math.random() * timedImages.length)];
-      state.timed.currentLabel = pick.label;
-      if (typeof viewer2.setTimedAugmentation === 'function') {
-        viewer2.setTimedAugmentation(
-          buildTimedRoundAugmentation(activeTierIndex, state.timed.round - 1, activeTotalRounds)
-        );
-      }
-      if (typeof viewer2.setTimedMotionProfile === 'function') {
-        viewer2.setTimedMotionProfile(buildTimedRoundMotionProfile(activeTierIndex));
-      }
-      viewer2.setDiscVisible(true);
-      viewer2.setImageSource(pick.src);
-      if (typeof viewer2.doGazeShift === 'function' && !state.viewer.shiftInProgress) {
-        viewer2.doGazeShift();
-      }
-      timedMessage2.textContent = `Round ${state.timed.round}/${activeTotalRounds}`;
-      timedCountdown2.textContent = String(roundSeconds);
-      revealIsActive = true;
-      disableTimedGuess(false);
-      let remain = roundSeconds;
-      const countdownId = setInterval(() => {
-        remain -= 1;
-        timedCountdown2.textContent = String(remain);
-        if (remain <= 0) {
-          clearCountdownTimer();
-          viewer2.setDiscVisible(false);
-          revealIsActive = false;
-          timedMessage2.textContent = 'Which disc was shown?';
-          timedCountdown2.textContent = '';
-        }
-      }, 1e3);
-      stateMachine2.setTimedCountdownTimer(countdownId);
-    }
-    function submitTimedGuess() {
-      if (!state.timed.isActive) {
-        return;
-      }
-      const guess = getSelectedTimedGuess();
-      if (!guess) {
-        timedMessage2.textContent = 'Select an answer before submitting.';
-        syncSubmitGuessAvailability();
-        return;
-      }
-      if (revealIsActive) {
-        clearCountdownTimer();
-        viewer2.setDiscVisible(false);
-        revealIsActive = false;
-        timedCountdown2.textContent = '';
-      }
-      const isCorrect = guess.value === state.timed.currentLabel;
-      if (isCorrect) {
-        state.timed.score += 1;
-        guess.parentElement.classList.add('correct-answer-label');
-      } else {
-        guess.parentElement.classList.add('wrong-answer-label');
-        const correctRadio = timedGuessBox2.querySelector(
-          `input[name="timedGuess"][value="${state.timed.currentLabel}"]`
-        );
-        if (correctRadio) {
-          correctRadio.parentElement.classList.add('correct-answer-label');
-        }
-      }
-      disableTimedGuess(true);
-      const feedbackId = setTimeout(() => {
-        clearTimedGuessSelections();
-        nextTimedRound();
-      }, 1200);
-      stateMachine2.setTimedFeedbackTimer(feedbackId);
-    }
-    function finishTimedTest() {
-      clearTimedTimers();
-      clearTimedGuessSelections();
-      disableTimedGuess(true);
-      timedGuessBox2.hidden = true;
-      revealIsActive = false;
-      const resultSummary = buildTimedResultSummary(
-        state.timed.score,
-        getTotalRounds(),
-        activeTierIndex
-      );
-      timedTestResult2.innerHTML = resultSummary.html;
-      if (!stateMachine2.endTimedSession()) {
-        return;
-      }
-      restoreStandardView({ clearResult: false });
-    }
-    function exitTimedMode() {
-      if (!stateMachine2.endTimedSession()) {
-        return;
-      }
-      restoreStandardView({ clearResult: true });
-    }
-    function restoreStandardView({ clearResult }) {
-      viewer2.setDiscVisible(true);
-      clearTimedTimers();
-      clearTimedGuessSelections();
-      disableTimedGuess(true);
-      timedGuessBox2.hidden = true;
-      explanationDiv2.hidden = false;
-      timedMessage2.textContent = '';
-      timedCountdown2.textContent = '';
-      revealIsActive = false;
-      if (clearResult) {
-        timedTestResult2.innerHTML = '';
-      }
-      restoreViewerStateAfterTimed();
-      viewer2.setViewerControlsDisabled(false);
-      viewer2.setImageSource(viewer2.getActiveConditionImagePath());
-    }
-    function resolveRequestedTierIndex(tierIndex) {
-      const fallbackTierIndex = Math.min(nextTierIndex, STAR_TIERS.length - 1);
-      const requestedTierIndex = typeof tierIndex === 'number' ? tierIndex : fallbackTierIndex;
-      if (!Number.isInteger(requestedTierIndex)) {
-        return null;
-      }
-      if (requestedTierIndex < 0 || requestedTierIndex >= STAR_TIERS.length) {
-        return null;
-      }
-      if (requestedTierIndex > nextTierIndex) {
-        return null;
-      }
-      return requestedTierIndex;
-    }
-    function getRoundProfile() {
-      if (roundProfiles.length === 0) {
-        return DEFAULT_ROUND_PROFILE;
-      }
-      const profileIndex = Math.min(activeTierIndex, roundProfiles.length - 1);
-      const profile = roundProfiles[profileIndex];
-      if (!profile || typeof profile !== 'object') {
-        return DEFAULT_ROUND_PROFILE;
-      }
-      const isDilated = Boolean(profile.isDilated);
-      return {
-        seconds: Number(profile.seconds) || DEFAULT_ROUND_PROFILE.seconds,
-        isDilated,
-        fovDegrees: isDilated ? TIMED_SAFE_FOV_DEGREES.dilated : TIMED_SAFE_FOV_DEGREES.undilated,
-        cataractLevel: clampTimedCataractLevel(profile.cataractLevel)
-      };
-    }
-    function getTotalRounds() {
-      return timedRoundQueue.length > 0 ? timedRoundQueue.length : totalRounds;
-    }
-    function buildTimedRoundAugmentation(tierIndex, roundIndex, setTotalRounds) {
-      const profileIndex = Math.max(
-        0,
-        Math.min(
-          Number.isInteger(tierIndex) ? tierIndex : 0,
-          TIMED_AUGMENTATION_PROFILES.length - 1
-        )
-      );
-      const profile = TIMED_AUGMENTATION_PROFILES[profileIndex];
-      const verticalFlipChance = Math.max(0, Math.min(1, Number(profile.verticalFlipChance) || 0));
-      const safeTotalRounds = Math.max(1, Number(setTotalRounds) || 1);
-      const safeRoundIndex = Math.max(
-        0,
-        Math.min(safeTotalRounds - 1, Number.isFinite(Number(roundIndex)) ? Number(roundIndex) : 0)
-      );
-      let flipVertical = Math.random() < verticalFlipChance;
-      if (!timedSetFlipApplied && safeRoundIndex >= safeTotalRounds - 1) {
-        flipVertical = true;
-      }
-      if (flipVertical) {
-        timedSetFlipApplied = true;
-      }
-      return {
-        rotateDegrees: randomSignedWithMinimum(
-          profile.rotateMaxDegrees,
-          profile.rotateMinDegrees || 0
-        ),
-        scale: randomScaleWithMinimumDelta(
-          profile.scaleMin,
-          profile.scaleMax,
-          profile.minScaleDelta || 0
-        ),
-        panXRatio: randomSignedWithMinimum(profile.panMaxRatio, profile.panMinRatio || 0),
-        panYRatio: randomSignedWithMinimum(profile.panMaxRatio, profile.panMinRatio || 0),
-        brightness: randomToneValue(profile.brightnessJitter, profile.brightnessMinJitter || 0),
-        contrast: randomToneValue(profile.contrastJitter, profile.contrastMinJitter || 0),
-        saturation: randomToneValue(profile.saturationJitter, profile.saturationMinJitter || 0),
-        flipVertical
-      };
-    }
-    function buildTimedRoundMotionProfile(tierIndex) {
-      const profileIndex = Math.max(
-        0,
-        Math.min(Number.isInteger(tierIndex) ? tierIndex : 0, TIMED_MOTION_PROFILES.length - 1)
-      );
-      const profile = TIMED_MOTION_PROFILES[profileIndex];
-      return {
-        jitterMultiplier: randomInRange(profile.jitterMultiplierMin, profile.jitterMultiplierMax),
-        shiftDistanceMultiplier: randomInRange(profile.shiftDistanceMin, profile.shiftDistanceMax),
-        shiftDurationMs: Math.round(
-          randomInRange(profile.shiftDurationMinMs, profile.shiftDurationMaxMs)
-        )
-      };
-    }
-    function buildTimedRoundQueue(images, perCategory, targetRounds) {
-      if (!Array.isArray(images) || images.length === 0) {
-        return [];
-      }
-      const desiredCount = Math.max(1, Number(targetRounds) || ROUNDS_PER_SET);
-      const inventory = images.map((image) => ({
-        image,
-        remaining: Math.max(1, Number(perCategory) || 1)
-      }));
-      const queue = [];
-      let previousLabel = null;
-      while (queue.length < desiredCount) {
-        let candidates = inventory.filter(
-          (entry) => entry.remaining > 0 && entry.image.label !== previousLabel
-        );
-        if (candidates.length === 0) {
-          candidates = inventory.filter((entry) => entry.remaining > 0);
-        }
-        if (candidates.length === 0) {
-          inventory.forEach((entry) => {
-            entry.remaining = Math.max(1, Number(perCategory) || 1);
-          });
-          candidates = inventory.filter(
-            (entry) => entry.remaining > 0 && entry.image.label !== previousLabel
-          );
-          if (candidates.length === 0) {
-            candidates = inventory.filter((entry) => entry.remaining > 0);
-          }
-        }
-        const pick = candidates[Math.floor(Math.random() * candidates.length)];
-        queue.push(pick.image);
-        pick.remaining -= 1;
-        previousLabel = pick.image.label;
-      }
-      return queue;
-    }
-    function buildTimedEyeSequence(targetRounds) {
-      const desiredCount = Math.max(1, Number(targetRounds) || ROUNDS_PER_SET);
-      const startingEye =
-        typeof viewer2.getIsRightEye === 'function'
-          ? !viewer2.getIsRightEye()
-          : Math.random() >= 0.5;
-      const sequence = [];
-      let nextIsRightEye = startingEye;
-      for (let round = 0; round < desiredCount; round += 1) {
-        sequence.push(nextIsRightEye);
-        nextIsRightEye = !nextIsRightEye;
-      }
-      return sequence;
-    }
-    function applyRoundProfile(roundProfile, isRightEye) {
-      applyViewerFovState(roundProfile);
-      if (typeof viewer2.setCataractLevel === 'function') {
-        viewer2.setCataractLevel(clampTimedCataractLevel(roundProfile.cataractLevel));
-      }
-      if (typeof isRightEye === 'boolean' && typeof viewer2.setRightEye === 'function') {
-        viewer2.setRightEye(isRightEye);
-      }
-    }
-    function restoreViewerStateAfterTimed() {
-      if (typeof viewer2.clearTimedAugmentation === 'function') {
-        viewer2.clearTimedAugmentation();
-      }
-      if (typeof viewer2.clearTimedMotionProfile === 'function') {
-        viewer2.clearTimedMotionProfile();
-      }
-      if (!viewerStateBeforeTimed) {
-        return;
-      }
-      applyViewerFovState(viewerStateBeforeTimed);
-      if (typeof viewer2.setCataractLevel === 'function') {
-        viewer2.setCataractLevel(viewerStateBeforeTimed.cataractLevel);
-      }
-      if (typeof viewer2.setRightEye === 'function') {
-        viewer2.setRightEye(viewerStateBeforeTimed.isRightEye);
-      }
-      viewerStateBeforeTimed = null;
-    }
-    function buildTimedResultSummary(score, total, tierIndex) {
-      const ratio = total > 0 ? score / total : 0;
-      const passThreshold = Math.ceil(total * PASS_RATIO);
-      const passedSet = score >= passThreshold;
-      let guidance = 'Revise vessel obscuration and disc margin blur, then retry.';
-      if (ratio === 1) {
-        guidance = 'Excellent recognition. Keep this speed and consistency.';
-      } else if (ratio >= PASS_RATIO) {
-        guidance = 'Strong result. One more round should lock this in.';
-      } else if (ratio >= 0.5) {
-        guidance = 'Good start. Focus on swollen vs suspicious differences.';
-      }
-      const activeTier = STAR_TIERS[Math.min(tierIndex, STAR_TIERS.length - 1)];
-      let starLine = '';
-      let progressionChanged = false;
-      if (passedSet && tierIndex === nextTierIndex && nextTierIndex < STAR_TIERS.length) {
-        unlockedTierIndex = Math.max(unlockedTierIndex, nextTierIndex);
-        starLine = `Unlocked ${STAR_TIERS[nextTierIndex].name} star.`;
-        nextTierIndex += 1;
-        progressionChanged = true;
-      } else if (nextTierIndex >= STAR_TIERS.length) {
-        unlockedTierIndex = STAR_TIERS.length - 1;
-        starLine = 'All star tiers already unlocked.';
-      } else {
-        const nextTier = STAR_TIERS[Math.min(nextTierIndex, STAR_TIERS.length - 1)];
-        starLine = `Need ${passThreshold}/${total} to unlock ${nextTier.name} star.`;
-      }
-      const unlockedTiers = STAR_TIERS.slice(0, unlockedTierIndex + 1);
-      const starsMarkup = unlockedTiers
+    function Fe() {
+      return S.slice(0, j + 1)
         .map(
-          (tier) =>
-            `<span class="${tier.className}" aria-label="${tier.name} star">&#9733; ${tier.name}</span>`
+          (M) => `<span class="${M.className}" aria-label="${M.name} star">&#9733; ${M.name}</span>`
         )
         .join(' ');
-      if (progressionChanged) {
-        notifyProgressChange();
-      }
-      return {
-        html: `Set ${Math.min(tierIndex + 1, STAR_TIERS.length)}/${STAR_TIERS.length} (${activeTier.name}): ${score}/${total}. ${guidance}<br>${starLine}${starsMarkup ? ` ${starsMarkup}` : ''}`
-      };
     }
-    function getLevelProgress() {
-      return STAR_TIERS.map((tier, index) => ({
-        index,
-        name: tier.name,
-        unlocked: index <= nextTierIndex,
-        completed: index <= unlockedTierIndex,
-        active: index === Math.min(nextTierIndex, STAR_TIERS.length - 1)
+    function $e({ autoSubmitted: c = !1 } = {}) {
+      var u, h, g;
+      if (e.mcq.selectedQuestions.length === 0 || e.mcq.lastResult) return;
+      let M = e.mcq.selectedQuestions.map((A, O) => {
+          let G = I.querySelector(`input[name="question${O}"]:checked`);
+          return G ? G.value : null;
+        }),
+        x = de(),
+        L = l(e.mcq.selectedQuestions, M, x.passRatio);
+      if (!L.isComplete && !c) {
+        let A = M.findIndex((O) => !O);
+        ((T.textContent = 'Please answer all questions before submitting.'),
+          (T.className = 'test-result is-review'),
+          (u = I.querySelector(`input[name="question${A}"]`)) == null || u.focus());
+        return;
+      }
+      (L.details.forEach((A) => {
+        let O = I.querySelectorAll('.question')[A.index];
+        if (A.selectedChoiceId && !A.isCorrect) {
+          let Me = I.querySelector(
+            `input[name="question${A.index}"][value="${A.selectedChoiceId}"]`
+          );
+          Me && Me.parentElement.classList.add('wrong-answer-label');
+        }
+        let G = I.querySelector(`input[name="question${A.index}"][value="${A.correctChoiceId}"]`);
+        G && G.parentElement.classList.add('correct-answer-label');
+        let ee = O == null ? void 0 : O.querySelector('.answer-explanation');
+        ee && ((ee.textContent = A.explanation), (ee.hidden = !1));
+      }),
+        I.querySelectorAll('input[type="radio"]').forEach((A) => {
+          A.disabled = !0;
+        }),
+        z(),
+        (e.mcq.lastResult = {
+          ...L,
+          passCode: L.passed ? m(8) : null,
+          completedAt: new Date().toISOString(),
+          tierName: x.name,
+          tierIndex: Q,
+          timed: x.timeLimitSeconds > 0,
+          timedOut: c
+        }));
+      let ae = _e({
+        passed: L.passed,
+        score: L.score,
+        maxScore: L.maxScore,
+        passThreshold: L.passThreshold
+      });
+      ((N.hidden = !0),
+        R && ((R.hidden = !1), (R.textContent = 'Try again')),
+        Le(e.mcq.lastResult, ae.starLine),
+        (k.hidden = !1),
+        we(),
+        (h = T.setAttribute) == null || h.call(T, 'tabindex', '-1'),
+        (g = T.focus) == null || g.call(T));
+    }
+    function Te() {
+      var c;
+      return t.beginMcqSession()
+        ? (z(),
+          V(),
+          ie(),
+          pe(),
+          Se(),
+          (c = I.querySelector('input[type="radio"]')) == null || c.focus(),
+          !0)
+        : !1;
+    }
+    function Ie() {
+      if (!e.mcq.lastResult) return;
+      let c = f(e.mcq.lastResult),
+        M = new Blob([c], { type: 'text/plain' }),
+        x = URL.createObjectURL(M),
+        L = w.createElement('a');
+      ((L.href = x),
+        (L.download = Ne(e.mcq.lastResult.completedAt)),
+        w.body.appendChild(L),
+        L.click(),
+        w.body.removeChild(L),
+        URL.revokeObjectURL(x));
+    }
+    function Le(c, M) {
+      let x = Fe(),
+        L = `Level ${c.tierIndex + 1} (${c.tierName}): ${c.score}/${c.maxScore}. `;
+      (c.passed ? ((L += 'Pass. '), c.passCode && (L += `Code: ${c.passCode}. `)) : (L += 'Fail. '),
+        c.timed && c.timedOut && (L += 'Time expired. '),
+        (L += M),
+        x && (L += `<br>${x}`),
+        (T.innerHTML = L));
+    }
+    function Ne(c) {
+      return `mcq_result_${c ? c.replace(/[:-]/g, '').replace(/\.\d{3}Z$/, 'Z') : 'unknown'}.txt`;
+    }
+    function Oe() {
+      return S.map((c, M) => ({
+        index: M,
+        name: c.name,
+        unlocked: M <= _,
+        completed: M <= j,
+        active: M === Math.min(_, S.length - 1)
       }));
     }
-    function getProgressState() {
-      return {
-        nextTierIndex,
-        unlockedTierIndex
-      };
-    }
-    function applyViewerFovState(viewerProfile) {
-      const isDilated = Boolean(viewerProfile == null ? void 0 : viewerProfile.isDilated);
-      const fovDegrees = Number(viewerProfile == null ? void 0 : viewerProfile.fovDegrees);
-      if (typeof viewer2.setFovDegrees === 'function') {
-        const fallbackFov = isDilated
-          ? TIMED_SAFE_FOV_DEGREES.dilated
-          : TIMED_SAFE_FOV_DEGREES.undilated;
-        viewer2.setFovDegrees(Number.isFinite(fovDegrees) ? fovDegrees : fallbackFov);
-        return;
-      }
-      if (typeof viewer2.setDilated === 'function') {
-        viewer2.setDilated(isDilated);
-        return;
-      }
-      if (!isDilated && typeof viewer2.ensureUndilated === 'function') {
-        viewer2.ensureUndilated();
-      }
-    }
-    function clearCountdownTimer() {
-      if (state.timed.countdownTimer) {
-        clearInterval(state.timed.countdownTimer);
-        stateMachine2.setTimedCountdownTimer(null);
-      }
-    }
-    function clearTimedTimers() {
-      clearCountdownTimer();
-      if (state.timed.feedbackTimer) {
-        clearTimeout(state.timed.feedbackTimer);
-        stateMachine2.setTimedFeedbackTimer(null);
-      }
-    }
-    function disableTimedGuess(disable) {
-      timedGuessBox2.querySelectorAll(guessQuery).forEach((radio) => {
-        radio.disabled = disable;
-      });
-      if (disable) {
-        submitTimedGuessButton2.disabled = true;
-        return;
-      }
-      syncSubmitGuessAvailability();
-    }
-    function getSelectedTimedGuess() {
-      return timedGuessBox2.querySelector(`${guessQuery}:checked`);
-    }
-    function syncSubmitGuessAvailability() {
-      const radios = timedGuessBox2.querySelectorAll(guessQuery);
-      const hasEnabledOptions = Array.from(radios).some((radio) => !radio.disabled);
-      if (!hasEnabledOptions) {
-        submitTimedGuessButton2.disabled = true;
-        return;
-      }
-      submitTimedGuessButton2.disabled = getSelectedTimedGuess() === null;
-    }
-    timedGuessBox2.querySelectorAll(guessQuery).forEach((radio) => {
-      if (typeof radio.addEventListener === 'function') {
-        radio.addEventListener('change', syncSubmitGuessAvailability);
-        timedGuessListenerDisposers.push(() => {
-          if (typeof radio.removeEventListener === 'function') {
-            radio.removeEventListener('change', syncSubmitGuessAvailability);
-          }
-        });
-      }
-    });
-    function clearTimedGuessSelections() {
-      timedGuessBox2.querySelectorAll(guessQuery).forEach((radio) => {
-        radio.checked = false;
-        radio.parentElement.classList.remove('correct-answer-label', 'wrong-answer-label');
-      });
-      syncSubmitGuessAvailability();
+    function D() {
+      return { nextTierIndex: _, unlockedTierIndex: j };
     }
     return {
-      startTimedTest,
-      submitTimedGuess,
-      exitTimedMode,
-      getLevelProgress,
-      getProgressState,
+      openTestModal: fe,
+      closeTestModal: Ve,
+      handleSubmitTest: $e,
+      handleRetryTest: Te,
+      handleSaveResult: Ie,
+      getLevelProgress: Oe,
+      getProgressState: D,
       destroy: () => {
-        timedGuessListenerDisposers.splice(0).forEach((dispose) => {
-          dispose();
-        });
-        stateMachine2.endTimedSession();
-        restoreStandardView({ clearResult: true });
-        timedRoundQueue = [];
-        timedRoundEyes = [];
-        unlockedTierIndex = -1;
-        nextTierIndex = 0;
-        activeTierIndex = 0;
-        revealIsActive = false;
-        timedSetFlipApplied = false;
-        state.timed.round = 0;
-        state.timed.score = 0;
-        state.timed.currentLabel = '';
-        notifyProgressChange();
+        (z(),
+          t.endMcqSession(),
+          (I.innerHTML = ''),
+          (T.textContent = ''),
+          we(),
+          (j = -1),
+          (_ = 0),
+          (Q = 0),
+          X());
       }
     };
   }
-
-  // script.js
-  var canvas = document.getElementById('fundusCanvas');
-  var fovToggleCheckbox = document.getElementById('fovToggle');
-  var fovLabelSmall = document.getElementById('fovLabelSmall');
-  var fovLabelLeft = document.getElementById('fovLabelLeft');
-  var fovLabelRight = document.getElementById('fovLabelRight');
-  var eyeToggleCheckbox = document.getElementById('eyeToggle');
-  var eyeLabelRight = document.getElementById('eyeLabelRight');
-  var eyeLabelLeft = document.getElementById('eyeLabelLeft');
-  var cataractSlider = document.getElementById('cataractSlider');
-  var cataractStops = document.querySelectorAll('.cataract-stop');
-  var viewSummary = document.getElementById('viewSummary');
-  var phonePreviewControl = document.getElementById('phonePreviewControl');
-  var phoneViewToggleCheckbox = document.getElementById('phoneViewToggle');
-  var explanation = document.querySelector('.explanation');
-  var conditionButtons = document.querySelectorAll('.condition-button');
-  var burgerIcon = document.getElementById('burger-icon');
-  var sideMenu = document.getElementById('sideMenu');
-  var sideMenuButtons = sideMenu.querySelectorAll('button');
-  var infoIcon = document.getElementById('info-icon');
-  var infoModal = document.getElementById('infoModal');
-  var closeInfoModalButton = document.getElementById('closeInfoModal');
-  var testModal = document.getElementById('testModal');
-  var testModalTitle = document.getElementById('testModalTitle');
-  var mcqTimer = document.getElementById('mcqTimer');
-  var closeTestModalButton = document.getElementById('closeTestModal');
-  var testContainer = document.getElementById('testContainer');
-  var submitTestButton = document.getElementById('submitTestButton');
-  var saveResultButton = document.getElementById('saveResultButton');
-  var testResultDiv = document.getElementById('testResult');
-  var explanationDiv = document.querySelector('.explanation');
-  var mcqLevelButtons = sideMenu.querySelectorAll('.mcq-level-button');
-  var timedLevelButtons = sideMenu.querySelectorAll('.timed-level-button');
-  var cupAchievement = document.getElementById('cupAchievement');
-  var cupAchievementLabel = document.getElementById('cupAchievementLabel');
-  var cupAchievementCode = document.getElementById('cupAchievementCode');
-  var downloadCupCertificateButton = document.getElementById('downloadCupCertificateButton');
-  var timedGuessBox = document.getElementById('timedGuessBox');
-  var timedMessage = document.getElementById('timedMessage');
-  var timedCountdown = document.getElementById('timedCountdown');
-  var submitTimedGuessButton = document.getElementById('submitTimedGuessButton');
-  var timedTestResult = document.getElementById('timedTestResult');
-  var CUP_ACHIEVEMENT_STORAGE_KEY = 'swollen_discs_cup_achievement_v1';
-  var MCQ_LEVEL_PROGRESS_STORAGE_KEY = 'swollen_discs_mcq_progress_v1';
-  var TIMED_LEVEL_PROGRESS_STORAGE_KEY = 'swollen_discs_timed_progress_v1';
-  var LOCKED_CUP_TEXT = 'Cup Locked: Complete Advanced in MCQ and Timed Sets';
-  var UNLOCKED_CUP_TEXT = 'Cup Unlocked: Advanced in MCQ and Timed Sets';
-  var PHONE_VIEW_STORAGE_KEY = 'swollen_discs_phone_view_v1';
-  var DEFAULT_CUP_ACHIEVEMENT_STATE = Object.freeze({
-    unlocked: false,
-    code: '',
-    unlockedAt: ''
-  });
-  var DEFAULT_LEVEL_PROGRESS_STATE = Object.freeze({
-    nextTierIndex: 0,
-    unlockedTierIndex: -1
-  });
-  var _a;
-  var queryValue =
-    (_a = new window.URLSearchParams(window.location.search).get(IMAGE_SET_QUERY_PARAM)) == null
-      ? void 0
-      : _a.toLowerCase();
-  var hasCoarsePointer =
-    typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
-  var viewportEdge = Math.max(window.innerWidth || 0, window.innerHeight || 0);
-  var selectedImageSet = resolveImageAssetSet({
-    imageAssetSets: IMAGE_ASSET_SETS,
-    queryValue,
-    hasCoarsePointer,
-    viewportEdge
-  });
-  applyConditionButtonImageSet(selectedImageSet, conditionButtons);
-  var resolvedDefaultImageSrc =
-    typeof selectedImageSet.normal === 'string' && selectedImageSet.normal.length > 0
-      ? selectedImageSet.normal
-      : DEFAULT_IMAGE_SRC;
-  var resolvedTimedImages = buildTimedImagesFromSet(selectedImageSet, TIMED_IMAGES);
-  scheduleImagePrefetch(
-    [
-      selectedImageSet.normal,
-      selectedImageSet.suspicious,
-      selectedImageSet.swollen,
-      ...resolvedTimedImages.map((image) => (image == null ? void 0 : image.src))
-    ].filter((src) => typeof src === 'string' && src.length > 0)
-  );
-  var appState = createAppState({ defaultImageSrc: resolvedDefaultImageSrc });
-  var stateMachine = createStateMachine(appState);
-  var teardownCallbacks = [];
-  var gazeIntervalId = null;
-  var isAppDestroyed = false;
-  var mcqLevelProgressState = [];
-  var timedLevelProgressState = [];
-  var cupAchievementState = loadCupAchievementState();
-  var initialMcqProgressState = loadLevelProgressState(MCQ_LEVEL_PROGRESS_STORAGE_KEY);
-  var initialTimedProgressState = loadLevelProgressState(TIMED_LEVEL_PROGRESS_STORAGE_KEY);
-  var viewer = createViewer({
-    state: appState,
-    canvas,
-    fovToggleCheckbox,
-    fovLabelSmall,
-    fovLabelLeft,
-    fovLabelRight,
-    eyeToggleCheckbox,
-    eyeLabelRight,
-    eyeLabelLeft,
-    cataractSlider,
-    cataractStops,
-    viewSummary,
-    explanation,
-    conditionButtons,
-    defaultImageSrc: resolvedDefaultImageSrc,
-    explanationTemplates: EXPLANATION_TEMPLATES,
-    cataractPresets: CATARACT_PRESETS,
-    cataractOcclusionSpots: CATARACT_OCCLUSION_SPOTS
-  });
-  var modalManager = createModalManager({
-    state: appState,
-    stateMachine,
-    sideMenu,
-    sideMenuButtons,
-    burgerIcon,
-    infoIcon,
-    infoModal,
-    testModal
-  });
-  var mcqController = createMcqController({
-    state: appState,
-    stateMachine,
-    questionBank: questions_default,
-    buildMcqTest,
-    evaluateMcqSubmission,
-    generatePassCode,
-    formatMcqResultText,
-    setModalState: modalManager.setModalState,
-    testModal,
-    triggerButton: burgerIcon,
-    testContainer,
-    submitTestButton,
-    saveResultButton,
-    testResultDiv,
-    testModalTitle,
-    mcqTimer,
-    mcqTierConfigs: MCQ_TIER_CONFIGS,
-    initialProgressState: initialMcqProgressState,
-    onProgressChange: renderMcqLevelMenu
-  });
-  var timedTestController = createTimedTestController({
-    state: appState,
-    stateMachine,
-    timedImages: resolvedTimedImages,
-    timedRoundsPerCategory: TIMED_ROUNDS_PER_CATEGORY,
-    timedTotalRounds: TIMED_SET_SIZE,
-    timedRoundProfiles: TIMED_ROUND_PROFILES,
-    initialProgressState: initialTimedProgressState,
-    onProgressChange: renderTimedLevelMenu,
-    closeTestModal: mcqController.closeTestModal,
-    setModalState: modalManager.setModalState,
-    infoModal,
-    infoIcon,
-    explanationDiv,
-    timedGuessBox,
-    timedMessage,
-    timedCountdown,
-    submitTimedGuessButton,
-    timedTestResult,
-    viewer
-  });
-  function scheduleImagePrefetch(imageSources) {
-    if (typeof window === 'undefined' || typeof Image === 'undefined') {
-      return;
-    }
-    const uniqueSources = [...new Set(imageSources)];
-    const prefetch = () => {
-      uniqueSources.forEach((src) => {
-        const image = new Image();
-        image.decoding = 'async';
-        image.src = src;
-      });
-    };
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(prefetch, { timeout: 1200 });
-    } else {
-      window.setTimeout(prefetch, 220);
-    }
+  var se = Object.freeze([
+      { name: 'Primary', className: 'primary-star' },
+      { name: 'Intermediate', className: 'intermediate-star' },
+      { name: 'Advanced', className: 'advanced-star' }
+    ]),
+    vn = 5,
+    He = Object.freeze({ undilated: 8, dilated: 15 }),
+    Hi = 1,
+    ct = Object.freeze({ seconds: vn, isDilated: !1, fovDegrees: He.undilated, cataractLevel: 0 }),
+    yn = Object.freeze([
+      {
+        rotateMaxDegrees: 2.4,
+        rotateMinDegrees: 0.9,
+        scaleMin: 0.94,
+        scaleMax: 1.07,
+        minScaleDelta: 0.02,
+        panMaxRatio: 0.025,
+        panMinRatio: 0.008,
+        brightnessJitter: 0.035,
+        brightnessMinJitter: 0.015,
+        contrastJitter: 0.035,
+        contrastMinJitter: 0.015,
+        saturationJitter: 0.03,
+        saturationMinJitter: 0.01
+      },
+      {
+        rotateMaxDegrees: 4.2,
+        rotateMinDegrees: 1.6,
+        scaleMin: 0.91,
+        scaleMax: 1.1,
+        minScaleDelta: 0.03,
+        panMaxRatio: 0.04,
+        panMinRatio: 0.012,
+        brightnessJitter: 0.06,
+        brightnessMinJitter: 0.025,
+        contrastJitter: 0.06,
+        contrastMinJitter: 0.025,
+        saturationJitter: 0.06,
+        saturationMinJitter: 0.025
+      },
+      {
+        rotateMaxDegrees: 5.2,
+        rotateMinDegrees: 1.9,
+        scaleMin: 0.89,
+        scaleMax: 1.12,
+        minScaleDelta: 0.04,
+        panMaxRatio: 0.048,
+        panMinRatio: 0.015,
+        brightnessJitter: 0.07,
+        brightnessMinJitter: 0.03,
+        contrastJitter: 0.07,
+        contrastMinJitter: 0.03,
+        saturationJitter: 0.07,
+        saturationMinJitter: 0.03
+      }
+    ]),
+    Mn = Object.freeze([
+      {
+        jitterMultiplierMin: 1.9,
+        jitterMultiplierMax: 2.4,
+        shiftDistanceMin: 1.15,
+        shiftDistanceMax: 1.45,
+        shiftDurationMinMs: 580,
+        shiftDurationMaxMs: 800
+      },
+      {
+        jitterMultiplierMin: 2.3,
+        jitterMultiplierMax: 2.9,
+        shiftDistanceMin: 1.35,
+        shiftDistanceMax: 1.7,
+        shiftDurationMinMs: 540,
+        shiftDurationMaxMs: 760
+      },
+      {
+        jitterMultiplierMin: 2.6,
+        jitterMultiplierMax: 3.1,
+        shiftDistanceMin: 1.45,
+        shiftDistanceMax: 1.9,
+        shiftDurationMinMs: 520,
+        shiftDurationMaxMs: 740
+      }
+    ]);
+  function Je(e, t) {
+    return e + Math.random() * (t - e);
   }
-  function normalizeLevelProgress(levelProgress) {
-    return Array.isArray(levelProgress) ? levelProgress : [];
+  function ut(e, t) {
+    let r = Math.max(0, Number(e) || 0),
+      a = Math.max(0, Math.min(r, Number(t) || 0));
+    if (r === 0) return 0;
+    let l = Je(a, r);
+    return Math.random() >= 0.5 ? l : -l;
   }
-  function renderLevelButtons(levelButtons, levelProgress) {
-    levelButtons.forEach((button) => {
-      const levelIndex = Number(button.dataset.levelIndex);
-      const levelState = levelProgress[levelIndex];
-      if (!levelState) {
+  function Ji(e, t, r) {
+    let a = Math.min(Number(e) || 1, Number(t) || 1),
+      l = Math.max(Number(e) || 1, Number(t) || 1),
+      m = Math.max(0, Number(r) || 0);
+    if (a === l) return a;
+    for (let f = 0; f < 10; f += 1) {
+      let b = Je(a, l);
+      if (Math.abs(b - 1) >= m) return b;
+    }
+    return Math.abs(a - 1) >= Math.abs(l - 1) ? a : l;
+  }
+  function wt(e, t) {
+    return 1 + ut(e, t);
+  }
+  function xn(e) {
+    let t = Number(e),
+      r = Number.isFinite(t) ? Math.round(t) : ct.cataractLevel;
+    return Math.max(0, Math.min(Hi, r));
+  }
+  function Qi(e, t) {
+    let r = Math.max(1, Number(t) || 1),
+      a = Number(e == null ? void 0 : e.nextTierIndex),
+      l = Number(e == null ? void 0 : e.unlockedTierIndex),
+      m = Number.isFinite(a) ? Math.max(0, Math.min(r, Math.floor(a))) : 0,
+      f = m >= r ? r - 1 : Math.max(-1, m - 1),
+      b = Number.isFinite(l) ? Math.min(f, Math.max(-1, Math.min(r - 1, Math.floor(l)))) : -1;
+    return { nextTierIndex: m, unlockedTierIndex: b };
+  }
+  function Tn({
+    state: e,
+    stateMachine: t,
+    timedImages: r,
+    timedRoundsPerCategory: a,
+    timedTotalRounds: l,
+    timedRoundProfiles: m,
+    initialProgressState: f,
+    onProgressChange: b,
+    closeTestModal: p,
+    setModalState: y,
+    infoModal: I,
+    infoIcon: N,
+    explanationDiv: R,
+    timedGuessBox: k,
+    timedMessage: T,
+    timedCountdown: B,
+    submitTimedGuessButton: q,
+    timedTestResult: Y,
+    viewer: i
+  }) {
+    let C = 'input[name="timedGuess"]',
+      w = Array.isArray(m) ? m : [],
+      S = Math.max(1, Number(l) || 4),
+      J = Math.max(1, Number(a) || 1),
+      U = Qi(f, se.length),
+      Q = null,
+      j = [],
+      _ = [],
+      K = U.unlockedTierIndex,
+      F = U.nextTierIndex,
+      Z = Math.min(U.nextTierIndex, se.length - 1),
+      le = !1,
+      re = 0,
+      X = !1,
+      ye = [];
+    function de() {
+      typeof b == 'function' && b(Ne());
+    }
+    function z({ tierIndex: u } = {}) {
+      if (!t.beginTimedSession()) return !1;
+      (p(),
+        y(I, !1, N),
+        M(),
+        ae(),
+        typeof i.clearTimedAugmentation == 'function' && i.clearTimedAugmentation(),
+        typeof i.clearTimedMotionProfile == 'function' && i.clearTimedMotionProfile(),
+        (Q = {
+          fovDegrees: typeof i.getFovDegrees == 'function' ? i.getFovDegrees() : null,
+          isDilated: typeof i.getIsDilated == 'function' ? i.getIsDilated() : !1,
+          cataractLevel: typeof i.getCataractLevel == 'function' ? i.getCataractLevel() : 0,
+          isRightEye: typeof i.getIsRightEye == 'function' ? i.getIsRightEye() : !0
+        }));
+      let h = Ve(u);
+      return h === null
+        ? (t.endTimedSession(), !1)
+        : ((j = Fe(r, J, S)),
+          (_ = $e(j.length || S)),
+          (Z = h),
+          (le = !1),
+          i.setDiscVisible(!0),
+          (Y.innerHTML = ''),
+          (T.textContent = ''),
+          (B.textContent = ''),
+          (k.hidden = !1),
+          (R.hidden = !0),
+          i.setViewerControlsDisabled(!0),
+          x(!0),
+          de(),
+          we(),
+          !0);
+    }
+    function we() {
+      e.timed.round += 1;
+      let u = oe();
+      if (e.timed.round > u) {
+        ie();
         return;
       }
-      button.dataset.locked = levelState.unlocked ? 'false' : 'true';
-      button.classList.toggle('is-locked', !levelState.unlocked);
-      button.classList.toggle('is-complete', levelState.completed);
-      button.textContent = `Level ${levelIndex + 1}: ${levelState.name}`;
-      button.setAttribute('aria-disabled', levelState.unlocked ? 'false' : 'true');
-    });
-  }
-  function renderTimedLevelMenu(levelProgress = timedTestController.getLevelProgress()) {
-    timedLevelProgressState = normalizeLevelProgress(levelProgress);
-    renderLevelButtons(timedLevelButtons, timedLevelProgressState);
-    saveLevelProgressState(
-      TIMED_LEVEL_PROGRESS_STORAGE_KEY,
-      deriveProgressStateFromLevelProgress(timedLevelProgressState)
-    );
-    renderCupAchievement();
-  }
-  function renderMcqLevelMenu(levelProgress = mcqController.getLevelProgress()) {
-    mcqLevelProgressState = normalizeLevelProgress(levelProgress);
-    renderLevelButtons(mcqLevelButtons, mcqLevelProgressState);
-    saveLevelProgressState(
-      MCQ_LEVEL_PROGRESS_STORAGE_KEY,
-      deriveProgressStateFromLevelProgress(mcqLevelProgressState)
-    );
-    renderCupAchievement();
-  }
-  function isFinalTierCompleted(levelProgressState) {
-    var _a2;
-    if (!Array.isArray(levelProgressState) || levelProgressState.length === 0) {
-      return false;
+      let h = pe(),
+        g = _[e.timed.round - 1];
+      Te(h, g);
+      let A = Math.max(1, Number(h.seconds) || vn),
+        O = j[e.timed.round - 1] || r[Math.floor(Math.random() * r.length)];
+      ((e.timed.currentLabel = O.label),
+        typeof i.setTimedAugmentation == 'function' &&
+          i.setTimedAugmentation(ge(Z, e.timed.round - 1, u)),
+        typeof i.setTimedMotionProfile == 'function' && i.setTimedMotionProfile(_e(Z)),
+        i.setDiscVisible(!0));
+      let G = ++re;
+      ((X = !1),
+        x(!0),
+        (T.textContent = 'Loading image\u2026'),
+        (B.textContent = ''),
+        i.setImageSource(O.src, {
+          onError: () => {
+            !e.timed.isActive ||
+              G !== re ||
+              (V(), (Y.textContent = 'Image unavailable. Set not scored; retry from Timed sets.'));
+          },
+          onReady: () => {
+            if (!e.timed.isActive || G !== re) return;
+            (typeof i.doGazeShift == 'function' && !e.viewer.shiftInProgress && i.doGazeShift(),
+              (T.textContent = `Round ${e.timed.round}/${u}`),
+              (B.textContent = String(A)),
+              (le = !0),
+              (X = !0),
+              x(!1));
+            let ee = A,
+              Me = setInterval(() => {
+                ((ee -= 1),
+                  (B.textContent = String(ee)),
+                  ee <= 0 &&
+                    (c(),
+                    i.setDiscVisible(!1),
+                    (le = !1),
+                    (T.textContent = 'Which disc was shown?'),
+                    (B.textContent = '')));
+              }, 1e3);
+            t.setTimedCountdownTimer(Me);
+          }
+        }));
     }
-    return Boolean(
-      (_a2 = levelProgressState[levelProgressState.length - 1]) == null ? void 0 : _a2.completed
-    );
-  }
-  function renderCupAchievement() {
-    if (!cupAchievement) {
-      return;
-    }
-    const hasMcqFinalTier = isFinalTierCompleted(mcqLevelProgressState);
-    const hasTimedFinalTier = isFinalTierCompleted(timedLevelProgressState);
-    const hasCompletedBothFinalTiers = hasMcqFinalTier && hasTimedFinalTier;
-    if (!hasCompletedBothFinalTiers && cupAchievementState.unlocked) {
-      cupAchievementState = {
-        unlocked: false,
-        code: '',
-        unlockedAt: ''
-      };
-      saveCupAchievementState(cupAchievementState);
-    } else {
-      unlockCupAchievementIfNeeded(hasCompletedBothFinalTiers);
-    }
-    cupAchievement.hidden = false;
-    cupAchievement.setAttribute('aria-hidden', 'false');
-    cupAchievement.classList.toggle('is-unlocked', cupAchievementState.unlocked);
-    cupAchievement.classList.toggle('is-locked', !cupAchievementState.unlocked);
-    if (cupAchievementLabel) {
-      cupAchievementLabel.textContent = cupAchievementState.unlocked
-        ? UNLOCKED_CUP_TEXT
-        : LOCKED_CUP_TEXT;
-    }
-    if (cupAchievementCode) {
-      if (cupAchievementState.unlocked && cupAchievementState.code) {
-        cupAchievementCode.hidden = false;
-        cupAchievementCode.textContent = `Code: ${cupAchievementState.code}`;
-      } else {
-        cupAchievementCode.hidden = true;
-        cupAchievementCode.textContent = '';
+    function Se() {
+      if (!e.timed.isActive || !X) return;
+      let u = L();
+      if (!u) {
+        ((T.textContent = 'Select an answer before submitting.'), W());
+        return;
       }
+      le && (c(), i.setDiscVisible(!1), (le = !1), (B.textContent = ''));
+      let h = u.value === e.timed.currentLabel;
+      if (((X = !1), h))
+        ((e.timed.score += 1), u.parentElement.classList.add('correct-answer-label'));
+      else {
+        u.parentElement.classList.add('wrong-answer-label');
+        let A = k.querySelector(`input[name="timedGuess"][value="${e.timed.currentLabel}"]`);
+        A && A.parentElement.classList.add('correct-answer-label');
+      }
+      x(!0);
+      let g = setTimeout(() => {
+        (ae(), we());
+      }, 1200);
+      t.setTimedFeedbackTimer(g);
     }
-    if (downloadCupCertificateButton) {
-      const isCertificateLocked = !cupAchievementState.unlocked;
-      downloadCupCertificateButton.disabled = isCertificateLocked;
-      downloadCupCertificateButton.dataset.locked = isCertificateLocked ? 'true' : 'false';
-      downloadCupCertificateButton.setAttribute(
-        'aria-disabled',
-        isCertificateLocked ? 'true' : 'false'
+    function ie() {
+      (M(), ae(), x(!0), (k.hidden = !0), (le = !1));
+      let u = Le(e.timed.score, oe(), Z);
+      ((Y.innerHTML = u.html), t.endTimedSession() && fe({ clearResult: !1 }));
+    }
+    function V() {
+      t.endTimedSession() && fe({ clearResult: !0 });
+    }
+    function fe({ clearResult: u }) {
+      (i.setDiscVisible(!0),
+        M(),
+        ae(),
+        x(!0),
+        (k.hidden = !0),
+        (R.hidden = !1),
+        (T.textContent = ''),
+        (B.textContent = ''),
+        (le = !1),
+        u && (Y.innerHTML = ''),
+        Ie(),
+        i.setViewerControlsDisabled(!1),
+        i.setImageSource(i.getActiveConditionImagePath()));
+    }
+    function Ve(u) {
+      let h = Math.min(F, se.length - 1),
+        g = typeof u == 'number' ? u : h;
+      return !Number.isInteger(g) || g < 0 || g >= se.length || g > F ? null : g;
+    }
+    function pe() {
+      if (w.length === 0) return ct;
+      let u = Math.min(Z, w.length - 1),
+        h = w[u];
+      if (!h || typeof h != 'object') return ct;
+      let g = !!h.isDilated;
+      return {
+        seconds: Number(h.seconds) || ct.seconds,
+        isDilated: g,
+        fovDegrees: g ? He.dilated : He.undilated,
+        cataractLevel: xn(h.cataractLevel)
+      };
+    }
+    function oe() {
+      return j.length > 0 ? j.length : S;
+    }
+    function ge(u) {
+      let h = Math.max(0, Math.min(Number.isInteger(u) ? u : 0, yn.length - 1)),
+        g = yn[h];
+      return {
+        rotateDegrees: ut(g.rotateMaxDegrees, g.rotateMinDegrees || 0),
+        scale: Ji(g.scaleMin, g.scaleMax, g.minScaleDelta || 0),
+        panXRatio: ut(g.panMaxRatio, g.panMinRatio || 0),
+        panYRatio: ut(g.panMaxRatio, g.panMinRatio || 0),
+        brightness: wt(g.brightnessJitter, g.brightnessMinJitter || 0),
+        contrast: wt(g.contrastJitter, g.contrastMinJitter || 0),
+        saturation: wt(g.saturationJitter, g.saturationMinJitter || 0),
+        flipVertical: !1
+      };
+    }
+    function _e(u) {
+      let h = Math.max(0, Math.min(Number.isInteger(u) ? u : 0, Mn.length - 1)),
+        g = Mn[h];
+      return {
+        jitterMultiplier: Je(g.jitterMultiplierMin, g.jitterMultiplierMax),
+        shiftDistanceMultiplier: Je(g.shiftDistanceMin, g.shiftDistanceMax),
+        shiftDurationMs: Math.round(Je(g.shiftDurationMinMs, g.shiftDurationMaxMs))
+      };
+    }
+    function Fe(u, h, g) {
+      if (!Array.isArray(u) || u.length === 0) return [];
+      let A = Math.max(1, Number(g) || 4),
+        O = u.map((te) => ({ image: te, remaining: Math.max(1, Number(h) || 1) })),
+        G = [],
+        ee = null,
+        Me = [...O];
+      for (; Me.length && G.length < A; ) {
+        let te = Math.floor(Math.random() * Me.length),
+          ce = Me.splice(te, 1)[0];
+        (G.push(ce.image), (ce.remaining -= 1), (ee = ce.image.label));
+      }
+      for (; G.length < A; ) {
+        let te = O.filter((ue) => ue.remaining > 0 && ue.image.label !== ee);
+        (te.length === 0 && (te = O.filter((ue) => ue.remaining > 0)),
+          te.length === 0 &&
+            (O.forEach((ue) => {
+              ue.remaining = Math.max(1, Number(h) || 1);
+            }),
+            (te = O.filter((ue) => ue.remaining > 0 && ue.image.label !== ee)),
+            te.length === 0 && (te = O.filter((ue) => ue.remaining > 0))));
+        let ce = te[Math.floor(Math.random() * te.length)];
+        (G.push(ce.image), (ce.remaining -= 1), (ee = ce.image.label));
+      }
+      return G;
+    }
+    function $e(u) {
+      let h = Math.max(1, Number(u) || 4),
+        g = typeof i.getIsRightEye == 'function' ? !i.getIsRightEye() : Math.random() >= 0.5,
+        A = [],
+        O = g;
+      for (let G = 0; G < h; G += 1) (A.push(O), (O = !O));
+      return A;
+    }
+    function Te(u, h) {
+      (D(u),
+        typeof i.setCataractLevel == 'function' && i.setCataractLevel(xn(u.cataractLevel)),
+        typeof h == 'boolean' && typeof i.setRightEye == 'function' && i.setRightEye(h));
+    }
+    function Ie() {
+      (typeof i.clearTimedAugmentation == 'function' && i.clearTimedAugmentation(),
+        typeof i.clearTimedMotionProfile == 'function' && i.clearTimedMotionProfile(),
+        Q &&
+          (D(Q),
+          typeof i.setCataractLevel == 'function' && i.setCataractLevel(Q.cataractLevel),
+          typeof i.setRightEye == 'function' && i.setRightEye(Q.isRightEye),
+          (Q = null)));
+    }
+    function Le(u, h, g) {
+      let A = h > 0 ? u / h : 0,
+        O = Math.ceil(h * 0.75),
+        G = u >= O,
+        ee = 'Revise vessel obscuration and disc margin blur, then retry.';
+      A === 1
+        ? (ee = 'Excellent recognition. Keep this speed and consistency.')
+        : A >= 0.75
+          ? (ee = 'Strong result. One more round should lock this in.')
+          : A >= 0.5 && (ee = 'Good start. Focus on swollen vs suspicious differences.');
+      let Me = se[Math.min(g, se.length - 1)],
+        te = '',
+        ce = !1;
+      if (G && g === F && F < se.length)
+        ((K = Math.max(K, F)), (te = `Unlocked ${se[F].name} star.`), (F += 1), (ce = !0));
+      else if (F >= se.length) ((K = se.length - 1), (te = 'All star tiers already unlocked.'));
+      else {
+        let Ae = se[Math.min(F, se.length - 1)];
+        te = `Need ${O}/${h} to unlock ${Ae.name} star.`;
+      }
+      let ot = se
+        .slice(0, K + 1)
+        .map(
+          (Ae) =>
+            `<span class="${Ae.className}" aria-label="${Ae.name} star">&#9733; ${Ae.name}</span>`
+        )
+        .join(' ');
+      return (
+        ce && de(),
+        {
+          html: `Set ${Math.min(g + 1, se.length)}/${se.length} (${Me.name}): ${u}/${h}. ${ee}<br>${te}${ot ? ` ${ot}` : ''}`
+        }
       );
     }
-  }
-  function unlockCupAchievementIfNeeded(hasCompletedBothFinalTiers) {
-    if (!hasCompletedBothFinalTiers || cupAchievementState.unlocked) {
-      return;
+    function Ne() {
+      return se.map((u, h) => ({
+        index: h,
+        name: u.name,
+        unlocked: h <= F,
+        completed: h <= K,
+        active: h === Math.min(F, se.length - 1)
+      }));
     }
-    cupAchievementState = {
-      unlocked: true,
-      code: createCupAchievementCode(),
-      unlockedAt: /* @__PURE__ */ new Date().toISOString()
-    };
-    saveCupAchievementState(cupAchievementState);
-  }
-  function hasLocalStorage() {
-    return typeof window !== 'undefined' && Boolean(window.localStorage);
-  }
-  function loadJsonStorage(storageKey) {
-    if (!hasLocalStorage()) {
-      return null;
+    function Oe() {
+      return { nextTierIndex: F, unlockedTierIndex: K };
     }
-    try {
-      const rawValue = window.localStorage.getItem(storageKey);
-      return rawValue ? JSON.parse(rawValue) : null;
-    } catch (e) {
-      return null;
+    function D(u) {
+      let h = !!(u != null && u.isDilated),
+        g = Number(u == null ? void 0 : u.fovDegrees);
+      if (typeof i.setFovDegrees == 'function') {
+        let A = h ? He.dilated : He.undilated;
+        i.setFovDegrees(Number.isFinite(g) ? g : A);
+        return;
+      }
+      if (typeof i.setDilated == 'function') {
+        i.setDilated(h);
+        return;
+      }
+      !h && typeof i.ensureUndilated == 'function' && i.ensureUndilated();
     }
-  }
-  function saveJsonStorage(storageKey, value) {
-    if (!hasLocalStorage()) {
-      return;
+    function c() {
+      e.timed.countdownTimer &&
+        (clearInterval(e.timed.countdownTimer), t.setTimedCountdownTimer(null));
     }
-    try {
-      window.localStorage.setItem(storageKey, JSON.stringify(value));
-    } catch (e) {}
-  }
-  function loadStringStorage(storageKey) {
-    if (!hasLocalStorage()) {
-      return null;
+    function M() {
+      ((re += 1),
+        (X = !1),
+        c(),
+        e.timed.feedbackTimer &&
+          (clearTimeout(e.timed.feedbackTimer), t.setTimedFeedbackTimer(null)));
     }
-    try {
-      return window.localStorage.getItem(storageKey);
-    } catch (e) {
-      return null;
+    function x(u) {
+      if (
+        (k.querySelectorAll(C).forEach((h) => {
+          h.disabled = u;
+        }),
+        u)
+      ) {
+        q.disabled = !0;
+        return;
+      }
+      W();
     }
-  }
-  function saveStringStorage(storageKey, value) {
-    if (!hasLocalStorage()) {
-      return;
+    function L() {
+      return k.querySelector(`${C}:checked`);
     }
-    try {
-      window.localStorage.setItem(storageKey, value);
-    } catch (e) {}
-  }
-  function loadCupAchievementState() {
-    const parsedValue = loadJsonStorage(CUP_ACHIEVEMENT_STORAGE_KEY);
-    if (!parsedValue || typeof parsedValue !== 'object') {
-      return { ...DEFAULT_CUP_ACHIEVEMENT_STATE };
+    function W() {
+      let u = k.querySelectorAll(C);
+      if (!Array.from(u).some((g) => !g.disabled)) {
+        q.disabled = !0;
+        return;
+      }
+      q.disabled = L() === null;
+    }
+    k.querySelectorAll(C).forEach((u) => {
+      typeof u.addEventListener == 'function' &&
+        (u.addEventListener('change', W),
+        ye.push(() => {
+          typeof u.removeEventListener == 'function' && u.removeEventListener('change', W);
+        }));
+    });
+    function ae() {
+      (k.querySelectorAll(C).forEach((u) => {
+        ((u.checked = !1),
+          u.parentElement.classList.remove('correct-answer-label', 'wrong-answer-label'));
+      }),
+        W());
     }
     return {
-      unlocked: Boolean(parsedValue.unlocked),
-      code: typeof parsedValue.code === 'string' ? parsedValue.code : '',
-      unlockedAt: typeof parsedValue.unlockedAt === 'string' ? parsedValue.unlockedAt : ''
+      startTimedTest: z,
+      submitTimedGuess: Se,
+      exitTimedMode: V,
+      getLevelProgress: Ne,
+      getProgressState: Oe,
+      destroy: () => {
+        (ye.splice(0).forEach((u) => {
+          u();
+        }),
+          t.endTimedSession(),
+          fe({ clearResult: !0 }),
+          (j = []),
+          (_ = []),
+          (K = -1),
+          (F = 0),
+          (Z = 0),
+          (le = !1),
+          (e.timed.round = 0),
+          (e.timed.score = 0),
+          (e.timed.currentLabel = ''),
+          de());
+      }
     };
   }
-  function loadLevelProgressState(storageKey) {
-    const parsedValue = loadJsonStorage(storageKey);
-    if (!parsedValue || typeof parsedValue !== 'object') {
-      return { ...DEFAULT_LEVEL_PROGRESS_STATE };
-    }
-    const nextTierIndex = Number.isFinite(Number(parsedValue.nextTierIndex))
-      ? Math.max(0, Math.floor(Number(parsedValue.nextTierIndex)))
-      : 0;
-    const unlockedTierIndex = Number.isFinite(Number(parsedValue.unlockedTierIndex))
-      ? Math.max(-1, Math.floor(Number(parsedValue.unlockedTierIndex)))
-      : -1;
-    return {
-      nextTierIndex,
-      unlockedTierIndex
-    };
-  }
-  function isDesktopPhonePreviewAvailable() {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-    const hasCoarsePointer2 =
-      typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
-    const viewportWidth = window.innerWidth || 0;
-    return !hasCoarsePointer2 && viewportWidth > 900;
-  }
-  function loadPhoneViewPreference() {
-    return loadStringStorage(PHONE_VIEW_STORAGE_KEY) === 'true';
-  }
-  function savePhoneViewPreference(enabled) {
-    saveStringStorage(PHONE_VIEW_STORAGE_KEY, enabled ? 'true' : 'false');
-  }
-  function setPhoneViewPreviewEnabled(enabled) {
-    document.body.classList.toggle('simulate-phone-frame', Boolean(enabled));
-    if (phoneViewToggleCheckbox) {
-      phoneViewToggleCheckbox.checked = Boolean(enabled);
-    }
-  }
-  function saveLevelProgressState(storageKey, progressState) {
-    saveJsonStorage(storageKey, progressState);
-  }
-  function deriveProgressStateFromLevelProgress(levelProgress) {
-    if (!Array.isArray(levelProgress) || levelProgress.length === 0) {
-      return {
-        nextTierIndex: 0,
-        unlockedTierIndex: -1
+  var Ki = document.getElementById('fundusCanvas'),
+    Zi = document.getElementById('fovToggle'),
+    eo = document.getElementById('fovLabelSmall'),
+    to = document.getElementById('fovLabelLeft'),
+    no = document.getElementById('fovLabelRight'),
+    io = document.getElementById('eyeToggle'),
+    oo = document.getElementById('eyeLabelRight'),
+    ro = document.getElementById('eyeLabelLeft'),
+    ao = document.getElementById('cataractSlider'),
+    so = document.querySelectorAll('.cataract-stop'),
+    lo = document.getElementById('viewSummary'),
+    In = document.getElementById('phonePreviewControl'),
+    Ue = document.getElementById('phoneViewToggle'),
+    co = document.querySelector('.explanation'),
+    Cn = document.querySelectorAll('.condition-button'),
+    At = document.getElementById('burger-icon'),
+    ft = document.getElementById('sideMenu'),
+    uo = ft.querySelectorAll('button'),
+    et = document.getElementById('info-icon'),
+    tt = document.getElementById('infoModal'),
+    mo = document.getElementById('closeInfoModal'),
+    Ln = document.getElementById('testModal'),
+    ho = document.getElementById('testModalTitle'),
+    fo = document.getElementById('mcqTimer'),
+    po = document.getElementById('closeTestModal'),
+    go = document.getElementById('testContainer'),
+    Rn = document.getElementById('submitTestButton'),
+    qn = document.getElementById('retryTestButton'),
+    Dn = document.getElementById('saveResultButton'),
+    bo = document.getElementById('testResult'),
+    yo = document.querySelector('.explanation'),
+    Pn = ft.querySelectorAll('.mcq-level-button'),
+    kn = ft.querySelectorAll('.timed-level-button'),
+    Qe = document.getElementById('cupAchievement'),
+    wn = document.getElementById('cupAchievementLabel'),
+    Ke = document.getElementById('cupAchievementCode'),
+    Ze = document.getElementById('downloadCupCertificateButton'),
+    Mo = document.getElementById('timedGuessBox'),
+    xo = document.getElementById('timedMessage'),
+    vo = document.getElementById('timedCountdown'),
+    Nn = document.getElementById('submitTimedGuessButton'),
+    To = document.getElementById('timedTestResult'),
+    On = 'swollen_discs_cup_achievement_v1',
+    _n = 'swollen_discs_mcq_progress_v1',
+    Fn = 'swollen_discs_timed_progress_v1',
+    Io = 'Cup Locked: Complete Advanced in MCQ and Timed Sets',
+    wo = 'Cup Unlocked: Advanced in MCQ and Timed Sets',
+    $n = 'swollen_discs_phone_view_v1',
+    So = Object.freeze({ unlocked: !1, code: '', unlockedAt: '' }),
+    Ao = Object.freeze({ nextTierIndex: 0, unlockedTierIndex: -1 }),
+    En,
+    Eo =
+      (En = new window.URLSearchParams(window.location.search).get(en)) == null
+        ? void 0
+        : En.toLowerCase(),
+    Co = typeof window.matchMedia == 'function' && window.matchMedia('(pointer: coarse)').matches,
+    Lo = Math.max(window.innerWidth || 0, window.innerHeight || 0),
+    ke = tn({ imageAssetSets: Ge, queryValue: Eo, hasCoarsePointer: Co, viewportEdge: Lo });
+  on(ke, Cn);
+  var Bn = typeof ke.normal == 'string' && ke.normal.length > 0 ? ke.normal : Ut,
+    jn = nn(ke, Vt);
+  Do(
+    [ke.normal, ke.suspicious, ke.swollen, ...jn.map((e) => (e == null ? void 0 : e.src))].filter(
+      (e) => typeof e == 'string' && e.length > 0
+    )
+  );
+  var Re = rn({ defaultImageSrc: Bn }),
+    Et = an(Re),
+    Ct = [],
+    dt = null,
+    Sn = !1,
+    mt = [],
+    ht = [],
+    ne = Oo(),
+    Ro = Hn(_n),
+    qo = Hn(Fn),
+    nt = fn({
+      state: Re,
+      canvas: Ki,
+      fovToggleCheckbox: Zi,
+      fovLabelSmall: eo,
+      fovLabelLeft: to,
+      fovLabelRight: no,
+      eyeToggleCheckbox: io,
+      eyeLabelRight: oo,
+      eyeLabelLeft: ro,
+      cataractSlider: ao,
+      cataractStops: so,
+      viewSummary: lo,
+      explanation: co,
+      conditionButtons: Cn,
+      defaultImageSrc: Bn,
+      explanationTemplates: Zt,
+      cataractPresets: Qt,
+      cataractOcclusionSpots: Kt
+    }),
+    ve = pn({
+      state: Re,
+      stateMachine: Et,
+      sideMenu: ft,
+      sideMenuButtons: uo,
+      burgerIcon: At,
+      infoIcon: et,
+      infoModal: tt,
+      testModal: Ln
+    }),
+    Ce = bn({
+      state: Re,
+      stateMachine: Et,
+      questionBank: Bt,
+      buildMcqTest: jt,
+      evaluateMcqSubmission: Gt,
+      generatePassCode: It,
+      formatMcqResultText: Wt,
+      setModalState: ve.setModalState,
+      testModal: Ln,
+      triggerButton: At,
+      testContainer: go,
+      submitTestButton: Rn,
+      retryTestButton: qn,
+      saveResultButton: Dn,
+      testResultDiv: bo,
+      testModalTitle: ho,
+      mcqTimer: fo,
+      mcqTierConfigs: zt,
+      initialProgressState: Ro,
+      onProgressChange: Vn
+    }),
+    it = Tn({
+      state: Re,
+      stateMachine: Et,
+      timedImages: jn,
+      timedRoundsPerCategory: Yt,
+      timedTotalRounds: Xt,
+      timedRoundProfiles: Ht,
+      initialProgressState: qo,
+      onProgressChange: Un,
+      closeTestModal: Ce.closeTestModal,
+      setModalState: ve.setModalState,
+      infoModal: tt,
+      infoIcon: et,
+      explanationDiv: yo,
+      timedGuessBox: Mo,
+      timedMessage: xo,
+      timedCountdown: vo,
+      submitTimedGuessButton: Nn,
+      timedTestResult: To,
+      viewer: nt
+    });
+  function Do(e) {
+    if (typeof window == 'undefined' || typeof Image == 'undefined') return;
+    let t = [...new Set(e)],
+      r = () => {
+        t.forEach((a) => {
+          let l = new Image();
+          ((l.decoding = 'async'), (l.src = a));
+        });
       };
+    typeof window.requestIdleCallback == 'function'
+      ? window.requestIdleCallback(r, { timeout: 1200 })
+      : window.setTimeout(r, 220);
+  }
+  function Gn(e) {
+    return Array.isArray(e) ? e : [];
+  }
+  function Wn(e, t) {
+    e.forEach((r) => {
+      let a = Number(r.dataset.levelIndex),
+        l = t[a];
+      l &&
+        ((r.dataset.locked = l.unlocked ? 'false' : 'true'),
+        r.classList.toggle('is-locked', !l.unlocked),
+        r.classList.toggle('is-complete', l.completed),
+        (r.textContent = l.name),
+        r.setAttribute('aria-disabled', l.unlocked ? 'false' : 'true'));
+    });
+  }
+  function Un(e = it.getLevelProgress()) {
+    ((ht = Gn(e)), Wn(kn, ht), Jn(Fn, Qn(ht)), Yn());
+  }
+  function Vn(e = Ce.getLevelProgress()) {
+    ((mt = Gn(e)), Wn(Pn, mt), Jn(_n, Qn(mt)), Yn());
+  }
+  function An(e) {
+    var t;
+    return !Array.isArray(e) || e.length === 0
+      ? !1
+      : !!((t = e[e.length - 1]) != null && t.completed);
+  }
+  function Yn() {
+    if (!Qe) return;
+    let e = An(mt),
+      t = An(ht),
+      r = e && t;
+    if (
+      (!r && ne.unlocked ? ((ne = { unlocked: !1, code: '', unlockedAt: '' }), Kn(ne)) : Po(r),
+      (Qe.hidden = !1),
+      Qe.setAttribute('aria-hidden', 'false'),
+      Qe.classList.toggle('is-unlocked', ne.unlocked),
+      Qe.classList.toggle('is-locked', !ne.unlocked),
+      wn && (wn.textContent = ne.unlocked ? wo : Io),
+      Ke &&
+        (ne.unlocked && ne.code
+          ? ((Ke.hidden = !1), (Ke.textContent = `Code: ${ne.code}`))
+          : ((Ke.hidden = !0), (Ke.textContent = ''))),
+      Ze)
+    ) {
+      let a = !ne.unlocked;
+      ((Ze.disabled = a),
+        (Ze.dataset.locked = a ? 'true' : 'false'),
+        Ze.setAttribute('aria-disabled', a ? 'true' : 'false'));
     }
-    const completedIndices = levelProgress
-      .filter((level) => level && level.completed)
-      .map((level) => Number(level.index))
-      .filter((index) => Number.isFinite(index));
-    const unlockedIndices = levelProgress
-      .filter((level) => level && level.unlocked)
-      .map((level) => Number(level.index))
-      .filter((index) => Number.isFinite(index));
-    const activeLevel = levelProgress.find((level) => level && level.active);
-    const maxCompletedIndex = completedIndices.length > 0 ? Math.max(...completedIndices) : -1;
-    const maxUnlockedIndex = unlockedIndices.length > 0 ? Math.max(...unlockedIndices) : -1;
-    const allCompleted = levelProgress.every((level) =>
-      Boolean(level == null ? void 0 : level.completed)
+  }
+  function Po(e) {
+    !e ||
+      ne.unlocked ||
+      ((ne = { unlocked: !0, code: Bo(), unlockedAt: new Date().toISOString() }), Kn(ne));
+  }
+  function pt() {
+    try {
+      return typeof window != 'undefined' && !!window.localStorage;
+    } catch (e) {
+      return !1;
+    }
+  }
+  function Xn(e) {
+    if (!pt()) return null;
+    try {
+      let t = window.localStorage.getItem(e);
+      return t ? JSON.parse(t) : null;
+    } catch (t) {
+      return null;
+    }
+  }
+  function zn(e, t) {
+    if (pt())
+      try {
+        window.localStorage.setItem(e, JSON.stringify(t));
+      } catch (r) {}
+  }
+  function ko(e) {
+    if (!pt()) return null;
+    try {
+      return window.localStorage.getItem(e);
+    } catch (t) {
+      return null;
+    }
+  }
+  function No(e, t) {
+    if (pt())
+      try {
+        window.localStorage.setItem(e, t);
+      } catch (r) {}
+  }
+  function Oo() {
+    let e = Xn(On);
+    return !e || typeof e != 'object'
+      ? { ...So }
+      : {
+          unlocked: !!e.unlocked,
+          code: typeof e.code == 'string' ? e.code : '',
+          unlockedAt: typeof e.unlockedAt == 'string' ? e.unlockedAt : ''
+        };
+  }
+  function Hn(e) {
+    let t = Xn(e);
+    if (!t || typeof t != 'object') return { ...Ao };
+    let r = Number.isFinite(Number(t.nextTierIndex))
+        ? Math.max(0, Math.floor(Number(t.nextTierIndex)))
+        : 0,
+      a = Number.isFinite(Number(t.unlockedTierIndex))
+        ? Math.max(-1, Math.floor(Number(t.unlockedTierIndex)))
+        : -1;
+    return { nextTierIndex: r, unlockedTierIndex: a };
+  }
+  function _o() {
+    if (typeof window == 'undefined') return !1;
+    let e =
+        typeof window.matchMedia == 'function' && window.matchMedia('(pointer: coarse)').matches,
+      t = window.innerWidth || 0;
+    return !e && t > 900;
+  }
+  function Fo() {
+    return ko($n) === 'true';
+  }
+  function $o(e) {
+    No($n, e ? 'true' : 'false');
+  }
+  function St(e) {
+    (document.body.classList.toggle('simulate-phone-frame', !!e), Ue && (Ue.checked = !!e));
+  }
+  function Jn(e, t) {
+    zn(e, t);
+  }
+  function Qn(e) {
+    if (!Array.isArray(e) || e.length === 0) return { nextTierIndex: 0, unlockedTierIndex: -1 };
+    let t = e
+        .filter((p) => p && p.completed)
+        .map((p) => Number(p.index))
+        .filter((p) => Number.isFinite(p)),
+      r = e
+        .filter((p) => p && p.unlocked)
+        .map((p) => Number(p.index))
+        .filter((p) => Number.isFinite(p)),
+      a = e.find((p) => p && p.active),
+      l = t.length > 0 ? Math.max(...t) : -1,
+      m = r.length > 0 ? Math.max(...r) : -1,
+      f = e.every((p) => !!(p != null && p.completed)),
+      b = 0;
+    return (
+      f
+        ? (b = e.length)
+        : a && Number.isFinite(Number(a.index))
+          ? (b = Math.max(0, Math.floor(Number(a.index))))
+          : m >= 0 && (b = Math.max(0, Math.min(e.length - 1, m))),
+      { nextTierIndex: b, unlockedTierIndex: l }
     );
-    let nextTierIndex = 0;
-    if (allCompleted) {
-      nextTierIndex = levelProgress.length;
-    } else if (activeLevel && Number.isFinite(Number(activeLevel.index))) {
-      nextTierIndex = Math.max(0, Math.floor(Number(activeLevel.index)));
-    } else if (maxUnlockedIndex >= 0) {
-      nextTierIndex = Math.max(0, Math.min(levelProgress.length - 1, maxUnlockedIndex));
-    }
-    return {
-      nextTierIndex,
-      unlockedTierIndex: maxCompletedIndex
-    };
   }
-  function saveCupAchievementState(nextState) {
-    saveJsonStorage(CUP_ACHIEVEMENT_STORAGE_KEY, nextState);
+  function Kn(e) {
+    zn(On, e);
   }
-  function createCupAchievementCode() {
-    const timestamp = /* @__PURE__ */ new Date()
+  function Bo() {
+    return `SDCUP-${new Date()
       .toISOString()
       .replace(/[-:.TZ]/g, '')
-      .slice(0, 14);
-    return `SDCUP-${timestamp}-${generatePassCode(6)}`;
+      .slice(0, 14)}-${It(6)}`;
   }
-  function downloadCupCertificate() {
-    if (!cupAchievementState.unlocked || !cupAchievementState.code) {
-      return;
-    }
-    const unlockedAtDate = cupAchievementState.unlockedAt
-      ? new Date(cupAchievementState.unlockedAt)
-      : null;
-    const issuedAtText =
-      unlockedAtDate && !Number.isNaN(unlockedAtDate.valueOf())
-        ? unlockedAtDate.toLocaleString()
-        : /* @__PURE__ */ new Date().toLocaleString();
-    const certificateText = [
-      'Swollen Discs',
-      'Practice Certificate of Achievement',
-      '(Local Certificate - Not Externally Verified)',
-      '',
-      'Awarded for completing:',
-      '- MCQ Advanced Level',
-      '- Timed Set Advanced Level',
-      '',
-      `Achievement Code: ${cupAchievementState.code}`,
-      `Issued: ${issuedAtText}`,
-      '',
-      'Keep this code for your records.'
-    ].join('\n');
-    const blob = new Blob([certificateText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    const safeCode = cupAchievementState.code.toLowerCase().replace(/[^a-z0-9-]/g, '');
-    anchor.href = url;
-    anchor.download = `swollen_discs_certificate_${safeCode}.txt`;
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-    URL.revokeObjectURL(url);
+  function jo() {
+    if (!ne.unlocked || !ne.code) return;
+    let e = ne.unlockedAt ? new Date(ne.unlockedAt) : null,
+      t = e && !Number.isNaN(e.valueOf()) ? e.toLocaleString() : new Date().toLocaleString(),
+      r = [
+        'Swollen Discs',
+        'Practice Certificate of Achievement',
+        '(Local Certificate - Not Externally Verified)',
+        '',
+        'Awarded for completing:',
+        '- MCQ Advanced Level',
+        '- Timed Set Advanced Level',
+        '',
+        `Achievement Code: ${ne.code}`,
+        `Issued: ${t}`,
+        '',
+        'Keep this code for your records.'
+      ].join(`
+`),
+      a = new Blob([r], { type: 'text/plain' }),
+      l = URL.createObjectURL(a),
+      m = document.createElement('a'),
+      f = ne.code.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    ((m.href = l),
+      (m.download = `swollen_discs_certificate_${f}.txt`),
+      document.body.appendChild(m),
+      m.click(),
+      document.body.removeChild(m),
+      URL.revokeObjectURL(l));
   }
-  initialize();
-  function initialize() {
-    if (typeof window !== 'undefined' && typeof window.__swollenDiscsDestroy === 'function') {
-      window.__swollenDiscsDestroy();
-    }
-    viewer.initialize();
-    renderMcqLevelMenu();
-    renderTimedLevelMenu();
-    modalManager.setSideMenuOpen(false);
-    const canUsePhoneViewPreview = isDesktopPhonePreviewAvailable();
-    if (phonePreviewControl) {
-      phonePreviewControl.hidden = !canUsePhoneViewPreview;
-    }
-    if (phoneViewToggleCheckbox) {
-      const initialPhoneViewPreviewEnabled = canUsePhoneViewPreview && loadPhoneViewPreference();
-      setPhoneViewPreviewEnabled(initialPhoneViewPreviewEnabled);
-      phoneViewToggleCheckbox.disabled = !canUsePhoneViewPreview;
-      const onPhoneViewToggleChange = () => {
-        const shouldEnablePhoneView = canUsePhoneViewPreview && phoneViewToggleCheckbox.checked;
-        setPhoneViewPreviewEnabled(shouldEnablePhoneView);
-        savePhoneViewPreference(shouldEnablePhoneView);
-        viewer.setDiscVisible(appState.viewer.isDiscVisible);
-      };
-      addAppListener(phoneViewToggleCheckbox, 'change', onPhoneViewToggleChange);
-    } else {
-      setPhoneViewPreviewEnabled(false);
-    }
-    const onBurgerClick = () => {
-      modalManager.toggleSideMenu();
-    };
-    addAppListener(burgerIcon, 'click', onBurgerClick);
-    const onInfoClick = () => {
-      modalManager.setModalState(infoModal, !modalManager.isModalOpen(infoModal), infoIcon);
-    };
-    addAppListener(infoIcon, 'click', onInfoClick);
-    const onCloseInfoClick = () => {
-      modalManager.setModalState(infoModal, false, infoIcon);
-    };
-    addAppListener(closeInfoModalButton, 'click', onCloseInfoClick);
-    addAppListener(closeTestModalButton, 'click', mcqController.closeTestModal);
-    addAppListener(submitTestButton, 'click', mcqController.handleSubmitTest);
-    addAppListener(saveResultButton, 'click', mcqController.handleSaveResult);
-    addAppListener(downloadCupCertificateButton, 'click', downloadCupCertificate);
-    mcqLevelButtons.forEach((button) => {
-      const onTakeMcqLevelClick = () => {
-        const levelIndex = Number(button.dataset.levelIndex);
-        const started = mcqController.openTestModal({
-          tierIndex: levelIndex,
-          beforeOpen: () => {
-            if (appState.timed.isActive) {
-              timedTestController.exitTimedMode();
+  Go();
+  function Go() {
+    (typeof window != 'undefined' &&
+      typeof window.__swollenDiscsDestroy == 'function' &&
+      window.__swollenDiscsDestroy(),
+      nt.initialize(),
+      Vn(),
+      Un(),
+      ve.setSideMenuOpen(!1));
+    let e = _o();
+    if ((In && (In.hidden = !e), Ue)) {
+      let f = e && Fo();
+      (St(f),
+        (Ue.disabled = !e),
+        he(Ue, 'change', () => {
+          let p = e && Ue.checked;
+          (St(p), $o(p), nt.setDiscVisible(Re.viewer.isDiscVisible));
+        }));
+    } else St(!1);
+    (he(At, 'click', () => {
+      ve.toggleSideMenu();
+    }),
+      he(et, 'click', () => {
+        ve.setModalState(tt, !ve.isModalOpen(tt), et);
+      }),
+      he(mo, 'click', () => {
+        ve.setModalState(tt, !1, et);
+      }),
+      he(po, 'click', Ce.closeTestModal),
+      he(Rn, 'click', Ce.handleSubmitTest),
+      he(qn, 'click', Ce.handleRetryTest),
+      he(Dn, 'click', Ce.handleSaveResult),
+      he(Ze, 'click', jo),
+      Pn.forEach((f) => {
+        he(f, 'click', () => {
+          let p = Number(f.dataset.levelIndex);
+          Ce.openTestModal({
+            tierIndex: p,
+            beforeOpen: () => {
+              Re.timed.isActive && it.exitTimedMode();
             }
-          }
+          }) && ve.setSideMenuOpen(!1);
         });
-        if (!started) {
-          return;
-        }
-        modalManager.setSideMenuOpen(false);
-      };
-      addAppListener(button, 'click', onTakeMcqLevelClick);
-    });
-    timedLevelButtons.forEach((button) => {
-      const onTakeTimedLevelClick = () => {
-        const levelIndex = Number(button.dataset.levelIndex);
-        const started = timedTestController.startTimedTest({ tierIndex: levelIndex });
-        if (!started) {
-          return;
-        }
-        modalManager.setSideMenuOpen(false);
-      };
-      addAppListener(button, 'click', onTakeTimedLevelClick);
-    });
-    addAppListener(submitTimedGuessButton, 'click', timedTestController.submitTimedGuess);
-    const onDocumentClick = (event) => {
-      modalManager.handleDocumentClick(event, {
-        closeTestModal: mcqController.closeTestModal
-      });
-    };
-    addAppListener(document, 'click', onDocumentClick);
-    const onDocumentKeyDown = (event) => {
-      modalManager.handleDocumentKeyDown(event, {
-        closeTestModal: mcqController.closeTestModal
-      });
-    };
-    addAppListener(document, 'keydown', onDocumentKeyDown);
-    gazeIntervalId = setInterval(() => {
-      if (!appState.viewer.shiftInProgress && !appState.timed.isActive) {
-        viewer.doGazeShift();
-      }
-    }, SHIFT_INTERVAL);
-    teardownCallbacks.push(() => {
-      if (gazeIntervalId !== null) {
-        clearInterval(gazeIntervalId);
-        gazeIntervalId = null;
-      }
-    });
-    if (typeof window !== 'undefined') {
-      window.__swollenDiscsDestroy = destroyApp;
-    }
+      }),
+      kn.forEach((f) => {
+        he(f, 'click', () => {
+          let p = Number(f.dataset.levelIndex);
+          it.startTimedTest({ tierIndex: p }) && ve.setSideMenuOpen(!1);
+        });
+      }),
+      he(Nn, 'click', it.submitTimedGuess),
+      he(document, 'click', (f) => {
+        ve.handleDocumentClick(f, { closeTestModal: Ce.closeTestModal });
+      }),
+      he(document, 'keydown', (f) => {
+        ve.handleDocumentKeyDown(f, { closeTestModal: Ce.closeTestModal });
+      }),
+      (dt = setInterval(() => {
+        !Re.viewer.shiftInProgress && !Re.timed.isActive && nt.doGazeShift();
+      }, Jt)),
+      Ct.push(() => {
+        dt !== null && (clearInterval(dt), (dt = null));
+      }),
+      typeof window != 'undefined' && (window.__swollenDiscsDestroy = Zn));
   }
-  function addAppListener(target, eventName, handler, options) {
-    target.addEventListener(eventName, handler, options);
-    teardownCallbacks.push(() => {
-      target.removeEventListener(eventName, handler, options);
-    });
+  function he(e, t, r, a) {
+    (e.addEventListener(t, r, a),
+      Ct.push(() => {
+        e.removeEventListener(t, r, a);
+      }));
   }
-  function destroyApp() {
-    if (isAppDestroyed) {
-      return;
-    }
-    isAppDestroyed = true;
-    teardownCallbacks.splice(0).forEach((dispose) => {
-      dispose();
-    });
-    timedTestController.destroy();
-    mcqController.destroy();
-    modalManager.destroy();
-    viewer.destroy();
-    if (typeof window !== 'undefined' && window.__swollenDiscsDestroy === destroyApp) {
-      window.__swollenDiscsDestroy = null;
-    }
+  function Zn() {
+    Sn ||
+      ((Sn = !0),
+      Ct.splice(0).forEach((e) => {
+        e();
+      }),
+      it.destroy(),
+      Ce.destroy(),
+      ve.destroy(),
+      nt.destroy(),
+      typeof window != 'undefined' &&
+        window.__swollenDiscsDestroy === Zn &&
+        (window.__swollenDiscsDestroy = null));
   }
 })();

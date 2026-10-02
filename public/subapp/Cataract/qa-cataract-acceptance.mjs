@@ -7,15 +7,19 @@ const OUTPUT_REPORT_FILE = 'acceptance-audit-report.txt';
 function createInput(overrides = {}) {
   return {
     onsetValue: 'gradual',
-    ageBand: '',
+    ageBand: 'adult',
     distanceVA: '6/6',
     nearVAValue: '',
-    eyes: '',
+    eyes: 'two',
     painYes: false,
+    painRecorded: true,
     pupilSelected: false,
     pupilRecorded: true,
     pupilAbnormal: false,
     frontPresent: false,
+    frontRecorded: true,
+    afferentConcern: false,
+    afferentRecorded: true,
     rapdPresent: false,
     directionLightPoor: false,
     fundalSelection: 'normal',
@@ -61,7 +65,7 @@ addCheck('urgent_main_action_when_sudden_pain_with_risk_flags', () => {
   const pass =
     decision.actionCode === 'urgent_same_day_investigation' &&
     decision.actionColour === 'red' &&
-    decision.actionText === 'Urgent same-day investigation needed.' &&
+    decision.actionText === 'Same-day eye assessment.' &&
     decision.cataractType === 'Nil' &&
     decision.actionNotes.length <= 3 &&
     decision.actionNoteCodes.includes('urgent_trigger_painful_one_or_sudden');
@@ -90,6 +94,48 @@ addCheck('missing_eyes_blocks_result', () => {
     detail: pass
       ? 'Engine requires eyes before returning a definitive action.'
       : `Got hasResult=${decision.hasResult}, missing=${decision.missingFields.join(', ') || '-'}`
+  };
+});
+
+addCheck('missing_age_blocks_result', () => {
+  const decision = evaluate({
+    ageBand: '',
+    eyes: 'one',
+    distanceVA: '6/36',
+    fundalSelection: 'dark',
+    backSelection: 'normal'
+  });
+
+  const pass = !decision.hasResult && decision.missingFields.includes('age');
+
+  return {
+    pass,
+    detail: pass
+      ? 'Age must be recorded before a result is shown.'
+      : `Got hasResult=${decision.hasResult}, missing=${decision.missingFields.join(', ') || '-'}`
+  };
+});
+
+addCheck('sudden_painless_loss_is_same_day', () => {
+  const decision = evaluate({
+    onsetValue: 'sudden',
+    eyes: 'one',
+    painYes: false,
+    distanceVA: '6/36',
+    fundalSelection: 'normal',
+    backSelection: 'normal'
+  });
+
+  const pass =
+    decision.actionCode === 'urgent_same_day_investigation' &&
+    decision.actionColour === 'red' &&
+    decision.actionText === 'Same-day eye assessment.';
+
+  return {
+    pass,
+    detail: pass
+      ? 'Sudden painless visual loss receives the same-day pathway.'
+      : `Got action=${decision.actionCode}, colour=${decision.actionColour}, text=${decision.actionText}`
   };
 });
 
@@ -149,7 +195,7 @@ addCheck('gradual_pain_unilateral_not_auto_urgent_without_red_flags', () => {
   const pass =
     decision.actionCode !== 'urgent_same_day_investigation' &&
     decision.actionColour !== 'red' &&
-    decision.actionText === 'No cataract referral now. Investigate non-cataract causes.';
+    decision.actionText === 'Check non-cataract causes.';
 
   return {
     pass,
@@ -170,8 +216,8 @@ addCheck('white_reflex_priority_preserved_under_pain', () => {
   });
 
   const pass =
-    decision.actionCode === 'cataract_priority_white' &&
-    decision.actionText === 'Priority cataract referral.' &&
+    decision.actionCode === 'white_reflex_prompt_review' &&
+    decision.actionText === 'Prompt eye assessment.' &&
     decision.actionColour === 'red';
 
   return {
@@ -194,7 +240,7 @@ addCheck('white_reflex_sudden_pain_routes_to_urgent_main', () => {
 
   const pass =
     decision.actionCode === 'urgent_same_day_investigation' &&
-    decision.actionText === 'Urgent same-day investigation needed.' &&
+    decision.actionText === 'Same-day eye assessment.' &&
     decision.actionColour === 'red';
 
   return {
@@ -216,9 +262,10 @@ addCheck('posterior_override_always_wins', () => {
   });
 
   const pass =
-    decision.actionCode === 'posterior_disease_first' &&
-    decision.actionText === 'Treat posterior eye disease first.' &&
-    decision.actionColour === 'red';
+    decision.actionCode === 'retinal_same_day' &&
+    decision.actionText === 'Same-day retinal assessment.' &&
+    decision.actionColour === 'red' &&
+    decision.cataractPhenotype === 'Cortical';
 
   return {
     pass,
@@ -247,7 +294,8 @@ addCheck('posterior_non_detached_not_auto_red_without_acute_flags', () => {
   const pass =
     decision.actionCode === 'posterior_disease_first' &&
     decision.actionColour === 'orange' &&
-    decision.actionText === 'Treat posterior eye disease first.';
+    decision.actionText === 'Assess posterior disease first.' &&
+    decision.cataractType === 'Possible Nuclear';
 
   return {
     pass,
@@ -257,7 +305,7 @@ addCheck('posterior_non_detached_not_auto_red_without_acute_flags', () => {
   };
 });
 
-addCheck('phenotype_explanation_not_lost_by_confidence_label', () => {
+addCheck('unrecorded_pupil_requires_completion_without_losing_explanation', () => {
   const decision = evaluate({
     onsetValue: 'gradual',
     eyes: 'two',
@@ -270,19 +318,21 @@ addCheck('phenotype_explanation_not_lost_by_confidence_label', () => {
   });
 
   const pass =
-    decision.cataractType.startsWith('Probable ') &&
+    decision.actionCode === 'complete_missing_checks' &&
+    decision.actionColour === 'orange' &&
     decision.cataractPhenotype === 'Nuclear' &&
+    decision.recheckFieldKeys.includes('pupil') &&
     Boolean(decision.explanations.cataract);
 
   return {
     pass,
     detail: pass
-      ? 'Confidence label does not remove cataract phenotype explanation.'
-      : `Got type=${decision.cataractType}, phenotype=${decision.cataractPhenotype}, hasExplanation=${Boolean(decision.explanations.cataract)}`
+      ? 'Unrecorded pupil state blocks routine guidance without removing the phenotype explanation.'
+      : `Got action=${decision.actionCode}, type=${decision.cataractType}, recheck=${decision.recheckFieldKeys.join(', ')}, hasExplanation=${Boolean(decision.explanations.cataract)}`
   };
 });
 
-addCheck('unticked_pupil_does_not_weaken_cataract_type', () => {
+addCheck('recorded_normal_pupil_keeps_cataract_type', () => {
   const decision = evaluate({
     onsetValue: 'gradual',
     eyes: 'two',
@@ -302,7 +352,7 @@ addCheck('unticked_pupil_does_not_weaken_cataract_type', () => {
   return {
     pass,
     detail: pass
-      ? 'Unticked positive-only pupil control is treated as no abnormal pupil.'
+      ? 'A deliberately recorded normal pupil does not weaken the cataract type.'
       : `Got type=${decision.cataractType}, flags=${decision.flags.join(', ') || '-'}`
   };
 });
@@ -356,7 +406,7 @@ addCheck('child_cataract_pattern_not_left_as_routine', () => {
 
   const pass =
     decision.actionColour === 'orange' &&
-    decision.actionText === 'Child cataract signs: prompt paediatric referral.';
+    decision.actionText === 'Paediatric eye review.';
 
   return {
     pass,
@@ -382,14 +432,66 @@ addCheck('dense_child_cataract_keeps_paediatric_wording', () => {
 
   const pass =
     decision.actionColour === 'red' &&
-    decision.actionText === 'Child cataract signs: prompt paediatric referral.' &&
-    decision.actionNoteCodes.includes('child_cataract_delay_risk');
+    decision.actionText === 'Urgent paediatric eye review.' &&
+    decision.cataractType === 'White reflex' &&
+    decision.actionNoteCodes.includes('child_white_reflex_causes');
 
   return {
     pass,
     detail: pass
       ? 'Dense child cataract keeps paediatric wording while staying red.'
       : `Got actionText=${decision.actionText}, colour=${decision.actionColour}, notes=${decision.actionNoteCodes.join(', ') || '-'}`
+  };
+});
+
+addCheck('dense_adult_typical_pattern_is_probable_mature_cataract', () => {
+  const decision = evaluate({
+    onsetValue: 'gradual',
+    ageBand: 'elderly',
+    eyes: 'one',
+    painYes: false,
+    distanceVA: '6/60',
+    pupilAbnormal: false,
+    frontPresent: false,
+    afferentConcern: false,
+    fundalSelection: 'white',
+    backSelection: 'poor view'
+  });
+
+  const pass =
+    decision.cataractType === 'Probable Mature' &&
+    decision.cataractPhenotype === 'Mature' &&
+    decision.actionCode === 'cataract_priority_white';
+
+  return {
+    pass,
+    detail: pass
+      ? 'A complete typical adult pattern can support probable mature cataract.'
+      : `Got type=${decision.cataractType}, phenotype=${decision.cataractPhenotype}, action=${decision.actionCode}`
+  };
+});
+
+addCheck('legacy_unknown_age_white_reflex_stays_cautious', () => {
+  const decision = evaluate({
+    onsetValue: 'gradual',
+    ageBand: 'unknown',
+    eyes: 'one',
+    painYes: false,
+    distanceVA: 'HM',
+    fundalSelection: 'white',
+    backSelection: 'poor view'
+  });
+
+  const pass =
+    decision.cataractType === 'White reflex' &&
+    decision.actionColour === 'red' &&
+    decision.actionNoteCodes.includes('age_unknown_caution');
+
+  return {
+    pass,
+    detail: pass
+      ? 'A defensive legacy unknown-age state does not convert a white reflex into adult mature cataract.'
+      : `Got type=${decision.cataractType}, colour=${decision.actionColour}, notes=${decision.actionNoteCodes.join(', ')}`
   };
 });
 
@@ -400,14 +502,14 @@ addCheck('rapd_routes_to_non_cataract_first_when_not_otherwise_urgent', () => {
     eyes: 'two',
     painYes: false,
     distanceVA: '6/12',
-    rapdPresent: true,
+    afferentConcern: true,
     fundalSelection: 'patches',
     backSelection: 'normal'
   });
 
   const pass =
     decision.actionColour === 'orange' &&
-    decision.actionText === 'Neuro red flags: investigate non-cataract cause.';
+    decision.actionText === 'Check retinal or nerve cause.';
 
   return {
     pass,
@@ -424,14 +526,14 @@ addCheck('rapd_with_abnormal_fundal_marks_competing_pathology_label', () => {
     eyes: 'two',
     painYes: false,
     distanceVA: '6/12',
-    rapdPresent: true,
+    afferentConcern: true,
     fundalSelection: 'patches',
     backSelection: 'normal'
   });
 
   const pass =
     decision.actionCode === 'rapd_non_cataract_first' &&
-    decision.cataractType.includes('other urgent pathology suspected');
+    decision.cataractType === 'Possible Cortical';
 
   return {
     pass,
@@ -454,7 +556,7 @@ addCheck('child_va_option_maps_to_early_specialist_when_reduced', () => {
 
   const pass =
     decision.actionColour === 'orange' &&
-    decision.actionText === 'Child reduced vision: early specialist assessment.';
+    decision.actionText === 'Early paediatric eye review.';
 
   return {
     pass,
@@ -540,8 +642,9 @@ addCheck('missing_assessment_note_names_only_missing_fields', () => {
   });
 
   const pass =
-    decision.actionNotes.includes('Record missing check: pain/redness.') &&
-    !decision.actionNotes.includes('Record missing checks: pain, front eye, RAPD, light direction.');
+    decision.actionCode === 'complete_missing_checks' &&
+    decision.actionNotes.includes('Missing: pain/redness.') &&
+    !decision.actionNotes.some((note) => note.includes('front eye'));
 
   return {
     pass,
@@ -600,9 +703,9 @@ addCheck('dense_reflex_relatively_good_va_low_risk_uses_recheck_first', () => {
   });
 
   const pass =
-    decision.actionCode === 'recheck_investigate_first' &&
-    decision.actionColour === 'orange' &&
-    decision.actionText === 'Re-check key findings first.' &&
+    decision.actionCode === 'white_reflex_recheck' &&
+    decision.actionColour === 'red' &&
+    decision.actionText === 'Confirm white reflex promptly.' &&
     decision.actionNoteCodes.includes('white_reflex_with_relatively_good_va');
 
   return {
@@ -632,7 +735,7 @@ addCheck('normal_reflex_unable_test_does_not_claim_very_poor_va', () => {
 
   const pass =
     decision.actionCode === 'normal_reflex_untestable_va_early' &&
-    decision.actionText === 'Distance VA not testable: early specialist review.' &&
+    decision.actionText === 'Specialist assessment advised.' &&
     !decision.actionText.toLowerCase().includes('very poor');
 
   return {

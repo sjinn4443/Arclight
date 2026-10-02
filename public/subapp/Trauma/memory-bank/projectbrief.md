@@ -1,8 +1,16 @@
 # Project Brief
 
+## Initial presentation
+
+The current safety-preserving initial state is unassessed. Do not restore the obsolete preselected `≥ 6/12`, score 100 and Category 5 presentation.
+
+## v1.1 engineering standard
+
+Preserve the OTS-style scoring tables and the calculator's unassessed initial presentation while keeping arithmetic pure, tested and separate from view code.
+
 <!-- APP-DOC-STATUS:START -->
 
-## Current Memory Status (18/5/2026)
+## Historical Memory Status (18/5/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -51,3 +59,7 @@ Provide a fast, mobile-friendly interface to estimate likely 6-month VA outcomes
 - Should remain usable in narrow mobile viewports.
 - Keep logic easy to audit in plain JavaScript.
 - Keep MCQ language complexity proportional to level.
+
+## MCQ quality boundary — 26 July 2026
+
+The teaching bank should assess OTS-style knowledge rather than app-interface mechanics. Review improvements must not alter the pure scoring engine, category boundaries, outcome probabilities, attempt sizes, pass marks or Cup rules.

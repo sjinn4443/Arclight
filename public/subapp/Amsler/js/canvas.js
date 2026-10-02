@@ -1,7 +1,9 @@
 import { GRID_MARGIN, TOOL_STYLES } from "./constants.js";
+import { normaliseStrokeWidth } from "./amsler-engine.js";
 
 export function createCanvasController(app) {
   const { canvas, ctx } = app.elements;
+  let activeStroke = null;
 
   function toAbs(point) {
     return {
@@ -10,15 +12,28 @@ export function createCanvasController(app) {
     };
   }
 
+  function getGridSize() {
+    return Math.max(
+      1,
+      Math.min(canvas.width - 2 * GRID_MARGIN, canvas.height - 2 * GRID_MARGIN),
+    );
+  }
+
   function drawMarkers() {
     ctx.save();
     ctx.fillStyle = "grey";
     ctx.font = "10px Inter, Segoe UI, sans-serif";
-    ctx.fillText("SN", GRID_MARGIN - 15, GRID_MARGIN - 5);
-    ctx.fillText("ST", canvas.width - GRID_MARGIN + 5, GRID_MARGIN - 5);
-    ctx.fillText("IN", GRID_MARGIN - 15, canvas.height - GRID_MARGIN + 15);
+    const left = app.state.currentEye === "RE" ? "N" : "T";
+    const right = app.state.currentEye === "RE" ? "T" : "N";
+    ctx.fillText(`S${left}`, GRID_MARGIN - 15, GRID_MARGIN - 5);
+    ctx.fillText(`S${right}`, canvas.width - GRID_MARGIN + 5, GRID_MARGIN - 5);
     ctx.fillText(
-      "IT",
+      `I${left}`,
+      GRID_MARGIN - 15,
+      canvas.height - GRID_MARGIN + 15,
+    );
+    ctx.fillText(
+      `I${right}`,
       canvas.width - GRID_MARGIN + 7,
       canvas.height - GRID_MARGIN + 15,
     );
@@ -105,12 +120,36 @@ export function createCanvasController(app) {
     }
 
     const style = TOOL_STYLES[tool];
+    const colour =
+      tool === "erase"
+        ? app.state.redMode
+          ? "black"
+          : "white"
+        : tool === "pen" && app.state.redMode
+          ? "white"
+          : style.strokeStyle;
     ctx.save();
-    ctx.strokeStyle = style.strokeStyle;
+    ctx.strokeStyle = colour;
     ctx.lineWidth = lineWidth ?? style.lineWidth;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.beginPath();
+
+    if (points.length === 1) {
+      const absPoint = toAbs(points[0]);
+      ctx.fillStyle = colour;
+      ctx.beginPath();
+      ctx.arc(
+        absPoint.x,
+        absPoint.y,
+        Math.max((lineWidth ?? style.lineWidth) / 2, 1),
+        0,
+        2 * Math.PI,
+      );
+      ctx.fill();
+      ctx.restore();
+      return;
+    }
 
     points.forEach((point, index) => {
       const absPoint = toAbs(point);
@@ -129,7 +168,10 @@ export function createCanvasController(app) {
     drawGrid();
 
     app.state.strokes[app.state.currentEye].forEach((strokeObj) => {
-      drawStroke(strokeObj.points, strokeObj.tool, strokeObj.lineWidth);
+      const renderedLineWidth = Number.isFinite(strokeObj.normalisedLineWidth)
+        ? strokeObj.normalisedLineWidth * getGridSize()
+        : strokeObj.lineWidth;
+      drawStroke(strokeObj.points, strokeObj.tool, renderedLineWidth);
     });
 
     if (app.state.currentStroke) {
@@ -143,6 +185,9 @@ export function createCanvasController(app) {
 
     drawFixationDot();
     drawMarkers();
+    if (!app.state.analysisDirty && app.state.lastAnalysisResults) {
+      app.analysisController?.drawMergedDefects();
+    }
   }
 
   function getPointerPos(event) {
@@ -172,13 +217,22 @@ export function createCanvasController(app) {
   }
 
   function startDrawing(event) {
+    if (activeStroke || event.isPrimary === false || event.button > 0) return;
+    activeStroke = {
+      pointerId: event.pointerId,
+      eye: app.state.currentEye,
+      tool: app.state.currentTool,
+      lineWidth: getStrokeLineWidth(app.state.currentTool),
+    };
+    canvas.setPointerCapture(event.pointerId);
+    app.markAnalysisDirty();
     app.state.isDrawing = true;
     app.state.currentStroke = [getPointerPos(event)];
     event.preventDefault();
   }
 
   function draw(event) {
-    if (!app.state.isDrawing) {
+    if (!app.state.isDrawing || event.pointerId !== activeStroke?.pointerId) {
       return;
     }
 
@@ -188,18 +242,27 @@ export function createCanvasController(app) {
   }
 
   function endDrawing(event) {
+    if (!activeStroke || event.pointerId !== activeStroke.pointerId) return;
+    const finished = activeStroke;
+    activeStroke = null;
     if (app.state.isDrawing) {
-      const lineWidth = getStrokeLineWidth(app.state.currentTool);
-      app.state.strokes[app.state.currentEye].push({
+      const lineWidth = finished.lineWidth;
+      const gridSizeAtCapture = getGridSize();
+      app.state.strokes[finished.eye].push({
         points: app.state.currentStroke,
-        tool: app.state.currentTool,
+        tool: finished.tool,
         lineWidth,
+        gridSizeAtCapture,
+        normalisedLineWidth: normaliseStrokeWidth(lineWidth, gridSizeAtCapture),
       });
+      app.state.assessedEyes[finished.eye] = true;
       app.markAnalysisDirty();
       app.state.currentStroke = null;
       app.state.isDrawing = false;
       redraw();
     }
+    if (canvas.hasPointerCapture(event.pointerId))
+      canvas.releasePointerCapture(event.pointerId);
     event.preventDefault();
   }
 

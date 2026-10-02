@@ -203,7 +203,8 @@ function buildObjectiveTarget(currentRx, objectiveRx, config) {
     ? Number.NaN
     : roundQuarter(
         objectiveRx.sph -
-          Math.sign(objectiveRx.sph) * config.sphere.objectiveBias,
+          Math.sign(objectiveRx.sph) *
+            Math.min(Math.abs(objectiveRx.sph), config.sphere.objectiveBias),
       );
   const cylinder = corroboratedCylinder
     ? objectiveRx.cyl
@@ -475,8 +476,8 @@ export function processEye(
 
 export function computeReadingAddition(ageValue, health, overrides) {
   const config = resolvePrescriptionConfig(overrides);
-  const age = parseFloat(ageValue);
-  if (Number.isNaN(age) || age < config.add.ageGate) {
+  const age = Math.floor(parseFloat(ageValue));
+  if (!Number.isFinite(age) || age < config.add.ageGate) {
     return Number.NaN;
   }
 
@@ -497,11 +498,11 @@ export function selectReadingAddition(
   objectiveAdd,
   overrides,
 ) {
-  if (!Number.isNaN(currentAdd)) {
+  if (typeof currentAdd === "number" && Number.isFinite(currentAdd)) {
     return currentAdd;
   }
 
-  if (!Number.isNaN(objectiveAdd)) {
+  if (typeof objectiveAdd === "number" && Number.isFinite(objectiveAdd)) {
     return objectiveAdd;
   }
 
@@ -509,7 +510,9 @@ export function selectReadingAddition(
 }
 
 export function checkOrangeFlag(sph) {
-  return !Number.isNaN(sph) && sph > -0.5 && sph < 0.75;
+  return (
+    typeof sph === "number" && Number.isFinite(sph) && sph > -0.5 && sph < 0.75
+  );
 }
 
 export function transposePrescription(prescription) {

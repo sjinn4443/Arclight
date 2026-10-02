@@ -1,5 +1,12 @@
 # System Patterns
 
+## Animation ownership (26/7/2026)
+
+- Keep geometry and jitter transitions in `viewer-logic.js`.
+- Maintain exactly one queued animation frame. Repeated starts are idempotent.
+- Advance the corneal reflex from the main frame update rather than scheduling a second loop.
+- Stop on page lifecycle exit and restart safely on return.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -49,3 +56,19 @@ Morph is currently a static HTML, CSS and JavaScript app. There is no build step
 - Do not crop or zoom pathology images in code to fix artwork framing.
 - Keep the app usable in a 360 x 740 viewport.
 - Keep local fonts so the app works predictably when opened directly from `index.html`.
+
+# v1.1 system patterns (23 July 2026)
+
+- Keep the viewer engine inline in `index.html` and protect its constants with contract tests.
+- Keep all runtime assets local. Register `service-worker.js` only on HTTP(S) and scope its cache to Morph.
+- Use the existing 18/16/12/10/8 px radius hierarchy and restrained shadows.
+- Trap keyboard focus inside the open drawer or guide and restore focus to the trigger when closed.
+- Reset the whole training session only after a second confirming press, implemented as a clean reload.
+
+## Maintenance pattern - 26 July 2026
+
+Keep viewer calculations in `viewer-logic.js` and keep exactly one request-animation-frame loop owner. Starting the loop must be idempotent. Do not reintroduce a second corneal or background-motion loop.
+
+## Achievement contract — 26 July 2026
+
+Do not add MCQ tiers merely for fleet uniformity. Keep `data-cup-mode="conditions"` and `.condition-button` as the target selector. The Cup unlocks only after all five unique condition names have been visited. Any added or renamed condition must update the contract and receive clinical content review.

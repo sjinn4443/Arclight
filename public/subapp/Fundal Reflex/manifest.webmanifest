@@ -1,0 +1,13 @@
+{
+  "name": "Fundal Reflex",
+  "short_name": "Fundal Reflex",
+  "description": "Teaching simulator for fundal reflex findings.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "allan-dermatology-aid",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/referral-logic.test.js tests/mcq-bank.test.js tests/photo-file-store.test.js tests/app-contract.test.js",
+    "test:ui": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1"
+  }
+}

@@ -47,6 +47,7 @@ A lightweight browser tool that simulates fundus examination, supports rapid ski
 - Realistic, responsive retina viewing interaction
 - Accessible keyboard flow in modal and menu interactions
 - Actionable feedback after each assessment mode
+- Explanatory MCQ feedback that states why the best answer is correct
 - Clear progression:
   - `Primary` -> `Intermediate` -> `Advanced` in both MCQ and timed sets
   - Unlockable cup achievement when both advanced tiers are completed
@@ -57,3 +58,11 @@ A lightweight browser tool that simulates fundus examination, supports rapid ski
   - Validation must never use blocking popups that can pause timed rounds.
 - Keep instructions brief and practical:
   - UK-style wording, minimal text, clear unsafe-view/escalation guidance.
+
+# v1.1 product context (23 July 2026)
+
+The primary workflow remains condition comparison, FOV, cataract, eye orientation, canvas scanning and explanation, with MCQ and timed practice in the drawer. A separated two-press **New training session** action resets volatile training state by reloading the app. Engineering consistency does not validate the referral teaching text or imply clinical approval.
+
+## MCQ learning model — 26 July 2026
+
+MCQs are untimed source-labelled learning checks with rationales and fresh retry. The separate timed mode remains the speeded image-recognition exercise. This keeps knowledge feedback separate from perceptual timing pressure.

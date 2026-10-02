@@ -32,6 +32,7 @@ function loadServiceWorker(fetchImpl) {
     Headers,
     Request,
     Response,
+    AbortController,
     URL,
     caches,
     fetch: fetchImpl,
@@ -54,6 +55,55 @@ function loadServiceWorker(fetchImpl) {
 }
 
 describe("service worker sensitive-cache policy", () => {
+  test("pausing aborts the current file, retains cached files and skips later requests", async () => {
+    let secondStarted;
+    const downloading = new Promise((resolve) => {
+      secondStarted = resolve;
+    });
+    const fetchImpl = jest.fn((request) => {
+      if (request.url.endsWith("/first.mp4"))
+        return Promise.resolve(new Response("saved"));
+      return new Promise((_resolve, reject) => {
+        request.signal.addEventListener(
+          "abort",
+          () => reject(new Error("aborted")),
+          { once: true },
+        );
+        secondStarted(request);
+      });
+    });
+    const { cache, handlers } = loadServiceWorker(fetchImpl);
+    const messages = [];
+    const port = {
+      postMessage: (value) => messages.push(value),
+      start: jest.fn(),
+    };
+    let work;
+    handlers.message({
+      data: {
+        type: "CACHE_URLS",
+        payload: ["/first.mp4", "/second.mp4", "/third.mp4"],
+      },
+      ports: [port],
+      waitUntil: (promise) => {
+        work = promise;
+      },
+    });
+    const request = await downloading;
+    port.onmessage({ data: { type: "CACHE_CANCEL" } });
+    await work;
+    expect(request.signal.aborted).toBe(true);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(cache.put).toHaveBeenCalledTimes(1);
+    expect(cache.delete).toBeUndefined();
+    expect(messages.at(-1)).toMatchObject({
+      type: "CACHE_PAUSED",
+      cached: 1,
+      total: 3,
+      failed: [],
+      paused: true,
+    });
+  });
   test.each([
     "/api/location/ip",
     "/api/app/version",

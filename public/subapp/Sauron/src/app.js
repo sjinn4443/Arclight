@@ -6,17 +6,19 @@ import {
 import {
   getCaseList,
   getFallbackBabyCase,
-} from "./case-catalog.js?v=20260507-1";
-import { getDomRefs } from "./dom.js?v=20260506-4";
+} from "./case-catalog.js?v=20260725-1";
+import { getDomRefs } from "./dom.js?v=20260725-1";
 import { createEyesController } from "./eyes.js?v=20260506-5";
 import { initInfoModal } from "./info-modal.js";
 import { initMenuMcq } from "./menu-mcq.js?v=20260506-9";
-import { createVisualCasesController } from "./menu-visual-cases.js?v=20260507-1";
+import { createVisualCasesController } from "./menu-visual-cases.js?v=20260725-logic1";
 import { prefersReducedMotion } from "./motion.js";
 import { createRetinoscopyController } from "./retinoscopy.js?v=20260506-8";
 import { createAppState } from "./state.js?v=20260506-2";
 import { createStreakControlsController } from "./streak-controls.js";
-import { createTestModeController } from "./test-mode.js?v=20260506-3";
+import { createTestModeController } from "./test-mode.js?v=20260725-logic1";
+import { registerServiceWorker } from "./pwa.js";
+import { initSimulatorReset } from "./reset-controller.js";
 
 function populateRefractionOptions(selectElement) {
   if (!selectElement) {
@@ -114,6 +116,7 @@ export function initApp() {
   initInfoModal(dom);
   streakControlsController.init();
   testModeController.init();
+  initSimulatorReset(dom);
   initMenuMcq({
     state,
     dom,
@@ -229,4 +232,6 @@ export function initApp() {
   window.addEventListener("resize", () => {
     retinoscopyController.scheduleRetinoscopy(true);
   });
+
+  registerServiceWorker();
 }

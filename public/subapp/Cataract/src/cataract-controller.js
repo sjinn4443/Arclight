@@ -1,6 +1,6 @@
 import { $, $$ } from "./dom-utils.js";
-import { evaluateCataractDecision } from "./cataract-engine.js?v=20260511-1";
-import { UI_COPY } from "./cataract-copy.js?v=20260511-2";
+import { evaluateCataractDecision } from "./cataract-engine.js?v=20260726-1";
+import { UI_COPY } from "./cataract-copy.js?v=20260726-1";
 
 const NEUTRAL_BORDER_COLOR = "#ccc";
 
@@ -155,16 +155,24 @@ function buildDisplayNotes(decision) {
 }
 
 export function initCataractController() {
+  const cataractForm = $("#cataractForm");
   const fundalSection = $("#fundal-section");
   const backSection = $("#back-section");
   const resultSection = $("#result-section");
   const resultDiv = $("#result");
   const ageBandSelect = $("#ageBand");
   const distanceVASelect = $("#distanceVA");
+  const distanceVALabel = $("#distance-va-label");
   const onsetInputs = $$('#top-section input[name="onset"]');
   const eyesInputs = $$('#top-section input[name="eyes"]');
   const painLabel = $("#pain-label");
+  const pupilLabel = $("#pupil-label");
+  const frontLabel = $("#front-label");
   const neuroLabel = $("#neuro-label");
+  const painStatusSelect = $("#painStatus");
+  const pupilStatusSelect = $("#pupilStatus");
+  const frontStatusSelect = $("#frontStatus");
+  const afferentStatusSelect = $("#afferentStatus");
   const fundalButtons = $$(".fundal-btn");
   const backButtons = $$(".back-btn");
   const topInputs = $$("#top-section input, #top-section select");
@@ -172,7 +180,10 @@ export function initCataractController() {
   const fundalLockHint = $("#fundal-lock-hint");
   const backLockHint = $("#back-lock-hint");
   const resultLockHint = $("#result-lock-hint");
+  const resetButton = $("#new-assessment-button");
+  const resetStatus = $("#case-reset-status");
   let hasShownFundalHint = false;
+  let resetConfirmationTimer = null;
 
   function setButtonGroupSelection(buttons, selectedButton, colorMap) {
     buttons.forEach((button) => {
@@ -190,7 +201,24 @@ export function initCataractController() {
     const onsetSelected = $('#top-section input[name="onset"]:checked');
     const distanceVA = $("#distanceVA")?.value;
     const eyesSelected = $('#top-section input[name="eyes"]:checked');
-    return Boolean(onsetSelected && distanceVA !== "" && eyesSelected);
+    const ageBand = $("#ageBand")?.value;
+    return Boolean(
+      onsetSelected && ageBand !== "" && distanceVA !== "" && eyesSelected,
+    );
+  }
+
+  function syncDistanceVALabel() {
+    if (!distanceVALabel) {
+      return;
+    }
+    const eyesSelected =
+      $('#top-section input[name="eyes"]:checked')?.value || "";
+    distanceVALabel.textContent =
+      eyesSelected === "one"
+        ? "Affected VA:"
+        : eyesSelected === "two"
+          ? "Worse VA:"
+          : "Eye VA:";
   }
 
   function clearButtonGroupSelection(buttons) {
@@ -334,9 +362,12 @@ export function initCataractController() {
       back: [backSection],
       onset: onsetInputs.map((input) => input.parentElement),
       eyes: eyesInputs.map((input) => input.parentElement),
-      pain: [painLabel],
-      rapd: [neuroLabel],
-      light: [neuroLabel],
+      pain: [painLabel, painStatusSelect],
+      pupil: [pupilLabel, pupilStatusSelect],
+      front: [frontLabel, frontStatusSelect],
+      afferent: [neuroLabel, afferentStatusSelect],
+      rapd: [neuroLabel, afferentStatusSelect],
+      light: [neuroLabel, afferentStatusSelect],
     };
 
     const uniqueTargets = new Set();
@@ -358,7 +389,7 @@ export function initCataractController() {
 
   function calculateResult() {
     const onsetElem = $('#top-section input[name="onset"]:checked');
-    if (!onsetElem || !resultDiv) {
+    if (!resultDiv) {
       if (resultDiv) {
         resultDiv.innerHTML = "";
       }
@@ -368,46 +399,40 @@ export function initCataractController() {
 
     const fundalBtn = $(".fundal-btn.selected");
     const backBtn = $(".back-btn.selected");
-    if (!fundalBtn || !backBtn) {
-      resultDiv.innerHTML = "";
-      clearRecheckHighlights();
-      return false;
-    }
-
-    const fundalSelection = fundalBtn.getAttribute("data-value");
-    const backSelection = backBtn.getAttribute("data-value");
+    const fundalSelection = fundalBtn?.getAttribute("data-value") || "";
+    const backSelection = backBtn?.getAttribute("data-value") || "";
     const eyesElem = $('#top-section input[name="eyes"]:checked');
     const eyes = eyesElem ? eyesElem.value : "";
-    const painElem = $('#top-section input[name="pain"]:checked');
-    const pupilElem = $('#top-section input[name="pupil"]:checked');
-    const frontElem = $('#top-section input[name="front"]:checked');
-    const neuroElem = $('#top-section input[name="neuro"]:checked');
+    const painStatus = painStatusSelect?.value || "";
+    const pupilStatus = pupilStatusSelect?.value || "";
+    const frontStatus = frontStatusSelect?.value || "";
+    const afferentStatus = afferentStatusSelect?.value || "";
 
     const decision = evaluateCataractDecision({
-      onsetValue: onsetElem.value,
+      onsetValue: onsetElem?.value || "",
       ageBand: $("#ageBand")?.value || "",
       distanceVA: $("#distanceVA")?.value || "",
       nearVAValue: $("#nearVA")?.value || "",
       eyes,
-      painYes: Boolean(painElem && painElem.value === "yes"),
-      painRecorded: true,
-      pupilSelected: true,
-      pupilRecorded: true,
-      pupilAbnormal: Boolean(pupilElem && pupilElem.value === "abnormal"),
-      frontPresent: Boolean(frontElem && frontElem.value === "present"),
-      frontRecorded: true,
-      rapdPresent: Boolean(neuroElem && neuroElem.value === "yes"),
-      rapdRecorded: true,
-      directionLightPoor: Boolean(neuroElem && neuroElem.value === "yes"),
-      lightRecorded: true,
+      painYes: painStatus === "yes",
+      painRecorded: Boolean(painStatus),
+      pupilSelected: Boolean(pupilStatus),
+      pupilRecorded: Boolean(pupilStatus),
+      pupilAbnormal: pupilStatus === "abnormal",
+      frontPresent: frontStatus === "present",
+      frontRecorded: Boolean(frontStatus),
+      afferentConcern: afferentStatus === "concern",
+      afferentRecorded: Boolean(afferentStatus),
       fundalSelection,
       backSelection,
     });
 
     if (!decision.hasResult) {
-      resultDiv.innerHTML = "";
+      resultDiv.innerHTML = decision.actionText
+        ? `<div class="result-detail-block"><p class="result-label">Not assessed</p><p class="action-text action-${decision.actionColour}">${decision.actionText}</p>${decision.actionNotes.map((note) => `<p class="action-note-line">${note}</p>`).join("")}</div>`
+        : "";
       clearRecheckHighlights();
-      return false;
+      return Boolean(decision.actionText);
     }
 
     let resultHTML = '<div class="result-summary result-summary--compact">';
@@ -447,35 +472,7 @@ export function initCataractController() {
     const wasFundalDisabled = Boolean(
       fundalSection?.classList.contains("disabled"),
     );
-    const isTopComplete = checkTopSectionCompletion();
-
-    if (!isTopComplete) {
-      clearButtonGroupSelection(fundalButtons);
-      clearButtonGroupSelection(backButtons);
-      resultDiv.innerHTML = "";
-      clearRecheckHighlights();
-
-      setSectionDisabledState(
-        fundalSection,
-        true,
-        fundalLockHint,
-        "Complete Vision Loss and Dist VA to unlock.",
-      );
-      setSectionDisabledState(
-        backSection,
-        true,
-        backLockHint,
-        "Complete top details first.",
-      );
-      setSectionDisabledState(
-        resultSection,
-        true,
-        resultLockHint,
-        "Complete required fields to show result.",
-      );
-      return;
-    }
-
+    // Observed red flags can be entered before unrelated history is complete.
     setSectionDisabledState(fundalSection, false, fundalLockHint);
     if (wasFundalDisabled && !hasShownFundalHint) {
       showFundalGuidanceMessage();
@@ -485,7 +482,6 @@ export function initCataractController() {
     const selectedFundalButton = $(".fundal-btn.selected");
     if (!selectedFundalButton) {
       clearButtonGroupSelection(backButtons);
-      resultDiv.innerHTML = "";
       clearRecheckHighlights();
       setSectionDisabledState(
         backSection,
@@ -495,7 +491,7 @@ export function initCataractController() {
       );
       setSectionDisabledState(
         resultSection,
-        true,
+        !calculateResult(),
         resultLockHint,
         "Select fundal reflex and back of eye.",
       );
@@ -505,19 +501,14 @@ export function initCataractController() {
     const fundalValue = selectedFundalButton.getAttribute("data-value")?.trim();
     if (fundalValue === "white") {
       const poorViewButton = $('.back-btn[data-value="poor view"]');
-      if (poorViewButton && !poorViewButton.classList.contains("selected")) {
+      if (poorViewButton && !$(".back-btn.selected")) {
         setButtonGroupSelection(
           backButtons,
           poorViewButton,
           BACK_BORDER_COLORS,
         );
       }
-      setSectionDisabledState(
-        backSection,
-        true,
-        backLockHint,
-        "Dense reflex auto-sets back to Poor view.",
-      );
+      setSectionDisabledState(backSection, false, backLockHint);
     } else {
       setSectionDisabledState(backSection, false, backLockHint);
     }
@@ -550,63 +541,97 @@ export function initCataractController() {
       }
     }
 
-    const painRadio = $("#pain-yes");
-    const painLabel = $("#pain-label");
-    const painYesLabel = $("#pain-yes-label");
-    if (painRadio && painLabel && painYesLabel) {
-      if (painRadio.checked) {
-        painLabel.classList.add("serious");
-        painYesLabel.classList.add("serious");
-      } else {
-        painLabel.classList.remove("serious");
-        painYesLabel.classList.remove("serious");
-      }
-    }
+    const statusPairs = [
+      {
+        select: painStatusSelect,
+        label: painLabel,
+        concern: painStatusSelect?.value === "yes",
+        recorded: Boolean(painStatusSelect?.value),
+        className: "serious",
+      },
+      {
+        select: pupilStatusSelect,
+        label: pupilLabel,
+        concern: pupilStatusSelect?.value === "abnormal",
+        recorded: Boolean(pupilStatusSelect?.value),
+        className: "serious",
+      },
+      {
+        select: frontStatusSelect,
+        label: frontLabel,
+        concern: frontStatusSelect?.value === "present",
+        recorded: Boolean(frontStatusSelect?.value),
+        className: "warning",
+      },
+      {
+        select: afferentStatusSelect,
+        label: neuroLabel,
+        concern: afferentStatusSelect?.value === "concern",
+        recorded: Boolean(afferentStatusSelect?.value),
+        className: "serious",
+      },
+    ];
 
-    const pupilAbnormalRadio = $("#pupil-abnormal");
-    const pupilLabel = $("#pupil-label");
-    const pupilYesLabel = $("#pupil-yes-label");
-    if (pupilLabel && pupilAbnormalRadio && pupilYesLabel) {
-      if (pupilAbnormalRadio.checked) {
-        pupilLabel.classList.add("serious");
-        pupilYesLabel.classList.add("serious");
-        pupilLabel.classList.remove("good");
-      } else {
-        pupilLabel.classList.remove("good");
-        pupilLabel.classList.remove("serious");
-        pupilYesLabel.classList.remove("serious");
-      }
-    }
+    statusPairs.forEach(({ select, label, concern, recorded, className }) => {
+      select?.classList.toggle("is-recorded-concern", concern);
+      select?.classList.toggle("is-recorded-normal", recorded && !concern);
+      label?.classList.toggle(className, concern);
+    });
+  }
 
-    const frontRadio = $("#front-present");
-    const frontLabel = $("#front-label");
-    const frontYesLabel = $("#front-yes-label");
-    if (frontRadio && frontLabel && frontYesLabel) {
-      if (frontRadio.checked) {
-        frontLabel.classList.add("warning");
-        frontYesLabel.classList.add("warning");
-      } else {
-        frontLabel.classList.remove("warning");
-        frontYesLabel.classList.remove("warning");
-      }
+  function disarmReset() {
+    if (resetConfirmationTimer !== null) {
+      window.clearTimeout(resetConfirmationTimer);
+      resetConfirmationTimer = null;
     }
+    if (!resetButton) {
+      return;
+    }
+    resetButton.dataset.confirming = "false";
+    resetButton.classList.remove("is-confirming");
+    resetButton.textContent = "New assessment";
+  }
 
-    const neuroRadio = $("#neuro-red-yes");
-    const neuroLabel = $("#neuro-label");
-    const neuroYesLabel = $("#neuro-yes-label");
-    if (neuroRadio && neuroLabel && neuroYesLabel) {
-      if (neuroRadio.checked) {
-        neuroLabel.classList.add("serious");
-        neuroYesLabel.classList.add("serious");
-      } else {
-        neuroLabel.classList.remove("serious");
-        neuroYesLabel.classList.remove("serious");
+  function armReset() {
+    if (!resetButton) {
+      return;
+    }
+    resetButton.dataset.confirming = "true";
+    resetButton.classList.add("is-confirming");
+    resetButton.textContent = "Clear assessment?";
+    if (resetStatus) {
+      resetStatus.textContent = "Press again to clear the current assessment.";
+    }
+    resetConfirmationTimer = window.setTimeout(() => {
+      disarmReset();
+      if (resetStatus) {
+        resetStatus.textContent = "Clear cancelled.";
       }
+    }, 10000);
+  }
+
+  function clearAssessment() {
+    cataractForm?.reset();
+    clearButtonGroupSelection(fundalButtons);
+    clearButtonGroupSelection(backButtons);
+    topInputs.forEach((input) => {
+      delete input.dataset.wasChecked;
+    });
+    hasShownFundalHint = false;
+    resultDiv.innerHTML = "";
+    clearRecheckHighlights();
+    updateCriticalStyling();
+    syncDistanceVALabel();
+    syncProgressiveState();
+    disarmReset();
+    if (resetStatus) {
+      resetStatus.textContent = "Assessment cleared.";
     }
   }
 
   topInputs.forEach((input) => {
     input.addEventListener("change", () => {
+      syncDistanceVALabel();
       updateCriticalStyling();
       syncProgressiveState();
     });
@@ -633,7 +658,25 @@ export function initCataractController() {
     nearVAInput.addEventListener("change", syncProgressiveState);
   }
 
+  resetButton?.addEventListener("click", () => {
+    if (resetButton.dataset.confirming === "true") {
+      clearAssessment();
+      return;
+    }
+    armReset();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && resetButton?.dataset.confirming === "true") {
+      disarmReset();
+      if (resetStatus) {
+        resetStatus.textContent = "Clear cancelled.";
+      }
+    }
+  });
+
   setupClearableTopRadios();
+  syncDistanceVALabel();
   updateCriticalStyling();
   syncProgressiveState();
 }

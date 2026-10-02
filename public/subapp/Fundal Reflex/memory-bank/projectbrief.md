@@ -101,3 +101,7 @@ Deliver a lightweight browser-based fundal reflex training tool where learners c
 - Header utility icons should stay subtle; the info control is a plain red `i` rather than a circled mark.
 - Interactive controls should have adequate tap regions and visible focus without visually shouting.
 - Typography should be readable on mobile without oversized hero-style text.
+
+## MCQ quality constraint — 26 July 2026
+
+MCQs reinforce reflex comparison, view quality and safe escalation without changing the simulator or referral engine. Preserve 5, 6 and 8-question attempts, use 44px answer rows and do not add app-interface trivia. Clinical source review does not equal independent approval.

@@ -2,7 +2,7 @@ import {
   CASE_LEVELS,
   getCaseByValue,
   getCaseList,
-} from "./case-catalog.js?v=20260507-1";
+} from "./case-catalog.js?v=20260725-1";
 import { createModalController } from "./modal.js";
 
 function createElement(tagName, className, textContent) {
@@ -61,12 +61,18 @@ export function createVisualCasesController({
     caseSectionsContainer,
     caseSimilarTool,
     caseSimilarList,
+    caseSafetyModal,
+    caseSafetyModalContent,
+    closeCaseSafetyModalButton,
+    caseSafetyTitle,
+    caseSafetyBody,
     casePicker,
     casePreviousButton,
     caseNextButton,
     caseTriggerButton,
     caseTriggerLabel,
     caseTriggerLevel,
+    caseTriggerSafety,
   } = dom;
 
   if (
@@ -75,12 +81,18 @@ export function createVisualCasesController({
     !caseModalContent ||
     !closeCaseModalButton ||
     !caseSectionsContainer ||
+    !caseSafetyModal ||
+    !caseSafetyModalContent ||
+    !closeCaseSafetyModalButton ||
+    !caseSafetyTitle ||
+    !caseSafetyBody ||
     !casePicker ||
     !casePreviousButton ||
     !caseNextButton ||
     !caseTriggerButton ||
     !caseTriggerLabel ||
-    !caseTriggerLevel
+    !caseTriggerLevel ||
+    !caseTriggerSafety
   ) {
     return {
       init() {},
@@ -95,6 +107,24 @@ export function createVisualCasesController({
     focusRoot: caseModalContent,
     initialFocusElement: closeCaseModalButton,
     modal: caseModal,
+  });
+
+  function setCaseModalSuspended(isSuspended) {
+    if (!modalController.isOpen()) {
+      return;
+    }
+
+    caseModal.toggleAttribute("inert", isSuspended);
+    caseModal.setAttribute("aria-hidden", String(isSuspended));
+  }
+
+  const safetyModalController = createModalController({
+    body,
+    focusRoot: caseSafetyModalContent,
+    initialFocusElement: closeCaseSafetyModalButton,
+    modal: caseSafetyModal,
+    onAfterClose: () => setCaseModalSuspended(false),
+    onAfterOpen: () => setCaseModalSuspended(true),
   });
 
   function getVisibleCases() {
@@ -127,7 +157,23 @@ export function createVisualCasesController({
     selectCase(caseList[nextIndex].value);
   }
 
+  function openSafetyNote(caseItem, triggerElement) {
+    if (!caseItem?.safetyNote) {
+      return;
+    }
+
+    caseSafetyTitle.textContent = caseItem.safetyNote.title;
+    caseSafetyBody.textContent = caseItem.safetyNote.body;
+    safetyModalController.open({ triggerElement });
+  }
+
   function renderCaseCard(caseItem) {
+    const shell = createElement("div", "case-card-shell");
+    shell.dataset.caseValue = caseItem.value;
+    if (caseItem.safetyNote) {
+      shell.classList.add("has-safety-note");
+    }
+
     const button = createElement("button", "case-card");
     button.type = "button";
     button.dataset.caseValue = caseItem.value;
@@ -136,6 +182,12 @@ export function createVisualCasesController({
       "aria-pressed",
       String(caseItem.value === state.currentRefraction),
     );
+    if (caseItem.safetyNote) {
+      button.setAttribute(
+        "aria-label",
+        `${caseItem.label}. Safety note available.`,
+      );
+    }
 
     const header = createElement("span", "case-card-header");
     const badge = createElement(
@@ -171,7 +223,29 @@ export function createVisualCasesController({
     button.append(header, media);
     button.addEventListener("click", () => selectCase(caseItem.value, button));
     button.addEventListener("focus", () => scrollCardIntoView(button));
-    return button;
+
+    shell.appendChild(button);
+    if (caseItem.safetyNote) {
+      const safetyButton = createElement("button", "case-safety-button");
+      safetyButton.type = "button";
+      safetyButton.dataset.caseValue = caseItem.value;
+      safetyButton.setAttribute(
+        "aria-label",
+        `Safety note for ${caseItem.label}`,
+      );
+      safetyButton.setAttribute("aria-haspopup", "dialog");
+      safetyButton.setAttribute("aria-controls", "caseSafetyModal");
+      const symbol = createElement("span", "case-warning-symbol");
+      symbol.setAttribute("aria-hidden", "true");
+      safetyButton.appendChild(symbol);
+      safetyButton.addEventListener("click", () =>
+        openSafetyNote(caseItem, safetyButton),
+      );
+      safetyButton.addEventListener("focus", () => scrollCardIntoView(shell));
+      shell.appendChild(safetyButton);
+    }
+
+    return shell;
   }
 
   function renderSimilarCases() {
@@ -270,6 +344,15 @@ export function createVisualCasesController({
     caseTriggerLevel.textContent = "";
     caseTriggerLevel.dataset.level = currentCase.level;
     caseTriggerButton.dataset.level = currentCase.level;
+    caseTriggerSafety.hidden = !currentCase.safetyNote;
+    caseTriggerButton.classList.toggle(
+      "has-safety-note",
+      Boolean(currentCase.safetyNote),
+    );
+    caseTriggerButton.setAttribute(
+      "aria-label",
+      `Case: ${currentCase.label}. ${currentCase.levelLabel}.${currentCase.safetyNote ? " Safety note available." : ""}`,
+    );
 
     const visibleCases = getVisibleCases();
     const hasMultipleCases = visibleCases.length > 1;
@@ -310,10 +393,18 @@ export function createVisualCasesController({
     closeCaseModalButton.addEventListener("click", () =>
       modalController.close(),
     );
+    closeCaseSafetyModalButton.addEventListener("click", () =>
+      safetyModalController.close(),
+    );
 
     caseModal.addEventListener("click", (event) => {
       if (event.target === caseModal) {
         modalController.close();
+      }
+    });
+    caseSafetyModal.addEventListener("click", (event) => {
+      if (event.target === caseSafetyModal) {
+        safetyModalController.close();
       }
     });
 

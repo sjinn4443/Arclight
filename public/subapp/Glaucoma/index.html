@@ -10,30 +10,14 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Glaucoma" />
+    <meta name="theme-color" content="#000000" />
     <title>Glaucoma</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <!-- Preconnect and DNS prefetch hints -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <!-- Preload Google Fonts -->
-    <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap"
-      />
-    </noscript>
+    <link rel="manifest" href="manifest.webmanifest" />
     <!-- Local CSS -->
-    <link rel="stylesheet" href="styles.css?v=20260518-appbar" />
+    <link rel="stylesheet" href="styles.css?v=20260929-logic1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <div class="container">
@@ -74,14 +58,27 @@
         aria-hidden="true"
         inert
       >
+        <button
+          type="button"
+          id="newAssessmentButton"
+          class="new-assessment-button"
+        >
+          New assessment
+        </button>
+        <p
+          id="newAssessmentStatus"
+          class="new-assessment-status"
+          role="status"
+          aria-live="polite"
+        ></p>
         <button type="button" class="mcq-level-button" data-level-index="0">
-          Primary MCQ
+          Primary
         </button>
         <button type="button" class="mcq-level-button" data-level-index="1">
-          Intermediate MCQ
+          Intermediate
         </button>
         <button type="button" class="mcq-level-button" data-level-index="2">
-          Advanced MCQ
+          Advanced
         </button>
         <section
           id="cupAchievement"
@@ -114,7 +111,12 @@
       </nav>
 
       <!-- Hidden info box -->
-      <div id="info-popup" role="dialog" aria-labelledby="info-popup-title">
+      <div
+        id="info-popup"
+        role="dialog"
+        aria-modal="false"
+        aria-labelledby="info-popup-title"
+      >
         <div class="info-popup-header">
           <h2 id="info-popup-title">Quick guide</h2>
           <button
@@ -133,7 +135,12 @@
             <p id="info-glaucoma-title" class="info-look-title">
               Glaucoma risk
             </p>
-            <p>Assess glaucoma vision-loss risk in seconds.</p>
+            <p class="info-purpose-copy">
+              Use this when examination information is limited: you select the
+              closest disc appearance, IOP or palpation and the risk signs you
+              observed. The app gives an approximate risk and referral prompt;
+              it does not diagnose glaucoma.
+            </p>
           </section>
           <hr class="info-divider" />
           <div class="info-look-guide">
@@ -184,7 +191,7 @@
               <strong>Grid:</strong> IOP + C/D; rock palp = emergency warning.
             </p>
             <p>
-              <strong>IOP:</strong> &le;20 +0 | 20-24 +1 | 25-29 +2 | &ge;30 +3.
+              <strong>IOP:</strong> &le;20 +0 | 21-24 +1 | 25-29 +2 | &ge;30 +3.
             </p>
             <p>
               <strong>Add:</strong> rim +1; fields +1; pupils +0.5; VA +0.25-1;
@@ -196,13 +203,53 @@
             </p>
           </div>
           <ol class="info-logic-list" id="info-logic-list"></ol>
-          <p class="info-logic-version" id="info-logic-version"></p>
         </details>
+        <p
+          class="info-version"
+          id="info-logic-version"
+          style="
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 8px 0 0;
+            color: #6e7c95;
+            font:
+              700 10.5px/1.2 Inter,
+              Arial,
+              sans-serif;
+            text-align: right;
+            white-space: nowrap;
+          "
+        ></p>
       </div>
 
       <main class="main questionnaire">
         <!-- Top Content: IOP, C/D Ratio and Disc Size -->
         <div class="top-content">
+          <div
+            class="eye-selector"
+            role="group"
+            aria-label="Eye being assessed (optional)"
+          >
+            <span class="eye-selector-label">Eye</span>
+            <button
+              type="button"
+              class="eye-button"
+              data-eye="RE"
+              aria-pressed="false"
+            >
+              RE
+            </button>
+            <button
+              type="button"
+              class="eye-button"
+              data-eye="LE"
+              aria-pressed="false"
+            >
+              LE
+            </button>
+          </div>
+
           <!-- Left Column: Digital palpation + IOP -->
           <div class="iop-control-group">
             <div
@@ -210,12 +257,13 @@
               role="group"
               aria-label="Digital palpation"
             >
-              <label><strong>Palp</strong></label>
+              <label title="Digital palpation"><strong>Palp</strong></label>
               <div class="palpation-buttons">
                 <button
                   type="button"
                   class="palpation-button"
                   data-palpation="normal"
+                  aria-pressed="false"
                 >
                   Normal
                 </button>
@@ -223,6 +271,7 @@
                   type="button"
                   class="palpation-button"
                   data-palpation="firm"
+                  aria-pressed="false"
                 >
                   Firm
                 </button>
@@ -230,6 +279,7 @@
                   type="button"
                   class="palpation-button"
                   data-palpation="rock"
+                  aria-pressed="false"
                 >
                   Rock
                 </button>
@@ -246,7 +296,7 @@
               </div>
               <div class="iop-radio">
                 <label
-                  ><input type="radio" name="iop" value="20-24" /> 20-24</label
+                  ><input type="radio" name="iop" value="21-24" /> 21-24</label
                 >
               </div>
               <div class="iop-radio">
@@ -265,34 +315,58 @@
           <!-- Middle Column: C/D Ratio -->
           <div class="selection-area">
             <div class="ratio-grid" id="ratio-grid">
-              <div class="ratio-button" data-ratio="0-0.2">
+              <button
+                type="button"
+                class="ratio-button"
+                data-ratio="0-0.2"
+                aria-label="Cup disc ratio 0 to 0.2"
+                aria-pressed="false"
+              >
                 <img
                   src="assets/images/01.webp"
                   alt="0-0.2"
                   class="ratio-image"
                 />
-              </div>
-              <div class="ratio-button" data-ratio="0.3-0.5">
+              </button>
+              <button
+                type="button"
+                class="ratio-button"
+                data-ratio="0.3-0.5"
+                aria-label="Cup disc ratio 0.3 to 0.5"
+                aria-pressed="false"
+              >
                 <img
                   src="assets/images/04.webp"
                   alt="0.3-0.5"
                   class="ratio-image"
                 />
-              </div>
-              <div class="ratio-button" data-ratio="0.6-0.8">
+              </button>
+              <button
+                type="button"
+                class="ratio-button"
+                data-ratio="0.6-0.8"
+                aria-label="Cup disc ratio 0.6 to 0.8"
+                aria-pressed="false"
+              >
                 <img
                   src="assets/images/07.webp"
                   alt="0.6-0.8"
                   class="ratio-image"
                 />
-              </div>
-              <div class="ratio-button" data-ratio="0.9-1">
+              </button>
+              <button
+                type="button"
+                class="ratio-button"
+                data-ratio="0.9-1"
+                aria-label="Cup disc ratio 0.9 to 1"
+                aria-pressed="false"
+              >
                 <img
                   src="assets/images/09.webp"
                   alt="0.9-1"
                   class="ratio-image"
                 />
-              </div>
+              </button>
             </div>
           </div>
 
@@ -300,11 +374,44 @@
           <div class="disc-size-selection">
             <div class="disc-size-buttons">
               <div class="disc-button-stack">
-                <div class="disc-button" data-size="Small">S</div>
-                <div class="disc-button selected" data-size="Medium">M</div>
-                <div class="disc-button" data-size="Large">L</div>
+                <button
+                  type="button"
+                  class="disc-button"
+                  data-size="Small"
+                  aria-label="Small disc"
+                  aria-pressed="false"
+                >
+                  S
+                </button>
+                <button
+                  type="button"
+                  class="disc-button selected"
+                  data-size="Medium"
+                  aria-label="Medium disc"
+                  aria-pressed="true"
+                >
+                  M
+                </button>
+                <button
+                  type="button"
+                  class="disc-button"
+                  data-size="Large"
+                  aria-label="Large disc"
+                  aria-pressed="false"
+                >
+                  L
+                </button>
               </div>
-              <div class="info-icon" data-popup-target="sizes-popup">i</div>
+              <button
+                type="button"
+                class="info-icon"
+                data-popup-target="sizes-popup"
+                aria-label="Disc size guide"
+                aria-controls="sizes-popup"
+                aria-expanded="false"
+              >
+                i
+              </button>
             </div>
           </div>
         </div>
@@ -313,23 +420,37 @@
         <div class="questionnaire-section-container">
           <!-- Thin Rim Question -->
           <div class="question">
-            <label class="thin-rim-label">
-              Thin rim/notch, Haem, Lam Crib, BV's?
-              <input
-                type="radio"
-                name="thin_rims"
-                value="Yes"
-                data-toggleable="true"
-              />
-              <span class="info-icon" data-popup-target="rim-popup">i</span>
-            </label>
+            <div class="thin-rim-control">
+              <label
+                class="thin-rim-label"
+                title="Thin rim or notch, disc haemorrhage, visible lamina cribrosa or abnormal blood vessels"
+              >
+                Thin rim/notch, Haem, Lam Crib, BV's?
+                <input
+                  type="radio"
+                  name="thin_rims"
+                  value="Yes"
+                  data-toggleable="true"
+                />
+              </label>
+              <button
+                type="button"
+                class="info-icon"
+                data-popup-target="rim-popup"
+                aria-label="Thin rim guide"
+                aria-controls="rim-popup"
+                aria-expanded="false"
+              >
+                i
+              </button>
+            </div>
           </div>
 
           <!-- Inline Questions: Fields, Pupils, BCVA -->
           <div class="inline-questions">
             <div class="question">
               <label>
-                Susp Fields?
+                Suspicious fields?
                 <input
                   type="radio"
                   name="field_of_vision_problem"
@@ -340,7 +461,7 @@
             </div>
             <div class="question">
               <label>
-                Susp Pupils?
+                Suspicious pupils?
                 <input
                   type="radio"
                   name="suspect_pupils"
@@ -410,6 +531,9 @@
           <div class="risk-grid-wrapper">
             <span class="risk-grid-iop-axis" aria-hidden="true">IOP</span>
             <table class="risk-grid-table">
+              <caption class="visually-hidden">
+                Glaucoma risk grid by intraocular pressure and cup-to-disc ratio
+              </caption>
               <thead>
                 <tr>
                   <th class="no-border cd-axis-cell">
@@ -424,7 +548,7 @@
               <tbody>
                 <tr>
                   <!-- Row 1: ≥30 -->
-                  <td class="no-border">&ge;30</td>
+                  <th scope="row" class="no-border">&ge;30</th>
                   <td class="risk-cell orange" id="cell_r1_c1">
                     <div class="cell-content"></div>
                   </td>
@@ -440,7 +564,7 @@
                 </tr>
                 <tr>
                   <!-- Row 2: 25-29 -->
-                  <td class="no-border">25-29</td>
+                  <th scope="row" class="no-border">25-29</th>
                   <td class="risk-cell orange" id="cell_r2_c1">
                     <div class="cell-content"></div>
                   </td>
@@ -455,8 +579,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <!-- Row 3: 20-24 -->
-                  <td class="no-border">20-24</td>
+                  <!-- Row 3: 21-24 -->
+                  <th scope="row" class="no-border">21-24</th>
                   <td class="risk-cell white" id="cell_r3_c1">
                     <div class="cell-content"></div>
                   </td>
@@ -472,7 +596,7 @@
                 </tr>
                 <tr>
                   <!-- Row 4: ≤20 -->
-                  <td class="no-border">&le;20</td>
+                  <th scope="row" class="no-border">&le;20</th>
                   <td class="risk-cell white" id="cell_r4_c1">
                     <div class="cell-content"></div>
                   </td>
@@ -490,13 +614,43 @@
             </table>
           </div>
         </div>
-        <div class="reasoning-window" id="reasoning-window"></div>
-        <div class="final-message" id="final-message"></div>
+        <section class="risk-output" aria-label="Glaucoma risk result">
+          <p class="acute-safety">
+            Painful red eye + sudden visual loss:
+            <strong>emergency assessment</strong>. Do not wait for the grid.
+          </p>
+          <div
+            class="risk-live"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <div class="reasoning-window" id="reasoning-window"></div>
+            <div class="final-message" id="final-message"></div>
+          </div>
+          <button
+            id="reportButton"
+            class="report-action-button"
+            type="button"
+            aria-label="Open report"
+            aria-controls="reportModal"
+            aria-haspopup="dialog"
+            disabled
+          >
+            <span class="local-icon-report" aria-hidden="true">R</span>
+            <span>Report</span>
+          </button>
+        </section>
       </main>
     </div>
 
     <!-- Popup Containers -->
-    <div id="sizes-popup" class="popup">
+    <div
+      id="sizes-popup"
+      class="popup"
+      role="dialog"
+      aria-label="Disc size guide"
+    >
       <button type="button" class="popup-close-button" aria-label="Close popup">
         ×
       </button>
@@ -513,10 +667,13 @@
           <em>clear margins, crescented, pigmented</em>
         </li>
       </ul>
-      <p>&gt; Larger discs are 'safer' &lt;</p>
+      <p>
+        Larger discs may have larger cups. Near-total cupping still needs
+        escalation.
+      </p>
     </div>
 
-    <div id="rim-popup" class="popup">
+    <div id="rim-popup" class="popup" role="dialog" aria-label="Thin rim guide">
       <button type="button" class="popup-close-button" aria-label="Close popup">
         ×
       </button>
@@ -545,8 +702,15 @@
       </ul>
     </div>
 
-    <div id="mcqModal" class="modal" aria-hidden="true">
-      <div class="modal-content">
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content" tabindex="-1">
         <button
           id="closeMcqModal"
           class="close-modal-button"
@@ -558,18 +722,70 @@
         <h2 id="mcqTitle">MCQ Test</h2>
         <div id="mcqTimer" class="mcq-timer" hidden></div>
         <div id="mcqContainer"></div>
+        <div
+          id="mcqResult"
+          class="mcq-result"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+        ></div>
         <div class="mcq-actions">
           <button id="submitMcqButton" type="button" class="mcq-submit">
-            Submit
+            Submit answers
+          </button>
+          <button id="retryMcqButton" type="button" class="mcq-submit" hidden>
+            New set
           </button>
         </div>
-        <div id="mcqResult" class="mcq-result"></div>
+      </div>
+    </div>
+
+    <div
+      id="reportModal"
+      class="modal report-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reportTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content report-modal-content" tabindex="-1">
+        <button
+          id="closeReportModal"
+          class="close-modal-button"
+          type="button"
+          aria-label="Close report"
+        >
+          <span class="close-glyph" aria-hidden="true">&times;</span>
+        </button>
+        <h2 id="reportTitle">Glaucoma report</h2>
+        <p class="report-kicker">Based on available findings</p>
+        <pre
+          id="reportText"
+          class="report-text"
+          tabindex="0"
+          aria-label="Generated report text"
+        ></pre>
+        <div class="report-modal-actions">
+          <button
+            id="copyReportButton"
+            class="report-copy-button"
+            type="button"
+          >
+            Copy report
+          </button>
+          <p
+            id="reportCopyStatus"
+            class="report-copy-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </div>
       </div>
     </div>
 
     <!-- External Calculator Script -->
-    <script src="app.bundle.js"></script>
-    <script src="cup-achievement.js"></script>
+    <script src="app.bundle.js?v=20260930-clinical2-perf1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

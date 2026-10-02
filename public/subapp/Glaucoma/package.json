@@ -4,7 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "node tools/lint.mjs",
-    "test": "node tests/run-tests.mjs"
+    "build": "esbuild scripts.js --bundle --minify --format=iife --target=es2018 --outfile=app.bundle.js --log-level=warning",
+    "lint": "node --check scripts.js && node --check app.bundle.js && node --check cup-achievement.js && node --check sw.js && node --check src/dom-utils.js && node --check src/mcq-controller.js && node --check src/mcq-data.js && node --check src/mcq-engine.js && node --check src/popup-controller.js && node --check src/pwa.js && node --check src/report-controller.js && node --check src/report.js && node --check src/risk-calculator-controller.js && node --check src/risk-config.js && node --check src/risk-engine.js",
+    "test": "node tests/run-tests.mjs",
+    "test:bundle": "node tools/check-bundle.mjs",
+    "check": "npm run lint && npm test && npm run test:bundle",
+    "browser:review": "node tests/browser-review.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5"
   }
 }

@@ -190,7 +190,7 @@ export function initLearnModal({ dom, onBeforeOpen, onSelectCase }) {
       triggerElement:
         triggerElement === infoLearnButton
           ? infoIcon || triggerElement
-          : triggerElement,
+          : burgerIcon || triggerElement,
     });
   };
 
@@ -208,7 +208,7 @@ export function initLearnModal({ dom, onBeforeOpen, onSelectCase }) {
 
   learnModal.addEventListener("click", (event) => {
     if (event.target === learnModal) {
-      learnModalController.close({ restoreFocus: false });
+      learnModalController.close();
     }
   });
 

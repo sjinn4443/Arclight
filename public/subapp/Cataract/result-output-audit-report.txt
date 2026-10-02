@@ -1,0 +1,374 @@
+Cataract Result Output Audit
+Generated: 2026-09-29T12:30:22.258Z
+
+Scope
+-----
+Mode: complete UI-feasible combinations with visible Result text.
+Complete UI combinations audited: 614400
+Unique visible Result panels: 2925
+
+Axes
+----
+Onset: gradual, sudden
+Age: baby, child, adolescent, young_adult, adult, middle_aged, elderly, very_elderly
+Eyes: one, two
+Pain/redness: no, yes
+Distance VA: 6/6, 6/12, 6/36, 6/60, HM, fix_follow_good, fix_follow_poor, unable_test
+Near VA: , N5, N8, N12, N18, N36
+Pupils: normal, abnormal
+Front eye: normal, scar/distortion
+RAPD/light direction: normal, abnormal
+Fundal + Back: all reflexes preserve recorded posterior findings; dense defaults to poor view only when blank.
+
+Issue Totals
+------------
+P0: 0
+P1: 0
+P2: 0
+P3: 0
+
+Findings
+--------
+No result-output findings detected.
+
+Top Next Step Outputs
+---------------------
+245760  red | Same-day eye assessment.
+122880  red | Same-day retinal assessment.
+113664  orange | Assess posterior disease first.
+ 49152  orange | Check retinal or nerve cause.
+ 18432  red | Urgent paediatric eye review.
+ 14880  red | Prompt eye assessment.
+ 13824  orange | Paediatric eye review.
+  8640  orange | Prompt cataract assessment.
+  5760  orange | Further eye assessment needed.
+  5096  orange | Re-check key findings.
+  3456  orange | Early paediatric eye review.
+  2880  orange | Early specialist assessment.
+  2880  orange | Assess before cataract referral.
+  2016  orange | Check non-cataract causes.
+  1440  orange | Early cataract assessment.
+   960  orange | Specialist assessment advised.
+
+Top Visible Result Panels (80 shown)
+-------------------------
+  6144  red | Nil | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes neuro_red_flags,pupil_abnormal_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=detached
+  6144  red | Possible Nuclear | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes neuro_red_flags,pupil_abnormal_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=detached
+  6144  red | Possible Cortical | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes neuro_red_flags,pupil_abnormal_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=detached
+  6144  red | Possible Subcapsular | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes neuro_red_flags,pupil_abnormal_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=detached
+  6144  red | White reflex | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes neuro_red_flags,pupil_abnormal_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=detached
+  4416  red | Nil | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=normal
+  3840  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=normal
+  3840  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=normal
+  3840  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=normal
+  3840  red | White reflex | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=normal
+  3072  orange | Nil | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=cupping
+  3072  orange | Nil | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=diabetic
+  3072  orange | Possible Nuclear | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=cupping
+  3072  orange | Possible Nuclear | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=diabetic
+  3072  orange | Possible Cortical | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=cupping
+  3072  orange | Possible Cortical | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=diabetic
+  3072  orange | Possible Subcapsular | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=cupping
+  3072  orange | Possible Subcapsular | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=diabetic
+  3072  red | Nil | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=cupping
+  3072  red | Nil | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=diabetic
+  3072  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=cupping
+  3072  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=diabetic
+  3072  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=cupping
+  3072  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=diabetic
+  3072  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=cupping
+  3072  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=diabetic
+  3072  red | White reflex | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=cupping
+  3072  red | White reflex | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=diabetic
+  2304  red | White reflex | Same-day retinal assessment.
+        Check: Exclude other white-reflex causes. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes child_white_reflex_causes,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=no, fundal=white, back=detached
+  2304  red | Nil | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes neuro_red_flags,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=normal, back=detached
+  2304  red | Possible Nuclear | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes neuro_red_flags,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=dark, back=detached
+  2304  red | Possible Cortical | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes neuro_red_flags,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=patches, back=detached
+  2304  red | Possible Subcapsular | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes neuro_red_flags,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=spots, back=detached
+  2304  red | White reflex | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause. | Exclude other white-reflex causes.
+        Codes: retinal_same_day / notes neuro_red_flags,child_white_reflex_causes
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=white, back=detached
+  2304  red | Nil | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes pupil_abnormal_review,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=normal, back=detached
+  2304  red | Possible Nuclear | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes pupil_abnormal_review,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=dark, back=detached
+  2304  red | Possible Cortical | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes pupil_abnormal_review,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=patches, back=detached
+  2304  red | Possible Subcapsular | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review. | Paediatric review after posterior assessment.
+        Codes: retinal_same_day / notes pupil_abnormal_review,child_case_posterior_review
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=spots, back=detached
+  2304  red | White reflex | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review. | Exclude other white-reflex causes.
+        Codes: retinal_same_day / notes pupil_abnormal_review,child_white_reflex_causes
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=white, back=detached
+  2304  orange | Possible Nuclear | Check retinal or nerve cause.
+        Check: Abnormal pupil: prompt review. | Avoid delay: visual development risk.
+        Codes: rapd_non_cataract_first / notes pupil_abnormal_review,child_cataract_delay_risk
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=normal
+  2304  orange | Possible Cortical | Check retinal or nerve cause.
+        Check: Abnormal pupil: prompt review. | Avoid delay: visual development risk.
+        Codes: rapd_non_cataract_first / notes pupil_abnormal_review,child_cataract_delay_risk
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=normal
+  2304  orange | Possible Subcapsular | Check retinal or nerve cause.
+        Check: Abnormal pupil: prompt review. | Avoid delay: visual development risk.
+        Codes: rapd_non_cataract_first / notes pupil_abnormal_review,child_cataract_delay_risk
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=normal
+  2304  red | White reflex | Urgent paediatric eye review.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Exclude other white-reflex causes.
+        Codes: child_white_reflex_urgent / notes neuro_red_flags,pupil_abnormal_review,child_white_reflex_causes
+        Example: onset=gradual, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=normal
+  2304  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Avoid delay: visual development risk. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,child_cataract_delay_risk,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=dark, back=normal
+  2304  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Avoid delay: visual development risk. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,child_cataract_delay_risk,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=patches, back=normal
+  2304  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Avoid delay: visual development risk. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,child_cataract_delay_risk,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=spots, back=normal
+  2304  red | White reflex | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Exclude other white-reflex causes. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,child_white_reflex_causes,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=white, back=normal
+  2304  red | Possible Nuclear | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Avoid delay: visual development risk. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,child_cataract_delay_risk,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=dark, back=normal
+  2304  red | Possible Cortical | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Avoid delay: visual development risk. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,child_cataract_delay_risk,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=patches, back=normal
+  2304  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Avoid delay: visual development risk. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,child_cataract_delay_risk,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=spots, back=normal
+  2304  red | White reflex | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Exclude other white-reflex causes. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,child_white_reflex_causes,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=white, back=normal
+  2304  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Avoid delay: visual development risk.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,child_cataract_delay_risk
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=dark, back=normal
+  2304  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Avoid delay: visual development risk.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,child_cataract_delay_risk
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=patches, back=normal
+  2304  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Avoid delay: visual development risk.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,child_cataract_delay_risk
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=spots, back=normal
+  2304  red | White reflex | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Exclude other white-reflex causes.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,pupil_abnormal_review,child_white_reflex_causes
+        Example: onset=sudden, age=baby, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=normal
+  2192  red | Possible Nuclear | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause.
+        Codes: retinal_same_day / notes neuro_red_flags
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=dark, back=detached
+  2192  red | Possible Cortical | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause.
+        Codes: retinal_same_day / notes neuro_red_flags
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=patches, back=detached
+  2192  red | Possible Subcapsular | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause.
+        Codes: retinal_same_day / notes neuro_red_flags
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=spots, back=detached
+  2192  red | Possible Nuclear | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes pupil_abnormal_review
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=dark, back=detached
+  2192  red | Possible Cortical | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes pupil_abnormal_review
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=patches, back=detached
+  2192  red | Possible Subcapsular | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes pupil_abnormal_review
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=spots, back=detached
+  2160  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Sudden visual loss. | Sudden loss suggests another cause.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,urgent_trigger_painful_one_or_sudden,sudden_onset_with_cataract_pattern
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=dark, back=normal
+  2160  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Sudden visual loss. | Sudden loss suggests another cause.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,urgent_trigger_painful_one_or_sudden,sudden_onset_with_cataract_pattern
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=patches, back=normal
+  2160  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Sudden visual loss. | Sudden loss suggests another cause.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,urgent_trigger_painful_one_or_sudden,sudden_onset_with_cataract_pattern
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=spots, back=normal
+  2160  red | Possible Nuclear | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Sudden visual loss. | Sudden loss suggests another cause.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,urgent_trigger_painful_one_or_sudden,sudden_onset_with_cataract_pattern
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=dark, back=normal
+  2160  red | Possible Cortical | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Sudden visual loss. | Sudden loss suggests another cause.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,urgent_trigger_painful_one_or_sudden,sudden_onset_with_cataract_pattern
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=patches, back=normal
+  2160  red | Possible Subcapsular | Same-day eye assessment.
+        Check: Abnormal pupil: prompt review. | Sudden visual loss. | Sudden loss suggests another cause.
+        Codes: urgent_same_day_investigation / notes pupil_abnormal_review,urgent_trigger_painful_one_or_sudden,sudden_onset_with_cataract_pattern
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=spots, back=normal
+  2080  red | White reflex | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause.
+        Codes: retinal_same_day / notes neuro_red_flags
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/36, near=-, pupil=normal, front=no, neuro=yes, fundal=white, back=detached
+  2080  red | White reflex | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes pupil_abnormal_review
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/36, near=-, pupil=abnormal, front=no, neuro=no, fundal=white, back=detached
+  2032  red | Nil | Same-day retinal assessment.
+        Check: Possible retinal or nerve cause.
+        Codes: retinal_same_day / notes neuro_red_flags
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=normal, back=detached
+  2032  red | Nil | Same-day retinal assessment.
+        Check: Abnormal pupil: prompt review.
+        Codes: retinal_same_day / notes pupil_abnormal_review
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=no, fundal=normal, back=detached
+  1920  orange | White reflex | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Possible glaucoma: assess.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_cupping_glaucoma
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=cupping
+  1920  orange | White reflex | Assess posterior disease first.
+        Check: Possible retinal or nerve cause. | Abnormal pupil: prompt review. | Retinal disease may limit outcome.
+        Codes: posterior_disease_first / notes neuro_red_flags,pupil_abnormal_review,posterior_diabetic_first
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=abnormal, front=no, neuro=yes, fundal=white, back=diabetic
+  1920  orange | Nil | Check retinal or nerve cause.
+        Check: Abnormal pupil: prompt review. | Reduced VA needs another cause.
+        Codes: rapd_non_cataract_first / notes pupil_abnormal_review,normal_reflex_with_reduced_va
+        Example: onset=gradual, age=young_adult, eyes=one, pain=no, distance=6/36, near=-, pupil=abnormal, front=no, neuro=yes, fundal=normal, back=normal
+  1920  red | Nil | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Possible glaucoma: assess. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,posterior_cupping_glaucoma,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=normal, back=cupping
+  1920  red | Nil | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Retinal disease may limit outcome. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,posterior_diabetic_first,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=normal, back=diabetic
+  1920  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Possible glaucoma: assess. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,posterior_cupping_glaucoma,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=dark, back=cupping
+  1920  red | Possible Nuclear | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Retinal disease may limit outcome. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,posterior_diabetic_first,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=dark, back=diabetic
+  1920  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Possible glaucoma: assess. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,posterior_cupping_glaucoma,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=patches, back=cupping
+  1920  red | Possible Cortical | Same-day eye assessment.
+        Check: Possible retinal or nerve cause. | Retinal disease may limit outcome. | Sudden visual loss.
+        Codes: urgent_same_day_investigation / notes neuro_red_flags,posterior_diabetic_first,urgent_trigger_painful_one_or_sudden
+        Example: onset=sudden, age=young_adult, eyes=one, pain=no, distance=6/6, near=-, pupil=normal, front=no, neuro=yes, fundal=patches, back=diabetic

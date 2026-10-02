@@ -4,28 +4,39 @@ const POPUP_DELAY_MS = 500;
 
 export function initImagePreviewController() {
   let popupTimer;
+  let activeButton = null;
+  let suppressNextClick = false;
 
   function showImagePopup(button) {
     let popup = document.getElementById("image-popup");
     if (!popup) {
       popup = document.createElement("div");
       popup.id = "image-popup";
-      popup.style.position = "fixed";
-      popup.style.top = "50%";
-      popup.style.left = "50%";
-      popup.style.transform = "translate(-50%, -50%)";
-      popup.style.zIndex = "1000";
-      popup.style.backgroundColor = "#fff";
-      popup.style.border = "2px solid #ccc";
-      popup.style.borderRadius = "20px";
-      popup.style.padding = "10px";
+      popup.className = "image-preview-dialog";
+      popup.setAttribute("role", "dialog");
+      popup.setAttribute("aria-modal", "true");
+      popup.setAttribute("aria-label", "Enlarged illustrative image");
+      popup.hidden = true;
       popup.addEventListener("contextmenu", (event) => {
         event.preventDefault();
+      });
+      popup.addEventListener("click", (event) => {
+        if (event.target === popup) {
+          hideImagePopup();
+        }
       });
       document.body.appendChild(popup);
     }
 
     popup.innerHTML = "";
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "image-preview-close";
+    closeButton.setAttribute("aria-label", "Close enlarged image");
+    closeButton.textContent = "\u00d7";
+    closeButton.addEventListener("click", hideImagePopup);
+    popup.appendChild(closeButton);
+
     const image = button.querySelector("img");
     if (image) {
       const enlargedImage = image.cloneNode(true);
@@ -33,21 +44,25 @@ export function initImagePreviewController() {
       enlargedImage.addEventListener("contextmenu", (event) =>
         event.preventDefault(),
       );
-      enlargedImage.style.maxWidth = "80vw";
-      enlargedImage.style.height = "auto";
-      enlargedImage.style.display = "block";
-      enlargedImage.style.animation = "zoomImage 3s forwards";
+      enlargedImage.className = "image-preview-image";
       popup.appendChild(enlargedImage);
-      popup.style.display = "block";
+      popup.hidden = false;
+      document.body.classList.add("modal-open");
+      activeButton = button;
+      suppressNextClick = true;
+      closeButton.focus();
     }
   }
 
   function hideImagePopup() {
     clearTimeout(popupTimer);
     const popup = document.getElementById("image-popup");
-    if (popup) {
-      popup.style.display = "none";
+    if (popup && !popup.hidden) {
+      popup.hidden = true;
+      document.body.classList.remove("modal-open");
+      activeButton?.focus();
     }
+    activeButton = null;
   }
 
   const buttons = $$(".button-item button");
@@ -58,12 +73,34 @@ export function initImagePreviewController() {
     button.addEventListener("mousedown", () => {
       popupTimer = setTimeout(() => showImagePopup(button), POPUP_DELAY_MS);
     });
-    button.addEventListener("mouseup", hideImagePopup);
-    button.addEventListener("mouseleave", hideImagePopup);
-    button.addEventListener("touchstart", () => {
-      popupTimer = setTimeout(() => showImagePopup(button), POPUP_DELAY_MS);
-    });
-    button.addEventListener("touchend", hideImagePopup);
-    button.addEventListener("touchcancel", hideImagePopup);
+    button.addEventListener("mouseup", () => clearTimeout(popupTimer));
+    button.addEventListener("mouseleave", () => clearTimeout(popupTimer));
+    button.addEventListener(
+      "touchstart",
+      () => {
+        popupTimer = setTimeout(() => showImagePopup(button), POPUP_DELAY_MS);
+      },
+      { passive: true },
+    );
+    button.addEventListener("touchend", () => clearTimeout(popupTimer));
+    button.addEventListener("touchcancel", () => clearTimeout(popupTimer));
+    button.addEventListener(
+      "click",
+      (event) => {
+        if (!suppressNextClick) {
+          return;
+        }
+        suppressNextClick = false;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      },
+      true,
+    );
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      hideImagePopup();
+    }
   });
 }

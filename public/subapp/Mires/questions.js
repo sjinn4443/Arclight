@@ -5,7 +5,7 @@
     optionCount: 4,
     passRatio: 0.7,
     timeLimitSeconds: 0,
-    questionIds: ["p1", "p2", "p3", "p4", "p5", "p6", "p7"],
+    questionIds: ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"],
   },
   {
     name: "Intermediate",
@@ -13,7 +13,7 @@
     optionCount: 4,
     passRatio: 0.75,
     timeLimitSeconds: 0,
-    questionIds: ["i1", "i2", "i3", "i4", "i5", "i6", "i7"],
+    questionIds: ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8", "i9", "i10"],
   },
   {
     name: "Advanced",
@@ -21,11 +21,33 @@
     optionCount: 5,
     passRatio: 0.8,
     timeLimitSeconds: 150,
-    questionIds: ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8"],
+    questionIds: ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "a9", "a10"],
   },
 ];
 
-export const QUESTION_BANK = [
+export const MCQ_SOURCE_REFERENCES = {
+  "haag-streit-at900-2025": {
+    title: "Haag-Streit AT 900 instructions for use",
+    url: "https://haag-streit.com/2%20Products/General%20diagnostics/Tonometers/Tonometer%20AT%20900/Instructions%20for%20use/1500%207006000%2004270_IFU_AT_900_01_en_web.pdf",
+    reviewed: "2026-07-26",
+    status: "primary-source-reviewed",
+  },
+  "egs-gat-guidance-2017": {
+    title:
+      "European Glaucoma Society terminology and guidelines: Goldmann applanation tonometry",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5583682/",
+    reviewed: "2026-07-26",
+    status: "guideline-source-reviewed",
+  },
+  "mires-training-scope-v1": {
+    title: "Mires v1 simulator scope and Newton practice rules",
+    url: null,
+    reviewed: "2026-07-26",
+    status: "internal-engineering-review",
+  },
+};
+
+const RAW_QUESTION_BANK = [
   {
     id: "p1",
     prompt: "Goldmann applanation tonometry mainly estimates:",
@@ -64,23 +86,23 @@ export const QUESTION_BANK = [
   },
   {
     id: "p4",
-    prompt: "Too much fluorescein usually causes:",
+    prompt: "Excess fluorescein can make the mires:",
     choices: [
-      { id: "a", text: "Thin, faint mires and under-reading risk" },
+      { id: "a", text: "Thin and faint" },
       { id: "b", text: "No change to mire appearance" },
-      { id: "c", text: "Thick bright mires and possible over-reading" },
+      { id: "c", text: "Too wide for a reliable endpoint" },
       { id: "d", text: "Immediate corneal oedema" },
     ],
     correctId: "c",
   },
   {
     id: "p5",
-    prompt: "Too little fluorescein usually causes:",
+    prompt: "Mires become too narrow as the tear film dries. What next?",
     choices: [
-      { id: "a", text: "Thin mires with possible under-reading" },
-      { id: "b", text: "Thick mires with over-reading only" },
+      { id: "a", text: "Withdraw, let the patient blink then repeat" },
+      { id: "b", text: "Accept the reading without repeating" },
       { id: "c", text: "No need for anaesthetic" },
-      { id: "d", text: "False high readings in every case" },
+      { id: "d", text: "An exact reading despite a poor endpoint" },
     ],
     correctId: "a",
   },
@@ -310,4 +332,219 @@ export const QUESTION_BANK = [
     ],
     correctId: "c",
   },
+  {
+    id: "p8",
+    prompt: "Goldmann intraocular pressure is recorded in:",
+    choices: [
+      { id: "a", text: "Millimetres of mercury (mmHg)" },
+      { id: "b", text: "Dioptres" },
+      { id: "c", text: "Millimetres of corneal diameter" },
+      { id: "d", text: "Degrees of prism rotation" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "p9",
+    prompt: "A reading taken while the patient is squeezing should usually be:",
+    choices: [
+      { id: "a", text: "Repeated after the patient relaxes" },
+      { id: "b", text: "Recorded as the lowest possible value" },
+      { id: "c", text: "Accepted without comment" },
+      { id: "d", text: "Corrected by adding a fixed amount" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "p10",
+    prompt: "A training score should be understood as:",
+    choices: [
+      { id: "a", text: "Practice feedback" },
+      { id: "b", text: "A patient diagnosis" },
+      { id: "c", text: "A calibrated pressure measurement" },
+      { id: "d", text: "A treatment decision" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "i8",
+    prompt:
+      "Before judging horizontal mire overlap, a large vertical offset should be:",
+    choices: [
+      { id: "a", text: "Corrected" },
+      { id: "b", text: "Ignored" },
+      { id: "c", text: "Made larger" },
+      { id: "d", text: "Recorded as a pressure value" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "i9",
+    prompt:
+      "Broken or irregular fluorescein semicircles most strongly suggest:",
+    choices: [
+      { id: "a", text: "An unstable tear film or irregular corneal surface" },
+      { id: "b", text: "A perfectly aligned prism" },
+      { id: "c", text: "A definitive low IOP" },
+      { id: "d", text: "An exact endpoint" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "i10",
+    prompt:
+      "When repeated Goldmann readings are inconsistent, the most useful response is to:",
+    choices: [
+      {
+        id: "a",
+        text: "Review alignment, tear film and lid pressure, then repeat",
+      },
+      { id: "b", text: "Keep only the most favourable value" },
+      { id: "c", text: "Average every value regardless of quality" },
+      { id: "d", text: "Skip the endpoint check" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "a9",
+    prompt:
+      "Why must a good simulator result not be treated as a patient measurement?",
+    choices: [
+      {
+        id: "a",
+        text: "The trainer does not include calibration, ocular surface and patient factors",
+      },
+      { id: "b", text: "The mires are always perfectly aligned" },
+      { id: "c", text: "The pressure scale is a prescription scale" },
+      { id: "d", text: "The Cup code is a clinical identifier" },
+      { id: "e", text: "The timer changes corneal thickness" },
+    ],
+    correctId: "a",
+  },
+  {
+    id: "a10",
+    prompt: "Which sequence best supports reliable Goldmann applanation?",
+    choices: [
+      {
+        id: "a",
+        text: "Centre, correct vertical offset, judge overlap, then record",
+      },
+      { id: "b", text: "Confirm first, then move the mires" },
+      { id: "c", text: "Ignore centring and use the timer alone" },
+      { id: "d", text: "Maximise overlap regardless of endpoint" },
+      { id: "e", text: "Use only the first visible ring position" },
+    ],
+    correctId: "a",
+  },
 ];
+
+const TOPIC_METADATA = {
+  principle: {
+    explanation:
+      "Goldmann applanation estimates IOP from the force needed to flatten a 3.06 mm corneal area, where tear-film and corneal forces approximately balance.",
+    source: "haag-streit-at900-2025",
+  },
+  setup: {
+    explanation:
+      "Goldmann applanation uses an anaesthetised central cornea, fluorescein in the tear film and a correctly aligned measuring prism.",
+    source: "haag-streit-at900-2025",
+  },
+  fluorescein: {
+    explanation:
+      "Wide or narrow fluorescein bands make the endpoint unreliable. Correct excess fluid or drying before repeating; let the patient blink when the tear film has dried.",
+    source: "haag-streit-at900-2025",
+  },
+  endpoint: {
+    explanation:
+      "At the Goldmann endpoint the inner edges of the fluorescein semicircles just touch, judged after the mires are centred and vertically aligned.",
+    source: "haag-streit-at900-2025",
+  },
+  lids: {
+    explanation:
+      "Squeezing or pressure on the globe can raise the measured IOP. Support the lids without pressing on the eye and repeat a compromised reading.",
+    source: "egs-gat-guidance-2017",
+  },
+  recording: {
+    explanation:
+      "Intraocular pressure is recorded in millimetres of mercury. A simulator display or training score is not a patient measurement.",
+    source: "mires-training-scope-v1",
+  },
+  scope: {
+    explanation:
+      "The simulator provides practice feedback only. It does not include the patient, calibration and ocular-surface factors needed for a clinical measurement.",
+    source: "mires-training-scope-v1",
+  },
+  surface: {
+    explanation:
+      "An unstable tear film, corneal surface disease or scarring can break or distort the fluorescein semicircles and make the endpoint unreliable.",
+    source: "egs-gat-guidance-2017",
+  },
+  repeat: {
+    explanation:
+      "Inconsistent readings need a technique and surface check followed by careful repeat measurements rather than selective or uncritical averaging.",
+    source: "egs-gat-guidance-2017",
+  },
+  hygiene: {
+    explanation:
+      "The measuring prism must be disinfected between patients in accordance with the manufacturer and local infection-control procedure.",
+    source: "haag-streit-at900-2025",
+  },
+  cornea: {
+    explanation:
+      "Corneal thickness and biomechanics affect Goldmann readings. Thick corneas tend to read higher while myopic corneal refractive surgery often biases readings lower.",
+    source: "egs-gat-guidance-2017",
+  },
+  astigmatism: {
+    explanation:
+      "Marked regular astigmatism changes the applanation geometry, so prism orientation or averaged principal-meridian readings may be required.",
+    source: "haag-streit-at900-2025",
+  },
+  contraindications: {
+    explanation:
+      "Active corneal epithelial injury or infection is a reason to avoid or defer contact applanation and use an appropriate local alternative.",
+    source: "haag-streit-at900-2025",
+  },
+};
+
+const TOPICS_BY_ID = {
+  p1: "principle",
+  p2: "principle",
+  p3: "setup",
+  p4: "fluorescein",
+  p5: "fluorescein",
+  p6: "endpoint",
+  p7: "lids",
+  p8: "recording",
+  p9: "lids",
+  p10: "scope",
+  i1: "endpoint",
+  i2: "setup",
+  i3: "lids",
+  i4: "surface",
+  i5: "repeat",
+  i6: "setup",
+  i7: "hygiene",
+  i8: "endpoint",
+  i9: "surface",
+  i10: "repeat",
+  a1: "principle",
+  a2: "cornea",
+  a3: "cornea",
+  a4: "astigmatism",
+  a5: "fluorescein",
+  a6: "lids",
+  a7: "contraindications",
+  a8: "repeat",
+  a9: "scope",
+  a10: "endpoint",
+};
+
+export const QUESTION_BANK = RAW_QUESTION_BANK.map((question) => {
+  const topic = TOPICS_BY_ID[question.id];
+  const metadata = TOPIC_METADATA[topic];
+  return {
+    ...question,
+    topic,
+    ...metadata,
+    reviewStatus: MCQ_SOURCE_REFERENCES[metadata.source].status,
+  };
+});

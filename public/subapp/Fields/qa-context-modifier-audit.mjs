@@ -323,13 +323,13 @@ function runAudit() {
             },
         },
         {
-            name: "sudden monocular loss with matching RAPD points to optic nerve",
+            name: "sudden monocular loss with matching RAPD retains retinal and optic nerve sources",
             actual: evaluate(ctx, patterns, "monoR", { onset: "sudden" }, "right"),
             checks: {
                 severity: "urgent",
-                category: "optic_nerve_likely",
+                category: "anterior_mixed",
                 side: "right",
-                targets: ["part-nerve-right"],
+                targets: ["part-retina-right", "part-nerve-right"],
                 includes: ["Sudden onset"],
             },
         },

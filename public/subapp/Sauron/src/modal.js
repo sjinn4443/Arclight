@@ -36,6 +36,8 @@ export function createModalController({
   modal,
   focusRoot,
   initialFocusElement,
+  onAfterClose,
+  onAfterOpen,
 }) {
   if (!modal) {
     return {
@@ -74,6 +76,9 @@ export function createModalController({
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
     setBodyModalLock(body, false);
+    if (typeof onAfterClose === "function") {
+      onAfterClose();
+    }
 
     if (
       restoreFocus &&
@@ -100,6 +105,9 @@ export function createModalController({
     modal.style.display = "block";
     modal.setAttribute("aria-hidden", "false");
     setBodyModalLock(body, true);
+    if (typeof onAfterOpen === "function") {
+      onAfterOpen();
+    }
 
     requestAnimationFrame(() => {
       focusInitialTarget();

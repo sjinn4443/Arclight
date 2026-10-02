@@ -1,0 +1,3 @@
+# Mires v1.1 gap list
+
+Addressed: remote fonts, no full-session reset, incomplete overlay focus behaviour, missing PWA, no reproducible build/tests, inconsistent panel depth, asymmetric mobile mode launchers and undersized Newton targets. The final mobile pass uses equal `159 x 44px` launchers, aligned drawer cards, a centred `328px`, `16px` Controls surface and `44px` Newton controls. Preserved: Newton `±2/±3` scoring, balanced sampling, Variable alignment lock, the exact `340 x 656` game area, simulator workflow, internal IDs, images and bright-green identity. External gates: clinical sign-off and physical-device review.

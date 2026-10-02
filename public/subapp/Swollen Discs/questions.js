@@ -1,370 +1,507 @@
-/***********************************************************
- * QUESTION BANK
- * 30 varied questions about normal, suspicious,
- * and definitely swollen discs, including the Frisén scale.
- * Revised to ensure distractors are less obviously wrong.
- ***********************************************************/
+/**
+ * Swollen Discs MCQ bank
+ *
+ * The Modified Frisén Scale grades the severity of papilloedema. It does not
+ * identify the cause of optic disc swelling and haemorrhages or exudates do
+ * not define a particular grade.
+ */
+
+export const MCQ_SOURCE_REFERENCES = Object.freeze({
+  'frisen-1982': Object.freeze({
+    title: 'Swelling of the optic nerve head: a staging scheme',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC491259/',
+    status: 'primary-source-reviewed'
+  }),
+  'modified-frisen-2010': Object.freeze({
+    title: 'Diagnosis and grading of papilledema using OCT versus the Modified Frisén Scale',
+    url: 'https://jamanetwork.com/journals/jamaophthalmology/fullarticle/425762',
+    status: 'primary-source-reviewed'
+  }),
+  'iihtt-reading-centre-2015': Object.freeze({
+    title: 'IIHTT Photographic Reading Center methods and baseline results',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4453296/',
+    status: 'primary-source-reviewed'
+  }),
+  'svp-icp-2019': Object.freeze({
+    title: 'Association of intracranial pressure and spontaneous retinal venous pulsation',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/31498376/',
+    status: 'primary-source-reviewed'
+  }),
+  'svp-frequency-2007': Object.freeze({
+    title: 'Frequency of spontaneous pulsations of the central retinal vein',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1857679/',
+    status: 'primary-source-reviewed'
+  }),
+  'swollen-discs-teaching-scope-v1': Object.freeze({
+    title: 'Swollen Discs teaching-state and documentation contract',
+    url: null,
+    status: 'app-aligned-pending-independent-clinical-review'
+  })
+});
+
 const questionBank = [
   {
     id: 'q01',
-    question: 'Which sign is commonly observed in a completely normal disc?',
+    question: 'Which finding best supports the Grade 0 comparison state?',
     options: {
-      a: 'Mild peripapillary halo that slightly obscures vessels',
-      b: 'Blurred nasal edge with mild haemorrhages in the nerve fibre layer',
-      c: 'Clearly visible physiological cup with sharp margins',
-      d: 'High disc elevation suggestive of optic disc drusen',
-      e: 'Prominent cotton wool spots near the disc margin'
+      a: 'A circumferential grey halo',
+      b: 'A major vessel segment obscured at the rim',
+      c: 'No disc oedema or peripapillary halo',
+      d: 'Elevation of every disc border',
+      e: 'A vessel segment obscured on the disc'
     },
-    correct: 'c'
+    correct: 'c',
+    explanation:
+      'Grade 0 means no papilloedema. Disc anatomy varies, so the absence of oedema is safer than requiring one cup shape.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q02',
-    question: 'A suspicious disc often shows:',
+    question: 'Which finding should make a disc look suspicious for early swelling?',
     options: {
-      a: 'Completely clear margins and spontaneous venous pulsations',
-      b: 'Mild nasal blurring without major vessel obscuration',
-      c: 'Absolutely no rim blur or any signs of oedema',
-      d: 'Deep, well-demarcated physiological cup with no swelling',
-      e: 'Severe haemorrhages with total vessel obscuration'
+      a: 'A sharp temporal and nasal margin with no halo',
+      b: 'Subtle nasal blur or a C-shaped halo with a temporal gap',
+      c: 'Complete obscuration of every major vessel',
+      d: 'A deep cup with no rim change',
+      e: 'An isolated macular pigment change'
     },
-    correct: 'b'
+    correct: 'b',
+    explanation:
+      'Minimal papilloedema begins with nasal margin change and a subtle C-shaped halo that spares the temporal side.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q03',
-    question: 'Which feature typically indicates definite swelling (Frisén Grade 3 or more)?',
+    question: 'What is the defining Grade 1 pattern?',
     options: {
-      a: 'Slight blur confined to one segment of the nasal rim only',
-      b: 'Totally sharp disc margins with normal colour and vessels',
-      c: 'At least partial obscuration of the major vessels crossing the margin',
-      d: 'A vertically tilted disc with normal neuroretinal rim',
-      e: 'A shallow but still visible physiological cup in all quadrants'
+      a: 'A subtle C-shaped halo with a temporal gap',
+      b: 'A complete halo with all vessels obscured',
+      c: 'Total obscuration of a vessel on the disc',
+      d: 'Elevation of the whole nerve head including the cup',
+      e: 'A normal margin with a deep physiological cup'
     },
-    correct: 'c'
+    correct: 'a',
+    explanation:
+      'Grade 1 is minimal papilloedema: a subtle C-shaped halo, disrupted nerve-fibre striations and a normal temporal margin.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q04',
-    question: 'What might you see in advanced papilloedema (Grade 4-5)?',
+    question: 'Which feature best distinguishes Grade 2 from Grade 1?',
     options: {
-      a: 'Edges largely crisp with subtle nasal elevation only',
-      b: "Severe disc elevation, possible Paton's lines and scattered haemorrhages",
-      c: 'A well-defined rim and normal colour despite slight tilt',
-      d: 'Minimal nerve fibre elevation but clear vessel pathways',
-      e: 'A shallow cup and normal ocular pressure readings'
+      a: 'Haemorrhage becomes compulsory',
+      b: 'Every vessel becomes hidden',
+      c: 'The physiological cup becomes deeper',
+      d: 'The halo becomes circumferential',
+      e: 'The disc becomes pale'
     },
-    correct: 'b'
+    correct: 'd',
+    explanation:
+      'At Grade 2 the halo closes around the full circumference. Major vessel obscuration is not a defining feature.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q05',
-    question: "Which disc appearance is most consistent with a 'normal' Frisén Grade 0?",
+    question: 'What does the term papilloedema mean?',
     options: {
-      a: 'Diffuse blurred margins across all quadrants with a full halo',
-      b: 'Swelling of at least 1 dioptre nasally plus haemorrhages temporally',
-      c: 'Total obscuration of the lamina cribrosa with fluid exudates',
-      d: 'Sharp, well-defined boundary and a clearly visible physiological cup',
-      e: 'Extensive peripapillary haemorrhages around the disc'
+      a: 'Any blurred optic disc margin',
+      b: 'Any swollen optic disc from any cause',
+      c: 'A small physiological cup',
+      d: 'Optic disc pallor after visual loss',
+      e: 'Optic disc swelling caused by raised intracranial pressure'
     },
-    correct: 'd'
+    correct: 'e',
+    explanation:
+      'Papilloedema is optic disc swelling caused by raised intracranial pressure. Other causes of disc oedema need a differential diagnosis.',
+    source: 'swollen-discs-teaching-scope-v1'
   },
   {
     id: 'q06',
-    question: 'What is an early indicator that a disc is suspicious (not fully swollen)?',
+    question: 'At Grade 2, what should happen to the major vessels?',
     options: {
-      a: 'Large haemorrhages bridging the macula and disc margins',
-      b: 'Partial rim blur with no major obscuration of vessels',
-      c: 'Completely crisp disc margin with robust venous pulsations',
-      d: 'Marked circumferential swelling in all quadrants',
-      e: 'Full disc elevation with exudates in the peripapillary region'
+      a: 'All must be totally hidden',
+      b: 'One must disappear on the disc',
+      c: 'No major vessel should be totally obscured',
+      d: 'Only arteries should remain visible',
+      e: 'Only veins should remain visible'
     },
-    correct: 'b'
+    correct: 'c',
+    explanation:
+      'Grade 2 has a circumferential halo and nasal elevation but no defining total obscuration of a major vessel.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q07',
-    question: 'Which finding strongly suggests definite disc swelling?',
+    question: 'What is the safest interpretation of absent spontaneous venous pulsation?',
     options: {
-      a: 'Slight blurring only at the nasal pole but vessels remain distinct',
-      b: 'Fully obscured vessels as they cross the disc margin',
-      c: 'A large but normal physiological cup with sharp edges',
-      d: 'Disc pallor with no obvious oedema or haemorrhages',
-      e: 'No haemorrhages or exudates near the disc margin'
+      a: 'It proves severe papilloedema',
+      b: 'It raises concern but is not diagnostic by itself',
+      c: 'It proves that intracranial pressure is normal',
+      d: 'It fixes the Frisén grade at 2',
+      e: 'It excludes pseudopapilloedema'
     },
-    correct: 'b'
+    correct: 'b',
+    explanation:
+      'Absent venous pulsation is associated with higher intracranial pressure but it can also be absent in healthy eyes.',
+    source: 'svp-icp-2019'
   },
   {
     id: 'q08',
-    question: 'In normal discs, which vessels should remain clearly visible?',
+    question: 'If the disc margin cannot be seen clearly, what is the safest record?',
     options: {
-      a: 'All veins are hidden by mild halo, but arteries remain visible',
-      b: 'Only the nasal vessels can be identified – temporal side is generally obscured',
-      c: 'Major vessels crossing the disc margin without significant blurring',
-      d: 'No vessels cross the disc margin in normal eyes',
-      e: 'All vessels except the superior vein become indistinct'
+      a: 'Grade 0 because swelling is unconfirmed',
+      b: 'Grade 5 because the vessels are hard to see',
+      c: 'Normal because the cup is uncertain',
+      d: 'Poor view or uncertain, then seek a better examination',
+      e: 'Papilloedema excluded'
     },
-    correct: 'c'
+    correct: 'd',
+    explanation:
+      'Poor image quality must not be converted into a normal or swollen finding. Record the limitation and improve the view.',
+    source: 'swollen-discs-teaching-scope-v1'
   },
   {
     id: 'q09',
-    question: 'Which Frisén grade usually indicates moderate papilloedema with some haemorrhages?',
+    question: 'Which feature is most useful when separating Grade 1 from Grade 2?',
     options: {
-      a: 'Grade 0 (completely normal)',
-      b: 'Grade 1 (minimal nasal blur only)',
-      c: 'Grade 2 (partial halo or mild swelling)',
-      d: 'Grade 3 or higher',
-      e: 'Grade 5 only (most severe form)'
+      a: 'Whether the peripapillary halo has a temporal gap',
+      b: 'Whether the physiological cup is large',
+      c: 'Whether one small haemorrhage is present',
+      d: 'Whether the pupil is round',
+      e: 'Whether visual acuity is written in Snellen notation'
     },
-    correct: 'd'
+    correct: 'a',
+    explanation:
+      'Grade 1 has a C-shaped halo with a temporal gap. At Grade 2 the halo becomes circumferential.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q10',
-    question: 'A suspicious disc might be described if:',
+    question: 'What does a Frisén grade describe?',
     options: {
-      a: 'All vessels and disc margins are fully distinct with no haze',
-      b: 'Severe swelling in all quadrants plus large haemorrhages',
-      c: 'Minimal oedema, usually nasal, without major haemorrhages',
-      d: 'A near-complete halo with exudates partially obscuring vessels',
-      e: 'Disc drusen creating a pseudo-oedema that looks elevated'
+      a: 'The cause of raised intracranial pressure',
+      b: 'The patient’s visual acuity',
+      c: 'The duration of symptoms',
+      d: 'The correct treatment',
+      e: 'The visible severity of papilloedema'
     },
-    correct: 'c'
+    correct: 'e',
+    explanation:
+      'The scale describes visible papilloedema severity. It does not diagnose the cause, measure vision or choose treatment.',
+    source: 'frisen-1982'
   },
   {
     id: 'q11',
-    question: 'One hallmark of a definitely swollen disc is:',
+    question: 'Which feature defines Grade 3 on the Modified Frisén Scale?',
     options: {
-      a: 'Sharp cup and healthy pinkish colour without any blur',
-      b: 'Full halo or definite rim swelling around most of the disc',
-      c: 'A tilt that gives the appearance of mild nasal elevation',
-      d: 'Zero dioptre difference between disc and retina on direct measurement',
-      e: 'Multiple spontaneous arterial pulsations near the rim'
+      a: 'A segment of a major vessel is obscured as it leaves the disc',
+      b: 'Every major vessel is obscured on the disc',
+      c: 'A temporal gap remains in the halo',
+      d: 'The disc is normal apart from absent venous pulsation',
+      e: 'Haemorrhage is present without disc oedema'
     },
-    correct: 'b'
+    correct: 'a',
+    explanation:
+      'Grade 3 adds obscuration of at least one major vessel segment as it leaves the disc, with elevation of all borders.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q12',
-    question: 'Which is least likely in a normal optic disc examination?',
+    question: 'Which feature defines Grade 4 rather than Grade 3?',
     options: {
-      a: 'Clear boundary between disc and retina when viewed directly',
-      b: 'Visible spontaneous venous pulsations in some eyes',
-      c: 'A crisp physiological cup with a healthy neuroretinal rim',
-      d: 'Significant obscuration of the nerve fibre layer by fluid',
-      e: 'Absence of haemorrhages in or around the disc'
+      a: 'A C-shaped halo with a temporal gap',
+      b: 'A major vessel segment is totally obscured on the disc',
+      c: 'No major vessel is obscured',
+      d: 'A normal temporal margin',
+      e: 'An isolated flame haemorrhage'
     },
-    correct: 'd'
+    correct: 'b',
+    explanation:
+      'Grade 4 includes total obscuration of a segment of a major vessel on the disc, not only as it leaves the disc.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q13',
-    question: 'An elevated disc with haemorrhages but no visible cup might indicate:',
+    question: 'Which feature defines Grade 5 on the Modified Frisén Scale?',
     options: {
-      a: 'A normal Grade 0 disc or physiological variant',
-      b: 'A suspicious disc with borderline swelling only',
-      c: 'Advanced papilloedema or a very swollen disc',
-      d: 'A hyperopic disc tilt without true swelling',
-      e: 'A normal variation found in many healthy individuals'
+      a: 'One vessel is obscured at the nasal rim',
+      b: 'The halo first becomes circumferential',
+      c: 'All major vessels have obscured segments on and leaving the disc',
+      d: 'A physiological cup is clearly visible',
+      e: 'A single haemorrhage is present'
     },
-    correct: 'c'
+    correct: 'c',
+    explanation:
+      'Grade 5 is severe papilloedema with obscuration of all major vessels on the disc and as they leave it.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q14',
-    question: 'Which description fits a suspicious disc rather than definitely swollen?',
+    question: 'How should haemorrhages and exudates affect Frisén grading?',
     options: {
-      a: 'Complete obscuration of vessels in all quadrants with haemorrhages',
-      b: 'Full disc halo and exudates around the margin',
-      c: 'Mild blur, often nasally, without extensive haemorrhages',
-      d: 'Diffuse swelling so severe that no margin is visible',
-      e: 'Deep physiological cup with absolutely no rim blur'
+      a: 'Any haemorrhage makes the disc Grade 3',
+      b: 'Exudates make the disc Grade 4',
+      c: 'Both are required for Grade 5',
+      d: 'They may occur but do not define the grade',
+      e: 'Their absence proves Grade 0'
     },
-    correct: 'c'
+    correct: 'd',
+    explanation:
+      'Frisén grade is defined mainly by halo, elevation and vessel obscuration. Haemorrhages and exudates can occur but are not grade thresholds.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q15',
-    question: 'Frisén Grade 2 is often associated with:',
+    question: 'What is the safest interpretation of a poorly visible physiological cup?',
     options: {
-      a: 'Zero disc swelling with totally crisp edges and normal vasculature',
-      b: 'Massive haemorrhages overshadowing the entire optic nerve',
-      c: 'Minimal nasal blur or an incomplete halo around the disc margin',
-      d: 'Extensive swelling and obscured vessels across all quadrants',
-      e: 'Significantly deeper physiological cup than in Grade 0'
+      a: 'It proves Grade 5',
+      b: 'It proves raised intracranial pressure',
+      c: 'It proves the disc was previously normal',
+      d: 'It excludes pseudopapilloedema',
+      e: 'It can accompany swelling but is not diagnostic alone'
     },
-    correct: 'c'
+    correct: 'e',
+    explanation:
+      'Cup filling can accompany more marked swelling, but cup size varies. Grade the defining disc and vessel features instead.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q16',
-    question: "When do we classify a disc as 'normal'?",
+    question: 'Which description best separates suspicious early change from Grade 3?',
     options: {
-      a: 'Edges are crisp, vessels remain clearly visible at the margin, and there is no oedema',
-      b: 'Minor blur only in one quadrant with scattered haemorrhages',
-      c: 'Partial halo around the entire disc boundary with fluid exudates',
-      d: 'Elevated disc by 2 dioptres nasally but no haemorrhages present',
-      e: 'Obscuration of vessels crossing the superior and inferior rims'
+      a: 'Early change lacks the defining major-vessel obscuration of Grade 3',
+      b: 'Early change always has more haemorrhages',
+      c: 'Grade 3 has a normal temporal margin',
+      d: 'Grade 3 has no halo',
+      e: 'Early change always has a visible venous pulsation'
     },
-    correct: 'a'
+    correct: 'a',
+    explanation:
+      'Grade 3 requires obscuration of a major vessel segment as it leaves the disc. Subtle early change does not meet that defining feature.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q17',
-    question: 'A definitely swollen disc (Grade 3–5) often includes:',
+    question: 'Which is a recognised reason for a raised-looking disc without papilloedema?',
     options: {
-      a: 'Only very slight nasal elevation, with no haemorrhages or exudates',
-      b: 'A full or nearly full halo and partially obscured vessels crossing the rim',
-      c: 'A large, distinct cup with absolutely no margin blur',
-      d: 'Complete absence of any disc swelling or vessel changes',
-      e: 'Minimal tilt or drusen giving a pseudo-swelling appearance'
+      a: 'A normal blood pressure reading',
+      b: 'Optic disc drusen or a crowded disc',
+      c: 'A clear cornea',
+      d: 'A normal macula',
+      e: 'A round pupil'
     },
-    correct: 'b'
+    correct: 'b',
+    explanation:
+      'Pseudopapilloedema from optic disc drusen or a crowded disc can mimic swelling. Appearance alone may not establish the cause.',
+    source: 'swollen-discs-teaching-scope-v1'
   },
   {
     id: 'q18',
-    question: 'Which sign is NOT a common feature of a suspicious disc?',
+    question: 'Which statement about optic disc oedema is most accurate?',
     options: {
-      a: 'Minor nasal blurring that does not extend temporally',
-      b: 'Mild or questionable swelling raising clinical concern',
-      c: 'Completely sharp margin with normal vessels throughout',
-      d: 'Lack of any large haemorrhages at this stage',
-      e: 'Partial halo suggesting borderline papilloedema'
+      a: 'Every oedematous disc is papilloedema',
+      b: 'Only bilateral discs can swell',
+      c: 'Papilloedema is one cause-specific form of optic disc oedema',
+      d: 'A normal visual acuity excludes disc swelling',
+      e: 'Disc oedema always causes a relative afferent pupil defect'
     },
-    correct: 'c'
+    correct: 'c',
+    explanation:
+      'Optic disc oedema has several causes. The term papilloedema is reserved for swelling caused by raised intracranial pressure.',
+    source: 'swollen-discs-teaching-scope-v1'
   },
   {
     id: 'q19',
-    question: 'Grade 4 papilloedema typically shows:',
+    question: 'What is an important limitation of Frisén grading?',
     options: {
-      a: 'Marked disc elevation with a near-complete halo and possible haemorrhages',
-      b: 'Crisp edges and a deep physiological cup in the centre',
-      c: 'No haemorrhages or exudates anywhere on the disc',
-      d: 'Mild tilt creating slight nasal blur only',
-      e: 'Barely elevated rim but normal overall disc colour'
+      a: 'It cannot be used with photographs',
+      b: 'It has no ordered severity levels',
+      c: 'It requires haemorrhage at every grade',
+      d: 'Observers may disagree, especially by one grade',
+      e: 'It directly measures intracranial pressure'
     },
-    correct: 'a'
+    correct: 'd',
+    explanation:
+      'In the IIHTT reading centre, exact agreement was imperfect although most assessments were within one grade.',
+    source: 'iihtt-reading-centre-2015'
   },
   {
     id: 'q20',
-    question: 'If a disc appears normal but has no spontaneous venous pulsations, it could be:',
+    question: 'What makes serial disc comparison most dependable?',
     options: {
-      a: 'Mild papilloedema that is always present in normal eyes',
-      b: 'Still a normal variant – some healthy eyes lack venous pulsations',
-      c: 'Definite papilloedema if the disc colour is also pale',
-      d: 'High-grade swelling completely blocking venous outflow',
-      e: 'An artefact from improper ophthalmoscopic technique'
+      a: 'Changing camera and view each time',
+      b: 'Judging colour alone',
+      c: 'Using only the cup-to-disc ratio',
+      d: 'Ignoring the fellow eye',
+      e: 'Using comparable views and recording the defining features'
     },
-    correct: 'b'
+    correct: 'e',
+    explanation:
+      'Standardised photographs and explicit feature recording reduce variation when severity is compared over time.',
+    source: 'iihtt-reading-centre-2015'
   },
   {
     id: 'q21',
-    question: 'A normal disc rarely shows:',
+    question:
+      'A hazy photograph hides vessels both on and away from the disc. What is the best next step before grading?',
     options: {
-      a: 'A distinct edge around the physiological cup',
-      b: 'A clearly visible central cup with a pinkish neuroretinal rim',
-      c: 'No significant haemorrhages anywhere near the disc',
-      d: 'Major vessel obscuration at the rim, indicating fluid',
-      e: 'Minimal pallor that remains within normal limits'
+      a: 'Improve the view and reassess the defining features',
+      b: 'Record Grade 5 because vessels are hard to see',
+      c: 'Record Grade 0 because no halo is clear',
+      d: 'Grade using disc colour alone',
+      e: 'Use the haemorrhage count instead'
     },
-    correct: 'd'
+    correct: 'a',
+    explanation:
+      'Poor image quality can obscure vessels without oedema. Improve the view and record uncertainty rather than treating optical blur as swelling.',
+    source: 'swollen-discs-teaching-scope-v1'
   },
   {
     id: 'q22',
-    question: 'Which sign suggests borderline suspicious rather than fully swollen?',
+    question:
+      'A disc has a circumferential halo and nasal elevation. All major vessels remain visible. Which finding would support progression to Grade 3?',
     options: {
-      a: 'A large haemorrhage bridging the temporal disc margin',
-      b: 'Obscured vessels in nearly all quadrants with massive exudates',
-      c: 'Faint or partial blur at the nasal boundary only, with normal macula',
-      d: 'A ring of exudates concealing the rim entirely',
-      e: 'Severe disc elevation so no clear cup is visible'
+      a: 'A brighter photographic exposure',
+      b: 'Obscuration of a major-vessel segment leaving the disc',
+      c: 'A single haemorrhage with unchanged vessels',
+      d: 'A change in pupil size',
+      e: 'A smaller visible cup without vessel obscuration'
     },
-    correct: 'c'
+    correct: 'b',
+    explanation:
+      'The starting features fit Grade 2. Obscuration of a major-vessel segment leaving the disc is the defining additional feature of Grade 3.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q23',
-    question: 'Definite papilloedema with Frisén Grade 3 or more may exhibit:',
+    question:
+      'Serial photographs differ in exposure and apparent grade by one step. What best supports a reliable comparison?',
     options: {
-      a: 'No difference from a normal disc, except mild tilt',
-      b: 'A fully visible lamina cribrosa and normal disc margins',
-      c: 'Multiple haemorrhages, exudates, or clearly obscured vessels',
-      d: 'A crisp boundary with a healthy, deep cup centrally',
-      e: 'A subtle halo only nasally, with no vascular changes'
+      a: 'Accept the higher grade without checking features',
+      b: 'Compare disc colour alone',
+      c: 'Obtain comparable views and document changes in defining features',
+      d: 'Assume any one-grade change proves deterioration',
+      e: 'Discard the earlier photograph'
     },
-    correct: 'c'
+    correct: 'c',
+    explanation:
+      'Image quality and observer variation affect grading. Comparable views and recorded structural features strengthen interpretation of a small serial change.',
+    source: 'iihtt-reading-centre-2015'
   },
   {
     id: 'q24',
-    question: 'Suspicious discs are sometimes confused with normal variants if:',
+    question:
+      'A crowded elevated disc resembles swelling, but the photograph does not establish its cause. Which interpretation is most appropriate?',
     options: {
-      a: 'All edges are heavily blurred with large peripapillary haemorrhages',
-      b: 'Minimal nasal blur is subtle, and no haemorrhages are present',
-      c: 'Vessels appear almost completely obscured by dense exudates',
-      d: 'There is a staphyloma or high myopia giving the illusion of swelling',
-      e: 'Frisén scale findings exceed Grade 4 in some quadrants'
+      a: 'Raised intracranial pressure is confirmed',
+      b: 'The disc is normal because it is crowded',
+      c: 'Disc colour alone distinguishes the cause',
+      d: 'Pseudopapilloedema is possible, but further assessment is needed',
+      e: 'Frisén grading identifies the underlying cause'
     },
-    correct: 'b'
+    correct: 'd',
+    explanation:
+      'Crowded discs or optic disc drusen can mimic swelling. A teaching photograph alone cannot confirm pseudopapilloedema or exclude true oedema.',
+    source: 'swollen-discs-teaching-scope-v1'
   },
   {
     id: 'q25',
-    question: 'A definitely swollen disc often leads to:',
+    question: 'What separates Grade 5 from Grade 4 in the Modified Frisén Scale?',
     options: {
-      a: 'Improved visual acuity due to better vascular perfusion',
-      b: 'Partial or complete loss of the physiological cup contour',
-      c: 'A reduction in intracranial pressure for each eye individually',
-      d: 'Absolutely no change in the retina surrounding the disc',
-      e: 'Spontaneous venous pulsations becoming more prominent'
+      a: 'The first appearance of a halo',
+      b: 'Nasal border elevation',
+      c: 'The first obscured vessel leaving the disc',
+      d: 'The presence of any haemorrhage',
+      e: 'Obscured segments of all major vessels on and leaving the disc'
     },
-    correct: 'b'
+    correct: 'e',
+    explanation:
+      'Grade 5 requires obscuration of all major vessels on the disc and as they leave it.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q26',
-    question: 'Which change is characteristic of Grade 1 papilloedema?',
+    question: 'Which observation favours Grade 3 over Grade 4?',
     options: {
-      a: 'Slight nasal blur without total vessel obscuration',
-      b: 'Extensive swelling in all quadrants plus haemorrhages',
-      c: 'Multiple exudates near the disc margin in every quadrant',
-      d: 'Very sharp margins with a deep and obvious cup',
-      e: 'Marked pallor of the disc overshadowing any swelling'
+      a: 'A vessel is obscured leaving the disc but remains visible on the disc',
+      b: 'All major vessels are obscured on the disc',
+      c: 'The halo still has a temporal gap',
+      d: 'No disc border is elevated',
+      e: 'There is no peripapillary halo'
     },
-    correct: 'a'
+    correct: 'a',
+    explanation:
+      'Grade 3 obscures a vessel segment as it leaves the disc. Grade 4 extends defining obscuration onto the disc itself.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q27',
-    question: 'When describing normal discs, one should expect:',
+    question: 'Which conclusion cannot be made from the Frisén grade alone?',
     options: {
-      a: 'Thick exudates on the rim blocking major vessels',
-      b: 'Moderate blurring of boundaries in at least one quadrant',
-      c: 'Clearly visible vessels crossing an undistorted margin',
-      d: 'Peripapillary flame haemorrhages overshadowing the cup',
-      e: 'A Frisén Grade 2 halo without haemorrhages'
+      a: 'Whether vessel obscuration is present',
+      b: 'The cause of raised intracranial pressure',
+      c: 'Whether a halo is circumferential',
+      d: 'Whether the whole nerve head is elevated',
+      e: 'Whether all major vessels are obscured'
     },
-    correct: 'c'
+    correct: 'b',
+    explanation:
+      'The grade describes optic disc appearance. Identifying why intracranial pressure is raised requires clinical assessment and investigation.',
+    source: 'frisen-1982'
   },
   {
     id: 'q28',
-    question: 'Suspicious disc changes can progress if:',
+    question: 'Why should a one-grade change be interpreted cautiously?',
     options: {
-      a: 'Intracranial pressure remains elevated and untreated',
-      b: 'They were entirely normal variants in the first place',
-      c: 'The disc is already fully swollen and cannot progress further',
-      d: 'Frisén scale spontaneously reverts to Grade 0',
-      e: 'Mild venous pulsations become more pronounced'
+      a: 'The scale is unordered',
+      b: 'The scale uses visual acuity only',
+      c: 'Observer grading can vary by about one grade',
+      d: 'Grade 0 and Grade 5 are identical',
+      e: 'Photographs cannot be graded'
     },
-    correct: 'a'
+    correct: 'c',
+    explanation:
+      'Photographic grading is useful but observer variation is real. Comparable images and recorded features strengthen serial interpretation.',
+    source: 'iihtt-reading-centre-2015'
   },
   {
     id: 'q29',
-    question: 'Which statement accurately describes definite papilloedema?',
+    question: 'Can severe papilloedema be present without haemorrhages?',
     options: {
-      a: 'No overshadowing of any part of the disc or vessels at all',
-      b: 'Minimal or questionable rim blur exclusively in the nasal quadrant',
-      c: 'Significant oedema with or without haemorrhages, typically Grade ≥3',
-      d: 'A normal ocular pressure with crisp, unwavering disc margins',
-      e: 'A faint halo that spares the vessels crossing the temporal side'
+      a: 'No, haemorrhage defines every severe grade',
+      b: 'No, Grade 4 requires exudates',
+      c: 'Only when venous pulsation is present',
+      d: 'Yes, vessel obscuration and elevation define the grade',
+      e: 'Only in a Grade 0 disc'
     },
-    correct: 'c'
+    correct: 'd',
+    explanation:
+      'Haemorrhages may accompany papilloedema but are not required. Vessel obscuration, halo and elevation determine the Modified Frisén grade.',
+    source: 'modified-frisen-2010'
   },
   {
     id: 'q30',
-    question: 'A normal disc always shows:',
+    question: 'If visible features do not fit one grade confidently, what is the safest approach?',
     options: {
-      a: 'Severe disc elevation if the cup is shallow',
-      b: 'Multiple haemorrhages near the macula or rim',
-      c: 'Cotton wool spots in at least one quadrant',
-      d: 'A dense peripapillary halo completely hiding vessels',
-      e: 'A crisp boundary with no fluid obscuration'
+      a: 'Choose Grade 0 automatically',
+      b: 'Choose the highest grade without explanation',
+      c: 'Ignore vessel visibility',
+      d: 'Use haemorrhage count as the grade',
+      e: 'Record the features, the uncertainty and seek review'
     },
-    correct: 'e'
+    correct: 'e',
+    explanation:
+      'The app is a teaching aid. Uncertainty should remain visible rather than being converted into false certainty.',
+    source: 'swollen-discs-teaching-scope-v1'
   }
-];
+].map((question) =>
+  Object.freeze({
+    ...question,
+    legacyId: question.id,
+    id: `swollen-discs-${question.id}`,
+    clinicalSignOff: 'pending-independent-review',
+    reviewStatus: MCQ_SOURCE_REFERENCES[question.source].status
+  })
+);
 
-export default questionBank;
+export default Object.freeze(questionBank);

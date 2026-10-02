@@ -21,10 +21,21 @@
   function getHintCondition(content) {
     const hint = extractHint(content);
     if (!hint) return "";
+    const hasNearStimulus = splitTokens(content).includes("near");
 
     switch (hint) {
+      case "third_nerve":
+        return "<span style='color:red;'>probable pupil-involving 3rd nerve palsy; emergency neurovascular assessment</span>";
+      case "fourth_nerve":
+        return "probable 4th nerve palsy; hypertropia, extorsion and depression-in-adduction deficit";
+      case "sixth_nerve":
+        return "<span style='color:red;'>probable 6th nerve palsy</span>; esotropia with abduction deficit";
+      case "horner":
+        return "possible Horner syndrome; mild ptosis, miosis and dilation lag";
+      case "benign_anisocoria":
+        return "possible physiological anisocoria; confirm normal reactions and stability in light and dark";
       case "pupil_sparing_3rd":
-        return "<span style='color:red;'>probable pupil-sparing 3rd nerve palsy</span>; acute diplopia with ptosis";
+        return "<span style='color:red;'>probable pupil-sparing 3rd nerve palsy; urgent neurovascular assessment</span>; pupil sparing does not exclude compression";
       case "partial_6th_small":
         return "<span style='color:red;'>possible partial 6th nerve palsy</span>; mild abduction deficit";
       case "partial_6th_medium":
@@ -48,9 +59,9 @@
       case "myasthenia":
         return "possible ocular myasthenia; variable ptosis/motility, pupil sparing";
       case "thyroid_restrictive":
-        return "possible thyroid restrictive change; restrictive motility";
+        return "possible thyroid restrictive change; limited teaching model shows elevation restriction only";
       case "ino":
-        return "possible INO; adduction deficit with pupil sparing";
+        return "possible INO; adduction deficit with contralateral abducting nystagmus and pupil sparing";
       case "latent_nystagmus":
         return "possible latent nystagmus-like pattern; often paediatric binocular pathway related";
       case "gaze_evoked_nystagmus":
@@ -66,17 +77,21 @@
       case "brown_syndrome":
         return "possible Brown syndrome-like pattern; elevation in adduction limited";
       case "duane_type1":
-        return "possible Duane type I-like pattern; abduction limited with esotropic tendency";
+        return "possible Duane type I-like pattern; abduction limited with globe retraction and fissure narrowing on adduction";
       case "dvd_like":
-        return "possible DVD-like pattern; dissociated upward drift";
+        return "possible DVD-like pattern; dissociated upward drift with extorsion";
       case "compressive_3rd":
-        return "<span style='color:red;'>probable compressive 3rd nerve palsy</span>; pupil involving";
+        return "<span style='color:red;'>probable pupil-involving 3rd nerve palsy; emergency neurovascular assessment</span>; compression or aneurysm must be excluded";
       case "acute_angle_closure":
         return "<span style='color:red;'>probable acute angle-closure glaucoma</span>; mid-dilated oval sluggish pupil";
       case "adie":
-        return "possible Adie's pupil; large tonic pupil with poor light reaction";
+        return hasNearStimulus
+          ? "possible Adie's pupil; tonic near response with slow redilation and poor light reaction"
+          : "possible Adie's pupil; large tonic pupil with poor light reaction - demonstrate the near response";
       case "argyll_robertson":
-        return "possible Argyll Robertson pupils; small, light-near dissociation pattern";
+        return hasNearStimulus
+          ? "possible Argyll Robertson pupils; small pupils constrict to near despite poor light response"
+          : "possible Argyll Robertson pupils; small pupils with poor light response - demonstrate the near response";
       case "pharmacological_mydriasis":
         return "possible pharmacological mydriasis; large fixed pupil pattern";
       case "pharmacological_miosis":
@@ -92,7 +107,7 @@
       case "traumatic_mydriasis":
         return "<span style='color:red;'>probable traumatic mydriasis</span>; large semi-fixed pupil";
       case "traumatic_miotic":
-        return "possible traumatic miosis; small sluggish pupil";
+        return "possible traumatic miosis; assess for traumatic iritis or iris/ciliary injury";
       case "traumatic_peaked":
         return "<span style='color:red;'>probable traumatic peaked pupil</span>; urgent globe-injury assessment";
       default:
@@ -148,7 +163,7 @@
       `${conditionRight || ""} ${conditionLeft || ""}`.toLowerCase();
     const notes = [];
 
-    if (modifiers.sudden) {
+    if (modifiers.sudden && !combinedCondition.includes("3rd nerve palsy")) {
       notes.push("Sudden onset: acute review.");
     }
 
@@ -170,9 +185,13 @@
     }
 
     if (modifiers.pain) {
-      if (combinedCondition.includes("3rd nerve palsy")) {
+      if (combinedCondition.includes("acute angle-closure")) {
         notes.push(
-          "<span style='color:red;'>Pain/headache with 3rd nerve signs: urgent neurology review.</span>",
+          "<span style='color:red;'>Pain with an acute angle-closure pattern needs immediate ophthalmic assessment.</span>",
+        );
+      } else if (combinedCondition.includes("3rd nerve palsy")) {
+        notes.push(
+          "<span style='color:red;'>Pain or headache heightens concern for aneurysm or compression.</span>",
         );
       } else if (combinedCondition.includes("6th nerve palsy")) {
         notes.push(
@@ -184,7 +203,23 @@
     }
 
     if (modifiers.trauma) {
-      notes.push("Recent trauma: traumatic palsy or orbital injury possible.");
+      if (combinedCondition.includes("traumatic miosis")) {
+        notes.push(
+          "After ocular trauma, miosis with pain or photophobia can indicate traumatic iritis.",
+        );
+      } else if (combinedCondition.includes("traumatic mydriasis")) {
+        notes.push(
+          "Assess for iris sphincter injury, 3rd nerve involvement and associated globe injury.",
+        );
+      } else if (combinedCondition.includes("traumatic peaked")) {
+        notes.push(
+          "<span style='color:red;'>A peaked pupil after trauma needs emergency open-globe assessment.</span>",
+        );
+      } else {
+        notes.push(
+          "Recent trauma: traumatic palsy or orbital injury possible.",
+        );
+      }
     }
 
     if (modifiers.diplopia) {
@@ -210,6 +245,28 @@
     return notes.join(" ");
   }
 
+  const SPECIFIC_PUPIL_HINTS = new Set([
+    "third_nerve",
+    "pupil_sparing_3rd",
+    "compressive_3rd",
+    "horner",
+    "benign_anisocoria",
+    "acute_angle_closure",
+    "adie",
+    "argyll_robertson",
+    "pharmacological_mydriasis",
+    "pharmacological_miosis",
+    "traumatic_mydriasis",
+    "traumatic_miotic",
+    "traumatic_peaked",
+  ]);
+
+  function shouldSuppressGenericPupilNote(rightText, leftText) {
+    return [extractHint(rightText), extractHint(leftText)].some((hint) =>
+      SPECIFIC_PUPIL_HINTS.has(hint),
+    );
+  }
+
   globalObj.AnalysisCore = {
     splitTokens,
     extractHint,
@@ -218,5 +275,6 @@
     extractModifierState,
     buildModifierSummary,
     buildModifierGuidance,
+    shouldSuppressGenericPupilNote,
   };
 })(typeof globalThis !== "undefined" ? globalThis : window);

@@ -11,6 +11,10 @@ export function createInitialState() {
       RE: [],
       LE: [],
     },
+    assessedEyes: {
+      RE: false,
+      LE: false,
+    },
     currentStroke: null,
     isDrawing: false,
     currentEye: "RE",

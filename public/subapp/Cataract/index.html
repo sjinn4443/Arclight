@@ -10,11 +10,14 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Cataract" />
+    <meta name="theme-color" content="#000000" />
     <title>Cataract</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="style.css?v=20260518-appbar" />
-    <link rel="stylesheet" href="mcq-ui.css?v=20260511-2" />
-    <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="style.css?v=20260930-clinical2-perf1" />
+    <link rel="stylesheet" href="mcq-ui.css?v=20260726-mcqquality2" />
+    <link rel="stylesheet" href="cup-achievement.css?v=20260722-1" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header class="app-bar">
@@ -48,6 +51,7 @@
       id="info-popup"
       class="info-box"
       role="dialog"
+      aria-modal="false"
       aria-labelledby="info-popup-title"
       hidden
     >
@@ -70,7 +74,11 @@
           <p id="info-cataract-title" class="info-look-title">
             Cataract triage
           </p>
-          <p id="info-copy-intro">Quick cataract triage in seconds.</p>
+          <p id="info-copy-intro" class="info-purpose-copy">
+            Use this while examining the patient: you enter the history, VA,
+            safety findings, fundal reflex and back-of-eye view. It suggests a
+            cataract pattern and next step; it does not make a final diagnosis.
+          </p>
         </section>
         <hr />
         <div class="info-look-guide">
@@ -97,11 +105,12 @@
           >
             <p id="info-detail-title" class="info-look-title">More detail</p>
             <p id="info-copy-bullet-1">
-              History + VA: onset, one or two eyes, pain, age, distance VA and
-              near VA.
+              History + VA: onset, one or two eyes, age and affected or
+              worse-eye VA.
             </p>
             <p id="info-copy-bullet-2">
-              Front: pupils, cornea/scar and RAPD or poor light direction.
+              Safety checks: pain/redness, pupils, front eye and RAPD/light
+              response.
             </p>
             <p id="info-copy-bullet-3">
               Reflex: Normal, Dull, Patches, Spots or Dense.
@@ -119,7 +128,24 @@
           Teaching aid, not final diagnosis. Look for non-cataract disease when
           features are atypical or urgent.
         </p>
-        <p class="info-version">v1 - 18/5/2026</p>
+        <p
+          class="info-version"
+          style="
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 8px 0 0;
+            color: #6e7c95;
+            font:
+              700 10.5px/1.2 Inter,
+              Arial,
+              sans-serif;
+            text-align: right;
+            white-space: nowrap;
+          "
+        >
+          v1 · 30/9/2026
+        </p>
       </div>
     </div>
 
@@ -130,15 +156,34 @@
       aria-hidden="true"
       inert
     >
+      <section class="case-actions" aria-labelledby="case-actions-title">
+        <p id="case-actions-title" class="menu-section-label">Assessment</p>
+        <button
+          type="button"
+          id="new-assessment-button"
+          class="case-reset-button"
+          aria-describedby="case-reset-status"
+          data-confirming="false"
+        >
+          New assessment
+        </button>
+        <p
+          id="case-reset-status"
+          class="case-reset-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
+      <p class="menu-section-label">Learning</p>
       <div class="mcq-level-menu">
         <button type="button" class="mcq-level-button" data-level-index="0">
-          Primary MCQ
+          Primary
         </button>
         <button type="button" class="mcq-level-button" data-level-index="1">
-          Intermediate MCQ
+          Intermediate
         </button>
         <button type="button" class="mcq-level-button" data-level-index="2">
-          Advanced MCQ
+          Advanced
         </button>
       </div>
       <section
@@ -184,7 +229,7 @@
                   ><strong>Vision Loss:</strong></span
                 >
                 <span class="history-field-control choice-cluster">
-                  <span
+                  <label class="inline-choice"
                     >Gradual <span class="small-text">(mths)</span
                     ><input
                       type="radio"
@@ -192,8 +237,8 @@
                       value="gradual"
                       id="onset-gradual"
                       aria-label="Vision loss gradual over months"
-                  /></span>
-                  <span
+                  /></label>
+                  <label class="inline-choice"
                     >Sudden <span class="small-text">(days)</span
                     ><input
                       type="radio"
@@ -201,54 +246,52 @@
                       value="sudden"
                       id="onset-sudden"
                       aria-label="Vision loss sudden over days"
-                  /></span>
+                  /></label>
                 </span>
               </div>
               <div class="history-row history-row--three">
                 <div class="history-field question-group--mixed-priority">
-                  <span class="history-field-label"
-                    ><strong>Eyes:</strong></span
-                  >
+                  <span class="history-field-label"><strong>Eyes</strong></span>
                   <span
                     class="history-field-control choice-cluster choice-cluster--tight"
                   >
-                    <span
+                    <label class="inline-choice"
                       >1<input
                         type="radio"
                         name="eyes"
                         value="one"
                         id="eyes-one"
                         aria-label="One eye affected"
-                    /></span>
-                    <span
+                    /></label>
+                    <label class="inline-choice"
                       >2<input
                         type="radio"
                         name="eyes"
                         value="two"
                         id="eyes-two"
                         aria-label="Two eyes affected"
-                    /></span>
+                    /></label>
                   </span>
                 </div>
                 <div class="history-field question-group--mixed-priority">
                   <span class="history-field-label" id="pain-label"
-                    ><strong>Pain/Redness:</strong></span
+                    ><strong>Pain/red</strong></span
                   >
-                  <label
-                    class="inline-choice history-field-control"
-                    id="pain-yes-label"
-                    ><input
-                      type="radio"
-                      name="pain"
-                      value="yes"
-                      id="pain-yes"
-                      aria-label="Pain or redness"
-                  /></label>
+                  <select
+                    id="painStatus"
+                    name="painStatus"
+                    class="compact-status-select tri-state-select history-field-control"
+                    aria-label="Pain or redness status"
+                  >
+                    <option value="">&mdash;</option>
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                  </select>
                 </div>
                 <div
                   class="history-field history-field--age question-group--secondary"
                 >
-                  <span class="history-field-label"><strong>Age:</strong></span>
+                  <span class="history-field-label"><strong>Age</strong></span>
                   <span class="history-field-control">
                     <select
                       id="ageBand"
@@ -256,7 +299,7 @@
                       class="compact-status-select"
                       aria-label="Age band"
                     >
-                      <option value=""></option>
+                      <option value="">&mdash;</option>
                       <option value="baby">0-1</option>
                       <option value="child">2-12</option>
                       <option value="adolescent">13-17</option>
@@ -275,10 +318,7 @@
               <div class="vision-row question-group--required">
                 <div class="history-field history-field--distance">
                   <span class="history-field-label"
-                    ><strong
-                      >Dist VA<span class="label-detail"> (binoc)</span
-                      >:</strong
-                    ></span
+                    ><strong id="distance-va-label">Eye VA:</strong></span
                   >
                   <span class="history-field-control">
                     <select
@@ -287,14 +327,14 @@
                       class="compact-status-select"
                       aria-label="Distance visual acuity"
                     >
-                      <option value=""></option>
+                      <option value="">&mdash;</option>
                       <option value="6/6">6/6</option>
                       <option value="6/12">6/12</option>
                       <option value="6/36">6/36</option>
                       <option value="6/60">6/60</option>
                       <option value="HM">HM</option>
                       <option value="unable_test" class="child-va-option">
-                        No test
+                        Unable
                       </option>
                       <option value="fix_follow_good" class="child-va-option">
                         Fix+
@@ -316,7 +356,7 @@
                       class="compact-status-select"
                       aria-label="Near visual acuity"
                     >
-                      <option value=""></option>
+                      <option value="">&mdash;</option>
                       <option value="N5">N5</option>
                       <option value="N8">N8</option>
                       <option value="N12">N12</option>
@@ -336,37 +376,46 @@
                     >not black, round, equal or reactive</span
                   >
                 </span>
-                <label class="inline-choice" id="pupil-yes-label"
-                  >Yes<input
-                    type="radio"
-                    name="pupil"
-                    value="abnormal"
-                    id="pupil-abnormal"
-                /></label>
+                <select
+                  id="pupilStatus"
+                  name="pupilStatus"
+                  class="compact-status-select tri-state-select"
+                  aria-label="Pupil assessment status"
+                >
+                  <option value="">&mdash;</option>
+                  <option value="normal">No</option>
+                  <option value="abnormal">Yes</option>
+                </select>
               </div>
               <div class="question-group">
                 <span id="front-label"
                   ><strong>Front eye scar/distortion?</strong></span
                 >
-                <label class="inline-choice" id="front-yes-label"
-                  >Yes<input
-                    type="radio"
-                    name="front"
-                    value="present"
-                    id="front-present"
-                /></label>
+                <select
+                  id="frontStatus"
+                  name="frontStatus"
+                  class="compact-status-select tri-state-select"
+                  aria-label="Front eye scar or distortion status"
+                >
+                  <option value="">&mdash;</option>
+                  <option value="absent">No</option>
+                  <option value="present">Yes</option>
+                </select>
               </div>
               <div class="question-group">
                 <span id="neuro-label"
-                  ><strong>RAPD / poor light direction?</strong></span
+                  ><strong>RAPD / poor light response?</strong></span
                 >
-                <label class="inline-choice" id="neuro-yes-label"
-                  >Yes<input
-                    type="radio"
-                    name="neuro"
-                    value="yes"
-                    id="neuro-red-yes"
-                /></label>
+                <select
+                  id="afferentStatus"
+                  name="afferentStatus"
+                  class="compact-status-select tri-state-select"
+                  aria-label="RAPD or poor light response status"
+                >
+                  <option value="">&mdash;</option>
+                  <option value="normal">No</option>
+                  <option value="concern">Yes</option>
+                </select>
               </div>
             </div>
           </div>
@@ -375,7 +424,7 @@
         <section id="fundal-section" class="disabled" aria-disabled="true">
           <h2>Fundal Reflex</h2>
           <p id="fundal-lock-hint" class="section-lock-hint" aria-live="polite">
-            Complete Vision Loss and Dist VA to unlock.
+            Complete Vision Loss, Age and Eye VA.
           </p>
           <div class="button-group">
             <div class="button-item">
@@ -387,7 +436,7 @@
               >
                 <img src="assets/images/normal.webp" alt="Normal" />
               </button>
-              <div class="button-label"><em>Normal</em></div>
+              <div class="button-label">Normal</div>
             </div>
             <div class="button-item">
               <button
@@ -454,7 +503,7 @@
                   alt="Normal back of eye"
                 />
               </button>
-              <div class="button-label"><em>Normal</em></div>
+              <div class="button-label">Normal</div>
             </div>
             <div class="button-item">
               <button
@@ -498,7 +547,7 @@
               >
                 <img src="assets/images/poorview.webp" alt="Poor view" />
               </button>
-              <div class="button-label"><em>Poor view</em></div>
+              <div class="button-label">Poor view</div>
             </div>
           </div>
         </section>
@@ -513,7 +562,14 @@
       </form>
     </main>
 
-    <div id="mcqModal" class="modal" aria-hidden="true">
+    <div
+      id="mcqModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mcqTitle"
+      aria-hidden="true"
+    >
       <div class="modal-content">
         <button
           id="closeMcqModal"
@@ -521,22 +577,28 @@
           type="button"
           aria-label="Close MCQ"
         >
-          x
+          &times;
         </button>
         <h2 id="mcqTitle">MCQ Test</h2>
         <div id="mcqTimer" class="mcq-timer" hidden></div>
         <div id="mcqContainer"></div>
+        <div
+          id="mcqResult"
+          class="mcq-result"
+          role="status"
+          aria-live="polite"
+        ></div>
         <div class="mcq-actions">
           <button id="submitMcqButton" type="button" class="mcq-submit">
-            Submit
+            Submit answers
           </button>
         </div>
-        <div id="mcqResult" class="mcq-result"></div>
       </div>
     </div>
 
-    <script src="app.bundle.js"></script>
-    <script src="cup-achievement.js"></script>
+    <script src="app.bundle.js?v=20260930-clinical2-perf1"></script>
+    <script src="cup-achievement.js?v=20260723-round1"></script>
+    <script src="pwa-register.js"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

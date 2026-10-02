@@ -1,11 +1,3 @@
-const REFERRAL_LEVELS = {
-  none: -1,
-  unclear: -0.5,
-  routine: 0,
-  soon: 1,
-  urgent: 2,
-};
-
 const REFERRAL_COPY = {
   none: {
     badge: "None",
@@ -41,6 +33,7 @@ const CASE_INTERPRETATIONS = {
     likelyBaby: "Reduced infant reflex L",
     site: "Media or fundus",
     referral: "soon",
+    babyReferral: "urgent",
   },
   "bilateral-blue-normal": {
     likely: "Normal blue reflexes R & L",
@@ -150,6 +143,7 @@ const CASE_INTERPRETATIONS = {
     likely: "Corneal opacity L",
     site: "Cornea",
     referral: "soon",
+    babyReferral: "urgent",
   },
   "right-hyper-left-posterior-pole": {
     likely: "R hypermetropia, L posterior pole cataract",
@@ -228,17 +222,6 @@ function clampReferral(referral) {
   return REFERRAL_COPY[referral] ? referral : "routine";
 }
 
-function bumpReferral(referral) {
-  const level = REFERRAL_LEVELS[clampReferral(referral)];
-  if (level >= REFERRAL_LEVELS.urgent) {
-    return "urgent";
-  }
-  if (level <= REFERRAL_LEVELS.none) {
-    return "routine";
-  }
-  return level === REFERRAL_LEVELS.routine ? "soon" : "urgent";
-}
-
 function getBaseRecord(caseValue) {
   return (
     CASE_INTERPRETATIONS[caseValue] || {
@@ -289,13 +272,6 @@ export function buildClinicalInterpretation({
     }
   }
 
-  if (
-    isBabyMode &&
-    ["bilateral-high-hypermetropia", "bilateral-myopia"].includes(caseValue)
-  ) {
-    referral = bumpReferral(referral);
-  }
-
   const referralCopy = REFERRAL_COPY[referral];
 
   return {
@@ -303,6 +279,11 @@ export function buildClinicalInterpretation({
     badge: referralCopy.badge,
     likely: `Likely: ${likely}`,
     site: `Site: ${record.site}`,
-    referral: referralCopy.line,
+    referral: referralCopy.line
+      .replace("Action:", "Example action:")
+      .replace(
+        "Urgent today",
+        isBabyMode ? "Urgent eye referral" : "Urgent today",
+      ),
   };
 }

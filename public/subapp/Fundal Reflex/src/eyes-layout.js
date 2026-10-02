@@ -39,6 +39,13 @@ export function getBrightenedReflexFillValue({
   return `rgb(${brightColor.r}, ${brightColor.g}, ${brightColor.b})`;
 }
 
+export function getIrisHalfSize(iris) {
+  return {
+    halfWidthPx: (iris.offsetWidth || 80) / 2,
+    halfHeightPx: (iris.offsetHeight || 80) / 2,
+  };
+}
+
 export function getDeviationBoostFactor(iris) {
   if (!iris) {
     return 1;

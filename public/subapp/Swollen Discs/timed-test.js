@@ -31,8 +31,7 @@ const TIMED_AUGMENTATION_PROFILES = Object.freeze([
     contrastJitter: 0.035,
     contrastMinJitter: 0.015,
     saturationJitter: 0.03,
-    saturationMinJitter: 0.01,
-    verticalFlipChance: 0.18
+    saturationMinJitter: 0.01
   },
   {
     rotateMaxDegrees: 4.2,
@@ -47,8 +46,7 @@ const TIMED_AUGMENTATION_PROFILES = Object.freeze([
     contrastJitter: 0.06,
     contrastMinJitter: 0.025,
     saturationJitter: 0.06,
-    saturationMinJitter: 0.025,
-    verticalFlipChance: 0.28
+    saturationMinJitter: 0.025
   },
   {
     rotateMaxDegrees: 5.2,
@@ -63,8 +61,7 @@ const TIMED_AUGMENTATION_PROFILES = Object.freeze([
     contrastJitter: 0.07,
     contrastMinJitter: 0.03,
     saturationJitter: 0.07,
-    saturationMinJitter: 0.03,
-    verticalFlipChance: 0.38
+    saturationMinJitter: 0.03
   }
 ]);
 const TIMED_MOTION_PROFILES = Object.freeze([
@@ -196,7 +193,8 @@ export function createTimedTestController({
   let nextTierIndex = normalizedInitialProgress.nextTierIndex;
   let activeTierIndex = Math.min(normalizedInitialProgress.nextTierIndex, STAR_TIERS.length - 1);
   let revealIsActive = false;
-  let timedSetFlipApplied = false;
+  let loadGeneration = 0;
+  let acceptingGuess = false;
   const timedGuessListenerDisposers = [];
 
   function notifyProgressChange() {
@@ -238,7 +236,6 @@ export function createTimedTestController({
     timedRoundEyes = buildTimedEyeSequence(timedRoundQueue.length || totalRounds);
     activeTierIndex = requestedTierIndex;
     revealIsActive = false;
-    timedSetFlipApplied = false;
 
     viewer.setDiscVisible(true);
 
@@ -286,36 +283,51 @@ export function createTimedTestController({
     }
 
     viewer.setDiscVisible(true);
-    viewer.setImageSource(pick.src);
-    if (typeof viewer.doGazeShift === 'function' && !state.viewer.shiftInProgress) {
-      viewer.doGazeShift();
-    }
+    const generation = ++loadGeneration;
+    acceptingGuess = false;
+    disableTimedGuess(true);
+    timedMessage.textContent = 'Loading image…';
+    timedCountdown.textContent = '';
+    viewer.setImageSource(pick.src, {
+      onError: () => {
+        if (!state.timed.isActive || generation !== loadGeneration) return;
+        exitTimedMode();
+        timedTestResult.textContent = 'Image unavailable. Set not scored; retry from Timed sets.';
+      },
+      onReady: () => {
+        if (!state.timed.isActive || generation !== loadGeneration) return;
+        if (typeof viewer.doGazeShift === 'function' && !state.viewer.shiftInProgress) {
+          viewer.doGazeShift();
+        }
 
-    timedMessage.textContent = `Round ${state.timed.round}/${activeTotalRounds}`;
-    timedCountdown.textContent = String(roundSeconds);
-    revealIsActive = true;
-    disableTimedGuess(false);
+        timedMessage.textContent = `Round ${state.timed.round}/${activeTotalRounds}`;
+        timedCountdown.textContent = String(roundSeconds);
+        revealIsActive = true;
+        acceptingGuess = true;
+        disableTimedGuess(false);
 
-    let remain = roundSeconds;
-    const countdownId = setInterval(() => {
-      remain -= 1;
-      timedCountdown.textContent = String(remain);
+        let remain = roundSeconds;
+        const countdownId = setInterval(() => {
+          remain -= 1;
+          timedCountdown.textContent = String(remain);
 
-      if (remain <= 0) {
-        clearCountdownTimer();
-        viewer.setDiscVisible(false);
-        revealIsActive = false;
+          if (remain <= 0) {
+            clearCountdownTimer();
+            viewer.setDiscVisible(false);
+            revealIsActive = false;
 
-        timedMessage.textContent = 'Which disc was shown?';
-        timedCountdown.textContent = '';
+            timedMessage.textContent = 'Which disc was shown?';
+            timedCountdown.textContent = '';
+          }
+        }, 1000);
+
+        stateMachine.setTimedCountdownTimer(countdownId);
       }
-    }, 1000);
-
-    stateMachine.setTimedCountdownTimer(countdownId);
+    });
   }
 
   function submitTimedGuess() {
-    if (!state.timed.isActive) {
+    if (!state.timed.isActive || !acceptingGuess) {
       return;
     }
 
@@ -334,6 +346,7 @@ export function createTimedTestController({
     }
 
     const isCorrect = guess.value === state.timed.currentLabel;
+    acceptingGuess = false;
 
     if (isCorrect) {
       state.timed.score += 1;
@@ -454,27 +467,13 @@ export function createTimedTestController({
     return timedRoundQueue.length > 0 ? timedRoundQueue.length : totalRounds;
   }
 
-  function buildTimedRoundAugmentation(tierIndex, roundIndex, setTotalRounds) {
+  function buildTimedRoundAugmentation(tierIndex) {
     const profileIndex = Math.max(
       0,
       Math.min(Number.isInteger(tierIndex) ? tierIndex : 0, TIMED_AUGMENTATION_PROFILES.length - 1)
     );
     const profile = TIMED_AUGMENTATION_PROFILES[profileIndex];
-    const verticalFlipChance = Math.max(0, Math.min(1, Number(profile.verticalFlipChance) || 0));
-    const safeTotalRounds = Math.max(1, Number(setTotalRounds) || 1);
-    const safeRoundIndex = Math.max(
-      0,
-      Math.min(safeTotalRounds - 1, Number.isFinite(Number(roundIndex)) ? Number(roundIndex) : 0)
-    );
-    let flipVertical = Math.random() < verticalFlipChance;
-
-    // Guarantee at least one vertical flip per timed set to prevent no-flip runs.
-    if (!timedSetFlipApplied && safeRoundIndex >= safeTotalRounds - 1) {
-      flipVertical = true;
-    }
-    if (flipVertical) {
-      timedSetFlipApplied = true;
-    }
+    // Preserve direct-view anatomy; variation comes from eye, pan, tone and scale.
 
     return {
       rotateDegrees: randomSignedWithMinimum(
@@ -491,7 +490,7 @@ export function createTimedTestController({
       brightness: randomToneValue(profile.brightnessJitter, profile.brightnessMinJitter || 0),
       contrast: randomToneValue(profile.contrastJitter, profile.contrastMinJitter || 0),
       saturation: randomToneValue(profile.saturationJitter, profile.saturationMinJitter || 0),
-      flipVertical
+      flipVertical: false
     };
   }
 
@@ -523,6 +522,16 @@ export function createTimedTestController({
     }));
     const queue = [];
     let previousLabel = null;
+
+    // Cover every authored class before repeating one in the four-round set.
+    const firstCycle = [...inventory];
+    while (firstCycle.length && queue.length < desiredCount) {
+      const index = Math.floor(Math.random() * firstCycle.length);
+      const entry = firstCycle.splice(index, 1)[0];
+      queue.push(entry.image);
+      entry.remaining -= 1;
+      previousLabel = entry.image.label;
+    }
 
     while (queue.length < desiredCount) {
       let candidates = inventory.filter(
@@ -700,6 +709,8 @@ export function createTimedTestController({
   }
 
   function clearTimedTimers() {
+    loadGeneration += 1;
+    acceptingGuess = false;
     clearCountdownTimer();
 
     if (state.timed.feedbackTimer) {
@@ -774,7 +785,6 @@ export function createTimedTestController({
       nextTierIndex = 0;
       activeTierIndex = 0;
       revealIsActive = false;
-      timedSetFlipApplied = false;
       state.timed.round = 0;
       state.timed.score = 0;
       state.timed.currentLabel = '';

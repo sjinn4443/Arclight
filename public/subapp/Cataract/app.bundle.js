@@ -1,222 +1,183 @@
 "use strict";
 (() => {
-  // src/dom-utils.js
-  function $(selector, root = document) {
-    return root.querySelector(selector);
+  function r(e, t = document) {
+    return t.querySelector(e);
   }
-  function $$(selector, root = document) {
-    return Array.from(root.querySelectorAll(selector));
+  function te(e, t = document) {
+    return Array.from(t.querySelectorAll(e));
   }
-
-  // src/cataract-copy.js
-  var ACTION_TEXT_BY_CODE = {
-    incomplete_input: "",
-    posterior_disease_first: "Treat posterior eye disease first.",
-    normal_reflex_very_poor_va_early:
-      "Very poor VA, normal reflex: early specialist review.",
-    normal_reflex_untestable_va_early:
-      "Distance VA not testable: early specialist review.",
-    normal_reflex_reduced_va_recheck:
-      "Reduced VA, normal reflex: check non-cataract causes.",
-    normal_reflex_mild_review:
-      "Mild VA drop, normal reflex: review and re-check.",
-    normal_reflex_no_referral: "No cataract referral.",
-    normal_reflex_non_cataract_reframe:
-      "No cataract referral now. Investigate non-cataract causes.",
-    cataract_priority_white: "Priority cataract referral.",
-    cataract_poor_view_assessment: "Assess further before cataract referral.",
-    cataract_routine: "Routine cataract referral.",
-    cataract_priority_very_poor_va:
-      "Early cataract referral: very poor distance VA.",
-    cataract_untestable_va_assess:
-      "Distance VA not testable: assess before cataract referral.",
-    cataract_early_referral_reduced_va:
-      "Early cataract referral: reduced distance VA.",
-    cataract_early_review_mild_va: "Early cataract review: mild VA reduction.",
-    cataract_early_review_va_6_6:
-      "Review in 12 months: cataract changes with VA 6/6.",
-    child_cataract_prompt_referral:
-      "Child cataract signs: prompt paediatric referral.",
-    child_reduced_vision_early_assessment:
-      "Child reduced vision: early specialist assessment.",
-    rapd_non_cataract_first: "Neuro red flags: investigate non-cataract cause.",
-    recheck_investigate_first: "Re-check key findings first.",
-    urgent_same_day_investigation: "Urgent same-day investigation needed.",
-  };
-  var CONSISTENCY_WARNING_TEXT_BY_CODE = {
-    fix_follow_with_non_child_age:
-      "Fix/Follow is usually for young children; re-check age or VA method.",
-    normal_reflex_with_reduced_va:
-      "VA low but reflex normal; check other causes.",
-    white_reflex_with_relatively_good_va:
-      "Dense reflex with relatively good VA is unusual; re-check both.",
-    abnormal_reflex_with_va_6_6:
-      "Reflex change + VA 6/6 is unusual; re-check both.",
-    near_poor_with_good_distance:
-      "Distance good but near poor: check presbyopia/refract.",
-    near_good_with_poor_distance:
-      "Distance poor but near good: re-check VA method/refraction.",
-    sudden_onset_with_cataract_pattern:
-      "Cataract is usually gradual; re-check onset.",
-    pain_with_cataract_pattern: "Pain/redness may mean another cause.",
-    normal_reflex_with_poor_back_view:
-      "Normal reflex with poor back view is unusual; re-check both.",
-    pain_without_eye_count: "Set one eye or two eyes to interpret pain.",
-  };
-  var NOTE_TEXT_BY_CODE = {
-    child_case_posterior_review:
-      "Child case: paediatric ophthalmology after posterior review.",
-    child_cataract_delay_risk: "Can affect visual development; avoid delay.",
-    child_reduced_vision_early_review: "Risk of amblyopia; avoid delay.",
-    younger_age_secondary_causes:
-      "Younger age is less typical for cataract; check other causes.",
-    posterior_detached_same_day:
-      "Detached retina suspected: same-day retinal assessment.",
-    posterior_diabetic_first:
-      "Treat retinal disease/scarring before cataract decisions.",
-    posterior_cupping_glaucoma:
-      "Deep cupping suggests glaucoma; prioritise glaucoma review.",
-    near_va_n8: "Near VA slightly reduced.",
-    near_va_n12: "Near VA reduced.",
-    near_va_n18: "Near VA poor.",
-    near_va_n36: "Near VA very poor.",
-    pupil_abnormal_review: "Abnormal pupils: prompt specialist review.",
-    front_abnormal_prognosis_limited:
-      "Front eye scar/distortion may limit vision gain.",
-    neuro_red_flags: "Check retina/optic nerve before cataract pathway.",
-    urgency_note_urgent: "Urgent same-day investigation needed.",
-    urgency_note_early: "Early review advised.",
-    urgent_trigger_painful_one_or_sudden:
-      "Urgent trigger: sudden painful vision loss.",
-    urgent_features_history_exam: "Urgent features on history/exam.",
-    assessment_incomplete_record_fields: "Record missing checks.",
-  };
-  var NOTE_PRIORITY_BY_CODE = {
-    posterior_detached_same_day: 0,
-    posterior_diabetic_first: 1,
-    posterior_cupping_glaucoma: 2,
-    child_cataract_delay_risk: 3,
-    child_reduced_vision_early_review: 4,
-    child_case_posterior_review: 5,
-    urgent_trigger_painful_one_or_sudden: 6,
-    urgency_note_urgent: 7,
-    fix_follow_with_non_child_age: 8,
-    normal_reflex_with_reduced_va: 8,
-    white_reflex_with_relatively_good_va: 8,
-    abnormal_reflex_with_va_6_6: 8,
-    near_poor_with_good_distance: 9,
-    near_good_with_poor_distance: 9,
-    sudden_onset_with_cataract_pattern: 8,
-    pain_with_cataract_pattern: 8,
-    normal_reflex_with_poor_back_view: 8,
-    urgency_note_early: 9,
-    pain_without_eye_count: 10,
-    assessment_incomplete_record_fields: 10,
-    neuro_red_flags: 11,
-    pupil_abnormal_review: 12,
-    front_abnormal_prognosis_limited: 13,
-    younger_age_secondary_causes: 14,
-    near_va_n8: 15,
-    near_va_n12: 15,
-    near_va_n18: 15,
-    near_va_n36: 15,
-    urgent_features_history_exam: 16,
-  };
-  var CATARACT_EXPLANATION_HTML_BY_PHENOTYPE = {
-    Nuclear:
-      "<p>Nuclear: central lens opacity causing blur, usually age-related. Surgery usually helps.</p>",
-    Cortical:
-      "<p>Cortical: spoke-like peripheral opacities causing blur and glare. Surgery usually helps.</p>",
-    Subcapsular:
-      "<p>Subcapsular: posterior opacities causing glare and near blur. Surgery usually helps.</p>",
-    Mature:
-      "<p>Mature: dense white lens with severe vision loss. Prompt surgery helps avoid complications.</p>",
-  };
-  var BACK_EXPLANATION_HTML_BY_SELECTION = {
-    cupping:
-      "<p>Deep disc cupping suggests advanced glaucoma. Urgent glaucoma review is needed.</p>",
-    diabetic:
-      "<p>Diabetic retinopathy needs treatment to protect vision. Cataract surgery may not help now.</p>",
-    "poor view":
-      "<p>Poor view may be due to dense cataract, retinal detachment, or vitreous haemorrhage. Review further.</p>",
-    detached:
-      "<p>Fresh retinal detachment needs immediate repair. Cataract surgery is unlikely to help first.</p>",
-  };
-  function getActionText(actionCode) {
-    return ACTION_TEXT_BY_CODE[actionCode] || "";
+  var rt = {
+      incomplete_input: "",
+      posterior_disease_first: "Assess posterior disease first.",
+      retinal_same_day: "Same-day retinal assessment.",
+      normal_reflex_very_poor_va_early: "Early specialist assessment.",
+      normal_reflex_untestable_va_early: "Specialist assessment advised.",
+      normal_reflex_reduced_va_recheck: "Check non-cataract causes.",
+      normal_reflex_mild_review: "Review vision and other causes.",
+      normal_reflex_no_referral: "No cataract referral now.",
+      normal_reflex_non_cataract_reframe: "Check non-cataract causes.",
+      cataract_priority_white: "Prompt cataract assessment.",
+      white_reflex_prompt_review: "Prompt eye assessment.",
+      white_reflex_recheck: "Confirm white reflex promptly.",
+      cataract_poor_view_assessment: "Further eye assessment needed.",
+      cataract_routine: "Cataract assessment advised.",
+      cataract_priority_very_poor_va: "Prompt cataract assessment.",
+      cataract_untestable_va_assess: "Assess before cataract referral.",
+      cataract_early_referral_reduced_va: "Early cataract assessment.",
+      cataract_early_review_mild_va: "Cataract assessment advised.",
+      cataract_early_review_va_6_6: "Review if function affected.",
+      child_cataract_prompt_referral: "Paediatric eye review.",
+      child_white_reflex_urgent: "Urgent paediatric eye review.",
+      child_reduced_vision_early_assessment: "Early paediatric eye review.",
+      rapd_non_cataract_first: "Check retinal or nerve cause.",
+      recheck_investigate_first: "Re-check key findings.",
+      complete_missing_checks: "Complete missing checks.",
+      urgent_same_day_investigation: "Same-day eye assessment.",
+    },
+    Te = {
+      fix_follow_with_non_child_age: "Re-check age or VA method.",
+      normal_reflex_with_reduced_va: "Reduced VA needs another cause.",
+      white_reflex_with_relatively_good_va: "VA and white reflex mismatch.",
+      abnormal_reflex_with_va_6_6: "VA and reflex mismatch.",
+      near_poor_with_good_distance: "Re-check near VA or refraction.",
+      near_good_with_poor_distance: "Re-check VA method or refraction.",
+      sudden_onset_with_cataract_pattern: "Sudden loss suggests another cause.",
+      pain_with_cataract_pattern: "Pain/redness suggests another cause.",
+      normal_reflex_with_poor_back_view: "Reflex and back view mismatch.",
+      pain_without_eye_count: "Record one or two eyes.",
+    },
+    st = {
+      child_case_posterior_review:
+        "Paediatric review after posterior assessment.",
+      child_cataract_delay_risk: "Avoid delay: visual development risk.",
+      child_reduced_vision_early_review: "Avoid delay: amblyopia risk.",
+      child_white_reflex_causes: "Exclude other white-reflex causes.",
+      age_unknown_caution: "Age affects urgency.",
+      younger_age_secondary_causes:
+        "Ask about trauma, steroids, diabetes and eye inflammation.",
+      posterior_detached_same_day: "Same-day retinal assessment.",
+      posterior_diabetic_first: "Retinal disease may limit outcome.",
+      posterior_cupping_glaucoma: "Possible glaucoma: assess.",
+      near_va_n8: "Near VA slightly reduced.",
+      near_va_n12: "Near VA reduced.",
+      near_va_n18: "Near VA poor.",
+      near_va_n36: "Near VA very poor.",
+      pupil_abnormal_review: "Abnormal pupil: prompt review.",
+      front_abnormal_prognosis_limited: "Scar may limit visual outcome.",
+      neuro_red_flags: "Possible retinal or nerve cause.",
+      urgency_note_urgent: "Same-day eye assessment.",
+      urgency_note_early: "Early review advised.",
+      urgent_trigger_painful_one_or_sudden: "Sudden visual loss.",
+      urgent_features_history_exam: "Urgent examination features.",
+      assessment_incomplete_record_fields: "Complete missing checks.",
+    },
+    we = {
+      posterior_detached_same_day: 0,
+      posterior_diabetic_first: 1,
+      posterior_cupping_glaucoma: 2,
+      child_cataract_delay_risk: 3,
+      child_white_reflex_causes: 4,
+      child_reduced_vision_early_review: 5,
+      child_case_posterior_review: 6,
+      age_unknown_caution: 7,
+      urgent_trigger_painful_one_or_sudden: 6,
+      urgency_note_urgent: 7,
+      fix_follow_with_non_child_age: 8,
+      normal_reflex_with_reduced_va: 8,
+      white_reflex_with_relatively_good_va: 8,
+      abnormal_reflex_with_va_6_6: 8,
+      near_poor_with_good_distance: 9,
+      near_good_with_poor_distance: 9,
+      sudden_onset_with_cataract_pattern: 8,
+      pain_with_cataract_pattern: 8,
+      normal_reflex_with_poor_back_view: 8,
+      urgency_note_early: 9,
+      pain_without_eye_count: 10,
+      assessment_incomplete_record_fields: 10,
+      neuro_red_flags: -2,
+      pupil_abnormal_review: -1,
+      front_abnormal_prognosis_limited: 13,
+      younger_age_secondary_causes: 14,
+      near_va_n8: 15,
+      near_va_n12: 15,
+      near_va_n18: 15,
+      near_va_n36: 15,
+      urgent_features_history_exam: 16,
+    },
+    Oe = {
+      Nuclear:
+        "<p>Nuclear: central lens opacity causing blur, usually age-related. Surgery usually helps.</p>",
+      Cortical:
+        "<p>Cortical: spoke-like peripheral opacities causing blur and glare. Surgery usually helps.</p>",
+      Subcapsular:
+        "<p>Subcapsular: posterior opacities causing glare and near blur. Surgery usually helps.</p>",
+      Mature:
+        "<p>Probable mature cataract: dense lens opacity with severe visual loss.</p>",
+      "White reflex":
+        "<p>White reflex: dense cataract or another cause. Prompt assessment is needed.</p>",
+    },
+    Me = {
+      cupping:
+        "<p>Disc cupping may indicate glaucoma. Confirm with appropriate assessment.</p>",
+      diabetic: "<p>Retinal disease or scarring may limit visual outcome.</p>",
+      "poor view":
+        "<p>Poor view may have lens, retinal or vitreous causes.</p>",
+      detached:
+        "<p>Suspected retinal detachment needs same-day assessment.</p>",
+    };
+  function Ce(e) {
+    return rt[e] || "";
   }
-  function getNoteText(noteCode) {
-    return (
-      NOTE_TEXT_BY_CODE[noteCode] ||
-      CONSISTENCY_WARNING_TEXT_BY_CODE[noteCode] ||
-      ""
-    );
+  function ye(e) {
+    return st[e] || Te[e] || "";
   }
-
-  // src/cataract-engine.js?v=20260511-1
-  function normalizeNearVaValue(value) {
-    return (value || "").trim().toUpperCase();
+  function ot(e) {
+    return (e || "").trim().toUpperCase();
   }
-  var ACTION_COLOUR_RANK = {
-    black: 0,
-    green: 1,
-    orange: 2,
-    red: 3,
-  };
-  var CATARACT_CONFIDENCE_RANK = {
-    definite: 0,
-    probable: 1,
-    possible_pupil: 2,
-    possible_competing: 3,
-  };
-  var ROUTINE_REVIEW_ACTION_CODES = /* @__PURE__ */ new Set([
-    "cataract_routine",
-    "cataract_early_review_va_6_6",
-    "cataract_early_review_mild_va",
-    "normal_reflex_mild_review",
-    "normal_reflex_no_referral",
-  ]);
-  var MAX_ACTION_NOTES_BY_COLOUR = {
-    black: 0,
-    green: 2,
-    orange: 3,
-    red: 3,
-  };
-  var REQUIRED_INPUT_KEYS = ["onset", "eyes", "distanceVA", "fundal", "back"];
-  var ASSESSMENT_FIELD_LABELS = {
-    pain: "pain/redness",
-    front: "front eye",
-    rapd: "RAPD",
-    light: "light direction",
-  };
-  function escalateActionColour(currentColour, nextColour) {
-    var _a, _b;
-    const currentRank =
-      (_a = ACTION_COLOUR_RANK[currentColour]) != null ? _a : 0;
-    const nextRank =
-      (_b = ACTION_COLOUR_RANK[nextColour]) != null ? _b : currentRank;
-    return nextRank > currentRank ? nextColour : currentColour;
+  var xe = { black: 0, green: 1, orange: 2, red: 3 },
+    De = {
+      observed: 0,
+      definite: 0,
+      probable: 1,
+      possible_incomplete: 1.5,
+      possible_pupil: 2,
+      possible_competing: 3,
+    },
+    it = new Set([
+      "cataract_routine",
+      "cataract_early_review_va_6_6",
+      "cataract_early_review_mild_va",
+      "normal_reflex_mild_review",
+      "normal_reflex_no_referral",
+    ]),
+    ct = { black: 0, green: 2, orange: 3, red: 3 },
+    Ve = ["onset", "eyes", "age", "distanceVA", "fundal", "back"],
+    lt = {
+      pain: "pain/redness",
+      pupil: "pupil",
+      front: "front eye",
+      afferent: "RAPD/light response",
+    };
+  function ce(e, t) {
+    var _, h;
+    let a = (_ = xe[e]) != null ? _ : 0;
+    return ((h = xe[t]) != null ? h : a) > a ? t : e;
   }
-  function deriveInitialCataractType(fundalSelection) {
-    if (fundalSelection === "normal") {
-      return "Normal";
-    }
-    if (fundalSelection === "white") {
-      return "Mature";
-    }
-    if (fundalSelection === "dark") {
-      return "Nuclear";
-    }
-    if (fundalSelection === "patches") {
-      return "Cortical";
-    }
-    if (fundalSelection === "spots") {
-      return "Subcapsular";
-    }
-    return "";
+  function dt(e) {
+    return e === "normal"
+      ? "Normal"
+      : e === "white"
+        ? "White reflex"
+        : e === "dark"
+          ? "Nuclear"
+          : e === "patches"
+            ? "Cortical"
+            : e === "spots"
+              ? "Subcapsular"
+              : "";
   }
-  function deriveNearVaNoteCode(nearVAValue) {
-    switch (nearVAValue) {
+  function _t(e) {
+    switch (e) {
       case "N8":
         return "near_va_n8";
       case "N12":
@@ -229,180 +190,127 @@
         return "";
     }
   }
-  function deriveCataractDisplayType(cataractPhenotype, confidenceLabel) {
-    if (cataractPhenotype === "Nil") {
-      return "Nil";
-    }
-    if (confidenceLabel === "probable") {
-      return `Probable ${cataractPhenotype}`;
-    }
-    if (confidenceLabel === "possible_pupil") {
-      return `Possible ${cataractPhenotype} (also pupil abnormality)`;
-    }
-    if (confidenceLabel === "possible_competing") {
-      return `Possible ${cataractPhenotype} (other urgent pathology suspected)`;
-    }
-    return cataractPhenotype;
+  function ut(e, t) {
+    return e === "Nil"
+      ? "Nil"
+      : e === "White reflex"
+        ? "White reflex"
+        : t === "probable"
+          ? `Probable ${e}`
+          : t === "possible_pupil" || t === "possible_incomplete"
+            ? `Possible ${e}`
+            : t === "possible_competing"
+              ? `Possible ${e}`
+              : e;
   }
-  function applyActionNotePolicy(actionNoteCodes, actionColour) {
-    var _a;
-    const maxNotes =
-      (_a = MAX_ACTION_NOTES_BY_COLOUR[actionColour]) != null ? _a : 3;
-    let filteredCodes = [...actionNoteCodes];
-    if (actionColour === "red") {
-      filteredCodes = filteredCodes.filter(
-        (code) => !code.startsWith("near_va_"),
-      );
-    }
-    if (maxNotes <= 0) {
-      return [];
-    }
-    return filteredCodes.slice(0, maxNotes);
+  function pt(e, t) {
+    var _;
+    let a = (_ = ct[t]) != null ? _ : 3,
+      s = [...e];
+    return (
+      t === "red" && (s = s.filter((h) => !h.startsWith("near_va_"))),
+      a <= 0 ? [] : s.slice(0, a)
+    );
   }
-  function formatPlainList(items) {
-    if (items.length <= 1) {
-      return items[0] || "";
-    }
-    if (items.length === 2) {
-      return `${items[0]} and ${items[1]}`;
-    }
-    return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+  function ft(e) {
+    return e.length <= 1
+      ? e[0] || ""
+      : e.length === 2
+        ? `${e[0]} and ${e[1]}`
+        : `${e.slice(0, -1).join(", ")} and ${e[e.length - 1]}`;
   }
-  function buildMissingAssessmentNote(missingAssessmentFieldKeys) {
-    const labels = missingAssessmentFieldKeys
-      .map((fieldKey) => ASSESSMENT_FIELD_LABELS[fieldKey])
-      .filter(Boolean);
-    if (labels.length === 0) {
-      return getNoteText("assessment_incomplete_record_fields");
-    }
-    const checkLabel = labels.length === 1 ? "check" : "checks";
-    return `Record missing ${checkLabel}: ${formatPlainList(labels)}.`;
+  function mt(e) {
+    let t = e.map((a) => lt[a]).filter(Boolean);
+    return t.length === 0
+      ? ye("assessment_incomplete_record_fields")
+      : `Missing: ${ft(t)}.`;
   }
-  function deriveConsistencyWarnings({
-    onsetValue,
-    eyes,
-    painYes,
-    normalizedNearVa,
-    isPresbyopicAge,
-    hasNonPaediatricAgeBand,
-    hasFixFollowDistanceVa,
-    hasAbnormalFundal,
-    hasWhiteFundal,
-    hasPosteriorPriorityDisease,
-    hasPoorView,
-    hasMildDistanceLoss,
-    hasModerateDistanceLoss,
-    hasSevereDistanceLoss,
-    hasGoodDistanceVision,
-    hasPainfulSuddenUnilateral,
+  function ht({
+    onsetValue: e,
+    eyes: t,
+    painYes: a,
+    normalizedNearVa: s,
+    isPresbyopicAge: _,
+    hasNonPaediatricAgeBand: h,
+    hasFixFollowDistanceVa: f,
+    hasAbnormalFundal: u,
+    hasWhiteFundal: p,
+    hasPosteriorPriorityDisease: v,
+    hasPoorView: b,
+    hasMildDistanceLoss: q,
+    hasModerateDistanceLoss: L,
+    hasSevereDistanceLoss: M,
+    hasGoodDistanceVision: R,
+    hasPainfulSuddenUnilateral: B,
   }) {
-    const warnings = [];
-    const warningFields = /* @__PURE__ */ new Set();
-    function addWarning(code, fields) {
-      warnings.push(code);
-      fields.forEach((field) => warningFields.add(field));
+    let S = [],
+      I = new Set();
+    function A(N, D) {
+      (S.push(N), D.forEach((J) => I.add(J)));
     }
-    if (hasNonPaediatricAgeBand && hasFixFollowDistanceVa) {
-      addWarning("fix_follow_with_non_child_age", ["distanceVA", "age"]);
-    }
-    if (
-      !hasAbnormalFundal &&
-      (hasModerateDistanceLoss || hasSevereDistanceLoss)
-    ) {
-      addWarning("normal_reflex_with_reduced_va", ["distanceVA", "fundal"]);
-    }
-    if (hasWhiteFundal && (hasGoodDistanceVision || hasMildDistanceLoss)) {
-      addWarning("white_reflex_with_relatively_good_va", [
-        "distanceVA",
-        "fundal",
-      ]);
-    } else if (
-      hasAbnormalFundal &&
-      hasGoodDistanceVision &&
-      !hasPosteriorPriorityDisease
-    ) {
-      addWarning("abnormal_reflex_with_va_6_6", ["distanceVA", "fundal"]);
-    }
-    const hasNearRecorded = Boolean(normalizedNearVa);
-    const hasGoodNearVision =
-      normalizedNearVa === "N5" || normalizedNearVa === "N8";
-    const hasPoorNearVision =
-      normalizedNearVa === "N18" || normalizedNearVa === "N36";
-    if (
-      hasNearRecorded &&
-      hasGoodDistanceVision &&
-      hasPoorNearVision &&
-      !isPresbyopicAge
-    ) {
-      addWarning("near_poor_with_good_distance", ["distanceVA", "near"]);
-    }
-    if (
-      hasNearRecorded &&
-      hasGoodNearVision &&
-      (hasSevereDistanceLoss || hasModerateDistanceLoss)
-    ) {
-      addWarning("near_good_with_poor_distance", ["distanceVA", "near"]);
-    }
-    if (
-      onsetValue === "sudden" &&
-      hasAbnormalFundal &&
-      !hasPosteriorPriorityDisease &&
-      !hasPainfulSuddenUnilateral
-    ) {
-      addWarning("sudden_onset_with_cataract_pattern", ["onset"]);
-    }
-    if (
-      Boolean(painYes) &&
-      hasAbnormalFundal &&
-      !hasPosteriorPriorityDisease &&
-      !hasPainfulSuddenUnilateral
-    ) {
-      addWarning("pain_with_cataract_pattern", ["pain", "fundal"]);
-    }
-    if (!hasAbnormalFundal && hasPoorView) {
-      addWarning("normal_reflex_with_poor_back_view", ["fundal", "back"]);
-    }
-    if (Boolean(painYes) && !eyes && !hasPosteriorPriorityDisease) {
-      addWarning("pain_without_eye_count", ["eyes", "pain"]);
-    }
-    const WARNING_PRIORITY = {
-      pain_without_eye_count: 0,
-      fix_follow_with_non_child_age: 1,
-      normal_reflex_with_reduced_va: 2,
-      normal_reflex_with_poor_back_view: 3,
-      white_reflex_with_relatively_good_va: 4,
-      abnormal_reflex_with_va_6_6: 5,
-      near_poor_with_good_distance: 6,
-      near_good_with_poor_distance: 6,
-      sudden_onset_with_cataract_pattern: 7,
-      pain_with_cataract_pattern: 8,
-    };
-    const sortedWarningCodes = [...warnings].sort((left, right) => {
-      var _a, _b;
-      const leftPriority = (_a = WARNING_PRIORITY[left]) != null ? _a : 99;
-      const rightPriority = (_b = WARNING_PRIORITY[right]) != null ? _b : 99;
-      return leftPriority - rightPriority;
-    });
-    const displayCodes = sortedWarningCodes.slice(0, 2);
+    (h && f && A("fix_follow_with_non_child_age", ["distanceVA", "age"]),
+      !u &&
+        (L || M) &&
+        A("normal_reflex_with_reduced_va", ["distanceVA", "fundal"]),
+      p &&
+        (R || q) &&
+        A("white_reflex_with_relatively_good_va", ["distanceVA", "fundal"]));
+    let $ = !!s,
+      F = s === "N5" || s === "N8";
+    ($ &&
+      R &&
+      (s === "N18" || s === "N36") &&
+      !_ &&
+      A("near_poor_with_good_distance", ["distanceVA", "near"]),
+      $ &&
+        F &&
+        (M || L) &&
+        A("near_good_with_poor_distance", ["distanceVA", "near"]),
+      e === "sudden" &&
+        u &&
+        !v &&
+        !B &&
+        A("sudden_onset_with_cataract_pattern", ["onset"]),
+      a && u && !v && !B && A("pain_with_cataract_pattern", ["pain", "fundal"]),
+      !u && b && A("normal_reflex_with_poor_back_view", ["fundal", "back"]),
+      a && !t && !v && A("pain_without_eye_count", ["eyes", "pain"]));
+    let Y = {
+        pain_without_eye_count: 0,
+        fix_follow_with_non_child_age: 1,
+        normal_reflex_with_reduced_va: 2,
+        normal_reflex_with_poor_back_view: 3,
+        white_reflex_with_relatively_good_va: 4,
+        abnormal_reflex_with_va_6_6: 5,
+        near_poor_with_good_distance: 6,
+        near_good_with_poor_distance: 6,
+        sudden_onset_with_cataract_pattern: 7,
+        pain_with_cataract_pattern: 8,
+      },
+      G = [...S]
+        .sort((N, D) => {
+          var U, m;
+          let J = (U = Y[N]) != null ? U : 99,
+            Z = (m = Y[D]) != null ? m : 99;
+          return J - Z;
+        })
+        .slice(0, 2);
     return {
-      messages: displayCodes
-        .map((code) => CONSISTENCY_WARNING_TEXT_BY_CODE[code])
-        .filter(Boolean),
-      codes: warnings,
-      displayCodes,
-      fields: [...warningFields],
+      messages: G.map((N) => Te[N]).filter(Boolean),
+      codes: S,
+      displayCodes: G,
+      fields: [...I],
     };
   }
-  function buildNoResultDecision(missingFields) {
+  function gt(e) {
     return {
-      hasResult: false,
+      hasResult: !1,
       actionCode: "incomplete_input",
       actionTextCode: "incomplete_input",
-      severityRank: ACTION_COLOUR_RANK.black,
+      severityRank: xe.black,
       flags: ["incomplete_input"],
       ruleTrace: ["input:incomplete"],
-      missingFields,
-      requiredInputKeys: REQUIRED_INPUT_KEYS,
+      missingFields: e,
+      requiredInputKeys: Ve,
       cataractType: "",
       cataractPhenotype: "",
       cataractConfidenceLabel: "",
@@ -416,547 +324,494 @@
       explanations: { cataract: "", back: "" },
     };
   }
-  function buildExplanations(cataractPhenotype, backSelection) {
-    const cataract =
-      CATARACT_EXPLANATION_HTML_BY_PHENOTYPE[cataractPhenotype] || "";
-    const back = BACK_EXPLANATION_HTML_BY_SELECTION[backSelection] || "";
-    return { cataract, back };
+  function yt(e, t) {
+    let a = Oe[e] || "",
+      s = Me[t] || "";
+    return { cataract: a, back: s };
   }
-  function evaluateCataractDecision({
-    onsetValue,
-    ageBand,
-    distanceVA,
-    nearVAValue,
-    eyes,
-    painYes,
-    painRecorded,
-    pupilSelected,
-    pupilRecorded,
-    pupilAbnormal,
-    frontPresent,
-    frontRecorded,
-    rapdPresent,
-    rapdRecorded,
-    directionLightPoor,
-    lightRecorded,
-    fundalSelection,
-    backSelection,
+  function qe({
+    onsetValue: e,
+    ageBand: t,
+    distanceVA: a,
+    nearVAValue: s,
+    eyes: _,
+    painYes: h,
+    painRecorded: f,
+    pupilSelected: u,
+    pupilRecorded: p,
+    pupilAbnormal: v,
+    frontPresent: b,
+    frontRecorded: q,
+    afferentConcern: L,
+    afferentRecorded: M,
+    rapdPresent: R,
+    rapdRecorded: B,
+    directionLightPoor: S,
+    lightRecorded: I,
+    fundalSelection: A,
+    backSelection: $,
   }) {
-    var _a;
-    const missingFields = [];
-    if (!onsetValue) {
-      missingFields.push("onset");
-    }
-    if (!eyes) {
-      missingFields.push("eyes");
-    }
-    if (!distanceVA) {
-      missingFields.push("distanceVA");
-    }
-    if (!fundalSelection) {
-      missingFields.push("fundal");
-    }
-    if (!backSelection) {
-      missingFields.push("back");
-    }
-    if (missingFields.length > 0) {
-      return buildNoResultDecision(missingFields);
-    }
-    const normalizedAgeBand = ageBand === "teenager" ? "adolescent" : ageBand;
-    const normalizedBackSelection =
-      fundalSelection === "white" && backSelection !== "poor view"
-        ? "poor view"
-        : backSelection;
-    const wasWhiteBackNormalized = normalizedBackSelection !== backSelection;
-    const isPainRecorded =
-      typeof painRecorded === "boolean" ? painRecorded : true;
-    const isPupilRecorded =
-      Boolean(pupilAbnormal) ||
-      (typeof pupilRecorded === "boolean" ? pupilRecorded : true);
-    const isFrontRecorded =
-      typeof frontRecorded === "boolean" ? frontRecorded : true;
-    const isRapdRecorded =
-      typeof rapdRecorded === "boolean" ? rapdRecorded : true;
-    const isLightRecorded =
-      typeof lightRecorded === "boolean" ? lightRecorded : true;
-    const missingAssessmentFieldKeys = [];
-    if (!isPainRecorded) {
-      missingAssessmentFieldKeys.push("pain");
-    }
-    if (!isFrontRecorded) {
-      missingAssessmentFieldKeys.push("front");
-    }
-    if (!isRapdRecorded) {
-      missingAssessmentFieldKeys.push("rapd");
-    }
-    if (!isLightRecorded) {
-      missingAssessmentFieldKeys.push("light");
-    }
-    const flags = /* @__PURE__ */ new Set();
-    const ruleTrace = ["input:complete"];
-    if (wasWhiteBackNormalized) {
-      flags.add("normalized_white_back_forced_poor_view");
-      ruleTrace.push("input:normalized_white_back");
-    }
-    let actionCode = "";
-    let actionTextCode = "";
-    let cataractPhenotype = deriveInitialCataractType(fundalSelection);
-    let cataractConfidenceLabel = "definite";
-    const hasPosteriorPriorityDisease = [
-      "cupping",
-      "diabetic",
-      "detached",
-    ].includes(normalizedBackSelection);
-    const hasWhiteFundal = fundalSelection === "white";
-    const hasAbnormalFundal = fundalSelection !== "normal";
-    const hasPoorView = normalizedBackSelection === "poor view";
-    const isDistanceVaUntestable = distanceVA === "unable_test";
-    const hasFixFollowDistanceVa =
-      distanceVA === "fix_follow_good" || distanceVA === "fix_follow_poor";
-    const hasSevereDistanceLoss =
-      distanceVA === "HM" ||
-      distanceVA === "6/60" ||
-      distanceVA === "fix_follow_poor" ||
-      isDistanceVaUntestable;
-    const hasModerateDistanceLoss = distanceVA === "6/36";
-    const hasMildDistanceLoss =
-      distanceVA === "6/12" || distanceVA === "fix_follow_good";
-    const hasGoodDistanceVision = distanceVA === "6/6";
-    const isPaediatric = ["baby", "child", "adolescent"].includes(
-      normalizedAgeBand,
-    );
-    const hasNonPaediatricAgeBand = Boolean(normalizedAgeBand) && !isPaediatric;
-    const isPresbyopicAge = ["middle_aged", "elderly", "very_elderly"].includes(
-      normalizedAgeBand,
-    );
-    const isYoungerAdult = ["young_adult", "adult"].includes(normalizedAgeBand);
-    if (fundalSelection === "normal") {
-      cataractPhenotype = "Nil";
-      ruleTrace.push("phenotype:normal_reflex");
-    } else {
-      ruleTrace.push("phenotype:abnormal_reflex");
-    }
-    let actionColour = "black";
-    let actionNoteCodes = [];
-    const dynamicNoteTextByCode = /* @__PURE__ */ new Map();
-    function setAction(code, colour) {
-      actionCode = code;
-      actionTextCode = code;
-      if (colour) {
-        actionColour = colour;
-      }
-    }
-    function pushNoteCode(code) {
-      if (code && !actionNoteCodes.includes(code)) {
-        actionNoteCodes.push(code);
-      }
-    }
-    if (hasPosteriorPriorityDisease) {
-      cataractPhenotype = "Nil";
-      cataractConfidenceLabel = "definite";
-      const posteriorBaseColour =
-        normalizedBackSelection === "detached" ? "red" : "orange";
-      setAction("posterior_disease_first", posteriorBaseColour);
-      flags.add("posterior_priority");
-      if (posteriorBaseColour === "red") {
-        flags.add("urgent_signal");
-      }
-      ruleTrace.push("core:posterior_override");
-    } else if (!hasAbnormalFundal) {
-      ruleTrace.push("core:normal_reflex_pathway");
-      if (isDistanceVaUntestable) {
-        setAction("normal_reflex_untestable_va_early", "orange");
-        flags.add("non_cataract_consideration");
-        ruleTrace.push("va:untestable");
-      } else if (hasSevereDistanceLoss) {
-        setAction("normal_reflex_very_poor_va_early", "orange");
-        flags.add("non_cataract_consideration");
-        ruleTrace.push("va:severe_loss");
-      } else if (hasModerateDistanceLoss) {
-        setAction("normal_reflex_reduced_va_recheck", "orange");
-        flags.add("non_cataract_consideration");
-        ruleTrace.push("va:moderate_loss");
-      } else if (hasMildDistanceLoss) {
-        setAction("normal_reflex_mild_review", "orange");
-        ruleTrace.push("va:mild_loss");
-      } else {
-        setAction("normal_reflex_no_referral", "black");
-        ruleTrace.push("va:good");
-      }
-    } else {
-      ruleTrace.push("core:abnormal_reflex_pathway");
-      if (hasWhiteFundal) {
-        setAction("cataract_priority_white", "red");
-        flags.add("urgent_signal");
-        ruleTrace.push("reflex:white");
-      } else if (hasPoorView) {
-        setAction("cataract_poor_view_assessment", "orange");
-        ruleTrace.push("reflex:poor_view");
-      } else {
-        setAction("cataract_routine", "green");
-        ruleTrace.push("reflex:non_white_abnormal");
-      }
-      if (!hasWhiteFundal) {
-        if (isDistanceVaUntestable) {
-          setAction("cataract_untestable_va_assess", "orange");
-          ruleTrace.push("va:untestable");
-        } else if (hasSevereDistanceLoss) {
-          setAction("cataract_priority_very_poor_va", "orange");
-          ruleTrace.push("va:severe_loss");
-        } else if (hasModerateDistanceLoss && !hasPoorView) {
-          setAction("cataract_early_referral_reduced_va", "orange");
-          ruleTrace.push("va:moderate_loss");
-        } else if (hasMildDistanceLoss && !hasPoorView) {
-          setAction("cataract_early_review_mild_va", "orange");
-          ruleTrace.push("va:mild_loss");
-        } else if (hasGoodDistanceVision && !hasPoorView) {
-          setAction("cataract_early_review_va_6_6", "orange");
-          ruleTrace.push("va:good");
-        }
-      }
-    }
-    const normalizedNearVa = normalizeNearVaValue(nearVAValue);
-    if (isPaediatric) {
-      flags.add("age_child");
-      ruleTrace.push("age:child");
-      if (hasPosteriorPriorityDisease) {
-        pushNoteCode("child_case_posterior_review");
-        ruleTrace.push("age:child_posterior_note");
-      } else if (hasAbnormalFundal) {
-        actionColour = escalateActionColour(
-          actionColour,
-          hasWhiteFundal ? "red" : "orange",
-        );
-        if (actionCode !== "urgent_same_day_investigation") {
-          setAction("child_cataract_prompt_referral", actionColour);
-        }
-        pushNoteCode("child_cataract_delay_risk");
-        ruleTrace.push("age:child_cataract_adjustment");
-      } else if (!hasGoodDistanceVision) {
-        actionColour = escalateActionColour(actionColour, "orange");
-        if (actionCode !== "urgent_same_day_investigation") {
-          setAction("child_reduced_vision_early_assessment", actionColour);
-        }
-        pushNoteCode("child_reduced_vision_early_review");
-        ruleTrace.push("age:child_reduced_vision_adjustment");
-      }
-    } else if (
-      isYoungerAdult &&
-      hasAbnormalFundal &&
-      !hasPosteriorPriorityDisease
-    ) {
-      pushNoteCode("younger_age_secondary_causes");
-      flags.add("age_younger_atypical");
-      ruleTrace.push("age:younger_atypical_note");
-    }
-    if (hasPosteriorPriorityDisease) {
-      if (normalizedBackSelection === "detached") {
-        pushNoteCode("posterior_detached_same_day");
-      } else if (normalizedBackSelection === "diabetic") {
-        pushNoteCode("posterior_diabetic_first");
-      } else if (normalizedBackSelection === "cupping") {
-        pushNoteCode("posterior_cupping_glaucoma");
-      }
-    }
-    if (normalizedNearVa && normalizedNearVa !== "N5") {
-      const nearVaNoteCode = deriveNearVaNoteCode(normalizedNearVa);
-      if (nearVaNoteCode) {
-        pushNoteCode(nearVaNoteCode);
-        flags.add("near_va_modifier");
-        ruleTrace.push("near_va:modifier_added");
-      }
-    }
-    function escalateCataractConfidence(nextConfidenceLabel) {
-      var _a2, _b;
-      const currentRank =
-        (_a2 = CATARACT_CONFIDENCE_RANK[cataractConfidenceLabel]) != null
-          ? _a2
-          : 0;
-      const nextRank =
-        (_b = CATARACT_CONFIDENCE_RANK[nextConfidenceLabel]) != null
-          ? _b
-          : currentRank;
-      if (nextRank > currentRank) {
-        cataractConfidenceLabel = nextConfidenceLabel;
-      }
-    }
-    const hasPainfulSuddenUnilateral =
-      eyes === "one" && onsetValue === "sudden" && Boolean(painYes);
-    if (hasPainfulSuddenUnilateral) {
-      actionColour = escalateActionColour(actionColour, "red");
-      flags.add("urgent_signal");
-      flags.add("painful_sudden_unilateral");
-      ruleTrace.push("safety:painful_sudden_unilateral");
-      if (cataractPhenotype !== "Nil") {
-        escalateCataractConfidence("possible_competing");
-        flags.add("competing_pathology");
-      }
-    }
-    if (!isPupilRecorded) {
-      if (hasAbnormalFundal && cataractPhenotype !== "Nil") {
-        escalateCataractConfidence("probable");
-        flags.add("pupil_not_recorded");
-        ruleTrace.push("pupil:not_recorded");
-      }
-    } else if (pupilAbnormal) {
-      pushNoteCode("pupil_abnormal_review");
-      actionColour = escalateActionColour(actionColour, "orange");
-      flags.add("pupil_abnormal");
-      flags.add("urgent_signal");
-      ruleTrace.push("pupil:abnormal");
-      if (cataractPhenotype !== "Nil") {
-        escalateCataractConfidence("possible_pupil");
-      }
-    }
-    if (frontPresent) {
-      pushNoteCode("front_abnormal_prognosis_limited");
-      actionColour = escalateActionColour(actionColour, "orange");
-      flags.add("front_abnormal");
-      ruleTrace.push("front:abnormal");
-    }
-    const hasNeuroRedFlags =
-      Boolean(rapdPresent) || Boolean(directionLightPoor);
-    if (hasNeuroRedFlags) {
-      pushNoteCode("neuro_red_flags");
-      actionColour = escalateActionColour(actionColour, "orange");
-      flags.add("neuro_red_flags");
-      if (rapdPresent) {
-        flags.add("rapd_present");
-      }
-      if (directionLightPoor) {
-        flags.add("direction_light_poor");
-      }
-      ruleTrace.push("neuro:red_flags");
-      if (
-        !hasPosteriorPriorityDisease &&
-        !hasWhiteFundal &&
-        actionCode !== "urgent_same_day_investigation"
-      ) {
-        setAction("rapd_non_cataract_first", actionColour);
-        ruleTrace.push("neuro:main_action_override");
-      }
-      if (cataractPhenotype !== "Nil" && !hasPosteriorPriorityDisease) {
-        escalateCataractConfidence("possible_competing");
-        flags.add("competing_pathology");
-        ruleTrace.push("neuro:competing_confidence");
-      }
-    }
-    const consistencyWarnings = deriveConsistencyWarnings({
-      onsetValue,
-      eyes,
-      painYes,
-      normalizedNearVa,
-      isPresbyopicAge,
-      hasNonPaediatricAgeBand,
-      hasFixFollowDistanceVa,
-      hasAbnormalFundal,
-      hasWhiteFundal,
-      hasPosteriorPriorityDisease,
-      hasPoorView,
-      hasMildDistanceLoss,
-      hasModerateDistanceLoss,
-      hasSevereDistanceLoss,
-      hasGoodDistanceVision,
-      hasPainfulSuddenUnilateral,
-    });
-    if (consistencyWarnings.displayCodes.length > 0) {
-      consistencyWarnings.displayCodes.forEach((code) => pushNoteCode(code));
-      actionColour = escalateActionColour(actionColour, "orange");
-      flags.add("consistency_warning");
-      flags.add("requires_recheck");
-      consistencyWarnings.codes.forEach((code) =>
-        flags.add(`consistency:${code}`),
-      );
-      ruleTrace.push("consistency:warnings_added");
-    }
-    const hasWhiteRelativelyGoodVaMismatch = consistencyWarnings.codes.includes(
-      "white_reflex_with_relatively_good_va",
-    );
-    const shouldUseWhiteMismatchRecheckOverride =
-      hasWhiteRelativelyGoodVaMismatch &&
-      actionCode === "cataract_priority_white" &&
-      onsetValue === "gradual" &&
-      !Boolean(painYes) &&
-      !Boolean(pupilAbnormal) &&
-      !Boolean(frontPresent) &&
-      !hasNeuroRedFlags &&
-      !isPaediatric;
-    if (shouldUseWhiteMismatchRecheckOverride) {
-      setAction("recheck_investigate_first", "orange");
-      flags.add("white_relatively_good_va_recheck_override");
-      flags.add("recheck_override");
-      ruleTrace.push("consistency:white_relatively_good_va_override");
-    }
-    const recheckFieldSet = new Set(consistencyWarnings.fields);
-    if (missingAssessmentFieldKeys.length > 0) {
-      flags.add("incomplete_assessment");
-      missingAssessmentFieldKeys.forEach((fieldKey) => {
-        flags.add(`missing_assessment:${fieldKey}`);
-      });
-      ruleTrace.push("assessment:incomplete");
-      if (actionColour !== "black") {
-        flags.add("requires_recheck");
-        dynamicNoteTextByCode.set(
-          "assessment_incomplete_record_fields",
-          buildMissingAssessmentNote(missingAssessmentFieldKeys),
-        );
-        pushNoteCode("assessment_incomplete_record_fields");
-        missingAssessmentFieldKeys.forEach((fieldKey) =>
-          recheckFieldSet.add(fieldKey),
-        );
-        ruleTrace.push("assessment:note_added");
-      }
-    }
-    const hasHighRiskContext =
-      onsetValue === "sudden" ||
-      Boolean(painYes) ||
-      Boolean(pupilAbnormal) ||
-      Boolean(frontPresent) ||
-      Boolean(rapdPresent) ||
-      Boolean(directionLightPoor);
+    var Be;
+    let F = [];
     if (
-      flags.has("requires_recheck") &&
-      hasHighRiskContext &&
-      ROUTINE_REVIEW_ACTION_CODES.has(actionCode)
+      (e || F.push("onset"),
+      _ || F.push("eyes"),
+      t || F.push("age"),
+      a || F.push("distanceVA"),
+      A || F.push("fundal"),
+      $ || F.push("back"),
+      F.length > 0)
     ) {
-      setAction("recheck_investigate_first", actionColour);
-      actionColour = escalateActionColour(actionColour, "orange");
-      flags.add("recheck_override");
-      ruleTrace.push("consistency:high_risk_override");
-    }
-    let urgencyNoteCode = "";
-    let urgencyNote = "";
-    let urgencyNoteColour = "";
-    if (Boolean(painYes) && onsetValue === "sudden") {
-      urgencyNoteCode = "urgency_note_urgent";
-      urgencyNote = getNoteText(urgencyNoteCode);
-      urgencyNoteColour = "red";
-      flags.add("urgent_signal");
-      flags.add("urgency_note");
-      ruleTrace.push("urgency:urgent_note");
-    } else if (painYes || onsetValue === "sudden") {
-      urgencyNoteCode = "urgency_note_early";
-      urgencyNote = getNoteText(urgencyNoteCode);
-      urgencyNoteColour = "orange";
-      flags.add("urgency_note");
-      ruleTrace.push("urgency:early_note");
-    }
-    if (urgencyNoteColour === "orange" || urgencyNoteColour === "red") {
-      actionColour = escalateActionColour(actionColour, urgencyNoteColour);
-      ruleTrace.push("urgency:colour_escalation");
-    }
-    if (
-      urgencyNoteColour === "red" &&
-      !hasPosteriorPriorityDisease &&
-      actionCode !== "urgent_same_day_investigation"
-    ) {
-      setAction("urgent_same_day_investigation", "red");
-      flags.add("urgent_main_action");
-      ruleTrace.push("urgency:main_action_override");
-    }
-    if (
-      actionCode === "urgent_same_day_investigation" &&
-      cataractPhenotype !== "Nil" &&
-      !hasPosteriorPriorityDisease
-    ) {
-      escalateCataractConfidence("possible_competing");
-      flags.add("competing_pathology");
-      ruleTrace.push("urgency:competing_confidence");
-    }
-    if (
-      actionCode === "normal_reflex_no_referral" &&
-      actionColour !== "black"
-    ) {
-      actionTextCode = "normal_reflex_non_cataract_reframe";
-      ruleTrace.push("core:normal_reflex_non_cataract_reframe");
-    }
-    if (
-      urgencyNoteCode &&
-      urgencyNoteColour &&
-      !(
-        urgencyNoteCode === "urgency_note_urgent" &&
-        actionCode === "urgent_same_day_investigation"
-      ) &&
-      !actionNoteCodes.includes(urgencyNoteCode)
-    ) {
-      pushNoteCode(urgencyNoteCode);
-      ruleTrace.push("urgency:note_added_to_checks");
-    }
-    if (
-      actionCode === "urgent_same_day_investigation" &&
-      !actionNoteCodes.includes("urgent_trigger_painful_one_or_sudden")
-    ) {
-      pushNoteCode("urgent_trigger_painful_one_or_sudden");
-      ruleTrace.push("urgency:trigger_note_added");
-    }
-    if (actionColour === "red") {
-      flags.add("urgent_signal");
-    }
-    actionNoteCodes.sort((left, right) => {
-      var _a2, _b;
+      let g = gt(F),
+        V =
+          $ === "detached"
+            ? "retinal_same_day"
+            : e === "sudden"
+              ? "urgent_same_day_investigation"
+              : ["baby", "child", "adolescent", "teenager"].includes(t) &&
+                  A === "white"
+                ? "child_white_reflex_urgent"
+                : A === "white"
+                  ? "white_reflex_prompt_review"
+                  : "";
+      V &&
+        (Object.assign(g, {
+          actionCode: V,
+          actionTextCode: V,
+          actionText: Ce(V),
+          actionColour: "red",
+          severityRank: 3,
+        }),
+        g.flags.push("urgent_signal"));
+      let oe = typeof L == "boolean" ? L : !!R || !!S,
+        ae = ["cupping", "diabetic"].includes($);
+      if (!V && (h || v || b || oe || ae)) {
+        let Ne = ae
+          ? "posterior_disease_first"
+          : oe
+            ? "rapd_non_cataract_first"
+            : "recheck_investigate_first";
+        Object.assign(g, {
+          actionCode: Ne,
+          actionTextCode: Ne,
+          actionText: Ce(Ne),
+          actionColour: "orange",
+          severityRank: 2,
+        });
+      }
+      let ne = [];
       return (
-        ((_a2 = NOTE_PRIORITY_BY_CODE[left]) != null ? _a2 : 99) -
-        ((_b = NOTE_PRIORITY_BY_CODE[right]) != null ? _b : 99)
+        oe && ne.push("neuro_red_flags"),
+        v && ne.push("pupil_abnormal_review"),
+        h &&
+          (ne.push("pain_with_cataract_pattern"),
+          V || ne.push("urgency_note_early")),
+        b && ne.push("front_abnormal_prognosis_limited"),
+        ae &&
+          ne.push(
+            $ === "cupping"
+              ? "posterior_cupping_glaucoma"
+              : "posterior_diabetic_first",
+          ),
+        (g.actionNoteCodes = ne),
+        (g.actionNotes = ne.map(ye).filter(Boolean)),
+        ne.length &&
+          g.ruleTrace.push("safety:recorded_concerns_incomplete_input"),
+        g
       );
-    });
+    }
+    let j = t === "teenager" ? "adolescent" : t,
+      Y = A === "white" && $ === "normal" ? "poor view" : $,
+      ie = Y !== $,
+      G = typeof f == "boolean" ? f : !0,
+      N = !!v || (typeof p == "boolean" ? p : !0),
+      D = typeof q == "boolean" ? q : !0,
+      J =
+        typeof M == "boolean"
+          ? M
+          : typeof B == "boolean" || typeof I == "boolean"
+            ? !!B && !!I
+            : !0,
+      Z = typeof L == "boolean" ? L : !!R || !!S,
+      U = [];
+    (G || U.push("pain"),
+      N || U.push("pupil"),
+      D || U.push("front"),
+      J || U.push("afferent"));
+    let m = new Set(),
+      o = ["input:complete"];
+    ie &&
+      (m.add("normalized_white_back_forced_poor_view"),
+      o.push("input:normalized_white_back"));
+    let P = "",
+      X = "",
+      W = dt(A),
+      se = A === "white" ? "observed" : "definite",
+      n = ["cupping", "diabetic", "detached"].includes(Y),
+      d = A === "white",
+      C = A !== "normal",
+      w = Y === "poor view",
+      Q = a === "unable_test",
+      z = a === "fix_follow_good" || a === "fix_follow_poor",
+      ee = a === "HM" || a === "6/60" || a === "fix_follow_poor" || Q,
+      re = a === "6/36",
+      i = a === "6/12",
+      c = a === "fix_follow_good",
+      l = a === "6/6",
+      y = ["baby", "child", "adolescent"].includes(j),
+      x = j === "unknown",
+      T = !!j && !y && !x,
+      le = ["middle_aged", "elderly", "very_elderly"].includes(j),
+      ke = ["young_adult", "adult"].includes(j),
+      he =
+        d &&
+        e === "gradual" &&
+        T &&
+        (a === "6/60" || a === "HM") &&
+        G &&
+        !h &&
+        N &&
+        !v &&
+        D &&
+        !b &&
+        J &&
+        !Z &&
+        !n;
+    (A === "normal"
+      ? ((W = "Nil"), o.push("phenotype:normal_reflex"))
+      : o.push("phenotype:abnormal_reflex"),
+      he &&
+        ((W = "Mature"),
+        (se = "probable"),
+        o.push("phenotype:probable_mature_pattern")));
+    let k = "black",
+      H = [],
+      K = new Map();
+    function E(g, V) {
+      ((P = g), (X = g), V && (k = V));
+    }
+    function O(g) {
+      g && !H.includes(g) && H.push(g);
+    }
+    if (n) {
+      let g = Y === "detached" ? "red" : "orange";
+      (E(Y === "detached" ? "retinal_same_day" : "posterior_disease_first", g),
+        m.add("posterior_priority"),
+        W !== "Nil" &&
+          W !== "White reflex" &&
+          ((se = "possible_competing"), m.add("competing_pathology")),
+        g === "red" && m.add("urgent_signal"),
+        o.push("core:posterior_override"));
+    } else
+      C
+        ? (o.push("core:abnormal_reflex_pathway"),
+          d
+            ? (E(
+                he ? "cataract_priority_white" : "white_reflex_prompt_review",
+                "red",
+              ),
+              m.add("urgent_signal"),
+              o.push("reflex:white"))
+            : w
+              ? (E("cataract_poor_view_assessment", "orange"),
+                o.push("reflex:poor_view"))
+              : (E("cataract_routine", "green"),
+                o.push("reflex:non_white_abnormal")),
+          d ||
+            (Q
+              ? (E("cataract_untestable_va_assess", "orange"),
+                o.push("va:untestable"))
+              : ee
+                ? (E("cataract_priority_very_poor_va", "orange"),
+                  o.push("va:severe_loss"))
+                : re && !w
+                  ? (E("cataract_early_referral_reduced_va", "orange"),
+                    o.push("va:moderate_loss"))
+                  : i && !w
+                    ? (E("cataract_early_review_mild_va", "orange"),
+                      o.push("va:mild_loss"))
+                    : l &&
+                      !w &&
+                      (E("cataract_early_review_va_6_6", "orange"),
+                      o.push("va:good"))))
+        : (o.push("core:normal_reflex_pathway"),
+          Q
+            ? (E("normal_reflex_untestable_va_early", "orange"),
+              m.add("non_cataract_consideration"),
+              o.push("va:untestable"))
+            : ee
+              ? (E("normal_reflex_very_poor_va_early", "orange"),
+                m.add("non_cataract_consideration"),
+                o.push("va:severe_loss"))
+              : re
+                ? (E("normal_reflex_reduced_va_recheck", "orange"),
+                  m.add("non_cataract_consideration"),
+                  o.push("va:moderate_loss"))
+                : i
+                  ? (E("normal_reflex_mild_review", "orange"),
+                    o.push("va:mild_loss"))
+                  : (E("normal_reflex_no_referral", "black"),
+                    o.push("va:good")));
+    let pe = ot(s);
     if (
-      actionCode === "urgent_same_day_investigation" &&
-      actionNoteCodes.length === 0
+      (y
+        ? (m.add("age_child"),
+          o.push("age:child"),
+          n
+            ? (O("child_case_posterior_review"),
+              d &&
+                (O("child_white_reflex_causes"),
+                Y !== "detached" && E("child_white_reflex_urgent", "red")),
+              o.push("age:child_posterior_note"))
+            : C
+              ? ((k = ce(k, d ? "red" : "orange")),
+                P !== "urgent_same_day_investigation" &&
+                  E(
+                    d
+                      ? "child_white_reflex_urgent"
+                      : "child_cataract_prompt_referral",
+                    k,
+                  ),
+                O(
+                  d ? "child_white_reflex_causes" : "child_cataract_delay_risk",
+                ),
+                o.push("age:child_cataract_adjustment"))
+              : !l &&
+                !c &&
+                ((k = ce(k, "orange")),
+                P !== "urgent_same_day_investigation" &&
+                  E("child_reduced_vision_early_assessment", k),
+                O("child_reduced_vision_early_review"),
+                o.push("age:child_reduced_vision_adjustment")))
+        : ke &&
+          C &&
+          !n &&
+          (O("younger_age_secondary_causes"),
+          m.add("age_younger_atypical"),
+          o.push("age:younger_atypical_note")),
+      x &&
+        (C || !l) &&
+        (O("age_unknown_caution"),
+        m.add("age_unknown"),
+        o.push("age:unknown_caution")),
+      n &&
+        (Y === "detached"
+          ? O("posterior_detached_same_day")
+          : Y === "diabetic"
+            ? O("posterior_diabetic_first")
+            : Y === "cupping" && O("posterior_cupping_glaucoma")),
+      pe && pe !== "N5")
     ) {
-      pushNoteCode("urgent_features_history_exam");
+      let g = _t(pe);
+      g && (O(g), m.add("near_va_modifier"), o.push("near_va:modifier_added"));
     }
-    actionNoteCodes.sort((left, right) => {
-      var _a2, _b;
-      return (
-        ((_a2 = NOTE_PRIORITY_BY_CODE[left]) != null ? _a2 : 99) -
-        ((_b = NOTE_PRIORITY_BY_CODE[right]) != null ? _b : 99)
-      );
+    function de(g) {
+      var ae, ne;
+      let V = (ae = De[se]) != null ? ae : 0;
+      ((ne = De[g]) != null ? ne : V) > V && (se = g);
+    }
+    let ve = _ === "one" && e === "sudden" && !!h;
+    (ve &&
+      ((k = ce(k, "red")),
+      m.add("urgent_signal"),
+      m.add("painful_sudden_unilateral"),
+      o.push("safety:painful_sudden_unilateral"),
+      W !== "Nil" && (de("possible_competing"), m.add("competing_pathology"))),
+      N
+        ? v &&
+          (O("pupil_abnormal_review"),
+          (k = ce(k, "orange")),
+          m.add("pupil_abnormal"),
+          m.add("urgent_signal"),
+          o.push("pupil:abnormal"),
+          W !== "Nil" && de("possible_pupil"))
+        : C &&
+          W !== "Nil" &&
+          (m.add("pupil_not_recorded"), o.push("pupil:not_recorded")),
+      b &&
+        (O("front_abnormal_prognosis_limited"),
+        (k = ce(k, "orange")),
+        m.add("front_abnormal"),
+        o.push("front:abnormal")));
+    let ge = Z;
+    ge &&
+      (O("neuro_red_flags"),
+      (k = ce(k, "orange")),
+      m.add("neuro_red_flags"),
+      m.add("afferent_concern"),
+      o.push("neuro:red_flags"),
+      !n &&
+        !d &&
+        P !== "urgent_same_day_investigation" &&
+        (E("rapd_non_cataract_first", k), o.push("neuro:main_action_override")),
+      W !== "Nil" &&
+        !n &&
+        (de("possible_competing"),
+        m.add("competing_pathology"),
+        o.push("neuro:competing_confidence")));
+    let fe = ht({
+      onsetValue: e,
+      eyes: _,
+      painYes: h,
+      normalizedNearVa: pe,
+      isPresbyopicAge: le,
+      hasNonPaediatricAgeBand: T,
+      hasFixFollowDistanceVa: z,
+      hasAbnormalFundal: C,
+      hasWhiteFundal: d,
+      hasPosteriorPriorityDisease: n,
+      hasPoorView: w,
+      hasMildDistanceLoss: i,
+      hasModerateDistanceLoss: re,
+      hasSevereDistanceLoss: ee,
+      hasGoodDistanceVision: l,
+      hasPainfulSuddenUnilateral: ve,
     });
-    const actionNoteCountBeforePolicy = actionNoteCodes.length;
-    actionNoteCodes = applyActionNotePolicy(actionNoteCodes, actionColour);
-    if (actionNoteCodes.length < actionNoteCountBeforePolicy) {
-      flags.add("notes_trimmed");
-      ruleTrace.push("notes:policy_trimmed");
+    (fe.displayCodes.length > 0 &&
+      (fe.displayCodes.forEach((g) => O(g)),
+      (k = ce(k, "orange")),
+      m.add("consistency_warning"),
+      m.add("requires_recheck"),
+      fe.codes.forEach((g) => m.add(`consistency:${g}`)),
+      o.push("consistency:warnings_added")),
+      fe.codes.includes("white_reflex_with_relatively_good_va") &&
+        ["white_reflex_prompt_review", "cataract_priority_white"].includes(P) &&
+        e === "gradual" &&
+        !h &&
+        !v &&
+        !b &&
+        !ge &&
+        !y &&
+        (E("white_reflex_recheck", "red"),
+        m.add("white_relatively_good_va_recheck_override"),
+        m.add("recheck_override"),
+        o.push("consistency:white_relatively_good_va_override")));
+    let Pe = new Set(fe.fields);
+    if (U.length > 0) {
+      (W !== "Nil" &&
+        W !== "White reflex" &&
+        (de("possible_incomplete"),
+        o.push("phenotype:provisional_missing_checks")),
+        m.add("incomplete_assessment"),
+        U.forEach((V) => {
+          m.add(`missing_assessment:${V}`);
+        }),
+        o.push("assessment:incomplete"),
+        m.add("requires_recheck"),
+        K.set("assessment_incomplete_record_fields", mt(U)),
+        O("assessment_incomplete_record_fields"),
+        U.forEach((V) => Pe.add(V)),
+        o.push("assessment:note_added"));
+      let g = [
+        "posterior_disease_first",
+        "rapd_non_cataract_first",
+        "child_cataract_prompt_referral",
+        "child_reduced_vision_early_assessment",
+      ].includes(P);
+      k !== "red" &&
+        !g &&
+        (E("complete_missing_checks", "orange"),
+        o.push("assessment:main_action_override"));
     }
-    const actionText = getActionText(actionTextCode || actionCode);
-    const actionNotes = actionNoteCodes
-      .map((code) => dynamicNoteTextByCode.get(code) || getNoteText(code))
-      .filter(Boolean);
-    const cataractType = deriveCataractDisplayType(
-      cataractPhenotype,
-      cataractConfidenceLabel,
-    );
+    let Ze = e === "sudden" || !!h || !!v || !!b || Z;
+    m.has("requires_recheck") &&
+      Ze &&
+      it.has(P) &&
+      (E("recheck_investigate_first", k),
+      (k = ce(k, "orange")),
+      m.add("recheck_override"),
+      o.push("consistency:high_risk_override"));
+    let _e = "",
+      Ee = "",
+      ue = "";
+    (e === "sudden"
+      ? ((_e = "urgency_note_urgent"),
+        (Ee = ye(_e)),
+        (ue = "red"),
+        m.add("urgent_signal"),
+        m.add("urgency_note"),
+        o.push("urgency:urgent_note"))
+      : h &&
+        ((_e = "urgency_note_early"),
+        (Ee = ye(_e)),
+        (ue = "orange"),
+        m.add("urgency_note"),
+        o.push("urgency:early_note")),
+      (ue === "orange" || ue === "red") &&
+        ((k = ce(k, ue)), o.push("urgency:colour_escalation")),
+      ue === "red" &&
+        P !== "urgent_same_day_investigation" &&
+        P !== "retinal_same_day" &&
+        (E("urgent_same_day_investigation", "red"),
+        m.add("urgent_main_action"),
+        o.push("urgency:main_action_override")),
+      P === "urgent_same_day_investigation" &&
+        W !== "Nil" &&
+        !n &&
+        (de("possible_competing"),
+        m.add("competing_pathology"),
+        o.push("urgency:competing_confidence")),
+      P === "normal_reflex_no_referral" &&
+        k !== "black" &&
+        ((X = "normal_reflex_non_cataract_reframe"),
+        o.push("core:normal_reflex_non_cataract_reframe")),
+      _e &&
+        ue &&
+        !(
+          _e === "urgency_note_urgent" && P === "urgent_same_day_investigation"
+        ) &&
+        !H.includes(_e) &&
+        (O(_e), o.push("urgency:note_added_to_checks")),
+      P === "urgent_same_day_investigation" &&
+        !H.includes("urgent_trigger_painful_one_or_sudden") &&
+        (O("urgent_trigger_painful_one_or_sudden"),
+        o.push("urgency:trigger_note_added")),
+      k === "red" && m.add("urgent_signal"),
+      H.sort((g, V) => {
+        var oe, ae;
+        return (
+          ((oe = we[g]) != null ? oe : 99) - ((ae = we[V]) != null ? ae : 99)
+        );
+      }),
+      P === "urgent_same_day_investigation" &&
+        H.length === 0 &&
+        O("urgent_features_history_exam"),
+      H.sort((g, V) => {
+        var oe, ae;
+        return (
+          ((oe = we[g]) != null ? oe : 99) - ((ae = we[V]) != null ? ae : 99)
+        );
+      }));
+    let et = H.length;
+    ((H = pt(H, k)),
+      H.length < et &&
+        (m.add("notes_trimmed"), o.push("notes:policy_trimmed")));
+    let tt = Ce(X || P),
+      at = H.map((g) => K.get(g) || ye(g)).filter(Boolean),
+      nt = ut(W, se);
     return {
-      hasResult: true,
-      actionCode,
-      actionTextCode: actionTextCode || actionCode,
-      severityRank:
-        (_a = ACTION_COLOUR_RANK[actionColour]) != null
-          ? _a
-          : ACTION_COLOUR_RANK.black,
-      flags: [...flags].sort(),
-      ruleTrace,
+      hasResult: !0,
+      actionCode: P,
+      actionTextCode: X || P,
+      severityRank: (Be = xe[k]) != null ? Be : xe.black,
+      flags: [...m].sort(),
+      ruleTrace: o,
       missingFields: [],
-      requiredInputKeys: REQUIRED_INPUT_KEYS,
-      cataractType,
-      cataractPhenotype,
-      cataractConfidenceLabel,
-      actionText,
-      actionNotes,
-      actionNoteCodes,
-      actionColour,
-      recheckFieldKeys: [...recheckFieldSet],
-      urgencyNote,
-      urgencyNoteColour,
-      explanations: buildExplanations(
-        cataractPhenotype,
-        normalizedBackSelection,
-      ),
+      requiredInputKeys: Ve,
+      cataractType: nt,
+      cataractPhenotype: W,
+      cataractConfidenceLabel: se,
+      actionText: tt,
+      actionNotes: at,
+      actionNoteCodes: H,
+      actionColour: k,
+      recheckFieldKeys: [...Pe],
+      urgencyNote: Ee,
+      urgencyNoteColour: ue,
+      explanations: yt(W, Y),
     };
   }
-
-  // src/cataract-copy.js?v=20260511-2
-  var UI_COPY = {
+  var be = {
     result: {
       cataractTypeLabel: "Cataract Type",
       nextStepLabel: "Next Step",
@@ -964,10 +819,11 @@
     },
     fundalHint: "Dilate pupils for best view",
     infoPopup: {
-      intro: "Quick cataract triage in seconds.",
+      intro:
+        "Use this while examining the patient: you enter the history, VA, safety findings, fundal reflex and back-of-eye view. It suggests a cataract pattern and next step; it does not make a final diagnosis.",
       bullets: [
-        "History + VA: onset, one or two eyes, pain, age, distance VA and near VA.",
-        "Front: pupils, cornea/scar and RAPD or poor light direction.",
+        "History + VA: onset, one or two eyes, age and affected or worse-eye VA.",
+        "Safety checks: pain/redness, pupils, front eye and RAPD/light response.",
         "Reflex: Normal, Dull, Patches, Spots or Dense.",
         "Back: Normal, Cupped, DR/Scar, Detached or Poor view.",
         "Result: cataract type, next step and short re-checks.",
@@ -976,663 +832,583 @@
         "Teaching aid, not final diagnosis. Look for non-cataract disease when features are atypical or urgent.",
     },
   };
-
-  // src/cataract-controller.js?v=20260511-6
-  var NEUTRAL_BORDER_COLOR = "#ccc";
-  var FUNDAL_BORDER_COLORS = {
-    normal: "green",
-    dark: "orange",
-    patches: "orange",
-    spots: "orange",
-    white: "red",
-  };
-  var BACK_BORDER_COLORS = {
-    normal: "green",
-    detached: "red",
-    cupping: "orange",
-    diabetic: "orange",
-    "poor view": "orange",
-  };
-  var MAX_DISPLAY_NOTES = 3;
-  var NOTE_DEDUP_STOPWORDS = /* @__PURE__ */ new Set([
-    "a",
-    "an",
-    "and",
-    "are",
-    "as",
-    "at",
-    "be",
-    "before",
-    "both",
-    "by",
-    "can",
-    "consider",
-    "for",
-    "first",
-    "from",
-    "in",
-    "is",
-    "it",
-    "key",
-    "needed",
-    "no",
-    "not",
-    "now",
-    "of",
-    "on",
-    "or",
-    "re",
-    "review",
-    "same",
-    "step",
-    "the",
-    "to",
-    "up",
-    "with",
-  ]);
-  function normalizeSnippet(text) {
-    return String(text || "")
+  var Le = "#ccc",
+    vt = {
+      normal: "green",
+      dark: "orange",
+      patches: "orange",
+      spots: "orange",
+      white: "red",
+    },
+    $e = {
+      normal: "green",
+      detached: "red",
+      cupping: "orange",
+      diabetic: "orange",
+      "poor view": "orange",
+    },
+    wt = 3,
+    xt = new Set([
+      "a",
+      "an",
+      "and",
+      "are",
+      "as",
+      "at",
+      "be",
+      "before",
+      "both",
+      "by",
+      "can",
+      "consider",
+      "for",
+      "first",
+      "from",
+      "in",
+      "is",
+      "it",
+      "key",
+      "needed",
+      "no",
+      "not",
+      "now",
+      "of",
+      "on",
+      "or",
+      "re",
+      "review",
+      "same",
+      "step",
+      "the",
+      "to",
+      "up",
+      "with",
+    ]);
+  function We(e) {
+    return String(e || "")
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, " ")
       .trim();
   }
-  function compactNoteText(note) {
-    const trimmed = String(note || "").trim();
-    return trimmed;
+  function bt(e) {
+    return String(e || "").trim();
   }
-  function getMeaningfulTokenSet(text) {
-    const tokens = String(text || "")
+  function Ie(e) {
+    let t = String(e || "")
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, " ")
       .split(" ")
-      .map((token) => token.trim())
-      .filter((token) => token.length >= 3 && !NOTE_DEDUP_STOPWORDS.has(token));
-    return new Set(tokens);
+      .map((a) => a.trim())
+      .filter((a) => a.length >= 3 && !xt.has(a));
+    return new Set(t);
   }
-  function isMostlyRepeatOfAction(noteText, actionText, actionTokenSet) {
-    const noteTokens = getMeaningfulTokenSet(noteText);
-    const actionTokens = actionTokenSet || getMeaningfulTokenSet(actionText);
-    if (noteTokens.size < 2 || actionTokens.size < 2) {
-      return false;
-    }
-    let shared = 0;
-    noteTokens.forEach((token) => {
-      if (actionTokens.has(token)) {
-        shared += 1;
-      }
+  function kt(e, t, a) {
+    let s = Ie(e),
+      _ = a || Ie(t);
+    if (s.size < 2 || _.size < 2) return !1;
+    let h = 0;
+    s.forEach((p) => {
+      _.has(p) && (h += 1);
     });
-    const noteCoverage = shared / noteTokens.size;
-    const actionCoverage = shared / actionTokens.size;
-    return (
-      noteCoverage >= 0.67 || (noteCoverage >= 0.5 && actionCoverage >= 0.5)
-    );
+    let f = h / s.size,
+      u = h / _.size;
+    return f >= 0.67 || (f >= 0.5 && u >= 0.5);
   }
-  function buildDisplayNotes(decision) {
-    const actionNotes = Array.isArray(decision.actionNotes)
-      ? decision.actionNotes
-      : [];
-    if (actionNotes.length === 0) {
-      return [];
-    }
-    const actionNorm = normalizeSnippet(decision.actionText);
-    const actionTokenSet = getMeaningfulTokenSet(decision.actionText);
-    const noteCodes = Array.isArray(decision.actionNoteCodes)
-      ? decision.actionNoteCodes
-      : [];
-    const showNotes = [];
-    const seenByCode = /* @__PURE__ */ new Set();
-    const seenByText = /* @__PURE__ */ new Set();
-    for (let index = 0; index < actionNotes.length; index += 1) {
-      const rawNote = actionNotes[index];
-      const noteCode = noteCodes[index] || "";
-      const compact = compactNoteText(rawNote);
-      const noteNorm = normalizeSnippet(compact);
-      if (!noteNorm) {
-        continue;
-      }
-      if (noteNorm === actionNorm) {
-        continue;
-      }
+  function Ct(e) {
+    let t = Array.isArray(e.actionNotes) ? e.actionNotes : [];
+    if (t.length === 0) return [];
+    let a = We(e.actionText),
+      s = Ie(e.actionText),
+      _ = Array.isArray(e.actionNoteCodes) ? e.actionNoteCodes : [],
+      h = [],
+      f = new Set(),
+      u = new Set();
+    for (let p = 0; p < t.length; p += 1) {
+      let v = t[p],
+        b = _[p] || "",
+        q = bt(v),
+        L = We(q);
       if (
-        isMostlyRepeatOfAction(compact, decision.actionText, actionTokenSet)
-      ) {
-        continue;
-      }
-      if (noteCode && seenByCode.has(noteCode)) {
-        continue;
-      }
-      if (seenByText.has(noteNorm)) {
-        continue;
-      }
-      if (noteCode) {
-        seenByCode.add(noteCode);
-      }
-      seenByText.add(noteNorm);
-      showNotes.push(compact);
-      if (showNotes.length >= MAX_DISPLAY_NOTES) {
+        L &&
+        L !== a &&
+        !kt(q, e.actionText, s) &&
+        !(b && f.has(b)) &&
+        !u.has(L) &&
+        (b && f.add(b), u.add(L), h.push(q), h.length >= wt)
+      )
         break;
-      }
     }
-    return showNotes;
+    return h;
   }
-  function initCataractController() {
-    const fundalSection = $("#fundal-section");
-    const backSection = $("#back-section");
-    const resultSection = $("#result-section");
-    const resultDiv = $("#result");
-    const ageBandSelect = $("#ageBand");
-    const distanceVASelect = $("#distanceVA");
-    const onsetInputs = $$('#top-section input[name="onset"]');
-    const eyesInputs = $$('#top-section input[name="eyes"]');
-    const painLabel = $("#pain-label");
-    const neuroLabel = $("#neuro-label");
-    const fundalButtons = $$(".fundal-btn");
-    const backButtons = $$(".back-btn");
-    const topInputs = $$("#top-section input, #top-section select");
-    const nearVAInput = $("#nearVA");
-    const fundalLockHint = $("#fundal-lock-hint");
-    const backLockHint = $("#back-lock-hint");
-    const resultLockHint = $("#result-lock-hint");
-    let hasShownFundalHint = false;
-    function setButtonGroupSelection(buttons, selectedButton, colorMap) {
-      var _a;
-      buttons.forEach((button) => {
-        button.classList.remove("selected");
-        button.style.borderColor = NEUTRAL_BORDER_COLOR;
-        button.setAttribute("aria-pressed", "false");
-      });
-      selectedButton.classList.add("selected");
-      const value =
-        (_a = selectedButton.getAttribute("data-value")) == null
+  function Ye() {
+    let e = r("#cataractForm"),
+      t = r("#fundal-section"),
+      a = r("#back-section"),
+      s = r("#result-section"),
+      _ = r("#result"),
+      h = r("#ageBand"),
+      f = r("#distanceVA"),
+      u = r("#distance-va-label"),
+      p = te('#top-section input[name="onset"]'),
+      v = te('#top-section input[name="eyes"]'),
+      b = r("#pain-label"),
+      q = r("#pupil-label"),
+      L = r("#front-label"),
+      M = r("#neuro-label"),
+      R = r("#painStatus"),
+      B = r("#pupilStatus"),
+      S = r("#frontStatus"),
+      I = r("#afferentStatus"),
+      A = te(".fundal-btn"),
+      $ = te(".back-btn"),
+      F = te("#top-section input, #top-section select"),
+      j = r("#nearVA"),
+      Y = r("#fundal-lock-hint"),
+      ie = r("#back-lock-hint"),
+      G = r("#result-lock-hint"),
+      N = r("#new-assessment-button"),
+      D = r("#case-reset-status"),
+      J = !1,
+      Z = null;
+    function U(i, c, l) {
+      var x;
+      (i.forEach((T) => {
+        (T.classList.remove("selected"),
+          (T.style.borderColor = Le),
+          T.setAttribute("aria-pressed", "false"));
+      }),
+        c.classList.add("selected"));
+      let y = (x = c.getAttribute("data-value")) == null ? void 0 : x.trim();
+      ((c.style.borderColor = l[y] || Le),
+        c.setAttribute("aria-pressed", "true"));
+    }
+    function m() {
+      var x, T;
+      let i = r('#top-section input[name="onset"]:checked'),
+        c = (x = r("#distanceVA")) == null ? void 0 : x.value,
+        l = r('#top-section input[name="eyes"]:checked'),
+        y = (T = r("#ageBand")) == null ? void 0 : T.value;
+      return !!(i && y !== "" && c !== "" && l);
+    }
+    function o() {
+      var c;
+      if (!u) return;
+      let i =
+        ((c = r('#top-section input[name="eyes"]:checked')) == null
           ? void 0
-          : _a.trim();
-      selectedButton.style.borderColor =
-        colorMap[value] || NEUTRAL_BORDER_COLOR;
-      selectedButton.setAttribute("aria-pressed", "true");
+          : c.value) || "";
+      u.textContent =
+        i === "one" ? "Affected VA:" : i === "two" ? "Worse VA:" : "Eye VA:";
     }
-    function checkTopSectionCompletion() {
-      var _a;
-      const onsetSelected = $('#top-section input[name="onset"]:checked');
-      const distanceVA = (_a = $("#distanceVA")) == null ? void 0 : _a.value;
-      const eyesSelected = $('#top-section input[name="eyes"]:checked');
-      return Boolean(onsetSelected && distanceVA !== "" && eyesSelected);
-    }
-    function clearButtonGroupSelection(buttons) {
-      buttons.forEach((button) => {
-        button.classList.remove("selected");
-        button.style.borderColor = NEUTRAL_BORDER_COLOR;
-        button.setAttribute("aria-pressed", "false");
+    function P(i) {
+      i.forEach((c) => {
+        (c.classList.remove("selected"),
+          (c.style.borderColor = Le),
+          c.setAttribute("aria-pressed", "false"));
       });
     }
-    function setSectionDisabledState(
-      section,
-      isDisabled,
-      hintElement,
-      hintText = "",
-    ) {
-      if (!section) {
-        return;
-      }
-      section.classList.toggle("disabled", isDisabled);
-      section.setAttribute("aria-disabled", isDisabled ? "true" : "false");
-      $$("button, input, select, textarea", section).forEach((control) => {
-        if ("disabled" in control) {
-          control.disabled = isDisabled;
-        }
-      });
-      if (hintElement) {
-        hintElement.textContent = isDisabled ? hintText : "";
-        hintElement.hidden = !isDisabled;
-      }
+    function X(i, c, l, y = "") {
+      i &&
+        (i.classList.toggle("disabled", c),
+        i.setAttribute("aria-disabled", c ? "true" : "false"),
+        te("button, input, select, textarea", i).forEach((x) => {
+          "disabled" in x && (x.disabled = c);
+        }),
+        l && ((l.textContent = c ? y : ""), (l.hidden = !c)));
     }
-    function setupClearableTopRadios() {
-      const topRadios = $$('#top-section input[type="radio"]');
-      if (topRadios.length === 0) {
-        return;
-      }
-      topRadios.forEach((radio) => {
-        const markWasChecked = () => {
-          radio.dataset.wasChecked = radio.checked ? "1" : "0";
-        };
-        radio.addEventListener("pointerdown", markWasChecked);
-        radio.addEventListener("mousedown", markWasChecked);
-        radio.addEventListener(
-          "touchstart",
-          () => {
-            markWasChecked();
-          },
-          { passive: true },
+    function W() {
+      let i = te('#top-section input[type="radio"]');
+      i.length !== 0 &&
+        i.forEach((c) => {
+          let l = () => {
+            c.dataset.wasChecked = c.checked ? "1" : "0";
+          };
+          (c.addEventListener("pointerdown", l),
+            c.addEventListener("mousedown", l),
+            c.addEventListener(
+              "touchstart",
+              () => {
+                l();
+              },
+              { passive: !0 },
+            ));
+          let y = c.closest("label");
+          (y &&
+            (y.addEventListener("pointerdown", l),
+            y.addEventListener("mousedown", l),
+            y.addEventListener(
+              "touchstart",
+              () => {
+                l();
+              },
+              { passive: !0 },
+            )),
+            c.addEventListener("keydown", (x) => {
+              (x.key === " " || x.key === "Spacebar" || x.key === "Enter") &&
+                c.checked &&
+                (c.dataset.wasChecked = "1");
+            }),
+            c.addEventListener("click", (x) => {
+              let T = c.dataset.wasChecked === "1";
+              ((c.dataset.wasChecked = "0"),
+                T &&
+                  (x.stopPropagation(),
+                  window.requestAnimationFrame(() => {
+                    ((c.checked = !1),
+                      c.dispatchEvent(new Event("change", { bubbles: !0 })));
+                  })));
+            }));
+        });
+    }
+    function se() {
+      let i = t == null ? void 0 : t.querySelector("h2");
+      if (!i || i.querySelector("#fundal-message")) return;
+      let l = document.createElement("span");
+      ((l.textContent = be.fundalHint),
+        (l.style.color = "black"),
+        (l.style.fontSize = "14px"),
+        (l.style.marginLeft = "20px"),
+        (l.style.display = "inline-block"),
+        (l.id = "fundal-message"),
+        (l.style.animation = "zoomAnimation 4s forwards"),
+        i.appendChild(l),
+        window.setTimeout(() => {
+          l.remove();
+        }, 4e3));
+    }
+    function n() {
+      te(".recheck-flash").forEach((i) => {
+        i.classList.remove("recheck-flash");
+      });
+    }
+    function d(i) {
+      if ((n(), !Array.isArray(i) || i.length === 0)) return;
+      let c = {
+          age: [h],
+          distanceVA: [f],
+          near: [j],
+          fundal: [t],
+          back: [a],
+          onset: p.map((y) => y.parentElement),
+          eyes: v.map((y) => y.parentElement),
+          pain: [b, R],
+          pupil: [q, B],
+          front: [L, S],
+          afferent: [M, I],
+          rapd: [M, I],
+          light: [M, I],
+        },
+        l = new Set();
+      (i.forEach((y) => {
+        (c[y] || []).forEach((T) => {
+          T && l.add(T);
+        });
+      }),
+        l.forEach((y) => {
+          (y.classList.remove("recheck-flash"),
+            y.offsetWidth,
+            y.classList.add("recheck-flash"));
+        }));
+    }
+    function C() {
+      var pe, de, ve;
+      let i = r('#top-section input[name="onset"]:checked');
+      if (!_) return (_ && (_.innerHTML = ""), n(), !1);
+      let c = r(".fundal-btn.selected"),
+        l = r(".back-btn.selected"),
+        y = (c == null ? void 0 : c.getAttribute("data-value")) || "",
+        x = (l == null ? void 0 : l.getAttribute("data-value")) || "",
+        T = r('#top-section input[name="eyes"]:checked'),
+        le = T ? T.value : "",
+        ke = (R == null ? void 0 : R.value) || "",
+        he = (B == null ? void 0 : B.value) || "",
+        k = (S == null ? void 0 : S.value) || "",
+        H = (I == null ? void 0 : I.value) || "",
+        K = qe({
+          onsetValue: (i == null ? void 0 : i.value) || "",
+          ageBand: ((pe = r("#ageBand")) == null ? void 0 : pe.value) || "",
+          distanceVA:
+            ((de = r("#distanceVA")) == null ? void 0 : de.value) || "",
+          nearVAValue: ((ve = r("#nearVA")) == null ? void 0 : ve.value) || "",
+          eyes: le,
+          painYes: ke === "yes",
+          painRecorded: !!ke,
+          pupilSelected: !!he,
+          pupilRecorded: !!he,
+          pupilAbnormal: he === "abnormal",
+          frontPresent: k === "present",
+          frontRecorded: !!k,
+          afferentConcern: H === "concern",
+          afferentRecorded: !!H,
+          fundalSelection: y,
+          backSelection: x,
+        });
+      if (!K.hasResult)
+        return (
+          (_.innerHTML = K.actionText
+            ? `<div class="result-detail-block"><p class="result-label">Not assessed</p><p class="action-text action-${K.actionColour}">${K.actionText}</p>${K.actionNotes.map((ge) => `<p class="action-note-line">${ge}</p>`).join("")}</div>`
+            : ""),
+          n(),
+          !!K.actionText
         );
-        const parentLabel = radio.closest("label");
-        if (parentLabel) {
-          parentLabel.addEventListener("pointerdown", markWasChecked);
-          parentLabel.addEventListener("mousedown", markWasChecked);
-          parentLabel.addEventListener(
-            "touchstart",
-            () => {
-              markWasChecked();
-            },
-            { passive: true },
-          );
-        }
-        radio.addEventListener("keydown", (event) => {
-          if (
-            (event.key === " " ||
-              event.key === "Spacebar" ||
-              event.key === "Enter") &&
-            radio.checked
-          ) {
-            radio.dataset.wasChecked = "1";
-          }
-        });
-        radio.addEventListener("click", (event) => {
-          const wasChecked = radio.dataset.wasChecked === "1";
-          radio.dataset.wasChecked = "0";
-          if (!wasChecked) {
-            return;
-          }
-          event.stopPropagation();
-          window.requestAnimationFrame(() => {
-            radio.checked = false;
-            radio.dispatchEvent(new Event("change", { bubbles: true }));
-          });
-        });
-      });
-    }
-    function showFundalGuidanceMessage() {
-      const fundalTitle =
-        fundalSection == null ? void 0 : fundalSection.querySelector("h2");
-      if (!fundalTitle) {
-        return;
-      }
-      const existingMessage = fundalTitle.querySelector("#fundal-message");
-      if (existingMessage) {
-        return;
-      }
-      const message = document.createElement("span");
-      message.textContent = UI_COPY.fundalHint;
-      message.style.color = "black";
-      message.style.fontSize = "14px";
-      message.style.marginLeft = "20px";
-      message.style.display = "inline-block";
-      message.id = "fundal-message";
-      message.style.animation = "zoomAnimation 4s forwards";
-      fundalTitle.appendChild(message);
-      window.setTimeout(() => {
-        message.remove();
-      }, 4e3);
-    }
-    function clearRecheckHighlights() {
-      $$(".recheck-flash").forEach((element) => {
-        element.classList.remove("recheck-flash");
-      });
-    }
-    function applyRecheckHighlights(recheckFieldKeys) {
-      clearRecheckHighlights();
-      if (!Array.isArray(recheckFieldKeys) || recheckFieldKeys.length === 0) {
-        return;
-      }
-      const targetMap = {
-        age: [ageBandSelect],
-        distanceVA: [distanceVASelect],
-        near: [nearVAInput],
-        fundal: [fundalSection],
-        back: [backSection],
-        onset: onsetInputs.map((input) => input.parentElement),
-        eyes: eyesInputs.map((input) => input.parentElement),
-        pain: [painLabel],
-        rapd: [neuroLabel],
-        light: [neuroLabel],
-      };
-      const uniqueTargets = /* @__PURE__ */ new Set();
-      recheckFieldKeys.forEach((fieldKey) => {
-        const targets = targetMap[fieldKey] || [];
-        targets.forEach((target) => {
-          if (target) {
-            uniqueTargets.add(target);
-          }
-        });
-      });
-      uniqueTargets.forEach((target) => {
-        target.classList.remove("recheck-flash");
-        void target.offsetWidth;
-        target.classList.add("recheck-flash");
-      });
-    }
-    function calculateResult() {
-      var _a, _b, _c;
-      const onsetElem = $('#top-section input[name="onset"]:checked');
-      if (!onsetElem || !resultDiv) {
-        if (resultDiv) {
-          resultDiv.innerHTML = "";
-        }
-        clearRecheckHighlights();
-        return false;
-      }
-      const fundalBtn = $(".fundal-btn.selected");
-      const backBtn = $(".back-btn.selected");
-      if (!fundalBtn || !backBtn) {
-        resultDiv.innerHTML = "";
-        clearRecheckHighlights();
-        return false;
-      }
-      const fundalSelection = fundalBtn.getAttribute("data-value");
-      const backSelection = backBtn.getAttribute("data-value");
-      const eyesElem = $('#top-section input[name="eyes"]:checked');
-      const eyes = eyesElem ? eyesElem.value : "";
-      const painElem = $('#top-section input[name="pain"]:checked');
-      const pupilElem = $('#top-section input[name="pupil"]:checked');
-      const frontElem = $('#top-section input[name="front"]:checked');
-      const neuroElem = $('#top-section input[name="neuro"]:checked');
-      const decision = evaluateCataractDecision({
-        onsetValue: onsetElem.value,
-        ageBand: ((_a = $("#ageBand")) == null ? void 0 : _a.value) || "",
-        distanceVA: ((_b = $("#distanceVA")) == null ? void 0 : _b.value) || "",
-        nearVAValue: ((_c = $("#nearVA")) == null ? void 0 : _c.value) || "",
-        eyes,
-        painYes: Boolean(painElem && painElem.value === "yes"),
-        painRecorded: true,
-        pupilSelected: true,
-        pupilRecorded: true,
-        pupilAbnormal: Boolean(pupilElem && pupilElem.value === "abnormal"),
-        frontPresent: Boolean(frontElem && frontElem.value === "present"),
-        frontRecorded: true,
-        rapdPresent: Boolean(neuroElem && neuroElem.value === "yes"),
-        rapdRecorded: true,
-        directionLightPoor: Boolean(neuroElem && neuroElem.value === "yes"),
-        lightRecorded: true,
-        fundalSelection,
-        backSelection,
-      });
-      if (!decision.hasResult) {
-        resultDiv.innerHTML = "";
-        clearRecheckHighlights();
-        return false;
-      }
-      let resultHTML = '<div class="result-summary result-summary--compact">';
-      resultHTML += `
+      let E = '<div class="result-summary result-summary--compact">';
+      ((E += `
       <div class="result-card result-pattern">
-        <p class="result-label">${UI_COPY.result.cataractTypeLabel}</p>
-        <p class="result-value">${decision.cataractType}</p>
+        <p class="result-label">${be.result.cataractTypeLabel}</p>
+        <p class="result-value">${K.cataractType}</p>
       </div>
-    `;
-      resultHTML += `
+    `),
+        (E += `
       <div class="result-card result-action">
-        <p class="result-label">${UI_COPY.result.nextStepLabel}</p>
-        <p class="result-value action-text action-${decision.actionColour}">${decision.actionText}</p>
+        <p class="result-label">${be.result.nextStepLabel}</p>
+        <p class="result-value action-text action-${K.actionColour}">${K.actionText}</p>
       </div>
-    `;
-      resultHTML += "</div>";
-      const displayNotes = buildDisplayNotes(decision);
-      if (displayNotes.length > 0) {
-        const notesHtml = displayNotes
-          .map((note) => `<p class="action-note-line">${note}</p>`)
-          .join("");
-        resultHTML += `
-        <div class="result-detail-block result-note-block checks-${decision.actionColour}">
-          <p class="result-label">${UI_COPY.result.checkLabel}</p>
-          <div class="action-notes">${notesHtml}</div>
+    `),
+        (E += "</div>"));
+      let O = Ct(K);
+      if (O.length > 0) {
+        let ge = O.map((fe) => `<p class="action-note-line">${fe}</p>`).join(
+          "",
+        );
+        E += `
+        <div class="result-detail-block result-note-block checks-${K.actionColour}">
+          <p class="result-label">${be.result.checkLabel}</p>
+          <div class="action-notes">${ge}</div>
         </div>
       `;
       }
-      resultDiv.innerHTML = resultHTML;
-      applyRecheckHighlights(decision.recheckFieldKeys);
-      return true;
+      return ((_.innerHTML = E), d(K.recheckFieldKeys), !0);
     }
-    function syncProgressiveState() {
-      var _a;
-      const wasFundalDisabled = Boolean(
-        fundalSection == null
-          ? void 0
-          : fundalSection.classList.contains("disabled"),
-      );
-      const isTopComplete = checkTopSectionCompletion();
-      if (!isTopComplete) {
-        clearButtonGroupSelection(fundalButtons);
-        clearButtonGroupSelection(backButtons);
-        resultDiv.innerHTML = "";
-        clearRecheckHighlights();
-        setSectionDisabledState(
-          fundalSection,
-          true,
-          fundalLockHint,
-          "Complete Vision Loss and Dist VA to unlock.",
-        );
-        setSectionDisabledState(
-          backSection,
-          true,
-          backLockHint,
-          "Complete top details first.",
-        );
-        setSectionDisabledState(
-          resultSection,
-          true,
-          resultLockHint,
-          "Complete required fields to show result.",
-        );
+    function w() {
+      var T;
+      let i = !!(t != null && t.classList.contains("disabled"));
+      (X(t, !1, Y), i && !J && (se(), (J = !0)));
+      let c = r(".fundal-btn.selected");
+      if (!c) {
+        (P($),
+          n(),
+          X(a, !0, ie, "Select one fundal reflex to unlock."),
+          X(s, !C(), G, "Select fundal reflex and back of eye."));
         return;
       }
-      setSectionDisabledState(fundalSection, false, fundalLockHint);
-      if (wasFundalDisabled && !hasShownFundalHint) {
-        showFundalGuidanceMessage();
-        hasShownFundalHint = true;
-      }
-      const selectedFundalButton = $(".fundal-btn.selected");
-      if (!selectedFundalButton) {
-        clearButtonGroupSelection(backButtons);
-        resultDiv.innerHTML = "";
-        clearRecheckHighlights();
-        setSectionDisabledState(
-          backSection,
-          true,
-          backLockHint,
-          "Select one fundal reflex to unlock.",
-        );
-        setSectionDisabledState(
-          resultSection,
-          true,
-          resultLockHint,
-          "Select fundal reflex and back of eye.",
-        );
+      if (
+        ((T = c.getAttribute("data-value")) == null ? void 0 : T.trim()) ===
+        "white"
+      ) {
+        let le = r('.back-btn[data-value="poor view"]');
+        (le && !r(".back-btn.selected") && U($, le, $e), X(a, !1, ie));
+      } else X(a, !1, ie);
+      if (C()) {
+        X(s, !1, G);
         return;
       }
-      const fundalValue =
-        (_a = selectedFundalButton.getAttribute("data-value")) == null
-          ? void 0
-          : _a.trim();
-      if (fundalValue === "white") {
-        const poorViewButton = $('.back-btn[data-value="poor view"]');
-        if (poorViewButton && !poorViewButton.classList.contains("selected")) {
-          setButtonGroupSelection(
-            backButtons,
-            poorViewButton,
-            BACK_BORDER_COLORS,
-          );
-        }
-        setSectionDisabledState(
-          backSection,
-          true,
-          backLockHint,
-          "Dense reflex auto-sets back to Poor view.",
-        );
-      } else {
-        setSectionDisabledState(backSection, false, backLockHint);
-      }
-      const hasResult = calculateResult();
-      if (hasResult) {
-        setSectionDisabledState(resultSection, false, resultLockHint);
-        return;
-      }
-      const hasBackSelection = Boolean($(".back-btn.selected"));
-      setSectionDisabledState(
-        resultSection,
-        true,
-        resultLockHint,
-        hasBackSelection
+      let x = !!r(".back-btn.selected");
+      X(
+        s,
+        !0,
+        G,
+        x
           ? "Complete required fields to show result."
           : "Select one back-of-eye finding.",
       );
     }
-    function updateCriticalStyling() {
-      const suddenRadio = $("#onset-sudden");
-      if (suddenRadio) {
-        const suddenSpan = suddenRadio.parentElement;
-        if (suddenRadio.checked) {
-          suddenSpan == null ? void 0 : suddenSpan.classList.add("serious");
-        } else {
-          suddenSpan == null ? void 0 : suddenSpan.classList.remove("serious");
-        }
+    function Q() {
+      let i = r("#onset-sudden");
+      if (i) {
+        let l = i.parentElement;
+        i.checked
+          ? l == null || l.classList.add("serious")
+          : l == null || l.classList.remove("serious");
       }
-      const painRadio = $("#pain-yes");
-      const painLabel2 = $("#pain-label");
-      const painYesLabel = $("#pain-yes-label");
-      if (painRadio && painLabel2 && painYesLabel) {
-        if (painRadio.checked) {
-          painLabel2.classList.add("serious");
-          painYesLabel.classList.add("serious");
-        } else {
-          painLabel2.classList.remove("serious");
-          painYesLabel.classList.remove("serious");
-        }
-      }
-      const pupilAbnormalRadio = $("#pupil-abnormal");
-      const pupilLabel = $("#pupil-label");
-      const pupilYesLabel = $("#pupil-yes-label");
-      if (pupilLabel && pupilAbnormalRadio && pupilYesLabel) {
-        if (pupilAbnormalRadio.checked) {
-          pupilLabel.classList.add("serious");
-          pupilYesLabel.classList.add("serious");
-          pupilLabel.classList.remove("good");
-        } else {
-          pupilLabel.classList.remove("good");
-          pupilLabel.classList.remove("serious");
-          pupilYesLabel.classList.remove("serious");
-        }
-      }
-      const frontRadio = $("#front-present");
-      const frontLabel = $("#front-label");
-      const frontYesLabel = $("#front-yes-label");
-      if (frontRadio && frontLabel && frontYesLabel) {
-        if (frontRadio.checked) {
-          frontLabel.classList.add("warning");
-          frontYesLabel.classList.add("warning");
-        } else {
-          frontLabel.classList.remove("warning");
-          frontYesLabel.classList.remove("warning");
-        }
-      }
-      const neuroRadio = $("#neuro-red-yes");
-      const neuroLabel2 = $("#neuro-label");
-      const neuroYesLabel = $("#neuro-yes-label");
-      if (neuroRadio && neuroLabel2 && neuroYesLabel) {
-        if (neuroRadio.checked) {
-          neuroLabel2.classList.add("serious");
-          neuroYesLabel.classList.add("serious");
-        } else {
-          neuroLabel2.classList.remove("serious");
-          neuroYesLabel.classList.remove("serious");
-        }
-      }
+      [
+        {
+          select: R,
+          label: b,
+          concern: (R == null ? void 0 : R.value) === "yes",
+          recorded: !!(R != null && R.value),
+          className: "serious",
+        },
+        {
+          select: B,
+          label: q,
+          concern: (B == null ? void 0 : B.value) === "abnormal",
+          recorded: !!(B != null && B.value),
+          className: "serious",
+        },
+        {
+          select: S,
+          label: L,
+          concern: (S == null ? void 0 : S.value) === "present",
+          recorded: !!(S != null && S.value),
+          className: "warning",
+        },
+        {
+          select: I,
+          label: M,
+          concern: (I == null ? void 0 : I.value) === "concern",
+          recorded: !!(I != null && I.value),
+          className: "serious",
+        },
+      ].forEach(
+        ({ select: l, label: y, concern: x, recorded: T, className: le }) => {
+          (l == null || l.classList.toggle("is-recorded-concern", x),
+            l == null || l.classList.toggle("is-recorded-normal", T && !x),
+            y == null || y.classList.toggle(le, x));
+        },
+      );
     }
-    topInputs.forEach((input) => {
-      input.addEventListener("change", () => {
-        updateCriticalStyling();
-        syncProgressiveState();
-      });
-    });
-    fundalButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        setButtonGroupSelection(fundalButtons, button, FUNDAL_BORDER_COLORS);
-        syncProgressiveState();
-      });
-    });
-    backButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        if (
-          backSection == null
-            ? void 0
-            : backSection.classList.contains("disabled")
-        ) {
-          return;
-        }
-        setButtonGroupSelection(backButtons, button, BACK_BORDER_COLORS);
-        syncProgressiveState();
-      });
-    });
-    if (nearVAInput) {
-      nearVAInput.addEventListener("change", syncProgressiveState);
+    function z() {
+      (Z !== null && (window.clearTimeout(Z), (Z = null)),
+        N &&
+          ((N.dataset.confirming = "false"),
+          N.classList.remove("is-confirming"),
+          (N.textContent = "New assessment")));
     }
-    setupClearableTopRadios();
-    updateCriticalStyling();
-    syncProgressiveState();
-  }
-
-  // src/image-preview-controller.js?v=20260511-5
-  var POPUP_DELAY_MS = 500;
-  function initImagePreviewController() {
-    let popupTimer;
-    function showImagePopup(button) {
-      let popup = document.getElementById("image-popup");
-      if (!popup) {
-        popup = document.createElement("div");
-        popup.id = "image-popup";
-        popup.style.position = "fixed";
-        popup.style.top = "50%";
-        popup.style.left = "50%";
-        popup.style.transform = "translate(-50%, -50%)";
-        popup.style.zIndex = "1000";
-        popup.style.backgroundColor = "#fff";
-        popup.style.border = "2px solid #ccc";
-        popup.style.borderRadius = "20px";
-        popup.style.padding = "10px";
-        popup.addEventListener("contextmenu", (event) => {
-          event.preventDefault();
+    function ee() {
+      N &&
+        ((N.dataset.confirming = "true"),
+        N.classList.add("is-confirming"),
+        (N.textContent = "Clear assessment?"),
+        D && (D.textContent = "Press again to clear the current assessment."),
+        (Z = window.setTimeout(() => {
+          (z(), D && (D.textContent = "Clear cancelled."));
+        }, 1e4)));
+    }
+    function re() {
+      (e == null || e.reset(),
+        P(A),
+        P($),
+        F.forEach((i) => {
+          delete i.dataset.wasChecked;
+        }),
+        (J = !1),
+        (_.innerHTML = ""),
+        n(),
+        Q(),
+        o(),
+        w(),
+        z(),
+        D && (D.textContent = "Assessment cleared."));
+    }
+    (F.forEach((i) => {
+      i.addEventListener("change", () => {
+        (o(), Q(), w());
+      });
+    }),
+      A.forEach((i) => {
+        i.addEventListener("click", () => {
+          (U(A, i, vt), w());
         });
-        document.body.appendChild(popup);
-      }
-      popup.innerHTML = "";
-      const image = button.querySelector("img");
-      if (image) {
-        const enlargedImage = image.cloneNode(true);
-        enlargedImage.draggable = false;
-        enlargedImage.addEventListener("contextmenu", (event) =>
-          event.preventDefault(),
-        );
-        enlargedImage.style.maxWidth = "80vw";
-        enlargedImage.style.height = "auto";
-        enlargedImage.style.display = "block";
-        enlargedImage.style.animation = "zoomImage 3s forwards";
-        popup.appendChild(enlargedImage);
-        popup.style.display = "block";
-      }
-    }
-    function hideImagePopup() {
-      clearTimeout(popupTimer);
-      const popup = document.getElementById("image-popup");
-      if (popup) {
-        popup.style.display = "none";
-      }
-    }
-    const buttons = $$(".button-item button");
-    buttons.forEach((button) => {
-      button.addEventListener("contextmenu", (event) => {
-        event.preventDefault();
-      });
-      button.addEventListener("mousedown", () => {
-        popupTimer = setTimeout(() => showImagePopup(button), POPUP_DELAY_MS);
-      });
-      button.addEventListener("mouseup", hideImagePopup);
-      button.addEventListener("mouseleave", hideImagePopup);
-      button.addEventListener("touchstart", () => {
-        popupTimer = setTimeout(() => showImagePopup(button), POPUP_DELAY_MS);
-      });
-      button.addEventListener("touchend", hideImagePopup);
-      button.addEventListener("touchcancel", hideImagePopup);
-    });
+      }),
+      $.forEach((i) => {
+        i.addEventListener("click", () => {
+          (a != null && a.classList.contains("disabled")) || (U($, i, $e), w());
+        });
+      }),
+      j && j.addEventListener("change", w),
+      N == null ||
+        N.addEventListener("click", () => {
+          if (N.dataset.confirming === "true") {
+            re();
+            return;
+          }
+          ee();
+        }),
+      document.addEventListener("keydown", (i) => {
+        i.key === "Escape" &&
+          (N == null ? void 0 : N.dataset.confirming) === "true" &&
+          (z(), D && (D.textContent = "Clear cancelled."));
+      }),
+      W(),
+      o(),
+      Q(),
+      w());
   }
-
-  // src/cataract-copy.js?v=20260511-1
-  var UI_COPY2 = {
+  var Ue = 500;
+  function He() {
+    let e,
+      t = null,
+      a = !1;
+    function s(f) {
+      let u = document.getElementById("image-popup");
+      (u ||
+        ((u = document.createElement("div")),
+        (u.id = "image-popup"),
+        (u.className = "image-preview-dialog"),
+        u.setAttribute("role", "dialog"),
+        u.setAttribute("aria-modal", "true"),
+        u.setAttribute("aria-label", "Enlarged illustrative image"),
+        (u.hidden = !0),
+        u.addEventListener("contextmenu", (b) => {
+          b.preventDefault();
+        }),
+        u.addEventListener("click", (b) => {
+          b.target === u && _();
+        }),
+        document.body.appendChild(u)),
+        (u.innerHTML = ""));
+      let p = document.createElement("button");
+      ((p.type = "button"),
+        (p.className = "image-preview-close"),
+        p.setAttribute("aria-label", "Close enlarged image"),
+        (p.textContent = "\xD7"),
+        p.addEventListener("click", _),
+        u.appendChild(p));
+      let v = f.querySelector("img");
+      if (v) {
+        let b = v.cloneNode(!0);
+        ((b.draggable = !1),
+          b.addEventListener("contextmenu", (q) => q.preventDefault()),
+          (b.className = "image-preview-image"),
+          u.appendChild(b),
+          (u.hidden = !1),
+          document.body.classList.add("modal-open"),
+          (t = f),
+          (a = !0),
+          p.focus());
+      }
+    }
+    function _() {
+      clearTimeout(e);
+      let f = document.getElementById("image-popup");
+      (f &&
+        !f.hidden &&
+        ((f.hidden = !0),
+        document.body.classList.remove("modal-open"),
+        t == null || t.focus()),
+        (t = null));
+    }
+    (te(".button-item button").forEach((f) => {
+      (f.addEventListener("contextmenu", (u) => {
+        u.preventDefault();
+      }),
+        f.addEventListener("mousedown", () => {
+          e = setTimeout(() => s(f), Ue);
+        }),
+        f.addEventListener("mouseup", () => clearTimeout(e)),
+        f.addEventListener("mouseleave", () => clearTimeout(e)),
+        f.addEventListener(
+          "touchstart",
+          () => {
+            e = setTimeout(() => s(f), Ue);
+          },
+          { passive: !0 },
+        ),
+        f.addEventListener("touchend", () => clearTimeout(e)),
+        f.addEventListener("touchcancel", () => clearTimeout(e)),
+        f.addEventListener(
+          "click",
+          (u) => {
+            a && ((a = !1), u.preventDefault(), u.stopImmediatePropagation());
+          },
+          !0,
+        ));
+    }),
+      document.addEventListener("keydown", (f) => {
+        f.key === "Escape" && _();
+      }));
+  }
+  var Ae = {
     result: {
       cataractTypeLabel: "Cataract Type",
       nextStepLabel: "Next Step",
@@ -1640,10 +1416,11 @@
     },
     fundalHint: "Dilate pupils for best view",
     infoPopup: {
-      intro: "Quick cataract triage in seconds.",
+      intro:
+        "Use this while examining the patient: you enter the history, VA, safety findings, fundal reflex and back-of-eye view. It suggests a cataract pattern and next step; it does not make a final diagnosis.",
       bullets: [
-        "History + VA: onset, one or two eyes, pain, age, distance VA and near VA.",
-        "Front: pupils, cornea/scar and RAPD or poor light direction.",
+        "History + VA: onset, one or two eyes, age and affected or worse-eye VA.",
+        "Safety checks: pain/redness, pupils, front eye and RAPD/light response.",
         "Reflex: Normal, Dull, Patches, Spots or Dense.",
         "Back: Normal, Cupped, DR/Scar, Detached or Poor view.",
         "Result: cataract type, next step and short re-checks.",
@@ -1652,824 +1429,995 @@
         "Teaching aid, not final diagnosis. Look for non-cataract disease when features are atypical or urgent.",
     },
   };
-
-  // src/info-popup-controller.js?v=20260511-6
-  function initInfoPopupController() {
-    const infoIcon = $("#info-icon");
-    const infoPopup = $("#info-popup");
-    const infoClose = $("#info-close");
-    const sideMenu = $("#sideMenu");
-    const burgerIcon = $("#burger-icon");
-    function hydrateInfoCopy() {
-      const intro = $("#info-copy-intro");
-      const outro = $("#info-copy-outro");
-      const bulletEls = [
-        $("#info-copy-bullet-1"),
-        $("#info-copy-bullet-2"),
-        $("#info-copy-bullet-3"),
-        $("#info-copy-bullet-4"),
-        $("#info-copy-bullet-5"),
-      ];
-      if (intro) {
-        intro.textContent = UI_COPY2.infoPopup.intro;
-      }
-      UI_COPY2.infoPopup.bullets.forEach((text, index) => {
-        const bulletEl = bulletEls[index];
-        if (bulletEl) {
-          bulletEl.textContent = text;
-        }
-      });
-      if (outro) {
-        outro.textContent = UI_COPY2.infoPopup.outro;
-      }
+  function Fe() {
+    let e = r("#info-icon"),
+      t = r("#info-popup"),
+      a = r("#info-close"),
+      s = r("#sideMenu"),
+      _ = r("#burger-icon"),
+      h = !1;
+    function f() {
+      let p = r("#info-copy-intro"),
+        v = r("#info-copy-outro"),
+        b = [
+          r("#info-copy-bullet-1"),
+          r("#info-copy-bullet-2"),
+          r("#info-copy-bullet-3"),
+          r("#info-copy-bullet-4"),
+          r("#info-copy-bullet-5"),
+        ];
+      (p && (p.textContent = Ae.infoPopup.intro),
+        Ae.infoPopup.bullets.forEach((q, L) => {
+          let M = b[L];
+          M && (M.textContent = q);
+        }),
+        v && (v.textContent = Ae.infoPopup.outro));
     }
-    function setInfoPopupOpen(isOpen) {
-      if (!infoPopup) {
-        return;
-      }
-      if (isOpen && sideMenu) {
-        sideMenu.classList.remove("open");
-        sideMenu.setAttribute("aria-hidden", "true");
-        sideMenu.setAttribute("inert", "");
-        if (burgerIcon) {
-          burgerIcon.setAttribute("aria-expanded", "false");
-        }
-      }
-      infoPopup.hidden = !isOpen;
-      if (infoIcon) {
-        infoIcon.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      }
-    }
-    if (infoIcon && infoPopup) {
-      infoIcon.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setInfoPopupOpen(infoPopup.hidden);
-      });
-    }
-    if (infoClose) {
-      infoClose.addEventListener("click", () => {
-        setInfoPopupOpen(false);
-      });
-    }
-    document.addEventListener("click", (event) => {
-      if (!infoPopup || infoPopup.hidden) {
-        return;
-      }
-      const clickedInsidePopup = infoPopup.contains(event.target);
-      const clickedInfoIcon = infoIcon && infoIcon.contains(event.target);
-      if (!clickedInsidePopup && !clickedInfoIcon) {
-        setInfoPopupOpen(false);
-      }
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        setInfoPopupOpen(false);
-      }
-    });
-    hydrateInfoCopy();
-    return {
-      close: () => setInfoPopupOpen(false),
-    };
-  }
-
-  // src/mcq-data.js?v=20260511-2
-  var MCQ_STORAGE_KEY = "cataract_mcq_progress_v1";
-  var MCQ_LEVELS = [
-    {
-      name: "Primary",
-      totalQuestions: 5,
-      passScore: 4,
-      timeSeconds: 90,
-      questions: [
-        {
-          prompt:
-            "Which reflex pattern most strongly suggests a mature cataract?",
-          options: [
-            "Normal red reflex",
-            "White reflex",
-            "Dark reflex only",
-            "Patchy peripheral reflex",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt:
-            "If fundal reflex is normal and VA is 6/6, the most likely action is:",
-          options: [
-            "Urgent surgery",
-            "Routine surgery",
-            "No cataract referral needed",
-            "Immediate retinal referral",
-          ],
-          answerIndex: 2,
-        },
-        {
-          prompt: "Best first step before deciding cataract referral is to:",
-          options: [
-            "Only inspect lens colour",
-            "Check history and vision carefully",
-            "Skip back-of-eye check",
-            "Refer everyone with blur",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt:
-            "Which VA indicates the poorest distance vision in this tool?",
-          options: ["6/12", "6/36", "6/60", "HM"],
-          answerIndex: 3,
-        },
-        {
-          prompt: "Pain/red eye with sudden one-eye loss should trigger:",
-          options: [
-            "Routine cataract pathway",
-            "No action",
-            "Urgent investigation for other pathology",
-            "Yearly review only",
-          ],
-          answerIndex: 2,
-        },
-        {
-          prompt: "Fundal Reflex unlocks when the app has:",
-          options: [
-            "Age only",
-            "Onset, eyes and Dist VA",
-            "Near VA only",
-            "Back of Eye first",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "What does the Back of Eye section check for?",
-          options: [
-            "Only lens colour",
-            "Other disease behind the lens",
-            "Phone brightness",
-            "Age band only",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "A normal fundal reflex usually means the pupil glow is:",
-          options: [
-            "Bright and clear",
-            "Always white",
-            "Always black",
-            "Hidden by default",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt: "Which choice is a Back of Eye finding in this app?",
-          options: ["Spots", "Patches", "Cupped", "Dense"],
-          answerIndex: 2,
-        },
-        {
-          prompt: "Which choice is a Fundal Reflex finding in this app?",
-          options: ["Detached", "DR/Scar", "Patches", "Cupped"],
-          answerIndex: 2,
-        },
-        {
-          prompt: "Why does the app ask for Dist VA?",
-          options: [
-            "To judge vision severity",
-            "To change the title",
-            "To unlock the menu",
-            "To replace all examination",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt:
-            "If the result asks for re-checks, the safest response is to:",
-          options: [
-            "Ignore them",
-            "Re-check the highlighted findings",
-            "Clear the browser",
-            "Choose the fastest referral only",
-          ],
-          answerIndex: 1,
-        },
-      ],
-    },
-    {
-      name: "Intermediate",
-      totalQuestions: 5,
-      passScore: 4,
-      timeSeconds: 80,
-      questions: [
-        {
-          prompt: "White reflex with poor back view generally indicates:",
-          options: [
-            "No visual relevance",
-            "Priority surgery / dense cataract pathway",
-            "Normal ageing only",
-            "Always glaucoma only",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Back-of-eye finding of detached retina should usually be:",
-          options: [
-            "Routine cataract surgery",
-            "No referral",
-            "Managed as non-cataract urgent retinal disease",
-            "Observed yearly",
-          ],
-          answerIndex: 2,
-        },
-        {
-          prompt: "Near VA deterioration (e.g. N18/N36) in this app:",
-          options: [
-            "Is ignored completely",
-            "Adds context to referral wording",
-            "Cancels distance VA",
-            "Always means no cataract",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Abnormal pupils in this workflow are treated as:",
-          options: [
-            "Simple cataract only",
-            "Possible non-cataract pathology",
-            "Always normal",
-            "Not relevant to triage",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Front-of-eye scar/distortion should lead to:",
-          options: [
-            "Guarded outcome warning",
-            "Automatic discharge",
-            "No change",
-            "Primary care only",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt: "If fundal reflex is white, the back section becomes:",
-          options: [
-            "Forced open",
-            "Disabled with poor-view preselection",
-            "Hidden permanently",
-            "Unchanged but irrelevant",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "A dense reflex with relatively good VA should make you:",
-          options: [
-            "Ignore the mismatch",
-            "Re-check reflex and VA",
-            "Always discharge",
-            "Skip Back of Eye",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Distance poor but near good usually means:",
-          options: [
-            "The result is automatically normal",
-            "VA method or refraction should be re-checked",
-            "Cataract is impossible",
-            "Age band should be deleted",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "A normal reflex with very poor VA should prompt:",
-          options: [
-            "No further thought",
-            "Early specialist review for another cause",
-            "Routine cataract surgery only",
-            "Ignore the back view",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Deep cupping in Back of Eye points towards:",
-          options: [
-            "Glaucoma review first",
-            "Mature cataract only",
-            "Normal result",
-            "Near-vision testing only",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt: "DR/Scar in Back of Eye means:",
-          options: [
-            "Retinal disease may limit cataract benefit",
-            "The lens is definitely clear",
-            "No referral can be needed",
-            "The result must be green",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt: "A child with cataract-pattern signs should usually get:",
-          options: [
-            "Yearly adult review",
-            "Prompt paediatric referral",
-            "No action until age 18",
-            "Reading glasses only",
-          ],
-          answerIndex: 1,
-        },
-      ],
-    },
-    {
-      name: "Advanced",
-      totalQuestions: 5,
-      passScore: 4,
-      timeSeconds: 75,
-      questions: [
-        {
-          prompt: "Most safety-critical trap in cataract triage is:",
-          options: [
-            "Over-documenting history",
-            "Assuming all blur is cataract",
-            "Checking pupils",
-            "Using fundal images",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt:
-            "If back-of-eye shows diabetic/retinal pathology, cataract surgery in this app is:",
-          options: [
-            "Always urgent",
-            "Usually not the primary immediate pathway",
-            "Guaranteed to restore vision",
-            "Always first-line",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Sudden + painful visual loss should bias toward:",
-          options: [
-            "Elective cataract list",
-            "Urgent diagnostic escalation",
-            "Annual follow-up only",
-            "Reassure and discharge",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "The main role of this tool is to:",
-          options: [
-            "Replace specialist diagnosis",
-            "Support rapid triage and safe signposting",
-            "Provide final surgical booking",
-            "Assess refractive error only",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Best interpretation of poor Back of Eye view is:",
-          options: [
-            "Definitely simple cataract only",
-            "Needs further assessment for alternate pathology",
-            "Always normal",
-            "Ignore if near VA is good",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt:
-            "When two findings conflict (e.g. cataract-like reflex but retinal red flags), priority should be:",
-          options: [
-            "The least severe interpretation",
-            "Safety-first escalation for red flags",
-            "Ignore retinal signs",
-            "Wait 12 months",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "RAPD or poor light direction should make the app consider:",
-          options: [
-            "Optic nerve or retinal disease first",
-            "Only routine cataract",
-            "No vision problem",
-            "Near VA only",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt:
-            "Why does the engine keep posterior override ahead of cataract type?",
-          options: [
-            "Posterior disease can be urgent or vision-limiting",
-            "It makes the MCQ shorter",
-            "It hides all cataract signs",
-            "It avoids taking history",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt: "Sudden painful white reflex is handled as:",
-          options: [
-            "Routine cataract only",
-            "Urgent same-day investigation",
-            "No cataract pathway",
-            "Back section hidden forever",
-          ],
-          answerIndex: 1,
-        },
-        {
-          prompt: "Why are red outputs kept short?",
-          options: [
-            "Urgent action should be clear",
-            "Near VA is never useful",
-            "The result is less important",
-            "The app cannot show notes",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt:
-            "If abnormal reflex and VA 6/6 appear together, the app should:",
-          options: [
-            "Show a re-check warning",
-            "Force urgent surgery",
-            "Delete the reflex choice",
-            "Ignore VA",
-          ],
-          answerIndex: 0,
-        },
-        {
-          prompt: "A non-cataract-first pathway should avoid:",
-          options: [
-            "Over-stating cataract as the definite cause",
-            "Mentioning safety",
-            "Checking the back of eye",
-            "Using plain language",
-          ],
-          answerIndex: 0,
-        },
-      ],
-    },
-  ];
-
-  // src/mcq-engine.js
-  function shuffleArray(items) {
-    const nextItems = items.slice();
-    for (let index = nextItems.length - 1; index > 0; index -= 1) {
-      const swapIndex = Math.floor(Math.random() * (index + 1));
-      const currentValue = nextItems[index];
-      nextItems[index] = nextItems[swapIndex];
-      nextItems[swapIndex] = currentValue;
-    }
-    return nextItems;
-  }
-  function normalizeProgress(rawProgress, levelCount) {
-    if (!rawProgress || typeof rawProgress !== "object") {
-      return { unlockedLevelIndex: 0, completedLevels: [] };
-    }
-    const unlockedLevelIndex = Number.isInteger(rawProgress.unlockedLevelIndex)
-      ? Math.max(0, Math.min(levelCount - 1, rawProgress.unlockedLevelIndex))
-      : 0;
-    const completedLevels = Array.isArray(rawProgress.completedLevels)
-      ? rawProgress.completedLevels
-          .filter(
-            (index) =>
-              Number.isInteger(index) && index >= 0 && index < levelCount,
-          )
-          .filter((value, index, arr) => arr.indexOf(value) === index)
-      : [];
-    return { unlockedLevelIndex, completedLevels };
-  }
-  function evaluateMcqAnswers(questions, selectedAnswers, allowUnanswered) {
-    let score = 0;
-    for (
-      let questionIndex = 0;
-      questionIndex < questions.length;
-      questionIndex += 1
-    ) {
-      const selectedOptionIndex = selectedAnswers[questionIndex];
-      if (selectedOptionIndex === null || selectedOptionIndex === void 0) {
-        if (!allowUnanswered) {
-          return { isComplete: false, score: 0, total: questions.length };
-        }
-        continue;
-      }
-      if (
-        Number(selectedOptionIndex) === questions[questionIndex].answerIndex
-      ) {
-        score += 1;
-      }
-    }
-    return { isComplete: true, score, total: questions.length };
-  }
-
-  // src/storage-utils.js
-  function safeLoadJson(storageKey, fallbackValue) {
-    try {
-      const rawValue = window.localStorage.getItem(storageKey);
-      if (!rawValue) {
-        return fallbackValue;
-      }
-      return JSON.parse(rawValue);
-    } catch (e) {
-      return fallbackValue;
-    }
-  }
-  function safeSaveJson(storageKey, value) {
-    try {
-      window.localStorage.setItem(storageKey, JSON.stringify(value));
-    } catch (e) {}
-  }
-
-  // src/mcq-controller.js?v=20260511-6
-  var DEFAULT_PROGRESS = { unlockedLevelIndex: 0, completedLevels: [] };
-  function initMcqController() {
-    const burgerIcon = $("#burger-icon");
-    const sideMenu = $("#sideMenu");
-    const mcqLevelButtons = $$(".mcq-level-button");
-    const mcqModal = $("#mcqModal");
-    const closeMcqModalButton = $("#closeMcqModal");
-    const mcqTitle = $("#mcqTitle");
-    const mcqTimer = $("#mcqTimer");
-    const mcqContainer = $("#mcqContainer");
-    const submitMcqButton = $("#submitMcqButton");
-    const mcqResult = $("#mcqResult");
-    const infoPopup = $("#info-popup");
-    const infoIcon = $("#info-icon");
-    let mcqProgress = normalizeProgress(
-      safeLoadJson(MCQ_STORAGE_KEY, DEFAULT_PROGRESS),
-      MCQ_LEVELS.length,
-    );
-    let activeMcqLevelIndex = null;
-    let activeMcqQuestions = [];
-    let mcqTimerId = null;
-    let mcqRemainingSeconds = 0;
-    function saveMcqProgress() {
-      safeSaveJson(MCQ_STORAGE_KEY, mcqProgress);
-    }
-    function isMcqLevelUnlocked(levelIndex) {
-      return levelIndex <= mcqProgress.unlockedLevelIndex;
-    }
-    function isMcqLevelCompleted(levelIndex) {
-      return mcqProgress.completedLevels.includes(levelIndex);
-    }
-    function renderMcqLevelButtons() {
-      mcqLevelButtons.forEach((button) => {
-        const levelIndex = Number(button.dataset.levelIndex);
-        const unlocked = isMcqLevelUnlocked(levelIndex);
-        const completed = isMcqLevelCompleted(levelIndex);
-        button.disabled = !unlocked;
-        button.classList.toggle("is-complete", completed);
-      });
-    }
-    function setSideMenuOpen(isOpen) {
-      if (!sideMenu) {
-        return;
-      }
-      if (isOpen && infoPopup) {
-        infoPopup.hidden = true;
-        if (infoIcon) {
-          infoIcon.setAttribute("aria-expanded", "false");
-        }
-      }
-      sideMenu.classList.toggle("open", isOpen);
-      sideMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      if (isOpen) {
-        sideMenu.removeAttribute("inert");
-      } else {
-        sideMenu.setAttribute("inert", "");
-      }
-      if (burgerIcon) {
-        burgerIcon.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        burgerIcon.setAttribute(
-          "aria-label",
-          isOpen ? "Close menu" : "Open menu",
-        );
-      }
-    }
-    function toggleSideMenu() {
-      if (!sideMenu) {
-        return;
-      }
-      setSideMenuOpen(!sideMenu.classList.contains("open"));
-    }
-    function stopMcqTimer() {
-      if (mcqTimerId !== null) {
-        clearInterval(mcqTimerId);
-        mcqTimerId = null;
-      }
-    }
-    function updateMcqTimerText() {
-      if (!mcqTimer) {
-        return;
-      }
-      const mins = Math.floor(mcqRemainingSeconds / 60);
-      const secs = mcqRemainingSeconds % 60;
-      mcqTimer.textContent = `Time: ${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    }
-    function handleSubmitMcq(allowUnanswered = false) {
-      const level = MCQ_LEVELS[activeMcqLevelIndex];
-      if (!level || !mcqResult) {
-        return;
-      }
-      const evaluation = evaluateMcqAnswers(
-        activeMcqQuestions,
-        collectSelectedAnswers(),
-        Boolean(allowUnanswered),
-      );
-      if (!evaluation.isComplete) {
-        mcqResult.textContent =
-          "Please answer all questions before submitting.";
-        return;
-      }
-      stopMcqTimer();
-      const passed = evaluation.score >= level.passScore;
-      if (passed) {
-        markLevelComplete(activeMcqLevelIndex);
-        renderMcqLevelButtons();
-      }
-      mcqResult.textContent = `${level.name}: ${evaluation.score}/${evaluation.total}. ${passed ? "Pass." : "Try again."}`;
-    }
-    function startMcqTimer(level) {
-      stopMcqTimer();
-      if (!mcqTimer) {
-        return;
-      }
-      const timeSeconds = Number(level.timeSeconds) || 0;
-      if (timeSeconds <= 0) {
-        mcqTimer.hidden = true;
-        mcqTimer.textContent = "";
-        return;
-      }
-      mcqRemainingSeconds = timeSeconds;
-      mcqTimer.hidden = false;
-      updateMcqTimerText();
-      mcqTimerId = setInterval(() => {
-        mcqRemainingSeconds -= 1;
-        updateMcqTimerText();
-        if (mcqRemainingSeconds <= 0) {
-          stopMcqTimer();
-          handleSubmitMcq(true);
-        }
-      }, 1e3);
-    }
-    function openMcqModal() {
-      if (!mcqModal) {
-        return;
-      }
-      mcqModal.classList.add("open");
-      mcqModal.setAttribute("aria-hidden", "false");
-    }
-    function closeMcqModal() {
-      if (!mcqModal) {
-        return;
-      }
-      stopMcqTimer();
-      mcqModal.classList.remove("open");
-      mcqModal.setAttribute("aria-hidden", "true");
-      activeMcqLevelIndex = null;
-      activeMcqQuestions = [];
-    }
-    function renderMcqQuestions(questions) {
-      if (!mcqContainer) {
-        return;
-      }
-      mcqContainer.innerHTML = "";
-      questions.forEach((question, questionIndex) => {
-        const fieldset = document.createElement("fieldset");
-        fieldset.className = "mcq-question";
-        const legend = document.createElement("legend");
-        legend.textContent = `${questionIndex + 1}. ${question.prompt}`;
-        fieldset.appendChild(legend);
-        question.options.forEach((optionText, optionIndex) => {
-          const optionLabel = document.createElement("label");
-          optionLabel.className = "mcq-option";
-          const optionInput = document.createElement("input");
-          optionInput.type = "radio";
-          optionInput.name = `mcq_q_${questionIndex}`;
-          optionInput.value = String(optionIndex);
-          const optionSpan = document.createElement("span");
-          optionSpan.textContent = optionText;
-          optionLabel.appendChild(optionInput);
-          optionLabel.appendChild(optionSpan);
-          fieldset.appendChild(optionLabel);
-        });
-        mcqContainer.appendChild(fieldset);
-      });
-    }
-    function openMcqLevel(levelIndex) {
-      const level = MCQ_LEVELS[levelIndex];
-      if (!level) {
-        return;
-      }
-      activeMcqLevelIndex = levelIndex;
-      activeMcqQuestions = shuffleArray(level.questions).slice(
-        0,
-        level.totalQuestions,
-      );
-      if (mcqTitle) {
-        mcqTitle.textContent = `MCQ - ${level.name}`;
-      }
-      if (mcqResult) {
-        mcqResult.textContent = "";
-      }
-      renderMcqQuestions(activeMcqQuestions);
-      openMcqModal();
-      startMcqTimer(level);
-    }
-    function collectSelectedAnswers() {
-      return activeMcqQuestions.map((question, questionIndex) => {
-        const selectedInput = document.querySelector(
-          `input[name="mcq_q_${questionIndex}"]:checked`,
-        );
-        return selectedInput ? Number(selectedInput.value) : null;
-      });
-    }
-    function markLevelComplete(levelIndex) {
-      if (!mcqProgress.completedLevels.includes(levelIndex)) {
-        mcqProgress.completedLevels.push(levelIndex);
-      }
-      mcqProgress.unlockedLevelIndex = Math.max(
-        mcqProgress.unlockedLevelIndex,
-        Math.min(MCQ_LEVELS.length - 1, levelIndex + 1),
-      );
-      saveMcqProgress();
-    }
-    if (burgerIcon) {
-      burgerIcon.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        toggleSideMenu();
-      });
-    }
-    mcqLevelButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const levelIndex = Number(button.dataset.levelIndex);
-        if (!isMcqLevelUnlocked(levelIndex)) {
+    function u(p, v = {}) {
+      if (t) {
+        if (
+          (p &&
+            s &&
+            (s.classList.remove("open"),
+            s.setAttribute("aria-hidden", "true"),
+            s.setAttribute("inert", ""),
+            _ && _.setAttribute("aria-expanded", "false")),
+          (t.hidden = !p),
+          e && e.setAttribute("aria-expanded", p ? "true" : "false"),
+          p)
+        ) {
+          ((h = !0),
+            window.requestAnimationFrame(() =>
+              a == null ? void 0 : a.focus(),
+            ));
           return;
         }
-        setSideMenuOpen(false);
-        openMcqLevel(levelIndex);
-      });
-    });
-    if (submitMcqButton) {
-      submitMcqButton.addEventListener("click", () => {
-        handleSubmitMcq(false);
-      });
+        h && v.restoreFocus !== !1
+          ? ((h = !1), e == null || e.focus())
+          : p || (h = !1);
+      }
     }
-    if (closeMcqModalButton) {
-      closeMcqModalButton.addEventListener("click", closeMcqModal);
+    return (
+      e &&
+        t &&
+        e.addEventListener("click", (p) => {
+          (p.preventDefault(), p.stopPropagation(), u(t.hidden));
+        }),
+      a &&
+        a.addEventListener("click", () => {
+          u(!1);
+        }),
+      document.addEventListener("click", (p) => {
+        if (!t || t.hidden) return;
+        let v = t.contains(p.target),
+          b = e && e.contains(p.target);
+        !v && !b && u(!1);
+      }),
+      document.addEventListener("keydown", (p) => {
+        p.key === "Escape" && u(!1);
+      }),
+      f(),
+      { close: () => u(!1) }
+    );
+  }
+  var Re = "cataract_mcq_progress_v1",
+    Ge = {
+      "nhs-adult-cataract-2025": {
+        label: "NHS cataracts in adults",
+        url: "https://www.nhs.uk/conditions/cataracts/",
+        status: "current-authoritative",
+      },
+      "nhs-childhood-cataract": {
+        label: "NHS childhood cataracts",
+        url: "https://www.nhs.uk/conditions/childhood-cataracts/",
+        status: "current-authoritative",
+      },
+      "cataract-app-scope-v1": {
+        label: "Cataract app scope and recording contract",
+        url: null,
+        status: "internal-engineering-contract",
+      },
+      "cataract-app-triage-v1": {
+        label: "Cataract app triage and referral wording",
+        url: null,
+        status: "pending-independent-clinical-sign-off",
+      },
+    },
+    At = [
+      {
+        name: "Primary",
+        totalQuestions: 5,
+        passScore: 4,
+        timeSeconds: 90,
+        questions: [
+          {
+            prompt:
+              "What is the safest interpretation of a white pupil reflex?",
+            options: [
+              "An abnormal sign needing eye assessment",
+              "Proof of mature cataract",
+              "Normal ageing",
+              "No action if painless",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt:
+              "If fundal reflex is normal and VA is 6/6, the most likely action is:",
+            options: [
+              "Urgent surgery",
+              "Routine surgery",
+              "No cataract referral needed",
+              "Immediate retinal referral",
+            ],
+            answerIndex: 2,
+          },
+          {
+            prompt: "Best first step before deciding cataract referral is to:",
+            options: [
+              "Only inspect lens colour",
+              "Check history and vision carefully",
+              "Skip back-of-eye check",
+              "Refer everyone with blur",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt:
+              "Which VA indicates the poorest distance vision in this tool?",
+            options: ["6/12", "6/36", "6/60", "HM"],
+            answerIndex: 3,
+          },
+          {
+            prompt: "Pain/red eye with sudden one-eye loss should trigger:",
+            options: [
+              "Routine cataract pathway",
+              "No action",
+              "Urgent investigation for other pathology",
+              "Yearly review only",
+            ],
+            answerIndex: 2,
+          },
+          {
+            prompt:
+              "Which history is least typical of simple age-related cataract?",
+            options: [
+              "Gradual painless blur",
+              "Glare and faded colours",
+              "Sudden painful loss",
+              "Slowly worsening distance vision",
+            ],
+            answerIndex: 2,
+          },
+          {
+            prompt: "What does the Back of Eye section check for?",
+            options: [
+              "Only lens colour",
+              "Other disease behind the lens",
+              "Phone brightness",
+              "Age band only",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "A normal fundal reflex usually means the pupil glow is:",
+            options: [
+              "Bright and clear",
+              "Always white",
+              "Always black",
+              "Hidden by default",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "Which choice is a Back of Eye finding in this app?",
+            options: ["Spots", "Patches", "Cupped", "Dense"],
+            answerIndex: 2,
+          },
+          {
+            prompt: "Which choice is a Fundal Reflex finding in this app?",
+            options: ["Detached", "DR/Scar", "Patches", "Cupped"],
+            answerIndex: 2,
+          },
+          {
+            prompt: "Why does the app ask for Dist VA?",
+            options: [
+              "To judge vision severity",
+              "To change the title",
+              "To unlock the menu",
+              "To replace all examination",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt:
+              "If the result asks for re-checks, the safest response is to:",
+            options: [
+              "Ignore them",
+              "Re-check the highlighted findings",
+              "Clear the browser",
+              "Choose the fastest referral only",
+            ],
+            answerIndex: 1,
+          },
+        ],
+      },
+      {
+        name: "Intermediate",
+        totalQuestions: 5,
+        passScore: 4,
+        timeSeconds: 80,
+        questions: [
+          {
+            prompt: "White reflex with a poor back view means:",
+            options: [
+              "Posterior disease cannot be excluded",
+              "Dense cataract is confirmed",
+              "No eye assessment is needed",
+              "The retina is normal",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "Back-of-eye finding of detached retina should usually be:",
+            options: [
+              "Routine cataract surgery",
+              "No referral",
+              "Managed as non-cataract urgent retinal disease",
+              "Observed yearly",
+            ],
+            answerIndex: 2,
+          },
+          {
+            prompt: "Near VA deterioration (e.g. N18/N36) in this app:",
+            options: [
+              "Is ignored completely",
+              "Adds context to referral wording",
+              "Cancels distance VA",
+              "Always means no cataract",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Abnormal pupils in this workflow are treated as:",
+            options: [
+              "Simple cataract only",
+              "Possible non-cataract pathology",
+              "Always normal",
+              "Not relevant to triage",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Front-of-eye scar/distortion should lead to:",
+            options: [
+              "Guarded outcome warning",
+              "Automatic discharge",
+              "No change",
+              "Primary care only",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt:
+              "If the reflex is white and the fundus cannot be seen, the safest record is:",
+            options: [
+              "Poor view; posterior disease not excluded",
+              "Normal back of eye",
+              "Definite mature cataract only",
+              "No further assessment required",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "A dense reflex with relatively good VA should make you:",
+            options: [
+              "Ignore the mismatch",
+              "Re-check reflex and VA",
+              "Always discharge",
+              "Skip Back of Eye",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Distance poor but near good usually means:",
+            options: [
+              "The result is automatically normal",
+              "VA method or refraction should be re-checked",
+              "Cataract is impossible",
+              "Age band should be deleted",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "A normal reflex with very poor VA should prompt:",
+            options: [
+              "No further thought",
+              "Early specialist review for another cause",
+              "Routine cataract surgery only",
+              "Ignore the back view",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Deep cupping in Back of Eye points towards:",
+            options: [
+              "Glaucoma review first",
+              "Mature cataract only",
+              "Normal result",
+              "Near-vision testing only",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "DR/Scar in Back of Eye means:",
+            options: [
+              "Retinal disease may limit cataract benefit",
+              "The lens is definitely clear",
+              "No referral can be needed",
+              "The result must be green",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "A child with cataract-pattern signs should usually get:",
+            options: [
+              "Yearly adult review",
+              "Prompt paediatric referral",
+              "No action until age 18",
+              "Reading glasses only",
+            ],
+            answerIndex: 1,
+          },
+        ],
+      },
+      {
+        name: "Advanced",
+        totalQuestions: 5,
+        passScore: 4,
+        timeSeconds: 75,
+        questions: [
+          {
+            prompt: "Most safety-critical trap in cataract triage is:",
+            options: [
+              "Over-documenting history",
+              "Assuming all blur is cataract",
+              "Checking pupils",
+              "Using fundal images",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt:
+              "If back-of-eye shows diabetic/retinal pathology, cataract surgery in this app is:",
+            options: [
+              "Always urgent",
+              "Usually not the primary immediate pathway",
+              "Guaranteed to restore vision",
+              "Always first-line",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Sudden + painful visual loss should bias toward:",
+            options: [
+              "Elective cataract list",
+              "Urgent diagnostic escalation",
+              "Annual follow-up only",
+              "Reassure and discharge",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "The main role of this tool is to:",
+            options: [
+              "Replace specialist diagnosis",
+              "Support rapid triage and safe signposting",
+              "Provide final surgical booking",
+              "Assess refractive error only",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Best interpretation of poor Back of Eye view is:",
+            options: [
+              "Definitely simple cataract only",
+              "Needs further assessment for alternate pathology",
+              "Always normal",
+              "Ignore if near VA is good",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt:
+              "When two findings conflict (e.g. cataract-like reflex but retinal red flags), priority should be:",
+            options: [
+              "The least severe interpretation",
+              "Safety-first escalation for red flags",
+              "Ignore retinal signs",
+              "Wait 12 months",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt:
+              "RAPD or poor light direction should make the app consider:",
+            options: [
+              "Optic nerve or retinal disease first",
+              "Only routine cataract",
+              "No vision problem",
+              "Near VA only",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt:
+              "Why does the engine keep posterior override ahead of cataract type?",
+            options: [
+              "Posterior disease can be urgent or vision-limiting",
+              "It makes the MCQ shorter",
+              "It hides all cataract signs",
+              "It avoids taking history",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "Sudden painful white reflex is handled as:",
+            options: [
+              "Routine cataract only",
+              "Urgent same-day investigation",
+              "No cataract pathway",
+              "Back section hidden forever",
+            ],
+            answerIndex: 1,
+          },
+          {
+            prompt: "Which wording is safest for a red-flag result?",
+            options: [
+              "Urgent action, brief reason and next step",
+              "A long differential with no action",
+              "Definite cataract diagnosis",
+              "Reassurance before referral",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt:
+              "If abnormal reflex and VA 6/6 appear together, the app should:",
+            options: [
+              "Show a re-check warning",
+              "Force urgent surgery",
+              "Delete the reflex choice",
+              "Ignore VA",
+            ],
+            answerIndex: 0,
+          },
+          {
+            prompt: "A non-cataract-first pathway should avoid:",
+            options: [
+              "Over-stating cataract as the definite cause",
+              "Mentioning safety",
+              "Checking the back of eye",
+              "Using plain language",
+            ],
+            answerIndex: 0,
+          },
+        ],
+      },
+    ],
+    Et = {
+      Primary: [
+        "white-reflex",
+        "routine",
+        "assessment",
+        "va",
+        "acute-loss",
+        "acute-loss",
+        "posterior-view",
+        "red-reflex",
+        "posterior-view",
+        "reflex-pattern",
+        "va",
+        "recheck",
+      ],
+      Intermediate: [
+        "white-reflex",
+        "retinal-red-flag",
+        "near-va",
+        "pupils",
+        "cornea",
+        "posterior-view",
+        "recheck",
+        "refraction",
+        "posterior-view",
+        "cupping",
+        "retinal-comorbidity",
+        "paediatric",
+      ],
+      Advanced: [
+        "safety-scope",
+        "retinal-comorbidity",
+        "acute-loss",
+        "safety-scope",
+        "posterior-view",
+        "retinal-red-flag",
+        "rapd",
+        "posterior-view",
+        "acute-loss",
+        "urgent-wording",
+        "recheck",
+        "safety-scope",
+      ],
+    },
+    Nt = {
+      "white-reflex": {
+        explanation:
+          "A white reflex is abnormal but does not prove mature cataract. Record the visual context and arrange eye assessment because posterior causes must not be missed.",
+        source: "cataract-app-triage-v1",
+      },
+      routine: {
+        explanation:
+          "Cataract usually causes gradual visual difficulty. A normal reflex with good acuity does not by itself justify a cataract referral, though symptoms and daily function still matter.",
+        source: "nhs-adult-cataract-2025",
+      },
+      assessment: {
+        explanation:
+          "History, visual acuity, anterior findings and the available posterior view must be considered together before choosing a pathway.",
+        source: "cataract-app-scope-v1",
+      },
+      va: {
+        explanation:
+          "Visual acuity records functional severity and helps expose a mismatch between the reported vision and the observed reflex.",
+        source: "cataract-app-scope-v1",
+      },
+      "acute-loss": {
+        explanation:
+          "Age-related cataract is usually gradual and painless. Sudden loss, pain or redness needs assessment for another cause rather than a routine cataract assumption.",
+        source: "nhs-adult-cataract-2025",
+      },
+      "posterior-view": {
+        explanation:
+          "A limited or absent posterior view is a limitation, not a normal retinal finding. Cataract and posterior disease can coexist.",
+        source: "cataract-app-triage-v1",
+      },
+      "red-reflex": {
+        explanation:
+          "A bright clear red reflex is the comparison pattern in this teaching app. It must still be interpreted with visual acuity and the rest of the examination.",
+        source: "cataract-app-scope-v1",
+      },
+      "reflex-pattern": {
+        explanation:
+          "Patches are an anterior reflex pattern in this app. Back-of-eye choices are recorded separately to avoid mixing lens and posterior findings.",
+        source: "cataract-app-scope-v1",
+      },
+      recheck: {
+        explanation:
+          "Conflicting visual acuity and examination findings should be rechecked before a referral conclusion is recorded.",
+        source: "cataract-app-scope-v1",
+      },
+      "retinal-red-flag": {
+        explanation:
+          "A retinal red flag overrides a cataract-like reflex because delay could miss urgent or vision-limiting posterior disease.",
+        source: "cataract-app-triage-v1",
+      },
+      "near-va": {
+        explanation:
+          "Near acuity adds functional context but does not replace distance acuity or the eye examination.",
+        source: "cataract-app-scope-v1",
+      },
+      pupils: {
+        explanation:
+          "An abnormal pupil or light response is not explained safely by simple cataract alone and should prompt assessment for another cause.",
+        source: "cataract-app-triage-v1",
+      },
+      cornea: {
+        explanation:
+          "Corneal scar or distortion can limit the expected visual outcome and should be recorded alongside any cataract finding.",
+        source: "cataract-app-triage-v1",
+      },
+      refraction: {
+        explanation:
+          "A mismatch between distance and near acuity can reflect test method or refractive error, so the measurements should be checked before escalation.",
+        source: "cataract-app-scope-v1",
+      },
+      cupping: {
+        explanation:
+          "Marked disc cupping suggests a possible glaucoma pathway and should not be explained by cataract alone.",
+        source: "cataract-app-triage-v1",
+      },
+      "retinal-comorbidity": {
+        explanation:
+          "Retinal disease can coexist with cataract, alter urgency and limit the likely visual benefit from cataract surgery.",
+        source: "cataract-app-triage-v1",
+      },
+      paediatric: {
+        explanation:
+          "A cataract affecting a child can impair visual development. Prompt paediatric eye assessment is important when vision may be affected.",
+        source: "nhs-childhood-cataract",
+      },
+      "safety-scope": {
+        explanation:
+          "The app supports structured triage and signposting. It does not replace specialist diagnosis or prove that cataract is the cause of visual loss.",
+        source: "cataract-app-scope-v1",
+      },
+      rapd: {
+        explanation:
+          "RAPD or an abnormal light response suggests retinal or optic-nerve dysfunction and should not be attributed to routine cataract without assessment.",
+        source: "cataract-app-triage-v1",
+      },
+      "urgent-wording": {
+        explanation:
+          "Urgent results should put the action first, then give a brief reason and practical next step.",
+        source: "cataract-app-triage-v1",
+      },
+    },
+    me = At.map((e) => ({
+      ...e,
+      questions: e.questions.map((t, a) => {
+        let s = Et[e.name][a],
+          _ = Nt[s];
+        return {
+          ...t,
+          id: `cataract-${e.name.toLowerCase()}-${String(a + 1).padStart(2, "0")}`,
+          topic: s,
+          explanation: _.explanation,
+          source: _.source,
+        };
+      }),
+    }));
+  function Se(e) {
+    let t = e.slice();
+    for (let a = t.length - 1; a > 0; a -= 1) {
+      let s = Math.floor(Math.random() * (a + 1)),
+        _ = t[a];
+      ((t[a] = t[s]), (t[s] = _));
     }
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") {
-        return;
+    return t;
+  }
+  function Xe(e, t) {
+    if (!e || typeof e != "object")
+      return { unlockedLevelIndex: 0, completedLevels: [] };
+    let a = Number.isInteger(e.unlockedLevelIndex)
+        ? Math.max(0, Math.min(t - 1, e.unlockedLevelIndex))
+        : 0,
+      s = Array.isArray(e.completedLevels)
+        ? e.completedLevels
+            .filter((_) => Number.isInteger(_) && _ >= 0 && _ < t)
+            .filter((_, h, f) => f.indexOf(_) === h)
+        : [];
+    return { unlockedLevelIndex: a, completedLevels: s };
+  }
+  function Qe(e, t, a) {
+    let s = 0,
+      _ = 0;
+    for (let h = 0; h < e.length; h += 1) {
+      let f = t[h];
+      if (f == null) {
+        if (!a)
+          return {
+            isComplete: !1,
+            score: 0,
+            total: e.length,
+            unansweredCount: 1,
+          };
+        continue;
       }
-      if (mcqModal && mcqModal.classList.contains("open")) {
-        closeMcqModal();
-        return;
-      }
-      if (sideMenu && sideMenu.classList.contains("open")) {
-        setSideMenuOpen(false);
-      }
-    });
-    document.addEventListener("click", (event) => {
-      if (sideMenu && sideMenu.classList.contains("open")) {
-        const clickedInsideMenu = sideMenu.contains(event.target);
-        const clickedMenuIcon = burgerIcon && burgerIcon.contains(event.target);
-        if (!clickedInsideMenu && !clickedMenuIcon) {
-          setSideMenuOpen(false);
-        }
-      }
-      if (
-        mcqModal &&
-        mcqModal.classList.contains("open") &&
-        event.target === mcqModal
-      ) {
-        closeMcqModal();
-      }
-    });
-    renderMcqLevelButtons();
+      ((_ += 1), Number(f) === e[h].answerIndex && (s += 1));
+    }
     return {
-      closeMcqModal,
-      setSideMenuOpen,
+      isComplete: !0,
+      score: s,
+      total: e.length,
+      unansweredCount: e.length - _,
     };
   }
-
-  // src/app.js?v=20260511-7
-  function initializeApp() {
-    initInfoPopupController();
-    initMcqController();
-    initCataractController();
-    initImagePreviewController();
+  function Ke(e, t) {
+    try {
+      let a = window.localStorage.getItem(e);
+      return a ? JSON.parse(a) : t;
+    } catch (a) {
+      return t;
+    }
   }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeApp, {
-      once: true,
-    });
-  } else {
-    initializeApp();
+  function ze(e, t) {
+    try {
+      window.localStorage.setItem(e, JSON.stringify(t));
+    } catch (a) {}
   }
+  var Tt = { unlockedLevelIndex: 0, completedLevels: [] };
+  function Lt(e) {
+    let t = Se(e.options.map((a, s) => ({ label: a, originalIndex: s })));
+    return {
+      ...e,
+      options: t.map((a) => a.label),
+      answerIndex: t.findIndex((a) => a.originalIndex === e.answerIndex),
+    };
+  }
+  function je() {
+    let e = r("#burger-icon"),
+      t = r("#sideMenu"),
+      a = te(".mcq-level-button"),
+      s = r("#mcqModal"),
+      _ = r("#closeMcqModal"),
+      h = r("#mcqTitle"),
+      f = r("#mcqTimer"),
+      u = r("#mcqContainer"),
+      p = r("#submitMcqButton"),
+      v = r("#mcqResult"),
+      b = r("#info-popup"),
+      q = r("#info-icon"),
+      L = Xe(Ke(Re, Tt), me.length),
+      M = null,
+      R = [],
+      B = null,
+      S = 0,
+      I = null,
+      A = !1;
+    function $() {
+      return s
+        ? Array.from(
+            s.querySelectorAll(
+              'button:not(:disabled), input:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])',
+            ),
+          ).filter((n) => !n.hidden && n.getClientRects().length > 0)
+        : [];
+    }
+    function F() {
+      ze(Re, L);
+    }
+    function j(n) {
+      return n <= L.unlockedLevelIndex;
+    }
+    function Y(n) {
+      return L.completedLevels.includes(n);
+    }
+    function ie() {
+      a.forEach((n) => {
+        let d = Number(n.dataset.levelIndex),
+          C = j(d),
+          w = Y(d);
+        ((n.disabled = !C), n.classList.toggle("is-complete", w));
+      });
+    }
+    function G(n) {
+      var d;
+      t &&
+        (n &&
+          b &&
+          ((b.hidden = !0), q && q.setAttribute("aria-expanded", "false")),
+        t.classList.toggle("open", n),
+        t.setAttribute("aria-hidden", n ? "false" : "true"),
+        n
+          ? (t.removeAttribute("inert"),
+            (d = t.querySelector("button:not([disabled])")) == null ||
+              d.focus({ preventScroll: !0 }))
+          : t.setAttribute("inert", ""),
+        e &&
+          (e.setAttribute("aria-expanded", n ? "true" : "false"),
+          e.setAttribute("aria-label", n ? "Close menu" : "Open menu")));
+    }
+    function N() {
+      t && G(!t.classList.contains("open"));
+    }
+    function D() {
+      B !== null && (clearInterval(B), (B = null));
+    }
+    function J() {
+      if (!f) return;
+      let n = Math.floor(S / 60),
+        d = S % 60,
+        C = me[M],
+        w = C ? `Pass ${C.passScore}/${C.totalQuestions}` : "";
+      f.textContent = `${w} \xB7 ${String(n).padStart(2, "0")}:${String(d).padStart(2, "0")}`;
+    }
+    function Z(n = !1) {
+      var z;
+      let d = me[M];
+      if (!d || !v) return;
+      if (A) {
+        X(M);
+        return;
+      }
+      let C = W(),
+        w = Qe(R, C, !!n);
+      if (!w.isComplete) {
+        ((v.textContent = "Please answer all questions before submitting."),
+          (v.className = "mcq-result is-review"));
+        let ee = C.findIndex((re) => !Number.isInteger(re));
+        (z =
+          u == null ? void 0 : u.querySelector(`input[name="mcq_q_${ee}"]`)) ==
+          null || z.focus();
+        return;
+      }
+      D();
+      let Q = w.unansweredCount === 0 && w.score >= d.passScore;
+      (Q && (se(M), ie()),
+        (v.textContent = `${d.name}: ${w.score}/${w.total}. ${Q ? "Pass." : "Review and retry."}`),
+        (v.className = `mcq-result ${Q ? "is-pass" : "is-review"}`),
+        R.forEach((ee, re) => {
+          let i = C[re],
+            c =
+              u == null
+                ? void 0
+                : u.querySelector(`[data-question-id="${ee.id}"]`);
+          c == null ||
+            c.querySelectorAll('input[type="radio"]').forEach((y) => {
+              y.disabled = !0;
+              let x = y.closest(".mcq-option"),
+                T = Number(y.value);
+              (x == null ||
+                x.classList.toggle("is-correct", T === ee.answerIndex),
+                x == null ||
+                  x.classList.toggle(
+                    "is-wrong",
+                    T === i && T !== ee.answerIndex,
+                  ));
+            });
+          let l = c == null ? void 0 : c.querySelector(".mcq-explanation");
+          l && (l.hidden = !1);
+        }),
+        (A = !0),
+        p &&
+          ((p.disabled = !1),
+          (p.textContent = Q ? "New attempt" : "Try again")));
+    }
+    function U(n) {
+      if ((D(), !f)) return;
+      let d = Number(n.timeSeconds) || 0;
+      if (d <= 0) {
+        ((f.hidden = !0), (f.textContent = ""));
+        return;
+      }
+      ((S = d),
+        (f.hidden = !1),
+        J(),
+        (B = setInterval(() => {
+          ((S -= 1), J(), S <= 0 && (D(), Z(!0)));
+        }, 1e3)));
+    }
+    function m() {
+      s &&
+        ((I = e),
+        s.classList.add("open"),
+        s.setAttribute("aria-hidden", "false"),
+        document.body.classList.add("modal-open"),
+        window.requestAnimationFrame(() => (_ == null ? void 0 : _.focus())));
+    }
+    function o() {
+      s &&
+        (D(),
+        s.classList.remove("open"),
+        s.setAttribute("aria-hidden", "true"),
+        document.body.classList.remove("modal-open"),
+        (M = null),
+        (R = []),
+        (A = !1),
+        p && ((p.textContent = "Submit"), (p.disabled = !1)),
+        I == null || I.focus(),
+        (I = null));
+    }
+    function P(n) {
+      u &&
+        ((u.innerHTML = ""),
+        n.forEach((d, C) => {
+          let w = document.createElement("fieldset");
+          ((w.className = "mcq-question"), (w.dataset.questionId = d.id));
+          let Q = document.createElement("legend");
+          ((Q.textContent = `${C + 1}. ${d.prompt}`),
+            w.appendChild(Q),
+            d.options.forEach((ee, re) => {
+              let i = document.createElement("label");
+              i.className = "mcq-option";
+              let c = document.createElement("input");
+              ((c.type = "radio"),
+                (c.name = `mcq_q_${C}`),
+                (c.value = String(re)));
+              let l = document.createElement("span");
+              ((l.textContent = ee),
+                i.appendChild(c),
+                i.appendChild(l),
+                w.appendChild(i));
+            }));
+          let z = document.createElement("p");
+          ((z.className = "mcq-explanation"),
+            (z.textContent = `Why: ${d.explanation}`),
+            (z.hidden = !0),
+            z.setAttribute("aria-live", "polite"),
+            w.appendChild(z),
+            u.appendChild(w));
+        }));
+    }
+    function X(n) {
+      let d = me[n];
+      d &&
+        ((M = n),
+        (A = !1),
+        (R = Se(d.questions).slice(0, d.totalQuestions).map(Lt)),
+        h && (h.textContent = `${d.name} MCQ`),
+        v && ((v.textContent = ""), (v.className = "mcq-result")),
+        p && ((p.textContent = "Submit"), (p.disabled = !1)),
+        P(R),
+        m(),
+        U(d));
+    }
+    function W() {
+      return R.map((n, d) => {
+        let C = document.querySelector(`input[name="mcq_q_${d}"]:checked`);
+        return C ? Number(C.value) : null;
+      });
+    }
+    function se(n) {
+      (L.completedLevels.includes(n) || L.completedLevels.push(n),
+        (L.unlockedLevelIndex = Math.max(
+          L.unlockedLevelIndex,
+          Math.min(me.length - 1, n + 1),
+        )),
+        F());
+    }
+    return (
+      e &&
+        e.addEventListener("click", (n) => {
+          (n.preventDefault(), n.stopPropagation(), N());
+        }),
+      a.forEach((n) => {
+        n.addEventListener("click", () => {
+          let d = Number(n.dataset.levelIndex);
+          j(d) && (G(!1), X(d));
+        });
+      }),
+      p &&
+        p.addEventListener("click", () => {
+          Z(!1);
+        }),
+      _ && _.addEventListener("click", o),
+      document.addEventListener("keydown", (n) => {
+        if (n.key === "Tab" && s != null && s.classList.contains("open")) {
+          let d = $(),
+            C = d[0],
+            w = d[d.length - 1];
+          if (C && w) {
+            if (n.shiftKey && document.activeElement === C) {
+              (n.preventDefault(), w.focus());
+              return;
+            }
+            if (!n.shiftKey && document.activeElement === w) {
+              (n.preventDefault(), C.focus());
+              return;
+            }
+          }
+        }
+        if (n.key === "Escape") {
+          if (s && s.classList.contains("open")) {
+            o();
+            return;
+          }
+          t &&
+            t.classList.contains("open") &&
+            (G(!1), e == null || e.focus({ preventScroll: !0 }));
+        }
+      }),
+      document.addEventListener("click", (n) => {
+        if (t && t.classList.contains("open")) {
+          let d = t.contains(n.target),
+            C = e && e.contains(n.target);
+          !d && !C && G(!1);
+        }
+        s && s.classList.contains("open") && n.target === s && o();
+      }),
+      ie(),
+      me.forEach((n) => {
+        n.questions.forEach((d) => {
+          (!d.id || !d.explanation || !Ge[d.source]) &&
+            console.warn(`Invalid MCQ metadata: ${d.id || d.prompt}`);
+        });
+      }),
+      { closeMcqModal: o, setSideMenuOpen: G }
+    );
+  }
+  function Je() {
+    (Fe(), je(), Ye(), He());
+  }
+  document.readyState === "loading"
+    ? document.addEventListener("DOMContentLoaded", Je, { once: !0 })
+    : Je();
 })();

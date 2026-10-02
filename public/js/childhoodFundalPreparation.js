@@ -3830,7 +3830,7 @@ function resolveFirstStageAnchorElement(stage, cfg) {
   );
 }
 
-async function ensureLottie() {
+export async function ensureLottie() {
   if (window.lottie) return true;
 
   if (!window.__lottieLoadPromise) {

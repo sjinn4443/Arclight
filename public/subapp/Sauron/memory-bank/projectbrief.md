@@ -1,5 +1,17 @@
 # Project Brief
 
+## Timed assessment rule
+
+A timed case may generate a hidden axis but must not move the visible streak to that answer before reveal. Baby mode must source timed cases only from its own catalogue. These assessment constraints must not alter the simulator's optical calculations or the revealed answer.
+
+## 25 July 2026 teaching follow-up
+
+Keep Sauron a retinoscopy teaching simulator. Teaching-tier assignment, safety emphasis and simulator behaviour are separate concerns. Warning notes must remain limited, accessible and visually distinct from level markers. They must not silently change simulator output or imply clinical approval.
+
+## v1.1 engineering standard
+
+Sauron is locally packaged, reset-safe, accessibility-labelled and proportionally tested. Its original retinoscopy teaching purpose and visual identity remain controlling requirements.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -109,3 +121,7 @@ Deliver a lightweight browser-based retinoscopy training tool where learners can
 - ophthalmology trainees
 - optometry trainees
 - Arclight simulation collaborators
+
+## MCQ quality boundary — 26 July 2026
+
+The MCQs should assess retinoscopy knowledge and interpretation, not knowledge of menu mechanics. Wording may be narrowed for safety and simulator scope without changing the optics engine, case parameters, attempt scoring or visual identity.

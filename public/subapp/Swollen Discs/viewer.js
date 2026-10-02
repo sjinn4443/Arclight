@@ -230,15 +230,36 @@ export function createViewer({
   let shouldFallbackFromWebp = false;
 
   const img = new Image();
+  let imageReady = false;
+  let imageCallbacks = {};
+  const imageStatus = document.getElementById('imageStatus');
+  const imageStatusText = document.getElementById('imageStatusText');
+  const retryImage = document.getElementById('retryImage');
+  function showImageStatus(message, failed = false) {
+    if (imageStatus) imageStatus.hidden = !message;
+    if (imageStatusText) imageStatusText.textContent = message;
+    if (retryImage) retryImage.hidden = !failed;
+  }
   img.onload = () => {
+    imageReady = true;
+    showImageStatus('');
     reCentreEverything();
     if (jitterAnimationId === null) {
       jitterAnimationId = requestAnimationFrame(jitter);
     }
+    const callbacks = imageCallbacks;
+    imageCallbacks = {};
+    callbacks.onReady?.();
   };
   img.onerror = () => {
     const fallbackPath = getJpegFallbackPath(state.viewer.activeImageSrc);
     if (!fallbackPath || fallbackPath === state.viewer.activeImageSrc) {
+      imageReady = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      showImageStatus('Image unavailable', true);
+      const callbacks = imageCallbacks;
+      imageCallbacks = {};
+      callbacks.onError?.();
       return;
     }
 
@@ -282,6 +303,8 @@ export function createViewer({
   }
 
   function initialize() {
+    if (retryImage)
+      addDomListener(retryImage, 'click', () => setImageSource(state.viewer.activeImageSrc));
     state.viewer.activeImageSrc = defaultImageSrc;
     state.viewer.conditionImageSrc = defaultImageSrc;
     state.viewer.activeCondition = 'normal';
@@ -474,17 +497,21 @@ export function createViewer({
     return circleRadius * zoomFactor * scaleFactor;
   }
 
-  function setImageSource(path) {
+  function setImageSource(path, callbacks = {}) {
     const nextPath = resolvePreferredImagePath(path, shouldFallbackFromWebp);
     state.viewer.activeImageSrc = nextPath;
 
     const loadedImageName = extractImageFilename(img.src);
     const requestedImageName = extractImageFilename(nextPath);
-    if (img.complete && loadedImageName === requestedImageName) {
+    if (imageReady && img.complete && img.naturalWidth && loadedImageName === requestedImageName) {
       reCentreEverything();
+      callbacks.onReady?.();
       return;
     }
-
+    imageReady = false;
+    imageCallbacks = callbacks;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    showImageStatus('Loading image…');
     img.src = nextPath;
   }
 
@@ -523,15 +550,10 @@ export function createViewer({
   }
 
   function buildFundusFilter(cataract) {
-    const isMobileCataract = VIEWER_PERF_PROFILE.isMobileLike && state.viewer.cataractLevel > 0;
-    const blurScale = isMobileCataract ? VIEWER_PERF_PROFILE.cataractBlurScale : 1;
-    const blurPx = Math.max(0, Math.min(isMobileCataract ? 0.25 : 6, cataract.blurPx * blurScale));
+    const blurPx = Math.max(0, Math.min(6, cataract.blurPx));
     const brightness = cataract.brightness * timedAugmentation.brightness;
     const contrast = cataract.contrast * timedAugmentation.contrast;
     const saturation = cataract.saturation * timedAugmentation.saturation;
-    if (isMobileCataract) {
-      return `brightness(${brightness})`;
-    }
     return `blur(${blurPx}px) brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
   }
 
@@ -1090,7 +1112,7 @@ export function createViewer({
   }
 
   function draw() {
-    if (!img.naturalWidth || !img.naturalHeight) {
+    if (!imageReady || !img.naturalWidth || !img.naturalHeight) {
       return;
     }
 
@@ -1438,6 +1460,10 @@ export function createViewer({
   }
 
   function destroy() {
+    imageReady = false;
+    imageCallbacks = {};
+    img.onload = null;
+    img.onerror = null;
     listenerDisposers.splice(0).forEach((dispose) => {
       dispose();
     });

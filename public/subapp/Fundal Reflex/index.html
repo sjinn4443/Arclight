@@ -10,22 +10,10 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Fundal Reflex" />
+    <meta name="theme-color" content="#111111" />
     <title>Fundal Reflex</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link
-      rel="preload"
-      href="assets/fonts/inter-latin-400-800.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="assets/fonts/quicksand-latin-700.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="manifest" href="manifest.webmanifest" />
 
     <style>
       html {
@@ -40,18 +28,6 @@
         color: #0f1625;
       }
 
-      .lang-lo,
-      .lang-es,
-      html[lang="lo"] .lang-en,
-      html[lang="es"] .lang-en {
-        display: none !important;
-      }
-
-      html[lang="lo"] .lang-lo,
-      html[lang="es"] .lang-es {
-        display: inline !important;
-      }
-
       body:not(.app-ready) .eyes-wrapper {
         background:
           radial-gradient(
@@ -63,8 +39,9 @@
           linear-gradient(180deg, #101514 0%, #303a38 72%, #3f473f 100%);
       }
     </style>
-    <link rel="stylesheet" href="style.css?v=20260821-1" />
+    <link rel="stylesheet" href="style.css?v=20261002-host1" />
     <link rel="stylesheet" href="cup-achievement.css" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <!-- App Bar -->
@@ -112,17 +89,17 @@
           Learn
         </button>
         <button type="button" class="mcq-level-button" data-level="primary">
-          Primary MCQ
+          Primary
         </button>
         <button
           type="button"
           class="mcq-level-button"
           data-level="intermediate"
         >
-          Intermediate MCQ
+          Intermediate
         </button>
         <button type="button" class="mcq-level-button" data-level="advanced">
-          Advanced MCQ
+          Advanced
         </button>
         <section
           id="cupAchievement"
@@ -155,6 +132,19 @@
         <button type="button" id="test-mode-button" class="test-mode-button">
           Test me
         </button>
+        <button
+          type="button"
+          id="new-session-button"
+          class="new-session-button"
+        >
+          New session
+        </button>
+        <p
+          id="new-session-status"
+          class="new-session-status"
+          role="status"
+          aria-live="polite"
+        ></p>
       </div>
     </nav>
 
@@ -186,40 +176,18 @@
             aria-labelledby="info-reflex-title"
           >
             <p id="info-reflex-title" class="info-look-title">Fundal reflex</p>
-            <p data-i18n-skip>
-              <span class="lang-en"
-                >The fundal reflex is the glow in the pupil from the fundus,
-                seen with Arclight at arm's length. We use
-                <em>fundal</em> reflex rather than <em>red</em> reflex. In those
-                with darker pigmentation, a normal reflex may look orange-yellow
-                or blue-white. Bright, equal and round is reassuring. Null,
-                milky or black means the back is not being seen.</span
-              >
-              <span class="lang-lo" lang="lo"
-                >ການສະທ້ອນແສງຈາກກົ້ນຕາແມ່ນແສງທີ່ສ່ອງອອກຈາກກົ້ນຕາຜ່ານຮູມ່ານຕາ
-                ເມື່ອໃຊ້ Arclight ກວດໃນໄລຍະແຂນ.
-                ພວກເຮົາໃຊ້ຄຳວ່າການສະທ້ອນແສງຈາກກົ້ນຕາ ແທນການສະທ້ອນສີແດງ.
-                ໃນຜູ້ທີ່ມີເມັດສີເຂັ້ມ ການສະທ້ອນປົກກະຕິອາດເປັນສີສົ້ມ-ເຫຼືອງ ຫຼື
-                ຟ້າ-ຂາວ. ການສະທ້ອນທີ່ສະຫວ່າງ, ເທົ່າກັນ ແລະ ກົມເປັນສັນຍານທີ່ດີ.
-                ຖ້າບໍ່ມີແສງ, ຂາວຂຸ່ນ ຫຼື ດຳ
-                ໝາຍເຖິງມອງບໍ່ເຫັນສ່ວນຫຼັງຂອງຕາ.</span
-              >
-              <span class="lang-es" lang="es"
-                >El reflejo de fondo es el brillo que se observa en la pupila
-                procedente del fondo de ojo con Arclight a la distancia de un
-                brazo. Usamos el término <em>reflejo de fondo</em> en vez de
-                <em>reflejo rojo</em>. En personas con pigmentación más oscura,
-                un reflejo normal puede verse amarillo anaranjado o blanco
-                azulado. Un reflejo brillante, igual y redondo es
-                tranquilizador. Si es ausente, lechoso o negro, significa que no
-                se está viendo la parte posterior del ojo.</span
-              >
+            <p class="info-purpose-copy">
+              The fundal reflex is the glow in the pupil from the fundus. Use
+              this while viewing the patient at arm's length: you compare both
+              reflexes, then match the simulator to what you see. It supports
+              recognition and referral judgement; it does not replace
+              examination.
             </p>
           </section>
           <hr />
           <p>
-            Dim light, calm patient. Compare both eyes for brightness, colour
-            and shape. Move side to side, then closer.
+            In dim light, compare brightness, colour and shape. A normal reflex
+            may look orange-yellow or blue-white with darker pigmentation.
           </p>
           <hr />
           <div class="info-look-guide">
@@ -262,13 +230,10 @@
           <hr />
           <div class="info-points">
             <p>
-              Use <em>Cases</em> to practise. Use <em>Learn</em> for the visual
-              handout.
+              Use <strong>Cases</strong> to practise. Use
+              <strong>Learn</strong> for the visual handout.
             </p>
-            <p>
-              Teaching aid, not final diagnosis.
-              <span class="modal-version-inline">v1 - 18/5/2026</span>
-            </p>
+            <p>Teaching aid, not final diagnosis.</p>
           </div>
           <button
             id="info-learn-button"
@@ -277,6 +242,24 @@
           >
             Learn from the handout
           </button>
+          <p
+            class="info-version"
+            style="
+              display: block;
+              width: 100%;
+              box-sizing: border-box;
+              margin: 8px 0 0;
+              color: #6e7c95;
+              font:
+                700 10.5px/1.2 Inter,
+                Arial,
+                sans-serif;
+              text-align: right;
+              white-space: nowrap;
+            "
+          >
+            v1 · 30/9/2026
+          </p>
         </div>
       </div>
     </div>
@@ -425,8 +408,26 @@
         <h2 id="mcqTitle">MCQ Test</h2>
         <p id="mcqIntro" class="mcq-intro"></p>
         <div id="mcqContainer"></div>
-        <button id="submitMcqButton" class="button-pass">Submit Test</button>
-        <div id="mcqResult" class="result-text"></div>
+        <div
+          id="mcqResult"
+          class="result-text"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+        ></div>
+        <div class="mcq-actions">
+          <button id="submitMcqButton" class="button-pass" type="button">
+            Submit answers
+          </button>
+          <button
+            id="retryMcqButton"
+            class="button-pass mcq-retry"
+            type="button"
+            hidden
+          >
+            New set
+          </button>
+        </div>
       </div>
     </div>
 
@@ -647,7 +648,8 @@
                   max="55"
                   value="32"
                   data-eye="left"
-                  title="Pupil size (small > large)"
+                  title="RE pupil size (small to large)"
+                  aria-label="RE pupil size"
                 />
               </div>
               <div class="slider-wrapper">
@@ -658,7 +660,8 @@
                   max="55"
                   value="32"
                   data-eye="right"
-                  title="Pupil size (small > large)"
+                  title="LE pupil size (small to large)"
+                  aria-label="LE pupil size"
                 />
               </div>
             </div>
@@ -675,7 +678,8 @@
                   max="30"
                   value="0"
                   data-eye="left"
-                  title="Upper eyelid ptosis"
+                  title="RE upper eyelid ptosis"
+                  aria-label="RE upper eyelid ptosis"
                 />
               </div>
               <div class="slider-wrapper">
@@ -686,7 +690,8 @@
                   max="30"
                   value="0"
                   data-eye="right"
-                  title="Upper eyelid ptosis"
+                  title="LE upper eyelid ptosis"
+                  aria-label="LE upper eyelid ptosis"
                 />
               </div>
             </div>
@@ -1157,8 +1162,8 @@
     </main>
 
     <!-- Main JS -->
-    <script src="app.bundle.js?v=20260821-1" defer></script>
-    <script src="cup-achievement.js" defer></script>
+    <script src="app.bundle.js?v=20261002-host1" defer></script>
+    <script src="cup-achievement.js?v=20260723-round1" defer></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
     <script src="i18n-lo.js?v=20260828-6" defer></script>
   </body>

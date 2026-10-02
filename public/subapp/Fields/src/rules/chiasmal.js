@@ -12,21 +12,27 @@ function checkBitemporalHemianopia(right, left) {
   const rC = codeToScore(right.c),
     lC = codeToScore(left.c);
 
-  // Keep chiasmal label strict: require clean vertical pattern and central sparing.
+  // Central involvement does not erase the bitemporal component.
   if (rSN !== 0 || rIN !== 0 || lSN !== 0 || lIN !== 0) {
     return null;
   }
-  if (rC !== 0 || lC !== 0) return null;
+  const centralNote = rC !== 0 || lC !== 0 ? " (with central involvement)" : "";
 
   if (rST >= 1 && rIT >= 1 && lST >= 1 && lIT >= 1) {
     const rSum = rST + rIT;
     const lSum = lST + lIT;
     const total = rSum + lSum;
     if (total === 4)
-      return "<em>Possible</em> <strong>Bitemporal Hemianopia</strong>";
+      return (
+        "<em>Possible</em> <strong>Bitemporal Hemianopia</strong>" + centralNote
+      );
     if (total === 8)
-      return "<em>Definite</em> <strong>Bitemporal Hemianopia</strong>";
-    return "<em>Probable</em> <strong>Bitemporal Hemianopia</strong>";
+      return (
+        "<em>Definite</em> <strong>Bitemporal Hemianopia</strong>" + centralNote
+      );
+    return (
+      "<em>Probable</em> <strong>Bitemporal Hemianopia</strong>" + centralNote
+    );
   }
   return null;
 }

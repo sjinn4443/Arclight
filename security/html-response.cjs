@@ -2,8 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { TELEMETRY_META_NAME } = require("./telemetry-guard.cjs");
 
-const INLINE_SCRIPT_OPEN_TAG_RE =
-  /<script(?![^>]*\bsrc=)(?![^>]*\bnonce=)([^>]*)>/gi;
+const INLINE_SCRIPT_OPEN_TAG_RE = /<script(?![^>]*\bnonce=)([^>]*)>/gi;
 const INLINE_STYLE_OPEN_TAG_RE = /<style(?![^>]*\bnonce=)([^>]*)>/gi;
 
 function injectNonceIntoHtml(html, nonce) {
@@ -41,11 +40,17 @@ function injectTelemetryMetaIntoHtml(html, telemetryToken) {
 }
 
 function resolveStaticHtmlFile(staticRoot, requestPath) {
-  const normalizedRequestPath = String(requestPath || "").split("?")[0] || "/";
-  const relativePath =
-    normalizedRequestPath === "/"
-      ? "index.html"
-      : normalizedRequestPath.replace(/^\/+/, "");
+  let normalizedRequestPath;
+  try {
+    normalizedRequestPath = decodeURIComponent(
+      String(requestPath || "/").split("?")[0],
+    );
+  } catch {
+    return null;
+  }
+  const relativePath = normalizedRequestPath.endsWith("/")
+    ? path.join(normalizedRequestPath.replace(/^\/+/, ""), "index.html")
+    : normalizedRequestPath.replace(/^\/+/, "");
 
   if (!relativePath.toLowerCase().endsWith(".html")) return null;
 

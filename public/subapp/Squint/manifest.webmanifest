@@ -1,0 +1,11 @@
+{
+  "name": "Squint",
+  "short_name": "Squint",
+  "description": "Teaching simulator for ocular alignment, motility and pupil signs.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#edf1f7",
+  "theme_color": "#0d47a1",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

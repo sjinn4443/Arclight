@@ -340,17 +340,6 @@ function summarizeCondition(inputState) {
 
     if (fallbackSecondary) {
       filteredMatches = [primary, fallbackSecondary];
-    } else if (
-      primary.key !== "binocularTotalLoss" &&
-      primary.key !== "binasalHemianopia"
-    ) {
-      filteredMatches = [
-        primary,
-        {
-          key: "mixedOverlapHint",
-          text: "<em>Possible</em> <strong>Mixed pattern</strong>",
-        },
-      ];
     }
   }
 

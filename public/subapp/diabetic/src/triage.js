@@ -25,23 +25,23 @@ const ACTION_COPY = {
     tone: "neutral",
   },
   routineScreen: {
-    title: "Routine screening still required",
+    title: "Routine (screening)",
     next: "Continue local screening pathway.",
     tone: "green",
   },
   ungradable: {
-    title: "Ungradable",
+    title: "Ungradable (repeat)",
     next: "Repeat dilated view/photo; refer if still poor.",
     tone: "orange",
   },
   routineReferral: {
-    title: "Routine referral when possible",
+    title: "Routine (weeks)",
     next: "Refer routinely when possible.",
-    tone: "blue",
+    tone: "green",
   },
   referSoon: {
-    title: "Refer soon (2 weeks)",
-    next: "Refer within 2 weeks.",
+    title: "Soon (days)",
+    next: "Refer within days.",
     tone: "orange",
   },
   urgent: {
@@ -146,7 +146,9 @@ export function evaluateEye(eyeKey, eye, state) {
   if (hasMaculaRisk) {
     const reasons = formatFindings(maculaKeys);
     if (hasQualifyingVaRisk) {
-      reasons.push(`${getVaLabel(eye.distanceVA)} VA`);
+      reasons.push(
+        `${getVaLabel(eye.distanceVA)} VA${maculaKeys.length === 0 ? " with DR signs" : ""}`,
+      );
     }
     return {
       ...base,
@@ -192,7 +194,7 @@ export function evaluateEye(eyeKey, eye, state) {
     };
   }
 
-  if (viewAdequate && findings.noReferableSignsSeen) {
+  if (eye.distanceVA && viewAdequate && findings.noReferableSignsSeen) {
     return {
       ...base,
       priority: PRIORITY.routineScreen,
@@ -205,7 +207,7 @@ export function evaluateEye(eyeKey, eye, state) {
   if (recorded) {
     return {
       ...base,
-      reasons: ["Select no signs or DR findings"],
+      reasons: [!eye.distanceVA ? "Record VA" : "Complete view and findings"],
       summary: "Incomplete",
     };
   }
@@ -250,6 +252,16 @@ function buildSystemicSummary(state) {
   return { checked, unchecked };
 }
 
+function buildSafety(systemic) {
+  const safety = ["Screening required. View only."];
+
+  if (systemic.unchecked.length > 0) {
+    safety.push("Medical review if possible.");
+  }
+
+  return safety;
+}
+
 export function evaluateTriage(state) {
   const eyeResults = Object.entries(state.eyes).map(([eyeKey, eye]) =>
     evaluateEye(eyeKey, eye, state),
@@ -262,9 +274,7 @@ export function evaluateTriage(state) {
   const incompleteEyes = eyeResults.filter(
     (result) => result.actionKey === "incomplete",
   );
-  const limitationEyes = eyeResults.filter(
-    (result) => result.viewLimited && result.priority < PRIORITY.urgent,
-  );
+  const limitationEyes = eyeResults.filter((result) => result.viewLimited);
   const reasons = [];
   const limitations = [];
 
@@ -279,12 +289,20 @@ export function evaluateTriage(state) {
         "Both eyes have adequate views and no referable signs selected.",
       );
     } else {
-      const limitedEye = eyeResults.find(
-        (result) => result.viewLimited || result.actionKey === "incomplete",
-      );
+      const limitedEye = eyeResults.find((result) => result.viewLimited);
       if (limitedEye) {
         return evaluateWithForcedUngradable(
           state,
+          eyeResults,
+          dilationNotes,
+          systemic,
+        );
+      }
+      const incompleteEye = eyeResults.find(
+        (result) => result.actionKey === "incomplete",
+      );
+      if (incompleteEye) {
+        return evaluateWithForcedIncomplete(
           eyeResults,
           dilationNotes,
           systemic,
@@ -304,25 +322,30 @@ export function evaluateTriage(state) {
     });
   }
 
-  limitationEyes
-    .filter((result) => result.priority < topEye.priority)
-    .forEach((result) =>
+  limitationEyes.forEach((result) =>
+    limitations.push(
+      `${result.eyeLabel}: limited view; other findings may be missed.`,
+    ),
+  );
+  eyeResults.forEach((result) => {
+    if (
+      !state.eyes[result.eyeKey].distanceVA &&
+      result.priority > PRIORITY.incomplete
+    ) {
+      limitations.push(`${result.eyeLabel}: VA not recorded.`);
+    }
+    if (state.eyes[result.eyeKey].findings.venousBeading) {
       limitations.push(
-        `${result.eyeLabel}: ${result.limitations.join(", ") || "limited view"}.`,
-      ),
-    );
+        `${result.eyeLabel}: assess extent; severity cannot be graded here.`,
+      );
+    }
+  });
 
   incompleteEyes
     .filter((result) => topEye.priority > PRIORITY.incomplete)
     .forEach((result) => limitations.push(`${result.eyeLabel}: incomplete.`));
 
   dilationNotes.forEach((note) => limitations.push(note));
-
-  const safety = ["Screening required. View only."];
-
-  if (systemic.unchecked.length > 0) {
-    safety.push("Medical review if possible.");
-  }
 
   return {
     actionKey: topEye.actionKey,
@@ -332,7 +355,7 @@ export function evaluateTriage(state) {
     reasons,
     limitations,
     next: copy.next,
-    safety,
+    safety: buildSafety(systemic),
     systemic,
     eyes: eyeResults,
   };
@@ -347,7 +370,7 @@ function evaluateWithForcedUngradable(
   const copy = ACTION_COPY.ungradable;
   const limitations = [];
   eyeResults
-    .filter((result) => result.viewLimited || result.actionKey === "incomplete")
+    .filter((result) => result.viewLimited)
     .forEach((result) =>
       limitations.push(
         `${result.eyeLabel}: ${result.reasons.join(", ") || "not assessable"}.`,
@@ -371,14 +394,23 @@ function evaluateWithForcedUngradable(
   };
 }
 
-export function getSummaryForEye(eyeResult) {
-  return eyeResult.summary;
-}
-
-export function describeEyeState(mode, eye) {
+function evaluateWithForcedIncomplete(eyeResults, dilationNotes, systemic) {
+  const copy = ACTION_COPY.incomplete;
+  const limitations = [];
+  eyeResults
+    .filter((result) => result.actionKey === "incomplete")
+    .forEach((result) => limitations.push(`${result.eyeLabel}: incomplete.`));
+  dilationNotes.forEach((note) => limitations.push(note));
   return {
-    va: getVaLabel(eye.distanceVA),
-    view: eye.viewQuality || "Not recorded",
-    area: getAreaLabel(mode, eye.areaSeen),
+    actionKey: "incomplete",
+    priority: PRIORITY.incomplete,
+    title: copy.title,
+    tone: copy.tone,
+    reasons: ["R/L recording incomplete."],
+    limitations,
+    next: copy.next,
+    safety: buildSafety(systemic),
+    systemic,
+    eyes: eyeResults,
   };
 }

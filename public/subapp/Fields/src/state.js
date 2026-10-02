@@ -10,6 +10,26 @@
 
 const APP_GLOBAL = typeof window !== "undefined" ? window : globalThis;
 const FIELD_CORE = APP_GLOBAL.FIELD_CORE || {};
+const FIELD_ASSESSMENT = APP_GLOBAL.FIELD_ASSESSMENT || {
+  UNASSESSED: "unassessed",
+  nextState: (state) =>
+    state === "unassessed"
+      ? "seen"
+      : state === "seen"
+        ? "suspect"
+        : state === "suspect"
+          ? "absent"
+          : "seen",
+  isComplete: (states, expectedCount = 10) =>
+    Array.isArray(states) &&
+    states.length === expectedCount &&
+    states.every((state) => state !== "unassessed"),
+  completionLabel: (states) =>
+    Array.isArray(states) && states.some((state) => state !== "unassessed")
+      ? "Mark rest seen"
+      : "Mark all seen",
+  shouldCompleteRemaining: () => false,
+};
 
 const createDefaultEyeState =
   FIELD_CORE.createDefaultEyeState ||
@@ -88,6 +108,7 @@ const RAPD_STATES = ["left", "none", "right"];
 const ONSET_STATES = ["none", "gradual", "sudden"];
 const BINARY_STATES = ["no", "yes"];
 const FIELD_SEGMENT_SHADES = {
+  unassessed: "#d9dee4",
   seen: "#eef1ef",
   suspect: "#858d98",
   absent: "#080b0f",
@@ -119,10 +140,39 @@ function getStateIndexFromButton(button) {
   return 0;
 }
 
+function getButtonBaseLabel(button) {
+  if (!button) return "";
+  if (!button.dataset.baseLabel) {
+    button.dataset.baseLabel =
+      button.getAttribute("aria-label") || "Field point";
+  }
+  return button.dataset.baseLabel;
+}
+
+function setButtonAccessibleState(button, stateLabel) {
+  const baseLabel = getButtonBaseLabel(button);
+  if (baseLabel) {
+    button.setAttribute("aria-label", `${baseLabel}: ${stateLabel}`);
+  }
+}
+
+function applyUnassessedButtonState(button) {
+  if (!button) return;
+  button.dataset.state = FIELD_ASSESSMENT.UNASSESSED;
+  button.style.removeProperty("background-color");
+  setButtonAccessibleState(button, "unassessed");
+
+  const iconEl = button.querySelector("i");
+  if (!iconEl) return;
+  iconEl.textContent = "\u2022";
+  iconEl.style.removeProperty("color");
+}
+
 function applyButtonState(button, stateIndex) {
   const state = BUTTON_STATES[stateIndex] || BUTTON_STATES[0];
   button.dataset.state = state.key;
   button.style.backgroundColor = state.bg;
+  setButtonAccessibleState(button, state.key);
 
   const iconEl = button.querySelector("i");
   if (!iconEl) return;
@@ -132,6 +182,9 @@ function applyButtonState(button, stateIndex) {
 }
 
 function getSegmentShadeFromButton(button) {
+  if (button?.dataset?.state === FIELD_ASSESSMENT.UNASSESSED) {
+    return FIELD_SEGMENT_SHADES.unassessed;
+  }
   const idx = getStateIndexFromButton(button);
   const state = BUTTON_STATES[idx] || BUTTON_STATES[0];
   return FIELD_SEGMENT_SHADES[state.key] || FIELD_SEGMENT_SHADES.seen;
@@ -174,12 +227,70 @@ function applyEyeFieldShading(eyeId) {
 }
 
 function cycleColor(button) {
-  const currentIndex = getStateIndexFromButton(button);
-  const nextIndex = (currentIndex + 1) % BUTTON_STATES.length;
+  const currentKey = button?.dataset?.state || FIELD_ASSESSMENT.UNASSESSED;
+  const nextKey = FIELD_ASSESSMENT.nextState(currentKey);
+  const nextIndex = getStateIndexByKey(nextKey);
   applyButtonState(button, nextIndex);
+  if (FIELD_ASSESSMENT.shouldCompleteRemaining(nextKey)) {
+    completeUnassessedFieldPointsSeen();
+  }
+  updateAssessmentAction();
 
-  const eyeState = updateOutput();
-  updateAnalysisOutput(eyeState);
+  refreshAssessmentOutputs();
+}
+
+function getFieldAssessmentStates() {
+  return Array.from(document.querySelectorAll(".color-button")).map(
+    (button) => button.dataset.state || FIELD_ASSESSMENT.UNASSESSED,
+  );
+}
+
+function isFieldAssessmentComplete() {
+  return FIELD_ASSESSMENT.isComplete(getFieldAssessmentStates(), 10);
+}
+
+function updateAssessmentAction() {
+  const action = document.getElementById("complete-assessment");
+  if (!action) return;
+
+  const states = getFieldAssessmentStates();
+  const complete = FIELD_ASSESSMENT.isComplete(states, 10);
+  action.hidden = complete;
+  action.textContent = FIELD_ASSESSMENT.completionLabel(states);
+  action.setAttribute(
+    "aria-label",
+    states.some((state) => state !== FIELD_ASSESSMENT.UNASSESSED)
+      ? "Mark remaining unassessed field points as seen"
+      : "Mark all unassessed field points as seen",
+  );
+}
+
+function initialiseFieldAssessment() {
+  document
+    .querySelectorAll(".color-button")
+    .forEach(applyUnassessedButtonState);
+  updateAssessmentAction();
+}
+
+function completeUnassessedFieldPointsSeen() {
+  document.querySelectorAll(".color-button").forEach((button) => {
+    if (
+      (button.dataset.state || FIELD_ASSESSMENT.UNASSESSED) ===
+      FIELD_ASSESSMENT.UNASSESSED
+    ) {
+      applyButtonState(button, 0);
+    }
+  });
+}
+
+function markRemainingFieldPointsSeen() {
+  completeUnassessedFieldPointsSeen();
+  updateAssessmentAction();
+  refreshAssessmentOutputs();
+}
+
+function resetFieldAssessment() {
+  initialiseFieldAssessment();
 }
 
 function getEyeState(eyeId) {
@@ -475,12 +586,13 @@ function updateSectionLocks() {
     return;
   }
 
+  const assessmentComplete = isFieldAssessmentComplete();
   const hasFieldInput = hasAnyFieldInputChanged();
 
   setLockStateForPanel("field-entry-panel", false);
   setLockStateForPanel("result-panel", false);
 
-  const pathwayLocked = !hasFieldInput;
+  const pathwayLocked = !assessmentComplete || !hasFieldInput;
   setLockStateForPanel("pathway-panel", pathwayLocked);
 }
 
@@ -497,12 +609,15 @@ function updateOutput() {
   const nightVisionPoor = getNightVisionPoorState();
   const flashesCurtain = getFlashesCurtainState();
   const colourFade = getColourFadeState();
+  const assessmentComplete = isFieldAssessmentComplete();
 
   applyEyeFieldShading("right-eye");
   applyEyeFieldShading("left-eye");
   renderContextSummary();
 
-  if (outputEl) {
+  if (outputEl && !assessmentComplete) {
+    outputEl.innerText = "Not assessed";
+  } else if (outputEl) {
     const tokens = [
       eyeToOutputString("R", right),
       eyeToOutputString("L", left),
@@ -531,6 +646,7 @@ function updateOutput() {
     outputEl.innerText = tokens.join(" | ");
   }
 
+  updateAssessmentAction();
   updateSectionLocks();
 
   return {
@@ -543,5 +659,6 @@ function updateOutput() {
     nightVisionPoor,
     flashesCurtain,
     colourFade,
+    assessmentComplete,
   };
 }

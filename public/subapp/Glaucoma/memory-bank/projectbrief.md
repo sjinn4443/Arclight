@@ -1,5 +1,9 @@
 # Project Brief
 
+## Approved safety amendment (25/7/2026)
+
+Preserve the one-page workflow, images and bright-green identity. The approved safety amendment permits only these operational changes: non-overlapping IOP bands, optional laterality context, a suspicious rim/field referral floor and clearer end-stage action. The report may reproduce available findings and the calculated output but must not add clinical logic. Further clinical rule changes require separate approval and review.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -24,3 +28,7 @@ Current brief additions:
 
 - Keep scoring and threshold rules visible in-app via the app-bar info popup.
 - Treat `Rock` palpation as an explicit acute warning state.
+
+## MCQ quality constraint — 26 July 2026
+
+MCQs reinforce pressure, structure, field and uncertainty reasoning without redefining the calculator. Preserve 4, 5 and 7-question attempts, the Advanced timer and 44px answer rows. Do not use quiz content to imply that the app diagnoses glaucoma or that engineering review approves local referral timescales.

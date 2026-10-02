@@ -1,7 +1,7 @@
 /* sw.js — Arclight PWA service worker */
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v82"
+    ? "arclight-static-v83"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -184,6 +184,13 @@ function postCacheProgress(port, payload) {
 }
 
 async function cacheUrls(urls, port) {
+  const controller = new AbortController();
+  if (port) {
+    port.onmessage = (event) => {
+      if (event.data?.type === "CACHE_CANCEL") controller.abort();
+    };
+    port.start?.();
+  }
   const cache = await caches.open(PACK_CACHE);
   const shellCache = await caches.open(CACHE_NAME);
   const revisions = await packRevisions();
@@ -193,13 +200,18 @@ async function cacheUrls(urls, port) {
   const total = normalized.total;
 
   for (const [index, url] of normalized.safe.entries()) {
+    if (controller.signal.aborted) break;
     try {
       const requestUrl = new URL(url, self.location.origin).href;
-      const request = new Request(requestUrl, { cache: "no-store" });
+      const request = new Request(requestUrl, {
+        cache: "no-store",
+        signal: controller.signal,
+      });
       const revision = revisions[new URL(requestUrl).pathname];
       const targetCache = revision ? cache : shellCache;
       const existing = await matchPack(targetCache, requestUrl);
       const res = existing || (await fetch(request));
+      if (controller.signal.aborted) break;
       if (canCacheResponse(res)) {
         if (!existing) {
           const headers = new Headers(res.headers);
@@ -218,6 +230,7 @@ async function cacheUrls(urls, port) {
         failed.push(url);
       }
     } catch {
+      if (controller.signal.aborted) break;
       failed.push(url);
     }
 
@@ -233,7 +246,8 @@ async function cacheUrls(urls, port) {
     }
   }
 
-  return { cached, failed, total };
+  if (port) port.onmessage = null;
+  return { cached, failed, total, paused: controller.signal.aborted };
 }
 
 self.addEventListener("install", (event) => {
@@ -423,7 +437,10 @@ async function handleMessage(event) {
     const port = ports?.[0];
     try {
       const result = await cacheUrls(urls, port);
-      postCacheProgress(port, { type: "CACHE_DONE", ...result });
+      postCacheProgress(port, {
+        type: result.paused ? "CACHE_PAUSED" : "CACHE_DONE",
+        ...result,
+      });
     } catch (err) {
       postCacheProgress(port, { type: "CACHE_ERROR", error: String(err) });
     }

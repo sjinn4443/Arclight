@@ -1,5 +1,28 @@
 # Tech Context
 
+## Maintenance verification (26/7/2026)
+
+- `npm run build` regenerates `app.bundle.js` from `scripts.js`.
+- `npm run check` runs JavaScript syntax checks, controller and risk tests then exact bundle parity.
+- Browser-visible bundle token and app-scoped worker cache are `20260726-refactor2`. The shared information footer is `v1 · 23/7/2026`.
+
+## Verification update (25/7/2026)
+
+- `npm test` includes an 86,400-combination risk-engine sweep.
+- `npm run browser:review` checks optional laterality, report enablement and modal behaviour, the referral floor, the rock-hard emergency, reset, accessibility semantics and Primary MCQ answer review.
+- Latest exact HTTP and direct-file results: width 360, scroll width 360 and page height 740 for untouched, completed and fully dense states with no runtime errors. The report card bottom was `468.61` within the 740px viewport.
+- Use an isolated Chrome profile. Do not alter the user's retained Codex browser device-toolbar state.
+
+## v1.1 Verification (23/7/2026)
+
+```powershell
+npm run build
+npm run lint
+npm test
+```
+
+Local Inter and Quicksand are the only runtime fonts. `manifest.webmanifest`, `sw.js` and `src/pwa.js` provide scoped offline infrastructure. `tests/browser-review.mjs` uses Chrome device emulation for an exact `360 x 740` CSS viewport. Direct-file use works without service-worker registration.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -31,3 +54,11 @@ Local commands:
 - Run app: `python -m http.server 8080`
 - Run tests: `npm test`
 - Run lint: `npm run lint`
+
+## Maintenance verification - 26 July 2026
+
+The final maintenance state passed the full lint, controller, contract and source/bundle parity suites. Browser checks covered untouched, laterality, completed, report, dense, information, reset, safety and MCQ states at `360 x 740`.
+
+## MCQ verification — 26 July 2026
+
+Source-owned MCQ files are `src/mcq-data.js`, `src/mcq-engine.js` and `src/mcq-controller.js`. The browser token and scoped cache are `20260726-mcq4`. Run `npm run lint`, `npm test`, `npm run build` and `npm run test:bundle`. Final lint, source tests, exact parity and isolated `360 x 740` MCQ browser review pass.

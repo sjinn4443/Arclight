@@ -9,6 +9,7 @@ import { initializeDiabeticScreeningScrollLessons } from "./diabeticRetinopathyW
 
 import { appendWorkshopImages } from "./workshopLessonMedia.js";
 import { appendFundalInterpretationQuiz } from "./pecFundalInterpretation.js";
+import { appendPecFundalReflexGuide } from "./pecFundalReflexGuide.js";
 
 const RESTORE_KEY = "pecWorkshop:restore";
 const MEDICAL_REUSE_KEY = "pecWorkshop:medicalReuse";
@@ -56,6 +57,7 @@ const PROCEDURE_KEYS = [
 let externalBackHandlerInstalled = false;
 let navigationLifecycleInstalled = false;
 let pecSequence = [];
+let cleanupFundalReflexGuide = null;
 
 function readStoredJson(key) {
   try {
@@ -496,24 +498,6 @@ const EYE_LESSONS = Object.freeze({
   },
   fundalSourceGuide: {
     title: "fundal_source_guide",
-    images: [
-      {
-        src: "/images/learning/PEC/image57.png",
-        caption: "fundal_source_guide",
-      },
-      {
-        src: "/images/learning/PEC/image67.png",
-        caption: "fundal_test_images",
-      },
-      {
-        src: "/images/learning/PEC/image68.png",
-        caption: "fundal_test_images",
-      },
-      {
-        src: "/images/learning/PEC/image69.png",
-        caption: "fundal_test_images",
-      },
-    ],
   },
   fundalInterpretation: {
     title: "fundal_interpretation_test",
@@ -885,6 +869,8 @@ function renderEyeLesson(key) {
   const page = document.getElementById("pecEyeLessonPage");
   const content = page?.querySelector(".pec-eye-lesson-content");
   if (!lesson || !content) return false;
+  cleanupFundalReflexGuide?.();
+  cleanupFundalReflexGuide = null;
   content.replaceChildren();
   const section = document.createElement("section");
   section.className =
@@ -972,6 +958,9 @@ function renderEyeLesson(key) {
   (lesson.trailingVideos || []).forEach(appendVideo);
   section.append(stack);
   content.append(section);
+  if (key === "fundalSourceGuide") {
+    cleanupFundalReflexGuide = appendPecFundalReflexGuide(stack);
+  }
   page.dataset.pecRenderedLesson = key;
   window.I18N?.applyTranslations?.(page);
   initializeDiabeticScreeningScrollLessons();

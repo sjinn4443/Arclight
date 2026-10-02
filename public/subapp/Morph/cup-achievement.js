@@ -161,9 +161,18 @@
     }
 
     function setupAdvancedMode() {
-      getAdvancedButtons().forEach((button) => {
+      const advancedButtons = getAdvancedButtons();
+      const levelButtons = Array.from(
+        new Set([
+          ...document.querySelectorAll(
+            "[data-level], [data-level-index], [data-mcq-level], .mcq-primary, .mcq-intermediate, .mcq-advanced",
+          ),
+          ...advancedButtons,
+        ]),
+      );
+      levelButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          advancedActive = true;
+          advancedActive = advancedButtons.includes(button);
           window.setTimeout(checkAdvancedCompletion, 300);
         });
       });
@@ -186,31 +195,39 @@
     function setupConditionsMode() {
       const selector = cup.dataset.cupTargetSelector || ".condition-button";
       const targets = Array.from(document.querySelectorAll(selector));
+      const conditionSelect = document.getElementById("conditionSelect");
       const visitedKey = `${storageKey}-visited`;
       const visited = new Set(getStorage(visitedKey) || []);
 
+      function conditionName(target) {
+        return target?.dataset?.conditionName || getText(target);
+      }
+
+      function recordCondition(name) {
+        if (!name) return;
+        visited.add(name);
+        setStorage(visitedKey, Array.from(visited));
+        if (targets.every((item) => visited.has(conditionName(item)))) {
+          unlock();
+        }
+      }
+
       targets.forEach((target) => {
         if (target.classList.contains("active")) {
-          visited.add(target.dataset.conditionName || getText(target));
+          visited.add(conditionName(target));
         }
         target.addEventListener("click", () => {
-          visited.add(target.dataset.conditionName || getText(target));
-          setStorage(visitedKey, Array.from(visited));
-          if (
-            targets.every((item) =>
-              visited.has(item.dataset.conditionName || getText(item)),
-            )
-          ) {
-            unlock();
-          }
+          recordCondition(conditionName(target));
         });
+      });
+
+      conditionSelect?.addEventListener("change", () => {
+        recordCondition(conditionName(conditionSelect.selectedOptions[0]));
       });
 
       if (
         targets.length > 0 &&
-        targets.every((item) =>
-          visited.has(item.dataset.conditionName || getText(item)),
-        )
+        targets.every((item) => visited.has(conditionName(item)))
       ) {
         unlock();
       }

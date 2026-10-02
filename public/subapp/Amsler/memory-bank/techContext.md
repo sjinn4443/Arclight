@@ -1,5 +1,25 @@
 # Technical Context
 
+## Compute repair technical context (24/7/2026)
+
+- Pure engine: `js/amsler-engine.js`.
+- Analysis resolution: fixed `400 x 400` normalised mask.
+- Tests: `npm test` runs 16 contracts, including seven direct engine cases, then checks generated-bundle alignment.
+- Browser-visible asset token: `20260724-compute1`. Worker cache token: `20260726-refactor2`, advanced for the shared information-footer date correction.
+- HTTP 360 x 740 review passed with invariant resize results, no horizontal overflow and no console warnings or errors.
+- Direct-file local assets and the generated classic bundle loaded in isolated Chrome. Its command-line minimum layout viewport prevents that capture from counting as a genuine 360 x 740 direct-file review.
+
+## v1.1 Technical Context (22/7/2026)
+
+- Local assets: Inter, Quicksand and html2canvas 1.4.1 with its MIT licence.
+- Runtime has no Google Fonts, Font Awesome or CDN script dependency.
+- Direct-file launch uses `app.bundle.js` and remains supported.
+- HTTP launch adds app-scoped manifest and service-worker offline support.
+- Build: `npm run build`.
+- Bundle alignment: `npm run build:check`.
+- Contracts: `npm test`.
+- Clinical sign-off and physical-device acceptance remain pending.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -21,9 +41,9 @@ _Last updated: 18/5/2026_
 - CSS3
 - JavaScript (vanilla, browser runtime)
 - Canvas API
-- `html2canvas` (CDN) for screenshot export
-- Font Awesome (CDN) for iconography
-- Google Fonts (Quicksand) for app title
+- local `html2canvas` for screenshot export
+- local CSS and text iconography
+- local Inter and Quicksand fonts
 
 ## Local Development Setup
 
@@ -34,7 +54,7 @@ _Last updated: 18/5/2026_
 
 ## Constraints
 
-- No build step / bundler
+- Modular source with a deterministic classic-bundle build
 - No backend services
 - Must remain lightweight and mobile-friendly
 - Must preserve app bar constraints (`54px`, `25px`, bold title)
@@ -45,6 +65,7 @@ _Last updated: 18/5/2026_
 - `styles.css`: layout and component styles
 - `script.js`: app bootstrap and controller composition
 - `js/canvas.js`: canvas drawing + pointer interaction
+- `js/amsler-engine.js`: pure normalised mark analysis
 - `js/analysis.js`: geometry and compute logic
 - `js/report.js`: report rendering + screenshot hook
 - `js/ui.js`: event wiring and modal/toggle behavior
@@ -68,3 +89,14 @@ _Last updated: 18/5/2026_
   - `node --check js/constants.js`
 - Server availability check:
   - `Invoke-WebRequest http://localhost:5500 -UseBasicParsing`
+
+## Refactor verification — 26 July 2026
+
+- `node --check js/analysis.js`
+- `npm run build`
+- `npm test`
+- `npm run build:check`
+
+The 26 July clean-up reduced `js/analysis.js` to the live normalised engine integration and overlay renderer. Direct-file support remains provided by the generated classic bundle.
+
+The final MCQ pass advances the stylesheet, bundle and app-scoped cache to `20260726-mcq2`. Rebuild with `npm run build`, then require `npm test` and the byte-equivalent `build:check` result. The clinical bank sources are NICE NG82 and NCBI Bookshelf `Amsler Grid`. Current result: 18/18 tests and exact bundle parity pass. Isolated browser evidence is under `output/playwright/mcq-quality/`.

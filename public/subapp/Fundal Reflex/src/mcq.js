@@ -1,4 +1,4 @@
-import { MCQ_BANK } from "./mcq-bank.js?v=20260430-2";
+import { MCQ_BANK } from "./mcq-bank.js?v=20260726-mcq3";
 
 function shuffledCopy(items) {
   return items
@@ -37,6 +37,7 @@ export function renderMcqQuestions(container, questions) {
   questions.forEach((question, questionIndex) => {
     const fieldset = document.createElement("fieldset");
     fieldset.className = "question";
+    fieldset.dataset.questionId = question.id;
 
     const legend = document.createElement("legend");
     legend.textContent = `${questionIndex + 1}. ${question.question}`;
@@ -57,6 +58,12 @@ export function renderMcqQuestions(container, questions) {
     });
 
     fieldset.appendChild(options);
+
+    const explanation = document.createElement("p");
+    explanation.className = "mcq-explanation";
+    explanation.hidden = true;
+    explanation.setAttribute("aria-live", "polite");
+    fieldset.appendChild(explanation);
     fragment.appendChild(fieldset);
   });
 
@@ -124,5 +131,24 @@ export function revealMcqFeedback(container, questions, answers) {
     questionBlock.querySelectorAll("input[type='radio']").forEach((input) => {
       input.disabled = true;
     });
+
+    const explanation = questionBlock.querySelector(".mcq-explanation");
+    if (explanation) {
+      const correctText =
+        questions[questionIndex]?.options?.[correctOptionIndex] || "";
+      explanation.textContent =
+        selectedOptionIndex === correctOptionIndex
+          ? `Correct. Why: ${questions[questionIndex].explanation}`
+          : `Incorrect. Correct answer: ${correctText}. Why: ${questions[questionIndex].explanation}`;
+      explanation.classList.toggle(
+        "is-correct",
+        selectedOptionIndex === correctOptionIndex,
+      );
+      explanation.classList.toggle(
+        "is-incorrect",
+        selectedOptionIndex !== correctOptionIndex,
+      );
+      explanation.hidden = false;
+    }
   });
 }

@@ -1,4 +1,14 @@
-﻿export function initSimulator() {
+import { createFixedStepRafScheduler } from "./frame-scheduler.js?v=20260726-refactor1";
+import {
+  advanceTrainingLock,
+  buildIopBuckets,
+  classifyNewtonBand,
+  evaluateNewtonSubmission,
+  pickLeastUsedBucket,
+  sampleBucketValue,
+} from "./simulator-logic.js?v=20260726-refactor1";
+
+export function initSimulator() {
   const mires = document.getElementById("mires");
   const blueCircle = document.getElementById("blueCircle");
   const toggleButton = document.getElementById("toggleButton");
@@ -135,23 +145,6 @@
     pxPerMmHg: 2.05,
   };
 
-  const newtonScoring = Object.freeze({
-    correctToleranceMmHg: 2,
-    closeToleranceMmHg: 3,
-  });
-
-  const newtonBands = Object.freeze([
-    { id: "very_below_20", label: "<16", min: 10, max: 15 },
-    { id: "just_below_20", label: "16-19", min: 16, max: 19 },
-    { id: "exactly_20", label: "20", min: 20, max: 20 },
-    { id: "range_21_24", label: "21-24", min: 21, max: 24 },
-    { id: "exactly_25", label: "25", min: 25, max: 25 },
-    { id: "range_26_29", label: "26-29", min: 26, max: 29 },
-    { id: "exactly_30", label: "30", min: 30, max: 30 },
-    { id: "above_30_bit", label: "31-34", min: 31, max: 34 },
-    { id: "well_above", label: "35+", min: 35, max: 50 },
-  ]);
-
   const caseTiers = Object.freeze({
     primary: { label: "Primary", minIop: 10, maxIop: 30 },
     intermediate: { label: "Intermediate", minIop: 8, maxIop: 40 },
@@ -173,60 +166,8 @@
     lastNewtonIop: null,
   };
 
-  function isMobileDevice() {
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  }
-
   function getActiveCaseTier() {
     return caseTiers[training.activeTier] ?? caseTiers.primary;
-  }
-
-  function buildIopBuckets(minIop, maxIop, bucketCount) {
-    const safeCount = Math.max(1, Math.floor(bucketCount));
-    const total = maxIop - minIop + 1;
-    const baseSize = Math.floor(total / safeCount);
-    let remainder = total % safeCount;
-    let cursor = minIop;
-    const buckets = [];
-
-    for (let index = 0; index < safeCount; index += 1) {
-      const size = baseSize + (remainder > 0 ? 1 : 0);
-      const bucketMin = cursor;
-      const bucketMax = cursor + size - 1;
-      buckets.push({ min: bucketMin, max: bucketMax });
-      cursor = bucketMax + 1;
-      if (remainder > 0) {
-        remainder -= 1;
-      }
-    }
-
-    return buckets;
-  }
-
-  function pickLeastUsedBucket(usage) {
-    const minUsage = Math.min(...usage);
-    const candidates = [];
-    usage.forEach((count, index) => {
-      if (count === minUsage) {
-        candidates.push(index);
-      }
-    });
-    return candidates[Math.floor(Math.random() * candidates.length)];
-  }
-
-  function sampleBucketValue(bucket, lastValue) {
-    const span = bucket.max - bucket.min + 1;
-    let value = bucket.min + Math.floor(Math.random() * span);
-
-    if (span <= 1) {
-      return value;
-    }
-
-    // Avoid immediate repeats to keep learning cases feeling varied.
-    for (let attempt = 0; attempt < 4 && value === lastValue; attempt += 1) {
-      value = bucket.min + Math.floor(Math.random() * span);
-    }
-    return value;
   }
 
   function sampleCaseIop() {
@@ -263,47 +204,6 @@
     samplingState.lastNewtonIop = sampledIop;
 
     return sampledIop;
-  }
-
-  function classifyNewtonBand(iop) {
-    const matchedBand = newtonBands.find(
-      (band) => iop >= band.min && iop <= band.max,
-    );
-    return matchedBand ?? newtonBands[newtonBands.length - 1];
-  }
-
-  function getNewtonBandById(id) {
-    return newtonBands.find((band) => band.id === id) ?? null;
-  }
-
-  function getNewtonGuessErrorMmHg(actualIop, guessId) {
-    const guessBand = getNewtonBandById(guessId);
-    if (!guessBand) {
-      return null;
-    }
-    if (actualIop < guessBand.min) {
-      return guessBand.min - actualIop;
-    }
-    if (actualIop > guessBand.max) {
-      return actualIop - guessBand.max;
-    }
-    return 0;
-  }
-
-  function evaluateNewtonSubmission(actualIop, selectedGuess) {
-    const errorMmHg = getNewtonGuessErrorMmHg(actualIop, selectedGuess);
-    const isCorrect =
-      typeof errorMmHg === "number" &&
-      errorMmHg <= newtonScoring.correctToleranceMmHg;
-    const isClose =
-      typeof errorMmHg === "number" &&
-      errorMmHg === newtonScoring.closeToleranceMmHg;
-
-    return {
-      errorMmHg,
-      isCorrect,
-      isClose,
-    };
   }
 
   function getActiveTargetIop() {
@@ -350,8 +250,8 @@
         training.pendingRevealFlash = false;
       }
       if (centerStatus && edgeStatus) {
-        setTextIfChanged(centerStatus, "Centre OK");
-        setTextIfChanged(edgeStatus, "Touch steady, IOP shown");
+        setTextIfChanged(centerStatus, "Case completed");
+        setTextIfChanged(edgeStatus, "IOP shown — New Case to retry");
       } else {
         setTextIfChanged(caseStatus, "Solved. Tap New Case.");
       }
@@ -449,7 +349,7 @@
         let outcome = "Recheck";
         let outcomeClass = "is-recheck";
         if (newton.lastIsCorrect) {
-          outcome = "Correct";
+          outcome = newton.lastErrorMmHg === 0 ? "Correct" : "Within tolerance";
           outcomeClass = "is-correct";
         } else if (newton.lastIsClose) {
           outcome = "Close";
@@ -560,51 +460,29 @@
       Math.abs(state.miresPosition.left),
       Math.abs(state.miresPosition.top),
     );
-    const centerAcquireThreshold = centerTolerancePx;
-    const centerHoldThreshold =
-      centerTolerancePx * training.centerToleranceHoldMultiplier;
-
-    if (training.isCentered) {
-      training.isCentered = centerError <= centerHoldThreshold;
-    } else {
-      training.isCentered = centerError <= centerAcquireThreshold;
-    }
-
     const innerEdgeGapPx = getInnerEdgeGapPx();
     const edgeError = Math.abs(innerEdgeGapPx);
-    const edgeAcquireThreshold = training.innerEdgeTolerancePx;
-    const edgeHoldThreshold =
-      training.innerEdgeTolerancePx * training.innerEdgeHoldMultiplier;
-
-    if (training.isInnerEdgeTouching) {
-      training.isInnerEdgeTouching = edgeError <= edgeHoldThreshold;
-    } else {
-      training.isInnerEdgeTouching = edgeError <= edgeAcquireThreshold;
-    }
-
-    const isAligned = training.isCentered && training.isInnerEdgeTouching;
-
-    if (!training.hasUserAdjusted) {
-      training.lockMs = 0;
-    } else if (isAligned) {
-      training.lockMs += dtMs;
-      if (training.lockMs >= training.requiredLockMs) {
-        training.isRevealed = true;
-        training.pendingRevealFlash = true;
-        training.lockMs = training.requiredLockMs;
-      }
-    } else {
-      const isNearTarget =
-        centerError <= centerHoldThreshold * 1.25 &&
-        edgeError <= edgeHoldThreshold * 1.25;
-      if (training.lockMs > 0 && isNearTarget) {
-        training.lockMs = Math.max(
-          0,
-          training.lockMs - dtMs * training.lockDecayFactor,
-        );
-      } else {
-        training.lockMs = 0;
-      }
+    const progress = advanceTrainingLock({
+      isCentered: training.isCentered,
+      isInnerEdgeTouching: training.isInnerEdgeTouching,
+      hasUserAdjusted: training.hasUserAdjusted,
+      lockMs: training.lockMs,
+      requiredLockMs: training.requiredLockMs,
+      lockDecayFactor: training.lockDecayFactor,
+      centerError,
+      centerTolerancePx,
+      centerToleranceHoldMultiplier: training.centerToleranceHoldMultiplier,
+      edgeError,
+      innerEdgeTolerancePx: training.innerEdgeTolerancePx,
+      innerEdgeHoldMultiplier: training.innerEdgeHoldMultiplier,
+      dtMs,
+    });
+    training.isCentered = progress.isCentered;
+    training.isInnerEdgeTouching = progress.isInnerEdgeTouching;
+    training.lockMs = progress.lockMs;
+    if (progress.isRevealed) {
+      training.isRevealed = true;
+      training.pendingRevealFlash = true;
     }
 
     updateCasePanel();
@@ -637,6 +515,11 @@
     }
     syncDrawerToggleVisibility();
 
+    casePanel.inert = !isOpen;
+    if (isOpen) casePanelClose?.focus({ preventScroll: true });
+    else if (casePanel.contains(document.activeElement))
+      casePanelToggle?.focus({ preventScroll: true });
+
     window.requestAnimationFrame(updateFieldOffset);
   }
 
@@ -648,6 +531,7 @@
     if (isOpen) {
       if (casePanel) {
         casePanel.classList.remove("is-open");
+        casePanel.inert = true;
       }
       if (casePanelToggle) {
         casePanelToggle.classList.remove("is-panel-open");
@@ -664,6 +548,11 @@
       newtonPanelToggle.setAttribute("aria-expanded", String(isOpen));
     }
     syncDrawerToggleVisibility();
+
+    newtonPanel.inert = !isOpen;
+    if (isOpen) newtonPanelClose?.focus({ preventScroll: true });
+    else if (newtonPanel.contains(document.activeElement))
+      newtonPanelToggle?.focus({ preventScroll: true });
 
     window.requestAnimationFrame(updateFieldOffset);
   }
@@ -815,28 +704,21 @@
 
   function constrainMiresToCircle() {
     const blueCircleRect = blueCircle.getBoundingClientRect();
-    const miresRect = mires.getBoundingClientRect();
-    const centreX = blueCircleRect.width / 2;
-    const centreY = blueCircleRect.height / 2;
-
-    if (state.miresPosition.top < -centreY + miresRect.height / 2) {
-      state.miresPosition.top = -centreY + miresRect.height / 2;
-    }
-    if (state.miresPosition.top > centreY - miresRect.height / 2) {
-      state.miresPosition.top = centreY - miresRect.height / 2;
-    }
-    if (state.miresPosition.left < -centreX + miresRect.width / 2) {
-      state.miresPosition.left = -centreX + miresRect.width / 2;
-    }
-    if (state.miresPosition.left > centreX - miresRect.width / 2) {
-      state.miresPosition.left = centreX - miresRect.width / 2;
+    // Constrain the centre, not the whole scaled graphic: the aperture clips it.
+    // Whole-graphic bounds invert when zoom makes the mires larger than the field.
+    const limit = Math.min(blueCircleRect.width, blueCircleRect.height) / 2;
+    const distance = Math.hypot(
+      state.miresPosition.left,
+      state.miresPosition.top,
+    );
+    if (distance > limit) {
+      state.miresPosition.left *= limit / distance;
+      state.miresPosition.top *= limit / distance;
     }
   }
 
-  function updateMiresPosition() {
-    const tickMs = 100;
-
-    if (!isMobileDevice() && activeMode === modes.VARIABLE) {
+  function updateMiresPosition(tickMs = 100) {
+    if (activeMode === modes.VARIABLE) {
       state.separation += state.driftFactor * 0.2;
       if (state.separation > state.maxSeparation)
         state.separation = state.maxSeparation;
@@ -846,15 +728,11 @@
     }
 
     const blueCircleRect = blueCircle.getBoundingClientRect();
-    const miresRect = mires.getBoundingClientRect();
     const distanceFromCentre = Math.hypot(
       state.miresPosition.left,
       state.miresPosition.top,
     );
-    const maxDistance = Math.max(
-      1,
-      blueCircleRect.width / 2 - miresRect.width / 2,
-    );
+    const maxDistance = Math.max(1, blueCircleRect.width / 2);
     const minDriftSpeed = 5;
     const maxDriftSpeed = 10;
     const driftSpeed =
@@ -906,6 +784,16 @@
   }
 
   function handleKeyPress(event) {
+    if (
+      event.key === "Escape" &&
+      !document.body.classList.contains("modal-open") &&
+      !document.getElementById("sideMenu")?.classList.contains("open")
+    ) {
+      if (newtonPanel?.classList.contains("is-open")) setNewtonPanelOpen(false);
+      else if (casePanel?.classList.contains("is-open"))
+        setCasePanelOpen(false);
+      return;
+    }
     if (shouldIgnoreKeyPress(event)) {
       return;
     }
@@ -1018,6 +906,8 @@
 
   thicknessSlider.addEventListener("input", () => {
     applyThickness();
+    updateSeparation();
+    updateTrainingProgress(0);
   });
 
   separationSlider.addEventListener("input", () => {
@@ -1135,6 +1025,10 @@
     if (event.touches.length < 2) {
       initialPinchDistance = null;
     }
+    if (event.touches.length === 1) {
+      touchStartX = event.touches[0].pageX;
+      touchStartY = event.touches[0].pageY;
+    }
     if (event.touches.length === 0) {
       isTouchSessionActive = false;
     }
@@ -1240,6 +1134,17 @@
   });
   window.addEventListener("resize", updateFieldOffset);
 
+  const motionScheduler = createFixedStepRafScheduler({
+    step: updateMiresPosition,
+    intervalMs: 100,
+  });
+  const resetMotionClock = () => motionScheduler.resetClock();
+  const stopMotion = () => motionScheduler.stop();
+  const startMotion = () => motionScheduler.start();
+  document.addEventListener("visibilitychange", resetMotionClock);
+  window.addEventListener("pagehide", stopMotion);
+  window.addEventListener("pageshow", startMotion);
+
   setAdvancedControlsOpen(false);
   setCasePanelOpen(false);
   setNewtonPanelOpen(false);
@@ -1248,5 +1153,14 @@
   updateNewtonUi();
   startNewtonCase();
   startNewCase();
-  window.setInterval(updateMiresPosition, 100);
+  motionScheduler.start();
+
+  return {
+    destroy() {
+      motionScheduler.stop();
+      document.removeEventListener("visibilitychange", resetMotionClock);
+      window.removeEventListener("pagehide", stopMotion);
+      window.removeEventListener("pageshow", startMotion);
+    },
+  };
 }

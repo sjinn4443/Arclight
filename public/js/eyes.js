@@ -150,6 +150,7 @@ const VIDEO_PAGE_IDS = new Set([
   "fieldsInteractivePage",
   "refractInteractivePage",
   "sauronInteractivePage",
+  "discsInteractivePage",
   "swollenDiscsInteractivePage",
   "squintPalsyPage",
   "cataractPage",

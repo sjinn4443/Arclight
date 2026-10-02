@@ -133,3 +133,7 @@ If a future prompt asks to use the "Fundal Reflex look", copy these principles:
 - startup fallbacks should solve first-paint artefacts without changing the final loaded composition
 - use state completeness as a quality check: default, pressed/hover where relevant, focus-visible, disabled/locked, selected/open and loading/hidden states
 - use generated visual thumbnails where visual matching matters
+
+## MCQ learner context — 26 July 2026
+
+Learners need varied case recognition followed by concise feedback that explains why an option is correct or wrong. Untouched or obscured views must not be treated as normal. The white-pupil pathway is urgent but exact routing remains local. The question bank supports teaching and does not validate the simulator as a diagnostic device.

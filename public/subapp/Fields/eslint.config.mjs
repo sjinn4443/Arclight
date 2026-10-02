@@ -7,32 +7,32 @@ export default [
   },
   js.configs.recommended,
   {
-    files: ["**/*.{js,mjs}"],
+    files: ["src/**/*.js", "analysis.js", "cup-achievement.js", "pwa-register.js", "service-worker.js"],
     languageOptions: {
       ecmaVersion: "latest",
+      sourceType: "script",
+      globals: {
+        ...globals.browser,
+        ...globals.serviceworker,
+      },
     },
     rules: {
-      // This app uses classic browser-script globals across files.
+      // The browser app deliberately shares named globals across ordered classic scripts.
       "no-undef": "off",
       "no-unused-vars": "off",
     },
   },
   {
-    files: ["src/**/*.js", "analysis.js"],
+    files: ["qa-*.mjs", "tests/**/*.mjs"],
     languageOptions: {
-      sourceType: "script",
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    files: ["qa-fields-audit.mjs"],
-    languageOptions: {
+      ecmaVersion: "latest",
       sourceType: "module",
       globals: {
         ...globals.node,
       },
+    },
+    rules: {
+      "no-unused-vars": "off",
     },
   },
 ];

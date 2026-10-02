@@ -1,0 +1,139 @@
+Fields Logic Audit Report
+Generated: 2026-09-28T22:11:54.194Z
+
+Run Details
+-----------
+Command: node qa-fields-audit.mjs
+Audit script: qa-fields-audit.mjs
+Source files: src/state.js, src/rules/helpers.js, src/rules/anterior.js, src/rules/chiasmal.js, src/rules/posterior.js, src/rules.js, src/summary.js
+Scanned state-space: 3^10 = 59,049 (both eyes, 5 points each, R/?/W)
+
+Coverage
+--------
+Total states audited: 59049
+States with any abnormal input: 59048 (100.00%)
+Raw no-match states: 14553 (24.65%)
+Raw no-match + abnormal input: 14552 (24.64%)
+Raw single-match states: 28018 (47.45%)
+Raw multi-match states: 16478 (27.91%)
+Raw >2-match states: 2880 (4.88%)
+Raw max simultaneous matches: 5
+Summary "Condition not identified" states: 0
+Summary "Condition not identified" + abnormal input: 0
+Summary "Mixed/Unclassified" primary states: 14552
+Summary "Full Fields of Vision" primary states: 1
+Summary unknown primary states: 0
+Summary with "Also" states: 21495 (36.40%)
+
+Rule Families (18) - Priority Order
+-----------------------------------
+01. BinocularTotalLoss (checkBinocularTotalLoss)
+    Both eyes show global field loss across all 5 points.
+02. MonocularTotalLoss (checkMonocularTotalLoss)
+    One eye globally down; fellow eye not globally down.
+03. HomonymousHemianopia (checkHomonymousHemianopia)
+    Post-chiasmal right/left hemi pattern with clean constraints.
+04. HomonymousQuadrantanopiaTemporal (checkHomonymousQuadrantanopiaTemporal)
+    Homonymous superior quadrantanopia family.
+05. HomonymousQuadrantanopiaParietal (checkHomonymousQuadrantanopiaParietal)
+    Homonymous inferior quadrantanopia family.
+06. BitemporalHemianopia (checkBitemporalHemianopia)
+    Classic bitemporal hemi with strict nasal/central sparing constraints.
+07. BitemporalQuadrantanopia (checkBitemporalQuadrantanopia)
+    Bitemporal superior/inferior quadrantanopia pattern.
+08. AltitudinalHemianopia (checkAltitudinalHemianopia)
+    Superior or inferior hemifield loss pattern.
+09. TunnelVision (checkTunnelVision)
+    Peripheral constriction with central sparing (uni/bilateral).
+10. MonocularCentralScotoma (checkMonocularCentralScotoma)
+    Pure central single-eye defect with normal peripheral quadrants.
+11. BilateralCentralScotoma (checkBilateralCentralScotoma)
+    Pure central bilateral defect with normal quadrants.
+12. JunctionalScotoma (checkJunctional)
+    Classic junctional center+contralateral ST pattern.
+13. MonocularCecocentralLike (checkMonocularCecocentralLike)
+    Single-eye central plus temporal involvement (coarse cecocentral proxy).
+14. MonocularTemporalHemianopia (checkMonocularTemporalHemianopia)
+    Single-eye temporal hemi pattern.
+15. MonocularNasalHemianopia (checkMonocularNasalHemianopia)
+    Single-eye nasal hemi pattern.
+16. GlaucomaSimple (checkGlaucomaSimple)
+    Nasal-predominant change with central sparing in simplified model.
+17. BinasalHemianopia (checkBinasal)
+    Binasal hemi family (strict + controlled fuzzy variant).
+18. MonocularOtherDefect (checkMonocularOtherDefect)
+    Fallback monocular non-specific defect family.
+
+Family Metrics
+--------------
+Columns: RawMatches (rule-level), PrimaryMatches (final top output), SummaryMentions (main or secondary)
+01. BinocularTotalLoss: Raw=1024 (1.73%), Primary=1024 (1.73%), Shown=1024 (1.73%)
+02. MonocularTotalLoss: Raw=13504 (22.87%), Primary=13504 (22.87%), Shown=13504 (22.87%)
+03. HomonymousHemianopia: Raw=288 (0.49%), Primary=288 (0.49%), Shown=288 (0.49%)
+04. HomonymousQuadrantanopiaTemporal: Raw=648 (1.10%), Primary=648 (1.10%), Shown=648 (1.10%)
+05. HomonymousQuadrantanopiaParietal: Raw=648 (1.10%), Primary=360 (0.61%), Shown=648 (1.10%)
+06. BitemporalHemianopia: Raw=144 (0.24%), Primary=144 (0.24%), Shown=144 (0.24%)
+07. BitemporalQuadrantanopia: Raw=8 (0.01%), Primary=8 (0.01%), Shown=8 (0.01%)
+08. AltitudinalHemianopia: Raw=11088 (18.78%), Primary=9552 (16.18%), Shown=11088 (18.78%)
+09. TunnelVision: Raw=7520 (12.74%), Primary=5728 (9.70%), Shown=7520 (12.74%)
+10. MonocularCentralScotoma: Raw=4 (0.01%), Primary=4 (0.01%), Shown=4 (0.01%)
+11. BilateralCentralScotoma: Raw=4 (0.01%), Primary=4 (0.01%), Shown=4 (0.01%)
+12. JunctionalScotoma: Raw=8 (0.01%), Primary=8 (0.01%), Shown=8 (0.01%)
+13. MonocularCecocentralLike: Raw=7264 (12.30%), Primary=4416 (7.48%), Shown=7072 (11.98%)
+14. MonocularTemporalHemianopia: Raw=5544 (9.39%), Primary=1240 (2.10%), Shown=5256 (8.90%)
+15. MonocularNasalHemianopia: Raw=5544 (9.39%), Primary=3336 (5.65%), Shown=5256 (8.90%)
+16. GlaucomaSimple: Raw=10649 (18.03%), Primary=3999 (6.77%), Shown=7126 (12.07%)
+17. BinasalHemianopia: Raw=9 (0.02%), Primary=9 (0.02%), Shown=9 (0.02%)
+18. MonocularOtherDefect: Raw=284 (0.48%), Primary=224 (0.38%), Shown=224 (0.38%)
+
+Top Primary Families
+--------------------
+- MonocularTotalLoss: 13504 primary states (22.87% of all, 30.35% of states with any rule match)
+- AltitudinalHemianopia: 9552 primary states (16.18% of all, 21.47% of states with any rule match)
+- TunnelVision: 5728 primary states (9.70% of all, 12.87% of states with any rule match)
+- MonocularCecocentralLike: 4416 primary states (7.48% of all, 9.92% of states with any rule match)
+- GlaucomaSimple: 3999 primary states (6.77% of all, 8.99% of states with any rule match)
+- MonocularNasalHemianopia: 3336 primary states (5.65% of all, 7.50% of states with any rule match)
+- MonocularTemporalHemianopia: 1240 primary states (2.10% of all, 2.79% of states with any rule match)
+- BinocularTotalLoss: 1024 primary states (1.73% of all, 2.30% of states with any rule match)
+- HomonymousQuadrantanopiaTemporal: 648 primary states (1.10% of all, 1.46% of states with any rule match)
+- HomonymousQuadrantanopiaParietal: 360 primary states (0.61% of all, 0.81% of states with any rule match)
+
+Top Raw Rule Overlaps
+---------------------
+- MonocularCecocentralLike|MonocularTemporalHemianopia: 3632
+- AltitudinalHemianopia|GlaucomaSimple: 2688
+- GlaucomaSimple|MonocularNasalHemianopia: 1746
+- AltitudinalHemianopia|MonocularTotalLoss: 1536
+- GlaucomaSimple|MonocularTotalLoss: 1472
+- MonocularCecocentralLike|MonocularTotalLoss: 1024
+- MonocularTotalLoss|TunnelVision: 1024
+- AltitudinalHemianopia|MonocularCecocentralLike: 768
+- AltitudinalHemianopia|TunnelVision: 768
+- MonocularNasalHemianopia|MonocularTotalLoss: 768
+- MonocularTemporalHemianopia|MonocularTotalLoss: 768
+- GlaucomaSimple|MonocularCecocentralLike: 736
+
+Regression Suite
+----------------
+Total regression scenarios: 15
+Passed: 15
+Failed: 0
+
+Issue Totals By Severity
+------------------------
+P0: 0
+P1: 0
+P2: 0
+P3: 0
+
+Issue Breakdown
+---------------
+No policy findings detected.
+
+Recommendations
+---------------
+1. No high-severity blockers detected in this run.
+2. Keep FAMILY_SPECS as single-source ordering/definition for all 18 families.
+3. Add one regression case for every newly fixed clinical edge-case before future releases.
+4. Re-run this audit after any change in src/rules/*.js or src/summary.js.

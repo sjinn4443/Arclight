@@ -612,7 +612,6 @@ export function createRetinoscopyController({ state, dom }) {
   }
 
   function updateRetReflex() {
-    const flags = getCaseFlags(state.currentRefraction);
     const cataractVisual = getCataractVisualState(state.cataractLevel);
     const timeSec = performance.now() / 1000;
     const lightJitter = getLightJitterOffset(timeSec);

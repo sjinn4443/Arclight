@@ -3786,6 +3786,43 @@
           <button
             type="button"
             class="pupil-card module-card"
+            data-page="discsInteractivePage"
+          >
+            <div
+              class="lesson-row lesson-row--interactive"
+              data-target="discsInteractivePage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span
+                    class="lesson-type"
+                    data-i18n="auto.videos.discs"
+                    id="videos-lesson-title-discs"
+                    >Discs</span
+                  >
+                </div>
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-labelledby="videos-lesson-title-discs"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
             data-page="swollenDiscsInteractivePage"
           >
             <div
@@ -6342,6 +6379,22 @@
           data-src="subapp/Sauron/index.html"
           loading="lazy"
           title="Sauron Interactive"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discs Interactive Page -->
+  <div id="discsInteractivePage" class="page interactive-subapp-page">
+    <div>
+      <div class="video-header">
+        <h3 data-i18n="auto.videos.discs">Discs</h3>
+      </div>
+      <div class="video-container interactive-subapp-container">
+        <iframe
+          data-src="subapp/Discs/index.html"
+          loading="lazy"
+          title="Discs Interactive"
         ></iframe>
       </div>
     </div>

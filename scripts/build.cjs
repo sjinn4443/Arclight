@@ -5,6 +5,7 @@ const path = require("path");
 const CleanCSS = require("clean-css");
 const htmlMinifierTerser = require("html-minifier-terser");
 const { execSync } = require("child_process");
+const { isSubappDevelopmentAsset } = require("../utils/subapp-assets.cjs");
 
 function toIsoDateString(value) {
   const trimmed = String(value ?? "").trim();
@@ -439,6 +440,7 @@ const build = async () => {
     );
     await fs.copy(publicPath, distPath, {
       filter: (src) =>
+        !isSubappDevelopmentAsset(path.relative(publicPath, src)) &&
         !isPathWithinOrEqual(publicJsPath, src) &&
         !isPathWithinOrEqual(pecSourceMastersPath, src) &&
         !src
@@ -528,7 +530,9 @@ const build = async () => {
     // 5. Minify CSS files in the build output directory.
     console.log("[build] minifying CSS");
     const cssFiles = await findFiles(distPath, ".css");
-    const cleanCss = new CleanCSS();
+    // Keep imports relative to each deployed stylesheet. Minifying raw strings
+    // has no file context for resolving them and can silently discard imports.
+    const cleanCss = new CleanCSS({ inline: ["none"], rebase: false });
     for (const file of cssFiles) {
       const content = await fs.readFile(file, "utf8");
       const minified = cleanCss.minify(content);

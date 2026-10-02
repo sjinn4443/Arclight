@@ -1,0 +1,88 @@
+/* Fleet UI review, 30 September 2026. App-local for offline and direct-file use.
+   Presentation only: question banks, scoring, engines and simulator geometry are unchanged. */
+:root {
+  --fleet-panel-radius: 16px;
+  --fleet-control-radius: 10px;
+}
+:is(#mcqModal, #mcq-modal, #testModal, #mcq-card)
+  :is(.modal-content, .mcq-modal-content, .mcq-overlay-panel) {
+  border-radius: var(--fleet-panel-radius);
+  max-width: 560px;
+  box-sizing: border-box;
+}
+:is(#mcqModal, #mcq-modal, #testModal, #mcq-card) h2 {
+  font-family: Quicksand, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.25;
+}
+:is(#mcqModal, #mcq-modal, #testModal, #mcq-card)
+  :is(legend, .question-text, .mcq-question-text) {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  font-style: normal;
+}
+:is(#mcqModal, #mcq-modal, #testModal, #mcq-card) label {
+  min-height: 44px;
+  border-radius: var(--fleet-control-radius);
+  font-family: Inter, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  font-style: normal;
+  box-sizing: border-box;
+  padding: 9px 10px;
+}
+:is(#mcqModal, #mcq-modal, #testModal, #mcq-card)
+  :is(.mcq-actions, .test-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+:is(
+  #submitMcqButton,
+  #mcqSubmitBtn,
+  #submitTestButton,
+  #mcq-submit,
+  #mcq-restart
+) {
+  min-height: 44px;
+  border-radius: var(--fleet-control-radius);
+  font:
+    700 13px/1.25 Inter,
+    Arial,
+    sans-serif;
+  padding: 10px 14px;
+  touch-action: manipulation;
+}
+:is(#mcqResult, #mcq-result, #testResult):not(:empty) {
+  border-radius: 12px;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  font-style: normal;
+}
+:is(#mcqModal, #mcq-modal, #testModal, #mcq-card)
+  :is(.mcq-rationale, .mcq-feedback, .question-feedback) {
+  font:
+    400 12.5px/1.42 Inter,
+    Arial,
+    sans-serif;
+}
+:is(button, a, input, select, summary):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+@media (min-width: 640px) {
+  :is(#mcqModal, #mcq-modal, #testModal)
+    :is(.modal-content, .mcq-modal-content) {
+    width: min(calc(100% - 32px), 560px);
+  }
+}
+.refraction-trigger {
+  min-height: 44px;
+}

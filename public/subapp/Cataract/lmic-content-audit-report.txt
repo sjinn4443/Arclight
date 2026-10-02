@@ -1,0 +1,10 @@
+Cataract LMIC Content Audit Report
+Generated: 2026-09-29T12:26:51.042Z
+
+Checks
+------
+1. No disallowed specialist-resource terms (MRI/OCT/ultrasound/imaging/CT scan).
+2. Action text length <= 12 words.
+3. Plain-language copy excludes selected specialist jargon.
+
+Result: PASS

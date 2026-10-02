@@ -1,4 +1,31 @@
-@import url("./styles/base.css?v=20260518-appbar");
-@import url("./styles/layout.css?v=20260518-appbar");
-@import url("./styles/components.css?v=20260518-appbar");
-@import url("./styles/responsive.css?v=20260518-appbar");
+@import url("./styles/base.css?v=20260725-report2");
+@import url("./styles/layout.css?v=20260726-refactor1");
+@import url("./styles/components.css?v=20260726-mcq4");
+@import url("./styles/responsive.css?v=20260727-audit1");
+
+/* Fleet UI alignment: information card radius and close target. */
+.acute-safety {
+  width: 100%;
+  margin: 6px 0;
+  color: #a51f2b;
+  font:
+    400 11px/1.35 Inter,
+    sans-serif;
+}
+
+#info-popup {
+  border-radius: 16px;
+}
+
+#info-popup .info-popup-header {
+  min-height: 44px;
+}
+
+#info-popup .popup-close-button {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  top: 4px;
+  right: 8px;
+}

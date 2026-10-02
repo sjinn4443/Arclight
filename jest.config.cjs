@@ -20,6 +20,7 @@ module.exports = {
     "/node_modules/",
     "/tests-e2e/",
     "/public/html/demo/",
+    "/public/subapp/", // Standalone mini apps use their own Node test runners.
     "tests/renderperf.test.js",
   ], // Exclude Playwright tests, demo folder, and specific test files
   modulePathIgnorePatterns: [

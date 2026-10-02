@@ -4,6 +4,23 @@ const RESULT_STATUS_CLASSES = [
   "status-caution",
   "status-urgent",
 ];
+const RESULT_ALL_STATUS_CLASSES = [
+  ...RESULT_STATUS_CLASSES,
+  "status-unassessed",
+];
+let assessmentRefreshInProgress = false;
+
+function refreshAssessmentOutputs() {
+  if (assessmentRefreshInProgress) return null;
+  assessmentRefreshInProgress = true;
+  try {
+    const eyeState = typeof updateOutput === "function" ? updateOutput() : null;
+    updateAnalysisOutput(eyeState);
+    return eyeState;
+  } finally {
+    assessmentRefreshInProgress = false;
+  }
+}
 
 function getResultModeToggle() {
   return document.getElementById("result-mode-toggle");
@@ -93,12 +110,10 @@ function initResultModeToggle() {
       // Ignore storage write errors.
     }
 
-    const eyeState = typeof updateOutput === "function" ? updateOutput() : null;
-    updateAnalysisOutput(eyeState);
+    refreshAssessmentOutputs();
   }
 
   toggle.addEventListener("change", onModeChanged);
-  toggle.addEventListener("input", onModeChanged);
 
   if (root) {
     root.querySelectorAll("[data-mode]").forEach((modeButton) => {
@@ -140,7 +155,7 @@ function setResultSeverityClasses(analysisEl, siteEl, severity) {
         : "status-caution";
   [analysisEl, siteEl].forEach((el) => {
     if (!el) return;
-    RESULT_STATUS_CLASSES.forEach((name) => el.classList.remove(name));
+    RESULT_ALL_STATUS_CLASSES.forEach((name) => el.classList.remove(name));
     el.classList.add(className);
   });
 }
@@ -343,17 +358,8 @@ function resolveClinicalModifiersForOutput(eyeState) {
   };
 }
 
-function applyClinicalModifierNotes(
-  baseText,
-  modifiers,
-  primaryCondition = "",
-) {
-  const text = String(baseText || "").trim();
-  if (!text) return "";
-  const conditionText = String(primaryCondition || "");
-  const isTunnelVisionPattern = conditionText.includes("Tunnel Vision");
+function getUrgentContextNotes(modifiers = {}) {
   const notes = [];
-
   if (modifiers.neuroFlags === "yes") {
     notes.push("Neuro red flags: urgent neuro review.");
   }
@@ -363,6 +369,51 @@ function applyClinicalModifierNotes(
   if (modifiers.onset === "sudden") {
     notes.push("Sudden onset: same-day review.");
   }
+  return notes;
+}
+
+function buildContextAwareSafetyMessage(baseText, modifiers = {}) {
+  const notes = getUrgentContextNotes(modifiers);
+  return {
+    text: notes.length ? `${baseText} ${notes.join(" ")}` : baseText,
+    urgent: notes.length > 0,
+  };
+}
+
+function buildIncompleteAssessmentPresentation(modifiers = {}) {
+  const message = buildContextAwareSafetyMessage(
+    "Complete the visual field entry to show a result.",
+    modifiers,
+  );
+  return {
+    analysisText: "Not assessed",
+    siteText: message.text,
+    urgent: message.urgent,
+  };
+}
+
+function buildUnavailableResultPresentation(modifiers = {}) {
+  const message = buildContextAwareSafetyMessage(
+    "Check the field entries and try again.",
+    modifiers,
+  );
+  return {
+    analysisText: "Unable to interpret",
+    siteText: message.text,
+    urgent: message.urgent,
+  };
+}
+
+function applyClinicalModifierNotes(
+  baseText,
+  modifiers,
+  primaryCondition = "",
+) {
+  const text = String(baseText || "").trim();
+  if (!text) return "";
+  const conditionText = String(primaryCondition || "");
+  const isTunnelVisionPattern = conditionText.includes("Tunnel Vision");
+  const notes = getUrgentContextNotes(modifiers);
   if (isTunnelVisionPattern && modifiers.nightVisionPoor === "yes") {
     notes.push("Night vision poor: retinal degeneration possible.");
   }
@@ -677,10 +728,10 @@ function classifySourceAssessment(primaryCondition, rapdState, modifiers) {
 
   if (unilateral && rapdMatchesConditionSide(side, rapdState)) {
     return {
-      category: "optic_nerve_likely",
+      category: "anterior_mixed",
       side,
-      confidence: "high",
-      text: "More likely optic nerve (RAPD match).",
+      confidence: "moderate",
+      text: "RAPD supports retinal or optic nerve involvement.",
     };
   }
 
@@ -835,14 +886,14 @@ function applyAnteriorRapdModifier(
       options && options.severeMonocular
         ? " High-confidence anterior pattern; urgent referral."
         : "";
-    return `${baseText} RAPD supports optic nerve involvement.${severeTriageSuffix}`;
+    return `${baseText} RAPD supports retinal or optic nerve involvement.${severeTriageSuffix}`;
   }
   return `${baseText} RAPD side does not match field pattern; re-check.`;
 }
 
 function applyBilateralRapdConsistencyNote(baseText, rapdState) {
   if (!isUnilateralRapd(rapdState)) return baseText;
-  return `${baseText} RAPD is unilateral with this bilateral/chiasmal pattern; possible mixed lesion or test inconsistency.`;
+  return `${baseText} RAPD may reflect asymmetric retinal or optic nerve involvement.`;
 }
 
 function getPrimaryLevelWord(primaryCondition) {
@@ -852,13 +903,12 @@ function getPrimaryLevelWord(primaryCondition) {
 
 function buildRetinaPriorityCondition(conditionHtml, mode) {
   const primary = String(conditionHtml || "").split("<br")[0];
-  const levelWord = getPrimaryLevelWord(primary);
   const side = getConditionSide(stripHtml(primary));
   const sideLabel =
     side === "right" ? "Right eye" : side === "left" ? "Left eye" : "One eye";
   const patternRaw = mode === "simple" ? toSimpleCondition(primary) : primary;
   const patternText = stripHtml(patternRaw);
-  return `<em>${levelWord}</em> <strong>${sideLabel} retinal detachment</strong><br><small>Pattern: ${patternText}</small>`;
+  return `<em>Suspected</em> <strong>${sideLabel} retinal detachment</strong><br><small>Pattern: ${patternText}</small>`;
 }
 
 function updateAnalysisOutput(eyeState) {
@@ -870,6 +920,34 @@ function updateAnalysisOutput(eyeState) {
   const analysisEl = document.getElementById("analysis-output");
   const siteEl = document.getElementById("analysis-site");
   if (!analysisEl || !siteEl || !outEl) return;
+
+  const assessmentIsExplicitlyIncomplete =
+    eyeState &&
+    typeof eyeState === "object" &&
+    Object.prototype.hasOwnProperty.call(eyeState, "assessmentComplete") &&
+    eyeState.assessmentComplete === false;
+  const clinicalModifiers = resolveClinicalModifiersForOutput(eyeState);
+  if (assessmentIsExplicitlyIncomplete) {
+    const presentation =
+      buildIncompleteAssessmentPresentation(clinicalModifiers);
+    analysisEl.textContent = presentation.analysisText;
+    siteEl.textContent =
+      getResultLanguageMode() === "simple"
+        ? toSimpleLesion(presentation.siteText)
+        : presentation.siteText;
+    RESULT_ALL_STATUS_CLASSES.forEach((name) =>
+      analysisEl.classList.remove(name),
+    );
+    RESULT_ALL_STATUS_CLASSES.forEach((name) => siteEl.classList.remove(name));
+    analysisEl.classList.add("status-unassessed");
+    siteEl.classList.add(
+      presentation.urgent ? "status-urgent" : "status-unassessed",
+    );
+    if (typeof updatePathwayDiagram === "function") {
+      updatePathwayDiagram("", "", "none", { category: "unknown" });
+    }
+    return;
+  }
 
   let inputState = eyeState || outEl.textContent || outEl.innerText;
   let condition = summarizeCondition(inputState);
@@ -883,13 +961,26 @@ function updateAnalysisOutput(eyeState) {
     condition = summarizeCondition(inputState);
   }
   if (condition === "Condition not identified") {
-    condition = "<em>Normal</em> <strong>Full Fields of Vision</strong>";
+    const presentation = buildUnavailableResultPresentation(clinicalModifiers);
+    analysisEl.textContent = presentation.analysisText;
+    siteEl.textContent =
+      getResultLanguageMode() === "simple"
+        ? toSimpleLesion(presentation.siteText)
+        : presentation.siteText;
+    setResultSeverityClasses(
+      analysisEl,
+      siteEl,
+      presentation.urgent ? "urgent" : "caution",
+    );
+    if (typeof updatePathwayDiagram === "function") {
+      updatePathwayDiagram("", "", "none", { category: "unknown" });
+    }
+    return;
   }
 
   const primaryCondition = String(condition).split("<br")[0];
   const rapdState = resolveRapdStateForOutput(eyeState);
   const baseLesionSiteText = mapConditionToLesion(primaryCondition, rapdState);
-  const clinicalModifiers = resolveClinicalModifiersForOutput(eyeState);
   const sourceAssessment = classifySourceAssessment(
     primaryCondition,
     rapdState,
@@ -967,6 +1058,8 @@ function updateAnalysisOutput(eyeState) {
 
   analysisEl.innerHTML = conditionForDisplay;
   siteEl.innerHTML = lesionForDisplay;
+  analysisEl.classList.remove("status-unassessed");
+  siteEl.classList.remove("status-unassessed");
   setResultSeverityClasses(analysisEl, siteEl, severity);
   if (typeof updatePathwayDiagram === "function") {
     updatePathwayDiagram(

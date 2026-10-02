@@ -1,35 +1,36 @@
 Squint Refactor Baseline
 =======================
-Generated: 2026-05-12T08:25:16.663Z
+Generated: 2026-07-24T20:20:47.083Z
+Amended: 29 September 2026 — three authorised diagnostic wording corrections only.
 
 Preset Counts
 -------------
-- primary: 8
-- intermediate: 12
-- advanced: 48
+- primary: 10
+- intermediate: 14
+- advanced: 44
 - total: 68
 
 MCQ Counts
 ----------
-- primary: 5
-- intermediate: 7
-- advanced: 17
-- total: 29
+- primary: 10
+- intermediate: 14
+- advanced: 23
+- total: 47
 
 Scenario Outputs
 ----------------
 - third_definite
-  rightCondition: <span style='color:red;'>definite 3rd nerve palsy</span>; sudden diplopia - <span style='color:red;'>urgent aneurysm exclusion</span>
+  rightCondition: <span style='color:red;'>probable 3rd nerve palsy</span>; sudden diplopia - <span style='color:red;'>urgent aneurysm exclusion</span>
   leftCondition: 
-  pupilCondition: Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>
+  pupilCondition: Right larger pupil - <i>compare in light and dark, test light and near reactions and assess motility, drugs and trauma</i>
   modifierSummary: Sudden
-  modifierGuidance: Sudden onset: acute review.
+  modifierGuidance: 
 - third_pupil_sparing_hint
-  rightCondition: <span style='color:red;'>probable pupil-sparing 3rd nerve palsy</span>; acute diplopia with ptosis
+  rightCondition: <span style='color:red;'>probable pupil-sparing 3rd nerve palsy; urgent neurovascular assessment</span>; pupil sparing does not exclude compression
   leftCondition: 
   pupilCondition: 
   modifierSummary: Sudden
-  modifierGuidance: Sudden onset: acute review.
+  modifierGuidance: 
 - sixth_partial_medium_hint
   rightCondition: <span style='color:red;'>probable partial 6th nerve palsy</span>; moderate abduction deficit
   leftCondition: 
@@ -37,15 +38,15 @@ Scenario Outputs
   modifierSummary: Sudden
   modifierGuidance: Sudden onset: acute review.
 - fourth_pattern
-  rightCondition: probable 4th nerve palsy; vertical diplopia/head-tilt pattern
+  rightCondition: possible 4th nerve palsy; vertical diplopia/head-tilt pattern
   leftCondition: 
   pupilCondition: 
   modifierSummary: 
   modifierGuidance: 
 - horner_like
-  rightCondition: definite Horner; carotid/stroke/apical lung causes; correlate clinically
+  rightCondition: Miosis pattern
   leftCondition: 
-  pupilCondition: Right smaller pupil - <i>possible Horner/drug effect</i>
+  pupilCondition: Right smaller pupil - <i>unilateral miosis; compare in light and dark and assess lids, pain, drugs and ocular causes</i>
   modifierSummary: 
   modifierGuidance: 
 - myasthenia_hint
@@ -55,23 +56,23 @@ Scenario Outputs
   modifierSummary: 
   modifierGuidance: 
 - thyroid_hint
-  rightCondition: possible thyroid restrictive change; restrictive motility
+  rightCondition: possible thyroid restrictive change; limited teaching model shows elevation restriction only
   leftCondition: 
   pupilCondition: 
   modifierSummary: 
   modifierGuidance: 
 - ino_hint
-  rightCondition: possible INO; adduction deficit with pupil sparing
+  rightCondition: possible INO; adduction deficit with contralateral abducting nystagmus and pupil sparing
   leftCondition: 
   pupilCondition: 
   modifierSummary: 
   modifierGuidance: 
 - modifier_bundle
-  rightCondition: <span style='color:red;'>definite 3rd nerve palsy</span>; sudden diplopia + pain - <span style='color:red;'>urgent aneurysm exclusion</span>
+  rightCondition: <span style='color:red;'>probable 3rd nerve palsy</span>; sudden diplopia + pain - <span style='color:red;'>urgent aneurysm exclusion</span>
   leftCondition: 
-  pupilCondition: Right larger pupil - <i>possible Adie's/3rd nerve pattern</i>
+  pupilCondition: Right larger pupil - <i>compare in light and dark, test light and near reactions and assess motility, drugs and trauma</i>
   modifierSummary: Sudden, Pain/HA, Trauma
-  modifierGuidance: Sudden onset: acute review. <span style='color:red;'>Pain/headache with 3rd nerve signs: urgent neurology review.</span> Recent trauma: traumatic palsy or orbital injury possible.
+  modifierGuidance: <span style='color:red;'>Pain or headache heightens concern for aneurysm or compression.</span> Recent trauma: traumatic palsy or orbital injury possible.
 - fatigable_headtilt
   rightCondition: <span style='color:red;'>probable 3rd nerve palsy</span>; classic down-and-out pattern
   leftCondition: 

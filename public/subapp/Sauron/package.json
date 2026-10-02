@@ -1,0 +1,15 @@
+{
+  "name": "sauron-retinoscopy-simulator",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild script.js --bundle --minify --format=iife --target=es2018 --outfile=app.bundle.js --log-level=warning",
+    "lint": "node tests/lint.mjs",
+    "test": "node tests/run-tests.mjs && node tests/bundle-parity.mjs",
+    "browser:review": "node tests/browser-review.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5"
+  }
+}

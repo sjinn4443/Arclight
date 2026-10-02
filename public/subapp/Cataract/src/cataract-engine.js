@@ -19,8 +19,10 @@ const ACTION_COLOUR_RANK = {
 };
 
 const CATARACT_CONFIDENCE_RANK = {
+  observed: 0,
   definite: 0,
   probable: 1,
+  possible_incomplete: 1.5,
   possible_pupil: 2,
   possible_competing: 3,
 };
@@ -40,13 +42,20 @@ const MAX_ACTION_NOTES_BY_COLOUR = {
   red: 3,
 };
 
-const REQUIRED_INPUT_KEYS = ["onset", "eyes", "distanceVA", "fundal", "back"];
+const REQUIRED_INPUT_KEYS = [
+  "onset",
+  "eyes",
+  "age",
+  "distanceVA",
+  "fundal",
+  "back",
+];
 
 const ASSESSMENT_FIELD_LABELS = {
   pain: "pain/redness",
+  pupil: "pupil",
   front: "front eye",
-  rapd: "RAPD",
-  light: "light direction",
+  afferent: "RAPD/light response",
 };
 
 function escalateActionColour(currentColour, nextColour) {
@@ -60,7 +69,7 @@ function deriveInitialCataractType(fundalSelection) {
     return "Normal";
   }
   if (fundalSelection === "white") {
-    return "Mature";
+    return "White reflex";
   }
   if (fundalSelection === "dark") {
     return "Nuclear";
@@ -94,16 +103,23 @@ function deriveCataractDisplayType(cataractPhenotype, confidenceLabel) {
     return "Nil";
   }
 
+  if (cataractPhenotype === "White reflex") {
+    return "White reflex";
+  }
+
   if (confidenceLabel === "probable") {
     return `Probable ${cataractPhenotype}`;
   }
 
-  if (confidenceLabel === "possible_pupil") {
-    return `Possible ${cataractPhenotype} (also pupil abnormality)`;
+  if (
+    confidenceLabel === "possible_pupil" ||
+    confidenceLabel === "possible_incomplete"
+  ) {
+    return `Possible ${cataractPhenotype}`;
   }
 
   if (confidenceLabel === "possible_competing") {
-    return `Possible ${cataractPhenotype} (other urgent pathology suspected)`;
+    return `Possible ${cataractPhenotype}`;
   }
 
   return cataractPhenotype;
@@ -148,8 +164,7 @@ function buildMissingAssessmentNote(missingAssessmentFieldKeys) {
     return getNoteText("assessment_incomplete_record_fields");
   }
 
-  const checkLabel = labels.length === 1 ? "check" : "checks";
-  return `Record missing ${checkLabel}: ${formatPlainList(labels)}.`;
+  return `Missing: ${formatPlainList(labels)}.`;
 }
 
 function deriveConsistencyWarnings({
@@ -194,12 +209,6 @@ function deriveConsistencyWarnings({
       "distanceVA",
       "fundal",
     ]);
-  } else if (
-    hasAbnormalFundal &&
-    hasGoodDistanceVision &&
-    !hasPosteriorPriorityDisease
-  ) {
-    addWarning("abnormal_reflex_with_va_6_6", ["distanceVA", "fundal"]);
   }
 
   const hasNearRecorded = Boolean(normalizedNearVa);
@@ -324,6 +333,8 @@ export function evaluateCataractDecision({
   pupilAbnormal,
   frontPresent,
   frontRecorded,
+  afferentConcern,
+  afferentRecorded,
   rapdPresent,
   rapdRecorded,
   directionLightPoor,
@@ -338,6 +349,9 @@ export function evaluateCataractDecision({
   if (!eyes) {
     missingFields.push("eyes");
   }
+  if (!ageBand) {
+    missingFields.push("age");
+  }
   if (!distanceVA) {
     missingFields.push("distanceVA");
   }
@@ -348,13 +362,80 @@ export function evaluateCataractDecision({
     missingFields.push("back");
   }
   if (missingFields.length > 0) {
-    return buildNoResultDecision(missingFields);
+    const pending = buildNoResultDecision(missingFields);
+    const urgentCode =
+      backSelection === "detached"
+        ? "retinal_same_day"
+        : onsetValue === "sudden"
+          ? "urgent_same_day_investigation"
+          : ["baby", "child", "adolescent", "teenager"].includes(ageBand) &&
+              fundalSelection === "white"
+            ? "child_white_reflex_urgent"
+            : fundalSelection === "white"
+              ? "white_reflex_prompt_review"
+              : "";
+    if (urgentCode) {
+      Object.assign(pending, {
+        actionCode: urgentCode,
+        actionTextCode: urgentCode,
+        actionText: getActionText(urgentCode),
+        actionColour: "red",
+        severityRank: 3,
+      });
+      pending.flags.push("urgent_signal");
+    }
+    const hasAfferentConcern =
+      typeof afferentConcern === "boolean"
+        ? afferentConcern
+        : Boolean(rapdPresent) || Boolean(directionLightPoor);
+    const hasPosteriorConcern = ["cupping", "diabetic"].includes(backSelection);
+    if (
+      !urgentCode &&
+      (painYes ||
+        pupilAbnormal ||
+        frontPresent ||
+        hasAfferentConcern ||
+        hasPosteriorConcern)
+    ) {
+      const code = hasPosteriorConcern
+        ? "posterior_disease_first"
+        : hasAfferentConcern
+          ? "rapd_non_cataract_first"
+          : "recheck_investigate_first";
+      Object.assign(pending, {
+        actionCode: code,
+        actionTextCode: code,
+        actionText: getActionText(code),
+        actionColour: "orange",
+        severityRank: 2,
+      });
+    }
+    // Recorded concerns remain visible even while an unrelated required input is missing.
+    const noteCodes = [];
+    if (hasAfferentConcern) noteCodes.push("neuro_red_flags");
+    if (pupilAbnormal) noteCodes.push("pupil_abnormal_review");
+    if (painYes) {
+      noteCodes.push("pain_with_cataract_pattern");
+      if (!urgentCode) noteCodes.push("urgency_note_early");
+    }
+    if (frontPresent) noteCodes.push("front_abnormal_prognosis_limited");
+    if (hasPosteriorConcern)
+      noteCodes.push(
+        backSelection === "cupping"
+          ? "posterior_cupping_glaucoma"
+          : "posterior_diabetic_first",
+      );
+    pending.actionNoteCodes = noteCodes;
+    pending.actionNotes = noteCodes.map(getNoteText).filter(Boolean);
+    if (noteCodes.length)
+      pending.ruleTrace.push("safety:recorded_concerns_incomplete_input");
+    return pending;
   }
 
   const normalizedAgeBand = ageBand === "teenager" ? "adolescent" : ageBand;
 
   const normalizedBackSelection =
-    fundalSelection === "white" && backSelection !== "poor view"
+    fundalSelection === "white" && backSelection === "normal"
       ? "poor view"
       : backSelection;
   const wasWhiteBackNormalized = normalizedBackSelection !== backSelection;
@@ -365,22 +446,28 @@ export function evaluateCataractDecision({
     (typeof pupilRecorded === "boolean" ? pupilRecorded : true);
   const isFrontRecorded =
     typeof frontRecorded === "boolean" ? frontRecorded : true;
-  const isRapdRecorded =
-    typeof rapdRecorded === "boolean" ? rapdRecorded : true;
-  const isLightRecorded =
-    typeof lightRecorded === "boolean" ? lightRecorded : true;
+  const isAfferentRecorded =
+    typeof afferentRecorded === "boolean"
+      ? afferentRecorded
+      : typeof rapdRecorded === "boolean" || typeof lightRecorded === "boolean"
+        ? Boolean(rapdRecorded) && Boolean(lightRecorded)
+        : true;
+  const hasAfferentConcern =
+    typeof afferentConcern === "boolean"
+      ? afferentConcern
+      : Boolean(rapdPresent) || Boolean(directionLightPoor);
   const missingAssessmentFieldKeys = [];
   if (!isPainRecorded) {
     missingAssessmentFieldKeys.push("pain");
   }
+  if (!isPupilRecorded) {
+    missingAssessmentFieldKeys.push("pupil");
+  }
   if (!isFrontRecorded) {
     missingAssessmentFieldKeys.push("front");
   }
-  if (!isRapdRecorded) {
-    missingAssessmentFieldKeys.push("rapd");
-  }
-  if (!isLightRecorded) {
-    missingAssessmentFieldKeys.push("light");
+  if (!isAfferentRecorded) {
+    missingAssessmentFieldKeys.push("afferent");
   }
 
   const flags = new Set();
@@ -392,7 +479,8 @@ export function evaluateCataractDecision({
   let actionCode = "";
   let actionTextCode = "";
   let cataractPhenotype = deriveInitialCataractType(fundalSelection);
-  let cataractConfidenceLabel = "definite";
+  let cataractConfidenceLabel =
+    fundalSelection === "white" ? "observed" : "definite";
   const hasPosteriorPriorityDisease = [
     "cupping",
     "diabetic",
@@ -410,23 +498,45 @@ export function evaluateCataractDecision({
     distanceVA === "fix_follow_poor" ||
     isDistanceVaUntestable;
   const hasModerateDistanceLoss = distanceVA === "6/36";
-  const hasMildDistanceLoss =
-    distanceVA === "6/12" || distanceVA === "fix_follow_good";
+  const hasMildDistanceLoss = distanceVA === "6/12";
+  const hasGoodFixation = distanceVA === "fix_follow_good";
   const hasGoodDistanceVision = distanceVA === "6/6";
   const isPaediatric = ["baby", "child", "adolescent"].includes(
     normalizedAgeBand,
   );
-  const hasNonPaediatricAgeBand = Boolean(normalizedAgeBand) && !isPaediatric;
+  const isAgeUnknown = normalizedAgeBand === "unknown";
+  const hasNonPaediatricAgeBand =
+    Boolean(normalizedAgeBand) && !isPaediatric && !isAgeUnknown;
   const isPresbyopicAge = ["middle_aged", "elderly", "very_elderly"].includes(
     normalizedAgeBand,
   );
   const isYoungerAdult = ["young_adult", "adult"].includes(normalizedAgeBand);
+  const isTypicalProbableMatureCataract =
+    hasWhiteFundal &&
+    onsetValue === "gradual" &&
+    hasNonPaediatricAgeBand &&
+    (distanceVA === "6/60" || distanceVA === "HM") &&
+    isPainRecorded &&
+    !Boolean(painYes) &&
+    isPupilRecorded &&
+    !Boolean(pupilAbnormal) &&
+    isFrontRecorded &&
+    !Boolean(frontPresent) &&
+    isAfferentRecorded &&
+    !hasAfferentConcern &&
+    !hasPosteriorPriorityDisease;
 
   if (fundalSelection === "normal") {
     cataractPhenotype = "Nil";
     ruleTrace.push("phenotype:normal_reflex");
   } else {
     ruleTrace.push("phenotype:abnormal_reflex");
+  }
+
+  if (isTypicalProbableMatureCataract) {
+    cataractPhenotype = "Mature";
+    cataractConfidenceLabel = "probable";
+    ruleTrace.push("phenotype:probable_mature_pattern");
   }
 
   let actionColour = "black";
@@ -448,13 +558,19 @@ export function evaluateCataractDecision({
   }
 
   if (hasPosteriorPriorityDisease) {
-    // Posterior pathology dominates the current decision; avoid mixed cataract-type messaging.
-    cataractPhenotype = "Nil";
-    cataractConfidenceLabel = "definite";
     const posteriorBaseColour =
       normalizedBackSelection === "detached" ? "red" : "orange";
-    setAction("posterior_disease_first", posteriorBaseColour);
+    setAction(
+      normalizedBackSelection === "detached"
+        ? "retinal_same_day"
+        : "posterior_disease_first",
+      posteriorBaseColour,
+    );
     flags.add("posterior_priority");
+    if (cataractPhenotype !== "Nil" && cataractPhenotype !== "White reflex") {
+      cataractConfidenceLabel = "possible_competing";
+      flags.add("competing_pathology");
+    }
     if (posteriorBaseColour === "red") {
       flags.add("urgent_signal");
     }
@@ -483,7 +599,12 @@ export function evaluateCataractDecision({
   } else {
     ruleTrace.push("core:abnormal_reflex_pathway");
     if (hasWhiteFundal) {
-      setAction("cataract_priority_white", "red");
+      setAction(
+        isTypicalProbableMatureCataract
+          ? "cataract_priority_white"
+          : "white_reflex_prompt_review",
+        "red",
+      );
       flags.add("urgent_signal");
       ruleTrace.push("reflex:white");
     } else if (hasPoorView) {
@@ -522,6 +643,12 @@ export function evaluateCataractDecision({
 
     if (hasPosteriorPriorityDisease) {
       pushNoteCode("child_case_posterior_review");
+      if (hasWhiteFundal) {
+        pushNoteCode("child_white_reflex_causes");
+        if (normalizedBackSelection !== "detached") {
+          setAction("child_white_reflex_urgent", "red");
+        }
+      }
       ruleTrace.push("age:child_posterior_note");
     } else if (hasAbnormalFundal) {
       actionColour = escalateActionColour(
@@ -529,11 +656,20 @@ export function evaluateCataractDecision({
         hasWhiteFundal ? "red" : "orange",
       );
       if (actionCode !== "urgent_same_day_investigation") {
-        setAction("child_cataract_prompt_referral", actionColour);
+        setAction(
+          hasWhiteFundal
+            ? "child_white_reflex_urgent"
+            : "child_cataract_prompt_referral",
+          actionColour,
+        );
       }
-      pushNoteCode("child_cataract_delay_risk");
+      pushNoteCode(
+        hasWhiteFundal
+          ? "child_white_reflex_causes"
+          : "child_cataract_delay_risk",
+      );
       ruleTrace.push("age:child_cataract_adjustment");
-    } else if (!hasGoodDistanceVision) {
+    } else if (!hasGoodDistanceVision && !hasGoodFixation) {
       actionColour = escalateActionColour(actionColour, "orange");
       if (actionCode !== "urgent_same_day_investigation") {
         setAction("child_reduced_vision_early_assessment", actionColour);
@@ -549,6 +685,12 @@ export function evaluateCataractDecision({
     pushNoteCode("younger_age_secondary_causes");
     flags.add("age_younger_atypical");
     ruleTrace.push("age:younger_atypical_note");
+  }
+
+  if (isAgeUnknown && (hasAbnormalFundal || !hasGoodDistanceVision)) {
+    pushNoteCode("age_unknown_caution");
+    flags.add("age_unknown");
+    ruleTrace.push("age:unknown_caution");
   }
 
   if (hasPosteriorPriorityDisease) {
@@ -594,7 +736,6 @@ export function evaluateCataractDecision({
 
   if (!isPupilRecorded) {
     if (hasAbnormalFundal && cataractPhenotype !== "Nil") {
-      escalateCataractConfidence("probable");
       flags.add("pupil_not_recorded");
       ruleTrace.push("pupil:not_recorded");
     }
@@ -616,17 +757,12 @@ export function evaluateCataractDecision({
     ruleTrace.push("front:abnormal");
   }
 
-  const hasNeuroRedFlags = Boolean(rapdPresent) || Boolean(directionLightPoor);
+  const hasNeuroRedFlags = hasAfferentConcern;
   if (hasNeuroRedFlags) {
     pushNoteCode("neuro_red_flags");
     actionColour = escalateActionColour(actionColour, "orange");
     flags.add("neuro_red_flags");
-    if (rapdPresent) {
-      flags.add("rapd_present");
-    }
-    if (directionLightPoor) {
-      flags.add("direction_light_poor");
-    }
+    flags.add("afferent_concern");
     ruleTrace.push("neuro:red_flags");
 
     if (
@@ -679,7 +815,9 @@ export function evaluateCataractDecision({
   );
   const shouldUseWhiteMismatchRecheckOverride =
     hasWhiteRelativelyGoodVaMismatch &&
-    actionCode === "cataract_priority_white" &&
+    ["white_reflex_prompt_review", "cataract_priority_white"].includes(
+      actionCode,
+    ) &&
     onsetValue === "gradual" &&
     !Boolean(painYes) &&
     !Boolean(pupilAbnormal) &&
@@ -688,7 +826,7 @@ export function evaluateCataractDecision({
     !isPaediatric;
 
   if (shouldUseWhiteMismatchRecheckOverride) {
-    setAction("recheck_investigate_first", "orange");
+    setAction("white_reflex_recheck", "red");
     flags.add("white_relatively_good_va_recheck_override");
     flags.add("recheck_override");
     ruleTrace.push("consistency:white_relatively_good_va_override");
@@ -696,23 +834,36 @@ export function evaluateCataractDecision({
 
   const recheckFieldSet = new Set(consistencyWarnings.fields);
   if (missingAssessmentFieldKeys.length > 0) {
+    if (cataractPhenotype !== "Nil" && cataractPhenotype !== "White reflex") {
+      escalateCataractConfidence("possible_incomplete");
+      ruleTrace.push("phenotype:provisional_missing_checks");
+    }
     flags.add("incomplete_assessment");
     missingAssessmentFieldKeys.forEach((fieldKey) => {
       flags.add(`missing_assessment:${fieldKey}`);
     });
     ruleTrace.push("assessment:incomplete");
 
-    if (actionColour !== "black") {
-      flags.add("requires_recheck");
-      dynamicNoteTextByCode.set(
-        "assessment_incomplete_record_fields",
-        buildMissingAssessmentNote(missingAssessmentFieldKeys),
-      );
-      pushNoteCode("assessment_incomplete_record_fields");
-      missingAssessmentFieldKeys.forEach((fieldKey) =>
-        recheckFieldSet.add(fieldKey),
-      );
-      ruleTrace.push("assessment:note_added");
+    flags.add("requires_recheck");
+    dynamicNoteTextByCode.set(
+      "assessment_incomplete_record_fields",
+      buildMissingAssessmentNote(missingAssessmentFieldKeys),
+    );
+    pushNoteCode("assessment_incomplete_record_fields");
+    missingAssessmentFieldKeys.forEach((fieldKey) =>
+      recheckFieldSet.add(fieldKey),
+    );
+    ruleTrace.push("assessment:note_added");
+
+    const preservesSafetySpecificAction = [
+      "posterior_disease_first",
+      "rapd_non_cataract_first",
+      "child_cataract_prompt_referral",
+      "child_reduced_vision_early_assessment",
+    ].includes(actionCode);
+    if (actionColour !== "red" && !preservesSafetySpecificAction) {
+      setAction("complete_missing_checks", "orange");
+      ruleTrace.push("assessment:main_action_override");
     }
   }
 
@@ -721,8 +872,7 @@ export function evaluateCataractDecision({
     Boolean(painYes) ||
     Boolean(pupilAbnormal) ||
     Boolean(frontPresent) ||
-    Boolean(rapdPresent) ||
-    Boolean(directionLightPoor);
+    hasAfferentConcern;
   if (
     flags.has("requires_recheck") &&
     hasHighRiskContext &&
@@ -737,14 +887,14 @@ export function evaluateCataractDecision({
   let urgencyNoteCode = "";
   let urgencyNote = "";
   let urgencyNoteColour = "";
-  if (Boolean(painYes) && onsetValue === "sudden") {
+  if (onsetValue === "sudden") {
     urgencyNoteCode = "urgency_note_urgent";
     urgencyNote = getNoteText(urgencyNoteCode);
     urgencyNoteColour = "red";
     flags.add("urgent_signal");
     flags.add("urgency_note");
     ruleTrace.push("urgency:urgent_note");
-  } else if (painYes || onsetValue === "sudden") {
+  } else if (painYes) {
     urgencyNoteCode = "urgency_note_early";
     urgencyNote = getNoteText(urgencyNoteCode);
     urgencyNoteColour = "orange";
@@ -759,8 +909,8 @@ export function evaluateCataractDecision({
 
   if (
     urgencyNoteColour === "red" &&
-    !hasPosteriorPriorityDisease &&
-    actionCode !== "urgent_same_day_investigation"
+    actionCode !== "urgent_same_day_investigation" &&
+    actionCode !== "retinal_same_day"
   ) {
     setAction("urgent_same_day_investigation", "red");
     flags.add("urgent_main_action");

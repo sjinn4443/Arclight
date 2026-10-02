@@ -1,0 +1,69 @@
+Cataract Acceptance Audit
+Generated: 2026-10-02T12:57:32.148Z
+
+Total checks: 30
+Passed: 30
+Failed: 0
+
+Results
+-------
+PASS urgent_main_action_when_sudden_pain_with_risk_flags
+  Urgent scenario maps to red urgent main action with concise priority notes.
+PASS missing_eyes_blocks_result
+  Engine requires eyes before returning a definitive action.
+PASS missing_age_blocks_result
+  Age must be recorded before a result is shown.
+PASS sudden_painless_loss_is_same_day
+  Sudden painless visual loss receives the same-day pathway.
+PASS invariance_eyes_one_vs_two_for_same_urgent_context
+  Changing eyes one/two does not alter main urgent guidance in this context.
+PASS gradual_pain_unilateral_not_auto_urgent_without_red_flags
+  Gradual painful unilateral baseline is not auto-escalated to red urgent action.
+PASS white_reflex_priority_preserved_under_pain
+  White reflex still routes to priority cataract referral.
+PASS white_reflex_sudden_pain_routes_to_urgent_main
+  Sudden painful white-reflex scenario now uses urgent main action.
+PASS posterior_override_always_wins
+  Posterior override preserved.
+PASS posterior_non_detached_not_auto_red_without_acute_flags
+  Non-detached posterior disease defaults to orange without acute red flags.
+PASS unrecorded_pupil_requires_completion_without_losing_explanation
+  Unrecorded pupil state blocks routine guidance without removing the phenotype explanation.
+PASS recorded_normal_pupil_keeps_cataract_type
+  A deliberately recorded normal pupil does not weaken the cataract type.
+PASS normal_reflex_va_severity_non_decreasing
+  Severity ladder monotonic: 0 -> 2 -> 2 -> 2 -> 2
+PASS child_cataract_pattern_not_left_as_routine
+  Child cataract pattern is escalated to prompt paediatric specialist referral.
+PASS dense_child_cataract_keeps_paediatric_wording
+  Dense child cataract keeps paediatric wording while staying red.
+PASS dense_adult_typical_pattern_is_probable_mature_cataract
+  A complete typical adult pattern can support probable mature cataract.
+PASS legacy_unknown_age_white_reflex_stays_cautious
+  A defensive legacy unknown-age state does not convert a white reflex into adult mature cataract.
+PASS rapd_routes_to_non_cataract_first_when_not_otherwise_urgent
+  RAPD correctly shifts pathway toward non-cataract first assessment.
+PASS rapd_with_abnormal_fundal_marks_competing_pathology_label
+  RAPD + abnormal reflex now marks cataract label as possible competing pathology.
+PASS child_va_option_maps_to_early_specialist_when_reduced
+  Child-friendly VA option triggers child reduced-vision pathway.
+PASS red_output_hides_near_va_note_and_caps_notes
+  Red output stays concise: near-VA note removed, notes capped, urgent trigger preserved.
+PASS orange_output_caps_supporting_notes
+  Orange output note count capped at 3.
+PASS missing_assessment_note_names_only_missing_fields
+  Missing-assessment note names only the missing field.
+PASS dense_reflex_with_relatively_good_va_prompts_recheck
+  Dense reflex with relatively good BCVA now triggers explicit re-check note and highlights.
+PASS dense_reflex_relatively_good_va_low_risk_uses_recheck_first
+  Low-risk dense/relatively-good-VA mismatch now uses re-check-first main action.
+PASS normal_reflex_unable_test_does_not_claim_very_poor_va
+  Unable-test VA now uses neutral non-poor wording on normal-reflex pathway.
+PASS fix_follow_non_child_age_prompts_recheck
+  Fix/Follow with non-child age now prompts re-check on age and distance VA.
+PASS distance_good_near_poor_non_presbyopic_prompts_recheck
+  Distance-good + near-poor non-presbyopic mismatch now prompts re-check.
+PASS distance_good_near_poor_presbyopic_not_flagged_as_mismatch
+  Presbyopic-age near reduction is not over-flagged as mismatch.
+PASS distance_poor_near_good_prompts_recheck
+  Distance-poor + near-good mismatch now prompts re-check.

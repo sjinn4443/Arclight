@@ -1,5 +1,13 @@
 # Project Brief
 
+## Compute repair delivery note (24/7/2026)
+
+The approved repair adds a pure normalised engine, explicit per-eye assessment state, fail-closed stale-result handling, unambiguous zone denominators, actual closed-region coverage and direct engine tests. It removes geometry-based `wavy` or `dark` inference without adding diagnosis or referral rules. The patient and information icons now match the fleet language.
+
+## v1.1 Delivery Note (22/7/2026)
+
+The v1.1 engineering pass preserves the original drawing, analysis, report and teaching scope. It adds local runtime assets, accessible transient surfaces, an examination-only reset, app-scoped offline support and automated contracts. It does not add diagnosis, referral logic, patient-image capture or a new report workflow.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -37,7 +45,7 @@ Provide a fast, browser-based Amsler grid tool for screening and documenting per
 - App bar with centered title and right-aligned instructions icon.
 - App bar left burger menu for MCQ access.
 - Canvas-based Amsler grid with drawing tools and eye tabs.
-- Defect analysis output (`total`, `central`, `peripheral` percentages).
+- Descriptive mark output for whole-grid, central-zone and outer-zone coverage.
 - Report generation with embedded RE/LE captures and screenshot button.
 - Memory-bank files for project continuity.
 
@@ -57,7 +65,7 @@ Provide a fast, browser-based Amsler grid tool for screening and documenting per
 In scope:
 
 - Static front-end implementation
-- Drawing, analysis, and report UX
+- Drawing, analysis and report UX
 - MCQ educational UX
 - Lightweight refactors that preserve behavior
 
@@ -65,3 +73,10 @@ Out of scope:
 
 - Backend storage or authentication
 - Clinical diagnosis claims or regulated decision support workflows
+
+## MCQ quality boundary — 26 July 2026
+
+- Preserve the 12/18/18 authored banks, 6/8/8 attempt sizes and existing pass marks.
+- Keep teaching separate from the patient drawing and report workflow.
+- Require unique progressive decisions across tiers, stable identities, one best answer, a concise rationale and recorded sources.
+- Treat engineering review as pending clinical sign-off.

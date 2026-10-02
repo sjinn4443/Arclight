@@ -7,6 +7,7 @@
   const AppStateRef = globalObj.AppState;
   const EyeControllerRef = globalObj.EyeController;
   const OutputWriterRef = globalObj.OutputWriter;
+  const SimCoreRef = globalObj.SimCore;
 
   // Approximate physiological ductions used for mapping:
   // Horizontal ~45-50 deg each side, elevation ~25 deg, depression ~35 deg.
@@ -88,6 +89,20 @@
     )
       x *= 0.66;
 
+    // 3rd palsy family: preserve abduction while restricting adduction,
+    // elevation and depression in the affected patient LE (DOM right eye).
+    if (
+      eyeType === "right" &&
+      [
+        "3rd nerve palsy",
+        "compressive 3rd nerve palsy",
+        "pupil-sparing 3rd nerve palsy",
+      ].includes(key)
+    ) {
+      if (x < 0) x *= 0.16;
+      y *= 0.2;
+    }
+
     // 4th palsy: make over-elevation in adduction clearly visible.
     // Strongest in adduction + downgaze (classic SO underaction with IO overaction),
     // but still present across adduction positions.
@@ -138,11 +153,11 @@
       x += inwardShiftForEye(eyeType, inShift);
     }
     if (key === "a-pattern exotropia") {
-      const outShift = 8 * upWeight + 2 * downWeight;
+      const outShift = 2 * upWeight + 8 * downWeight;
       x += outwardShiftForEye(eyeType, outShift);
     }
     if (key === "v-pattern exotropia") {
-      const outShift = 2 * upWeight + 8 * downWeight;
+      const outShift = 8 * upWeight + 2 * downWeight;
       x += outwardShiftForEye(eyeType, outShift);
     }
 
@@ -182,17 +197,24 @@
     if (up === 0 || down === 0) return "";
     if (Math.sign(up) !== Math.sign(down)) return "";
 
-    const absUp = Math.abs(up);
-    const absDown = Math.abs(down);
-    const isEso = up < 0;
+    return SimCoreRef?.computeAvPatternCue?.(up, down, AV_CUE_THRESHOLD) || "";
+  }
 
-    if (absUp >= absDown + AV_CUE_THRESHOLD) {
-      return `A-pattern cue (${isEso ? "esotropia" : "exotropia"})`;
-    }
-    if (absDown >= absUp + AV_CUE_THRESHOLD) {
-      return `V-pattern cue (${isEso ? "esotropia" : "exotropia"})`;
-    }
-    return "";
+  function updatePresetVisualCues(presetKey, vectorX) {
+    const key = String(presetKey || "").toLowerCase();
+    document.querySelectorAll(".eye").forEach((eye) => {
+      const eyeType = String(eye.dataset.eye || "").toLowerCase();
+      const duaneAdduction =
+        key === "duane type i-like" && eyeType === "right" && vectorX < -0.08;
+      const adductionDemand = duaneAdduction
+        ? clamp(Math.abs(vectorX), 0, 1)
+        : 0;
+      eye.classList.toggle("is-duane-retracting", duaneAdduction);
+      eye.style.setProperty(
+        "--fissure-scale",
+        (1 - 0.24 * adductionDemand).toFixed(3),
+      );
+    });
   }
 
   function classifyDirection(vectorX, vectorY) {
@@ -448,10 +470,14 @@
       iris.gazeOffset = { x: adjusted.x, y: adjusted.y };
       EyeControllerRef?.updateIrisTransform?.(iris);
     });
+    updatePresetVisualCues(presetKey, safeX);
 
     const directionKey = classifyDirection(safeX, safeY);
     AppStateRef.state.gazeDirection = directionKey;
     AppStateRef.state.gazeVector = { x: safeX, y: safeY };
+    if (directionKey !== "primary" && AppStateRef.state.coverEye === "none") {
+      globalObj.CoverController?.clearCoverObservation?.();
+    }
     setGazeStatus(directionKey);
     updateMuscleReadout(safeX, safeY);
     recordGazeSamples(safeX, safeY);
@@ -502,6 +528,7 @@
     applyNeutralGuide(trackpad);
 
     let pointerId = null;
+    const activeArrowKeys = new Set();
 
     function applyFromClient(clientX, clientY) {
       const v = vectorFromPointer(trackpad, clientX, clientY);
@@ -539,6 +566,51 @@
     trackpad.addEventListener("pointerleave", (event) => {
       if (pointerId === null || event.pointerId !== pointerId) return;
       endPointer(event);
+    });
+
+    function applyKeyboardGaze() {
+      const x =
+        (activeArrowKeys.has("ArrowRight") ? 1 : 0) -
+        (activeArrowKeys.has("ArrowLeft") ? 1 : 0);
+      const y =
+        (activeArrowKeys.has("ArrowDown") ? 1 : 0) -
+        (activeArrowKeys.has("ArrowUp") ? 1 : 0);
+      trackpad.classList.toggle("is-active", activeArrowKeys.size > 0);
+      if (!x && !y) {
+        resetToPrimary();
+        return;
+      }
+      applyVector(x, y);
+    }
+
+    trackpad.addEventListener("keydown", (event) => {
+      if (event.key.startsWith("Arrow")) {
+        event.preventDefault();
+        AppStateRef.markManualInteraction();
+        activeArrowKeys.add(event.key);
+        applyKeyboardGaze();
+        return;
+      }
+      if (event.key === "Home" || event.key === "Escape") {
+        event.preventDefault();
+        activeArrowKeys.clear();
+        trackpad.classList.remove("is-active");
+        resetToPrimary();
+      }
+    });
+
+    trackpad.addEventListener("keyup", (event) => {
+      if (!event.key.startsWith("Arrow")) return;
+      event.preventDefault();
+      activeArrowKeys.delete(event.key);
+      applyKeyboardGaze();
+    });
+
+    trackpad.addEventListener("blur", () => {
+      if (!activeArrowKeys.size) return;
+      activeArrowKeys.clear();
+      trackpad.classList.remove("is-active");
+      resetToPrimary();
     });
 
     window.addEventListener("resize", () => {

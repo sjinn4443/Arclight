@@ -1,0 +1,174 @@
+{
+  "date": "30/9/2026",
+  "author": "WJW",
+  "version": "v1",
+  "appCount": 15,
+  "purpose": "Mini app gallery metadata for lightweight browsing, selection and integration.",
+  "note": "These mini apps are teaching aids, guides and learning tools. They do not diagnose.",
+  "status": {
+    "engineering": "Verified for integration",
+    "clinicalSignOff": "Not independently confirmed",
+    "physicalDevice": "Not completed"
+  },
+  "thumbnail": {
+    "format": "webp",
+    "width": 180,
+    "height": 370,
+    "sourceViewport": {
+      "width": 360,
+      "height": 740
+    }
+  },
+  "apps": [
+    {
+      "title": "Allan",
+      "slug": "allan",
+      "folder": "Allan",
+      "entry": "../Allan/index.html",
+      "thumbnail": "thumbnails/allan.webp",
+      "colour": "#a855f7",
+      "type": "Dermatology referral aid",
+      "description": "Photograph and record observed skin findings for referral prompts."
+    },
+    {
+      "title": "Amsler",
+      "slug": "amsler",
+      "folder": "Amsler",
+      "entry": "../Amsler/index.html",
+      "thumbnail": "thumbnails/amsler.webp",
+      "colour": "#ff2a18",
+      "type": "Grid assessment",
+      "description": "Record fixation and grid distortion patterns."
+    },
+    {
+      "title": "Cataract",
+      "slug": "cataract",
+      "folder": "Cataract",
+      "entry": "../Cataract/index.html",
+      "thumbnail": "thumbnails/cataract.webp",
+      "colour": "#ff8c00",
+      "type": "Referral prompts",
+      "description": "Record lens appearance and referral prompts."
+    },
+    {
+      "title": "Diabetic",
+      "slug": "diabetic",
+      "folder": "diabetic",
+      "entry": "../diabetic/index.html",
+      "thumbnail": "thumbnails/diabetic.webp",
+      "colour": "#e53e3e",
+      "type": "Retinal assessment",
+      "description": "Record retinal signs in both eyes for triage prompts."
+    },
+    {
+      "title": "Discs",
+      "slug": "discs",
+      "folder": "Discs",
+      "entry": "../Discs/index.html",
+      "thumbnail": "thumbnails/discs.webp",
+      "colour": "#ff8c00",
+      "type": "Disc comparison",
+      "description": "Compare optic disc appearances and referral clues."
+    },
+    {
+      "title": "Fields",
+      "slug": "fields",
+      "folder": "Fields",
+      "entry": "../Fields/home.html",
+      "thumbnail": "thumbnails/fields.webp",
+      "colour": "#2a82cf",
+      "type": "Field patterns",
+      "description": "Record observed confrontation-field patterns."
+    },
+    {
+      "title": "Fundal Reflex",
+      "slug": "fundal-reflex",
+      "folder": "Fundal Reflex",
+      "entry": "../Fundal Reflex/index.html",
+      "thumbnail": "thumbnails/fundal-reflex.webp",
+      "colour": "#f03b2f",
+      "type": "Reflex comparison",
+      "description": "Match reflex brightness, colour and symmetry."
+    },
+    {
+      "title": "Glaucoma",
+      "slug": "glaucoma",
+      "folder": "Glaucoma",
+      "entry": "../Glaucoma/index.html",
+      "thumbnail": "thumbnails/glaucoma.webp",
+      "colour": "#00d632",
+      "type": "Risk guide",
+      "description": "Approximate risk from disc, pressure and observed signs."
+    },
+    {
+      "title": "Mires",
+      "slug": "mires",
+      "folder": "Mires",
+      "entry": "../Mires/index.html",
+      "thumbnail": "thumbnails/mires.webp",
+      "colour": "#00e928",
+      "type": "Tonometry simulator",
+      "description": "Practise Goldmann mire alignment and IOP estimation."
+    },
+    {
+      "title": "Morph",
+      "slug": "morph",
+      "folder": "Morph",
+      "entry": "../Morph/index.html",
+      "thumbnail": "thumbnails/morph.webp",
+      "colour": "#111111",
+      "type": "Fundus simulator",
+      "description": "Explore fundus-view and instrument appearance."
+    },
+    {
+      "title": "Refract",
+      "slug": "refract",
+      "folder": "Refract",
+      "entry": "../Refract/index.html",
+      "thumbnail": "thumbnails/refract.webp",
+      "colour": "#2a82cf",
+      "type": "Refraction guide",
+      "description": "Estimate a cautious spectacle prescription from measured inputs."
+    },
+    {
+      "title": "Sauron",
+      "slug": "sauron",
+      "folder": "Sauron",
+      "entry": "../Sauron/index.html",
+      "thumbnail": "thumbnails/sauron.webp",
+      "colour": "#ff8c00",
+      "type": "Retinoscopy simulator",
+      "description": "Practise retinoscopy reflex and streak interpretation."
+    },
+    {
+      "title": "Squint",
+      "slug": "squint",
+      "folder": "Squint",
+      "entry": "../Squint/index.html",
+      "thumbnail": "thumbnails/squint.webp",
+      "colour": "#ffb000",
+      "type": "Motility simulator",
+      "description": "Drag observed eye positions and explore motility."
+    },
+    {
+      "title": "Swollen Discs",
+      "slug": "swollen-discs",
+      "folder": "Swollen Discs",
+      "entry": "../Swollen Discs/index.html",
+      "thumbnail": "thumbnails/swollen-discs.webp",
+      "colour": "#f03b2f",
+      "type": "Disc assessment",
+      "description": "Compare disc margins, vessels and swelling clues."
+    },
+    {
+      "title": "Trauma",
+      "slug": "trauma",
+      "folder": "Trauma",
+      "entry": "../Trauma/index.html",
+      "thumbnail": "thumbnails/trauma.webp",
+      "colour": "#ff3030",
+      "type": "Red-flag guide",
+      "description": "Record presenting vision and urgent injury signs."
+    }
+  ]
+}

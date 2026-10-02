@@ -1,0 +1,15 @@
+{
+  "name": "refract-static-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild scripts.js --bundle --minify --format=iife --target=es2018 --outfile=app.bundle.js --log-level=warning && esbuild src/mcq-controller.js --bundle --minify --format=iife --target=es2018 --outfile=mcq.bundle.js --log-level=warning",
+    "test": "node tests/run-tests.mjs && node tests/prescribing-rules.mjs && node tests/context-ui.mjs && node tests/weighted-rules.mjs && node tests/target-safety.mjs && node tests/bundle-parity.mjs",
+    "browser:review": "node tests/browser-review.mjs",
+    "browser:output-fit": "node tests/output-fit.mjs",
+    "audit": "node tools/audit-allan-rx.mjs --sheet-inputs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5"
+  }
+}

@@ -1,5 +1,9 @@
 # Product Context
 
+## v1.1 boundary (23/7/2026)
+
+Mires remains a teaching simulator rather than a patient assessment or diagnostic tool. `Reset` restores visual controls. The new two-step `New training session` restarts both exercises and simulator state while retaining the user-level MCQ achievement.
+
 <!-- APP-DOC-STATUS:START -->
 
 ## Current Memory Status (18/5/2026)
@@ -29,3 +33,7 @@ User needs:
 Why this matters:
 
 - Better endpoint consistency and interpretation confidence can improve real-world assessment quality.
+
+## MCQ learner context — 26 July 2026
+
+Learners need to recognise the correct endpoint, common artefacts and reasons to repeat a reading. Explanatory feedback should connect mire appearance to technique. A simulated endpoint or score is never a patient IOP. The EGS-reviewed fluorescein direction is now explicit, but full clinical approval remains pending.

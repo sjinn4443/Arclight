@@ -8,7 +8,7 @@ const acuityMap = {
   [VISUAL_SYSTEM]: [
     { name: "NPL", value: 60, tableValues: [73, 17, 7, 2, 1] },
     { name: "PL or HM", value: 70, tableValues: [28, 26, 18, 13, 15] },
-    { name: "1/60 to < 6/60", value: 80, tableValues: [2, 11, 15, 28, 44] },
+    { name: "0.3/60 to <6/60", value: 80, tableValues: [2, 11, 15, 28, 44] },
     { name: "6/60 to 6/15", value: 90, tableValues: [1, 2, 2, 21, 74] },
     { name: "≥ 6/12", value: 100, tableValues: [0, 1, 2, 5, 92] },
   ],
@@ -21,7 +21,7 @@ const optionalFields = [
     name: "Globe Rupture",
     photoUrl: "assets/images/globe.webp",
     description:
-      "Globe rupture occurs by blunt or penetrating inside-out trauma. It is severe, the eye often deflates and urgent surgery is required.",
+      "A full-thickness eyewall wound caused by blunt trauma, from inside out. Urgent surgery is required.",
   },
   {
     letter: "C",
@@ -68,7 +68,7 @@ const CATEGORY_BANDS = [
 const OUTCOME_LABELS = [
   "NPL",
   "PL or HM",
-  "1/60 to <6/60",
+  "0.3/60 to <6/60",
   "6/60 to 6/15",
   "≥ 6/12",
 ];
@@ -92,7 +92,20 @@ const CATEGORY_DESCRIPTIONS = [
   },
 ];
 
-const MCQ_LEVELS = [
+const MCQ_SOURCE_REFERENCES = {
+  "kuhn-ots-2002": {
+    label: "Kuhn et al.: The Ocular Trauma Score (2002)",
+    url: "https://pubmed.ncbi.nlm.nih.gov/12229231/",
+    status: "primary-source-reviewed",
+  },
+  "trauma-app-scope-v1": {
+    label: "Trauma app scope and counselling limitations",
+    url: null,
+    status: "pending-independent-clinical-sign-off",
+  },
+};
+
+const RAW_MCQ_LEVELS = [
   {
     key: "primary",
     name: "Primary",
@@ -101,12 +114,13 @@ const MCQ_LEVELS = [
     passCount: 3,
     questions: [
       {
-        prompt: "Which step should you do first when using this calculator?",
+        prompt:
+          "Which information must be recorded before an OTS-style score can be calculated?",
         choices: [
-          "Select presenting VA",
-          "Read the outcome table",
-          "Add all risk factors",
-          "Open the info screen",
+          "Presenting VA",
+          "Outcome-table category",
+          "Patient age only",
+          "Treatment choice",
         ],
         answerIndex: 0,
       },
@@ -222,7 +236,7 @@ const MCQ_LEVELS = [
       {
         prompt:
           "In the Category 1 row, which outcome column has the highest percentage?",
-        choices: ["NPL", "PL or HM", "1/60 to <6/60", "≥ 6/12"],
+        choices: ["NPL", "PL or HM", "0.3/60 to <6/60", "≥ 6/12"],
         answerIndex: 0,
       },
       {
@@ -392,6 +406,61 @@ const MCQ_LEVELS = [
   },
 ];
 
+function getMcqSource(question) {
+  if (
+    /best fits this tool|exported result summary|must be recorded before/i.test(
+      question.prompt,
+    )
+  ) {
+    return "trauma-app-scope-v1";
+  }
+  return "kuhn-ots-2002";
+}
+
+function getMcqExplanation(question) {
+  const correctAnswer = question.choices[question.answerIndex];
+  if (/must be recorded before/i.test(question.prompt)) {
+    return "Presenting visual acuity supplies the OTS-style starting score before any listed prognostic penalties are subtracted.";
+  }
+  if (/best fits this tool/i.test(question.prompt)) {
+    return "OTS supports probabilistic prognostic discussion and planning. It does not replace examination, diagnosis or treatment decisions.";
+  }
+  if (/exported result summary/i.test(question.prompt)) {
+    return "An exported OTS-style result remains prognostic support rather than a diagnosis or a guarantee of an individual outcome.";
+  }
+  if (
+    /gives what final score|has which final score|what final score/i.test(
+      question.prompt,
+    )
+  ) {
+    return `Subtract the listed penalties from the presenting-VA base score. The configured result is ${correctAnswer}.`;
+  }
+  if (/category|maps to|falls into|score range/i.test(question.prompt)) {
+    return `The configured OTS-style score bands place this result in ${correctAnswer}. The category summarises a probability distribution, not certainty.`;
+  }
+  if (/penalty|risk factor|RAPD/i.test(question.prompt)) {
+    return `The OTS-style table applies the listed adverse prognostic weight. For this item the best answer is ${correctAnswer}.`;
+  }
+  if (/outcome table|percentage|chance|outcome column/i.test(question.prompt)) {
+    return `The outcome table reports category-level six-month visual-acuity probabilities. The relevant value here is ${correctAnswer}.`;
+  }
+  return `The configured OTS-style model uses presenting acuity, listed penalties and score bands. The best answer is ${correctAnswer}.`;
+}
+
+const MCQ_LEVELS = RAW_MCQ_LEVELS.map((level) => ({
+  ...level,
+  questions: level.questions.map((question, questionIndex) => {
+    const source = getMcqSource(question);
+    return {
+      ...question,
+      id: `trauma-${level.key}-${String(questionIndex + 1).padStart(2, "0")}`,
+      explanation: getMcqExplanation(question),
+      source,
+      reviewStatus: MCQ_SOURCE_REFERENCES[source].status,
+    };
+  }),
+}));
+
 //========================================================================
 // DOM REFERENCES
 //========================================================================
@@ -465,7 +534,7 @@ function prepareMcqQuestion(question) {
   const shuffledChoices = shuffleArray(choices);
 
   return {
-    prompt: question.prompt,
+    ...question,
     choices: shuffledChoices.map((choice) => choice.text),
     answerIndex: shuffledChoices.findIndex((choice) => choice.isCorrect),
   };
@@ -473,6 +542,8 @@ function prepareMcqQuestion(question) {
 
 function closeMcqModal() {
   mcqModal.style.display = "none";
+  mcqModal.setAttribute("aria-hidden", "true");
+  document.getElementById("sidebar-toggle")?.focus();
 }
 
 function openMcqModal(levelIndex) {
@@ -492,6 +563,7 @@ function openMcqModal(levelIndex) {
 
   const questionNodes = activeMcqQuestions.map((question, questionIndex) => {
     const fieldset = createNode("fieldset", "mcq-question");
+    fieldset.dataset.questionId = question.id;
     const legend = document.createElement("legend");
     legend.textContent = `${questionIndex + 1}. ${question.prompt}`;
     const options = createNode("div", "mcq-options");
@@ -514,7 +586,19 @@ function openMcqModal(levelIndex) {
       options.appendChild(label);
     });
 
-    fieldset.append(legend, options);
+    const review = createNode("div", "mcq-item-review");
+    review.hidden = true;
+    const explanation = createNode(
+      "p",
+      "mcq-item-feedback",
+      `Why: ${question.explanation}`,
+    );
+    const source = createNode("p", "mcq-item-source");
+    const sourceMeta = MCQ_SOURCE_REFERENCES[question.source];
+    source.textContent = `Source: ${sourceMeta?.label || question.source}. Status: ${question.reviewStatus}.`;
+    review.append(explanation, source);
+
+    fieldset.append(legend, options, review);
     return fieldset;
   });
 
@@ -527,9 +611,15 @@ function openMcqModal(levelIndex) {
 
   appSidebar.classList.remove("is-open");
   appSidebar.inert = true;
+  appSidebar.setAttribute("aria-hidden", "true");
+  document
+    .getElementById("sidebar-toggle")
+    ?.setAttribute("aria-expanded", "false");
   appMenuBackdrop.hidden = true;
 
   mcqModal.style.display = "block";
+  mcqModal.setAttribute("aria-hidden", "false");
+  window.requestAnimationFrame(() => closeMcqModalButton.focus());
 }
 
 function submitMcqAnswers() {
@@ -566,6 +656,10 @@ function submitMcqAnswers() {
   if (unansweredCount > 0) {
     mcqResult.className = "mcq-result is-error";
     mcqResult.textContent = `Please answer all questions. ${unansweredCount} remaining.`;
+    const firstUnanswered = answerDetails.find((detail) => !detail.answered);
+    mcqForm
+      .querySelector(`input[name="mcq_q_${firstUnanswered?.questionIndex}"]`)
+      ?.focus();
     return;
   }
 
@@ -581,6 +675,28 @@ function submitMcqAnswers() {
     `${levelConfig.name}: ${correctCount}/${totalCount} (${percentScore}%). ${passed ? "Pass" : "Not yet pass"}.`,
   );
   const incorrectDetails = answerDetails.filter((detail) => !detail.correct);
+
+  answerDetails.forEach((detail) => {
+    const question = activeMcqQuestions[detail.questionIndex];
+    const fieldset = mcqForm.querySelector(
+      `[data-question-id="${question.id}"]`,
+    );
+    fieldset?.querySelectorAll(".mcq-option").forEach((label, choiceIndex) => {
+      label.classList.toggle(
+        "is-correct",
+        choiceIndex === question.answerIndex,
+      );
+      label.classList.toggle(
+        "is-wrong",
+        choiceIndex === detail.selectedIndex &&
+          choiceIndex !== question.answerIndex,
+      );
+      const input = label.querySelector("input");
+      if (input) input.disabled = true;
+    });
+    const review = fieldset?.querySelector(".mcq-item-review");
+    if (review) review.hidden = false;
+  });
 
   if (incorrectDetails.length) {
     const feedbackList = createNode("ul", "mcq-feedback-list");
@@ -605,6 +721,7 @@ function submitMcqAnswers() {
 
   submitMcqButton.disabled = true;
   newMcqButton.hidden = false;
+  newMcqButton.textContent = passed ? "New attempt" : "Try again";
 }
 
 //========================================================================
@@ -612,14 +729,18 @@ function submitMcqAnswers() {
 //========================================================================
 
 function populateAcuityOptions() {
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select";
+  placeholder.selected = true;
+  placeholder.disabled = true;
   const options = acuityMap[VISUAL_SYSTEM].map((item, index) => {
     const option = document.createElement("option");
     option.value = index;
     option.textContent = item.name;
     return option;
   });
-  acuitySelect.replaceChildren(...options);
-  acuitySelect.selectedIndex = 4;
+  acuitySelect.replaceChildren(placeholder, ...options);
 }
 
 function closeOpenRiskTooltips() {
@@ -690,6 +811,7 @@ function createRiskFactorToggle(field, index) {
   const closeTooltip = () => {
     tooltip.classList.remove("is-open");
     labelText.setAttribute("aria-expanded", "false");
+    labelText.focus();
   };
 
   labelText.addEventListener("click", (event) => {
@@ -737,39 +859,12 @@ function populateOptionalFields() {
   );
 }
 
-function getSelectedAcuity() {
-  const acuityIndex = Number(acuitySelect.value);
-  return acuityMap[VISUAL_SYSTEM][acuityIndex];
-}
-
-function getPenaltyState() {
-  const appliedPenalties = [];
-  let penaltySum = 0;
-
-  const checkboxes = optionalFieldsDiv.querySelectorAll(
-    'input[type="checkbox"]',
-  );
-  checkboxes.forEach((checkbox, index) => {
-    if (!checkbox.checked) {
-      return;
-    }
-
-    const penaltyValue = Number(checkbox.value);
-    penaltySum += penaltyValue;
-    appliedPenalties.push({
-      name: optionalFields[index].name,
-      value: penaltyValue,
-    });
-  });
-
-  return { penaltySum, appliedPenalties };
-}
-
 function getCategoryInfo(finalScore) {
   return CATEGORY_BANDS.find((band) => finalScore <= band.max);
 }
 
 function renderScoreHeader(finalScore, category) {
+  resultScore.classList.remove("is-unassessed");
   const label = createNode("span", "static-text", "Estimated VA at 6 months");
   const resultCluster = createNode("span", "result-score-cluster");
   const scoreBox = createNode("span", "score-box", String(finalScore));
@@ -783,6 +878,26 @@ function renderScoreHeader(finalScore, category) {
   resultCluster.append(scoreBox, categoryBox);
 
   resultScore.replaceChildren(label, resultCluster);
+}
+
+function renderUnassessedState() {
+  resultScore.classList.add("is-unassessed");
+  const heading = createNode(
+    "strong",
+    "result-unassessed-title",
+    "Not assessed",
+  );
+  const guidance = createNode(
+    "span",
+    "result-unassessed-copy",
+    "Choose a VA category to calculate.",
+  );
+  resultScore.replaceChildren(heading, guidance);
+  outcomeDetails.replaceChildren();
+  calculationContent.replaceChildren();
+  calculationToggle.disabled = true;
+  latestResult = null;
+  setCalculationCollapsed(true);
 }
 
 function renderOutcomeTable(outcomes, activeCategory) {
@@ -961,14 +1076,26 @@ function exportResultSummary() {
 //========================================================================
 
 function calculateOTS() {
-  const selectedAcuity = getSelectedAcuity();
+  if (acuitySelect.value === "") {
+    renderUnassessedState();
+    return;
+  }
+
+  const selectedPenaltyIndexes = Array.from(
+    optionalFieldsDiv.querySelectorAll('input[type="checkbox"]'),
+  ).flatMap((checkbox, index) => (checkbox.checked ? [index] : []));
+  const score = window.TraumaScoring.calculateScore(
+    Number(acuitySelect.value),
+    selectedPenaltyIndexes,
+  );
+  const selectedAcuity = score.acuity;
   const baseScore = selectedAcuity.value;
-
-  const { penaltySum, appliedPenalties } = getPenaltyState();
-  const finalScore = baseScore + penaltySum;
-
-  const { category, rule } = getCategoryInfo(finalScore);
-  const outcomes = acuityMap[VISUAL_SYSTEM][category - 1].tableValues;
+  const { penaltySum, appliedPenalties, finalScore, category, rule, outcomes } =
+    score;
+  const configuredCategory = getCategoryInfo(finalScore);
+  if (configuredCategory.category !== category) {
+    throw new Error("Scoring configuration mismatch.");
+  }
 
   renderScoreHeader(finalScore, category);
   renderOutcomeTable(outcomes, category);
@@ -981,6 +1108,7 @@ function calculateOTS() {
     rule,
     category,
   );
+  calculationToggle.disabled = false;
 
   latestResult = {
     acuityName: selectedAcuity.name,
@@ -1042,3 +1170,54 @@ window.addEventListener("keydown", (event) => {
 });
 setCalculationCollapsed(true);
 calculateOTS();
+
+const resetCaseButton = document.getElementById("resetCaseButton");
+const resetCaseStatus = document.getElementById("resetCaseStatus");
+let resetConfirmationExpiresAt = 0;
+resetCaseButton.addEventListener("click", () => {
+  const now = Date.now();
+  if (now <= resetConfirmationExpiresAt) {
+    acuitySelect.selectedIndex = 0;
+    optionalFieldsDiv
+      .querySelectorAll('input[type="checkbox"]')
+      .forEach((input) => {
+        input.checked = false;
+      });
+    setCalculationCollapsed(true);
+    closeOpenRiskTooltips();
+    calculateOTS();
+    resetConfirmationExpiresAt = 0;
+    resetCaseButton.textContent = "Reset case";
+    resetCaseStatus.textContent = "Calculator cleared.";
+    return;
+  }
+  resetConfirmationExpiresAt = now + 8000;
+  resetCaseButton.textContent = "Confirm reset";
+  resetCaseStatus.textContent =
+    "Press again within 8 seconds to clear the current case.";
+  window.setTimeout(() => {
+    if (Date.now() <= resetConfirmationExpiresAt) return;
+    resetConfirmationExpiresAt = 0;
+    resetCaseButton.textContent = "Reset case";
+    resetCaseStatus.textContent = "";
+  }, 8100);
+});
+
+mcqModal.addEventListener("keydown", (event) => {
+  if (event.key !== "Tab" || mcqModal.style.display !== "block") return;
+  const focusable = Array.from(
+    mcqModal.querySelectorAll(
+      'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((element) => element.getClientRects().length > 0);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});

@@ -1,0 +1,35 @@
+// Audit helper only. Uses the bundled browser runtime without altering app source.
+import { chromium } from 'file:///C:/Users/William/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs/promises';
+const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const context=await browser.newContext({viewport:{width:360,height:740},hasTouch:true,serviceWorkers:'block'});
+const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+const out=new URL('../output/playwright/',import.meta.url);await fs.mkdir(out,{recursive:true});
+await page.goto('http://127.0.0.1:8090/Mires/index.html');
+await page.evaluate(()=>document.fonts.ready);
+const set=async(id,value)=>page.locator('#'+id).evaluate((e,v)=>{e.value=String(v);e.dispatchEvent(new Event('input',{bubbles:true}));},value);
+const snap=()=>page.evaluate(()=>{
+const box=id=>{const r=document.querySelector(id).getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};};
+const top=document.querySelector('.semi-circle.top');
+const cross=document.querySelector('#crosshair .horizontal').getBoundingClientRect();
+const svg=document.querySelector('#mires svg');const p=svg.createSVGPoint();p.x=70;p.y=70;const centre=p.matrixTransform(svg.getScreenCTM());
+return {top:top.getAttribute('transform'),stroke:top.style.strokeWidth,mires:document.querySelector('#mires').style.transform,svgCentre:{x:centre.x,y:centre.y},crossY:cross.y+cross.height/2,zoom:document.querySelector('#zoomSlider').value,separation:document.querySelector('#separationSlider').value,iop:document.querySelector('#iopValue').textContent,status:document.querySelector('#caseStatus').textContent,blue:box('#blueCircle'),mireBox:box('#mires'),dock:box('#controlDock'),panel:box('#newtonPanel'),width:innerWidth,scrollWidth:document.documentElement.scrollWidth,focus:document.activeElement.id};
+});
+await set('jitterSlider',0);await set('suddenSlider',0);await set('driftSlider',0);
+const normal=await snap();await page.screenshot({path:fileURLToPath(new URL('mires-audit-normal.png',out))});
+await page.locator('#casePanelToggle').click();await page.waitForTimeout(300);
+const tr=await snap();const offset=Number(tr.top.match(/translate\(([-.\d]+)/)[1]);const target=Math.round(Number(tr.separation)-(offset-(100-Number(tr.stroke))/2)/1.15);
+await set('separationSlider',target);await page.waitForTimeout(1000);const solved=await snap();
+await set('zoomSlider',2);await page.waitForTimeout(400);const zoom=await snap();await page.screenshot({path:fileURLToPath(new URL('mires-audit-zoom.png',out))});
+await set('zoomSlider',1);await page.locator('#resetControlsButton').click();await set('jitterSlider',0);await set('suddenSlider',0);await set('driftSlider',0);
+await page.locator('#casePanelClose').click();await page.locator('#newtonPanelToggle').click();await page.waitForTimeout(300);
+const newton=await snap();await set('thicknessSlider',20);await page.waitForTimeout(350);const thickness=await snap();
+await page.screenshot({path:fileURLToPath(new URL('mires-audit-newton.png',out))});
+await page.keyboard.press('Escape');const escapeOpen=await page.locator('#newtonPanel').evaluate(e=>e.classList.contains('is-open'));
+await page.locator('#newtonPanelClose').click();await page.locator('#casePanelToggle').click();await set('driftSlider',5);const driftBefore=await snap();await page.waitForTimeout(1200);const driftAfter=await snap();
+await page.locator('#advancedMotionButton').click();await page.waitForTimeout(250);const dense=await snap();await page.screenshot({path:fileURLToPath(new URL('mires-audit-dense.png',out))});
+await page.locator('#burger-icon').click();await page.locator('.mcq-level-button[data-level-index="0"]').click();await page.locator('#submitTestButton').click();const incomplete=await page.evaluate(()=>({focus:document.activeElement.id,text:document.querySelector('#testResult').textContent}));
+await fs.writeFile(new URL('mires-audit-20260929.json',out),JSON.stringify({normal,target,solved,zoom,newton,thickness,escapeOpen,driftBefore,driftAfter,dense,incomplete,errors},null,2));
+console.log(JSON.stringify({target,normal,solved,zoom,newton,thickness,escapeOpen,driftBefore,driftAfter,dense,incomplete,errors},null,2));
+await browser.close();

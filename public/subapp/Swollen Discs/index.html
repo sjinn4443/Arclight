@@ -10,10 +10,13 @@
     <meta name="author" content="WJW" />
     <meta name="date" content="18/5/2026" />
     <meta name="application-name" content="Swollen Discs" />
+    <meta name="theme-color" content="#000000" />
     <title>Swollen Discs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
 
-    <link rel="stylesheet" href="styles.css?v=20260518-1" />
+    <link rel="stylesheet" href="styles.css?v=20260929-logic1" />
+    <link rel="stylesheet" href="fleet-ui-refinements.css?v=20260930-ui2" />
   </head>
   <body>
     <header class="app-bar">
@@ -41,10 +44,6 @@
         aria-label="Open quick guide"
         aria-controls="infoModal"
         aria-expanded="false"
-        onclick="
-          event.stopImmediatePropagation();
-          window.toggleInfoGuide?.();
-        "
       >
         <span class="appbar-glyph appbar-glyph-info" aria-hidden="true"></span>
       </button>
@@ -55,7 +54,7 @@
         <h2 id="mcqMenuTitle" class="side-menu-heading">MCQ sets</h2>
         <div class="mcq-level-menu">
           <button class="mcq-level-button" type="button" data-level-index="0" data-level="primary">
-            Level 1: Primary
+            Primary
           </button>
           <button
             class="mcq-level-button"
@@ -63,10 +62,10 @@
             data-level-index="1"
             data-level="intermediate"
           >
-            Level 2: Intermediate
+            Intermediate
           </button>
           <button class="mcq-level-button" type="button" data-level-index="2" data-level="advanced">
-            Level 3: Advanced
+            Advanced
           </button>
         </div>
       </section>
@@ -80,7 +79,7 @@
             data-level-index="0"
             data-level="primary"
           >
-            Level 1: Primary
+            Primary
           </button>
           <button
             class="timed-level-button"
@@ -88,7 +87,7 @@
             data-level-index="1"
             data-level="intermediate"
           >
-            Level 2: Intermediate
+            Intermediate
           </button>
           <button
             class="timed-level-button"
@@ -96,7 +95,7 @@
             data-level-index="2"
             data-level="advanced"
           >
-            Level 3: Advanced
+            Advanced
           </button>
         </div>
       </section>
@@ -117,6 +116,14 @@
           Save
         </button>
       </section>
+
+      <section class="side-menu-section session-reset-section" aria-labelledby="sessionResetTitle">
+        <h2 id="sessionResetTitle" class="side-menu-heading">Training session</h2>
+        <button id="newSessionButton" class="session-reset-button" type="button">
+          New training session
+        </button>
+        <small class="session-reset-hint">Press twice to reset the controls and viewer.</small>
+      </section>
     </nav>
 
     <div
@@ -126,12 +133,6 @@
       aria-modal="true"
       aria-hidden="true"
       aria-labelledby="infoModalTitle"
-      onclick="
-        if (event.target === this) {
-          event.stopPropagation();
-          window.toggleInfoGuide?.(false);
-        }
-      "
     >
       <div class="modal-content info-popup" id="infoModalContent">
         <div class="info-popup-header">
@@ -141,16 +142,17 @@
             class="close-button"
             type="button"
             aria-label="Close quick guide"
-            onclick="
-              event.stopImmediatePropagation();
-              window.toggleInfoGuide?.(false);
-            "
           >
             <span class="close-glyph" aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="info-popup-body">
           <div class="info-look-guide">
+            <p class="info-purpose-copy">
+              Use this simulator to compare a disc with normal, suspicious and swollen examples: you
+              select the appearance that best matches what you see and practise referral
+              recognition. It does not grade or diagnose a patient's disc.
+            </p>
             <section class="info-look-section">
               <p class="info-look-title">Basics</p>
               <div class="info-basics-grid" aria-label="Basic disc checks">
@@ -164,7 +166,7 @@
                 </div>
                 <div class="info-basics-cue">
                   <strong>Vessels hidden</strong>
-                  <small>Or haemorrhage</small>
+                  <small>Check view quality</small>
                 </div>
               </div>
             </section>
@@ -178,17 +180,34 @@
 
             <section class="info-look-section info-look-section--detail">
               <p>
-                If a disc looks suspicious, seek same-day advice. If vessels are hidden or there is
-                haemorrhage, treat it as urgent.
+                Suspicious swelling needs same-day advice; definite swelling needs emergency review.
+                Poor views or haemorrhage alone do not establish the grade.
               </p>
             </section>
 
             <section class="info-points">
               <p>Use the view slider to practise normal and wide views.</p>
               <p>Cataract makes the view harder. It is not part of the disc grade.</p>
-              <p>Use the menu for MCQ and timed practice.</p>
-              <p class="modal-version">v1 - 18/5/2026</p>
+              <p>Timed sets reuse three examples: practice, not clinical certification.</p>
             </section>
+            <p
+              class="info-version"
+              style="
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 8px 0 0;
+                color: #6e7c95;
+                font:
+                  700 10.5px/1.2 Inter,
+                  Arial,
+                  sans-serif;
+                text-align: right;
+                white-space: nowrap;
+              "
+            >
+              v1 · 30/9/2026
+            </p>
           </div>
         </div>
       </div>
@@ -307,11 +326,15 @@
             <span id="eyeLabelLeft" class="toggle-label canvas-eye-label">LE</span>
           </div>
           <canvas id="fundusCanvas"></canvas>
+          <div id="imageStatus" class="image-status" role="status" hidden>
+            <span id="imageStatusText"></span
+            ><button id="retryImage" type="button" hidden>Retry image</button>
+          </div>
         </div>
 
         <section class="explanation interpretation-panel" aria-live="polite">
           <div class="interpretation-summary interpretation-summary--normal">
-            <span class="interpretation-kicker">Referral</span>
+            <span class="interpretation-kicker">Teaching example</span>
             <strong class="interpretation-referral text-green">No urgent referral</strong>
           </div>
           <p class="interpretation-detail">
@@ -367,49 +390,21 @@
         <h2 id="testModalTitle">MCQ Test</h2>
         <div id="mcqTimer" class="mcq-timer" hidden></div>
         <div id="testContainer"></div>
+        <div id="testResult" class="result-text" role="status" aria-live="polite"></div>
         <div class="test-actions">
-          <button id="submitTestButton" class="button-pass" type="button">Submit Test</button>
+          <button id="submitTestButton" class="button-pass" type="button">Submit answers</button>
+          <button id="retryTestButton" class="button-secondary" type="button" hidden>
+            Try again
+          </button>
           <button id="saveResultButton" class="button-pass" type="button" hidden>
             Save Result
           </button>
         </div>
-        <div id="testResult" class="result-text" aria-live="polite"></div>
       </div>
     </div>
 
-    <script>
-      window.toggleInfoGuide = (forceOpen) => {
-        const infoIcon = document.getElementById('info-icon');
-        const infoModal = document.getElementById('infoModal');
-        const closeInfoModal = document.getElementById('closeInfoModal');
-
-        if (!infoIcon || !infoModal) {
-          return;
-        }
-
-        const isOpen =
-          typeof forceOpen === 'boolean' ? forceOpen : !infoModal.classList.contains('is-open');
-
-        infoModal.classList.toggle('is-open', isOpen);
-        infoModal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-        infoIcon.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        document.body.classList.toggle('modal-open', isOpen);
-
-        if (isOpen) {
-          closeInfoModal?.focus();
-        } else {
-          infoIcon.focus();
-        }
-      };
-
-      document.addEventListener('keydown', (event) => {
-        const infoModal = document.getElementById('infoModal');
-        if (event.key === 'Escape' && infoModal?.classList.contains('is-open')) {
-          window.toggleInfoGuide(false);
-        }
-      });
-    </script>
-    <script src="app.bundle.js"></script>
+    <script src="app.bundle.js?v=20260929-logic1-ui20260930-perf1"></script>
+    <script src="fleet-enhancements.js?v=20260723-v11"></script>
     <script src="../i18n-lo.js?v=20260901-2" defer></script>
   </body>
 </html>

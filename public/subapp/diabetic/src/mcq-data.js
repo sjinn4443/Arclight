@@ -19,7 +19,26 @@ export const MCQ_LEVEL_META = {
   },
 };
 
-export const MCQ_BANKS = {
+export const MCQ_SOURCE_REFERENCES = {
+  "nhs-des-grading-2025": {
+    title: "NHS Diabetic Eye Screening Programme grading definitions",
+    url: "https://www.gov.uk/government/publications/diabetic-eye-screening-retinal-image-grading-criteria/nhs-diabetic-eye-screening-programme-grading-definitions-for-referable-disease-start-date-october-01",
+    reviewed: "2026-07-26",
+  },
+  "diabetic-app-scope-v1": {
+    title: "Diabetic app v1 scope and recording workflow",
+    url: null,
+    reviewed: "2026-07-26",
+  },
+  "diabetic-app-triage-v1": {
+    title: "Diabetic app v1 LMIC-oriented triage rules",
+    url: null,
+    reviewed: "2026-07-26",
+    status: "Pending independent clinical sign-off",
+  },
+};
+
+const RAW_MCQ_BANKS = {
   primary: [
     {
       question: "What does an ungradable view mean?",
@@ -45,10 +64,11 @@ export const MCQ_BANKS = {
       topic: "safety-copy",
     },
     {
-      question: "Which finding is a DR sign?",
+      question:
+        "Which finding is the earliest visible sign of diabetic retinopathy?",
       options: [
         "Microaneurysms",
-        "NVD",
+        "New vessels at the disc",
         "Vitreous haemorrhage",
         "Preretinal haemorrhage",
       ],
@@ -95,8 +115,13 @@ export const MCQ_BANKS = {
       topic: "va",
     },
     {
-      question: "Which systemic check belongs in the Action panel?",
-      options: ["HbA1c", "Shoe size", "Height only", "Hair colour"],
+      question: "Which measure reflects longer-term glycaemic control?",
+      options: [
+        "HbA1c",
+        "A single random glucose",
+        "Blood pressure",
+        "Serum cholesterol",
+      ],
       answer: 0,
       topic: "systemic",
     },
@@ -134,15 +159,15 @@ export const MCQ_BANKS = {
       topic: "mode",
     },
     {
-      question: "What should no referable signs do when a lesion is selected?",
+      question: "What does no referable signs mean?",
       options: [
-        "Stay selected",
-        "Clear because findings conflict",
-        "Become urgent",
-        "Open MCQ",
+        "No referable signs seen in the view obtained",
+        "No diabetes",
+        "Full normal retina",
+        "Discharge from screening",
       ],
-      answer: 1,
-      topic: "state",
+      answer: 0,
+      topic: "safety-copy",
     },
     {
       question: "What is the app mainly for?",
@@ -179,22 +204,23 @@ export const MCQ_BANKS = {
       topic: "safety-copy",
     },
     {
-      question: "Where should practice live in this app?",
+      question: "Which sign suggests proliferative DR?",
       options: [
-        "Side drawer",
-        "Main clinical tab rail",
-        "Referral note only",
-        "Dilation dropdown",
+        "New vessels",
+        "Microaneurysms",
+        "Cotton-wool spots",
+        "Hard exudates",
       ],
       answer: 0,
-      topic: "practice",
+      topic: "pdr",
     },
   ],
   intermediate: [
     {
-      question: "An eye has MA and dot/blot haemorrhages only. Best action?",
+      question:
+        "A few microaneurysms and dot/blot haemorrhages are seen, without macular or proliferative signs. Which app action applies?",
       options: [
-        "Routine referral when possible",
+        "Routine (weeks)",
         "Urgent today",
         "No screening required",
         "Choose laser",
@@ -206,7 +232,7 @@ export const MCQ_BANKS = {
       question:
         "Hard exudates near macula with 6/36 VA should usually trigger:",
       options: [
-        "Refer soon (2 weeks)",
+        "Soon (days)",
         "Routine screening only",
         "No action",
         "Confirmed DMO treatment",
@@ -285,9 +311,13 @@ export const MCQ_BANKS = {
       topic: "pdr",
     },
     {
-      question:
-        "For Holo (BIO), four-quadrant sweep should be removed when switching to:",
-      options: ["Arclight (DO)", "Practice drawer", "Referral note", "MCQ"],
+      question: "A brief Arclight (DO) glimpse should usually be recorded as:",
+      options: [
+        "Limited unless disc and macula are clearly seen",
+        "Full four-quadrant view",
+        "Confirmed normal retina",
+        "Confirmed no maculopathy",
+      ],
       answer: 0,
       topic: "mode",
     },
@@ -303,28 +333,26 @@ export const MCQ_BANKS = {
       topic: "systemic",
     },
     {
-      question:
-        "If no referable signs is selected then CWS is ticked, the app should:",
+      question: "If a cotton-wool spot is seen, what is the safest next step?",
       options: [
-        "Clear no referable signs",
-        "Clear CWS",
-        "Ignore CWS",
-        "Submit MCQ",
+        "Record it and look carefully for other DR features",
+        "Call no referable signs",
+        "Ignore it",
+        "Record a normal retina",
       ],
       answer: 0,
-      topic: "state",
+      topic: "npdr",
     },
     {
-      question:
-        "If no referable signs is selected after lesions, the app should:",
+      question: "If lesions are visible, no referable signs is unsafe because:",
       options: [
-        "Clear lesion findings for that eye",
-        "Keep all lesions",
-        "Mark urgent",
-        "Switch mode",
+        "A finding has been seen",
+        "VA is always normal",
+        "Dilation is impossible",
+        "Macula is always clear",
       ],
       answer: 0,
-      topic: "state",
+      topic: "safety-copy",
     },
     {
       question:
@@ -350,43 +378,38 @@ export const MCQ_BANKS = {
       topic: "referral-note",
     },
     {
-      question: "Which app pattern should VA reuse?",
+      question: "Reduced VA with hard exudates near the macula suggests:",
       options: [
-        "Cataract compact select",
-        "Large text area",
-        "Slider",
-        "Freehand drawing",
+        "Macula risk needing soon referral",
+        "Confirmed PDR",
+        "No retinal concern",
+        "Systemic review only",
       ],
       answer: 0,
-      topic: "ui",
+      topic: "macula",
     },
     {
-      question: "What is the main clinical tab rail?",
-      options: [
-        "Arclight (DO) and Holo (BIO)",
-        "Primary and Advanced",
-        "Right and Left only",
-        "BP and HbA1c",
-      ],
+      question: "Which sign belongs in proliferative signs?",
+      options: ["NVE", "CWS", "Microaneurysm", "Hard exudate"],
       answer: 0,
-      topic: "ui",
+      topic: "pdr",
     },
     {
-      question: "Where should longer teaching text live?",
+      question: "Which wording is safest for suspected maculopathy?",
       options: [
-        "Popup or drawer",
-        "Crowded main panel",
-        "Action title",
-        "VA dropdown",
+        "Possible maculopathy or macula risk",
+        "Confirmed DMO",
+        "No DR",
+        "Laser required",
       ],
       answer: 0,
-      topic: "ui",
+      topic: "macula",
     },
     {
       question:
-        "What should routine DR signs without macula or proliferative signs use?",
+        "In this app, what action applies to DR signs without macular or proliferative features?",
       options: [
-        "Routine referral when possible",
+        "Routine (weeks)",
         "Urgent today",
         "No follow-up ever",
         "Anti-VEGF decision",
@@ -396,12 +419,7 @@ export const MCQ_BANKS = {
     },
     {
       question: "What should suspected foveal involvement trigger?",
-      options: [
-        "Refer soon (2 weeks)",
-        "Routine only",
-        "Ignore",
-        "Confirmed DMO",
-      ],
+      options: ["Soon (days)", "Routine only", "Ignore", "Confirmed DMO"],
       answer: 0,
       topic: "macula",
     },
@@ -417,23 +435,20 @@ export const MCQ_BANKS = {
       topic: "va",
     },
     {
-      question: "Which mode should visibly prompt dilation before recording?",
-      options: [
-        "Holo (BIO)",
-        "MCQ only",
-        "Practice only",
-        "Referral note only",
-      ],
+      question:
+        "Which viewing method usually needs dilation for wider assessment?",
+      options: ["Holo (BIO)", "Referral note", "VA line", "Systemic checks"],
       answer: 0,
       topic: "dilation",
     },
     {
-      question: "What should be stored if not dilated?",
+      question:
+        "The teaching viewer is dilated but the patient was not. What should the examination record say?",
       options: [
-        "Reason if not dilated",
-        "Laser type",
-        "OCT thickness",
-        "Lens power",
+        "Dilated: No",
+        "Dilated: Yes",
+        "Leave both eye findings blank",
+        "Change the recorded VA",
       ],
       answer: 0,
       topic: "dilation",
@@ -461,15 +476,15 @@ export const MCQ_BANKS = {
       topic: "scope",
     },
     {
-      question: "What should a 360 x 740 layout avoid?",
+      question: "Which DR sign makes a routine case more concerning?",
       options: [
-        "Two full duplicated eye panels",
-        "Compact chips",
-        "A small popup",
-        "Short labels",
+        "Venous beading",
+        "Normal disc colour",
+        "Clear lens",
+        "Equal pupils",
       ],
       answer: 0,
-      topic: "ui",
+      topic: "npdr",
     },
   ],
   advanced: [
@@ -498,31 +513,34 @@ export const MCQ_BANKS = {
     },
     {
       question:
-        "Both eyes clear adequate with no referable signs selected. Overall action?",
+        "Both views are adequate with no signs selected but one VA is blank. What is appropriate?",
       options: [
-        "Routine screening still required",
-        "Ungradable",
-        "Urgent today",
-        "Refer soon",
+        "Complete the missing VA before routine screening output",
+        "Assume the missing VA is 6/6",
+        "Diagnose macular oedema",
+        "Treat the clear view as a VA test",
       ],
       answer: 0,
       topic: "routine",
+      explanation:
+        "A clear retinal view does not measure vision. Complete the missing VA before issuing a reassuring routine result.",
     },
     {
-      question: "6/12 VA without DR findings should:",
+      question:
+        "A patient reports sudden visual loss but the limited view shows no DR. How should this tool be used?",
       options: [
-        "Be recorded without escalation by itself",
-        "Trigger urgent today",
-        "Confirm DMO",
-        "Clear all findings",
+        "Assess the acute complaint separately; this screening tool cannot clear it",
+        "Use the no-signs result to exclude urgent disease",
+        "Assume cataract without further assessment",
+        "Wait for the next screening visit",
       ],
       answer: 0,
-      topic: "va",
+      topic: "scope",
     },
     {
       question: "6/36 VA plus dot/blot haemorrhages should support:",
       options: [
-        "Refer soon (2 weeks)",
+        "Soon (days)",
         "No action",
         "Confirmed proliferative DR",
         "Treatment choice",
@@ -531,12 +549,13 @@ export const MCQ_BANKS = {
       topic: "va",
     },
     {
-      question: "Fix/follow means:",
+      question:
+        "A patient fixes and follows but cannot complete a chart test. Which interpretation is justified?",
       options: [
-        "Non-standard VA, no escalation by itself",
-        "Always urgent",
-        "Confirmed maculopathy",
-        "Ignore all findings",
+        "Record the observation without assigning a Snellen equivalent",
+        "Record 6/6",
+        "Exclude macular disease",
+        "Omit the retinal examination",
       ],
       answer: 0,
       topic: "va",
@@ -544,7 +563,7 @@ export const MCQ_BANKS = {
     {
       question: "No fix with DR signs should be treated as:",
       options: [
-        "Reduced VA supporting refer soon",
+        "Reduced VA supporting Soon (days)",
         "Normal VA",
         "Confirmed proliferative DR",
         "No test needed",
@@ -555,7 +574,7 @@ export const MCQ_BANKS = {
     {
       question: "No test VA with DR signs should:",
       options: [
-        "Prevent reassuring wording and support refer soon",
+        "Prevent reassuring wording and support Soon (days)",
         "Confirm normal vision",
         "Delete DR signs",
         "Choose laser",
@@ -594,47 +613,48 @@ export const MCQ_BANKS = {
     },
     {
       question:
-        "What should happen to no referable signs when NVD is selected?",
+        "Fine abnormal vessels cross the disc surface despite good VA. What drives the next step?",
       options: [
-        "It clears for that eye",
-        "It stays selected",
-        "It becomes the action",
-        "It hides VA",
+        "Suspected NVD warrants urgent assessment despite good VA",
+        "Good VA excludes proliferative disease",
+        "Wait until central vision falls",
+        "Record no signs if the macula looks clear",
       ],
       answer: 0,
-      topic: "state",
+      topic: "pdr",
     },
     {
       question:
-        "What should happen to lesions when no referable signs is selected?",
+        "If one eye has no signs and the fellow eye has NVE, overall action is:",
       options: [
-        "They clear for that eye",
-        "They remain active",
-        "They become systemic checks",
-        "They move to fellow eye",
+        "Urgent today",
+        "Routine screening only",
+        "No referral",
+        "Medical review only",
       ],
       answer: 0,
-      topic: "state",
+      topic: "priority",
     },
     {
       question:
-        "A user changes Holo (BIO) to Arclight (DO) after four-quadrant sweep. The app should:",
+        "Arclight (DO) cannot see the far periphery well. The key limitation is:",
       options: [
-        "Reset or require new valid area for that eye",
-        "Keep four quadrants",
-        "Delete all findings",
-        "Open practice",
+        "Peripheral disease may be missed",
+        "Macula is always invisible",
+        "VA cannot be recorded",
+        "Dilation is irrelevant",
       ],
       answer: 0,
       topic: "mode",
     },
     {
-      question: "Which data belongs in the referral note?",
+      question:
+        "NVD is visible through a hazy view in the same eye. What should the referral include?",
       options: [
-        "Whether dilation was done",
-        "Anti-VEGF dose",
-        "Laser settings",
-        "OCT map",
+        "Urgent findings and the limited view",
+        "Only the NVD because urgency removes limitations",
+        "Only the haze until the view improves",
+        "A normal peripheral examination",
       ],
       answer: 0,
       topic: "referral-note",
@@ -663,63 +683,65 @@ export const MCQ_BANKS = {
       topic: "safety-copy",
     },
     {
-      question: "Which should remain in the drawer?",
-      options: [
-        "Image practice cases",
-        "Clinical equipment mode",
-        "Action panel",
-        "Right/Left eye switcher",
-      ],
+      question:
+        "Which finding is enough for same-day referral even if VA is not recorded?",
+      options: ["NVD", "Microaneurysm only", "Mild hard exudate", "No signs"],
       answer: 0,
-      topic: "practice",
+      topic: "urgent",
     },
     {
-      question: "What does red-flags-win mean?",
+      question:
+        "Suspected vitreous blood obscures the fundus and the patient cannot perform VA testing. Which response is safest?",
       options: [
-        "Proliferative signs drive urgent today",
-        "Red title changes urgency",
-        "BP tick-box means urgent",
-        "Practice score changes referral",
+        "Retain urgent referral and record both assessment limitations",
+        "Wait for measurable VA before referring",
+        "Treat the obscured fundus as no DR",
+        "Use the fellow-eye VA for this eye",
       ],
       answer: 0,
       topic: "urgent",
     },
     {
-      question: "What should an urgent output suppress?",
+      question: "What should an urgent proliferative output emphasise?",
       options: [
-        "Long low-yield teaching text",
-        "Reason text",
-        "Eye label",
-        "Referral note",
+        "Same-day eye referral",
+        "Routine annual screening only",
+        "Spectacle prescription",
+        "No follow-up",
       ],
       answer: 0,
-      topic: "ui",
+      topic: "urgent",
     },
     {
-      question: "Which first-screen layout rule is safest?",
+      question: "When R/L findings conflict, triage should use:",
       options: [
-        "R/L VA and R/L view in the View panel",
-        "Two large eye panels stacked",
-        "Practice as main tab",
-        "Long manual text before controls",
+        "The highest-risk eye finding",
+        "The better eye only",
+        "The first completed field",
+        "VA alone",
       ],
       answer: 0,
-      topic: "ui",
+      topic: "priority",
     },
     {
-      question: "Which finding group contains venous beading?",
-      options: ["DR signs", "Proliferative signs", "Macula-only", "Systemic"],
+      question:
+        "Venous beading is recorded without its extent. What can this app conclude?",
+      options: [
+        "DR is present but full severity cannot be graded",
+        "Severe NPDR is excluded",
+        "PDR is confirmed",
+        "Macular oedema is confirmed",
+      ],
       answer: 0,
       topic: "npdr",
     },
     {
-      question:
-        "Which category should CWS plus venous beading enter if no macula or proliferative signs?",
+      question: "Venous beading is seen. What is the safest interpretation?",
       options: [
-        "Routine referral when possible or soon if concerning",
-        "Urgent today always",
-        "Routine screening only",
-        "Confirmed DMO",
+        "Record it and assess extent plus other ischaemic signs",
+        "Call it proliferative disease by itself",
+        "Treat it as a normal vessel",
+        "Confirm diabetic macular oedema",
       ],
       answer: 0,
       topic: "npdr",
@@ -747,15 +769,105 @@ export const MCQ_BANKS = {
       topic: "mode",
     },
     {
-      question: "What should pure triage tests include?",
+      question:
+        "Ungradable view with suspected vitreous blood should be treated as:",
       options: [
-        "Mixed-eye priority edge cases",
-        "Only colour checks",
-        "Only drawer clicks",
-        "Only image filenames",
+        "Urgent today",
+        "Routine screening only",
+        "No DR",
+        "Confirmed DMO",
       ],
       answer: 0,
-      topic: "testing",
+      topic: "urgent",
     },
   ],
 };
+
+const TOPIC_METADATA = {
+  "view-quality": {
+    explanation:
+      "An inadequate view cannot exclude retinal disease. Record the limitation rather than describing the retina as normal.",
+    source: "diabetic-app-scope-v1",
+  },
+  "safety-copy": {
+    explanation:
+      "Use wording that describes only what was actually seen and does not turn a limited view into reassurance.",
+    source: "diabetic-app-scope-v1",
+  },
+  npdr: {
+    explanation:
+      "Microaneurysms and retinal haemorrhages are non-proliferative signs. Venous beading or IRMA can indicate more severe pre-proliferative disease and require fuller assessment.",
+    source: "nhs-des-grading-2025",
+  },
+  pdr: {
+    explanation:
+      "New vessels, pre-retinal haemorrhage and vitreous haemorrhage are proliferative or potentially sight-threatening findings.",
+    source: "nhs-des-grading-2025",
+  },
+  dilation: {
+    explanation:
+      "A wider retinal examination commonly needs dilation, but local contraindications and the reason for non-dilation must be recorded.",
+    source: "diabetic-app-scope-v1",
+  },
+  urgent: {
+    explanation:
+      "The app uses its urgent action for active proliferative signs or suspected vitreous blood. The local referral pathway still requires clinical approval.",
+    source: "diabetic-app-triage-v1",
+  },
+  va: {
+    explanation:
+      "Reduced or unmeasured visual acuity adds concern in the presence of retinal findings but does not diagnose macular oedema by itself.",
+    source: "diabetic-app-triage-v1",
+  },
+  systemic: {
+    explanation:
+      "Blood pressure, glycaemic control and lipids support wider diabetes care but do not replace the retinal finding that determines eye urgency.",
+    source: "diabetic-app-triage-v1",
+  },
+  "both-eyes": {
+    explanation:
+      "Record each eye separately because disease severity, image quality and referral drivers can differ between eyes.",
+    source: "diabetic-app-scope-v1",
+  },
+  mode: {
+    explanation:
+      "The viewing method describes the examination obtained. It must not imply that unseen peripheral retina was assessed.",
+    source: "diabetic-app-scope-v1",
+  },
+  scope: {
+    explanation:
+      "This app supports recording, triage prompts and teaching. It does not make a diagnosis or select treatment.",
+    source: "diabetic-app-scope-v1",
+  },
+  macula: {
+    explanation:
+      "Hard exudates near the macula with reduced vision can support concern for maculopathy, but confirmation needs an appropriate macular assessment.",
+    source: "nhs-des-grading-2025",
+  },
+  priority: {
+    explanation:
+      "The highest-risk recorded eye finding drives the overall action. A poor view in the fellow eye remains an important limitation.",
+    source: "diabetic-app-triage-v1",
+  },
+  "referral-note": {
+    explanation:
+      "A useful referral note records each eye, visual acuity, view quality, dilation status, findings and the action driver.",
+    source: "diabetic-app-scope-v1",
+  },
+  routine: {
+    explanation:
+      "No referable signs in an adequate recorded view does not end future diabetic eye screening.",
+    source: "diabetic-app-triage-v1",
+  },
+};
+
+export const MCQ_BANKS = Object.fromEntries(
+  Object.entries(RAW_MCQ_BANKS).map(([level, questions]) => [
+    level,
+    questions.map((question, index) => ({
+      id: `diabetic-${level}-${String(index + 1).padStart(2, "0")}`,
+      ...TOPIC_METADATA[question.topic],
+      ...question,
+    })),
+  ]),
+);

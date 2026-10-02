@@ -1,8 +1,56 @@
 # Sauron
 
+## Receiving host integration — 2 October 2026
+
+Host routes and locale hooks are retained. Service-worker reads remain app-scoped and shared locale assets are precached. Development material is excluded from deployment and offline manifests.
+
+Current receiving-host evidence is in [the integration report](../../../docs/miniapps/20260930/INTEGRATION_REPORT.md). Earlier receipts below remain upstream historical evidence.
+
+## Performance review — 30 September 2026
+
+Production bundle minified from its canonical source. Shipped JavaScript: 211,173 → 121,120 bytes. Mobile Lighthouse performance: 85 → 94/100 in one paired lab run, not a physical-device speed guarantee.
+
+Shared verification: 24/24 regression jobs, all 15 HTTP and direct-file information/drawer reviews, all 14 Primary quiz workflows and 45 main-page responsive views passed. Selected completed states were also checked. No clinical rules or approved layout were deliberately changed. App-specific asset queries and caches were bumped only where shipped bundles changed. Direct-file checks do not test service workers. Full dead-code elimination, every workflow, offline cache migration and physical-device acceptance are not claimed. The retained Glaucoma tab's real toolbar was verified at 360 x 740 after switching away and back; this does not establish sibling-tab sizes or physical-device acceptance.
+
+[Evidence and remaining priorities](../FLEET_PERFORMANCE_REVIEW_20260930.md). This entry supersedes older performance figures only; earlier clinical and feature history remains below.
+
+## Current fleet UI refinement receipt — 30 September 2026
+
+Refraction trigger enlarged; established teaching arrangement retained.
+
+App-local versioned `fleet-ui-refinements.css` aligns quiz typography, answer rows, focus outlines and rounding where compatible. Information footers show `v1 · 30/9/2026`. Clinical engines, simulator geometry, authored questions, scoring and progression are unchanged. Earlier dated entries below are historical.
+
+Fleet evidence: 24/24 regression jobs, 45 main-page views, 15/15 HTTP information/drawer reviews, 15/15 direct-file information/drawer reviews and 18/18 selected expanded/completed-state checks. All 14 Primary quiz workflows pass individually; Cataract passed its isolated recheck after one transient connection warning. Automated viewports are temporary. Real Codex retained-toolbar verification remains blocked by the unavailable visible tab; physical-device acceptance and independent clinical sign-off remain pending. See the [full change and verification receipt](../FLEET_UI_REFINEMENTS_2026-09-30.md).
+
+## Fleet repair receipt — 30 September 2026
+
+Removed direct-file font preload CORS errors while retaining and verifying both local font families. Current information footer: `v1 · 30/9/2026`. Runtime HTML changes use an updated app-scoped cache; internal engine/package versions are retained.
+
+Information-panel and drawer checks pass over HTTP and direct-file routes at temporary `360 x 740`. Available popup checks and the Primary quiz state checks pass. Scoped automated test commands pass. See [fleet repair evidence](../FLEET_FIXES_2026-09-30.md) for exact coverage and exclusions. Service workers do not run on `file://`; offline migration, physical-device acceptance and independent clinical sign-off are not established by this repair. The retained Codex flowchart tab was not changed.
+
+Older dated sections below are historical evidence. This receipt supersedes their release-date and verification-status claims, not their recorded clinical decisions.
+
+## Documentation refresh — 29 September 2026
+
+Current visible information footer: `v1 · 29/9/2026`, bottom right in the existing information popup. This entry records a documentation and popup-date synchronisation, not a new clinical audit. App behaviour and the previously recorded verification limits are unchanged. Older dated entries below are historical records, not the current popup date. Independent clinical sign-off and physical-device acceptance are not implied by this date.
+
+## Logic corrections — 29 September 2026
+
+High-minus summary now agrees with slow against movement. Cylinder cases explicitly describe a stylised opposite-meridian example; the intermediate angle is a transition, not a claim of clinical neutrality. Purpose copy describes case exploration rather than nonexistent trial-lens adjustment. Test rounds reset adjustable modifiers to baseline, retain Baby case filtering and restore the prior modifiers, pupils and dilation history on exit. Shared active-eye illumination now drives a consensual pupil response; dilated, aniridic and affected ACG apertures remain non-reactive in this teaching model. The deliberately exaggerated ACG oval is unchanged.
+
+Bundle rebuilt from source with locked esbuild 0.25.5. Contracts, new pupil/copy regression checks, bundle parity and 28-file syntax checks pass. Assets/cache use 20260929-logic2. Full rendered interaction review, direct-file acceptance, physical-device checks and independent clinical sign-off remain pending.
+
+Eye-engine follow-up, 23 July 2026: radial pupil response is now protected by a pure contract and paired advanced controls announce RE and LE explicitly. The production bundle, tests and 28-file syntax check pass. Simulator maths, response timing, case content and eye geometry are unchanged.
+
+Fleet edge follow-up, 23 July 2026: the control deck and stage now use exact `10px` outer margins and `340px` width at `360 x 740`. Simulator maths and internal geometry are unchanged.
+
+Case curriculum and safety follow-up, 25 July 2026: the visual catalogue now uses `5` Primary, `10` Intermediate and `13` Advanced cases. Four abnormal-eye cases carry a shared red safety-note triangle. Reflex rendering, MCQs and timed-test selection are unchanged.
+
+Logic-integrity follow-up, 25 July 2026: timed tests retain the learner's pre-round streak angle so an axis-dependent case cannot initialise on its hidden answer. Baby mode now limits timed rounds to Baby-compatible test cases. The safety dialog temporarily suspends the underlying case dialog. The exaggerated ACG oval remains unchanged and is explicitly described as a stylised teaching cue.
+
 <!-- APP-DOC-STATUS:START -->
 
-## Current Status (18/5/2026)
+## Current Status (25/7/2026)
 
 - Static packaging: open `index.html` directly; a local HTTP server is optional for testing.
 - Mobile target: `360 x 740`, with the main page kept free of required vertical scrolling.
@@ -15,7 +63,11 @@
 
 Interactive retinoscopy training simulator focused on direct streak handling, monocular eye targeting, case recognition and quick self-testing.
 
-_Documentation last updated: 18/5/2026_
+_Documentation last updated: 25/7/2026_
+
+## v1.1 Fleet Upgrade
+
+Sauron now includes a deliberate two-step simulator reset, explicit active-eye accessibility state, a local manifest and scoped offline worker, executable contract checks and a reproducible `360 x 740` browser review. The simulator maths, case content, MCQs, timed testing, assets, IDs and orange-red identity remain unchanged. The 25 July follow-up changes four teaching-tier assignments, their display order and separate safety-note presentation. See `SAURON_V1.1_EVIDENCE_RECEIPT.md` for exact evidence. Independent clinical sign-off and physical-device testing remain pending.
 
 ## Current Direction
 
@@ -68,14 +120,18 @@ Sauron keeps the orange-red app bar, black title text and compact clinical simul
   - tier marker colour
   - answer masking during timed testing
 - Fundal-style case picker:
-  - Primary cases: 6
-  - Intermediate cases: 8
-  - Advanced cases: 14
+  - Primary cases: 5
+  - Intermediate cases: 10
+  - Advanced cases: 13
   - case order starts with `1. Neutral (0)`
   - large full-width snapshot cards
   - centred `409 x 147` WebP thumbnails
   - no visible streak-handle cue artefacts in thumbnails
   - regenerated after corneal-reflex changes
+- Shared case safety cues:
+  - red triangular `!` markers identify a separate safety note for ACG, leucocoria, vitreous haemorrhage and partial retinal detachment
+  - activating a card marker opens a compact accessible note without selecting the case
+  - selected safety cases replace the tier dot with one small triangle while their accessible name retains the tier
 - Structural pupil and iris cases including:
   - `ACG`
   - `Aniridia`
@@ -100,6 +156,8 @@ Sauron keeps the orange-red app bar, black title text and compact clinical simul
   - result area stays hidden until feedback is needed
 - `test me` mode:
   - picks a random condition from the case pool
+  - limits the pool to Baby-compatible test cases while Baby mode is active
+  - retains the learner's pre-round streak angle rather than aligning it with a hidden case axis
   - hides the case answer during the countdown
   - uses a staged timer sequence of `20`, `15`, `10`, `8` then `6` seconds
   - reveals axis detail for astigmatic and axis-dependent cases
@@ -108,6 +166,8 @@ Sauron keeps the orange-red app bar, black title text and compact clinical simul
 ## Usage
 
 Open `index.html` directly for normal use. A local HTTP server is still useful for cache-free browser testing, but the app is packaged to run from the file itself.
+
+For Netlify, drag this existing `Sauron` folder into the upload area. Keep `index.html`, the bundled scripts, styles and `assets` together at this level. The included `netlify.toml` explicitly publishes this folder (`.`) and uses `npm run build` when Netlify runs a build. The app does not need a separate `dist` folder or ZIP.
 
 Optional local-server test command:
 
@@ -178,9 +238,9 @@ Typical flow:
 ## Local Checks
 
 ```powershell
-node --check script.js
-Get-ChildItem src\*.js | ForEach-Object { node --check $_.FullName }
-Get-ChildItem -Path . -Recurse -File | Where-Object { $_.Extension -in '.gif', '.ico' }
+npm run build
+npm run lint
+npm test
 ```
 
 Browser checks should include:
@@ -203,3 +263,35 @@ The broad retinoscopy split has already started. The next work should stay targe
 - keep thumbnail generation rules strict and centred
 - keep fixed pathology overlays separate from moving reflex logic
 - avoid broad rewrites unless a new condition makes the current module ownership unclear
+
+## Information popup consistency — 23 July 2026
+
+The modal Quick Guide now has an effective `44 x 44px` close target and uses the shared `version · date` presentation. Retinoscopy optics, cases and stage controls are unchanged.
+
+## Information-card typography and fit — 23 July 2026
+
+The guide now uses the fleet role map of Quicksand `14px/700` title, Inter `12.5px/400` body, Inter `11px/800` section labels and Inter `10.5px/700` version text. It measured `355.2px` at `360 x 740` and required no internal scrolling. Advanced instructions, controls and colour anchors are upright while clinical movement descriptions retain meaningful italics. Its simple visible `v1` label and current `23/7/2026` date now occupy the shared bottom-right footer position.
+
+## Sidebar consistency — 23 July 2026
+
+The orange-red identity and existing menu actions are unchanged. The drawer now uses the fleet `14px` title, `11px` section-label and `12.5px` supporting-copy roles where present. Opening moves focus inside and Escape closes the drawer and returns focus to its trigger at `360 x 740`.
+
+## MCQ consistency — 23 July 2026
+
+Level labels match the fleet and Cup unlocking requires explicit Advanced pass evidence. Existing random question and option selection and retinoscopy content are unchanged. The Advanced teaching pass mark is now 6/8 rather than 4/8 so the hardest tier requires the same clear majority as the other advanced fleet tiers. This does not alter simulator or clinical decision logic.
+
+## Maintenance refactor — 26 July 2026
+
+The service-worker contract now requires the complete canonical case-thumbnail set rather than a sample. Confirmed unused and superseded selectors were removed and exact bundle parity prevents drift between authored modules and `app.bundle.js`. The bundle was rebuilt. Retinoscopy optics, the established oval eye geometry, simulator cases and clinical teaching content are unchanged. Independent clinical sign-off and physical-device acceptance remain open.
+
+## MCQ quality and review workflow — 26 July 2026
+
+All 26 authored questions now have stable `sauron-{tier}-{NN}` IDs, a concise answer rationale, a named source and an explicit review status. The small-pupil item now makes optimisation and authorisation explicit rather than presenting dilation as an unconditional first step. Three pathology-image items explicitly refer to this simulator. Attempt sizes, pass marks, simulator optics and Cup unlocking are unchanged. Unanswered attempts focus the first missing answer. Completed attempts show a result, correct-answer explanations and source status, then offer `Try again` or `New attempt`.
+
+## Information purpose pass — 27 July 2026
+
+The existing `i` panel now tells the user to sweep and rotate the streak across the pupil, then adjust lenses until the reflex is neutral or use a practice case. It states that the simulator does not measure a patient's refraction. No optics, case, pupil-shape or teaching logic changed. The open panel passed the shared non-scrolling `360 x 740` review.
+
+## Fleet UI alignment — 28 September 2026
+
+The information card now uses the shared `16px` radius and a measured `44 x 44px` close target. Clean Chromium checks at `360 x 740` found no horizontal overflow, no information-card scrolling, correct Escape focus return and no console errors. Optics, case and pupil-shape logic are unchanged. Physical-device acceptance remains pending.

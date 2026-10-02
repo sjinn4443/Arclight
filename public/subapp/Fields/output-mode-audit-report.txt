@@ -1,0 +1,67 @@
+Fields Output Mode Audit
+Generated: 2026-09-28T21:57:06.374Z
+
+Scope
+-----
+Eye states: 59049 (3^10)
+RAPD states: 3
+Modifier scenarios: 96 (all onset/flag combinations)
+Cached render contexts: 395136
+Total simple-vs-advanced comparisons: 17006112
+
+Mode Difference Summary
+-----------------------
+Different output: 17006112 (100.00%)
+Identical output: 0 (0.00%)
+Condition/headline differs: 17006112 (100.00%)
+Lesion/explanation differs: 16743456 (98.46%)
+Advanced at least 5 words longer: 2801280 (16.47%)
+Advanced shorter than simple: 4846032 (28.50%)
+Simple at least 5 words longer: 356064 (2.09%)
+Simple contains technical term absent from advanced: 0 (0.00%)
+
+Family Breakdown
+----------------
+Mixed/Unclassified Field Defect: 4209408 comparisons, different 100.00%, avg advanced word delta 2.00, range 2..2
+Monocular Blind Eye: 3889152 comparisons, different 100.00%, avg advanced word delta 2.24, range -2..13
+Altitudinal: 2750976 comparisons, different 100.00%, avg advanced word delta 3.28, range -1..12
+Tunnel Vision: 1649664 comparisons, different 100.00%, avg advanced word delta 0.65, range -5..6
+Cecocentral-like Defect: 1290240 comparisons, different 100.00%, avg advanced word delta -0.69, range -7..12
+Glaucoma-like Changes: 1151712 comparisons, different 100.00%, avg advanced word delta 0.52, range -1..3
+Monocular Nasal Hemianopia: 960768 comparisons, different 100.00%, avg advanced word delta -1.00, range -7..9
+Monocular Temporal Hemianopia: 357120 comparisons, different 100.00%, avg advanced word delta -0.88, range -7..9
+Binocular Blindness: 294912 comparisons, different 100.00%, avg advanced word delta -1.00, range -7..2
+Quadrantanopia: 294912 comparisons, different 100.00%, avg advanced word delta 1.99, range -1..4
+Homonymous Hemianopia: 82944 comparisons, different 100.00%, avg advanced word delta 2.42, range -2..6
+Monocular Large Defect: 50688 comparisons, different 100.00%, avg advanced word delta 4.71, range 1..14
+Monocular Partial Defect: 11520 comparisons, different 100.00%, avg advanced word delta 4.89, range 1..14
+Bitemporal Hemianopia: 4608 comparisons, different 100.00%, avg advanced word delta 6.67, range 4..8
+Binasal Hemianopia: 2592 comparisons, different 100.00%, avg advanced word delta 5.67, range -1..9
+Junctional Scotoma: 2304 comparisons, different 100.00%, avg advanced word delta 4.00, range 4..4
+Bilateral Central Scotoma: 1152 comparisons, different 100.00%, avg advanced word delta 2.33, range -3..5
+Monocular Central Scotoma: 1152 comparisons, different 100.00%, avg advanced word delta 1.42, range -3..15
+Full Fields of Vision: 288 comparisons, different 100.00%, avg advanced word delta 2.00, range 2..2
+
+Sample Identical Outputs
+------------------------
+None.
+
+Sample Cases Where Advanced Is Shorter
+--------------------------------------
+1. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Flashes/curtain: urgent retina referral.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Flashes/curtain: urgent retina review."}
+2. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"neuroFlags+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina referral.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina review."}
+3. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"knownOldDefect+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Flashes/curtain: urgent retina referral. Old known defect: compare old records.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Flashes/curtain: urgent retina review. Old known defect: compare old records."}
+4. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"neuroFlags+knownOldDefect+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina referral.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina review."}
+5. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"nightVisionPoor+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Flashes/curtain: urgent retina referral. Night vision poor: retinal degeneration possible.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Flashes/curtain: urgent retina review. Night vision poor: retinal degeneration possible."}
+6. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"neuroFlags+nightVisionPoor+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina referral.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina review."}
+7. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"knownOldDefect+nightVisionPoor+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Flashes/curtain: urgent retina referral. Night vision poor: retinal degeneration possible.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Flashes/curtain: urgent retina review. Night vision poor: retinal degeneration possible."}
+8. {"family":"Monocular Central Scotoma","rapd":"none","scenario":"neuroFlags+knownOldDefect+nightVisionPoor+flashesCurtain","simple":"Possible Left eye retinal detachment Pattern: Possible Left Central blind spot in one eye Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina referral.","advanced":"Possible Left eye retinal detachment Pattern: Possible Left Monocular Central Scotoma Retinal source. Neuro red flags: urgent neuro review. Flashes/curtain: urgent retina review."}
+
+Sample Simple-Technical Cases
+-----------------------------
+None.
+
+Interpretation
+--------------
+Simple and advanced outputs differ for every audited combination.
+The modes are not fully separated by length: simple is occasionally longer, although it is still plainer.

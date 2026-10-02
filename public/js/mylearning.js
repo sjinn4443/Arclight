@@ -438,6 +438,7 @@ function go(target) {
     "fieldsInteractivePage",
     "refractInteractivePage",
     "sauronInteractivePage",
+    "discsInteractivePage",
     "swollenDiscsInteractivePage",
     "squintPalsyPage",
     "squintPalsySimulatorPage",

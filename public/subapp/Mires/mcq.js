@@ -27,6 +27,8 @@ function closeAllModals() {
 }
 
 export function initMcqUi({ questionBank, tiers }) {
+  let lastOverlayTrigger = null;
+  let resetTimerId = 0;
   if (
     !Array.isArray(questionBank) ||
     questionBank.length === 0 ||
@@ -51,6 +53,7 @@ export function initMcqUi({ questionBank, tiers }) {
   const mcqQuestionProgress = document.getElementById("mcqQuestionProgress");
   const testContainer = document.getElementById("testContainer");
   const submitTestButton = document.getElementById("submitTestButton");
+  const retryTestButton = document.getElementById("retryTestButton");
   const saveResultButton = document.getElementById("saveResultButton");
   const testResult = document.getElementById("testResult");
 
@@ -73,6 +76,7 @@ export function initMcqUi({ questionBank, tiers }) {
     !mcqQuestionProgress ||
     !testContainer ||
     !submitTestButton ||
+    !retryTestButton ||
     !saveResultButton ||
     !testResult ||
     levelButtons.length === 0
@@ -94,6 +98,13 @@ export function initMcqUi({ questionBank, tiers }) {
   }
 
   function setModalOpen(modal, isOpen) {
+    if (isOpen && !modal.classList.contains("is-open")) {
+      const activeElement = document.activeElement;
+      lastOverlayTrigger =
+        activeElement instanceof Element && sideMenu.contains(activeElement)
+          ? burgerIcon
+          : activeElement;
+    }
     if (isOpen) {
       setSideMenuOpen(false);
       closeAllModals();
@@ -101,15 +112,24 @@ export function initMcqUi({ questionBank, tiers }) {
 
     modal.classList.toggle("is-open", isOpen);
     modal.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    if (modal === infoModal)
+      infoIcon.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) modal.querySelector(".modal-content")?.focus();
+    if (!isOpen) lastOverlayTrigger?.focus?.();
     setBodyModalState();
   }
 
   function setSideMenuOpen(isOpen) {
+    const wasOpen = sideMenu.classList.contains("open");
+    if (isOpen) lastOverlayTrigger = document.activeElement;
     sideMenu.classList.toggle("open", isOpen);
     sideMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
     burgerIcon.setAttribute("aria-expanded", isOpen ? "true" : "false");
     menuBackdrop.hidden = !isOpen;
     menuBackdrop.classList.toggle("is-visible", isOpen);
+    sideMenu.toggleAttribute("inert", !isOpen);
+    if (isOpen) sideMenuClose.focus();
+    if (!isOpen && wasOpen) lastOverlayTrigger?.focus?.();
   }
 
   function renderLevelButtons() {
@@ -117,7 +137,7 @@ export function initMcqUi({ questionBank, tiers }) {
       const tierIndex = Number(button.dataset.levelIndex);
       const tier = tiers[tierIndex];
 
-      button.textContent = `Level ${tierIndex + 1}: ${tier.name}`;
+      button.textContent = tier.name;
       button.removeAttribute("data-locked");
       button.setAttribute("aria-disabled", "false");
       button.disabled = false;
@@ -216,6 +236,7 @@ export function initMcqUi({ questionBank, tiers }) {
     state.selectedQuestions.forEach((question, questionIndex) => {
       const fieldset = document.createElement("fieldset");
       fieldset.className = "question";
+      fieldset.dataset.questionId = question.id;
 
       const legend = document.createElement("legend");
       legend.textContent = `${questionIndex + 1}. ${question.prompt}`;
@@ -290,6 +311,7 @@ export function initMcqUi({ questionBank, tiers }) {
     testResult.style.color = "";
     submitTestButton.hidden = false;
     submitTestButton.disabled = false;
+    retryTestButton.hidden = true;
     saveResultButton.hidden = true;
 
     renderQuestions();
@@ -373,9 +395,9 @@ export function initMcqUi({ questionBank, tiers }) {
         const feedback = document.createElement("p");
         feedback.className = `question-feedback ${detail.isCorrect ? "is-correct" : "is-incorrect"}`;
         if (detail.isCorrect) {
-          feedback.textContent = "Correct.";
+          feedback.textContent = `Correct. Why: ${question.explanation}`;
         } else {
-          feedback.textContent = `Incorrect. Correct answer: ${correctChoiceText}`;
+          feedback.textContent = `Incorrect. Correct answer: ${correctChoiceText}. Why: ${question.explanation}`;
         }
         fieldset.appendChild(feedback);
       }
@@ -398,6 +420,15 @@ export function initMcqUi({ questionBank, tiers }) {
     if (!autoSubmitted && !areAllQuestionsAnswered()) {
       testResult.textContent = "Please answer all questions before submitting.";
       testResult.style.color = "#c4171d";
+      const unanswered = state.selectedQuestions.findIndex(
+        (_, index) =>
+          !testContainer.querySelector(
+            `input[name="question-${index}"]:checked`,
+          ),
+      );
+      testContainer
+        .querySelector(`input[name="question-${unanswered}"]`)
+        ?.focus();
       return;
     }
 
@@ -417,6 +448,7 @@ export function initMcqUi({ questionBank, tiers }) {
     };
 
     submitTestButton.hidden = true;
+    retryTestButton.hidden = false;
     saveResultButton.hidden = false;
 
     const summary = document.createElement("p");
@@ -433,6 +465,7 @@ export function initMcqUi({ questionBank, tiers }) {
 
     testResult.style.color = state.lastResult.passed ? "#0f9644" : "#c4171d";
     testResult.replaceChildren(summary);
+    testResult.focus({ preventScroll: true });
 
     updateQuestionProgress();
     updateTimerUi();
@@ -476,6 +509,44 @@ export function initMcqUi({ questionBank, tiers }) {
     setSideMenuOpen(false);
   });
 
+  const newSessionButton = document.getElementById("newSessionButton");
+  newSessionButton?.addEventListener("click", () => {
+    if (newSessionButton.dataset.confirm !== "true") {
+      newSessionButton.dataset.confirm = "true";
+      newSessionButton.textContent = "Press again to reset";
+      clearTimeout(resetTimerId);
+      resetTimerId = setTimeout(() => {
+        delete newSessionButton.dataset.confirm;
+        newSessionButton.textContent = "New training session";
+      }, 5000);
+      return;
+    }
+    location.reload();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const surface = document.querySelector(
+      ".modal.is-open .modal-content, .side-menu.open",
+    );
+    if (!surface) return;
+    const items = [
+      ...surface.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ];
+    if (!items.length) return;
+    const first = items[0],
+      last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
   menuBackdrop.addEventListener("click", () => {
     setSideMenuOpen(false);
   });
@@ -493,13 +564,18 @@ export function initMcqUi({ questionBank, tiers }) {
   submitTestButton.addEventListener("click", () =>
     submitCurrentTest({ autoSubmitted: false }),
   );
+  retryTestButton.addEventListener("click", () => {
+    openTierTest(state.activeTierIndex);
+    testContainer
+      .querySelector('input[type="radio"]')
+      ?.focus({ preventScroll: true });
+  });
   saveResultButton.addEventListener("click", saveResult);
 
   levelButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const tierIndex = Number(button.dataset.levelIndex);
       openTierTest(tierIndex);
-      setSideMenuOpen(false);
     });
   });
 

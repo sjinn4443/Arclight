@@ -146,6 +146,33 @@ function runAudit() {
     const svgPartIds = collectSvgPartIds();
     const issues = [];
     let pathwayMarksChecked = 0;
+    const globalQuestionIds = new Map();
+    const globalStemAnswers = new Map();
+
+    function registerQuestionIdentity(scope, question, stemKey, answerKey) {
+        const priorIdScope = globalQuestionIds.get(question.id);
+        if (priorIdScope) {
+            issues.push(
+                `[GLOBAL] duplicate question id '${question.id}' in ${priorIdScope} and ${scope}`
+            );
+        } else {
+            globalQuestionIds.set(question.id, scope);
+        }
+
+        const stemAnswerKey = JSON.stringify([
+            stripHtml(question.prompt || ""),
+            stemKey,
+            answerKey,
+        ]);
+        const priorStemScope = globalStemAnswers.get(stemAnswerKey);
+        if (priorStemScope) {
+            issues.push(
+                `[GLOBAL] repeated stem and answer in ${priorStemScope} and ${scope}`
+            );
+        } else {
+            globalStemAnswers.set(stemAnswerKey, scope);
+        }
+    }
 
     function checkPathwayMarks(scope, marks) {
         (marks || []).forEach((id) => {
@@ -159,6 +186,7 @@ function runAudit() {
     function checkTextSet(name, set) {
         const seen = new Set();
         (set || []).forEach((q) => {
+            registerQuestionIdentity(`${name}:${q.id}`, q, stripHtml(q.prompt), q.answer);
             if (seen.has(q.id)) {
                 issues.push(`[${name}] duplicate id: ${q.id}`);
             }
@@ -172,12 +200,24 @@ function runAudit() {
             if (!optionKeys.has(q.answer)) {
                 issues.push(`[${name}:${q.id}] answer key '${q.answer}' missing from options`);
             }
+            if (optionKeys.size !== options.length) {
+                issues.push(`[${name}:${q.id}] duplicate option key`);
+            }
+            if (!q.explanation || !Array.isArray(q.sourceIds) || !q.sourceIds.length || !q.reviewStatus) {
+                issues.push(`[${name}:${q.id}] missing explanation, source or review metadata`);
+            }
+            (q.sourceIds || []).forEach((sourceId) => {
+                if (!D.MCQ_SOURCE_REGISTRY[sourceId]) {
+                    issues.push(`[${name}:${q.id}] unknown source id '${sourceId}'`);
+                }
+            });
         });
     }
 
     function checkFieldSet(name, set) {
         const seen = new Set();
         (set || []).forEach((q) => {
+            registerQuestionIdentity(`${name}:${q.id}`, q, q.stem, q.answer);
             if (seen.has(q.id)) {
                 issues.push(`[${name}] duplicate id: ${q.id}`);
             }
@@ -200,12 +240,24 @@ function runAudit() {
             if (!Array.isArray(q.opts) || !q.opts.includes(q.answer)) {
                 issues.push(`[${name}:${q.id}] answer '${q.answer}' is not in opts`);
             }
+            if (new Set(q.opts || []).size !== (q.opts || []).length) {
+                issues.push(`[${name}:${q.id}] duplicate option key`);
+            }
+            if (!q.explanation || !Array.isArray(q.sourceIds) || !q.sourceIds.length || !q.reviewStatus) {
+                issues.push(`[${name}:${q.id}] missing explanation, source or review metadata`);
+            }
         });
     }
 
     function checkPathwaySet(name, set) {
         const seen = new Set();
         (set || []).forEach((q) => {
+            registerQuestionIdentity(
+                `${name}:${q.id}`,
+                q,
+                `${q.stem?.kind || ""}:${q.stem?.key || ""}`,
+                q.answer
+            );
             if (seen.has(q.id)) {
                 issues.push(`[${name}] duplicate id: ${q.id}`);
             }
@@ -251,6 +303,12 @@ function runAudit() {
 
             if (!Array.isArray(q.opts) || !q.opts.includes(q.answer)) {
                 issues.push(`[${name}:${q.id}] answer '${q.answer}' is not in opts`);
+            }
+            if (new Set(q.opts || []).size !== (q.opts || []).length) {
+                issues.push(`[${name}:${q.id}] duplicate option key`);
+            }
+            if (!q.explanation || !Array.isArray(q.sourceIds) || !q.sourceIds.length || !q.reviewStatus) {
+                issues.push(`[${name}:${q.id}] missing explanation, source or review metadata`);
             }
         });
     }
@@ -348,7 +406,7 @@ function runAudit() {
     lines.push("-----");
     lines.push("- Source: src/mcq-data/core.js, src/mcq-data/library.js, src/mcq-data/sets.js, src/mcq-data.js, home.html");
     lines.push("- Engine sanity: src/field-core.js, src/rules/helpers.js, src/rules/anterior.js, src/rules/chiasmal.js, src/rules/posterior.js, src/rules.js, src/summary.js");
-    lines.push("- Checks: structure integrity + semantic pattern classification + pathway SVG mark resolution");
+    lines.push("- Checks: global identity and repetition + structure integrity + semantic pattern classification + pathway SVG mark resolution");
     lines.push("");
     lines.push("Counts");
     lines.push("------");

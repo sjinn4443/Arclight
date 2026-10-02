@@ -20,6 +20,20 @@
     pathwayVisual: "Pathway Drawing: Site <-> Loss",
   };
 
+  const MCQ_SOURCE_REGISTRY = Object.freeze({
+    "VISUAL-PATHWAY-2023": Object.freeze({
+      title:
+        "Visual Loss Due to Optic Chiasm and Retrochiasmal Visual Pathway Lesions",
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10564022/",
+    }),
+    "VISUAL-PATHWAY-2021": Object.freeze({
+      title: "Imaging of the Primary Visual Pathway Based on Visual Deficits",
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8053434/",
+    }),
+  });
+
+  const MCQ_REVIEW_STATUS = "Independent clinical sign-off pending";
+
   const parts = (globalScope.MCQ_DATA_PARTS = globalScope.MCQ_DATA_PARTS || {});
   Object.assign(parts, {
     MCQ_SET_STORAGE_KEY,
@@ -27,5 +41,7 @@
     MCQ_SET_KEYS,
     MCQ_LEVEL_LABELS,
     MCQ_SET_LABELS,
+    MCQ_SOURCE_REGISTRY,
+    MCQ_REVIEW_STATUS,
   });
 })(typeof window !== "undefined" ? window : globalThis);

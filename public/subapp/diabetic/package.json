@@ -1,0 +1,18 @@
+{
+  "name": "arclight-diabetic",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild script.js --bundle --minify --format=iife --target=es2018 --outfile=app.bundle.js --log-level=warning",
+    "build:check": "node tools/check-bundle.mjs",
+    "syntax": "node --check script.js && node --check app.bundle.js && node --check cup-achievement.js && node --check sw.js && node --check src/findings.js && node --check src/mcq-data.js && node --check src/mcq.js && node --check src/practice-cases.js && node --check src/pwa.js && node --check src/referral-note.js && node --check src/state.js && node --check src/triage.js && node --check src/ui-shell.js && node --check src/viewer-config.js && node --check src/viewer-math.js && node --check src/viewer.js",
+    "check": "npm run syntax && npm test && npm run build:check",
+    "test": "node tests/run-tests.mjs",
+    "test:browser": "node tests/logic-browser.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.5",
+    "playwright-core": "1.55.0"
+  }
+}

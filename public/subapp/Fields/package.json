@@ -1,6 +1,6 @@
 {
   "name": "fields",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Mobile-first confrontation visual-field screening app",
   "main": "src/main.js",
   "scripts": {
@@ -12,7 +12,8 @@
     "qa:mcq": "node qa-mcq-audit.mjs",
     "qa:context": "node qa-context-modifier-audit.mjs",
     "qa:all": "npm run -s qa:fields && npm run -s qa:pathway && npm run -s qa:output && npm run -s qa:mcq && npm run -s qa:context",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:contracts": "node tests/assessment-state.test.mjs && node tests/pathway-legend.test.mjs && node tests/output-safety.test.mjs && node tests/app-contract.test.mjs && node tests/clinical-regressions.test.mjs && node tests/mcq-builders.test.mjs",
+    "test": "npm run -s test:contracts && npm run -s lint && npm run -s qa:all"
   },
   "keywords": [],
   "author": "",

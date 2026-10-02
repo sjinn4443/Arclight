@@ -31,3 +31,11 @@ The app uses visual behaviour to show why the same retina can become easier or h
 Fundal Reflex provides the UI language: local fonts, compact clinical controls, light menus and a concise quick guide.
 
 Swollen Discs provides the closest viewer lessons: cataract constants, corneal reflex model, touch and pen pointer anchoring and dark clinical canvas behaviour.
+
+# v1.1 product context (23 July 2026)
+
+The main workflow remains Cataract, Field, Rx, Condition, Adult/Child then the draggable fundus view. The side menu remains a condition chooser and now also hosts a clearly separated two-press **New training session** action. Morph is not a diagnostic or operational decision tool and engineering verification does not imply clinical approval.
+
+## Achievement context — 26 July 2026
+
+The condition chooser is the app's teaching progression. Visiting all five conditions demonstrates exploration of the available simulator states, so the Cup belongs to condition completion rather than an MCQ. This preserves Morph's compact purpose and avoids implying clinical knowledge assessment from unreviewed quiz content.
