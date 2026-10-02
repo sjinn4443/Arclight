@@ -1,4 +1,5 @@
 // Development fixtures and research material must never become public/offline assets.
+/** @param {unknown} assetPath */
 function isSubappDevelopmentAsset(assetPath) {
   let decoded;
   try {
@@ -28,7 +29,7 @@ function isSubappDevelopmentAsset(assetPath) {
     )
   )
     return true;
-  const filename = parts.at(-1);
+  const filename = parts.at(-1) ?? "";
   return (
     /\.(?:md|csv|py|drawio|xlsx?|map|cjs|cmd)$/.test(filename) ||
     (/\.mjs$/.test(filename) && filename !== "mcq-engine.mjs") ||
