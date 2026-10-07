@@ -2,7 +2,7 @@
 
 Arclight is a media-rich, offline-capable (PWA) educational web application for clinical learning (ophthalmology + otoscopy).
 
-The app is primarily static (served from `public/` in dev, and `dist/` in production builds). A lightweight Express server (`server.cjs`) handles:
+The app is primarily static (served from `public/` in dev, and `dist/` plus `dist-media/` in production builds). A lightweight Express server (`server.cjs`) handles:
 
 - local development serving (with/without watch)
 - serving static assets in production
@@ -22,7 +22,83 @@ The app is primarily static (served from `public/` in dev, and `dist/` in produc
 - VS Code launcher extension: [`vscode-alanui-launcher/README.md`](./vscode-alanui-launcher/README.md)
 - Memory bank: [`memory-bank/`](./memory-bank/)
 - Agent notes: [`agent.md`](./agent.md)
+- Lottie examination scroll pages: [implementation guide](./docs/lottie-examination-scroll-pages.md)
 - Narration and captions: [overview](#narration-and-captions-for-examination-lessons) and [production record](./memory-bank/narration-and-subtitles.md)
+
+## Building another JSON animation scroll lesson
+
+For a page alongside `#/videos/directOphthalmoscopyScrollPage` or
+`#/videos/fundalReflexExaminationScrollPage`, use the
+[Lottie examination scroll implementation guide](./docs/lottie-examination-scroll-pages.md).
+It covers the minimal Videos HTML shell, shared stage-autoplay config, JSON and
+image dependencies, combined section styles, narration/frame timing, text and
+language controls, replay, scroll locks, progress restore, routing, offline
+delivery, WebKit recovery and checks for a new lesson.
+
+Both pages reuse `public/js/childhoodFundalPreparation.js` and
+`.childhood-fundal-scroll-page` styles. A sibling Videos page also needs
+`videos.js` initialisation and progress wiring, membership in the combined-page
+CSS selector groups, Back and My Learning mappings and verified download
+categorisation. DO follows the narration frame clock; Fundal retains segment
+playback with stage audio clips. These pages use the shared engine's generated
+stage DOM and are separate from workshop article/image reveal pages.
+
+Source review recorded 7 October 2026; this update documents the implementation
+without changing lesson behaviour.
+
+## Primary eye and ear care workshops
+
+The Primary Eye Care route (`#/pecWorkshop`) is owned by
+`public/html/pecWorkshop.html` and `public/js/pecWorkshop.js`. Primary Ear
+Care (`#/primaryEarCareWorkshop`) uses the matching HTML and JS modules.
+Both combine foldered lessons, reused Videos pages, local teaching content and
+Previous/Next navigation. PEC also reuses Medical Students lessons; preserve
+the originating workshop and folder when returning from shared pages.
+[The PEEC content audit](./docs/peec-workshop-content-audit.md) records the
+slide-source mapping and content gaps.
+
+`public/js/primaryWorkshopProgress.js` stores monotonic progress under
+`primaryWorkshop:progress:<workshop>:<lesson>` and the active launch context in
+session storage under `primaryWorkshop:activeLesson`. It combines workshop
+progress with shared lesson progress and renders folder completion ticks.
+`public/js/workshopLessonMedia.js` provides shared workshop media handling.
+
+PEC section 3 procedure video players use a 16:9 frame matching Irrigate an eye
+at both quality levels, including when opened from the Eyes procedure cards.
+Visual Acuity, Assess Near Vision and Sight Loss Guidance exports retain their
+anamorphic pixel aspect metadata so their footage displays at its original 16:9
+proportion. Preserve display aspect ratio when converting the source masters.
+
+PEC's illustrated fundal reflex guide uses `public/js/pecFundalReflexGuide.js`
+and layered WebP artwork in `public/images/workshop/PEC/FundalReflexes/`.
+Normal, Cataract and Retinoblastoma panels use stationary layers with timed
+reveals and wipes over 4.2 seconds. Four controls provide pause, play and replay,
+including a Lottie normal-reflex variations example. Layered-panel playback waits for decoded
+images and pauses outside the viewport; reduced motion initially shows the
+completed scene. Route cleanup cancels animations and observers.
+`public/js/pecFundalInterpretation.js` owns the interpretation worksheet;
+the separate `#/fundalReflexQuiz` route uses `public/js/fundalReflexQuiz.js`.
+Regression coverage lives in `tests-e2e/peec-workshop-content.spec.js`,
+`tests-e2e/pec-fundal-reflex-guide.spec.js` and
+`tests-e2e/fundal-reflex-quiz.spec.js`.
+
+## Local mini-app fleet
+
+The 30 September mini-app snapshot was integrated on 2 October: 14 existing
+apps were updated, Discs was added, and the 15-app Gallery is available at
+`/subapp/gallery/index.html`. Discs also has an Interactive Learning launcher.
+Fundal Reflex, Trauma and Amsler now use local iframe content.
+Run `npm run check:miniapps` for Gallery and runtime inventory checks.
+[The integration report](./docs/miniapps/20260930/INTEGRATION_REPORT.md)
+records host repairs, verification and limits; supplied `AGENTS.source.md`
+files are archived reference material.
+
+Mini-app workers preserve host and sibling caches. Encoded paths and iframe
+styles must remain compatible with nonce-based CSP. Developer fixtures and
+research outputs are excluded from deployment and offline manifests. The
+production CSS minifier preserves relative imports used by split stylesheets.
+Clinical sign-off, physical-device acceptance and native Share remain
+unverified in the integration record; new copy may use English fallback.
 
 ## Lesson progress accessibility
 
@@ -318,13 +394,23 @@ See [`reports/README.md`](./reports/README.md) for details.
 The Language/Install route and menu download actions now use the same offline-download pipeline:
 
 - `GET /api/app/offline-assets` serves a build-generated manifest in production and one asynchronously cached manifest in development.
-- `public/js/languageinstall.js` turns that manifest into download choices: full content, selected content section, or app-only/no-video content, with low/high video quality filtering where both MP4 tiers exist.
+- `public/js/languageinstall.js` turns that manifest into download choices: full content, one or more selected sections, or app-only/no-video content, with low/high video quality filtering where both MP4 tiers exist.
 - `public/js/menu.js` reuses the same helpers for the menu download action and the Downloaded Contents summary.
 - `public/sw.js` receives selected URL lists through `CACHE_URLS` / `CACHE_ASSETS`, reports progress, caches full MP4 files for offline playback, and serves cached MP4 range requests when the browser asks for partial content.
 - The service worker rejects sensitive cache-message URLs and bypasses API, tracking, reports, and health responses; it also honors `no-store` and caches only successful static responses.
 - Childhood Eye Screening HLS assets and subtitle catalogs are included in the cacheable asset model so iOS HLS playback can keep working offline after a successful download.
 
 When adding new media, keep the file path discoverable under the static root, add it to the relevant Videos/catalog mapping, include matching subtitles where applicable, and bump the service worker cache name when cached behavior or required cached assets change.
+
+Grouped section controls show cache status, unavailable sections and byte-size
+estimates.
+
+The progress dialog shows the chosen content and supports confirmed pause and
+resume. Already downloaded files are retained; service-worker cancellation uses
+`CACHE_CANCEL` and acknowledges `CACHE_PAUSED`. An interrupted file can restart
+on resume. `tests/download-options.test.cjs` and
+`tests-e2e/download-options.spec.js` cover selection and dialog behavior; the
+browser spec uses a mocked worker and does not establish real-network recovery.
 
 ## Video subtitles and progress
 
@@ -389,7 +475,8 @@ Yoruba (`yo`) and Igbo (`ig`). English speech uses a British voice.
 
 The scroll page plays 22 selected intervals from the Fundal Reflex tracks.
 Its on-screen guidance remains separate from the full spoken transcript and
-follows the app language. Changing its narration selector changes the voice.
+follows the resolved narration language through the app dictionary. Changing its
+narration selector changes the voice and guidance without changing app language.
 
 ### How the work was produced
 
@@ -531,7 +618,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - If changes do not show up in the browser, the service worker may be serving cached assets. Use DevTools -> Application -> Service Workers and/or "Clear site data" when troubleshooting.
 - The Interactive Learning section inside [`public/html/videos.html`](./public/html/videos.html) uses a shared Videos-route subpage pattern:
   - local modules such as `Morph` and `Mires` load from `public/subapp/*`
-  - some modules now lazy-load external Netlify iframes (`Fundal Reflex`, `Trauma`, `Amsler`)
+  - `Fundal Reflex`, `Trauma`, and `Amsler` now lazy-load local `public/subapp/*` iframes; earlier external-embed entries below are historical
   - the Primary `Connect` row opens the local `eyeExaminationConnectPage`, a 7x7 eye-examination sequence game implemented by `public/js/eyeExaminationConnect.js` with assets from `public/images/quiz/connect/`, first-play instructions, keyboard/pointer input, and shared lesson-progress completion
 - The Diabetic Retinopathy workshop is launched from the Eyes route and combines workshop folders, scroll lessons, Videos-route lessons, progress bars, folder restore behavior, structural previous/next buttons, protocol pages, and demo quizzes.
   - `public/html/diabeticRetinopathyWorkshop.html` owns the workshop shell and protocol/scroll pages.
@@ -560,6 +647,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 
 ## Changelog (high level)
 
+- 2026-10-02: Refreshed documentation for primary eye/ear workshop routes and progress, PEC fundal reflex teaching panels and quizzes, grouped multi-section downloads with pause/resume, and the integrated local mini-app fleet. This entry records documentation work; verification of the underlying changes is recorded separately.
 - 2026-09-15: Documented the five examination pages' narration and caption workflow, nine-language coverage, speech tools, timing rules, scroll reuse and regeneration checks. Corrected the current Front of Eye source to the video with ten encoded holds. This entry records documentation work only.
 - 2026-09-04: Replaced the BIO full-animation source with `New_BIOFullAnim.mp4`; added the Front of Eye `Full Animation` lesson and `New_FrontofEyeFullAnim.mp4` page; added timed English captions, narration, and dedicated accessible player controls for both; refined both scripts; added narration-continuing BIO holds of four and seven seconds plus Front of Eye holds of four, four and three seconds; tightened cue endings and resynchronized post-hold narration; and bumped the static cache to `arclight-static-v52`.
 - 2026-09-02: Added stage-matched multilingual narration controls to the combined Fundal Reflex examination scroll page and standardized its launcher thumbnail on `primary_scrollytell.webp`.

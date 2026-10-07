@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-09-25
+Last refreshed: 2026-10-07
 
 ## Current repo orientation
 
@@ -24,13 +24,70 @@ Last refreshed: 2026-09-25
   - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder/pages.
   - `public/js/diabeticRetinopathyWorkshop.js` initializes workshop-only behavior plus the diabetic demo quiz pages when those pages exist.
   - `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js` keep progress, previous/next flow, and return-to-folder behavior aligned across route boundaries.
-- The Videos route hosts both local subapps and selected external iframe lessons; cross-origin iframe internals cannot be styled or scripted from Arclight.
+- The Videos route hosts local mini-app iframes; for any future external lessons, cross-origin iframe internals cannot be styled or scripted from Arclight.
 - The Case Study route (`public/html/casestudy.html`) owns primary/intermediate/advanced case-study pages. Primary chat and flashcard behavior live in `public/js/casestudy_primary.js`; intermediate chat behavior lives in `public/js/casestudy.js`. The Glaucoma history case-study route lives in `public/html/glaucomaHistoryCaseStudy.html` and `public/js/glaucomaHistoryCaseStudy.js`.
 - Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
 - `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
 
+## Primary workshops, downloads and mini-apps
+
+- PEC and Primary Ear Care use `pecWorkshop` and `primaryEarCareWorkshop`
+  routes, matching HTML/JS modules, `primaryWorkshopProgress.js` and
+  `workshopLessonMedia.js`. Keep lesson IDs, launch contexts, shared-page return
+  paths and Previous/Next sequencing aligned when moving rows. PEC can cross
+  into Medical Students content as well as Videos pages.
+- Preserve `primaryWorkshop:progress:<workshop>:<lesson>` earned progress and
+  the `primaryWorkshop:activeLesson` session context. Folder ticks derive from
+  child completion; shared target progress can contribute to the same row.
+- PEC illustrated reflex panels use `pecFundalReflexGuide.js`, supplied layered
+  WebP assets and Web Animations. Preserve stationary reveal/wipe geometry,
+  image-decode gating, visibility pause, explicit replay, reduced-motion final
+  scenes and route cleanup. This guide is separate from the shared Lottie
+  Fundal engine and its FR06 guardrails. Recheck
+  `tests-e2e/pec-fundal-reflex-guide.spec.js` after playback/layout edits.
+- Keep the PEC interpretation worksheet and standalone `fundalReflexQuiz`
+  scoring aligned with their slide-source records. Consult
+  `docs/peec-workshop-content-audit.md` before changing reused source content.
+- Downloads support multiple sections, grouped cache status and estimates.
+  Keep `languageinstall.js`, `offline.js`, `sw.js` and menu summaries aligned;
+  preserve `CACHE_CANCEL` / `CACHE_PAUSED` and retained completed files during
+  pause/resume. The download browser spec mocks the worker.
+- The local fleet has 15 apps, including Discs, and a Gallery. Fundal Reflex,
+  Trauma and Amsler now load locally. Read
+  `docs/miniapps/20260930/INTEGRATION_REPORT.md` before fleet integration edits;
+  archived `AGENTS.source.md` files are reference material, not active policy.
+- Run `npm run check:miniapps` for fleet changes. Preserve earned-progress keys,
+  sibling/host caches, locale hooks, nonce-aware encoded HTML routes, export
+  CSP handling and relative CSS imports. Keep developer fixtures excluded from
+  deployment/offline manifests. Rebuild changed bundles with each app's
+  canonical builder; keep clinical review and physical-device limits explicit.
+- Current source service-worker fallback: `arclight-static-v84`. Production
+  can inject `__BUILD_CACHE_NAME__`; read `public/sw.js` before assuming a value.
+
 ## Combined examination scroll guides
 
+- For requests to build a page like `videos/directOphthalmoscopyScrollPage` or
+  `videos/fundalReflexExaminationScrollPage`, read
+  [the Lottie examination scroll implementation guide](./docs/lottie-examination-scroll-pages.md).
+  This is the shared `stageAutoplay` format. Reuse the generated stage DOM and
+  existing runtime; use the separate article/image scrolly instructions only
+  when that is the requested format.
+- A sibling Videos lesson uses a hidden shell in `videos.html` and a
+  `ROUTE_CONFIG` engine key, initialised through both Videos page-display paths.
+  It does not need a new top-level `config.js` route. Register standalone config
+  modules before `configureExaminationTiming` runs and align all per-file arrays.
+- Extend the combined-page CSS selector groups for list/sections/dividers and
+  their mobile overrides. The shared class alone does not apply their zero outer
+  gap, 107px stage gap, black section bands and 120px arrow clearance. Preserve
+  stage aspect ratios, desktop sizing and asset-specific caption overrides.
+- Keep the chosen progress writer and `progressStoragePrefix` aligned. Scroll
+  progress caps at 95; the engine completion event awards 100. Check fresh,
+  partial and completed visits, replay, Back, My Learning, cleanup and selective
+  downloads for every JSON, referenced image, snapshot and narration track.
+- Lesson guidance follows the narration selector without changing `prefLang`.
+  DO uses translated script cues; Fundal uses the selected narration language's
+  dictionary. Auto follows app language; global language changes reset to Auto
+  while preserving mute. Fundal keeps its clip-based motion timing.
 - The Videos route owns `frontOfEyeExaminationScrollPage`, `directOphthalmoscopyScrollPage`, `binocularIndirectOphthalmoscopyScrollPage` and `fundalReflexExaminationScrollPage`. Keep launcher targets, My Learning and progress keys aligned.
 - Front of Eye uses eleven Lottie files across four sections. Its order, frame holds and audio intervals live in `public/js/frontOfEyeExaminationScroll.js`; the shared runtime is `public/js/childhoodFundalPreparation.js`.
 - Front of Eye, DO and BIO use `public/js/examinationScrollTiming.js` to map narration time to scene frames and teaching holds. Muted playback uses a monotonic virtual clock. Preserve launcher audio priming, saved mute choices and completion gating until narration ends. Fundal retains its existing playback path.
@@ -159,8 +216,8 @@ aligned with the [README overview](./README.md#narration-and-captions-for-examin
 - Keep Auto, Off and explicit language choices working. Preserve the separate
   page keys `videoNarration:<pageId>` and `videoNarrationLanguage:<pageId>`.
 - Scroll narration follows the existing stage order and may continue over a
-  settled frame. Stage guidance comes from the app dictionary, independently
-  of the narration selector. Preserve replay, blocked-audio recovery and route
+  settled frame. Guidance follows the narration language: Fundal uses the
+  dictionary and clock-driven guides use script cues. Preserve replay, blocked-audio recovery and route
   cleanup. Keep the FR06 behaviour guardrails below.
 - Register new video languages in the catalogue. Also update scroll track
   maps and language normalisers when extending scroll support. Keep
@@ -264,6 +321,9 @@ Use this when the user asks to make a page like `childhoodFundalPreparationPage`
 # Newborn Eyes Open Scroll Notes
 
 ## 2026-03-11 Interactive Learning External Embed Notes
+
+Historical record: these three embeds now load local content under
+`public/subapp/` following the 2 October integration.
 
 - Page: `interactiveLearningPage` inside `public/html/videos.html`
 - Added external embed cards:

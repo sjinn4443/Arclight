@@ -23854,6 +23854,21 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   height: auto;
 }
 
+/* Section 3 procedure players share Irrigate an eye's landscape frame. */
+:is(
+    #pecProcedureVideoPage,
+    .eye-care-procedure-video-page
+  )[data-pec-procedure-layout="landscape"]
+  .pec-procedure-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  object-fit: contain;
+  background: #000;
+}
+
 :is(#pecWorkshopPage, #primaryEarCareWorkshopPage)
   .pec-procedure-rows
   > .lesson-row {

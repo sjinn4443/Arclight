@@ -1,0 +1,160 @@
+.page.eye-care-procedure-page > .container.pupils-container:first-child {
+  padding-top: 10px;
+}
+
+.eye-care-procedure-box {
+  width: min(420px, calc(100% - 36px));
+  margin: 48px auto 60px;
+  overflow: hidden;
+  border-radius: 26px;
+  background: #080808;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.eye-care-procedure-box .eye-care-procedure-cap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 37px;
+  margin: 0;
+  padding: 0 18px;
+  background: #00d900;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.eye-care-procedure-lessons {
+  padding: 35px 32px;
+}
+
+.eye-care-procedure-video-rows {
+  display: grid;
+  gap: 16px;
+}
+
+.eye-care-procedure-box .lesson-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 72px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 16px;
+  background: #fff;
+  color: #111;
+  text-align: start;
+  cursor: pointer;
+}
+
+.eye-care-procedure-box .thumb {
+  width: 62px;
+  height: 52px;
+  border-radius: 13px;
+  background: #000 center / contain no-repeat;
+}
+
+.eye-care-procedure-box .lesson-row--folder .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_folder.webp");
+}
+
+.eye-care-procedure-box .lesson-row--video .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
+}
+
+.eye-care-procedure-box .lesson-type {
+  font-size: 11px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.eye-care-procedure-box .lesson-cta {
+  align-self: end;
+  color: #15e115;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.eye-care-procedure-box [hidden] {
+  display: none !important;
+}
+
+.eye-care-procedure-folder-content h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.eye-care-procedure-folder-content h2 > span {
+  width: auto;
+  flex: 1;
+}
+
+.eye-care-procedure-box .see-all-toggle {
+  width: auto;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #15e115;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.eye-care-procedure-box button:focus-visible {
+  outline: 3px solid #15e115;
+  outline-offset: 3px;
+}
+
+.eye-care-procedure-video-page .tri-toggle {
+  --tri-cols: 2;
+  flex: 0 0 128px;
+  width: 128px;
+  min-width: 128px;
+  height: 36px;
+  margin: 0;
+}
+
+.eye-care-procedure-video-page .tri-toggle__btn {
+  height: 28px;
+  margin: 0;
+}
+
+.eye-care-procedure-video-page .tri-toggle__knob {
+  background: #00d900;
+}
+
+.eye-care-procedure-video-page .video-header h3 {
+  text-align: center;
+}
+
+.eye-care-procedure-video-page .video-container {
+  box-sizing: border-box;
+  width: calc(100% - 36px);
+  max-width: 820px;
+  max-height: none;
+  margin: 49px auto 0;
+  padding: 21px 0 0 !important;
+}
+
+.eye-care-procedure-video-page video {
+  width: 100%;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .eye-care-procedure-lessons {
+    padding: 28px 20px;
+  }
+}

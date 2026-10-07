@@ -7,7 +7,15 @@
  * This allows for dynamic navigation based on user selection in the catalog.
  * 'comingSoon' is used as a placeholder for pages not yet implemented.
  */
+import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
+
 export const EYES_INDEX = {
+  ...Object.fromEntries(
+    Object.entries(EYE_CARE_PROCEDURES).map(([route, procedure]) => [
+      procedure.label,
+      route,
+    ]),
+  ),
   // Core Examination
   "History Taking": "casestudy",
   "Visual Acuity": "visualAcuityPage",

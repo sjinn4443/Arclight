@@ -1,8 +1,30 @@
 # System Patterns
 
+## Videos Lottie examination page contract
+
+The [implementation guide](../docs/lottie-examination-scroll-pages.md), reviewed
+7 October 2026, records the shared `stageAutoplay` architecture for combined
+DO and Fundal pages and a new sibling lesson. `videos.html` supplies an empty
+list shell; `videos.js` owns subpage entry and progress; the Fundal engine
+generates stages, sections, text and controls. Standalone lesson configs can
+live in their own module, registered before the narration timing setup pass.
+
+Combined examination styling also requires the page-specific selector groups in
+`pages.css`: outer gap zero, inner stage gap 107px and black heading bands with
+120px clearance for advance controls. Config, narration clips and timing arrays
+share the same global zero-based stage order. DO maps audio seconds to frames;
+Fundal uses segment playback with stage clips. Guidance follows the narration
+selection, using script cues for DO and the selected dictionary for Fundal.
+
+Scroll progress caps at 95 until `childhoodWorkshop:route-complete` awards 100.
+The progress writer and completed-restore prefix must match. Preserve shared
+cleanup, Back/return contexts, My Learning targets and offline asset dependencies
+when adding a lesson. The guide distinguishes Videos subpages from separate
+top-level Fundal routes and historical `segmentScroll` behaviour.
+
 ## System Architecture
 
-Arclight is primarily a static, client-side PWA served from `public/` (or `dist/` in production builds). A lightweight Express server (`server.cjs`) is used for:
+Arclight is primarily a static, client-side PWA served from `public/` (or `dist/` plus `dist-media/` in production builds). A lightweight Express server (`server.cjs`) is used for:
 
 - local development serving
 - serving static assets in production
@@ -10,13 +32,27 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - generating the offline asset manifest used by install/download flows
 - protecting and serving the reports/admin pages
 
+## Primary workshop and mini-app contracts
+
+- Workshop launch context survives shared Videos and Medical Students lessons.
+  `primaryWorkshopProgress.js` combines monotonic workshop progress with shared
+  lesson targets; folder completion derives from the child rows.
+- PEC illustrated reflex panels use decoded image layers, visibility-gated
+  Web Animations and disposable observers/controllers. Reduced motion renders
+  final scenes before an explicit replay.
+- Downloads select a union of sections, show cache-aware status/estimates and
+  pause through `CACHE_CANCEL` / `CACHE_PAUSED` while retaining completed files.
+- Local mini-app workers preserve host/sibling caches. HTML serving handles
+  encoded routes and CSP nonces; deployment excludes developer fixtures and
+  retains relative CSS imports. The Gallery inventories 15 apps.
+
 ## Key Technical Decisions
 
 - PWA-first: service worker + web manifest to support offline usage.
 - Static-first delivery: most user-facing functionality is in static HTML/CSS/JS under `public/`.
 - Minimal backend surface area: backend is intentionally small and focused on hosting + telemetry.
 - Environment-aware storage:
-  - default/no DB: file-backed NDJSON storage through `storage/ndjson-storage.cjs`
+  - no DB: encrypted NDJSON in non-production; production defaults to no-op unless file storage is explicitly enabled with encryption
   - DB configured: Postgres through `storage/pg-storage.cjs`
   - E2E isolation: Playwright sets `DISABLE_DB_STORAGE=1`
   - forced off: no-op storage through `storage/disabled-storage.cjs`
@@ -75,7 +111,7 @@ contract for the four full animations and the combined Fundal scroll page.
   captions to follow narration while audio is ahead.
 - Stage reuse: the Fundal scroll page maps 22 Lottie stages to intervals in
   the existing full-animation audio. Short stage text remains dictionary-based
-  and independent of the manual narration choice.
+  and follows the resolved narration language without changing app language.
 - Language choice: all four full animations have nine languages.
   Page preferences and offline download language
   selection are separate. Offline media falls back to English per lesson.
@@ -94,7 +130,7 @@ contract for the four full animations and the combined Fundal scroll page.
   - Reports protection: Basic Auth for `/reports.html` and `/html/reports.html`
   - Reports API: `/api/dev/users`, `DELETE /api/dev/users/:anonId`
 - Storage selection: `storage/index.cjs`
-  - `storage/ndjson-storage.cjs` (default/no DB)
+  - `storage/ndjson-storage.cjs` (encrypted non-production fallback or explicitly enabled production file storage)
   - `storage/pg-storage.cjs` (Postgres URL configured)
   - `storage/disabled-storage.cjs` (`DISABLE_DB_STORAGE=1`)
 - Reports encryption helper: `reports/security/encrypt.cjs`

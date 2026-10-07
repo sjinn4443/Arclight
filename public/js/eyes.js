@@ -585,7 +585,12 @@ export function initializeEyesCatalog() {
       "Drops & Ointment",
       "Eye Pad / Shield",
       "Sight Loss Guidance",
-    ].map((label) => ({ label, target: "comingSoon", tags: [], blank: true })),
+    ].map((label) => ({
+      label,
+      target: EYES_INDEX[label],
+      tags: ["Video"],
+      blank: true,
+    })),
     diseaseCarousel: [
       {
         label: "Uncorrected Refractive Error",

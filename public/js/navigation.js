@@ -4,6 +4,7 @@
 
 import { ROUTES } from "./config.js";
 import { closeMenu } from "./menu.js";
+import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
 
 // === Guest Mode Guard ===
 const MAX_GUEST_CLICKS = 10;
@@ -1208,6 +1209,13 @@ function getStructuralBackTarget(routeName, subPageId = null) {
   if (!normalizedRoute) return null;
 
   const normalizedSubPage = normalizeSubPageId(subPageId);
+  if (
+    Object.prototype.hasOwnProperty.call(EYE_CARE_PROCEDURES, normalizedRoute)
+  ) {
+    return normalizedSubPage && normalizedSubPage !== normalizedRoute
+      ? { routeName: normalizedRoute, subPageId: normalizedRoute }
+      : { routeName: "eyes" };
+  }
   return normalizeStructuralBackTarget(
     STRUCTURAL_BACK_SUBPAGES[normalizedSubPage] ||
       STRUCTURAL_BACK_TARGETS[normalizedRoute],

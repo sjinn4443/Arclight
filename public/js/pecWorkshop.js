@@ -812,14 +812,19 @@ function populateExaminationRows(page) {
   });
 }
 
-function renderProcedureVideo(key) {
+export function renderProcedureVideo(key, pageId = "pecProcedureVideoPage") {
   const filename = PROCEDURE_VIDEO_FILES[key];
-  const page = document.getElementById("pecProcedureVideoPage");
+  const page = document.getElementById(pageId);
   const video = page?.querySelector(".pec-procedure-video");
   const source = video?.querySelector("source");
   const toggle = page?.querySelector(".tri-toggle");
   if (!filename || !page || !video || !source || !toggle) return;
   page.dataset.pecRenderedVideo = key;
+  if (["clean_eye", "warm_compress", ...PROCEDURE_KEYS].includes(key)) {
+    page.dataset.pecProcedureLayout = "landscape";
+  } else {
+    delete page.dataset.pecProcedureLayout;
+  }
   const title = page.querySelector(".pec-procedure-video-title");
   if (title) {
     title.dataset.i18n = `pecWorkshop.${key}`;

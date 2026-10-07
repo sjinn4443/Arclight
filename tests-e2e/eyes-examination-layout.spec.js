@@ -24,9 +24,12 @@ test("Examination cards open the Tools and Extended lesson pages", async ({
   await expect(catalog.locator("#procedureCarousel .eyes-card")).toHaveCount(7);
   await expect(
     catalog.locator("#procedureCarousel .eyes-card.is-disabled"),
-  ).toHaveCount(7);
+  ).toHaveCount(0);
   await expect(catalog.locator("#procedureCarousel .coming-tag")).toHaveCount(
-    7,
+    0,
+  );
+  await expect(catalog.locator("#procedureCarousel .tag")).toHaveText(
+    Array(7).fill("Video"),
   );
   await expect(
     catalog.locator("#extendedCarousel, #toolsCarousel"),

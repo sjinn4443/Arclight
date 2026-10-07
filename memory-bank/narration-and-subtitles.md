@@ -421,12 +421,18 @@ active clip. A global app-language change returns this selector to Auto.
 If autoplay is blocked, a user tap can start the active clip.
 
 Short stage guidance still comes from `segmentStartTexts` and the shared
-dictionary lookup through `translateFundalText()`. It follows the app language,
-independently of the manual narration choice. Preserve title text toggling,
+dictionary lookup through `translateFundalText()`. It follows the resolved
+narration language through `getFundalTextLanguage()` without changing app
+language. Auto follows the app language. Preserve title text toggling,
 accumulated guidance, stage replay and the FR06 frame-settling rules in
 [agent.md](../agent.md).
 
 ## Rebuild commands
+
+For a new sibling JSON animation lesson, see the
+[Lottie examination scroll implementation guide](../docs/lottie-examination-scroll-pages.md)
+(source review: 7 October 2026). It connects the narration clip/timing contract to
+the HTML shell, section styles, progress, navigation and offline delivery.
 
 Run commands from the repository root. Use a Python executable available on
 the machine; replace `python` with its full path if needed. JavaScript helpers

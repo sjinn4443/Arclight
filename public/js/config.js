@@ -6,7 +6,15 @@
  * ROUTES object maps application route names to their respective HTML file paths.
  * This configuration centralizes route management, making it easier to update and maintain navigation.
  */
+import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
+
 export const ROUTES = {
+  ...Object.fromEntries(
+    Object.keys(EYE_CARE_PROCEDURES).map((route) => [
+      route,
+      "html/eyeCareProcedure.html",
+    ]),
+  ),
   splashscreen: "html/splashscreen.html",
   languageinstall: "html/languageinstall.html",
   onboarding: "html/onboarding.html",

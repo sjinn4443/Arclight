@@ -1,5 +1,52 @@
 # Progress
 
+## Lottie examination scroll documentation - 7 October 2026
+
+- Studied the DO and combined Fundal Videos pages, their source configs, shared
+  stage engine, CSS, timing, language, progress, routing and download wiring.
+- Added [the implementation guide](../docs/lottie-examination-scroll-pages.md)
+  with file ownership, minimal shell/config examples, per-file options, exact
+  section and stage styling, playback and cleanup, WebKit recovery, offline
+  dependencies and checks for a future sibling lesson.
+- Linked the guide from README, agent notes and the memory bank. Corrected older
+  language notes to match the runtime and narration browser tests: manual voice
+  choices also select guidance without changing app language.
+- Scope: documentation only; runtime, lesson assets and cache revision unchanged.
+  Verification passed: documentation formatting, guide links/source references
+  and JSON metadata/referenced image existence for all 13 DO and 22 Fundal stages.
+  The future implementation test matrix is not a claim of browser tests run.
+
+## PEC procedure video proportions - 2 October 2026
+
+- Standardized all 11 section 3 procedure players to Irrigate an eye's 16:9
+  frame at both quality levels, also covering Eyes procedure-card launchers.
+- Restored the lost anamorphic display aspect metadata in Visual Acuity,
+  Assess Near Vision and Sight Loss Guidance (six MP4 exports) using stream
+  copy, preserving footage and audio without re-encoding. Source masters
+  declare 16:9 despite their 360x640 stored pixels.
+- Bumped the source static cache fallback to v84 for the corrected assets.
+- Validation: all 132 browser layout combinations passed across Chromium and
+  WebKit, 390/820/1440px viewports and low/high quality; section 2 reuse clears
+  the procedure layout. FFprobe confirms 16:9 for all six corrected exports.
+- Decoded Visual Acuity frames and shared Eyes players were checked in
+  Chromium. Final `npm run build`, syntax/format checks and `git diff --check`
+  passed; all six packaged MP4s still declare 16:9.
+
+## Documentation refresh - 2 October 2026
+
+- Aligned README, agent notes and memory-bank context with commits through
+  `3edec92f` (ReflexesAnim01), including `9100eb2d` (DownloadNMiniApp01).
+- Documented primary eye/ear routes, shared progress and navigation, PEC reflex
+  animations/worksheet/quiz, grouped multi-section downloads and pause/resume.
+- Corrected current external-embed references to local mini-app content and
+  linked the fleet integration evidence. Supplied agent files remain archived
+  reference material. Historical dated records remain available.
+- Corrected outdated memory-bank storage defaults and build-output orientation.
+- This refresh changes documentation only. The integration report records
+  prior app checks; no new browser, build or clinical acceptance is claimed.
+- Validation: 25 added links/source references resolve across seven documents;
+  the documentation diff passes `git diff --check`.
+
 ## Lesson progress ARIA labels - 25 September 2026
 
 - Named 184 previously unnamed progress bars across five lesson HTML files by
@@ -205,7 +252,7 @@
 - Diabetic demo quizzes: Videos-route demo quiz pages include matching history to image, findings grouping, connect, retinal-structure tapping, and review-video quiz flows initialized by `public/js/diabeticRetinopathyWorkshop.js`.
 - Diabetic protocol media: NCD/protocol visual assets and low-resolution workshop videos are present under `public/images/learning/Diabetic/Diabetes/NCD/` and `public/videos/Workshop/Diabetic/`.
 - Childhood Fundal Reflex scrollytelling: `childhoodFundal*` routes share the Lottie stage-autoplay engine in `public/js/childhoodFundalPreparation.js`, with route shells in `public/html/childhoodFundal*.html`, route wiring in `config.js`/`main.js`, and shared layout/control styling in `public/style/pages.css`.
-- Combined Fundal Reflex examination narration: `fundalReflexExaminationScrollPage` reuses all nine full-animation tracks through 22 stage intervals. It has language and on/off controls in the Eyes topbar. Short stage guidance follows the app dictionary independently of a manual voice choice. Replay and route cleanup manage the shared audio element.
+- Combined Fundal Reflex examination narration: `fundalReflexExaminationScrollPage` reuses all nine full-animation tracks through 22 stage intervals. It has language and on/off controls in the Eyes topbar. Short stage guidance uses the dictionary for the resolved narration language without changing app language. Replay and route cleanup manage the shared audio element.
 - Fundal route sequence/navigation: `FUNDAL_PAGE_ROUTE_SEQUENCE` controls the Preparation -> Examination -> Newborn Eyes Open/Closed -> Unclear Findings -> Possible Finding -> After Examination flow, including down-arrow/page-next behavior and boundary navigation.
 - Offline content management: a modal uses a build-generated/cached manifest to select assets; sensitive, API, report, health, failed, and `no-store` responses are excluded from service-worker caches.
 - Server-backed offline downloads: `GET /api/app/offline-assets` provides a static asset manifest with byte sizes, and `languageinstall.js`/`menu.js` use it for full/select/app-only downloads, low/high MP4 filtering, estimates, progress, and Downloaded Contents summaries.

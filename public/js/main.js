@@ -16,6 +16,7 @@ import { initializeExperimentalMiniAppNotice } from "./experimentalMiniAppNotice
 import { initializeLessonCompletionTickObserver } from "./lessonCompletionTick.js";
 import { initializeLocalizedVideoSubtitles } from "./videoSubtitles.js";
 import { initializeTopbarLogos } from "./topbar-logo.js";
+import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
 import {
   initializeFundalReflexPdf,
   initializeAtomsHandout1,
@@ -216,6 +217,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializePrimaryEarCareWorkshop } =
         await import("./primaryEarCareWorkshop.js");
       initializePrimaryEarCareWorkshop();
+      return;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(EYE_CARE_PROCEDURES, routeName)) {
+      const { initializeEyeCareProcedure } =
+        await import("./eyeCareProcedure.js");
+      initializeEyeCareProcedure(routeName);
       return;
     }
 

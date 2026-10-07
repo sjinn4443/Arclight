@@ -1,6 +1,21 @@
-<!-- THE CHANGES - activeContext.md | 2026-09-25, Codex -->
+<!-- THE CHANGES - activeContext.md | 2026-10-02, Codex -->
 
 # Active Context
+
+## Lottie examination page reference - 7 October 2026
+
+- Studied `videos/directOphthalmoscopyScrollPage` and
+  `videos/fundalReflexExaminationScrollPage` and recorded the reusable contract in
+  [the implementation guide](../docs/lottie-examination-scroll-pages.md).
+- Future sibling lessons should reuse the Fundal stage engine, extend combined
+  CSS selector groups and wire Videos initialisation, narration, progress, Back,
+  My Learning and offline dependencies together. The guide includes shell/config
+  examples, exact visual values, WebKit guardrails and a focused check matrix.
+- Corrected stale narration notes: stage guidance follows the resolved narration
+  preference, with dictionary text for Fundal and script cues for DO. A manual
+  selection leaves app language unchanged; an app-language change resets Auto.
+- This task updates documentation only. No new lesson or runtime change was
+  requested or implemented; future implementation checks are listed in the guide.
 
 - Lesson progress bars across Videos, Childhood Eye Screening, Diabetic
   Retinopathy, Glaucoma and case-study HTML now reference unique visible title
@@ -12,6 +27,36 @@
   and keep its final two words together. Desktop text has up to 48px extra width
   on either side of the animation. Its caption-aware alignment lifts overflowing scenes only,
   reserving accumulated text height before playback starts.
+
+## Current baseline - 2 October 2026
+
+- PEC section 3 procedure video players use a shared 16:9 frame matching
+  Irrigate an eye at both qualities and from Eyes procedure-card launchers.
+  Visual Acuity, Assess Near Vision and Sight Loss Guidance exports have their
+  original 16:9 display aspect metadata restored without re-encoding.
+- Primary Eye Care and Primary Ear Care have dedicated `pecWorkshop` and
+  `primaryEarCareWorkshop` routes, folder restore, cross-route lesson reuse,
+  Previous/Next flow and shared `primaryWorkshopProgress.js`. PEC includes
+  additional PEEC slide content, fundal interpretation and a separate Fundal
+  Reflex quiz. Source mapping: [PEEC audit](../docs/peec-workshop-content-audit.md).
+- PEC's illustrated fundal guide uses layered WebP images and Web Animations
+  in `pecFundalReflexGuide.js`: Normal, Cataract and Retinoblastoma, plus normal
+  variations; decoded-image startup, visibility pause, pause/play/replay,
+  reduced-motion final scenes and cleanup on route changes.
+- Downloads support multiple selected sections, grouped cache status and size
+  estimates, plus pause/resume retaining completed files. Keep worker messages
+  `CACHE_CANCEL` and `CACHE_PAUSED` aligned with the host dialog.
+- The supplied mini-app snapshot updates 14 apps and adds Discs and a 15-app
+  Gallery. Fundal Reflex, Trauma and Amsler are local. Host integration preserves
+  progress, locale hooks and sibling caches, handles CSP nonces/encoded paths,
+  retains relative CSS imports and excludes developer fixtures from deployment.
+  [Integration evidence](../docs/miniapps/20260930/INTEGRATION_REPORT.md)
+  records browser/build checks and remaining clinical/device/Share limits.
+- Source service-worker fallback is `arclight-static-v84`; builds can inject a
+  different cache name. Older version numbers below are historical checkpoints.
+
+The following dated work notes are retained as history. Read current source
+and the integration report before relying on earlier media or embed paths.
 
 ## Current Work Focus
 
@@ -113,7 +158,7 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - `public/js/childhoodFundalPreparation.js` owns the shared Lottie stage-autoplay engine, per-route `ROUTE_CONFIG`, settle-frame behavior, stage replay/down-arrow controls, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`
 - `public/js/config.js` and `public/js/main.js` provide the route map and lazy initializer for the Fundal route set
 - `public/style/pages.css` owns the shared Fundal layout/button/text styling
-- The combined Videos-route `fundalReflexExaminationScrollPage` plays 22 stage intervals from any of the nine Fundal Reflex narration tracks. Its Eyes topbar owns a language selector and a persistent narration on/off control. Short stage guidance is translated through the app dictionary and follows the app language independently of a manual narration choice. Global app-language changes return narration to Auto.
+- The combined Videos-route `fundalReflexExaminationScrollPage` plays 22 stage intervals from any of the nine Fundal Reflex narration tracks. Its Eyes topbar owns a language selector and a persistent narration on/off control. Short stage guidance is translated through the dictionary selected by the resolved narration language, without changing app language. Global app-language changes return narration to Auto.
 - FR06 remains the user-approved baseline for Fundal settle behavior; avoid playback/settle experiments unless explicitly requested and rechecked
 - Diabetic Fundal-style scrollytelling now depends on hardened pause-frame locking, retained accumulated captions after completion, iOS/WebKit renderer overrides where needed, exact static snapshot recovery for fragile WebKit pause/final holds, and ordinary `< Previous` / `Next >` buttons on the final page of each scrollytelling group.
 

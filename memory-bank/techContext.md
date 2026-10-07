@@ -1,6 +1,23 @@
-<!-- THE CHANGES - techContext.md | 2026-09-15, Codex -->
+<!-- THE CHANGES - techContext.md | 2026-10-02, Codex -->
 
 # Tech Context
+
+## Lottie examination authoring reference - 7 October 2026
+
+Read [Building a Lottie examination scroll page](../docs/lottie-examination-scroll-pages.md)
+for exact file ownership, HTML/config examples, CSS values, asset metadata,
+narration timing and implementation checks. The current templates are the
+Videos-route DO (13 stages) and Fundal Reflex (22 stages) pages. New content can
+use a standalone config module like `frontOfEyeExaminationScroll.js`, registered
+in `childhoodFundalPreparation.js`. Local Lottie loads from `/vendor/lottie.min.js`.
+
+Frame-clock guides also require a page entry in `EXAMINATION_SCROLL_TIMING`,
+matching narration clips/script cue IDs and launcher audio priming. SVG is the
+ordinary renderer; iOS/iPadOS defaults to canvas with per-file overrides.
+Preserve configured exact recovery snapshots. Built/offline delivery must include
+JSON plus its referenced images, snapshots, script and selected narration.
+Use the guide's focused test matrix; WebKit's mocked narration clock does not
+prove physical-device audio quality. Documentation edits require no cache bump.
 
 ## Technologies Used
 
@@ -9,7 +26,7 @@
 - PWA: Service Worker API, Web Manifest
 - Offline install/downloads: server-generated static asset manifest (`/api/app/offline-assets`), service-worker on-demand caching, cached MP4 range responses, and HLS/subtitle cache support
 - Video localization: JSON subtitle catalogs in `public/video-localization/` plus VTT assets in `public/video-subtitles/`, synchronized at runtime by `public/js/videoSubtitles.js` and Videos-route subtitle helpers
-- Embedded interactive content: local iframe mini-apps under `public/subapp/*`, selected external Netlify iframes, Videos-route diabetic video pages, full-animation local MP4 pages, and demo quiz pages inside `public/html/videos.html`
+- Embedded interactive content: local iframe mini-apps under `public/subapp/*`, the 15-app Gallery, Videos-route diabetic video pages, full-animation local MP4 pages, and demo quiz pages inside `public/html/videos.html`
 - Workshop flows: static HTML lesson shells plus JS navigation/progress helpers, including `public/js/diabeticWorkshopNextFlow.js`, `public/js/diabeticWorkshopProgress.js`, and diabetic quiz/scroll initializers in `public/js/diabeticRetinopathyWorkshop.js`
 - Shared progress UI: `public/js/lessonProgress.js` and `public/js/lessonCompletionTick.js`
 - Case-study chat: `public/html/casestudy.html`, `public/js/casestudy.js`, `public/js/casestudy_primary.js`, `public/html/glaucomaHistoryCaseStudy.html`, and `public/js/glaucomaHistoryCaseStudy.js`
@@ -19,7 +36,7 @@
 - Quality: ESLint, Prettier, Husky + lint-staged
 - E2E/Perf (optional): Playwright, Lighthouse CI
 - Storage:
-  - current default: file-backed NDJSON storage via `storage/ndjson-storage.cjs` when no DB URL is configured
+  - no DB: encrypted NDJSON in non-production; production uses no-op storage unless `ENABLE_NDJSON_STORAGE=true` and `ENCRYPTION_SECRET` are configured
   - Postgres: `storage/pg-storage.cjs` when any configured Postgres URL is present and `DISABLE_DB_STORAGE` is not enabled
   - forced off: `storage/disabled-storage.cjs` when `DISABLE_DB_STORAGE=1`
 
@@ -38,10 +55,24 @@
 ### Offline install/download notes
 
 - `server.cjs` exposes `/api/app/offline-assets`, which enumerates files from the active static root and returns file URLs, byte sizes, count, and total bytes.
-- `public/js/languageinstall.js` owns download options: full content, selected content section, app-only/no-video, and video quality filtering.
+- `public/js/languageinstall.js` owns download options: full content, multiple selected sections, app-only/no-video, and video quality filtering; grouped cache status and estimates accompany pause/resume controls.
 - `public/js/menu.js` reuses the same helpers for menu-started downloads and Downloaded Contents summaries.
 - `public/sw.js` caches selected URL lists via `CACHE_URLS` / `CACHE_ASSETS`, reports progress, serves cached MP4 range requests from complete cached MP4s, and keeps cached Childhood Eye Screening HLS assets usable offline.
 - When cached behavior or required precached assets change, bump the service-worker cache name.
+
+### Primary workshop and fleet maintenance
+
+- Primary routes: `pecWorkshop` and `primaryEarCareWorkshop`; shared modules:
+  `primaryWorkshopProgress.js` and `workshopLessonMedia.js`.
+- PEC illustrated reflex panels use Web Animations and layered WebP artwork,
+  independently of the shared Lottie engine. Interpretation and quiz modules
+  are `pecFundalInterpretation.js` and `fundalReflexQuiz.js`.
+- Fleet inventory: `npm run check:miniapps`. See
+  [integration report](../docs/miniapps/20260930/INTEGRATION_REPORT.md) for
+  canonical builders, deployment filtering, CSP and cache contracts.
+- Build delivery uses `dist/` and `dist-media/` at the same URL paths;
+  source maps and size reports are separate outputs. Deploy both content trees.
+- Source cache fallback is v83; `__BUILD_CACHE_NAME__` can override it.
 
 ### Interactive Learning integration notes
 
@@ -142,4 +173,4 @@ The repo root is ESM (`"type": "module"`), but server and many tests are CommonJ
 ## CI/CD
 
 - GitHub Actions workflow: `.github/workflows/ci-cd.yml`
-- Runs format check, build, accessibility checks, Jest, and uploads `dist/` as an artifact.
+- Runs format check, build, accessibility checks and Jest; uploads `dist/`, `dist-media/` and `dist-sourcemaps/` as separate artifacts.
