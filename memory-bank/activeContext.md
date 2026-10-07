@@ -2,6 +2,31 @@
 
 # Active Context
 
+## Eye pad and shield scroll lesson - 7 October 2026
+
+- Added `#/eyePadShield/makeEyePadShieldScrollPage` below the matching video row.
+  Nine Lottie stages start with the existing DO hand-washing animation,
+  then use the supplied 01–12 illustrations and motion
+  from the PEC reference video. Scenes 10–12 form one continuous paper roll,
+  tape attachment and projected camera move, with no final-image slide swap.
+- `eyePadShieldScroll.js` owns captions, English narration intervals and the
+  shared engine config. `build-eye-pad-shield-scroll.cjs` regenerates reduced-size
+  WebP textures, scene JSON and the script. The English AAC/VTT delivery is 125s.
+  Folding/taping share stage 04; circle/slit share stage 08. Cotton
+  pulls alternate directions while original hand proportions stay fixed.
+  The split holdinghand crops support stages 04/05/08, top above and bottom below
+  the object. Folded gauze stops at its crease; the extended right hand fades as
+  one baked image, so WebKit canvas cannot expose its internal layers. Narrow
+  scissors progressively trim their visited short arcs,
+  then dissolve the remaining outlines. The single slit appears as the upper
+  blade starts returning. Pencil circles front-left to front-right, then behind
+  the cup from right to left. The introduction and equipment-preparation cue are
+  removed. The shield completion cue starts during the final camera move.
+- Procedure routing, lazy initialisation, replay, progress, completed restore,
+  My Learning and the existing eye-pad selective download category are aligned.
+  Source cache fallback is now v89. See
+  [the authoring record](../docs/make-eye-pad-shield-scroll.md).
+
 ## Lottie examination page reference - 7 October 2026
 
 - Studied `videos/directOphthalmoscopyScrollPage` and
@@ -52,7 +77,7 @@
   retains relative CSS imports and excludes developer fixtures from deployment.
   [Integration evidence](../docs/miniapps/20260930/INTEGRATION_REPORT.md)
   records browser/build checks and remaining clinical/device/Share limits.
-- Source service-worker fallback is `arclight-static-v84`; builds can inject a
+- Source service-worker fallback is `arclight-static-v87`; builds can inject a
   different cache name. Older version numbers below are historical checkpoints.
 
 The following dated work notes are retained as history. Read current source

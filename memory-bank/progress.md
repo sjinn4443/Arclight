@@ -1,5 +1,51 @@
 # Progress
 
+## Eye pad and shield Lottie lesson - 7 October 2026
+
+- Added a scroll lesson below the existing make-eye-pad video in Eye Pad / Shield.
+  Nine stages preserve reference scenes 01–12, beginning with the reused DO
+  hand-washing scene, with one continuous final roll,
+  tape and camera sequence. English-only AAC narration and VTT captions use the
+  supplied instructions and the shared narration/frame clock.
+- Applied the third motion revision: preserved original hand proportions and
+  registered the cotton hand/thumb pairs, matched brown palm sizes, and used
+  the split holdinghand top/bottom in stages 04/05/08 at a shared crop scale.
+  Fold/tape share stage 04: stationary gauze stops at the fixed crease, the
+  widening flap overlays it, and an extended right hand fades as one baked image.
+  Production screenshots exposed canvas precomp opacity bleeding in WebKit;
+  `foldinghand.webp` fixes it without altering the original hand artwork.
+  Pad/circle cutting progressively removes only the visited quarter arc, then
+  dissolves the remaining outline; tape uses the same masks. The current lower
+  PNG joins at `[127, 205]`. Both scissors pieces have a four-degree swing to keep
+  fingers joined. Cardboard cutting travels only a short distance left before
+  turning 90 degrees and stops earlier upwards. Pencil motion travels left-to-right
+  in front of the cup, then right-to-left behind it, with a wrist extension.
+  It ends before the cup rotates 45 degrees offscreen.
+  The complete circle is exposed, followed by a line wipe and then the 8cm label.
+  Circle/slit share stage 08. The slit moves the upper blade once and is already
+  visible when the blade starts returning.
+  Removed the preparation cue; shield completion starts during camera rotation.
+  The English track stays 125s (342,727 bytes), with unchanged 13 captions and
+  cue intervals. Cache fallback is v89.
+- Recorded the builder, artwork ownership, stage mapping, route-specific launch
+  logic, progress keys and checks in
+  [the authoring record](../docs/make-eye-pad-shield-scroll.md).
+- Nine focused media-contract, My Learning and Front of Eye Jest checks passed,
+  along with focused authoring/config/test ESLint, service-worker syntax and the
+  173-page accessibility audit. The production build contains all 46 runtime
+  files (3,042,885 bytes), including matching narration checksums. Browser checks
+  cover all nine final frames and intermediate fold/fade, trim, pencil and slit
+  renders, replay, completion, Back, captions, My Learning, downloads and existing
+  procedure/Front of Eye regressions. Windows WebKit uses the existing mocked
+  audio clock; Chromium uses actual AAC. Physical iPhone audio is not checked.
+- The serial regression run passed all 18 case bodies; its web-server teardown
+  stalled and was stopped after completion. After correcting the WebKit canvas
+  fade, the final production lesson suite passed all 8 checks on desktop/WebKit
+  with exit code 0 after stopping its owned test server. Final WebKit intermediate
+  screenshots confirm that internal hand crops no longer show through.
+- Build budgets passed: shell 19,833,985 bytes, compressed shell 10,003,734 bytes
+  and media 1,681,264,001 bytes, all within their limits.
+
 ## Lottie examination scroll documentation - 7 October 2026
 
 - Studied the DO and combined Fundal Videos pages, their source configs, shared

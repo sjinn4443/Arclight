@@ -42,11 +42,11 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       localStorage.setItem("arclight:onboarded", "1");
       localStorage.setItem("prefLang", "en");
     });
-    await page.goto(`/#/videos/${hub}`);
-    await page.waitForFunction(
-      () => document.getElementById("videos")?.style.visibility === "visible",
-    );
-    await page.locator(`#${hub} [data-target="${pageId}"]`).click();
+    await page.goto(timing.route ? `/#/${timing.route}` : `/#/videos/${hub}`);
+    await expect(page.locator(`#${timing.route || hub}`)).toBeVisible();
+    await page
+      .locator(`#${timing.route || hub} [data-target="${pageId}"]`)
+      .click();
     const guide = page.locator(`#${pageId}`);
     const audio = guide.locator("audio");
     const toggle = guide.locator("[data-fundal-scroll-narration-toggle]");

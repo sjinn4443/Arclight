@@ -17,7 +17,7 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       localStorage.setItem("prefLang", "en");
       localStorage.setItem(`videoNarration:${id}`, "off");
     }, pageId);
-    await page.goto(`/#/videos/${pageId}`);
+    await page.goto(`/#/${timing.route || "videos"}/${pageId}`);
     const guide = page.locator(`#${pageId}`);
     const headings = guide.locator(".fundal-reflex-section-divider__title");
     const select = guide.locator("[data-fundal-scroll-narration-language]");

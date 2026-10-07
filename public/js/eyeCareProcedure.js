@@ -2,6 +2,89 @@ import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
 import { getRouteFromHash, loadPage } from "./navigation.js";
 import { openMenu } from "./menu.js";
 import { renderProcedureVideo } from "./pecWorkshop.js";
+import {
+  EYE_PAD_SHIELD_SCROLL_PAGE,
+  EYE_PAD_SHIELD_SCROLL_ROUTE,
+} from "./eyePadShieldScroll.js";
+import { primeExaminationNarration } from "./examinationScrollTiming.js";
+import {
+  setLessonProgress,
+  updateLessonProgressRows,
+  LESSON_PROGRESS_EVENT,
+} from "./lessonProgress.js";
+
+let padShieldInitialization = Promise.resolve();
+const pendingPadShieldPages = new WeakMap();
+function initializePadShieldScroll() {
+  const page = document.getElementById(EYE_PAD_SHIELD_SCROLL_PAGE);
+  if (!page) return Promise.resolve();
+  if (pendingPadShieldPages.has(page)) return pendingPadShieldPages.get(page);
+  // A WebKit hash refresh can replace the fragment while imports are pending.
+  // Serialise initialisation and coalesce requests for the same live page.
+  const task = padShieldInitialization
+    .catch(() => {})
+    .then(async () => {
+      const { initializeChildhoodFundalReflexScrollPage } =
+        await import("./childhoodFundalPreparation.js");
+      if (
+        document.body.dataset.currentRoute !== "eyePadShield" ||
+        document.getElementById(EYE_PAD_SHIELD_SCROLL_PAGE) !== page ||
+        page.style.display === "none"
+      )
+        return;
+      await initializeChildhoodFundalReflexScrollPage(
+        EYE_PAD_SHIELD_SCROLL_ROUTE,
+      );
+    });
+  padShieldInitialization = task;
+  pendingPadShieldPages.set(page, task);
+  return task.finally(() => pendingPadShieldPages.delete(page));
+}
+
+// The engine owns playback and cleanup; this route owns earned progress.
+document.addEventListener("childhoodWorkshop:route-complete", (event) => {
+  if (event.detail?.target === EYE_PAD_SHIELD_SCROLL_PAGE)
+    setLessonProgress(EYE_PAD_SHIELD_SCROLL_PAGE, 100);
+});
+document.addEventListener(LESSON_PROGRESS_EVENT, () => {
+  updateLessonProgressRows(document.getElementById("eyePadShield"));
+});
+let scrollUpdateQueued = false;
+function syncPadShieldScrollProgress() {
+  if (scrollUpdateQueued) return;
+  scrollUpdateQueued = true;
+  requestAnimationFrame(() => {
+    scrollUpdateQueued = false;
+    const page = document.getElementById(EYE_PAD_SHIELD_SCROLL_PAGE);
+    if (
+      document.body.dataset.currentRoute !== "eyePadShield" ||
+      !page ||
+      page.style.display === "none"
+    )
+      return;
+    const host = document.getElementById("page-content");
+    const containerScrolls = host && host.scrollHeight > host.clientHeight + 1;
+    const scrollTop = containerScrolls ? host.scrollTop : window.scrollY;
+    const range = containerScrolls
+      ? host.scrollHeight - host.clientHeight
+      : document.documentElement.scrollHeight - window.innerHeight;
+    if (range > 1)
+      setLessonProgress(
+        EYE_PAD_SHIELD_SCROLL_PAGE,
+        Math.min(95, (95 * scrollTop) / range),
+      );
+  });
+}
+window.addEventListener("scroll", syncPadShieldScrollProgress, {
+  passive: true,
+});
+window.addEventListener("resize", syncPadShieldScrollProgress, {
+  passive: true,
+});
+document.addEventListener("scroll", syncPadShieldScrollProgress, {
+  passive: true,
+  capture: true,
+});
 
 function showProcedurePage(id) {
   if (typeof window.showPage === "function") window.showPage(id);
@@ -52,7 +135,7 @@ function lessonRow(key, type, activate) {
   return row;
 }
 
-export function initializeEyeCareProcedure(route) {
+export async function initializeEyeCareProcedure(route) {
   const procedure = EYE_CARE_PROCEDURES[route];
   const root = document.getElementById("eyeCareProcedurePage");
   if (!procedure || !root || document.body.dataset.currentRoute !== route)
@@ -82,6 +165,41 @@ export function initializeEyeCareProcedure(route) {
     });
     row.dataset.pecVideo = key;
     videoRows.append(row);
+    if (route === "eyePadShield" && key === "make_eye_pad") {
+      const scrollTemplate = document.getElementById(
+        "eyePadShieldScrollTemplate",
+      );
+      root.parentElement.append(
+        scrollTemplate.content.firstElementChild.cloneNode(true),
+      );
+      const scrollRow = lessonRow(key, "scroll", async () => {
+        primeExaminationNarration(EYE_PAD_SHIELD_SCROLL_PAGE, "en");
+        await loadPage(route, { subPageId: EYE_PAD_SHIELD_SCROLL_PAGE });
+        await initializePadShieldScroll();
+      });
+      scrollRow.dataset.lesson = "make-eye-pad-shield-scroll";
+      scrollRow.dataset.target = EYE_PAD_SHIELD_SCROLL_PAGE;
+      const title = scrollRow.querySelector(".lesson-type");
+      title.id = "eyePadShield-scroll-lesson-title";
+      const cta = scrollRow.querySelector(".lesson-cta");
+      cta.removeAttribute("data-i18n");
+      cta.replaceChildren(
+        translatedSpan("auto.diabeticretinopathyworkshop.scroll", "scroll", ""),
+        document.createTextNode(" >"),
+      );
+      const progress = document.createElement("div");
+      progress.className = "lesson-progress";
+      progress.setAttribute("role", "progressbar");
+      progress.setAttribute("aria-labelledby", title.id);
+      progress.setAttribute("aria-valuemin", "0");
+      progress.setAttribute("aria-valuemax", "100");
+      progress.setAttribute("aria-valuenow", "0");
+      const fill = document.createElement("div");
+      fill.className = "lesson-progress__fill";
+      progress.append(fill);
+      scrollRow.querySelector(".lesson-main").append(progress);
+      videoRows.append(scrollRow);
+    }
   });
 
   if (procedure.folder) {
@@ -125,11 +243,15 @@ export function initializeEyeCareProcedure(route) {
     });
   });
   window.I18N?.applyTranslations?.(root.parentElement);
+  updateLessonProgressRows(root);
   const requested = getRouteFromHash()?.subPageId;
   const videoKey = procedure.videos.find(
     (key) => requested === `eyeCareVideo-${key}`,
   );
-  if (videoKey) {
+  if (route === "eyePadShield" && requested === EYE_PAD_SHIELD_SCROLL_PAGE) {
+    showProcedurePage(requested);
+    await initializePadShieldScroll();
+  } else if (videoKey) {
     if (procedure.folder) lessons.querySelector("[data-nested-folder]").click();
     showProcedurePage(requested);
     renderProcedureVideo(videoKey, requested);

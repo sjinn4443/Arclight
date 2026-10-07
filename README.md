@@ -46,6 +46,18 @@ stage DOM and are separate from workshop article/image reveal pages.
 Source review recorded 7 October 2026; this update documents the implementation
 without changing lesson behaviour.
 
+The Eye Pad / Shield procedure now has a **Make an eye pad and eye shield** scroll
+row immediately below the matching video. Its URL is
+`#/eyePadShield/makeEyePadShieldScrollPage`. Nine Lottie stages begin with the
+existing DO hand-washing animation and use the supplied
+01–12 artwork, with rolling, taping and the change of camera angle in one final
+sequence. Folding and taping share stage 04; circle cutting and the radial slit
+share stage 08. Split holding-hand crops surround the material, visited edges
+trim progressively, and the English-only narration is 125s.
+The shield completion cue starts during the camera move. It reuses the same stage
+engine, replay, scroll locks and completion restore, with procedure-owned progress
+and My Learning navigation. See [authoring and checks](./docs/make-eye-pad-shield-scroll.md).
+
 ## Primary eye and ear care workshops
 
 The Primary Eye Care route (`#/pecWorkshop`) is owned by

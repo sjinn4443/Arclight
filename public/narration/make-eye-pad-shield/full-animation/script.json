@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "title": "Make an eye pad and eye shield",
+  "sourceVideo": "/videos/Workshop/PEC/7.MakepadNshield_720p.mp4",
+  "durationSeconds": 125,
+  "defaultLanguage": "en",
+  "languages": {
+    "en": {
+      "label": "English",
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural",
+      "style": "Calm, clear British English medical educator"
+    }
+  },
+  "timingSource": "Nine Lottie scenes, beginning with DO hand hygiene. Folding/taping share stage 04; circle cutting and the single radial slit share stage 08. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
+  "cues": [
+    {
+      "id": "hygiene",
+      "en": "Wash your hands and don PPE.",
+      "ttsText": {
+        "en": "Wash your hands and don P P E."
+      },
+      "start": 1,
+      "end": 7
+    },
+    {
+      "id": "equipment",
+      "en": "You will need gauze, cotton wool, cardboard, pencil, cup, sticky paper and scissors.",
+      "start": 7,
+      "end": 17
+    },
+    {
+      "id": "cotton",
+      "en": "For the eye pad, spread a cotton wool ball into an oval shape about 5 to 6 centimetres wide.",
+      "start": 17,
+      "end": 30
+    },
+    {
+      "id": "gauze",
+      "en": "Fold the gauze around the cotton wool.",
+      "start": 30,
+      "end": 39
+    },
+    {
+      "id": "pad-tape",
+      "en": "Tape at the open end.",
+      "start": 39,
+      "end": 46
+    },
+    {
+      "id": "trim",
+      "en": "Trim the edges of the gauze to the shape of the cotton wool.",
+      "start": 46,
+      "end": 56
+    },
+    {
+      "id": "finished-pad",
+      "en": "This is your eye pad.",
+      "start": 56.5,
+      "end": 59
+    },
+    {
+      "id": "cardboard",
+      "en": "For the shield, find some clean cardboard. Reusing medical packaging works well.",
+      "start": 59,
+      "end": 70
+    },
+    {
+      "id": "draw",
+      "en": "Using a cup as a template, draw a circle with a diameter of about 8 centimetres.",
+      "start": 70,
+      "end": 84
+    },
+    {
+      "id": "cut",
+      "en": "Cut out the circle.",
+      "start": 84,
+      "end": 97
+    },
+    {
+      "id": "slit",
+      "en": "Then make a cut from the edge to the centre.",
+      "start": 97,
+      "end": 104
+    },
+    {
+      "id": "cone",
+      "en": "Curve the card into a cone and secure with sticky tape.",
+      "start": 104,
+      "end": 115
+    },
+    {
+      "id": "finished-shield",
+      "en": "This is your eye shield.",
+      "start": 115,
+      "end": 125
+    }
+  ],
+  "videoTitleCues": []
+}

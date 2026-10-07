@@ -67,6 +67,38 @@
   background-image: url("/images/icon/eyes/moduleicons/primary_video.webp");
 }
 
+.eye-care-procedure-box .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
+}
+.eye-care-procedure-box .lesson-row--scroll .lesson-progress {
+  margin-top: 7px;
+  height: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e7e7e7;
+}
+.eye-care-procedure-box .lesson-progress__fill {
+  width: 0;
+  height: 100%;
+  background: #15e115;
+}
+#makeEyePadShieldScrollPage .childhood-fundal-segment-text {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 680px;
+  text-wrap: pretty;
+}
+#makeEyePadShieldScrollPage .eyes-topbar__title {
+  max-width: min(52vw, 360px);
+  white-space: normal;
+  line-height: 1.2;
+}
+@media (min-width: 1024px) {
+  #makeEyePadShieldScrollPage .childhood-fundal-segment-text {
+    width: min(66.6667%, calc(68vh * (1169 / 1280)));
+  }
+}
+
 .eye-care-procedure-box .lesson-type {
   font-size: 11px;
   font-weight: 600;

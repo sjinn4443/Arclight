@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Object.prototype.hasOwnProperty.call(EYE_CARE_PROCEDURES, routeName)) {
       const { initializeEyeCareProcedure } =
         await import("./eyeCareProcedure.js");
-      initializeEyeCareProcedure(routeName);
+      await initializeEyeCareProcedure(routeName);
       return;
     }
 

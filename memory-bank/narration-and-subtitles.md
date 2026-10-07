@@ -2,6 +2,28 @@
 
 Last checked: 17 September 2026.
 
+### Eye pad and shield scroll narration — 7 October 2026
+
+The procedure-hosted `makeEyePadShieldScrollPage` uses nine Lottie stages and
+the same narration/frame clock. Its supplied English instructions are recorded
+in `public/narration/make-eye-pad-shield/full-animation/script.json`, generated
+from `eyePadShieldScroll.js` by `build-eye-pad-shield-scroll.cjs`. The English
+delivery is 125s mono AAC (342,727 bytes), with 13 matching VTT cues and a checksum
+manifest. `PPE` remains unchanged in captions; `ttsText` spells its letters.
+The first cue is now “Wash your hands and don PPE.” with the reused DO hygiene
+animation. The introduction and “Prepare the equipment” cue are removed.
+Fold/tape cues share stage 04; circle/slit cues share stage 08 with the same absolute
+84–97s / 97–104s cue intervals. This merge keeps the AAC and VTT unchanged. Finished-item cues say
+“This is your eye pad.” and “This is your eye shield.” The shield cue starts at
+11s within the final stage, while its camera moves over local seconds 10.5–14.5.
+
+Source artwork 10–12 shares one cone animation: roll, tape, then camera motion.
+The PEC video is a 73.73s motion reference, so narration generation skips a review
+video against that source. The WAV master stays local; the cue durations,
+delivery checksum and rate checks are in
+`.codex-artifacts/make-eye-pad-shield-narration/qa-report.json`.
+See [authoring, regeneration and checks](../docs/make-eye-pad-shield-scroll.md).
+
 ### Combined scroll timing update — 17 September 2026
 
 `frontOfEyeExaminationScrollPage`, `directOphthalmoscopyScrollPage` and

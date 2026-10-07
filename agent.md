@@ -61,10 +61,34 @@ Last refreshed: 2026-10-07
   CSP handling and relative CSS imports. Keep developer fixtures excluded from
   deployment/offline manifests. Rebuild changed bundles with each app's
   canonical builder; keep clinical review and physical-device limits explicit.
-- Current source service-worker fallback: `arclight-static-v84`. Production
+- Current source service-worker fallback: `arclight-static-v89`. Production
   can inject `__BUILD_CACHE_NAME__`; read `public/sw.js` before assuming a value.
 
 ## Combined examination scroll guides
+
+- The Eye Pad / Shield procedure owns `makeEyePadShieldScrollPage`, launched
+  directly below its `make_eye_pad` video row. Read
+  [its authoring record](./docs/make-eye-pad-shield-scroll.md) for artwork, timing,
+  narration and validation. `eyePadShieldScroll.js` supplies nine configs to the
+  shared engine; scenes 10–12 remain one roll/tape/camera animation. English is
+  currently the only caption/narration language. Its first stage reuses DO hand
+  hygiene; fold/tape share stage 04 and circle/slit share stage 08.
+  Preserve original hand proportions. Register `holdinghand_top.png` and
+  `holdinghand_bottom.png` at one scale, above/below the held object, in 04/05/08.
+  Mask stationary gauze at the fixed crease and bake the right hand and wrist
+  into `foldinghand.webp` before fading. A Lottie precomp still bleeds internal
+  child layers on iOS canvas, so keep the generated single texture. Extend wrists
+  offscreen. Scissors share measured screw anchors and a four-degree swing;
+  trim the visited short arc progressively, then dissolve only the remaining
+  outline, including tape. Reveal the slit at the start of the upper blade's return.
+  The containing route remains
+  `eyePadShield`, not Videos. Its runtime row has its own click handler: do not
+  add `data-route`, which also triggers the global router and returns to the root.
+- Procedure scroll initialisation must coalesce calls for the same page and
+  serialise fragment replacements while lazy imports are pending. Recheck
+  `tests-e2e/eye-pad-shield-scroll.spec.js` and the shared speech-clock/headings
+  tests after changes. Include the route metadata when iterating the timing
+  registry; entries are no longer all hosted in Videos.
 
 - For requests to build a page like `videos/directOphthalmoscopyScrollPage` or
   `videos/fundalReflexExaminationScrollPage`, read

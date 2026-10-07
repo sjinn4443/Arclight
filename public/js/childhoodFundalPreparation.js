@@ -1,5 +1,6 @@
 import { VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG } from "./visualAcuityExaminationScroll.js";
 import { FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG } from "./frontOfEyeExaminationScroll.js";
+import { EYE_PAD_SHIELD_SCROLL_CONFIG } from "./eyePadShieldScroll.js";
 import {
   configureExaminationTiming,
   frameAtNarrationTime,
@@ -1509,6 +1510,8 @@ ROUTE_CONFIG.frontOfEyeExaminationScroll = {
 ROUTE_CONFIG.visualAcuityExaminationScroll = {
   ...VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG,
 };
+
+ROUTE_CONFIG.makeEyePadShieldScroll = { ...EYE_PAD_SHIELD_SCROLL_CONFIG };
 
 Object.values(ROUTE_CONFIG).forEach(configureExaminationTiming);
 

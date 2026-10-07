@@ -49,6 +49,7 @@ ArclightApp.zip
 /public/videos/Workshop/PEC/New folder/
 
 # Test artifacts
+/.codex-artifacts/make-eye-pad-shield-narration/*.wav
 /tmp/
 /tmp_*
 /tmp-*

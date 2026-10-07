@@ -47,6 +47,13 @@ keep `config.js`'s existing `videos` route and initialise the engine from
 `videos.js`. Separate `childhoodFundal*` routes instead require a fragment in
 `config.js` and membership in `main.js`'s `FUNDAL_REFLEX_SCROLL_ROUTES`.
 
+For a procedure-hosted example, see
+[Make an eye pad and eye shield](./make-eye-pad-shield-scroll.md).
+`eyeCareProcedure.html` supplies a template cloned only for `eyePadShield`, and
+`eyeCareProcedure.js` owns launch, lazy initialisation and shared progress. The
+same engine config and combined-page CSS still apply. Its timing entry specifies
+`route: "eyePadShield"` so generic browser checks use the correct containing route.
+
 ## Minimal page shell and launcher
 
 Use the existing topbar and an empty animation list. Replace every example ID,

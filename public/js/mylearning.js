@@ -100,6 +100,12 @@ const MY_LEARNING_EYES_IMAGE_MAP = Object.freeze({
 
 const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
   {
+    route: "eyePadShield",
+    title: "Eye Pad / Shield",
+    titleI18n: "eyes.card_label.eye_pad_shield",
+    image: "images/icon/eyes/moduleicons/primary_scrollytell.webp",
+  },
+  {
     route: "childhoodEyeScreeningWorkshop",
     title: "Childhood Eye Screening Workshop",
     titleI18n: "mylearning.progress_childhood_workshop",
@@ -283,6 +289,10 @@ const GLAUCOMA_TARGET_ROUTES = Object.freeze({
 });
 
 const PROGRESS_TARGET_ROUTES = Object.freeze({
+  makeEyePadShieldScrollPage: {
+    route: "eyePadShield",
+    subPageId: "makeEyePadShieldScrollPage",
+  },
   ...CHILDHOOD_TARGET_ROUTES,
   ...GLAUCOMA_TARGET_ROUTES,
   atomsHandout1Page: { route: "atomsHandout1" },
@@ -1108,6 +1118,15 @@ function getStoredProgressTargets() {
 async function getInProgressGroups(searchDictionaries) {
   const seenTargets = new Set();
   const targetCatalog = new Map();
+  // Procedure rows are created at runtime, so their fragment has no static row
+  // for the catalog reader. Keep this lesson's title and destination explicit.
+  targetCatalog.set("makeEyePadShieldScrollPage", {
+    title: "Make an eye pad and eye shield",
+    titleI18n: "pecWorkshop.make_eye_pad",
+    kind: "Scrolly",
+    source: getProgressSourceByRoute("eyePadShield"),
+    ...PROGRESS_TARGET_ROUTES.makeEyePadShieldScrollPage,
+  });
   const groups = new Map();
   const loadedSources = await Promise.all(
     MY_LEARNING_PROGRESS_SOURCES.map(async (source) => ({
@@ -1213,6 +1232,7 @@ async function getInProgressGroups(searchDictionaries) {
       {
         target,
         title: catalogEntry?.title || humanizeProgressTarget(target),
+        titleI18n: catalogEntry?.titleI18n || "",
         section: catalogEntry?.section || "",
         kind: catalogEntry?.kind || "Lesson",
         searchText:
