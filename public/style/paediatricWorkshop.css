@@ -1,0 +1,348 @@
+/* Source-derived paediatric lessons use the shared workshop card/reveal shell. */
+.paediatric-scrolly-page .diabetic-screening-eyebrow {
+  color: #f25600;
+}
+.paediatric-scrolly-page .diabetic-screening-step {
+  background: #f25600;
+}
+.paediatric-scrolly-page .diabetic-screening-panel {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.paediatric-scrolly-page .diabetic-screening-panel__text,
+.paediatric-scrolly-page .workshop-source-figure {
+  min-width: 0;
+  width: 100%;
+}
+.paediatric-scrolly-page .diabetic-screening-panel p {
+  color: #374151;
+  font-size: clamp(15px, 4.1vw, 18px);
+  font-weight: 550;
+  line-height: 1.65;
+}
+.paediatric-scrolly-page .diabetic-screening-panel--content-fit {
+  display: block;
+  min-height: 0;
+}
+.paediatric-scrolly-page .workshop-source-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto 0;
+  object-fit: contain;
+}
+.paediatric-scrolly-page .paediatric-image-panel .workshop-source-figure img {
+  width: min(100%, 330px);
+  border-radius: 16px 16px 0 0;
+}
+.paediatric-scrolly-page .workshop-source-figure figcaption {
+  background: #f25600;
+  color: white;
+}
+.paediatric-scrolly-page details {
+  margin-top: 20px;
+  border: 1px solid #f25600;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.paediatric-scrolly-page summary {
+  min-height: 32px;
+  cursor: pointer;
+  color: #f25600;
+  font-weight: 800;
+}
+.paediatric-workshop-page .lesson-row[aria-disabled="true"] {
+  background: #e5e7eb;
+}
+.paediatric-workshop-page
+  .lesson-row[aria-disabled="true"]
+  :is(.thumb, .lesson-type, .lesson-progress) {
+  opacity: 0.42;
+}
+#paediatricSurgicalEyeEarWorkshopPage .paediatric-coming-soon {
+  color: #fff;
+  background: #6b7280;
+  border-radius: 4px;
+  padding: 2px 4px;
+  flex: 0 0 auto;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#paediatricSurgicalEyeEarWorkshopPage
+  .lesson-row[aria-disabled="true"]
+  .lesson-cta {
+  visibility: hidden;
+  margin: 0;
+  align-self: end;
+  font-size: 11px;
+  line-height: normal;
+  white-space: nowrap;
+}
+#paediatricSurgicalEyeEarWorkshopPage
+  .lesson-row[aria-disabled="true"]
+  .lesson-top {
+  width: calc(100% + 42px) !important;
+}
+#paediatricSurgicalEyeEarWorkshopPage
+  .lesson-row[aria-disabled="true"]
+  .lesson-type {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+#paediatricSurgicalEyeEarWorkshopPage
+  .lesson-row[aria-disabled="true"]
+  .lesson-progress__fill {
+  width: 0;
+}
+.paediatric-workshop-page .lesson-meta {
+  display: block;
+  padding: 8px 0 0 25px;
+  white-space: normal;
+}
+.paediatric-workshop-page
+  .pec-nested-folder-open
+  > .lesson-row:not(.pec-nested-folder-row) {
+  opacity: 0.72;
+}
+.paediatric-flow-target
+  :is(
+    .medical-next-wrap,
+    .childhood-next-wrap,
+    .glaucoma-next-wrap,
+    .diabetic-next-wrap
+  ),
+.paediatric-flow-target .pec-flow-nav:not(.paediatric-flow-nav) {
+  display: none !important;
+}
+.paediatric-workshop-page .lesson-row:focus-visible,
+.paediatric-scrolly-page summary:focus-visible {
+  outline: 3px solid #f25600;
+  outline-offset: 4px;
+}
+
+#paediatricSurgicalEyeEarWorkshopPage .pupil-level__cap {
+  background: linear-gradient(90deg, #ff7a00 0%, #ff5200 100%);
+}
+#paediatricSurgicalEyeEarWorkshopPage .lesson-progress__fill {
+  background: #f25600;
+}
+/* Shared lessons inherit their active caller's palette. */
+#page-content .paediatric-flow-target,
+#page-content .paediatric-flow-target .medical-students-screening-page {
+  --medical-orange: #f25600;
+  --medical-orange-dark: #c2410c;
+  --medical-orange-soft: #fff3eb;
+}
+#page-content .paediatric-flow-target .diabetic-screening-step {
+  background: #f25600;
+  color: #fff;
+}
+#page-content
+  .paediatric-flow-target
+  :is(
+    .diabetic-screening-eyebrow,
+    .pec-eye-lesson-hero p,
+    .pec-eye-lesson-panel h2
+  ) {
+  color: #f25600;
+}
+#page-content
+  .paediatric-flow-target
+  :is(.medical-overview-list li, .medical-prev-btn) {
+  border-color: rgb(242 86 0 / 35%);
+}
+#page-content
+  .paediatric-flow-target
+  :is(
+    .medical-next-btn,
+    .medical-practice-poster figcaption,
+    .medical-learning-image figcaption,
+    .core-examination-pdf-download,
+    .retinal-structure-tap__next,
+    .retinal-structure-tap__modal-cta,
+    .diabetic-case-quiz__nav-button.is-active,
+    .casechat-confirm__btn,
+    .casechat-nextcase,
+    .casechat-submitpill
+  ) {
+  background: #f25600;
+  color: #fff;
+}
+#page-content .paediatric-flow-target .diabetic-case-quiz__option input {
+  accent-color: #f25600;
+}
+#page-content .paediatric-flow-target .medical-next-btn {
+  box-shadow: 0 10px 22px rgb(242 86 0 / 20%);
+}
+#caseStudyChatPage.paediatric-flow-target #caseChatSubmitBtn,
+#medicalAnteriorSegmentPage.paediatric-flow-target #medicalAnteriorAnswerBtn {
+  background: #f25600;
+  color: #fff;
+}
+#caseStudyChatPage.paediatric-flow-target #caseChatSendBtn:not(:disabled) {
+  color: #f25600;
+}
+.paediatric-flow-target .pec-eye-lesson-panel li::marker {
+  color: #f25600;
+}
+#paediatricSurgicalEyeEarWorkshopPage
+  :is(.lesson-cta, .see-all-toggle, .pec-folder-complete) {
+  color: #f25600;
+}
+#paediatricSurgicalEyeEarWorkshopPage .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_scroll.webp");
+}
+#paediatricSurgicalEyeEarWorkshopPage .lesson-row--scroll .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_scroll.webp");
+}
+#paediatricSurgicalEyeEarWorkshopPage .lesson-row--folder .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
+}
+#paediatricSurgicalEyeEarWorkshopPage .lesson-row--video .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_video.webp");
+}
+#paediatricSurgicalEyeEarWorkshopPage .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_pdf.webp");
+}
+#paediatricSurgicalEyeEarWorkshopPage
+  :is(.lesson-row--quiz, .lesson-row--interactive)
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp") !important;
+}
+.paediatric-flow-nav .pec-flow-prev {
+  color: #f25600;
+  border-color: #f25600;
+}
+.paediatric-flow-nav .pec-flow-next,
+.paediatric-quiz-page .quiz-actions .btn.primary {
+  background: #f25600;
+  color: #fff;
+  box-shadow: 0 10px 22px rgb(242 86 0 / 20%);
+}
+.paediatric-scrolly-page .paediatric-objective-images {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+.paediatric-scrolly-page .paediatric-objective-images--pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+.paediatric-scrolly-page .paediatric-objective-figure {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.paediatric-scrolly-page .paediatric-objective-figure img {
+  width: 100%;
+  height: 250px;
+  margin: 0;
+  border-radius: 0;
+  object-fit: contain;
+  background: #fff;
+}
+.paediatric-scrolly-page .paediatric-objective-images--pair img {
+  height: clamp(150px, 18vw, 220px);
+}
+.paediatric-scrolly-page .paediatric-objective-figure figcaption {
+  margin: 0;
+}
+.paediatric-scrolly-page .paediatric-structure-list {
+  display: grid;
+  gap: 14px;
+  padding-left: 22px;
+  margin: 0;
+  list-style: disc;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+.paediatric-structure-list li::marker {
+  color: #f25600;
+}
+@media (min-width: 48em) {
+  .paediatric-scrolly-page .paediatric-objective-panel {
+    grid-template-columns: minmax(0, 1.05fr) minmax(220px, 0.8fr);
+    min-height: auto;
+    align-items: center;
+  }
+}
+.paediatric-quiz-page .medical-test-quiz-mount {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 10px 14px 24px;
+  box-sizing: border-box;
+}
+.paediatric-quiz-page .paediatric-quiz-title {
+  font-size: 18px;
+  margin: 24px 0 0;
+  color: #f25600;
+  white-space: normal;
+}
+.paediatric-quiz-page .paediatric-quiz-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.paediatric-quiz-page .paediatric-quiz-heading h2 {
+  font-size: 18px;
+  margin: 8px 0;
+}
+.paediatric-quiz-page .quiz-progress {
+  font-size: 13px;
+  color: #505964;
+}
+.paediatric-quiz-page .paediatric-quiz-instructions {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #505964;
+  margin-bottom: 28px;
+}
+.paediatric-quiz-page .paediatric-quiz-image {
+  display: block;
+  width: min(100%, 260px);
+  height: auto;
+  margin: 0 auto 18px;
+  border-radius: 12px;
+}
+.paediatric-quiz-page fieldset {
+  min-width: 0;
+}
+.paediatric-quiz-page legend {
+  float: left;
+  width: 100%;
+}
+.paediatric-quiz-page .paediatric-quiz-results {
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 32px));
+  border: 0;
+}
+.paediatric-quiz-results::backdrop {
+  background: rgb(0 0 0 / 45%);
+}
+#eyesCatalogPage
+  .eyes-card[data-target="paediatricSurgicalEyeEarWorkshop"]
+  .eyes-card__bg {
+  inset: auto 0 4% auto;
+  width: 64%;
+  height: 78%;
+  object-fit: contain !important;
+  background: transparent !important;
+  border-radius: 0;
+}
+#eyesCatalogPage
+  .eyes-card[data-target="paediatricSurgicalEyeEarWorkshop"]
+  .eyes-card__title {
+  max-width: 72%;
+  white-space: pre-line;
+}
+@media (prefers-reduced-motion: reduce) {
+  .paediatric-scrolly-page [data-diabetic-scroll-step] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

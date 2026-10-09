@@ -2,6 +2,32 @@
 
 # Active Context
 
+## Paediatric Surgical Eye & Ear workshop - 9 October 2026
+
+- Added the Eyes carousel workshop with a white/grey heart illustration and
+  Intermediate orange accents. It is first in the workshop carousel, with the
+  title split into Paediatric Surgical / Eye & Ear. Its 31 rows comprise six local scrolly lessons,
+  one five-image MCQ quiz, 23 shared pages and one grey disabled animation row.
+  Media order is scrolly → Full Animation → PDF → examination video, with exam
+  skill names as row titles plus Animation / PDF suffixes. Singleton Train and Test entries render directly.
+- Shared Back and Previous/Next preserve the originating folder. Embedded
+  mini-apps consume the existing interactive-learning return bridge. Ear reuse
+  selects the existing Primary Ear Care lesson key without replacing the caller's
+  progress context. My Learning lists local pages and supports the saved card.
+- Front Train and Test contains Medical Students anterior cases and Intermediate
+  Case Study (row title has no Intermediate; its entry uses PEC's unlimited mode);
+  Fundal contains only Fundal Reflex Test, and Direct Ophthalmoscopy
+  contains only `videos/diabeticCaseQuizPage`. Front objectives are text-only;
+  other objectives use clinical image placement and orange practice-style captions.
+  Workshop structure uses bullets. Source ear MCQs preserve the slide labels and support
+  saved answers, scoring, review and restart. Reused Ear lessons show one orange
+  Previous/Next pair and orange content accents; disabled rows show white
+  “coming soon” beside their title at normal row height. The quiz asks which
+  option best describes the image, with a Fundal Reflex Quiz-style heading.
+- New copy is English with i18n metadata/fallbacks; shared pages retain their
+  languages. Selective download dependencies are registered; SW fallback is v92.
+  See [the content audit](../docs/paediatric-workshop-content-audit.md).
+
 ## Eye pad and shield scroll lesson - 7 October 2026
 
 - Added `#/eyePadShield/makeEyePadShieldScrollPage` below the matching video row.

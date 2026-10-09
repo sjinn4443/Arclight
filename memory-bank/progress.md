@@ -1,5 +1,80 @@
 # Progress
 
+## Paediatric workshop layout refinement - 9 October 2026
+
+- Moved the card to the start of Eyes Workshops and split its title into
+  Paediatric Surgical / Eye & Ear. Workshop structure now uses unboxed bullets;
+  animation and PDF lesson titles have the requested suffixes.
+- Renamed the Intermediate cases row to Case Study and applied PEC's unlimited
+  mode on paediatric entry, including revealed images and no intro/timer. Shared
+  Ear/Medical/Case Study accents follow the caller's orange palette.
+- Removed Front objective photos while preserving text panels. Remaining
+  objectives use clinical image placement and Medical Students practice captions,
+  with constrained paired images. Disabled Otoscopy Animation shows white
+  “coming soon” beside its title while retaining normal row height.
+- Ear MCQs now ask which option best describes the image and use the Fundal
+  Reflex Quiz heading style. Answers, scoring, persistence and source labels are
+  unchanged. Service-worker fallback is v92.
+- Accessibility passed all 174 HTML files. Four focused Jest suites passed
+  33 checks covering ear MCQs, offline selection, Medical Students and anterior
+  cases. Twenty production browser cases passed in Chromium and iPhone WebKit:
+  title/order, bullets, media labels, captions, equal disabled-row height,
+  text-only Front objectives, PEC case mode, reload/return and normal-entry
+  theme/mode isolation. Two additional final-bundle checks passed for orange
+  diabetic quiz controls in both engines, for 22 production browser checks total.
+- Final production build passed: shell 19,998,149 bytes (20MB limit), compressed
+  shell 10,068,481 bytes (12MB limit), media 1,685,271,231 bytes (2GB limit).
+  Focused new-module lint, formatting and diff checks passed. The existing nine
+  Case Study lint findings match HEAD. Mobile objective tests explicitly wait
+  for the originating folder to restore before opening the next lesson.
+
+## Paediatric Surgical Eye & Ear workshop - 9 October 2026
+
+- Added the carousel card, five folders, six source-derived scrolly lessons,
+  one ear-image MCQ quiz, 23 shared lesson links and one disabled animation row. The source
+  objectives and ear photographs are integrated with the existing folder,
+  scrolly, navigation, progress, My Learning and offline download conventions.
+- Reused the actual downloadable PDFs and Full Animation videos alongside
+  examination scrolly pages; shared targets return to the new workshop folder,
+  and existing Medical Students and Primary Ear Care controls yield to the
+  active caller's flow. The existing embedded-return bridge remains available.
+- Applied the user's revision: white/grey heart artwork, Intermediate orange,
+  skill-name titles and scrolly → Full Animation → PDF → examination video order.
+  Front training links only anterior cases and Intermediate Case Study; Fundal
+  and Direct each expose the requested single test directly. Objective panels
+  reuse labelled app images. The unavailable row has no status copy, zero
+  progress and normal height. Shared Ear pages show one orange navigation pair.
+  The MCQ quiz supports partial-answer reload, five-image scoring, review and
+  restart; correct answers follow source slide 16.
+- Fixed Videos-to-Videos sequencing with the existing `showVideosPageById` API;
+  Intermediate cases synchronise the chat subpage after the existing card launch.
+  Shared-page child-list changes reconcile the caller's navigation after late
+  quiz/video rendering. Intermediate case refresh restores its existing launch.
+  Recorded slide/image provenance, source-label limits, target mappings and
+  import instructions in
+  [the content audit](../docs/paediatric-workshop-content-audit.md).
+- Focused Jest coverage: 68 checks passed across ear MCQs, paediatric offline selection,
+  existing narration downloads and Medical Students. Accessibility audit passed
+  all 174 HTML pages. Translation QA matches HEAD's existing counts (985 missing
+  keys, 504 missing literal keys, no damaged strings or medical homonym violations).
+  New source copy is English; this task does not supply translations for it.
+- Production build passed: shell 19,988,719 bytes (20MB limit), compressed shell
+  10,065,738 bytes (12MB limit), media 1,685,271,231 bytes (2GB limit).
+- All 32 revised browser cases were validated in Chromium and iPhone WebKit
+  across the production run and focused final-build checks. Thirty new cases
+  passed the broad production run; the final media/quiz return checks passed in
+  both engines after asynchronous navigation and folder-restore fixes. The
+  desktop quiz check waits for the Fundal folder to restore before opening Direct.
+  Eight existing PEC/Ear Care regressions passed: four against production and
+  four against source, since the latter import development-only module APIs.
+  Mobile media sequencing uses keyboard activation of the same Next controls;
+  format order and shared scrolly returns are tested separately, while timed
+  Lottie playback remains covered by its existing examination suite. Checks do
+  not establish physical-device media/audio quality.
+  Focused new-module/importer/browser-test lint passed; the ESM `.cjs` offline test
+  was linted with its Babel/jsdom environment. Broader affected-file lint reports
+  the pre-existing unused `getRowSectionText` in My Learning.
+
 ## Eye pad and shield Lottie lesson - 7 October 2026
 
 - Added a scroll lesson below the existing make-eye-pad video in Eye Pad / Shield.

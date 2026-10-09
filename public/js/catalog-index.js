@@ -40,6 +40,7 @@ export const EYES_INDEX = {
 
   // Primary Eye Care procedures
   PEC: "pecWorkshop",
+  "Paediatric Surgical Eye & Ear": "paediatricSurgicalEyeEarWorkshop",
 
   // Extended examination
   Ptosis: "comingSoon",

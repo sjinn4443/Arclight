@@ -4,6 +4,10 @@ import {
   setLessonProgress,
   updateLessonProgressRows,
 } from "./lessonProgress.js";
+import {
+  PAEDIATRIC_ROUTE,
+  PAEDIATRIC_LESSONS,
+} from "./paediatricWorkshopData.js";
 
 const INTERMEDIATE_CASE_STUDY_PROGRESS_TARGET = "caseStudyChatPage";
 
@@ -423,9 +427,16 @@ export function initializeCaseStudy() {
   if (!listPage || !chatPage) return;
   const pecUnlimited = (() => {
     try {
+      const paediatric = JSON.parse(
+        sessionStorage.getItem(`${PAEDIATRIC_ROUTE}:activeLesson`) || "null",
+      );
       return (
         JSON.parse(sessionStorage.getItem("pecWorkshop:activeEntry") || "null")
-          ?.caseStudy === "intermediate"
+          ?.caseStudy === "intermediate" ||
+        PAEDIATRIC_LESSONS.some(
+          (entry) =>
+            entry.id === paediatric?.id && entry.caseStudy === "intermediate",
+        )
       );
     } catch {
       return false;

@@ -564,6 +564,7 @@ const OFFLINE_DOWNLOAD_OPTIONS = [
     ["condition-optic-nerve", "Optic Nerve Disease"],
     ["workshop-pec", "PEC"],
     ["workshop-medical-students", "Medical Students"],
+    ["workshop-paediatric-surgical", "Paediatric Surgical Eye & Ear"],
     ["workshop-childhood", "Childhood Eye Screening"],
     ["workshop-glaucoma", "Glaucoma"],
     ["workshop-diabetic", "Diabetic Retinopathy"],
@@ -624,6 +625,7 @@ export const OFFLINE_CATALOG_GROUPS = [
     sections: [
       "workshop-pec",
       "workshop-medical-students",
+      "workshop-paediatric-surgical",
       "workshop-childhood",
       "workshop-glaucoma",
       "workshop-diabetic",
@@ -818,6 +820,44 @@ export function matchesOfflineCatalog(url, catalogId) {
   if (catalogId.startsWith("workshop-")) {
     const shared = assetPath.startsWith("/videos/workshop/shared/");
     const workshop = catalogId.slice("workshop-".length);
+    if (workshop === "paediatric-surgical") {
+      return (
+        assetPath.includes("paediatricsurgicaleyeear") ||
+        assetPath.endsWith("/car_paediatric.webp") ||
+        assetPath.startsWith(
+          "/videos/usaid childhood eye screening/1. how to use the arclight",
+        ) ||
+        assetPath.startsWith("/videos/fullanim/dofullanim_") ||
+        [
+          "core-front-of-eye",
+          "core-fundal-reflex",
+          "core-ophthalmoscopy",
+          "tools",
+        ].some((id) => matchesOfflineCatalog(url, id)) ||
+        [
+          "/images/pdf/workshop/ent/",
+          "/videos/otoscopy/",
+          "/images/ears/",
+          "/images/learning/primaryearcare/",
+          "/images/learning/medicalstudents/",
+          "/html/primaryearcareworkshop",
+          "/html/medicalstudentsworkshop",
+          "/scrolly/coreexam/fundalreflex/",
+          "/scrolly/coreexam/frontofeye/",
+          "/scrolly/coreexam/ophths/do/",
+          "/scrolly/workshop/childhood/eyesbrain/",
+          "/images/casestudy/",
+          "/images/quiz/workshop/dr/cases/",
+          "/subapp/discs/assets/images/discs/case-01.webp",
+          "/subapp/discs/assets/images/discs/case-02.webp",
+          "/subapp/discs/assets/images/discs/case-03.webp",
+          "/narration/fundal-reflex/",
+          "/narration/front-of-eye/",
+          "/narration/direct-ophthalmoscopy/",
+          "/images/quiz/fundal-reflex/",
+        ].some((prefix) => assetPath.startsWith(prefix))
+      );
+    }
     if (workshop === "pec" || workshop === "medical-students") {
       const directory = workshop === "pec" ? "pec" : "medstudents";
       return (

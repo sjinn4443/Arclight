@@ -1,4 +1,4 @@
-import { readLessonProgress } from "./lessonProgress.js";
+import { readLessonProgress, setLessonProgress } from "./lessonProgress.js";
 import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 
 const COLOUR = "#15e115";
@@ -7,6 +7,7 @@ const ACTIVE_KEY = "primaryWorkshop:activeLesson";
 const WORKSHOPS = {
   pecWorkshop: "pecWorkshopPage",
   primaryEarCareWorkshop: "primaryEarCareWorkshopPage",
+  paediatricSurgicalEyeEarWorkshop: "paediatricSurgicalEyeEarWorkshopPage",
 };
 let wired = false;
 let frame = null;
@@ -29,8 +30,9 @@ const percent = (value) => Math.max(0, Math.min(100, Number(value) || 0));
 let active = read(sessionStorage, ACTIVE_KEY);
 
 function rowColour(workshop, row) {
-  return workshop === "pecWorkshop" &&
-    row.dataset.pecTarget === "fundalReflexQuizPage"
+  return workshop === "paediatricSurgicalEyeEarWorkshop" ||
+    (workshop === "pecWorkshop" &&
+      row.dataset.pecTarget === "fundalReflexQuizPage")
     ? INTERMEDIATE_COLOUR
     : COLOUR;
 }
@@ -41,6 +43,11 @@ function setProgress(context, value) {
   const next = Math.max(previous, percent(value));
   if (next !== previous)
     write(localStorage, key, { percent: next, updatedAt: Date.now() });
+  if (
+    context.progressTarget &&
+    next > readLessonProgress(context.progressTarget).percent
+  )
+    setLessonProgress(context.progressTarget, next);
   refreshPrimaryWorkshopProgress();
 }
 
@@ -93,7 +100,11 @@ export function refreshPrimaryWorkshopProgress() {
           .forEach((tick) => tick.remove());
         container?.querySelector(":scope > h3 .pec-folder-complete")?.remove();
         row.classList.toggle("is-pec-complete", complete);
-        syncLessonCompletionTick(row, complete ? 100 : 0, COLOUR);
+        syncLessonCompletionTick(
+          row,
+          complete ? 100 : 0,
+          rowColour(workshop, row),
+        );
       });
   });
 }

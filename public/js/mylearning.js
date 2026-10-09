@@ -8,6 +8,12 @@ import { loadPage } from "./navigation.js";
 import { EYES_INDEX } from "./catalog-index.js";
 import { LESSON_PROGRESS_EVENT, readLessonProgress } from "./lessonProgress.js";
 import {
+  PAEDIATRIC_ROUTE,
+  PAEDIATRIC_TITLE,
+  PAEDIATRIC_COPY_PREFIX,
+  PAEDIATRIC_LESSONS,
+} from "./paediatricWorkshopData.js";
+import {
   buildSearchText,
   getActiveSearchDictionaries,
   getElementLocalizedSearchValues,
@@ -51,6 +57,7 @@ const MY_LEARNING_PROGRESS_PREFIXES = Object.freeze([
   "glaucomaWorkshop:progress:",
 ]);
 const MY_LEARNING_LABEL_I18N_OVERRIDES = Object.freeze({
+  [PAEDIATRIC_TITLE]: `${PAEDIATRIC_COPY_PREFIX}.title`,
   "Eye Movements/Squint": "eyes.card_label.eye_movements/squint",
   PEC: "eyes.card_label.pec",
   "Tools and Kits": "eyes.card_label.tools_and_kits",
@@ -72,6 +79,7 @@ const MY_LEARNING_TAG_I18N_KEYS = Object.freeze({
   "Mini App": "eyes.tag_mini_app",
 });
 const MY_LEARNING_EYES_IMAGE_MAP = Object.freeze({
+  [PAEDIATRIC_TITLE]: "images/icon/eyes/workshop/car_paediatric.webp",
   "History Taking": "images/icon/eyes/core/car_history.webp",
   "Visual Acuity": "images/icon/eyes/core/car_visualacuity.webp",
   Pupils: "images/icon/eyes/core/car_pupils.webp",
@@ -99,6 +107,12 @@ const MY_LEARNING_EYES_IMAGE_MAP = Object.freeze({
 });
 
 const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
+  {
+    route: PAEDIATRIC_ROUTE,
+    title: PAEDIATRIC_TITLE,
+    titleI18n: `${PAEDIATRIC_COPY_PREFIX}.title`,
+    image: "images/icon/eyes/workshop/car_paediatric.webp",
+  },
   {
     route: "eyePadShield",
     title: "Eye Pad / Shield",
@@ -994,6 +1008,13 @@ function inferProgressNavigationFromTarget(target, fallbackRoute = "") {
 }
 
 function inferProgressNavigation(row, source, target) {
+  if (source.route === PAEDIATRIC_ROUTE) {
+    const entry = PAEDIATRIC_LESSONS.find(
+      (item) => item.id === row.dataset.paediatricLesson,
+    );
+    if (entry && !entry.unavailable)
+      return { route: entry.route, subPageId: entry.target };
+  }
   const explicitRoute = String(row.getAttribute("data-route") || "").trim();
   if (explicitRoute === "videos") return { route: "videos", subPageId: target };
   if (explicitRoute) return { route: explicitRoute, subPageId: "" };
@@ -1167,6 +1188,13 @@ async function getInProgressGroups(searchDictionaries) {
 
     Array.from(doc.querySelectorAll(".lesson-row[data-target]")).forEach(
       (row) => {
+        if (source.route === PAEDIATRIC_ROUTE) {
+          const entry = PAEDIATRIC_LESSONS.find(
+            (item) => item.id === row.dataset.paediatricLesson,
+          );
+          // Shared targets stay in the progress catalogue of their owning route.
+          if (!entry || entry.route !== PAEDIATRIC_ROUTE) return;
+        }
         const target = String(row.getAttribute("data-target") || "").trim();
         if (!target) return;
 

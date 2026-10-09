@@ -5,6 +5,24 @@ import { initializeMedicalAnteriorSegmentCaseStudy } from "./medicalAnteriorSegm
 import { initializeMedicalStudentsTestQuizzes } from "./medicalStudentsTestQuiz.js";
 
 import { initializeMedicalFrontOfEyePractice } from "./medicalFrontOfEyePractice.js";
+import { PAEDIATRIC_LESSONS } from "./paediatricWorkshopData.js";
+
+function isPaediatricMedicalReuse(targetId) {
+  try {
+    const active = JSON.parse(
+      sessionStorage.getItem("paediatricSurgicalEyeEarWorkshop:activeLesson") ||
+        "null",
+    );
+    return PAEDIATRIC_LESSONS.some(
+      (entry) =>
+        entry.id === active?.id &&
+        entry.route === "medicalStudentsWorkshop" &&
+        entry.target === targetId,
+    );
+  } catch {
+    return false;
+  }
+}
 
 const PAGE_ID = "medicalStudentsWorkshopPage";
 const RAPD_RETURN_KEY = "medicalStudentsWorkshop:rapdReturn";
@@ -643,7 +661,7 @@ async function navigateByStep(step) {
 
 function renderMedicalNavigation(targetId) {
   const config = MEDICAL_NAV_CONFIG[targetId];
-  if (!config || !isFlowEnabled()) {
+  if (!config || !isFlowEnabled() || isPaediatricMedicalReuse(targetId)) {
     removeMedicalNextButtons();
     return;
   }
@@ -757,6 +775,7 @@ export function initializeMedicalStudentsWorkshopFlowInfra() {
       const target = event.target;
       if (!(target instanceof Element)) return;
       if (!target.closest("#backBtnGlobal")) return;
+      if (isPaediatricMedicalReuse(getVisiblePageId())) return;
       const pecReuse = getPecMedicalReuse();
       if (pecReuse?.target === getVisiblePageId()) {
         event.preventDefault();
@@ -795,6 +814,9 @@ export function initializeMedicalStudentsWorkshopFlowInfra() {
       startMedicalVisualDevelopmentVideoAtRequestedOffset(shownId);
       if (getPecMedicalReuse()?.target === shownId) {
         applyPecMedicalReuseTheme();
+        removeMedicalNextButtons();
+        setFlowEnabled(false);
+      } else if (isPaediatricMedicalReuse(shownId)) {
         removeMedicalNextButtons();
         setFlowEnabled(false);
       } else renderMedicalNavigation(shownId);

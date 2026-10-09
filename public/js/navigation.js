@@ -1070,6 +1070,7 @@ const STRUCTURAL_BACK_TARGETS = {
   glaucomaScrollImages: { routeName: "glaucomaWorkshop" },
   glaucomaWorkshop: { routeName: "eyes" },
   medicalStudentsWorkshop: { routeName: "eyes" },
+  paediatricSurgicalEyeEarWorkshop: { routeName: "eyes" },
   pecWorkshop: { routeName: "eyes" },
   primaryEarCareWorkshop: { routeName: "ears" },
   settings: { routeName: "myprofile" },

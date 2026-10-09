@@ -194,6 +194,31 @@ The Visual System lesson finishes with a numbered visual-field-loss video panel.
 The Anterior Segment source image lives under
 `public/images/learning/MedicalStudents/Training/` in the shared PDF-page shell.
 
+## Paediatric Surgical Eye & Ear workshop
+
+Eyes → Workshops starts with **Paediatric Surgical Eye & Ear**, sourced from the
+17-slide Kids OR deck. `#/paediatricSurgicalEyeEarWorkshop` contains Introduction,
+Front of Eye, Fundal Red Reflex, Direct Ophthalmoscopy and Otoscopy folders, with
+nested How to perform / Train and Test rows. The workshop uses Intermediate
+orange accents and a white/grey heart illustration. Six local lessons use the
+shared article scrolly format and one is a five-question ear-image MCQ quiz;
+23 rows reuse existing pages. Media follows scrolly → Full Animation → PDF →
+examination video, with skill names as row titles and Animation / PDF suffixes.
+The carousel title spans two lines: Paediatric Surgical / Eye & Ear. Workshop
+structure uses unboxed bullets. Front objectives stay text-only; other objectives
+pair clinical images with the Medical Students practice caption style. Case Study
+uses the same unlimited Intermediate case settings as PEC. Shared lessons inherit
+orange accents when entered through this workshop. Single-item Train and Test
+sections are direct rows. The unavailable otoscopy animation is a grey disabled
+row with white “coming soon” beside its title and the same height as other lessons.
+
+`public/js/paediatricWorkshopData.js` supplies the curriculum and English source
+copy; `public/js/paediatricSurgicalEyeEarWorkshop.js` owns navigation and restore,
+and `public/js/paediatricEarQuiz.js` owns answer persistence, scoring and review.
+Progress, saved cards and selective downloads use the existing shared systems.
+The [source and reuse audit](./docs/paediatric-workshop-content-audit.md) records
+slide mappings, image provenance, regeneration and current language coverage.
+
 ## Lao localization
 
 Lao (`lo`) is now a supported application language. The rollout includes the

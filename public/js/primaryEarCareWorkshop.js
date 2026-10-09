@@ -327,6 +327,14 @@ async function openLesson(key, section, nested) {
   window.scrollTo(0, 0);
   updateActivePrimaryWorkshopLesson();
 }
+// Shared launches keep the calling workshop's progress and return context.
+export async function openPrimaryEarCareSharedLesson(key) {
+  if (!LESSONS[key]) return;
+  write(LESSON_KEY, key);
+  await loadPage(ROUTE, { subPageId: "primaryEarCareLessonPage" });
+  initializePrimaryEarCareWorkshop();
+  renderLesson(key);
+}
 function renderLesson(key) {
   const lesson = LESSONS[key];
   const page = document.getElementById("primaryEarCareLessonPage");
@@ -556,7 +564,8 @@ export function initializePrimaryEarCareWorkshop() {
       (event) => {
         if (
           !event.target.closest?.("#backBtnGlobal") ||
-          document.body.dataset.currentRoute !== ROUTE
+          document.body.dataset.currentRoute !== ROUTE ||
+          read("paediatricSurgicalEyeEarWorkshop:activeLesson", null)
         )
           return;
         const lessonPage = document.getElementById("primaryEarCareLessonPage");

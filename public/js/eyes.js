@@ -7,6 +7,10 @@ import { openMenu } from "./menu.js";
 import { readLikes as getLikes, toggleLike } from "./likes.js";
 import { EYES_INDEX } from "./catalog-index.js";
 import { ROUTES } from "./config.js";
+import {
+  PAEDIATRIC_COPY_PREFIX,
+  PAEDIATRIC_COPY,
+} from "./paediatricWorkshopData.js";
 
 /**
  * Navigates to a specified target page.
@@ -43,6 +47,8 @@ const EYES_IMAGE_MAP = {
   // Primary Eye Care (PEC)
   // Primary Eye Care (PEC)
   PEC: "images/icon/eyes/workshop/car_who.webp",
+  "Paediatric Surgical Eye & Ear":
+    "images/icon/eyes/workshop/car_paediatric.webp",
 
   // Extended examination
   Ptosis: "images/icon/eyes/extended/car_ptosis.webp",
@@ -91,6 +97,7 @@ const EYES_LABEL_I18N_KEYS = Object.freeze({
   "Eye Pad / Shield": "eyes.card_label.eye_pad_shield",
   "Sight Loss Guidance": "eyes.card_label.sight_loss_guidance",
   "Medical Students": "eyes.card_label.medical_students",
+  "Paediatric Surgical Eye & Ear": `${PAEDIATRIC_COPY_PREFIX}.title`,
 });
 
 const EYES_TAG_I18N_KEYS = Object.freeze({
@@ -636,6 +643,12 @@ export function initializeEyesCatalog() {
     ],
     pecCarousel: [
       {
+        label: "Paediatric Surgical Eye & Ear",
+        target: "paediatricSurgicalEyeEarWorkshop",
+        tags: ["Scroll", "Video", "PDF"],
+        blank: true,
+      },
+      {
         label: "PEC",
         target: EYES_INDEX.PEC,
         tags: ["Scroll"],
@@ -755,8 +768,17 @@ export function initializeEyesCatalog() {
 
       const title = card.querySelector(".eyes-card__title");
       if (title) {
-        title.textContent = i.label;
-        if (labelI18nKey) title.setAttribute("data-i18n", labelI18nKey);
+        const paediatric = i.target === "paediatricSurgicalEyeEarWorkshop";
+        title.textContent = paediatric
+          ? PAEDIATRIC_COPY.carousel_title
+          : i.label;
+        if (labelI18nKey)
+          title.setAttribute(
+            "data-i18n",
+            paediatric
+              ? `${PAEDIATRIC_COPY_PREFIX}.carousel_title`
+              : labelI18nKey,
+          );
       }
 
       const tagRow = card.querySelector(".tag-row");

@@ -136,6 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initializePageNavigation();
   initializePWA();
   // Keep workshop "Next >" flow available even on direct deep links.
+  void import("./paediatricSurgicalEyeEarWorkshop.js")
+    .then((m) => m.initializePaediatricWorkshopFlowInfra?.())
+    .catch(() => {});
   void import("./childhoodWorkshopNextFlow.js")
     .then((m) => m.initializeChildhoodWorkshopNextFlowInfra?.())
     .catch(() => {});
@@ -217,6 +220,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializePrimaryEarCareWorkshop } =
         await import("./primaryEarCareWorkshop.js");
       initializePrimaryEarCareWorkshop();
+      return;
+    }
+
+    if (routeName === "paediatricSurgicalEyeEarWorkshop") {
+      const { initializePaediatricSurgicalEyeEarWorkshop } =
+        await import("./paediatricSurgicalEyeEarWorkshop.js");
+      initializePaediatricSurgicalEyeEarWorkshop();
       return;
     }
 
