@@ -35,19 +35,25 @@ Last refreshed: 2026-10-09
   shared primary folder/progress contracts. Read
   [its source and reuse audit](./docs/paediatric-workshop-content-audit.md) before
   changing source copy or targets. It uses Intermediate orange, skill-name row
-  titles (Animation / PDF suffixes) and scrolly → Full Animation → PDF → examination
+  titles (Animation / PDF / (videos) suffixes) and scrolly → Full Animation → PDF → examination
   video order. Its carousel card comes first and uses two title lines. Single-item
   Train and Test sections render directly. Shared
   global Back uses a window capture handler; embedded mini-app Back uses the
   existing `interactiveLearning:returnTarget` bridge. Preserve folder restore,
   English source fallbacks, ear lesson-key selection and existing owner controls.
   The deck contains no otoscopy animation: retain a grey disabled row with white
-  “coming soon” beside its title and equal lesson height until an asset is supplied.
+  “Coming Soon” inline beside the black title, without a badge, and equal lesson
+  height until an asset is supplied.
   `paediatricEarQuiz.js` supplies five source-image MCQs with saved answers,
-  scoring, review and restart. Correct answers follow slide 16's source labels;
+  scoring, review and restart. Image and choice order are mixed; preserve that
+  order with answers on reload and reshuffle on restart. Grade by stable source
+  IDs rather than display letters. Correct answers follow slide 16's source labels;
   preserve the slide 15/16 label discrepancy documented in the audit.
   Front objectives are text-only. Other objective images reuse existing app assets
-  with Medical Students clinical layout and practice captions. Caller-scoped orange
+  with Medical Students clinical layout and practice captions. Objectives are
+  content-sized and image frames follow each image's natural aspect ratio. Gallery
+  names belong in body text beneath the numbered step, with the image on the right.
+  Caller-scoped orange
   styling also applies to shared Ear and Case Study controls. Use `showVideosPageById` after routing shared
   Videos lessons so their media initialisers and cleanup run; select the
   Intermediate case-study card and sync the chat subpage when launching cases.
@@ -83,7 +89,7 @@ Last refreshed: 2026-10-09
   CSP handling and relative CSS imports. Keep developer fixtures excluded from
   deployment/offline manifests. Rebuild changed bundles with each app's
   canonical builder; keep clinical review and physical-device limits explicit.
-- Current source service-worker fallback: `arclight-static-v92`. Production
+- Current source service-worker fallback: `arclight-static-v93`. Production
   can inject `__BUILD_CACHE_NAME__`; read `public/sw.js` before assuming a value.
 
 ## Combined examination scroll guides

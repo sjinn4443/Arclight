@@ -397,10 +397,10 @@
                 <div class="lesson-main">
                   <div class="lesson-top">
                     <span
-                      data-paediatric-copy="front"
+                      data-paediatric-copy="front_video"
                       class="lesson-type"
                       id="paediatric-title-paediatricFrontVideo"
-                      >Front of Eye Examination</span
+                      >Front of Eye Examination (videos)</span
                     >
                   </div>
                   <div
@@ -753,10 +753,10 @@
                 <div class="lesson-main">
                   <div class="lesson-top">
                     <span
-                      data-paediatric-copy="fundal"
+                      data-paediatric-copy="fundal_video"
                       class="lesson-type"
                       id="paediatric-title-paediatricFundalVideo"
-                      >Fundal Reflex Examination</span
+                      >Fundal Reflex Examination (videos)</span
                     >
                   </div>
                   <div
@@ -1035,10 +1035,10 @@
                 <div class="lesson-main">
                   <div class="lesson-top">
                     <span
-                      data-paediatric-copy="direct"
+                      data-paediatric-copy="direct_video"
                       class="lesson-type"
                       id="paediatric-title-paediatricDirectVideo"
-                      >Direct Ophthalmoscopy</span
+                      >Direct Ophthalmoscopy (videos)</span
                     >
                   </div>
                   <div
@@ -1286,7 +1286,7 @@
                     ><span
                       data-paediatric-copy="coming_soon"
                       class="paediatric-coming-soon"
-                      >coming soon</span
+                      >Coming Soon</span
                     >
                   </div>
                   <div
@@ -1347,10 +1347,10 @@
                 <div class="lesson-main">
                   <div class="lesson-top">
                     <span
-                      data-paediatric-copy="otoscopy"
+                      data-paediatric-copy="otoscopy_video"
                       class="lesson-type"
                       id="paediatric-title-paediatricOtoscopyVideo"
-                      >Otoscopy</span
+                      >Otoscopy (videos)</span
                     >
                   </div>
                   <div
@@ -1603,7 +1603,7 @@
 </div>
 <div
   id="paediatricFrontObjectivesPage"
-  class="page pupils-like has-eyes-topbar paediatric-scrolly-page"
+  class="page pupils-like has-eyes-topbar paediatric-scrolly-page paediatric-objectives-page"
   style="display: none"
 >
   <div class="container pupils-container diabetic-screening-page">
@@ -1684,7 +1684,7 @@
 </div>
 <div
   id="paediatricFundalObjectivesPage"
-  class="page pupils-like has-eyes-topbar paediatric-scrolly-page"
+  class="page pupils-like has-eyes-topbar paediatric-scrolly-page paediatric-objectives-page"
   style="display: none"
 >
   <div class="container pupils-container diabetic-screening-page">
@@ -1816,7 +1816,7 @@
 </div>
 <div
   id="paediatricDirectObjectivesPage"
-  class="page pupils-like has-eyes-topbar paediatric-scrolly-page"
+  class="page pupils-like has-eyes-topbar paediatric-scrolly-page paediatric-objectives-page"
   style="display: none"
 >
   <div class="container pupils-container diabetic-screening-page">
@@ -1966,7 +1966,7 @@
 </div>
 <div
   id="paediatricOtoscopyObjectivesPage"
-  class="page pupils-like has-eyes-topbar paediatric-scrolly-page"
+  class="page pupils-like has-eyes-topbar paediatric-scrolly-page paediatric-objectives-page"
   style="display: none"
 >
   <div class="container pupils-container diabetic-screening-page">
@@ -2166,7 +2166,10 @@
             class="diabetic-screening-panel diabetic-screening-panel--content-fit paediatric-image-panel"
             data-diabetic-scroll-step
           >
-            <span class="diabetic-screening-step">02</span>
+            <div class="diabetic-screening-panel__text">
+              <span class="diabetic-screening-step">02</span>
+              <p data-paediatric-copy="normal">Normal</p>
+            </div>
             <figure class="workshop-source-figure">
               <img
                 src="/images/learning/PaediatricSurgicalEyeEar/normal.webp"
@@ -2176,14 +2179,16 @@
                 height="601"
                 data-paediatric-alt="normal"
               />
-              <figcaption data-paediatric-copy="normal">Normal</figcaption>
             </figure>
           </article>
           <article
             class="diabetic-screening-panel diabetic-screening-panel--content-fit paediatric-image-panel"
             data-diabetic-scroll-step
           >
-            <span class="diabetic-screening-step">03</span>
+            <div class="diabetic-screening-panel__text">
+              <span class="diabetic-screening-step">03</span>
+              <p data-paediatric-copy="hole">Hole</p>
+            </div>
             <figure class="workshop-source-figure">
               <img
                 src="/images/learning/PaediatricSurgicalEyeEar/hole.webp"
@@ -2193,14 +2198,18 @@
                 height="220"
                 data-paediatric-alt="hole"
               />
-              <figcaption data-paediatric-copy="hole">Hole</figcaption>
             </figure>
           </article>
           <article
             class="diabetic-screening-panel diabetic-screening-panel--content-fit paediatric-image-panel"
             data-diabetic-scroll-step
           >
-            <span class="diabetic-screening-step">04</span>
+            <div class="diabetic-screening-panel__text">
+              <span class="diabetic-screening-step">04</span>
+              <p data-paediatric-copy="csom">
+                Chronic Suppurative Otitis Media (CSOM)
+              </p>
+            </div>
             <figure class="workshop-source-figure">
               <img
                 src="/images/learning/PaediatricSurgicalEyeEar/csom.webp"
@@ -2210,16 +2219,16 @@
                 height="220"
                 data-paediatric-alt="csom"
               />
-              <figcaption data-paediatric-copy="csom">
-                Chronic Suppurative Otitis Media (CSOM)
-              </figcaption>
             </figure>
           </article>
           <article
             class="diabetic-screening-panel diabetic-screening-panel--content-fit paediatric-image-panel"
             data-diabetic-scroll-step
           >
-            <span class="diabetic-screening-step">05</span>
+            <div class="diabetic-screening-panel__text">
+              <span class="diabetic-screening-step">05</span>
+              <p data-paediatric-copy="csom_hole">CSOM &amp; Hole</p>
+            </div>
             <figure class="workshop-source-figure">
               <img
                 src="/images/learning/PaediatricSurgicalEyeEar/csom-hole.webp"
@@ -2229,16 +2238,16 @@
                 height="220"
                 data-paediatric-alt="csom_hole"
               />
-              <figcaption data-paediatric-copy="csom_hole">
-                CSOM &amp; Hole
-              </figcaption>
             </figure>
           </article>
           <article
             class="diabetic-screening-panel diabetic-screening-panel--content-fit paediatric-image-panel"
             data-diabetic-scroll-step
           >
-            <span class="diabetic-screening-step">06</span>
+            <div class="diabetic-screening-panel__text">
+              <span class="diabetic-screening-step">06</span>
+              <p data-paediatric-copy="ome">Otitis Media with Effusion (OME)</p>
+            </div>
             <figure class="workshop-source-figure">
               <img
                 src="/images/learning/PaediatricSurgicalEyeEar/ome.webp"
@@ -2248,9 +2257,6 @@
                 height="220"
                 data-paediatric-alt="ome"
               />
-              <figcaption data-paediatric-copy="ome">
-                Otitis Media with Effusion (OME)
-              </figcaption>
             </figure>
           </article>
           <article

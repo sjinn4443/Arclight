@@ -1,5 +1,26 @@
 # Progress
 
+## Paediatric compact cards and mixed MCQs - 9 October 2026
+
+- How to perform live examination videos now end with (videos); Animation and
+  PDF suffixes remain distinct. Objective and gallery cards fit content, and
+  objective image frames use natural aspect ratios without white letterboxing.
+- Disabled Otoscopy Animation has black title text and inline white Coming Soon,
+  without a badge, on a darker grey background. Its lesson height is preserved.
+  Tympanic membrane names are body text beneath step numbers, images to the right.
+- Ear MCQs mix the image order and option order with mixed correct-answer letters.
+  The exact arrangement persists with answers through reload; restart reshuffles
+  and earned completion remains intact. Scoring uses stable source IDs. Existing
+  saved answers and invalid-order recovery are covered. SW fallback is v93.
+- Nine focused Jest checks and five source browser cases per engine passed in
+  Chromium and iPhone WebKit, including compact cards, natural image ratios,
+  gallery placement, mixed order, reload, scoring, review and restart. All ten
+  final-build browser cases passed across Chromium and iPhone WebKit.
+- Accessibility passed all 174 HTML files. Focused lint, formatting and diff
+  checks passed. Production build passed: shell 19,999,512 bytes (20MB limit),
+  compressed shell 10,068,923 bytes (12MB limit), media 1,685,271,231 bytes
+  (2GB limit).
+
 ## Paediatric workshop layout refinement - 9 October 2026
 
 - Moved the card to the start of Eyes Workshops and split its title into

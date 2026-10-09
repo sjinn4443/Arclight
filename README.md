@@ -203,14 +203,18 @@ nested How to perform / Train and Test rows. The workshop uses Intermediate
 orange accents and a white/grey heart illustration. Six local lessons use the
 shared article scrolly format and one is a five-question ear-image MCQ quiz;
 23 rows reuse existing pages. Media follows scrolly → Full Animation → PDF →
-examination video, with skill names as row titles and Animation / PDF suffixes.
+examination video, with skill names as row titles and Animation / PDF / (videos) suffixes.
 The carousel title spans two lines: Paediatric Surgical / Eye & Ear. Workshop
 structure uses unboxed bullets. Front objectives stay text-only; other objectives
-pair clinical images with the Medical Students practice caption style. Case Study
+use compact cards and pair naturally sized clinical images with the Medical Students
+practice caption style. The tympanic membrane gallery places each name below its
+number as body text, with the photograph on the right. Ear MCQs mix image and
+option order, preserve the order on reload and reshuffle on restart. Case Study
 uses the same unlimited Intermediate case settings as PEC. Shared lessons inherit
 orange accents when entered through this workshop. Single-item Train and Test
 sections are direct rows. The unavailable otoscopy animation is a grey disabled
-row with white “coming soon” beside its title and the same height as other lessons.
+row with black “Otoscopy Animation” and white “Coming Soon” as inline text,
+without a status badge, and the same height as other lessons.
 
 `public/js/paediatricWorkshopData.js` supplies the curriculum and English source
 copy; `public/js/paediatricSurgicalEyeEarWorkshop.js` owns navigation and restore,

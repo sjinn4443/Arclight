@@ -38,7 +38,12 @@ it("requires an answer to every image before showing a score", () => {
   expect(page.querySelector("[role=status]").textContent).toContain(
     "Answer all five",
   );
-  expect(document.activeElement.name).toBe("ear-hole");
+  const missing = [...page.querySelectorAll("fieldset")].find(
+    (card) => !card.querySelector("input:checked"),
+  );
+  expect(document.activeElement.name).toBe(
+    `ear-${missing.dataset.earQuestion}`,
+  );
 });
 it("grades the five source labels and reviews a wrong answer", () => {
   initializePaediatricEarQuiz(page);
@@ -52,9 +57,80 @@ it("grades the five source labels and reviews a wrong answer", () => {
   expect(page.querySelectorAll(".opt.correct")).toHaveLength(5);
   expect(page.querySelectorAll(".opt.wrong")).toHaveLength(1);
   expect(page.querySelectorAll("input:disabled")).toHaveLength(25);
-  expect(page.querySelector(".quiz-explanation").textContent).toBe(
-    "Source label: Normal",
+  expect(
+    page.querySelector('[data-ear-question="normal"] .quiz-explanation')
+      .textContent,
+  ).toBe("Source label: Normal");
+});
+
+const displayOrder = () =>
+  [...page.querySelectorAll("fieldset")].map((card) => ({
+    id: card.dataset.earQuestion,
+    number: card.querySelector(".quiz-card-number").textContent,
+    choices: [...card.querySelectorAll(".opt input")].map(
+      (input) => input.value,
+    ),
+    letters: [...card.querySelectorAll(".opt-prefix")].map(
+      (node) => node.textContent,
+    ),
+  }));
+it("mixes image and correct-answer positions even for a repetitive random draw", () => {
+  const random = jest.spyOn(Math, "random").mockReturnValue(0);
+  initializePaediatricEarQuiz(page);
+  random.mockRestore();
+  const order = displayOrder();
+  expect(order.map((item) => item.id)).not.toEqual(ids);
+  expect(order.map((item) => item.number)).toEqual([
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+  ]);
+  const positions = order.map((item) => item.choices.indexOf(item.id));
+  expect([...positions].sort()).toEqual([0, 1, 2, 3, 4]);
+  expect(
+    positions.every(
+      (position, index) => position === (positions[0] + index) % 5,
+    ),
+  ).toBe(false);
+  order.forEach((item) => {
+    expect([...item.choices].sort()).toEqual([...ids].sort());
+    expect(item.letters).toEqual(["A.", "B.", "C.", "D.", "E."]);
+  });
+});
+it("keeps image and option order alongside partial answers on reload", () => {
+  initializePaediatricEarQuiz(page);
+  choose("normal", "hole");
+  const before = displayOrder();
+  const restored = page.cloneNode(true);
+  page.replaceWith(restored);
+  page = restored;
+  delete page.dataset.earQuizWired;
+  initializePaediatricEarQuiz(page);
+  expect(displayOrder()).toEqual(before);
+  expect(
+    page.querySelector('input[name="ear-normal"][value="hole"]').checked,
+  ).toBe(true);
+});
+it("repairs duplicate or unknown saved orders without losing existing answers", () => {
+  localStorage.setItem(
+    "paediatricSurgicalEyeEarWorkshop:earQuiz:v1",
+    JSON.stringify({
+      answers: { normal: "hole" },
+      questionOrder: ["normal", "normal", "csom", "csom-hole", "invalid"],
+      optionOrders: Object.fromEntries(ids.map((id) => [id, ids])),
+    }),
   );
+  initializePaediatricEarQuiz(page);
+  expect(
+    displayOrder()
+      .map((item) => item.id)
+      .sort(),
+  ).toEqual([...ids].sort());
+  expect(
+    page.querySelector('input[name="ear-normal"][value="hole"]').checked,
+  ).toBe(true);
 });
 it("restores partial selections and ignores invalid stored answers", () => {
   localStorage.setItem(

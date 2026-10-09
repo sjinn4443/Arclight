@@ -32,41 +32,26 @@
   object-fit: contain;
 }
 .paediatric-scrolly-page .paediatric-image-panel .workshop-source-figure img {
-  width: min(100%, 330px);
-  border-radius: 16px 16px 0 0;
+  width: 100%;
+  margin: 0;
+  border-radius: 16px;
 }
 .paediatric-scrolly-page .workshop-source-figure figcaption {
   background: #f25600;
   color: white;
 }
-.paediatric-scrolly-page details {
-  margin-top: 20px;
-  border: 1px solid #f25600;
-  border-radius: 12px;
-  padding: 12px 16px;
-}
-.paediatric-scrolly-page summary {
-  min-height: 32px;
-  cursor: pointer;
-  color: #f25600;
-  font-weight: 800;
-}
 .paediatric-workshop-page .lesson-row[aria-disabled="true"] {
-  background: #e5e7eb;
+  background: #b8b8b8;
 }
 .paediatric-workshop-page
   .lesson-row[aria-disabled="true"]
-  :is(.thumb, .lesson-type, .lesson-progress) {
+  :is(.thumb, .lesson-progress) {
   opacity: 0.42;
 }
 #paediatricSurgicalEyeEarWorkshopPage .paediatric-coming-soon {
   color: #fff;
-  background: #6b7280;
-  border-radius: 4px;
-  padding: 2px 4px;
   flex: 0 0 auto;
-  font-size: 9px;
-  line-height: 1;
+  font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -88,6 +73,7 @@
 #paediatricSurgicalEyeEarWorkshopPage
   .lesson-row[aria-disabled="true"]
   .lesson-type {
+  color: #000;
   white-space: nowrap;
   flex: 0 0 auto;
 }
@@ -95,11 +81,6 @@
   .lesson-row[aria-disabled="true"]
   .lesson-progress__fill {
   width: 0;
-}
-.paediatric-workshop-page .lesson-meta {
-  display: block;
-  padding: 8px 0 0 25px;
-  white-space: normal;
 }
 .paediatric-workshop-page
   .pec-nested-folder-open
@@ -116,8 +97,7 @@
 .paediatric-flow-target .pec-flow-nav:not(.paediatric-flow-nav) {
   display: none !important;
 }
-.paediatric-workshop-page .lesson-row:focus-visible,
-.paediatric-scrolly-page summary:focus-visible {
+.paediatric-workshop-page .lesson-row:focus-visible {
   outline: 3px solid #f25600;
   outline-offset: 4px;
 }
@@ -237,14 +217,12 @@
 }
 .paediatric-scrolly-page .paediatric-objective-figure img {
   width: 100%;
-  height: 250px;
+  height: auto;
+  max-height: none;
   margin: 0;
   border-radius: 0;
   object-fit: contain;
   background: #fff;
-}
-.paediatric-scrolly-page .paediatric-objective-images--pair img {
-  height: clamp(150px, 18vw, 220px);
 }
 .paediatric-scrolly-page .paediatric-objective-figure figcaption {
   margin: 0;
@@ -262,10 +240,20 @@
 .paediatric-structure-list li::marker {
   color: #f25600;
 }
+:is(.paediatric-objectives-page, #paediatricTympanicMembranesPage)
+  .diabetic-screening-panel {
+  min-height: 0;
+  align-content: start;
+}
+.paediatric-scrolly-page .paediatric-image-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  min-height: 0;
+  align-items: center;
+}
 @media (min-width: 48em) {
   .paediatric-scrolly-page .paediatric-objective-panel {
     grid-template-columns: minmax(0, 1.05fr) minmax(220px, 0.8fr);
-    min-height: auto;
     align-items: center;
   }
 }

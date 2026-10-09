@@ -10,7 +10,7 @@ export const PAEDIATRIC_COPY_PREFIX = "paediatricSurgicalEyeEarWorkshop";
 export const PAEDIATRIC_COPY = {
   title: "Paediatric Surgical Eye & Ear",
   carousel_title: "Paediatric Surgical\nEye & Ear",
-  coming_soon: "coming soon",
+  coming_soon: "Coming Soon",
   introduction: "Introduction",
   overview: "Workshop overview",
   arclight: "What is the Arclight?",
@@ -27,6 +27,10 @@ export const PAEDIATRIC_COPY = {
   direct_pdf: "Direct Ophthalmoscopy PDF",
   otoscopy_animation: "Otoscopy Animation",
   otoscopy_pdf: "Otoscopy PDF",
+  front_video: "Front of Eye Examination (videos)",
+  fundal_video: "Fundal Reflex Examination (videos)",
+  direct_video: "Direct Ophthalmoscopy (videos)",
+  otoscopy_video: "Otoscopy (videos)",
   objectives: "Learning objectives",
   how: "How to perform",
   train_test: "Train and Test",
@@ -98,9 +102,6 @@ export const PAEDIATRIC_COPY = {
   intermediate_cases: "Case Study",
   direct_test: "Direct Ophthalmoscopy Test",
   image_question: "Which option best describes this image?",
-  infective_image: "Infective red eye: neonatal conjunctivitis",
-  ulcer_image: "Corneal ulcer",
-  injury_image: "Penetrating injury",
   healthy_reflex_image: "Healthy, symmetrical fundal reflex",
   cataract_image: "Cataract",
   retinoblastoma_image: "Retinoblastoma",
@@ -179,7 +180,7 @@ export const PAEDIATRIC_FOLDERS = [
           },
           {
             id: "paediatricFrontVideo",
-            label: "front",
+            label: "front_video",
             type: "video",
             route: "videos",
             target: "feFullAnteriorSegmentPage",
@@ -249,7 +250,7 @@ export const PAEDIATRIC_FOLDERS = [
           },
           {
             id: "paediatricFundalVideo",
-            label: "fundal",
+            label: "fundal_video",
             type: "video",
             route: "videos",
             target: "fundalExamPage",
@@ -311,7 +312,7 @@ export const PAEDIATRIC_FOLDERS = [
           },
           {
             id: "paediatricDirectVideo",
-            label: "direct",
+            label: "direct_video",
             type: "video",
             route: "videos",
             target: "directOphthalmoscopyVideoPage",
@@ -382,7 +383,7 @@ export const PAEDIATRIC_FOLDERS = [
           },
           {
             id: "paediatricOtoscopyVideo",
-            label: "otoscopy",
+            label: "otoscopy_video",
             type: "video",
             route: "primaryEarCareWorkshop",
             target: "primaryEarCareLessonPage",
@@ -504,24 +505,6 @@ export const PAEDIATRIC_EAR_IMAGES = [
 ];
 
 export const PAEDIATRIC_OBJECTIVE_ILLUSTRATIONS = {
-  common_red: [
-    {
-      src: "/images/casestudy/case3_eyes.webp",
-      caption: "infective_image",
-    },
-  ],
-  serious_red: [
-    {
-      src: "/images/casestudy/case5_eyes.webp",
-      caption: "ulcer_image",
-    },
-  ],
-  injury: [
-    {
-      src: "/images/casestudy/case12_eyes.webp",
-      caption: "injury_image",
-    },
-  ],
   all_children: [
     {
       src: "/images/quiz/fundal-reflex/case-2.webp",

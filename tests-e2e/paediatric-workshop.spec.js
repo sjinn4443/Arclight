@@ -115,7 +115,7 @@ test("orange curriculum uses skill names, ordered formats and unwrapped single t
       skill,
       `${skill} Animation`,
       `${skill} PDF`,
-      skill,
+      `${skill} (videos)`,
     ]);
   }
   await expect(
@@ -172,6 +172,15 @@ test("source objectives, keyboard folders and scrolly progress survive reload", 
   await expect(lesson).toContainText("penetrating injury and ruptured globe");
   await expect(lesson.locator(".diabetic-screening-panel")).toHaveCount(3);
   await expect(lesson.locator(".diabetic-screening-panel img")).toHaveCount(0);
+  await expect(lesson.locator(".diabetic-screening-panel").first()).toHaveCSS(
+    "min-height",
+    "0px",
+  );
+  const frontPanel = await lesson
+    .locator(".diabetic-screening-panel")
+    .first()
+    .boundingBox();
+  expect(frontPanel.height).toBeLessThan(350);
   await lesson.locator(".paediatric-flow-nav").scrollIntoViewIfNeeded();
   await page.evaluate(() =>
     window.scrollTo(0, document.documentElement.scrollHeight),
@@ -379,12 +388,26 @@ test("otoscopy reuses the existing video and two-page PDF, and marks missing ani
   );
   await expect(unavailable).toHaveAttribute("aria-disabled", "true");
   await expect(unavailable.locator(".paediatric-coming-soon")).toHaveText(
-    "coming soon",
+    "Coming Soon",
   );
   await expect(unavailable.locator(".paediatric-coming-soon")).toHaveCSS(
     "color",
     "rgb(255, 255, 255)",
   );
+  await expect(unavailable.locator(".paediatric-coming-soon")).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
+  await expect(unavailable.locator(".lesson-type")).toHaveCSS(
+    "color",
+    "rgb(0, 0, 0)",
+  );
+  await expect(unavailable).toHaveCSS("background-color", "rgb(184, 184, 184)");
+  await expect(
+    home.locator(
+      '[data-paediatric-lesson="paediatricOtoscopyVideo"] .lesson-type',
+    ),
+  ).toHaveText("Otoscopy (videos)");
   await expect(unavailable.locator(".lesson-meta")).toHaveCount(0);
   const unavailableBox = await unavailable.boundingBox();
   const availableBox = await home
@@ -411,6 +434,23 @@ test("ear image MCQs score, review, persist, restart, and fit mobile", async ({
     ).toBeTruthy();
   await expect(lesson.locator("[data-diabetic-scroll-lesson]")).toHaveCount(0);
   await expect(lesson.locator("fieldset")).toHaveCount(5);
+  const order = await lesson.locator("fieldset").evaluateAll((cards) =>
+    cards.map((card) => ({
+      id: card.dataset.earQuestion,
+      choices: [...card.querySelectorAll(".opt input")].map(
+        (input) => input.value,
+      ),
+    })),
+  );
+  expect(order.map((card) => card.id)).not.toEqual([
+    "normal",
+    "hole",
+    "csom",
+    "csom-hole",
+    "ome",
+  ]);
+  const positions = order.map((card) => card.choices.indexOf(card.id));
+  expect(positions).not.toEqual([0, 1, 2, 3, 4]);
   await expect(lesson.locator(".quiz-question").first()).toHaveText(
     "Which option best describes this image?",
   );
@@ -434,6 +474,16 @@ test("ear image MCQs score, review, persist, restart, and fit mobile", async ({
   await expect(
     lesson.locator('input[name="ear-normal"][value="hole"]'),
   ).toBeChecked();
+  expect(
+    await lesson.locator("fieldset").evaluateAll((cards) =>
+      cards.map((card) => ({
+        id: card.dataset.earQuestion,
+        choices: [...card.querySelectorAll(".opt input")].map(
+          (input) => input.value,
+        ),
+      })),
+    ),
+  ).toEqual(order);
   for (const id of ["hole", "csom", "csom-hole", "ome"])
     await lesson.locator(`input[name="ear-${id}"][value="${id}"]`).check();
   await lesson.locator("[data-ear-quiz-submit]").click();
@@ -484,12 +534,35 @@ test("ear image MCQs score, review, persist, restart, and fit mobile", async ({
   await expect(
     gallery.locator("img[src*='PaediatricSurgicalEyeEar']"),
   ).toHaveCount(6);
+  await expect(
+    gallery.locator(".paediatric-image-panel figcaption"),
+  ).toHaveCount(0);
+  await expect(
+    gallery.locator(
+      ".paediatric-image-panel .diabetic-screening-panel__text p",
+    ),
+  ).toHaveText([
+    "Normal",
+    "Hole",
+    "Chronic Suppurative Otitis Media (CSOM)",
+    "CSOM & Hole",
+    "Otitis Media with Effusion (OME)",
+  ]);
   for (const width of [320, 390, 820, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await gallery
       .locator(".paediatric-image-panel")
       .first()
       .scrollIntoViewIfNeeded();
+    const galleryText = await gallery
+      .locator(".paediatric-image-panel .diabetic-screening-panel__text")
+      .first()
+      .boundingBox();
+    const galleryImage = await gallery
+      .locator(".paediatric-image-panel img")
+      .first()
+      .boundingBox();
+    expect(galleryImage.x).toBeGreaterThan(galleryText.x + galleryText.width);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth + 1,
@@ -523,6 +596,26 @@ test("illustrated objectives pair clinical images with aligned captions", async 
       const caption = figure.locator("figcaption");
       await expect(caption).toHaveCSS("text-transform", "uppercase");
       await expect(caption).toHaveCSS("background-color", "rgb(242, 86, 0)");
+      await expect(image).toHaveCSS("max-height", "none");
+      await expect
+        .poll(() =>
+          image.evaluate((node) => node.complete && node.naturalWidth > 0),
+        )
+        .toBe(true);
+      await expect
+        .poll(() =>
+          image.evaluate((node) => {
+            const box = node.getBoundingClientRect();
+            return Math.abs(
+              box.height / box.width - node.naturalHeight / node.naturalWidth,
+            );
+          }),
+        )
+        .toBeLessThan(0.01);
+      await expect(image.locator("xpath=ancestor::article")).toHaveCSS(
+        "min-height",
+        "0px",
+      );
       await expect
         .poll(async () => {
           const imageBox = await image.boundingBox();

@@ -9,7 +9,7 @@
   title split into Paediatric Surgical / Eye & Ear. Its 31 rows comprise six local scrolly lessons,
   one five-image MCQ quiz, 23 shared pages and one grey disabled animation row.
   Media order is scrolly → Full Animation → PDF → examination video, with exam
-  skill names as row titles plus Animation / PDF suffixes. Singleton Train and Test entries render directly.
+  skill names as row titles plus Animation / PDF / (videos) suffixes. Singleton Train and Test entries render directly.
 - Shared Back and Previous/Next preserve the originating folder. Embedded
   mini-apps consume the existing interactive-learning return bridge. Ear reuse
   selects the existing Primary Ear Care lesson key without replacing the caller's
@@ -19,13 +19,17 @@
   Fundal contains only Fundal Reflex Test, and Direct Ophthalmoscopy
   contains only `videos/diabeticCaseQuizPage`. Front objectives are text-only;
   other objectives use clinical image placement and orange practice-style captions.
+  Cards fit their content; images retain natural aspect ratios without fixed-height
+  white space. Gallery names sit below the step number as body text, images on the right.
   Workshop structure uses bullets. Source ear MCQs preserve the slide labels and support
   saved answers, scoring, review and restart. Reused Ear lessons show one orange
   Previous/Next pair and orange content accents; disabled rows show white
-  “coming soon” beside their title at normal row height. The quiz asks which
+  “Coming Soon” inline beside the black title, without a badge, at normal row height.
+  Quiz image/option order is mixed, persisted with answers and reshuffled on restart.
+  The quiz asks which
   option best describes the image, with a Fundal Reflex Quiz-style heading.
 - New copy is English with i18n metadata/fallbacks; shared pages retain their
-  languages. Selective download dependencies are registered; SW fallback is v92.
+  languages. Selective download dependencies are registered; SW fallback is v93.
   See [the content audit](../docs/paediatric-workshop-content-audit.md).
 
 ## Eye pad and shield scroll lesson - 7 October 2026

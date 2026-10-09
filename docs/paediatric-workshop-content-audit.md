@@ -19,10 +19,12 @@ one lesson render as direct rows; Front of Eye and Otoscopy retain nested folder
 
 Media order is examination scrolly → Full Animation → downloadable PDF →
 examination video. Main row titles name the examination skill, with Animation
-and PDF appended to the corresponding lesson titles. Ear hearing/examination
+and PDF appended to the corresponding lesson titles, and (videos) appended to
+live examination videos in How to perform. Ear hearing/examination
 guides remain ahead of the available otoscopy
 media. No otoscopy Full Animation asset exists, so its row stays grey, disabled,
-with white “coming soon” beside its title and at the same height as active rows.
+with black “Otoscopy Animation” and white “Coming Soon” inline (no badge),
+on a darker grey background and at the same height as active rows.
 Workshop structure is an unboxed bullet list.
 
 | Slides | Source content                                            | App treatment                                                                                                             |
@@ -92,7 +94,7 @@ slide 16's labels; review displays the source label rather than adding clinical
 explanations. The white/grey carousel artwork is
 `public/images/icon/eyes/workshop/car_paediatric.webp`.
 
-Objective imagery reuses `images/casestudy/`, `images/quiz/fundal-reflex/`,
+Objective imagery reuses `images/quiz/fundal-reflex/`,
 `images/learning/MedicalStudents/Introduction/`, `images/learning/PrimaryEarCare/`
 and Discs `case-01.webp` (normal), `case-02.webp` (swelling), `case-03.webp` (pale).
 The existing Discs viewer config supplies those labels.
@@ -100,6 +102,10 @@ Front objectives no longer display photographs. The remaining objectives use
 the Medical Students Diagnosis of Eye Disease layout (text beside imagery on
 desktop, stacked on mobile) and Visual Acuity Practice's orange caption strips.
 Paired images share a constrained grid and captions align with their images.
+Objective cards fit their content without viewport-height minimums; image frames
+follow natural aspect ratios instead of fixed heights. Gallery labels are body
+text under the numbered step with the image to the right; the full source
+comparison remains available beneath the individual images.
 
 `public/js/paediatricWorkshopData.js` owns the curriculum, copy and mappings.
 `scripts/import-paediatric-workshop.mjs` generates static HTML and optionally
@@ -126,6 +132,12 @@ extraction files are not deployed.
   support. `paediatricEarQuiz.js` renders five MCQs through the existing quiz
   layout, persists partial answers, validates completion, scores, displays results,
   allows review and restart, and closes its result dialog when leaving. The quiz
+  mixes image order and option order, balances correct-answer letters in mixed
+  order, persists the exact arrangement with saved answers and reshuffles on
+  restart. Validation rejects duplicate or unknown saved ordering IDs. Stable
+  source IDs determine scoring, so display order never changes the answer key.
+  Original v1 saved answers remain compatible.
+  The quiz
   awards completion after all five answers are submitted; earned progress remains
   monotonic after restart.
 - Shared Back returns to the restored workshop folder. Intermediate cases select
@@ -150,7 +162,7 @@ extraction files are not deployed.
 - Selective downloads include the new card/ear assets and objective imagery,
   existing case-study images, diabetic quiz cases, shared PDFs/videos, examination
   Lottie stages and selected narration. Removed simulator rows no longer pull
-  their mini-app trees into this workshop selection. SW fallback is v92.
+  their mini-app trees into this workshop selection. SW fallback is v93.
 
 ## Validation
 

@@ -9,6 +9,19 @@ const ui = (key, fallback) =>
   window.I18N?.t?.(`medicalStudentsWorkshop.quizUi.${key}`, fallback) ||
   fallback;
 
+function shuffled(items) {
+  const order = [...items];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  // Avoid the source sequence and simple rotations that still reveal a pattern.
+  const offset = items.indexOf(order[0]);
+  if (order.every((id, index) => id === items[(index + offset) % items.length]))
+    [order[0], order[1]] = [order[1], order[0]];
+  return order;
+}
+
 export function initializePaediatricEarQuiz(page) {
   if (!page || page.dataset.earQuizWired === "1") return;
   page.dataset.earQuizWired = "1";
@@ -34,12 +47,72 @@ export function initializePaediatricEarQuiz(page) {
   );
   let submitted = saved?.submitted === true && ids.every((id) => answers[id]);
   let reviewing = submitted && saved?.reviewing === true;
+  const validOrder = (order) =>
+    Array.isArray(order) &&
+    order.length === ids.length &&
+    new Set(order).size === ids.length &&
+    order.every((id) => ids.includes(id));
+  let questionOrder;
+  let optionOrders;
+
+  function mixQuestions() {
+    questionOrder = shuffled(ids);
+    // Assign a different correct-answer letter to every image, in mixed order.
+    const positions = shuffled(ids.map((_, index) => index));
+    optionOrders = Object.fromEntries(
+      questionOrder.map((id, index) => {
+        const options = shuffled(ids);
+        const correct = options.indexOf(id);
+        const position = positions[index];
+        [options[correct], options[position]] = [
+          options[position],
+          options[correct],
+        ];
+        return [id, options];
+      }),
+    );
+  }
+  function applyOrder() {
+    const questions = form.querySelector(".medical-test-quiz-questions");
+    questionOrder.forEach((id, index) => {
+      const card = form.querySelector(`[data-ear-question="${id}"]`);
+      card.querySelector(".quiz-card-number").textContent = String(
+        index + 1,
+      ).padStart(2, "0");
+      card.querySelector("img").alt =
+        `${PAEDIATRIC_COPY.image_case} ${index + 1}`;
+      const options = card.querySelector(".options");
+      optionOrders[id].forEach((value, optionIndex) => {
+        const label = card
+          .querySelector(`input[value="${value}"]`)
+          .closest(".opt");
+        label.querySelector(".opt-prefix").textContent =
+          `${String.fromCharCode(65 + optionIndex)}.`;
+        options.append(label);
+      });
+      questions.append(card);
+    });
+  }
+  if (
+    validOrder(saved?.questionOrder) &&
+    ids.every((id) => validOrder(saved?.optionOrders?.[id]))
+  ) {
+    questionOrder = saved.questionOrder;
+    optionOrders = saved.optionOrders;
+  } else mixQuestions();
+  applyOrder();
 
   function persist() {
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ answers, submitted, reviewing }),
+        JSON.stringify({
+          answers,
+          submitted,
+          reviewing,
+          questionOrder,
+          optionOrders,
+        }),
       );
     } catch {
       /* optional storage */
@@ -99,7 +172,7 @@ export function initializePaediatricEarQuiz(page) {
   });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    const missing = ids.find((id) => !answers[id]);
+    const missing = questionOrder.find((id) => !answers[id]);
     if (missing) {
       status.textContent = "Answer all five questions before submitting.";
       const question = form.querySelector(`[data-ear-question="${missing}"]`);
@@ -123,6 +196,8 @@ export function initializePaediatricEarQuiz(page) {
     reviewing = false;
     dialog.close();
     status.textContent = "";
+    mixQuestions();
+    applyOrder();
     update();
     form.querySelector("input").focus();
   });
