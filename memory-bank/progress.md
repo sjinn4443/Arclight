@@ -1,5 +1,14 @@
 # Progress
 
+## VS Code localhost status bar shortcut - 19 October 2026
+
+- Added a separate `localhost:3000` status bar item and contributed command to
+  the launcher extension. If port 3000 is not responding, either status bar
+  button starts `server.cjs` with VS Code's bundled Node runtime and waits for
+  loopback readiness before opening the URL.
+- The extension activates after startup; package 0.0.7 is available as a VSIX.
+  Reload an already-open VS Code window after installing the extension.
+
 ## Paediatric compact cards and mixed MCQs - 9 October 2026
 
 - How to perform live examination videos now end with (videos); Animation and

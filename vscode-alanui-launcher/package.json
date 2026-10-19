@@ -1,8 +1,9 @@
 {
   "name": "vscode-alanui-launcher",
+  "publisher": "your-publisher-name",
   "displayName": "Arclight App Launcher",
-  "description": "Launches Arclight App on localhost:3000 with a status bar button.",
-  "version": "0.0.1",
+  "description": "Starts Arclight App when needed and opens localhost:3000 in Google Chrome from the status bar.",
+  "version": "0.0.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/your-username/vscode-alanui-launcher.git"
@@ -14,8 +15,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-alanui-launcher.launchArclightApp"
+    "onStartupFinished"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-alanui-launcher.launchArclightApp",
+        "title": "Arclight: Launch App on Local 3000"
+      },
+      {
+        "command": "vscode-alanui-launcher.openLocalhost3000",
+        "title": "Arclight: Open localhost:3000"
+      }
+    ]
+  },
   "main": "./out/extension.js",
   "scripts": {
     "compile": "tsc -p ./",
@@ -24,6 +37,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "@types/vscode": "^1.80.0",
     "typescript": "^5.0.0",
     "vsce": "^2.15.0",

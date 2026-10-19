@@ -179,14 +179,15 @@ function oval(cx, cy, rx, ry) {
 }
 function scissorsAlong(
   samples,
-  { width = 950, snipAt = null, stopAt = Infinity } = {},
+  { width = 950, snipAt = null, stopAt = Infinity, lowerScale = 1.28 } = {},
 ) {
   const upper = A.get("scissorupperhand.png");
   const lower = A.get("scissorlowerhand.webp");
   const scale = width / upper.w;
   // Both anchors refer to the visible screw in the current supplied PNG pair.
   const upperAnchor = [135, 367, 0];
-  const lowerAnchor = [127, 205, 0];
+  // Bring the trim-stage lower grip slightly right/up toward the upper palm.
+  const lowerAnchor = lowerScale > 1 ? [115, 217, 0] : [127, 205, 0];
   const tipVector = [-upperAnchor[0] * scale, -upperAnchor[1] * scale];
   const pivot = samples.map(([t, tip, angle]) => {
     const radians = (angle * Math.PI) / 180;
@@ -211,17 +212,94 @@ function scissorsAlong(
   const lowerRotation = samples.map(([t, , angle]) => {
     const closing =
       (1 - Math.cos((Math.min(t, stopAt) * Math.PI * 2) / 24)) / 2;
-    // Restrict the two cropped finger/handle pieces to a four-degree swing.
-    // The native blade gap is already ~12 degrees; offset it towards closed
-    // rather than pulling the supporting fingers away from the brown palm.
-    return [t, angle + 4 + 4 * closing];
+    // Open beyond the supplied pose, then close around the common screw.
+    // Keep the resting slit pose unchanged once the circular cut is complete.
+    const settle = Math.max(0, Math.min(1, (t - stopAt) / 36));
+    const opening = (-8 + 16 * closing) * (1 - settle) + 4 * settle;
+    return [t, angle + opening];
   });
   const rear = image("scissorlowerhand.webp", 0, 0, {
-    width: lower.w * scale,
+    width: lower.w * scale * lowerScale,
     a: constant(lowerAnchor),
     p: linearKeys(pivot),
     r: linearKeys(lowerRotation),
   });
+  rear.hasMask = true;
+  rear.masksProperties = [
+    {
+      inv: false,
+      mode: "s",
+      pt: constant(
+        pointsShape([
+          [137, 221],
+          [166, 211],
+          [168, 246],
+          [158, 246],
+        ]),
+      ),
+      o: constant(100),
+      x: constant(0),
+      nm: "Hide lower joint spur",
+    },
+    ...[
+      [
+        [76, 341],
+        [98, 341],
+        [116, 348],
+        [122, 371],
+        [123, 400],
+        [118, 425],
+        [105, 445],
+        [95, 445],
+        [80, 428],
+        [67, 406],
+        [58, 381],
+        [60, 358],
+      ],
+      [
+        [174, 375],
+        [294, 451],
+        [279, 533],
+        [260, 529],
+        [231, 518],
+        [218, 504],
+        [202, 472],
+        [190, 438],
+        [181, 406],
+      ],
+    ].map((outline, index) => ({
+      inv: false,
+      mode: "s",
+      pt: constant(pointsShape(outline)),
+      o: constant(100),
+      x: constant(0),
+      nm: `Hide extended finger ${index + 1}`,
+    })),
+  ];
+  // Canvas ignores subtract-mask modes. Use one positive outline with reverse-
+  // wound holes, joined by zero-area bridges, so SVG and Canvas cut identically.
+  const origin = [-2, -2];
+  const visibleOutline = [
+    origin,
+    [lower.w + 2, -2],
+    [lower.w + 2, lower.h + 2],
+    [-2, lower.h + 2],
+    origin,
+  ];
+  for (const mask of rear.masksProperties) {
+    const hole = [...mask.pt.k.v].reverse();
+    visibleOutline.push(...hole, hole[0], origin);
+  }
+  rear.masksProperties = [
+    {
+      inv: false,
+      mode: "a",
+      pt: constant(pointsShape(visibleOutline)),
+      o: constant(100),
+      x: constant(0),
+      nm: "Lower scissor without extended finger or spur",
+    },
+  ];
   const front = image("scissorupperhand.png", 0, 0, {
     width,
     a: constant(upperAnchor),
@@ -242,6 +320,7 @@ function orbitScissors(
   start = 30,
   finish = 240,
   settle = false,
+  lowerScale = 1.28,
 ) {
   const samples = [];
   const initialAngle = 0;
@@ -269,6 +348,7 @@ function orbitScissors(
   return scissorsAlong(samples, {
     stopAt: finish,
     snipAt: settle ? 480 : null,
+    lowerScale,
   });
 }
 function ovalMask(layer, { cx, cy, rx, ry }) {
@@ -284,26 +364,43 @@ function ovalMask(layer, { cx, cy, rx, ry }) {
     },
   ];
 }
-function coneSequence() {
-  // Radial paper facets are projected from a cone surface. During rolling its
-  // apex rises and its cut edges overlap; during the camera move the same
-  // vertices and attached tape change perspective together.
+async function coneSequence() {
   const checkpoints = [
     [0, 0, Math.PI / 2, 322, 0],
     [45, 0, Math.PI / 2, 322, 0],
-    [180, 280, 1.47, 310, 0],
-    [285, 280, 1.47, 310, 0],
-    [315, 280, 1.47, 310, 0],
+    [75, (280 * 30) / 135, Math.PI / 2, 319, 0],
+    [105, (280 * 60) / 135, Math.PI / 2, 316, 0],
+    [135, (280 * 90) / 135, Math.PI / 2, 313, 0],
+    [180, 280, Math.PI / 2, 310, 0],
+    [285, 280, Math.PI / 2, 310, 0],
+    [315, 280, Math.PI / 2, 310, 0],
     [435, 350, Math.PI / 6, 384, 0.85],
     [539, 350, Math.PI / 6, 384, 0.85],
   ];
-  const project = (r, theta, height, elevation, radius, yaw) => [
-    584 + r * radius * Math.cos(theta - yaw),
-    600 +
-      (1 - Math.sin(elevation)) * 280 +
-      r * radius * Math.sin(theta - yaw) * Math.sin(elevation) -
-      height * (1 - r) * Math.cos(elevation),
-  ];
+  const rollAt = (t) => Math.max(0, Math.min(1, (t - 45) / 135));
+  const overlap = 0.85;
+  const cutAngle = (t) => Math.PI / 2 + overlap * rollAt(t);
+  const curlAt = (t) => Math.sin(Math.PI * rollAt(t));
+  const edgeAngle = (_radius, t) => cutAngle(t);
+  const project = (r, theta, height, elevation, radius, yaw) => {
+    const overhead = Math.max(
+      0,
+      Math.min(1, (elevation - Math.PI / 6) / (Math.PI / 3)),
+    );
+    // The outline changes after the free edge has visibly started rolling.
+    // Keep the camera overhead. A ten-pixel apex rise gives the stiff sheet
+    // slight relief while its straight radial edge rolls over the other edge.
+    const forming = Math.max(0, Math.min(1, (height / 280 - 0.35) / 0.65));
+    const oval = 1 - 0.16 * forming * forming * (3 - 2 * forming) * overhead;
+    return [
+      584 + r * radius * Math.cos(theta - yaw),
+      600 +
+        (1 - Math.sin(elevation)) * 280 +
+        r * radius * Math.sin(theta - yaw) * Math.sin(elevation) * oval -
+        height * (1 - r) * Math.cos(elevation) -
+        10 * Math.min(1, height / 280) * (1 - r) * overhead,
+    ];
+  };
   const frameShape = (verticesAt) => {
     const values = checkpoints.map(([t, h, e, r, yaw]) => [
       t,
@@ -317,67 +414,137 @@ function coneSequence() {
         ...(i < values.length - 1
           ? {
               e: [values[i + 1][1]],
-              i: { x: 0.67, y: 1 },
-              o: { x: 0.33, y: 0 },
+              i: t >= 315 ? { x: 0.67, y: 1 } : { x: 2 / 3, y: 2 / 3 },
+              o: t >= 315 ? { x: 0.33, y: 0 } : { x: 1 / 3, y: 1 / 3 },
             }
           : {}),
       })),
     };
   };
   const count = 72;
-  // Draw the rear surface first, then the front. Matching edge strokes cover
-  // subpixel SVG rasterisation seams between facets on small mobile screens.
+  const vertices = (index, h, e, r, t, yaw) => {
+    // Stretch the material's angular span beyond a full turn: the right cut
+    // edge moves left over the stationary edge, rather than opening a gap.
+    const span = 2 * Math.PI + overlap * rollAt(t);
+    const a = Math.PI / 2 + (index * span) / count;
+    const b = Math.PI / 2 + ((index + 1) * span) / count;
+    return [
+      project(0, 0, h, e, r, yaw),
+      project(1, a - 0.002, h, e, r, yaw),
+      project(1, b + 0.002, h, e, r, yaw),
+    ];
+  };
   const order = [...Array(count).keys()].sort(
     (a, b) =>
       Math.sin(Math.PI / 2 + (a * 2 * Math.PI) / count) -
       Math.sin(Math.PI / 2 + (b * 2 * Math.PI) / count),
   );
   for (const i of order) {
-    const theta = Math.PI / 2 + (i * Math.PI * 2) / count;
-    const vertices = (h, e, r, t, yaw) => {
-      const roll = Math.min(1, Math.max(0, (t - 45) / 135));
-      const slit = 0.04 * (1 - roll);
-      const a = theta + slit,
-        b = Math.PI / 2 + ((i + 1) * Math.PI * 2) / count - slit;
-      // Only the two slit edges are separated; other facets overlap slightly.
-      const aa = i === 0 ? a : theta - 0.003,
-        bb =
-          i === count - 1
-            ? b
-            : Math.PI / 2 + ((i + 1) * Math.PI * 2) / count + 0.003;
-      return [
-        project(0, 0, h, e, r, yaw),
-        project(1, aa, h, e, r, yaw),
-        project(1, bb, h, e, r, yaw),
-      ];
-    };
     shapeLayer(
       `Paper cone facet ${i}`,
-      frameShape(vertices),
+      frameShape((h, e, r, t, yaw) => vertices(i, h, e, r, t, yaw)),
       [0.955, 0.955, 0.955, 1],
       { edgeStroke: 2.2 },
     );
   }
-  // The cut edge sweeps left over the disc, forming the overlapping cone wall.
-  // Paint this moving flap above the base so its roll remains visible throughout.
-  for (let i = 0; i < 18; i++) {
-    const shade = 0.72 + (0.235 * i) / 18;
+  // Only a narrow contact shadow under the moving edge, darkest at contact
+  // and fading left. It has zero area before the paper starts overlapping.
+  const edgeBand = (h, e, r, t, yaw, offsetA, offsetB) => {
+    const side = (offset) =>
+      Array.from({ length: 9 }, (_, j) => {
+        const radius = j / 8;
+        return project(radius, edgeAngle(radius, t) + offset, h, e, r, yaw);
+      });
+    return [...side(offsetA), ...side(offsetB).reverse()];
+  };
+  for (let i = 0; i < 8; i++) {
     shapeLayer(
-      `Rolling paper flap ${i}`,
+      `Overlap contact shadow ${i}`,
       frameShape((h, e, r, t, yaw) => {
-        const roll = Math.min(1, Math.max(0, (t - 45) / 135));
-        const a = Math.PI / 2 + ((i * Math.PI) / 36 - 0.003) * roll;
-        const b = Math.PI / 2 + (((i + 1) * Math.PI) / 36 + 0.003) * roll;
-        return [
-          project(0, 0, h, e, r, yaw),
-          project(1, a, h, e, r, yaw),
-          project(1, b, h, e, r, yaw),
-        ];
+        const width = 0.11 * rollAt(t);
+        return edgeBand(
+          h,
+          e,
+          r,
+          t,
+          yaw,
+          (i * width) / 8,
+          ((i + 1) * width) / 8,
+        );
       }),
-      [shade, shade, shade, 1],
-      { edgeStroke: 2.2, o: opacity([0, 0], [45, 0], [60, 100]) },
+      [0.45, 0.45, 0.45, 1],
+      {
+        o: opacity(
+          [0, 0],
+          [45, 0],
+          [75, 35 - i * 4],
+          [135, 35 - i * 4],
+          [180, 24 - i * 2.8],
+        ),
+      },
     );
   }
+  // The last material sector is the right-hand paper, painted over the left.
+  // Its vertices move from the right of the slit to the left as the disc rolls.
+  for (let i = 0; i < 12; i++) {
+    for (let ring = 0; ring < 6; ring++) {
+      shapeLayer(
+        `Rolling paper flap ${i}${ring ? ` ring ${ring}` : ""}`,
+        frameShape((h, e, r, t, yaw) => {
+          const span = 2 * Math.PI + overlap * rollAt(t);
+          const point = (fraction, radius) => {
+            const u = (count - 12 + i + fraction) / count;
+            const angle = Math.PI / 2 + u * span;
+            return project(radius, angle, h, e, r, yaw);
+          };
+          return [
+            point(0, ring / 6),
+            point(1, ring / 6),
+            point(1, (ring + 1) / 6),
+            point(0, (ring + 1) / 6),
+          ];
+        }),
+        [0.955, 0.955, 0.955, 1],
+        { edgeStroke: 1.2 },
+      );
+    }
+  }
+  // A subtle straight band describes the stiff rolled edge, without a wave.
+  for (let i = 0; i < 8; i++) {
+    const tone = 0.81 + (0.145 * i) / 7;
+    shapeLayer(
+      `Paper curl shading ${i}`,
+      frameShape((h, e, r, t, yaw) => {
+        const width = 0.06 * curlAt(t);
+        return edgeBand(
+          h,
+          e,
+          r,
+          t,
+          yaw,
+          (-i * width) / 8,
+          (-(i + 1) * width) / 8,
+        );
+      }),
+      [tone, tone, tone, 1],
+      { o: opacity([0, 0], [45, 0], [75, 40], [135, 40], [180, 0]) },
+    );
+  }
+  shapeLayer(
+    "Radial cut before overlap",
+    constant(
+      pointsShape(
+        [
+          [584, 600],
+          [584, 922],
+        ],
+        false,
+      ),
+    ),
+    [0.65, 0.65, 0.65, 1],
+    { stroke: 2, o: opacity([0, 100], [45, 100], [75, 0]) },
+  );
+
   image("10arrow.webp", 555, 945, {
     width: 340,
     o: opacity([0, 0], [30, 100], [140, 100], [180, 0]),
@@ -391,21 +558,21 @@ function coneSequence() {
     ]),
   });
   // Tape lands after the roll, stays attached, then tilts with the camera.
-  image("11tape.webp", 450, 725, {
+  const tape = image("11tape.webp", 450, 725, {
     width: 255,
     o: opacity([0, 0], [189, 0], [201, 100]),
     p: keys([
       [0, [578, 615, 0]],
       [190, [578, 615, 0]],
-      [255, [584, 790, 0]],
-      [315, [584, 790, 0]],
-      [435, [749, 717, 0]],
+      [255, [...project(0.56, cutAngle(180), 280, Math.PI / 2, 310, 0), 0]],
+      [315, [...project(0.56, cutAngle(180), 280, Math.PI / 2, 310, 0), 0]],
+      [435, [...project(0.56, cutAngle(180), 350, Math.PI / 6, 384, 0.85), 0]],
     ]),
     r: keys([
       [0, -15],
-      [255, 0],
-      [315, 0],
-      [435, -9],
+      [255, (overlap * 180) / Math.PI],
+      [315, (overlap * 180) / Math.PI],
+      [435, 0],
     ]),
     s: keys([
       [0, [100, 100, 100]],
@@ -413,6 +580,54 @@ function coneSequence() {
       [435, [125, 90, 100]],
     ]),
   });
+  // Keep the supplied paper texture, masking out its baked right-hand shadow.
+  // Trace the pale paper in native coordinates and cast its shadow to the left.
+  const { data, info } = await sharp(path.join(OUT, "images/11tape.webp"))
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const left = [],
+    right = [];
+  for (let y = 0; y < info.height; y++) {
+    const row = [];
+    for (let x = 0; x < info.width; x++) {
+      const i = (y * info.width + x) * 4;
+      if (
+        data[i + 3] > 100 &&
+        data[i] > 180 &&
+        data[i + 1] > 175 &&
+        data[i + 2] > 150
+      )
+        row.push(x);
+    }
+    if (row.length) {
+      left.push([row[0] - 0.5, y]);
+      right.push([row.at(-1) + 0.5, y]);
+    }
+  }
+  const paperOutline = [...left, ...right.reverse()];
+  tape.hasMask = true;
+  tape.masksProperties = [
+    {
+      inv: false,
+      mode: "a",
+      pt: constant(pointsShape(paperOutline)),
+      o: constant(100),
+      x: constant(0),
+      nm: "Tape paper without baked shadow",
+    },
+  ];
+  const shadow = shapeLayer(
+    "Tape shadow — cast left",
+    constant(pointsShape(paperOutline.map(([x, y]) => [x - 10, y + 5]))),
+    [0.55, 0.55, 0.55, 1],
+  );
+  shadow.ks = structuredClone(tape.ks);
+  for (const key of shadow.ks.o.k) {
+    key.s = key.s.map((v) => v * 0.35);
+    if (key.e) key.e = key.e.map((v) => v * 0.35);
+  }
+  behind(shadow, tape);
 }
 
 async function hygieneScene() {
@@ -508,28 +723,6 @@ async function assembleFoldingHand() {
     p: "foldinghand.webp",
     e: 0,
   });
-}
-function creaseMask(layer, left, width, hinge = 584) {
-  const asset = [...A.values()].find((a) => a.id === layer.refId);
-  const edge = (hinge - left) / (width / asset.w);
-  layer.hasMask = true;
-  layer.masksProperties = [
-    {
-      inv: false,
-      mode: "a",
-      pt: constant(
-        pointsShape([
-          [-1, -1],
-          [edge, -1],
-          [edge, asset.h + 1],
-          [-1, asset.h + 1],
-        ]),
-      ),
-      o: constant(100),
-      x: constant(0),
-      nm: "Stationary half ends at the crease",
-    },
-  ];
 }
 function visitedCutMask(layer, left, top, width, cx, cy, rx, ry) {
   const asset = [...A.values()].find((a) => a.id === layer.refId);
@@ -648,35 +841,110 @@ function cottonScene() {
   behind(left[0], cotton);
   behind(right[0], cotton);
 }
+function softGauzeFlap() {
+  const asset = A.get("03gauze_folding.webp");
+  const angle = (12.5 * Math.PI) / 180;
+  const frames = [
+    0,
+    45,
+    ...Array.from({ length: 25 }, (_, i) => 51 + i * 6),
+    200,
+    225,
+  ];
+  const count = 28;
+  // Piecewise affine strips retain the source weave while letting the free
+  // edge sag and ripple. Every strip shares the same fixed, undeformed hinge.
+  const surface = (x, t) => {
+    const progress = Math.max(0, Math.min(1, (t - 45) / 145));
+    const ease = progress * progress * (3 - 2 * progress);
+    const flex = Math.sin(Math.PI * progress) ** 1.5;
+    const u = x - 22;
+    const distance = Math.max(0, u / (asset.w - 22));
+    return [
+      (0.72 - 2.27 * ease) * u + 28 * flex * Math.sin(Math.PI * distance),
+      flex *
+        (90 * distance ** 1.2 +
+          12 * distance * Math.sin(4 * Math.PI * distance - 3 * progress)),
+    ];
+  };
+  for (let i = 0; i < count; i++) {
+    const x0 = (i * asset.w) / count;
+    const x1 = ((i + 1) * asset.w) / count;
+    const center = (x0 + x1) / 2;
+    const positions = [],
+      scales = [],
+      skews = [];
+    for (const t of frames) {
+      const a = surface(x0, t),
+        b = surface(x1, t);
+      const [x, y] = surface(center, t);
+      const dx = (b[0] - a[0]) / (x1 - x0);
+      const dy = (b[1] - a[1]) / (x1 - x0);
+      const safeScale = Math.abs(dx) < 0.025 ? (dx < 0 ? -0.025 : 0.025) : dx;
+      positions.push([
+        t,
+        [
+          681 + x * Math.cos(angle) - y * Math.sin(angle),
+          389 + x * Math.sin(angle) + y * Math.cos(angle),
+          0,
+        ],
+      ]);
+      scales.push([t, [100 * safeScale, 72, 100]]);
+      skews.push([
+        t,
+        Math.max(
+          -80,
+          Math.min(80, (Math.atan(dy / safeScale) * 180) / Math.PI),
+        ),
+      ]);
+    }
+    const strip = image("03gauze_folding.webp", 0, 0, {
+      a: constant([center, 90, 0]),
+      p: linearKeys(positions),
+      r: constant(12.5),
+      s: linearKeys(scales),
+      o: opacity([0, 100], [110, 100], [135, 0]),
+    });
+    strip.nm = i === 0 ? "03gauze_folding.webp" : `03gauze_folding strip ${i}`;
+    strip.ks.sk = linearKeys(skews);
+    strip.ks.sa = constant(90);
+    strip.hasMask = true;
+    strip.masksProperties = [
+      {
+        inv: false,
+        mode: "a",
+        pt: constant(
+          pointsShape([
+            [x0 - 0.3, -1],
+            [x1 + 0.3, -1],
+            [x1 + 0.3, asset.h + 1],
+            [x0 - 0.3, asset.h + 1],
+          ]),
+        ),
+        o: constant(100),
+        x: constant(0),
+        nm: "Continuous flexible gauze strip",
+      },
+    ];
+  }
+}
 function foldScene() {
-  const stationary = image("03gauze.webp", 155, 280, {
-    width: 700,
-    o: opacity([0, 100], [200, 100], [225, 0]),
+  const firstLayer = layerIndex;
+  image("03gauze.webp", 115, 280, {
+    width: 570,
+    o: opacity([0, 100], [125, 100], [150, 0]),
   });
-  creaseMask(stationary, 155, 700);
-  const filling = image("03stretchedcotton.webp", 170, 490, {
+  image("03stretchedcotton.webp", 170, 490, {
     width: 430,
-    o: opacity([0, 100], [200, 100], [225, 0]),
+    o: opacity([0, 100], [125, 100], [150, 0]),
   });
-  creaseMask(filling, 170, 430);
-  const flap = A.get("03gauze_folding.webp");
-  image("03gauze_folding.webp", 584, 280, {
-    width: 359,
-    a: constant([0, flap.h / 2, 0]),
-    p: constant([584, 654, 0]),
-    s: keys([
-      [0, [100, 100, 100]],
-      [45, [100, 100, 100]],
-      [115, [0, 100, 100]],
-      [190, [-120, 100, 100]],
-    ]),
-    o: opacity([0, 100], [200, 100], [225, 0]),
+  // Register the flap's left edge to the complete gauze's sloping right edge.
+  // Its [22, 90] transparent inset is part of the crop, not a hinge gap.
+  softGauzeFlap();
+  image("03and04foldedgauze.webp", 115, 280, {
+    width: 570,
+    o: opacity([0, 0], [125, 0], [150, 100]),
   });
-  const folded = image("03and04foldedgauze.webp", 155, 280, {
-    width: 700,
-    o: opacity([0, 0], [200, 0], [225, 100]),
-  });
-  creaseMask(folded, 155, 700);
   holdingHand(-190, 530);
   const handMoves = [
     [0, -10, -135],
@@ -702,9 +970,45 @@ function foldScene() {
     p: keys([
       [0, [483, 225, 0]],
       [300, [483, 225, 0]],
-      [395, [483, 395, 0]],
+      [395, [483, 424, 0]],
     ]),
   });
+  // Enlarge only the held pad assembly, preserving all crop registration and
+  // animation keys. The left grip stays fixed; move the right grip to its hinge.
+  const magnification = 700 / 570;
+  const mapProperty = (property, transform) => {
+    if (!property.a) return constant(transform(property.k));
+    return {
+      ...property,
+      k: property.k.map((key) => ({
+        ...key,
+        ...(key.s ? { s: transform(key.s) } : {}),
+        ...(key.e ? { e: transform(key.e) } : {}),
+      })),
+    };
+  };
+  const enlargePosition = ([x, y, z]) => [
+    250 + (x - 250) * magnification,
+    580 + (y - 580) * magnification,
+    z,
+  ];
+  for (const layer of layers.filter(
+    (l) => l.ind > firstLayer && /^03/.test(l.nm),
+  )) {
+    layer.ks.p = mapProperty(layer.ks.p, enlargePosition);
+    if (layer.nm === "03tape.webp") continue;
+    layer.ks.s = mapProperty(layer.ks.s, ([x, y, z]) => [
+      x * magnification,
+      y * magnification,
+      z,
+    ]);
+  }
+  const [hingeX, hingeY] = enlargePosition([681, 389, 0]);
+  right.ks.p = mapProperty(right.ks.p, ([x, y, z]) => [
+    x + hingeX - 681,
+    y + hingeY - 389,
+    z,
+  ]);
 }
 function trimPadScene() {
   const fadeOriginal = opacity([0, 100], [246, 100], [276, 0]);
@@ -739,7 +1043,17 @@ function trimPadScene() {
     ry: 224 / tapeScale,
   });
   holdingHand(-230, 470);
-  const cut = orbitScissors(495, 561, 301, 224);
+  const lowerBladeScale = 1.28;
+  const cut = orbitScissors(
+    495,
+    561,
+    301,
+    224,
+    30,
+    240,
+    false,
+    lowerBladeScale,
+  );
   behind(cut.rear, gauze);
   // Stop at the tape, then dissolve to the trimmed gauze AND trimmed tape.
   for (const layer of [cut.front, cut.rear])
@@ -747,14 +1061,6 @@ function trimPadScene() {
 }
 function cardboardScene() {
   image("05cardboard.webp", 200, 230, { width: 770 });
-  const samples = [];
-  for (let t = 0; t < endFrame; t += 6) {
-    const left = Math.max(0, Math.min(1, (t - 24) / 108));
-    const turn = Math.max(0, Math.min(1, (t - 132) / 42));
-    const up = Math.max(0, Math.min(1, (t - 174) / 108));
-    samples.push([t, [900 - 100 * left, 980 - 440 * up], -70 + 90 * turn]);
-  }
-  scissorsAlong(samples);
 }
 function drawCircleScene() {
   image("06paper.webp", 200, 175, { width: 770 });
@@ -824,10 +1130,10 @@ function drawCircleScene() {
       "Pencil wrist extension",
       constant(
         pointsShape([
-          [665, 90],
-          [815, 250],
-          [2200, 650],
-          [2200, 180],
+          [698, 90],
+          [816, 243],
+          [2300, -710],
+          [2182, -863],
         ]),
       ),
       [0.52, 0.3, 0.14, 1],
@@ -851,14 +1157,14 @@ function drawCircleScene() {
     ...pencilOptions,
     o: backOpacity,
   });
-  // The cup base spans the same 454px diameter as the traced ellipse.
+  // Lift the cup slightly so its lower rim does not obscure the traced circle.
   const cupScale = 454 / 410;
   const cup = image("06handholdingcup.webp", 0, 0, {
     width: 1283 * cupScale,
     a: constant([1080, 595, 0]),
     p: keys([
-      [0, [cx, cy, 0]],
-      [210, [cx, cy, 0]],
+      [0, [cx, cy - 36, 0]],
+      [210, [cx, cy - 36, 0]],
       [285, [-1250, -550, 0]],
     ]),
     r: keys([
@@ -867,7 +1173,7 @@ function drawCircleScene() {
       [285, 45],
     ]),
   });
-  cup.nm = "Cup — base aligned with 8cm circle";
+  cup.nm = "Cup — lifted above the circle outline";
   const frontOpacity = opacity([0, 100], [105, 100], [111, 0]);
   pencilArm(frontOpacity);
   image("06pencil.webp", 0, 0, {
@@ -925,7 +1231,7 @@ function cutCircleScene() {
     o: opacity([0, 0], [246, 0], [276, 100]),
   });
   holdingHand(-95, 370);
-  const cut = orbitScissors(604, 438, 227, 227, 30, 240, true);
+  const cut = orbitScissors(604, 438, 227, 227, 30, 240, true, 1.22);
   behind(cut.rear, paper);
   // The completed slit already exists when the upper blade starts returning.
   const slit = shapeLayer(
@@ -994,7 +1300,7 @@ async function main() {
       cutCircleScene,
       coneSequence,
     ];
-    sceneBuilders[index]?.();
+    await sceneBuilders[index]?.();
     const used = new Set(layers.filter((l) => l.refId).map((l) => l.refId));
     const json =
       index === 0

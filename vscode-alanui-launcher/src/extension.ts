@@ -1,84 +1,209 @@
 import * as vscode from "vscode";
 import * as child_process from "child_process";
+import * as http from "http";
 import * as path from "path";
+import * as fs from "fs";
+
+const appPort = 3000;
+const appUrl = `http://localhost:${appPort}`;
+let appProcess: child_process.ChildProcess | undefined;
+let appStartError: string | undefined;
+let appOutputChannel: vscode.OutputChannel | undefined;
+
+async function openInChrome(): Promise<void> {
+  let executable: string;
+  let args = [appUrl];
+  if (process.platform === "win32") {
+    const candidates = [
+      process.env.PROGRAMFILES,
+      process.env["PROGRAMFILES(X86)"],
+      process.env.LOCALAPPDATA,
+    ]
+      .filter((directory): directory is string => Boolean(directory))
+      .map((directory) =>
+        path.join(directory, "Google", "Chrome", "Application", "chrome.exe"),
+      );
+    const chromePath = candidates.find((candidate) => fs.existsSync(candidate));
+    if (!chromePath) {
+      throw new Error(
+        "Google Chrome was not found. Install Chrome and try again.",
+      );
+    }
+    executable = chromePath;
+  } else if (process.platform === "darwin") {
+    executable = "/usr/bin/open";
+    args = ["-a", "Google Chrome", appUrl];
+  } else {
+    executable = "google-chrome";
+  }
+
+  await new Promise<void>((resolve, reject) => {
+    const browser = child_process.spawn(executable, args, {
+      detached: true,
+      stdio: "ignore",
+    });
+    browser.once("error", reject);
+    browser.once("spawn", () => {
+      browser.unref();
+      resolve();
+    });
+  });
+}
+
+async function findAppRoot(startPath: string): Promise<string> {
+  let currentPath = startPath;
+
+  while (true) {
+    const packageJsonPath = path.join(currentPath, "package.json");
+    try {
+      const contents = await vscode.workspace.fs.readFile(
+        vscode.Uri.file(packageJsonPath),
+      );
+      const packageJson = JSON.parse(Buffer.from(contents).toString("utf8"));
+      if (typeof packageJson.scripts?.dev === "string") {
+        return currentPath;
+      }
+    } catch (error) {
+      if (
+        !(error instanceof vscode.FileSystemError) ||
+        error.code !== "FileNotFound"
+      ) {
+        throw error;
+      }
+    }
+
+    const parentPath = path.dirname(currentPath);
+    if (parentPath === currentPath) {
+      throw new Error(
+        "Could not find a package.json with a dev script in this workspace or its parent folders.",
+      );
+    }
+    currentPath = parentPath;
+  }
+}
+
+function isLocalServerReady(): Promise<boolean> {
+  return new Promise((resolve) => {
+    const request = http.get(appUrl, (response) => {
+      response.resume();
+      resolve(true);
+    });
+    request.setTimeout(1000, () => request.destroy());
+    request.on("error", () => resolve(false));
+  });
+}
+
+async function waitForLocalServer(timeoutMs: number): Promise<boolean> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    if (await isLocalServerReady()) {
+      return true;
+    }
+    if (
+      appStartError ||
+      (appProcess &&
+        (appProcess.exitCode !== null || appProcess.signalCode !== null))
+    ) {
+      return false;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+  return isLocalServerReady();
+}
+
+function startLocalServer(appRoot: string): void {
+  const serverPath = path.join(appRoot, "server.cjs");
+  appStartError = undefined;
+  appOutputChannel?.clear();
+  appOutputChannel?.appendLine(`Starting Arclight at ${appUrl}`);
+  appProcess = child_process.spawn(process.execPath, [serverPath], {
+    cwd: appRoot,
+    detached: true,
+    env: {
+      ...process.env,
+      ELECTRON_RUN_AS_NODE: "1",
+      HOST: "127.0.0.1",
+      NODE_ENV: "development",
+      PORT: String(appPort),
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  appProcess.stdout?.on("data", (data) => {
+    appOutputChannel?.append(data.toString());
+  });
+  appProcess.stderr?.on("data", (data) => {
+    appOutputChannel?.append(data.toString());
+  });
+  appProcess.on("error", (error) => {
+    appStartError = error.message;
+    appOutputChannel?.appendLine(
+      `Failed to start the server: ${error.message}`,
+    );
+  });
+  appProcess.on("exit", (code, signal) => {
+    appStartError = `The server process exited before becoming ready (code ${code ?? "unknown"}, signal ${signal ?? "none"}).`;
+    appOutputChannel?.appendLine(appStartError);
+  });
+  appProcess.unref();
+}
 
 export function activate(context: vscode.ExtensionContext) {
   console.log(
     'Congratulations, your extension "vscode-alanui-launcher" is now active!',
   );
+  appOutputChannel = vscode.window.createOutputChannel("Arclight App");
+  context.subscriptions.push(appOutputChannel);
+
+  let openingApp: Promise<void> | undefined;
+  const openLocalhost = (): Promise<void> => {
+    if (openingApp) {
+      return openingApp;
+    }
+
+    openingApp = (async () => {
+      try {
+        if (!(await isLocalServerReady())) {
+          const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+          if (!workspaceFolder) {
+            throw new Error("Open the Arclight workspace first.");
+          }
+
+          const appRoot = await findAppRoot(workspaceFolder.uri.fsPath);
+          startLocalServer(appRoot);
+          vscode.window.setStatusBarMessage(
+            "Starting Arclight on localhost:3000...",
+            10000,
+          );
+
+          if (!(await waitForLocalServer(45000))) {
+            appOutputChannel?.show(true);
+            throw new Error(
+              appStartError
+                ? `Could not start the server: ${appStartError}`
+                : "Arclight did not start on port 3000. Check the Arclight App output channel.",
+            );
+          }
+        }
+
+        await openInChrome();
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(`Unable to open Arclight: ${message}`);
+      }
+    })().finally(() => {
+      openingApp = undefined;
+    });
+    return openingApp;
+  };
+
+  const openLocalhostCommand = vscode.commands.registerCommand(
+    "vscode-alanui-launcher.openLocalhost3000",
+    openLocalhost,
+  );
 
   const disposable = vscode.commands.registerCommand(
     "vscode-alanui-launcher.launchArclightApp",
-    () => {
-      const workspaceFolders = vscode.workspace.workspaceFolders;
-      if (!workspaceFolders) {
-        vscode.window.showErrorMessage("No workspace folder open.");
-        return;
-      }
-
-      // Assuming Arclight_App is the root of the workspace or a known subfolder.
-      // For this example, we'll assume the command should be run from the root of the opened workspace.
-      const workspacePath = workspaceFolders[0].uri.fsPath;
-
-      vscode.window.showInformationMessage("Launching Arclight App...");
-
-      // Execute npm start
-      child_process.exec(
-        "npm start",
-        { cwd: workspacePath },
-        (error, stdout, stderr) => {
-          if (error) {
-            console.error(`exec error: ${error}`);
-            vscode.window.showErrorMessage(
-              `Failed to start Arclight App: ${error.message}`,
-            );
-            if (stderr) {
-              vscode.window.showErrorMessage(`stderr: ${stderr}`);
-            }
-            return;
-          }
-          if (stdout) {
-            vscode.window.showInformationMessage(
-              `Arclight App started. Output: ${stdout}`,
-            );
-          }
-          if (stderr) {
-            vscode.window.showWarningMessage(
-              `Arclight App output (stderr): ${stderr}`,
-            );
-          }
-          vscode.window.showInformationMessage(
-            "Arclight App started. Opening in browser...",
-          );
-
-          // Open the URL in Google Chrome
-          const url = "http://localhost:3000";
-          const command = `open -a "Google Chrome" "${url}"`;
-
-          child_process.exec(command, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`exec error: ${error}`);
-              vscode.window.showErrorMessage(
-                `Failed to open Chrome: ${error.message}`,
-              );
-              if (stderr) {
-                vscode.window.showErrorMessage(`stderr: ${stderr}`);
-              }
-              return;
-            }
-            if (stdout) {
-              console.log(`stdout: ${stdout}`);
-            }
-            if (stderr) {
-              console.warn(`stderr: ${stderr}`);
-            }
-            vscode.window.showInformationMessage(
-              "Arclight App opened in Chrome.",
-            );
-          });
-        },
-      );
-    },
+    openLocalhost,
   );
 
   // Add the button to the status bar
@@ -87,11 +212,35 @@ export function activate(context: vscode.ExtensionContext) {
     100,
   );
   statusBarItem.command = "vscode-alanui-launcher.launchArclightApp";
-  statusBarItem.text = `🚀 Launch Arclight_App on Local 3000`;
-  statusBarItem.tooltip = "Click to start Arclight App and open in browser";
+  statusBarItem.text = "$(rocket) Start Arclight (3000)";
+  statusBarItem.tooltip =
+    "Start Arclight if needed, then open http://localhost:3000 in Google Chrome";
   statusBarItem.show();
 
-  context.subscriptions.push(disposable, statusBarItem);
+  const localhostStatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    99,
+  );
+  localhostStatusBarItem.command = "vscode-alanui-launcher.openLocalhost3000";
+  localhostStatusBarItem.text = "$(globe) localhost:3000";
+  localhostStatusBarItem.tooltip =
+    "Start Arclight if needed, then open http://localhost:3000 in Google Chrome";
+  localhostStatusBarItem.show();
+
+  context.subscriptions.push(
+    disposable,
+    openLocalhostCommand,
+    statusBarItem,
+    localhostStatusBarItem,
+  );
 }
 
-export function deactivate() {}
+export function deactivate() {
+  if (
+    appProcess &&
+    appProcess.exitCode === null &&
+    appProcess.signalCode === null
+  ) {
+    appProcess.kill();
+  }
+}

@@ -1,6 +1,6 @@
 # Make an eye pad and eye shield scroll lesson
 
-Implemented and revised 7 October 2026. Launch the scroll row immediately below the matching
+Implemented 7 October and motion revised 19 October 2026. Launch the scroll row immediately below the matching
 video in **Eye Pad / Shield**, or open
 `#/eyePadShield/makeEyePadShieldScrollPage`. The original two procedure videos
 remain available.
@@ -21,15 +21,16 @@ The supplied instructions are the English captions and narration. The existing
 | 01 Hand hygiene        | DO first animation | 1–7s               | Original geometry and six images, retimed to six seconds                                                                                           |
 | 02 Preparation         | 01                 | 7–17s              | Equipment illustration without highlight circles; no preparation cue                                                                               |
 | 03 Spread cotton wool  | 02                 | 17–30s             | Cotton pulls in several directions; registered hand/thumb pairs translate without deformation                                                      |
-| 04 Fold and tape gauze | 03                 | 30–46s             | Stationary half ends at the fixed crease; widening flap folds over it; extended right hand fades as one composition; tape lands later              |
+| 04 Fold and tape gauze | 03                 | 30–46s             | Complete gauze artwork; flap registered along the sloping right edge; extended right hand fades as one composition; tape lands later               |
 | 05 Trim the eye pad    | 04                 | 46–59s             | Progressively trim only the short visited arc to the tape, then dissolve remaining edges, including tape; finished-pad cue                         |
-| 06 Choose cardboard    | 05                 | 59–70s             | Short leftward cut from bottom right, turn 90 degrees, then cut a shorter distance upwards                                                         |
+| 06 Choose cardboard    | 05                 | 59–70s             | Static box illustration without scissors                                                                                                           |
 | 07 Draw a circle       | 06–07              | 70–84s             | Pencil moves left-to-right in front, then right-to-left behind cup; cup rotates 45 degrees offscreen; circle, line wipe, then 8cm                  |
 | 08 Cut circle and slit | 08–09              | 84–104s            | Progressively trim the short arc, dissolve remaining outline, settle into reference-09 pose; one upper-blade snip; slit visible at start of return |
 | 09 Complete the shield | 10–12              | 104–125s           | Continuous roll/tape/camera sequence; finished-shield cue starts during camera rotation                                                            |
 
 The final stage is one 630-frame Lottie animation at 30fps. Its paper facets and
-overlapping flap share projected geometry. The roll takes frames 45–180, tape
+overlapping flap share projected geometry. Folding and taping retain a fixed
+top view, with the rolled outline becoming a 1.19:1 oval. The roll takes frames 45–180, tape
 attachment takes 190–255 and the camera move takes 315–435. The tape moves with
 the camera. The final frame holds the same object; there is no crossfade to a
 separate scene-12 image. The supplied scene-12 illustration is the visual reference
@@ -38,9 +39,18 @@ for the final projection.
 The scissors pieces share one animated screw position. Their measured anchors
 are `[135, 367]` for the upper artwork and `[127, 205]` for the current lower PNG.
 The lower source can be PNG or WebP; the generated runtime texture is WebP.
-Its opening is narrower than the supplied open pose: the lower piece is offset
-4 degrees towards closed and swings just 4 more degrees, keeping the fingers
-joined to the palm. The final snip also moves the upper blade only 4 degrees.
+Circular cutting swings the lower piece from -8 to +8 degrees relative to the
+upper piece, opening the blades further while preserving the common screw.
+The lower artwork uses a 1.28 scale correction for trimming and a slightly
+smaller 1.22 correction for circle cutting, around the shared screw.
+Both cutting scenes register the lower crop at `[115, 217]`, bringing its grip
+slightly right/up toward the upper palm. A positive outline with reverse-wound
+holes hides its exposed joint spur and the two visible portions of the extended
+reddish-brown finger. Zero-area bridges make the holes work in both SVG and
+Canvas; Canvas does not implement Lottie's subtract-mask mode.
+The previously added brown finger extension is removed. Blade and handle
+artwork retain their original proportions.
+The final slit pose and its four-degree upper-blade snip remain unchanged.
 The lower piece sits behind the gauze/card while the upper blade remains in front.
 The latter part of stage 08 moves the upper blade once and keeps the lower blade
 stationary. The whole slit appears at local frame 480, when the upper blade starts
@@ -51,9 +61,17 @@ Stages 04/05/08 use the new `holdinghand_top.png` and `holdinghand_bottom.png`
 crops, at one source scale, with their measured crop registration: bottom width
 700px and top offset `[170, 18]` in the resized source coordinates before scaling.
 Top is above the held material and bottom is below it. There is no synthetic
-thumb mask or duplicate whole-hand image. The stationary gauze and final folded
-image are masked at x=584; the folding flap keeps the same hinge and widens to
-120% while folding onto the stationary half. The builder composites the original
+thumb mask or duplicate whole-hand image. Stage 04 shows the complete stationary
+and folded gauze textures at the original 700px width, without a crease mask.
+The gauze, cotton and flap are enlarged together about the fixed left grip;
+the pad tape keeps its original 165px width and lands at the gauze's upper edge,
+slightly raised again to graze the upper corner. The separate
+`03and04and08and09fingershadow.webp` layer is removed from stage 04.
+The right grip follows the enlarged hinge without stretching the hand. The flap's top
+crop inset and 12.5-degree rotation align its left edge with the gauze's sloping
+right edge; both ends meet with a small overlap. It widens as it folds over the
+cotton. Its 28 masked texture strips sag and ripple during folding, then settle
+flat, retaining a fixed crease and the source weave. The builder composites the original
 right-hand/thumb and wrist extension into `foldinghand.webp`, then fades that
 single image. Preserve this baking step: Lottie's canvas renderer applies a
 precomposition's opacity to each child individually, which exposes the rear crop
@@ -61,13 +79,37 @@ through the thumb on WebKit. Both folding and pencil wrists extend beyond the
 viewport. The source hand images remain unchanged; the generated composition
 uses their native dimensions and relative crop offset `[77, 49]`.
 
+The folding strips fade at frames 110–135, before the first finger contact at
+frame 141. A rendered alpha-overlap check confirms there are no visible cloth/
+holding-thumb intersections. The stationary gauze/cotton crossfade to the folded
+texture at frames 125–150 so the earlier disappearance has a continuous handoff.
+
 Pad/circle masks change only on the visited right-to-top quarter arc. Opposite
 edges remain unchanged until the final-outline dissolve at frames 246–276.
 The pad's tape uses the same progressive and final masks. The pencil's wrist extension shares its position,
 uniform scale and rotation. Ellipse arc length keeps the growing visible segment
 at the graphite; the remaining circle is revealed while the cup still covers it.
-The cup leaves after the pencil finishes, without fading. The measurement line
+The pencil wrist continues along the source crop's cut edge beyond the viewport.
+The cup sits 36px higher to expose the lower circle outline and leaves after the
+pencil finishes, without fading. The measurement line
 uses a left-to-right mask wipe before the 8cm label appears.
+
+The cone keeps an overhead camera throughout folding and taping, with only a
+10px apex rise to give the paper slight relief. Its right-hand material sweeps
+across the left cut edge by 0.85 radians (about 49 degrees). Its radial edge
+stays straight as the stiff sheet rolls, without a wave. A narrow, subtle shading
+band marks the rolled edge and settles away once the overlap is complete. The oval
+deformation starts after the free edge is already rolling; no wedge-shaped gap
+opens and no camera motion is used to suggest the fold. A narrow
+contact shadow tracks that moving edge and fades left. Its angular width is
+0.11 radians, twice the previous 0.055 (about 33px at the outer rim). The paper
+faces use the same less-bright white (RGB 0.955), without a bright wedge or broad
+dark quarter-disc.
+Tape crosses the overlapped edge before the camera moves at frames
+315–435. Tape is attached at 56% of the radius, moved in from 72%, and follows
+that same surface position during the camera move. Its supplied paper texture
+is masked to remove the baked right-hand shadow, with a new left-cast silhouette
+following exactly the same tape transforms. No source texture is modified.
 
 ## Ownership and integration
 
@@ -182,3 +224,49 @@ the final production lesson suite passed all 8 checks on desktop/WebKit with
 exit code 0. The runner's teardown completed after stopping only its own test
 server (identified in its WebServer output). Do not stop the user's development
 server. Final WebKit fold/fade screenshots match the single-image composition.
+
+19 October motion revision: the focused Jest suites passed all 9 tests; the
+production lesson suite passed all 4 desktop/mobile Chrome checks. Intermediate
+frames were also inspected in both SVG and Canvas renderers. The build passed,
+and all six changed stage JSONs match their distribution copies. The broader
+desktop regression run passed 14 of 15 case bodies: the Visual Acuity speech-clock
+case failed while its hub remained visible. Its files were outside this revision.
+The runner stalled during teardown and was interrupted after all case bodies
+finished. Windows WebKit was unavailable in this environment; these checks do not
+establish physical iPhone rendering or audio output.
+
+The subsequent size/top-view revision passed all 7 focused Jest tests. Of the
+8 desktop/mobile Chrome lesson, heading and speech-clock checks, 7 passed on the
+first run; the desktop My Learning check briefly found no saved row, then passed
+unchanged when rerun alone. SVG and Canvas frame reviews cover the enlarged
+gauze, matched cutting blades, oval fold, attached tape and later camera move.
+
+The final soft-gauze/original-cone revision passed all 7 focused Jest tests and
+all 8 desktop/mobile Chrome lesson, heading and speech-clock checks. SVG and
+Canvas reviews confirmed the flexible gauze strips, original pad-tape size,
+moderate lower-scissor correction, restored cone gradient and left-cast tape
+shadow. The changed runtime JSONs match their distribution copies.
+
+The contact/overlap revision passed all 8 focused Jest checks, including an
+alpha-sampling check that gauze sits directly behind the pad tape's upper edge.
+All 8 desktop/mobile Chrome lesson, heading and speech-clock checks passed.
+SVG/Canvas reviews include the widest scissor opening, the landed tape, and
+intermediate paper-overlap frames. The cone centre is fixed throughout folding
+and taping, and its contact shadow starts with zero area and follows the right
+paper edge as it crosses onto the left surface.
+
+The explicit-roll revision passed all 8 focused Jest checks. The desktop/mobile
+lesson, headings and clock checks passed; the two saved-row navigation checks
+initially found no My Learning item and passed unchanged when rerun separately.
+SVG/Canvas reviews include the supplied thumb shadow, masked scissor joint,
+matching pad/circle cutting hands, and bowed paper edge at frames 75/105/135.
+Scenes 04/05/08/09 and their media revisions/offline sizes were refreshed and
+verified against the built distribution, within the existing size budgets.
+
+The stiff-roll/finger-removal revision passed all 8 focused Jest checks and all
+8 desktop/mobile Chrome lesson, heading and speech-clock checks. SVG and Canvas
+frame reviews confirmed the removed scissor finger, smaller circle-cutting lower
+blade, raised gauze tape without the separate thumb-shadow layer, straight rolling
+paper edge, subtle apex relief and matching paper whites. Scenes 04/05/08/09,
+their distribution copies, offline sizes and media revisions match; distribution
+size budgets pass.

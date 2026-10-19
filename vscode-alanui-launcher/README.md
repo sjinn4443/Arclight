@@ -2,14 +2,15 @@
 
 This folder contains a small Visual Studio Code extension intended to make local development easier by:
 
-1. running `npm start` in the opened workspace
-2. opening `http://localhost:3000` in your browser
+1. starting `server.cjs` if nothing is listening on port 3000
+2. opening `http://localhost:3000` in Google Chrome
+3. providing status bar shortcuts that start the server when needed and open `http://localhost:3000`
 
 ## What’s in here
 
-- `src/extension.ts` – registers the command `vscode-alanui-launcher.launchArclightApp` and adds a status bar button
+- `src/extension.ts` – registers the launch and localhost shortcut commands and status bar buttons
 - `package.json` – extension manifest
-- `alanui-launcher-0.0.1.vsix` – packaged extension (if present/up to date)
+- `vscode-alanui-launcher-0.0.8.vsix` – packaged extension
 
 ## Install
 
@@ -18,8 +19,10 @@ This folder contains a small Visual Studio Code extension intended to make local
 From the repo root:
 
 ```bash
-code --install-extension vscode-alanui-launcher/alanui-launcher-0.0.1.vsix
+code --install-extension vscode-alanui-launcher/vscode-alanui-launcher-0.0.8.vsix
 ```
+
+If VS Code is already open, run **Developer: Reload Window** from the Command Palette after installing.
 
 ### Option B: Build and package
 
@@ -32,17 +35,15 @@ npm run compile
 
 ## Use
 
-- Click the status bar button (created by the extension), or
-- run the command id: `vscode-alanui-launcher.launchArclightApp`
+- Click either status bar button (**Start Arclight (3000)** or **localhost:3000**) to open the app. If port 3000 is not responding, the extension starts `server.cjs` with VS Code's bundled Node runtime and waits for it to respond before opening Google Chrome. This avoids depending on `npm` being available in the extension host's PATH.
+- Run `vscode-alanui-launcher.openLocalhost3000` or `vscode-alanui-launcher.launchArclightApp` from the Command Palette.
 
-The extension will run `npm start` in the **first workspace folder** and then attempt to open `http://localhost:3000`.
+The extension locates the nearest parent `package.json` with a `dev` script starting from the first workspace folder. Keep the Arclight workspace open and install the app's dependencies before launching.
 
 ## Platform notes / limitations
 
-- The current implementation uses `open -a "Google Chrome" ...`, which is **macOS-specific**.
-  - On Windows, you may need to update the extension to use `start <url>` or VS Code’s `vscode.env.openExternal()`.
-- The extension manifest currently does **not** declare `contributes.commands`. Depending on VS Code behavior, the command may not appear in the Command Palette even though it’s registered in code.
+- Both status bar buttons open Google Chrome directly. On Windows, the extension checks Chrome's standard system and per-user installation locations. If Chrome is missing, it displays an installation error.
 
 ## Expected workspace layout
 
-Open the **repo root** (the folder containing the main `package.json`) in VS Code so that `npm start` runs the Arclight server correctly.
+Open the **repo root** (the folder containing the main `package.json`) in VS Code so the extension can locate `server.cjs`.

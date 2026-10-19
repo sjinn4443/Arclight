@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import sharp from "sharp";
 import {
   EYE_PAD_SHIELD_SCROLL_CONFIG as cfg,
   EYE_PAD_SHIELD_STAGES as stages,
@@ -143,12 +144,46 @@ test("short cutting arcs reveal finished shapes and keep the scissor pieces join
       (layer) => layer.nm === "scissorlowerhand.webp",
     );
     expect(lower.ks.p).toEqual(upper.ks.p);
-    expect(lower.ks.a.k).toEqual([127, 205, 0]);
+    expect(lower.ks.a.k).toEqual([115, 217, 0]);
+    expect(lower.masksProperties[0].mode).toBe("a");
+    const visible = (x, y) => {
+      const points = lower.masksProperties[0].pt.k.v;
+      let inside = false;
+      for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+        const [a, b] = points[i],
+          [c, d] = points[j];
+        if (b > y !== d > y && x < ((c - a) * (y - b)) / (d - b) + a)
+          inside = !inside;
+      }
+      return inside;
+    };
+    expect(visible(95, 380)).toBe(false); // exposed fingertip
+    expect(visible(245, 470)).toBe(false); // straight extended finger
+    expect(visible(162, 235)).toBe(false); // metal spur
+    expect(visible(125, 500)).toBe(true); // lower handle
+    expect(visible(300, 700)).toBe(true); // palm
+    {
+      expect(lower.ks.s.k[0] / upper.ks.s.k[0]).toBeCloseTo(
+        stage === 5 ? 1.28 : 1.22,
+      );
+      expect(
+        data.layers.some((layer) => layer.nm === "Scissor finger extension"),
+      ).toBe(false);
+    }
     for (const key of lower.ks.r.k.filter((key) => key.t <= 240)) {
       const upperAngle = upper.ks.r.k.find((k) => k.t === key.t).s[0];
-      expect(key.s[0] - upperAngle).toBeGreaterThanOrEqual(4);
+      expect(key.s[0] - upperAngle).toBeGreaterThanOrEqual(-8.00001);
       expect(key.s[0] - upperAngle).toBeLessThanOrEqual(8.00001);
     }
+    expect(
+      Math.min(
+        ...lower.ks.r.k
+          .filter((key) => key.t <= 240)
+          .map(
+            (key) => key.s[0] - upper.ks.r.k.find((k) => k.t === key.t).s[0],
+          ),
+      ),
+    ).toBeCloseTo(-8);
     const angle = upper.ks.r.k;
     expect(
       Math.abs(angle.find((key) => key.t === 240).s[0] - angle[0].s[0]),
@@ -183,7 +218,145 @@ test("rolling, taping and the camera move share one continuous cone scene", () =
   expect(tape.ks.p.k.find((key) => key.t === 435).s).not.toEqual(
     tape.ks.p.k.find((key) => key.t === 315).s,
   );
+  const paperCamera = geometry.find((key) => key.t === 315);
+  const tapeCamera = tape.ks.p.k.find((key) => key.t === 315);
+  expect(paperCamera.i).toEqual({ x: tapeCamera.i.x[0], y: tapeCamera.i.y[0] });
+  expect(paperCamera.o).toEqual({ x: tapeCamera.o.x[0], y: tapeCamera.o.y[0] });
   expect(data.layers.some((layer) => layer.nm === "12cone.webp")).toBe(false);
+  // The overhead roll gains only ten pixels of relief; the camera moves later.
+  const apex = (t) => geometry.find((key) => key.t === t).s[0].v[0];
+  expect(apex(45)[0]).toBe(apex(180)[0]);
+  expect(apex(45)[1] - apex(180)[1]).toBeCloseTo(10);
+  expect(apex(180)).toEqual(apex(315));
+  expect(geometry.find((key) => key.t === 180).s).toEqual(
+    geometry.find((key) => key.t === 315).s,
+  );
+  const facets = data.layers.filter((layer) =>
+    /^Paper cone facet/.test(layer.nm),
+  );
+  for (const layer of data.layers.filter((layer) =>
+    /^(Paper cone facet|Rolling paper flap)/.test(layer.nm),
+  )) {
+    expect(layer.shapes[0].it.find((shape) => shape.ty === "fl").c.k).toEqual([
+      0.955, 0.955, 0.955, 1,
+    ]);
+  }
+  const boundsAt = (t) => {
+    const points = facets.flatMap(
+      (layer) => layer.shapes[0].it[0].ks.k.find((key) => key.t === t).s[0].v,
+    );
+    return [0, 1].map(
+      (axis) =>
+        Math.max(...points.map((p) => p[axis])) -
+        Math.min(...points.map((p) => p[axis])),
+    );
+  };
+  const [width, height] = boundsAt(180);
+  expect(width / height).toBeGreaterThan(1.15);
+  expect(width / height).toBeLessThan(1.25);
+  const orderedShadows = data.layers
+    .filter((layer) => /^Overlap contact shadow/.test(layer.nm))
+    .sort(
+      (a, b) => Number(a.nm.split(" ").at(-1)) - Number(b.nm.split(" ").at(-1)),
+    );
+  expect(orderedShadows).toHaveLength(8);
+  expect(orderedShadows[0].ks.o.k.at(-1).s[0]).toBeGreaterThan(
+    orderedShadows.at(-1).ks.o.k.at(-1).s[0],
+  );
+  const shapeAt = (layer, t) =>
+    layer.shapes[0].it[0].ks.k.find((key) => key.t === t).s[0].v;
+  const first = shapeAt(orderedShadows[0], 180)[8];
+  const last = shapeAt(orderedShadows.at(-1), 180)[9];
+  const shadowWidth = Math.hypot(first[0] - last[0], first[1] - last[1]);
+  expect(shadowWidth).toBeGreaterThan(30);
+  expect(shadowWidth).toBeLessThan(40);
+  const attachedTape = tape.ks.p.k.find((key) => key.t === 255).s;
+  const tapeRadius = Math.hypot(
+    (attachedTape[0] - 584) / 310,
+    (attachedTape[1] - 600 + 4.4) / (310 * 0.84),
+  );
+  expect(tapeRadius).toBeCloseTo(0.56);
+  for (const shadow of orderedShadows) {
+    const initial = shapeAt(shadow, 45);
+    expect(initial.slice(0, 9)).toEqual(initial.slice(9).reverse());
+  }
+  const movingEdge = data.layers.find(
+    (layer) => layer.nm === "Rolling paper flap 11 ring 5",
+  );
+  expect(Math.abs(shapeAt(movingEdge, 45)[2][0] - 584)).toBeLessThan(1);
+  expect(shapeAt(movingEdge, 180)[2][0]).toBeLessThan(400);
+  const curlingEdge = shapeAt(orderedShadows[0], 105);
+  const midpoint = curlingEdge[0].map(
+    (n, axis) => (n + curlingEdge[8][axis]) / 2,
+  );
+  expect(
+    Math.hypot(
+      curlingEdge[4][0] - midpoint[0],
+      curlingEdge[4][1] - midpoint[1],
+    ),
+  ).toBeLessThan(0.01);
+  const curlBand = data.layers.find(
+    (layer) => layer.nm === "Paper curl shading 0",
+  );
+  expect(curlBand.ks.o.k.find((key) => key.t === 75).s[0]).toBe(40);
+  expect(curlBand.ks.o.k.at(-1).s).toEqual([0]);
+  const tapeShadow = data.layers.find(
+    (layer) => layer.nm === "Tape shadow — cast left",
+  );
+  expect(tapeShadow.ks.p).toEqual(tape.ks.p);
+  expect(tapeShadow.ks.r).toEqual(tape.ks.r);
+  const shadowOutline = tapeShadow.shapes[0].it[0].ks.k.v;
+  expect(shadowOutline[0][0]).toBe(tape.masksProperties[0].pt.k.v[0][0] - 10);
+});
+
+test("the pad tape grazes the gauze's upper edge", async () => {
+  const scene = JSON.parse(fs.readFileSync(`public${cfg.paths[3]}`, "utf8"));
+  const imageData = async (layer) => {
+    const asset = scene.assets.find((a) => a.id === layer.refId);
+    return sharp(
+      path.join(
+        "public/scrolly/eyeprocedures/make-eye-pad-shield/images",
+        asset.p,
+      ),
+    )
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+  };
+  const tape = scene.layers.find((layer) => layer.nm === "03tape.webp");
+  const gauze = scene.layers.find(
+    (layer) => layer.nm === "03and04foldedgauze.webp",
+  );
+  const a = await imageData(tape),
+    b = await imageData(gauze);
+  const p = tape.ks.p.k.at(-1).s;
+  const scale = tape.ks.s.k[0] / 100,
+    gauzeScale = gauze.ks.s.k[0] / 100;
+  let samples = 0;
+  for (let x = 30; x < a.info.width - 30; x += 10) {
+    for (let y = 0; y < a.info.height; y++) {
+      const i = (y * a.info.width + x) * 4;
+      if (a.data[i + 3] < 200 || a.data[i] < 180) continue;
+      const world = [
+        p[0] + (x - tape.ks.a.k[0]) * scale,
+        p[1] + (y - tape.ks.a.k[1]) * scale,
+      ];
+      const gx = Math.round(
+        (world[0] - gauze.ks.p.k[0]) / gauzeScale + gauze.ks.a.k[0],
+      );
+      const gy = Math.round(
+        (world[1] + 10 - gauze.ks.p.k[1]) / gauzeScale + gauze.ks.a.k[1],
+      );
+      expect(b.data[(gy * b.info.width + gx) * 4 + 3]).toBeGreaterThan(200);
+      samples++;
+      break;
+    }
+  }
+  expect(samples).toBeGreaterThan(5);
+  const shadow = scene.layers.find(
+    (layer) => layer.nm === "03and04and08and09fingershadow.webp",
+  );
+  expect(shadow).toBeUndefined();
 });
 
 test("hands retain their source proportions and the slit uses only one upper-blade snip", () => {
@@ -207,11 +380,60 @@ test("hands retain their source proportions and the slit uses only one upper-bla
   }
   const fold = JSON.parse(fs.readFileSync(`public${cfg.paths[3]}`, "utf8"));
   const flap = fold.layers.find((layer) => layer.nm === "03gauze_folding.webp");
-  expect(flap.ks.p.a).toBe(0);
-  const fixed = fold.layers.find((layer) => layer.nm === "03gauze.webp");
-  expect(fixed.masksProperties[0].pt.k.v[1][0]).toBeCloseTo(
-    (584 - 155) / (700 / 744),
+  const strips = fold.layers.filter((layer) =>
+    /^03gauze_folding/.test(layer.nm),
   );
+  expect(strips).toHaveLength(28);
+  for (const strip of strips) {
+    expect(strip.ks.o.k.at(-1).t).toBeLessThan(141);
+    expect(strip.ks.o.k.at(-1).s).toEqual([0]);
+  }
+  expect(
+    strips.some((layer) =>
+      layer.ks.sk.k.some((key) => Math.abs(key.s[0]) > 10),
+    ),
+  ).toBe(true);
+  const padTape = fold.layers.find((layer) => layer.nm === "03tape.webp");
+  const tapeAsset = fold.assets.find((asset) => asset.id === padTape.refId);
+  expect((tapeAsset.w * padTape.ks.s.k[0]) / 100).toBeCloseTo(165);
+  const fixed = fold.layers.find((layer) => layer.nm === "03gauze.webp");
+  const folded = fold.layers.find(
+    (layer) => layer.nm === "03and04foldedgauze.webp",
+  );
+  expect(fixed.hasMask).not.toBe(true);
+  expect(folded.hasMask).not.toBe(true);
+  const fixedAsset = fold.assets.find((asset) => asset.id === fixed.refId);
+  expect((fixedAsset.w * fixed.ks.s.k[0]) / 100).toBeCloseTo(700);
+  const toWorld = (layer, [x, y], scale) => {
+    const [ax, ay] = layer.ks.a.k;
+    const position = layer.ks.p.a ? layer.ks.p.k[0].s : layer.ks.p.k;
+    const angle = (layer.ks.r.k * Math.PI) / 180;
+    return [
+      position[0] +
+        (x - ax) * scale * Math.cos(angle) -
+        (y - ay) * scale * Math.sin(angle),
+      position[1] +
+        (x - ax) * scale * Math.sin(angle) +
+        (y - ay) * scale * Math.cos(angle),
+    ];
+  };
+  // Top and bottom of the full gauze edge meet the flap, including crop inset.
+  for (const [basePoint, flapPoint] of [
+    [
+      [744, 140],
+      [22, 90],
+    ],
+    [
+      [610, 740],
+      [18, 740],
+    ],
+  ]) {
+    const base = toWorld(fixed, basePoint, fixed.ks.s.k[0] / 100);
+    const moving = toWorld(flap, flapPoint, flap.ks.s.k[0].s[0] / 100);
+    expect(Math.hypot(base[0] - moving[0], base[1] - moving[1])).toBeLessThan(
+      10,
+    );
+  }
   const assembled = fold.layers.find(
     (layer) => layer.nm === "Assembled folding hand",
   );
@@ -241,6 +463,17 @@ test("hands retain their source proportions and the slit uses only one upper-bla
   const cut = slit.layers.find((layer) => layer.nm === "Single radial slit");
   expect(cut.ip).toBe(480);
   expect(cut.shapes[0].it.some((shape) => shape.ty === "tm")).toBe(false);
+});
+
+test("choosing cardboard holds only the box illustration", () => {
+  const data = JSON.parse(fs.readFileSync(`public${cfg.paths[5]}`, "utf8"));
+  expect(data.layers.map((layer) => layer.nm)).toEqual([
+    "05cardboard.webp",
+    "othersbackground.webp",
+  ]);
+  expect(
+    data.layers.every((layer) => layer.ks.p.a === 0 && layer.ks.r.a === 0),
+  ).toBe(true);
 });
 
 test("the pencil graphite and the growing ellipse share a continuous path", () => {

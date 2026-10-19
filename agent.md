@@ -103,12 +103,31 @@ Last refreshed: 2026-10-09
   hygiene; fold/tape share stage 04 and circle/slit share stage 08.
   Preserve original hand proportions. Register `holdinghand_top.png` and
   `holdinghand_bottom.png` at one scale, above/below the held object, in 04/05/08.
-  Mask stationary gauze at the fixed crease and bake the right hand and wrist
+  Show complete gauze textures at 700px width and register the flap along their
+  sloping edge, scaling the held assembly together about the left grip.
+  Bake the right hand and wrist
   into `foldinghand.webp` before fading. A Lottie precomp still bleeds internal
   child layers on iOS canvas, so keep the generated single texture. Extend wrists
-  offscreen. Scissors share measured screw anchors and a four-degree swing;
+  offscreen. Scissors share measured screw anchors and a 16-degree cutting swing;
   trim the visited short arc progressively, then dissolve only the remaining
-  outline, including tape. Reveal the slit at the start of the upper blade's return.
+  outline, including tape. The cardboard stage holds only the box. Keep the pad
+  tape at 165px, landed at the gauze's upper edge, and use the flexible strip mesh.
+  Fade the folding strips by frame 135, before holding-thumb contact at frame 141.
+  Stage 04 omits the separate finger-shadow texture and raises the tape slightly.
+  The cone keeps a top view through folding/taping, with only a 10px apex rise.
+  Its right paper edge
+  moves over the left with a narrow tracking contact shadow; no gap or broad
+  quarter-disc shading. Cast its tape shadow left. Move the camera only afterwards.
+  Keep the paper stiff with a straight free edge and subtle roll shading; overlap travel
+  is 0.85 radians, and the oval deformation follows the visible start of the roll.
+  Contact-shadow angular width is 0.11 radians; cone tape sits at 56% of the radius.
+  Use lower-scissor corrections of 1.28 for trimming and 1.22 for circle cutting.
+  Register its grip slightly closer to the upper palm with anchor [115, 217].
+  Omit the brown finger extension; mask the source's two extended finger portions
+  and the protruding lower joint corner in both scenes. Match both paper faces
+  to the same 0.955 white.
+  Reveal the slit at the start of the
+  upper blade's four-degree return.
   The containing route remains
   `eyePadShield`, not Videos. Its runtime row has its own click handler: do not
   add `data-route`, which also triggers the global router and returns to the root.

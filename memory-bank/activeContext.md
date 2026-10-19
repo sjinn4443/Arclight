@@ -2,6 +2,16 @@
 
 # Active Context
 
+## VS Code localhost shortcut - 19 October 2026
+
+- The launcher extension has a separate `localhost:3000` status bar button and
+  Command Palette command. When port 3000 is not responding, it starts
+  `server.cjs` with VS Code's bundled Node runtime, waits for loopback readiness,
+  then opens the browser through `vscode.env.openExternal()`.
+- Extension package 0.0.7 contributes both commands and activates after startup.
+  After installing a VSIX into an already-open VS Code window, run
+  **Developer: Reload Window** to activate it.
+
 ## Paediatric Surgical Eye & Ear workshop - 9 October 2026
 
 - Added the Eyes carousel workshop with a white/grey heart illustration and
@@ -395,7 +405,6 @@ Childhood Fundal Reflex scrollytelling is also an active maintenance area:
 - If a remote embed later blocks framing, switch that module to a local copy or an open-in-new-tab fallback.
 - Add translation keys for `Trauma` and `Amsler` if those labels need to be localized instead of staying English-only.
 - Keep folder READMEs in sync with future wiring changes (for example if optional routers under `reports/routes/` are re-enabled or if CSP/CORS/CSRF are reintroduced as middleware).
-- Consider improving the VS Code launcher extension for Windows/Linux (replace macOS `open -a` with `vscode.env.openExternal()` and add `contributes.commands` to the extension manifest).
 - Regenerate `folderList.txt` whenever large folder structure changes occur.
 
 ## Active Decisions and Considerations
