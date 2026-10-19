@@ -45,6 +45,94 @@ describe("language-specific offline narration", () => {
   };
 
   it.each(["low", "high"])(
+    "downloads the eye pad animation with English fallback at %s quality",
+    (videoQuality) => {
+      const base = "/narration/make-eye-pad-shield/full-animation/";
+      const media = "/videos/FullAnim/MakeEyePadShieldFullAnim_";
+      const urls = [
+        base + "en.m4a",
+        base + "en.vtt",
+        media + "240p.mp4",
+        media + "720p.mp4",
+      ];
+      const selection = languageInstall.resolveOfflineDownloadSelection(
+        { assets: urls.map((url) => ({ url, bytes: 1000 })) },
+        {
+          language: "ko",
+          mode: "select",
+          catalogId: "procedure-eye-pad",
+          videoQuality,
+        },
+      );
+      expect(selection.urls).toEqual(
+        expect.arrayContaining([
+          base + "en.m4a",
+          base + "en.vtt",
+          media + (videoQuality === "low" ? "240p.mp4" : "720p.mp4"),
+        ]),
+      );
+      expect(selection.urls).not.toContain(
+        media + (videoQuality === "low" ? "720p.mp4" : "240p.mp4"),
+      );
+    },
+  );
+
+  it.each(
+    ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"].flatMap(
+      (language) => ["low", "high"].map((quality) => [language, quality]),
+    ),
+  )(
+    "keeps both procedure timelines in %s at %s quality",
+    (language, videoQuality) => {
+      const base = "/narration/make-eye-pad-shield/full-animation/";
+      const tracks = [
+        "en",
+        "es-419",
+        "ko",
+        "ne",
+        "fr",
+        "lg",
+        "ha",
+        "yo",
+        "ig",
+      ].flatMap((code) =>
+        ["", "video/"].flatMap((folder) =>
+          ["m4a", "vtt"].map((ext) => `${base}${folder}${code}.${ext}`),
+        ),
+      );
+      const media = "/videos/FullAnim/MakeEyePadShieldFullAnim_";
+      const selection = languageInstall.resolveOfflineDownloadSelection(
+        {
+          assets: [...tracks, media + "240p.mp4", media + "720p.mp4"].map(
+            (url) => ({ url, bytes: 1000 }),
+          ),
+        },
+        {
+          language,
+          mode: "select",
+          catalogId: "procedure-eye-pad",
+          videoQuality,
+        },
+      );
+      expect(
+        selection.urls.filter((url) => url.startsWith(base)).sort(),
+      ).toEqual(
+        ["", "video/"]
+          .flatMap((folder) =>
+            ["m4a", "vtt"].map((ext) => `${base}${folder}${language}.${ext}`),
+          )
+          .sort(),
+      );
+      expect(selection.urls).toContain(
+        media + (videoQuality === "low" ? "240p.mp4" : "720p.mp4"),
+      );
+      expect(selection.urls).not.toContain(
+        media + (videoQuality === "low" ? "720p.mp4" : "240p.mp4"),
+      );
+    },
+  );
+
+  it.each(["low", "high"])(
     "includes Visual Acuity English fallback with %s video",
     (videoQuality) => {
       const base = "/narration/visual-acuity/full-animation/";

@@ -8,6 +8,89 @@
       "captions": "en.vtt",
       "bytes": 342727,
       "sha256": "71fb0f6d7d0fa591a0876e24ae6f1f6573436da9eaf7cc5bf3dedf00067fde7e"
+    },
+    "lg": {
+      "src": "lg.m4a",
+      "captions": "lg.vtt",
+      "bytes": 431162,
+      "sha256": "ca6304471ca95d5fb7b7a060e1f0c23fcfc6cb57f022721692c6ccc7479f15bd",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.71,
+        "truePeakDbTP": -3.38
+      }
+    },
+    "ha": {
+      "src": "ha.m4a",
+      "captions": "ha.vtt",
+      "bytes": 417848,
+      "sha256": "3e7693a71d49a7f5e6f535a6a66028db7f0c8484b4e48e5a9b11276183c768ca",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.39,
+        "truePeakDbTP": -3.93
+      }
+    },
+    "yo": {
+      "src": "yo.m4a",
+      "captions": "yo.vtt",
+      "bytes": 291516,
+      "sha256": "fd5d7fe0c891e8df79d4d7033e4f9fb86b387eee64c527c79ddba5a4dd12e0c6",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.42,
+        "truePeakDbTP": -4.36
+      }
+    },
+    "ig": {
+      "src": "ig.m4a",
+      "captions": "ig.vtt",
+      "bytes": 395569,
+      "sha256": "f58e2e84fd86edbd4c406f6f9c0f2fab30c563416f5c7ce0a17ee594c09fdf32",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.54,
+        "truePeakDbTP": -4.29
+      }
+    },
+    "es-419": {
+      "src": "es-419.m4a",
+      "captions": "es-419.vtt",
+      "bytes": 352197,
+      "sha256": "7baae49593ed72848d8db421ea38ee2e31e8206b2ad3f36744bf599c63e0b0d5"
+    },
+    "ko": {
+      "src": "ko.m4a",
+      "captions": "ko.vtt",
+      "bytes": 368568,
+      "sha256": "65ebcfd6e26110d861140ad45f937a76e4507f14facdd06f2bf455f1948d1741",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.32,
+        "truePeakDbTP": -4.47
+      }
+    },
+    "ne": {
+      "src": "ne.m4a",
+      "captions": "ne.vtt",
+      "bytes": 336137,
+      "sha256": "fb976a69aad1846fe16fc0d162a38e899e8149616a2326cb232d6d617be304dd",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.46,
+        "truePeakDbTP": -3.94
+      }
+    },
+    "fr": {
+      "src": "fr.m4a",
+      "captions": "fr.vtt",
+      "bytes": 358640,
+      "sha256": "bd27c852521d34884e6c7d5cace4b7be4270758f96b0aabb0613ac7dcfd660e1",
+      "loudness": {
+        "referenceLanguage": "en",
+        "integratedLUFS": -18.52,
+        "truePeakDbTP": -2.97
+      }
     }
   }
 }

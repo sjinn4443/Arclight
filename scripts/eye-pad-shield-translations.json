@@ -1,0 +1,158 @@
+{
+  "es-419": {
+    "titles": [
+      "Preparación",
+      "Cómo hacer una almohadilla ocular",
+      "Cómo hacer un protector ocular"
+    ],
+    "cues": [
+      "Lávese las manos y póngase el equipo de protección personal.",
+      "Necesitará gasa, algodón, cartón, lápiz, taza, cinta adhesiva y tijeras.",
+      "Para la almohadilla ocular, extienda una bola de algodón en forma ovalada, de unos cinco a seis centímetros de ancho.",
+      "Doble la gasa alrededor del algodón.",
+      "Pegue cinta en el extremo abierto.",
+      "Recorte los bordes de la gasa siguiendo la forma del algodón.",
+      "Esta es su almohadilla.",
+      "Para el protector, busque cartón limpio. Puede reutilizar un envase médico.",
+      "Use una taza como plantilla y dibuje un círculo de unos ocho centímetros de diámetro.",
+      "Recorte el círculo.",
+      "Luego haga un corte desde el borde hasta el centro.",
+      "Curve el cartón para formar un cono y fíjelo con cinta adhesiva.",
+      "Este es el protector ocular."
+    ]
+  },
+  "ko": {
+    "titles": ["준비", "안대 만들기", "눈 보호대 만들기"],
+    "cues": [
+      "손을 씻고 개인 보호구를 착용합니다.",
+      "거즈, 솜, 판지, 연필, 컵, 접착테이프와 가위가 필요합니다.",
+      "안대를 만들려면 솜뭉치를 펴서 너비가 약 오에서 육 센티미터인 타원 모양으로 만듭니다.",
+      "거즈로 솜을 감싸 접습니다.",
+      "열린 끝부분에 테이프를 붙입니다.",
+      "솜 모양에 맞춰 거즈 가장자리를 다듬어 자릅니다.",
+      "이것이 안대입니다.",
+      "눈 보호대에는 깨끗한 판지를 사용합니다. 의료용 포장재를 재활용해도 좋습니다.",
+      "컵을 본으로 삼아 지름이 약 팔 센티미터인 원을 그립니다.",
+      "원을 오려 냅니다.",
+      "그런 다음 가장자리에서 중심까지 한 번 자릅니다.",
+      "판지를 구부려 원뿔 모양으로 만들고 접착테이프로 고정합니다.",
+      "눈 보호대가 완성되었습니다."
+    ]
+  },
+  "ne": {
+    "titles": ["तयारी", "आँखाको प्याड बनाउने", "आँखाको सुरक्षा कवच बनाउने"],
+    "cues": [
+      "हात धुनुहोस् र व्यक्तिगत सुरक्षा सामग्री लगाउनुहोस्।",
+      "गज, कपास, गत्ता, पेन्सिल, कप, टेप र कैंची चाहिन्छ।",
+      "आँखाको प्याड बनाउन कपासको डल्लोलाई करिब पाँचदेखि छ सेन्टिमिटर चौडा अण्डाकारमा फैलाउनुहोस्।",
+      "कपास वरिपरि गज मोड्नुहोस्।",
+      "खुला छेउमा टेप लगाउनुहोस्।",
+      "कपासको आकारअनुसार गजको किनारा काट्नुहोस्।",
+      "यो आँखाको प्याड हो।",
+      "कवचका लागि सफा गत्ता खोज्नुहोस्। औषधिको प्याकेट पुनः प्रयोग गर्न सकिन्छ।",
+      "कपलाई नमुना बनाएर करिब आठ सेन्टिमिटर व्यासको वृत्त कोर्नुहोस्।",
+      "वृत्त काटेर निकाल्नुहोस्।",
+      "त्यसपछि किनाराबाट केन्द्रसम्म काट्नुहोस्।",
+      "गत्तालाई सोलीको आकारमा मोडेर टेपले अड्याउनुहोस्।",
+      "यो आँखाको सुरक्षा कवच हो।"
+    ]
+  },
+  "fr": {
+    "titles": [
+      "Préparation",
+      "Fabriquer un pansement oculaire",
+      "Fabriquer une coque de protection"
+    ],
+    "cues": [
+      "Lavez-vous les mains et mettez votre équipement de protection individuelle.",
+      "Il vous faut de la gaze, du coton, du carton, un crayon, une tasse, du ruban adhésif et des ciseaux.",
+      "Pour le pansement oculaire, étalez une boule de coton en ovale, d'environ cinq à six centimètres de large.",
+      "Repliez la gaze autour du coton.",
+      "Collez du ruban adhésif sur l'extrémité ouverte.",
+      "Découpez les bords de la gaze en suivant la forme du coton.",
+      "Votre pansement oculaire.",
+      "Pour la coque, prenez du carton propre. Un emballage médical peut être réutilisé.",
+      "Avec une tasse comme gabarit, tracez un cercle d'environ huit centimètres de diamètre.",
+      "Découpez le cercle.",
+      "Puis faites une entaille du bord jusqu'au centre.",
+      "Courbez le carton en cône et fixez-le avec du ruban adhésif.",
+      "Voici la coque de protection oculaire."
+    ]
+  },
+  "lg": {
+    "titles": [
+      "Okweteekateeka",
+      "Okukola ppamba y'eriiso",
+      "Okukola ekikuumi ky'eriiso"
+    ],
+    "cues": [
+      "Naaba engalo, oyambale eby'okwekuuma.",
+      "Weetaaga gauze, ppamba, kaadi, ekkalaamu, ekikopo, teepu ne makansi.",
+      "Okukola ppamba y'eriiso, yanjuza akapiira ka ppamba mu ngeri ey'ekigi, nga kagazi sentimita ttaano oba mukaaga.",
+      "Zinga gauze ku ppamba.",
+      "Teeka teepu ku nkomerero enzigule.",
+      "Salako empenda za gauze nga ogoberera enkula ya ppamba.",
+      "Eno ye ppamba y'eriiso.",
+      "Ku kikuumi, funa kaadi ennyonjo. Osobola okuddamu okukozesa ekipaketi ky'eddagala.",
+      "Kozesa ekikopo ng'ekyokulabirako, okube ekikulungo ekigazi nga sentimita munaana.",
+      "Salayo ekikulungo.",
+      "Oluvannyuma sala okuva ku ludda okutuuka wakati.",
+      "Zinga kaadi ekole ekifunvu, oginyweze ne teepu.",
+      "Kino kye kikuumi ky'eriiso."
+    ]
+  },
+  "ha": {
+    "titles": ["Shiri", "Yin audugar rufe ido", "Yin garkuwar ido"],
+    "cues": [
+      "Wanke hannuwanka, ka sa kayan kariya.",
+      "Kana buƙatar gauze, auduga, kwali, fensir, kofi, tef da almakashi.",
+      "Don audugar rufe ido, shimfiɗa ƙwallon auduga ya zama mai siffar ƙwai, faɗinsa santimita biyar zuwa shida.",
+      "Nannaɗe gauze a kan audugar.",
+      "Liƙa tef a buɗaɗɗen ƙarshen.",
+      "Yanke gefunan gauze su bi siffar audugar.",
+      "Audugar ido kenan.",
+      "Don garkuwar ido, samo kwali mai tsabta. Za a iya sake amfani da marufin kayan lafiya.",
+      "Yi amfani da kofi a matsayin samfuri, ka zana da'ira mai faɗin santimita takwas.",
+      "Yanke da'irar.",
+      "Sannan ka yanka daga gefen zuwa tsakiyar.",
+      "Lanƙwasa kwali ya zama mazubi, ka ɗaure shi da tef.",
+      "Wannan ita ce garkuwar ido."
+    ]
+  },
+  "yo": {
+    "titles": ["Ìmúrasílẹ̀", "Ṣíṣe páàdì ojú", "Ṣíṣe ààbò ojú"],
+    "cues": [
+      "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
+      "O nílò gáàsì, òwú, káàdì, pẹ́ńsù, ife, téèpù àti scissors.",
+      "Fún páàdì ojú, tẹ òwú kan sílẹ̀ ní ìrísí ẹyin, kí ìwọ̀n rẹ̀ jẹ́ sẹ̀ǹtímítà márùn-ún sí mẹ́fà.",
+      "Pa gáàsì yí òwú náà ká.",
+      "Fi téèpù sí ẹnu tí ó ṣí.",
+      "Gé etí gáàsì náà ní ìrísí òwú náà.",
+      "Èyí ni páàdì ojú rẹ.",
+      "Fún ààbò ojú, wá káàdì tó mọ́. O lè tún àpótí ohun èlò ìṣègùn lò.",
+      "Lo ife gẹ́gẹ́ bí àwòṣe, kí o fa àyíká tó fẹ̀ tó sẹ̀ǹtímítà mẹ́jọ.",
+      "Gé àyíká náà jáde.",
+      "Lẹ́yìn náà, gé láti etí rẹ̀ dé àárín.",
+      "Yí káàdì náà sí ìrísí kọ́ọ̀nù, kí o fi téèpù mú un dúró.",
+      "Èyí ni ààbò ojú rẹ."
+    ]
+  },
+  "ig": {
+    "titles": ["Nkwadebe", "Ime akwa mkpuchi anya", "Ime ọta anya"],
+    "cues": [
+      "Saa aka gị ma yiri ngwa nchebe.",
+      "Ị ga-achọ gauze, owu, kaadiboodu, pensụl, iko, teepu na mkpa.",
+      "Iji mee akwa mkpuchi anya, gbasaa bọọlụ owu ka ọ dị ka akwa, obosara ya dị sentimita ise ruo isii.",
+      "Kechie gauze gburugburu owu ahụ.",
+      "Tinye teepu n'ọnụ mepere emepe.",
+      "Bee akụkụ gauze ahụ ka ọ soro ọdịdị owu ahụ.",
+      "Akwa anya gị.",
+      "Maka ọta anya, chọta kaadiboodu dị ọcha. I nwere ike iji ngwugwu ọgwụ ọzọ.",
+      "Jiri iko dị ka ihe atụ see okirikiri nke obosara ya dị ihe dị ka sentimita asatọ.",
+      "Bee okirikiri ahụ.",
+      "Mgbe ahụ, bee site n'akụkụ ya ruo n'etiti.",
+      "Gbagọọ kaadiboodu ahụ ka ọ dị ka kọnụ, jiri teepu jide ya.",
+      "Nke a bụ ọta anya gị."
+    ]
+  }
+}

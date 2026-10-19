@@ -1361,6 +1361,14 @@ async function main() {
     ),
     videoTitleCues: [],
   };
+  const { EYE_PAD_SHIELD_SECTIONS: sections } = await import(
+    pathToFileURL(path.join(ROOT, "public/js/eyePadShieldScroll.js"))
+  );
+  require("./localize-eye-pad-shield-narration.cjs").applyEyePadShieldTranslations(
+    script,
+    sections,
+    clips,
+  );
   await fs.writeFile(
     path.join(folder, "script.json"),
     JSON.stringify(script, null, 2) + "\n",

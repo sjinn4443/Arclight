@@ -4,6 +4,20 @@ Last checked: 17 September 2026.
 
 ### Eye pad and shield scroll narration — 7 October 2026
 
+The **Full animation** row added on 19 October opens the procedure-hosted
+`makeEyePadShieldFullAnimationVideoPage`. Its silent 240p/720p MP4s render the
+same nine Lottie stages at 30fps with three 3s title cards, for 134 seconds.
+The shared Front of Eye player supplies separate audio, captions, quality
+selection and full-screen controls. Both lessons now support its nine languages.
+The scrolly retains the existing 125s timeline; video uses the matching 134s
+tracks in `full-animation/video/`. Titles start at video 0s, 20s and 65s.
+Lossless source frames and explicit limited-range BT.709 encoding fix the
+brighter first export. Rebuild with `scripts/build-eye-pad-shield-video.cjs`.
+Translations live in `scripts/eye-pad-shield-translations.json`; the localiser
+updates both scripts and connects all delivery files. Microsoft voices used
+edge-tts 7.3.1 after its October handshake update. Local voices retain the same
+cached MMS model revisions and licences as Front of Eye and Fundal Reflex.
+
 The procedure-hosted `makeEyePadShieldScrollPage` uses nine Lottie stages and
 the same narration/frame clock. Its supplied English instructions are recorded
 in `public/narration/make-eye-pad-shield/full-animation/script.json`, generated

@@ -2673,5 +2673,62 @@
       "low": "videos/FullAnim/VisualAcuityFullAnim_220p.mp4",
       "high": "videos/FullAnim/VisualAcuityFullAnim_720p.mp4"
     }
+  },
+  "makeEyePadShieldFullAnimationVideoPage": {
+    "subtitles": {
+      "en": "/narration/make-eye-pad-shield/full-animation/video/en.vtt",
+      "es": "/narration/make-eye-pad-shield/full-animation/video/es-419.vtt",
+      "ko": "/narration/make-eye-pad-shield/full-animation/video/ko.vtt",
+      "ne": "/narration/make-eye-pad-shield/full-animation/video/ne.vtt",
+      "fr": "/narration/make-eye-pad-shield/full-animation/video/fr.vtt",
+      "lg": "/narration/make-eye-pad-shield/full-animation/video/lg.vtt",
+      "ha": "/narration/make-eye-pad-shield/full-animation/video/ha.vtt",
+      "yo": "/narration/make-eye-pad-shield/full-animation/video/yo.vtt",
+      "ig": "/narration/make-eye-pad-shield/full-animation/video/ig.vtt"
+    },
+    "audioVariants": {
+      "en": {
+        "label": "English",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/en.m4a"
+      },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/es-419.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/ko.m4a"
+      },
+      "ne": {
+        "label": "नेपाली",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/ne.m4a"
+      },
+      "fr": {
+        "label": "Français",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/fr.m4a"
+      },
+      "lg": {
+        "label": "Luganda",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/ig.m4a"
+      }
+    },
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "/videos/FullAnim/MakeEyePadShieldFullAnim_240p.mp4",
+      "high": "/videos/FullAnim/MakeEyePadShieldFullAnim_720p.mp4"
+    }
   }
 }

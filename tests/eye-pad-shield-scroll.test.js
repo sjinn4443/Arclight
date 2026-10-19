@@ -56,7 +56,17 @@ test("the twelve references and DO hygiene form nine locally available Lottie st
 });
 
 test("captions and narration retain every supplied English instruction in order", () => {
-  expect(Object.keys(script.languages)).toEqual(["en"]);
+  expect(Object.keys(script.languages)).toEqual([
+    "en",
+    "es-419",
+    "ko",
+    "ne",
+    "fr",
+    "lg",
+    "ha",
+    "yo",
+    "ig",
+  ]);
   expect(script.cues[0].en).toBe("Wash your hands and don PPE.");
   expect(script.cues.some((cue) => cue.id === "introduction")).toBe(false);
   expect(script.cues.some((cue) => cue.id === "prepare")).toBe(false);

@@ -109,7 +109,9 @@ test("all procedure cards open their PEC lessons and playable videos", async ({
       await expect(folder).toBeFocused();
       await folder.click();
     }
-    await expect(detail.locator(".lesson-row--video")).toHaveCount(keys.length);
+    await expect(detail.locator(".lesson-row--video")).toHaveCount(
+      keys.length + (route === "eyePadShield" ? 1 : 0),
+    );
     if (route === "eyePadShield") {
       await page.screenshot({
         path: testInfo.outputPath("eye-pad-shield.png"),

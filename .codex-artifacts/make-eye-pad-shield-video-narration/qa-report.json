@@ -1,0 +1,1423 @@
+{
+  "schemaVersion": 1,
+  "sourceVideo": "public/videos/FullAnim/MakeEyePadShieldFullAnim_720p.mp4",
+  "sourceVideoDuration": 134,
+  "targetDuration": 134,
+  "syncToleranceSeconds": 0.25,
+  "maxPlaybackSpeed": 1.08,
+  "tracks": {
+    "en": {
+      "voice": "en-GB-SoniaNeural",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/en.m4a",
+        "bytes": 346168,
+        "duration": 134,
+        "sha256": "6446d89f5cba7ce2010e454ab87f81a8a0c0ea52864d1218f948eb64a1391500",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.en.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 3.02,
+          "playbackSpeed": 1,
+          "renderedEnd": 7.02,
+          "endMargin": 2.98
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 7.39,
+          "playbackSpeed": 1,
+          "renderedEnd": 17.39,
+          "endMargin": 2.61
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 6.91,
+          "playbackSpeed": 1,
+          "renderedEnd": 29.91,
+          "endMargin": 6.09
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 2.95,
+          "playbackSpeed": 1,
+          "renderedEnd": 38.95,
+          "endMargin": 6.05
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 1.99,
+          "playbackSpeed": 1,
+          "renderedEnd": 46.99,
+          "endMargin": 5.01
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.01,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.01,
+          "endMargin": 5.99
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 1.97,
+          "playbackSpeed": 1,
+          "renderedEnd": 64.47,
+          "endMargin": 0.53
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 6.48,
+          "playbackSpeed": 1,
+          "renderedEnd": 74.48,
+          "endMargin": 4.52
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 6.07,
+          "playbackSpeed": 1,
+          "renderedEnd": 85.07,
+          "endMargin": 7.93
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 1.87,
+          "playbackSpeed": 1,
+          "renderedEnd": 94.87,
+          "endMargin": 11.13
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 3.19,
+          "playbackSpeed": 1,
+          "renderedEnd": 109.19,
+          "endMargin": 3.81
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 4.03,
+          "playbackSpeed": 1,
+          "renderedEnd": 117.03,
+          "endMargin": 6.97
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 2.14,
+          "playbackSpeed": 1,
+          "renderedEnd": 126.14,
+          "endMargin": 7.86
+        }
+      ]
+    },
+    "lg": {
+      "voice": "facebook/mms-tts-lug",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/lg.m4a",
+        "bytes": 435278,
+        "duration": 134,
+        "sha256": "4d34bd5a540bf3b5dcb78222bea2cc8ad75c7e4ae987f8f3dd5a8ba2515f0e99",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.lg.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 3.55,
+          "playbackSpeed": 1,
+          "renderedEnd": 7.55,
+          "endMargin": 2.45
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 5.3,
+          "playbackSpeed": 1,
+          "renderedEnd": 15.3,
+          "endMargin": 4.7
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 10.94,
+          "playbackSpeed": 1,
+          "renderedEnd": 33.94,
+          "endMargin": 2.06
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 2.3,
+          "playbackSpeed": 1,
+          "renderedEnd": 38.3,
+          "endMargin": 6.7
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 3.6,
+          "playbackSpeed": 1,
+          "renderedEnd": 48.6,
+          "endMargin": 3.4
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.99,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.99,
+          "endMargin": 5.01
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 2.13,
+          "playbackSpeed": 1,
+          "renderedEnd": 64.63,
+          "endMargin": 0.37
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 6.61,
+          "playbackSpeed": 1,
+          "renderedEnd": 74.61,
+          "endMargin": 4.39
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 8.21,
+          "playbackSpeed": 1,
+          "renderedEnd": 87.21,
+          "endMargin": 5.79
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 2.08,
+          "playbackSpeed": 1,
+          "renderedEnd": 95.08,
+          "endMargin": 10.92
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 5.28,
+          "playbackSpeed": 1,
+          "renderedEnd": 111.28,
+          "endMargin": 1.72
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 5.38,
+          "playbackSpeed": 1,
+          "renderedEnd": 118.38,
+          "endMargin": 5.62
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 2.3,
+          "playbackSpeed": 1,
+          "renderedEnd": 126.3,
+          "endMargin": 7.7
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-19.94",
+          "input_tp": "-1.41",
+          "input_lra": "8.20",
+          "input_thresh": "-30.59",
+          "output_i": "-23.31",
+          "output_tp": "-2.00",
+          "output_lra": "8.30",
+          "output_thresh": "-34.01",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.69"
+        },
+        "after": {
+          "input_i": "-18.74",
+          "input_tp": "-2.44",
+          "input_lra": "8.70",
+          "input_thresh": "-29.37",
+          "output_i": "-23.03",
+          "output_tp": "-3.19",
+          "output_lra": "8.60",
+          "output_thresh": "-33.65",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.97"
+        },
+        "targetLUFS": -18.35
+      }
+    },
+    "ha": {
+      "voice": "facebook/mms-tts-hau",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/ha.m4a",
+        "bytes": 421316,
+        "duration": 134,
+        "sha256": "11feeb3833fa7b7064c4081827a9d60a48a99f4180d0f67311ff49d69f521041",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.ha.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 3.07,
+          "playbackSpeed": 1,
+          "renderedEnd": 7.07,
+          "endMargin": 2.93
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 6.45,
+          "playbackSpeed": 1,
+          "renderedEnd": 16.45,
+          "endMargin": 3.55
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 10.18,
+          "playbackSpeed": 1,
+          "renderedEnd": 33.18,
+          "endMargin": 2.82
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 2.64,
+          "playbackSpeed": 1,
+          "renderedEnd": 38.64,
+          "endMargin": 6.36
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 3.22,
+          "playbackSpeed": 1,
+          "renderedEnd": 48.22,
+          "endMargin": 3.78
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.32,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.32,
+          "endMargin": 5.68
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 1.94,
+          "playbackSpeed": 1,
+          "renderedEnd": 64.44,
+          "endMargin": 0.56
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 7.26,
+          "playbackSpeed": 1,
+          "renderedEnd": 75.26,
+          "endMargin": 3.74
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 7.62,
+          "playbackSpeed": 1,
+          "renderedEnd": 86.62,
+          "endMargin": 6.38
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 1.62,
+          "playbackSpeed": 1,
+          "renderedEnd": 94.62,
+          "endMargin": 11.38
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 4.27,
+          "playbackSpeed": 1,
+          "renderedEnd": 110.27,
+          "endMargin": 2.73
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 4.9,
+          "playbackSpeed": 1,
+          "renderedEnd": 117.9,
+          "endMargin": 6.1
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 2.51,
+          "playbackSpeed": 1,
+          "renderedEnd": 126.51,
+          "endMargin": 7.49
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-15.36",
+          "input_tp": "0.29",
+          "input_lra": "7.90",
+          "input_thresh": "-26.59",
+          "output_i": "-22.28",
+          "output_tp": "-2.00",
+          "output_lra": "8.60",
+          "output_thresh": "-33.19",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.72"
+        },
+        "after": {
+          "input_i": "-18.40",
+          "input_tp": "-3.86",
+          "input_lra": "7.80",
+          "input_thresh": "-29.49",
+          "output_i": "-22.96",
+          "output_tp": "-3.22",
+          "output_lra": "8.10",
+          "output_thresh": "-33.81",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.04"
+        },
+        "targetLUFS": -18.35
+      }
+    },
+    "yo": {
+      "voice": "facebook/mms-tts-yor",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/yo.m4a",
+        "bytes": 295807,
+        "duration": 134,
+        "sha256": "8d462064ce533dd10b3d4c7093e634d955ae25d4bbe34d753bfa5b468c5e546c",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.yo.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 2.45,
+          "playbackSpeed": 1,
+          "renderedEnd": 6.45,
+          "endMargin": 3.55
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 4.1,
+          "playbackSpeed": 1,
+          "renderedEnd": 14.1,
+          "endMargin": 5.9
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 5.82,
+          "playbackSpeed": 1,
+          "renderedEnd": 28.82,
+          "endMargin": 7.18
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 1.68,
+          "playbackSpeed": 1,
+          "renderedEnd": 37.68,
+          "endMargin": 7.32
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 1.79,
+          "playbackSpeed": 1,
+          "renderedEnd": 46.79,
+          "endMargin": 5.21
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 2.19,
+          "playbackSpeed": 1,
+          "renderedEnd": 54.19,
+          "endMargin": 7.81
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 1.49,
+          "playbackSpeed": 1,
+          "renderedEnd": 63.99,
+          "endMargin": 1.01
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 4.8,
+          "playbackSpeed": 1,
+          "renderedEnd": 72.8,
+          "endMargin": 6.2
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 4.91,
+          "playbackSpeed": 1,
+          "renderedEnd": 83.91,
+          "endMargin": 9.09
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 1.47,
+          "playbackSpeed": 1,
+          "renderedEnd": 94.47,
+          "endMargin": 11.53
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 2.67,
+          "playbackSpeed": 1,
+          "renderedEnd": 108.67,
+          "endMargin": 4.33
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 4.62,
+          "playbackSpeed": 1,
+          "renderedEnd": 117.62,
+          "endMargin": 6.38
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 1.41,
+          "playbackSpeed": 1,
+          "renderedEnd": 125.41,
+          "endMargin": 8.59
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-27.51",
+          "input_tp": "-13.37",
+          "input_lra": "7.60",
+          "input_thresh": "-37.89",
+          "output_i": "-23.97",
+          "output_tp": "-9.45",
+          "output_lra": "7.70",
+          "output_thresh": "-34.36",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.03"
+        },
+        "after": {
+          "input_i": "-18.41",
+          "input_tp": "-5.10",
+          "input_lra": "7.60",
+          "input_thresh": "-28.80",
+          "output_i": "-23.12",
+          "output_tp": "-5.88",
+          "output_lra": "8.30",
+          "output_thresh": "-33.55",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.88"
+        },
+        "targetLUFS": -18.35
+      }
+    },
+    "ig": {
+      "voice": "Shinzmann/soro-tts-ibo",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/ig.m4a",
+        "bytes": 398205,
+        "duration": 134,
+        "sha256": "06914ec75fcb48e9ca83ef7f15729bc20b434f5f6921829587443f823629bd19",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.ig.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 2.22,
+          "playbackSpeed": 1,
+          "renderedEnd": 6.22,
+          "endMargin": 3.78
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 6.02,
+          "playbackSpeed": 1,
+          "renderedEnd": 16.02,
+          "endMargin": 3.98
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 9.14,
+          "playbackSpeed": 1,
+          "renderedEnd": 32.14,
+          "endMargin": 3.86
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 2.66,
+          "playbackSpeed": 1,
+          "renderedEnd": 38.66,
+          "endMargin": 6.34
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 2.78,
+          "playbackSpeed": 1,
+          "renderedEnd": 47.78,
+          "endMargin": 4.22
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 2.96,
+          "playbackSpeed": 1,
+          "renderedEnd": 54.96,
+          "endMargin": 7.04
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 1.2,
+          "playbackSpeed": 1,
+          "renderedEnd": 63.7,
+          "endMargin": 1.3
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 6.76,
+          "playbackSpeed": 1,
+          "renderedEnd": 74.76,
+          "endMargin": 4.24
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 8.1,
+          "playbackSpeed": 1,
+          "renderedEnd": 87.1,
+          "endMargin": 5.9
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 1.7,
+          "playbackSpeed": 1,
+          "renderedEnd": 94.7,
+          "endMargin": 11.3
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 4.96,
+          "playbackSpeed": 1,
+          "renderedEnd": 110.96,
+          "endMargin": 2.04
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 5.18,
+          "playbackSpeed": 1,
+          "renderedEnd": 118.18,
+          "endMargin": 5.82
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 2.8,
+          "playbackSpeed": 1,
+          "renderedEnd": 126.8,
+          "endMargin": 7.2
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-23.02",
+          "input_tp": "-5.69",
+          "input_lra": "6.00",
+          "input_thresh": "-33.46",
+          "output_i": "-23.97",
+          "output_tp": "-4.80",
+          "output_lra": "6.10",
+          "output_thresh": "-34.42",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.03"
+        },
+        "after": {
+          "input_i": "-18.52",
+          "input_tp": "-4.19",
+          "input_lra": "6.00",
+          "input_thresh": "-29.01",
+          "output_i": "-23.33",
+          "output_tp": "-3.54",
+          "output_lra": "7.50",
+          "output_thresh": "-33.78",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.67"
+        },
+        "targetLUFS": -18.35
+      }
+    },
+    "es-419": {
+      "voice": "es-MX-DaliaNeural",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/es-419.m4a",
+        "bytes": 355886,
+        "duration": 134,
+        "sha256": "2ed0e09116e0e3adf0d372247b74cccc35cc07d2cff0a163cf84ebeadb5d1af9",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.es-419.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 4.56,
+          "playbackSpeed": 1,
+          "renderedEnd": 8.56,
+          "endMargin": 1.44
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 7.68,
+          "playbackSpeed": 1,
+          "renderedEnd": 17.68,
+          "endMargin": 2.32
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 8.14,
+          "playbackSpeed": 1,
+          "renderedEnd": 31.14,
+          "endMargin": 4.86
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 3.34,
+          "playbackSpeed": 1,
+          "renderedEnd": 39.34,
+          "endMargin": 5.66
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 3.17,
+          "playbackSpeed": 1,
+          "renderedEnd": 48.17,
+          "endMargin": 3.83
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.51,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.51,
+          "endMargin": 5.49
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 2.47,
+          "playbackSpeed": 1,
+          "renderedEnd": 64.97,
+          "endMargin": 0.03
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 6.67,
+          "playbackSpeed": 1,
+          "renderedEnd": 74.67,
+          "endMargin": 4.33
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 6.17,
+          "playbackSpeed": 1,
+          "renderedEnd": 85.17,
+          "endMargin": 7.83
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 2.47,
+          "playbackSpeed": 1,
+          "renderedEnd": 95.47,
+          "endMargin": 10.53
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 3.82,
+          "playbackSpeed": 1,
+          "renderedEnd": 109.82,
+          "endMargin": 3.18
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 4.82,
+          "playbackSpeed": 1,
+          "renderedEnd": 117.82,
+          "endMargin": 6.18
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 2.88,
+          "playbackSpeed": 1,
+          "renderedEnd": 126.88,
+          "endMargin": 7.12
+        }
+      ]
+    },
+    "ko": {
+      "voice": "ko-KR-SunHiNeural",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/ko.m4a",
+        "bytes": 373157,
+        "duration": 134,
+        "sha256": "45a91ed5c7e70004e4e760acf0d993993a6a019bc428bb1f31255bd8522d2507",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.ko.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 4.13,
+          "playbackSpeed": 1,
+          "renderedEnd": 8.13,
+          "endMargin": 1.87
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 7.61,
+          "playbackSpeed": 1,
+          "renderedEnd": 17.61,
+          "endMargin": 2.39
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 7.7,
+          "playbackSpeed": 1,
+          "renderedEnd": 30.7,
+          "endMargin": 5.3
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 3.31,
+          "playbackSpeed": 1,
+          "renderedEnd": 39.31,
+          "endMargin": 5.69
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 3.72,
+          "playbackSpeed": 1,
+          "renderedEnd": 48.72,
+          "endMargin": 3.28
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.87,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.87,
+          "endMargin": 5.13
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 2.57,
+          "playbackSpeed": 1.028,
+          "renderedEnd": 65,
+          "endMargin": 0
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 7.94,
+          "playbackSpeed": 1,
+          "renderedEnd": 75.94,
+          "endMargin": 3.06
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 5.18,
+          "playbackSpeed": 1,
+          "renderedEnd": 84.18,
+          "endMargin": 8.82
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 2.47,
+          "playbackSpeed": 1,
+          "renderedEnd": 95.47,
+          "endMargin": 10.53
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 4.56,
+          "playbackSpeed": 1,
+          "renderedEnd": 110.56,
+          "endMargin": 2.44
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 5.81,
+          "playbackSpeed": 1,
+          "renderedEnd": 118.81,
+          "endMargin": 5.19
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 3.31,
+          "playbackSpeed": 1,
+          "renderedEnd": 127.31,
+          "endMargin": 6.69
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-16.72",
+          "input_tp": "-2.47",
+          "input_lra": "7.10",
+          "input_thresh": "-27.28",
+          "output_i": "-22.38",
+          "output_tp": "-2.05",
+          "output_lra": "7.70",
+          "output_thresh": "-32.93",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.62"
+        },
+        "after": {
+          "input_i": "-18.31",
+          "input_tp": "-4.62",
+          "input_lra": "7.10",
+          "input_thresh": "-28.84",
+          "output_i": "-22.68",
+          "output_tp": "-3.75",
+          "output_lra": "6.90",
+          "output_thresh": "-33.21",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.32"
+        },
+        "targetLUFS": -18.35
+      }
+    },
+    "ne": {
+      "voice": "ne-NP-HemkalaNeural",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/ne.m4a",
+        "bytes": 339681,
+        "duration": 134,
+        "sha256": "3fa4d728d679d4a2c4d727793def79d722999a7b8b322eff7ad383468293d749",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.ne.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 4.73,
+          "playbackSpeed": 1,
+          "renderedEnd": 8.73,
+          "endMargin": 1.27
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 5.18,
+          "playbackSpeed": 1,
+          "renderedEnd": 15.18,
+          "endMargin": 4.82
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 8.11,
+          "playbackSpeed": 1,
+          "renderedEnd": 31.11,
+          "endMargin": 4.89
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 3.07,
+          "playbackSpeed": 1,
+          "renderedEnd": 39.07,
+          "endMargin": 5.93
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 2.98,
+          "playbackSpeed": 1,
+          "renderedEnd": 47.98,
+          "endMargin": 4.02
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.22,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.22,
+          "endMargin": 5.78
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 2.4,
+          "playbackSpeed": 1,
+          "renderedEnd": 64.9,
+          "endMargin": 0.1
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 7.08,
+          "playbackSpeed": 1,
+          "renderedEnd": 75.08,
+          "endMargin": 3.92
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 5.64,
+          "playbackSpeed": 1,
+          "renderedEnd": 84.64,
+          "endMargin": 8.36
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 2.81,
+          "playbackSpeed": 1,
+          "renderedEnd": 95.81,
+          "endMargin": 10.19
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 3.98,
+          "playbackSpeed": 1,
+          "renderedEnd": 109.98,
+          "endMargin": 3.02
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 4.58,
+          "playbackSpeed": 1,
+          "renderedEnd": 117.58,
+          "endMargin": 6.42
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 3,
+          "playbackSpeed": 1,
+          "renderedEnd": 127,
+          "endMargin": 7
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-20.98",
+          "input_tp": "-4.32",
+          "input_lra": "9.90",
+          "input_thresh": "-31.39",
+          "output_i": "-23.29",
+          "output_tp": "-3.49",
+          "output_lra": "9.20",
+          "output_thresh": "-33.67",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.71"
+        },
+        "after": {
+          "input_i": "-18.45",
+          "input_tp": "-4.23",
+          "input_lra": "9.80",
+          "input_thresh": "-28.87",
+          "output_i": "-22.88",
+          "output_tp": "-3.83",
+          "output_lra": "10.60",
+          "output_thresh": "-33.26",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.12"
+        },
+        "targetLUFS": -18.35
+      }
+    },
+    "fr": {
+      "voice": "fr-FR-DeniseNeural",
+      "delivery": {
+        "path": "public/narration/make-eye-pad-shield/full-animation/video/fr.m4a",
+        "bytes": 360795,
+        "duration": 134,
+        "sha256": "f94bb81d0004cbd7c53fa77bc8d334d182b78e51e15feae0ab8a31afb2f9a6a1",
+        "format": "mono AAC in M4A, 48 kbps, 48 kHz"
+      },
+      "master": {
+        "path": ".codex-artifacts/make-eye-pad-shield-video-narration/make-eye-pad-shield-video.fr.master.wav",
+        "bytes": 12864078,
+        "duration": 134,
+        "format": "mono PCM WAV, 16-bit, 48 kHz"
+      },
+      "reviewVideo": null,
+      "cues": [
+        {
+          "id": "hygiene",
+          "slotStart": 4,
+          "slotEnd": 10,
+          "sourceDuration": 4.78,
+          "playbackSpeed": 1,
+          "renderedEnd": 8.78,
+          "endMargin": 1.22
+        },
+        {
+          "id": "equipment",
+          "slotStart": 10,
+          "slotEnd": 20,
+          "sourceDuration": 7.8,
+          "playbackSpeed": 1,
+          "renderedEnd": 17.8,
+          "endMargin": 2.2
+        },
+        {
+          "id": "cotton",
+          "slotStart": 23,
+          "slotEnd": 36,
+          "sourceDuration": 7.34,
+          "playbackSpeed": 1,
+          "renderedEnd": 30.34,
+          "endMargin": 5.66
+        },
+        {
+          "id": "gauze",
+          "slotStart": 36,
+          "slotEnd": 45,
+          "sourceDuration": 2.98,
+          "playbackSpeed": 1,
+          "renderedEnd": 38.98,
+          "endMargin": 6.02
+        },
+        {
+          "id": "pad-tape",
+          "slotStart": 45,
+          "slotEnd": 52,
+          "sourceDuration": 4.1,
+          "playbackSpeed": 1,
+          "renderedEnd": 49.1,
+          "endMargin": 2.9
+        },
+        {
+          "id": "trim",
+          "slotStart": 52,
+          "slotEnd": 62,
+          "sourceDuration": 4.2,
+          "playbackSpeed": 1,
+          "renderedEnd": 56.2,
+          "endMargin": 5.8
+        },
+        {
+          "id": "finished-pad",
+          "slotStart": 62.5,
+          "slotEnd": 65,
+          "sourceDuration": 2.64,
+          "playbackSpeed": 1.056,
+          "renderedEnd": 65,
+          "endMargin": 0
+        },
+        {
+          "id": "cardboard",
+          "slotStart": 68,
+          "slotEnd": 79,
+          "sourceDuration": 7.13,
+          "playbackSpeed": 1,
+          "renderedEnd": 75.13,
+          "endMargin": 3.87
+        },
+        {
+          "id": "draw",
+          "slotStart": 79,
+          "slotEnd": 93,
+          "sourceDuration": 5.93,
+          "playbackSpeed": 1,
+          "renderedEnd": 84.93,
+          "endMargin": 8.07
+        },
+        {
+          "id": "cut",
+          "slotStart": 93,
+          "slotEnd": 106,
+          "sourceDuration": 2.35,
+          "playbackSpeed": 1,
+          "renderedEnd": 95.35,
+          "endMargin": 10.65
+        },
+        {
+          "id": "slit",
+          "slotStart": 106,
+          "slotEnd": 113,
+          "sourceDuration": 3.36,
+          "playbackSpeed": 1,
+          "renderedEnd": 109.36,
+          "endMargin": 3.64
+        },
+        {
+          "id": "cone",
+          "slotStart": 113,
+          "slotEnd": 124,
+          "sourceDuration": 4.54,
+          "playbackSpeed": 1,
+          "renderedEnd": 117.54,
+          "endMargin": 6.46
+        },
+        {
+          "id": "finished-shield",
+          "slotStart": 124,
+          "slotEnd": 134,
+          "sourceDuration": 3.43,
+          "playbackSpeed": 1,
+          "renderedEnd": 127.43,
+          "endMargin": 6.57
+        }
+      ],
+      "loudnessNormalization": {
+        "before": {
+          "input_i": "-20.12",
+          "input_tp": "-3.28",
+          "input_lra": "8.80",
+          "input_thresh": "-30.54",
+          "output_i": "-23.15",
+          "output_tp": "-4.71",
+          "output_lra": "8.20",
+          "output_thresh": "-33.57",
+          "normalization_type": "dynamic",
+          "target_offset": "-0.85"
+        },
+        "after": {
+          "input_i": "-18.53",
+          "input_tp": "-1.86",
+          "input_lra": "8.70",
+          "input_thresh": "-28.95",
+          "output_i": "-22.93",
+          "output_tp": "-4.28",
+          "output_lra": "8.60",
+          "output_thresh": "-33.36",
+          "normalization_type": "dynamic",
+          "target_offset": "-1.07"
+        },
+        "targetLUFS": -18.35
+      }
+    }
+  }
+}

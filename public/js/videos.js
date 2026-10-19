@@ -1576,6 +1576,16 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fe-full",
   },
 
+  makeEyePadShieldFullAnimationVideoPage: {
+    key: "videoMode:makeEyePadShieldFullAnimationVideoPage",
+    containerSelector: "#makeEyePadShieldFullAnimationVideoContainer",
+    videoSelector: "#makeEyePadShieldFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/MakeEyePadShieldFullAnim_240p.mp4",
+      high: "videos/FullAnim/MakeEyePadShieldFullAnim_720p.mp4",
+    },
+  },
+
   frontOfEyeFullAnimationVideoPage: {
     key: "videoMode:frontOfEyeFullAnimationVideoPage",
     containerSelector: "#frontOfEyeFullAnimationVideoContainer",
@@ -1917,6 +1927,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
   Object.keys(VIDEO_PAGE_SOURCES),
 );
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
+  "makeEyePadShieldFullAnimationVideoPage",
   "visualAcuityFullAnimationVideoPage",
   "fundalReflexFullAnimationVideoPage",
   "directOphthalmoscopyFullAnimationVideoPage",
@@ -5221,6 +5232,18 @@ export function goToVideosSection(sectionId, opts = {}) {
 export function showVideosPageById(sectionId) {
   if (!sectionId) return;
   show(sectionId);
+}
+
+// Reuse the full-animation player in procedure routes without changing their hash.
+export function initializeFullAnimationVideoPage(pageId) {
+  const cfg = VIDEO_PAGE_SOURCES[pageId];
+  const page = document.getElementById(pageId);
+  if (!cfg || !page) return;
+  ensureVideoPageMenuButtonForPage(pageId);
+  wireVideoPageTriToggle(pageId);
+  wireProgressForVideoElement(page.querySelector(cfg.videoSelector), pageId);
+  initializeVideoPlayers();
+  scheduleVideoPageShareButtonAlignment(pageId);
 }
 
 export {

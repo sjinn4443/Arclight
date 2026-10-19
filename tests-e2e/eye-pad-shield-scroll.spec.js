@@ -54,9 +54,9 @@ test("the new row plays nine stages, replays, saves completion and returns to th
   expect(
     await row.evaluate((el) => el.previousElementSibling.dataset.pecVideo),
   ).toBe("make_eye_pad");
-  expect(
-    await row.evaluate((el) => el.nextElementSibling.dataset.pecVideo),
-  ).toBe("apply_eye_pad");
+  expect(await row.evaluate((el) => el.nextElementSibling.dataset.target)).toBe(
+    "makeEyePadShieldFullAnimationVideoPage",
+  );
   await expect(row.locator(".lesson-cta")).toHaveText("scroll >");
   await expect(row.getByRole("progressbar")).toHaveAccessibleName(
     "Make an eye pad and eye shield",
@@ -71,7 +71,7 @@ test("the new row plays nine stages, replays, saves completion and returns to th
   ).toHaveText(cfg.sections.map((section) => section.title));
   await expect(
     guide.locator("[data-fundal-scroll-narration-language] option"),
-  ).toHaveCount(2);
+  ).toHaveCount(Object.keys(cfg.narrationTracks).length + 1);
   const shots = [];
   for (let i = 0; i < cfg.paths.length; i++) {
     const stage = stages.nth(i);
@@ -207,7 +207,7 @@ test("the new row plays nine stages, replays, saves completion and returns to th
   expect(errors).toEqual([]);
 });
 
-test("deep links, English fallback, My Learning and procedure downloads retain the new lesson", async ({
+test("deep links, Korean narration, My Learning and procedure downloads retain the new lesson", async ({
   page,
 }) => {
   const downloadUrls = [
@@ -233,7 +233,7 @@ test("deep links, English fallback, My Learning and procedure downloads retain t
   await page.goto(`/#/eyePadShield/${pageId}`);
   const guide = page.locator(`#${pageId}`);
   await expect(guide).toBeVisible();
-  await expect(guide.locator('option[value="auto"]')).toContainText("EN");
+  await expect(guide.locator('option[value="auto"]')).toContainText("KO");
   await expect(
     guide.locator("[data-fundal-scroll-narration-toggle]"),
   ).toHaveAttribute("aria-pressed", "false");

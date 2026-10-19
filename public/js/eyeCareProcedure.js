@@ -14,6 +14,36 @@ import {
 } from "./lessonProgress.js";
 
 let padShieldInitialization = Promise.resolve();
+const PAD_SHIELD_FULL_ANIMATION_PAGE = "makeEyePadShieldFullAnimationVideoPage";
+let padShieldFullAnimationPage = null;
+
+function pausePadShieldFullAnimation() {
+  padShieldFullAnimationPage
+    ?.querySelectorAll("video, audio")
+    .forEach((media) => media.pause());
+}
+
+document.addEventListener("page:shown", (event) => {
+  if (event.detail?.id !== PAD_SHIELD_FULL_ANIMATION_PAGE)
+    pausePadShieldFullAnimation();
+});
+window.addEventListener("page:loaded", () => {
+  if (
+    !padShieldFullAnimationPage?.isConnected ||
+    document.body.dataset.currentRoute !== "eyePadShield"
+  )
+    pausePadShieldFullAnimation();
+});
+
+async function initializePadShieldFullAnimation() {
+  const { initializeFullAnimationVideoPage } = await import("./videos.js");
+  if (document.body.dataset.currentRoute !== "eyePadShield") return;
+  const page = document.getElementById(PAD_SHIELD_FULL_ANIMATION_PAGE);
+  if (padShieldFullAnimationPage !== page) pausePadShieldFullAnimation();
+  padShieldFullAnimationPage = page;
+  initializeFullAnimationVideoPage(PAD_SHIELD_FULL_ANIMATION_PAGE);
+}
+
 const pendingPadShieldPages = new WeakMap();
 function initializePadShieldScroll() {
   const page = document.getElementById(EYE_PAD_SHIELD_SCROLL_PAGE);
@@ -173,7 +203,12 @@ export async function initializeEyeCareProcedure(route) {
         scrollTemplate.content.firstElementChild.cloneNode(true),
       );
       const scrollRow = lessonRow(key, "scroll", async () => {
-        primeExaminationNarration(EYE_PAD_SHIELD_SCROLL_PAGE, "en");
+        primeExaminationNarration(
+          EYE_PAD_SHIELD_SCROLL_PAGE,
+          window.I18N?.getLanguage?.() ||
+            localStorage.getItem("prefLang") ||
+            "en",
+        );
         await loadPage(route, { subPageId: EYE_PAD_SHIELD_SCROLL_PAGE });
         await initializePadShieldScroll();
       });
@@ -199,6 +234,24 @@ export async function initializeEyeCareProcedure(route) {
       progress.append(fill);
       scrollRow.querySelector(".lesson-main").append(progress);
       videoRows.append(scrollRow);
+      const fullAnimationRow = lessonRow(
+        "full_animation",
+        "video",
+        async () => {
+          await loadPage(route, { subPageId: PAD_SHIELD_FULL_ANIMATION_PAGE });
+          await initializePadShieldFullAnimation();
+        },
+      );
+      fullAnimationRow.dataset.lesson = "make-eye-pad-shield-full-animation";
+      fullAnimationRow.dataset.target = PAD_SHIELD_FULL_ANIMATION_PAGE;
+      const animationTitle = fullAnimationRow.querySelector(".lesson-type");
+      animationTitle.removeAttribute("data-i18n");
+      animationTitle.textContent = "Full animation";
+      animationTitle.id = "eyePadShield-full-animation-lesson-title";
+      const animationProgress = progress.cloneNode(true);
+      animationProgress.setAttribute("aria-labelledby", animationTitle.id);
+      fullAnimationRow.querySelector(".lesson-main").append(animationProgress);
+      videoRows.append(fullAnimationRow);
     }
   });
 
@@ -251,6 +304,12 @@ export async function initializeEyeCareProcedure(route) {
   if (route === "eyePadShield" && requested === EYE_PAD_SHIELD_SCROLL_PAGE) {
     showProcedurePage(requested);
     await initializePadShieldScroll();
+  } else if (
+    route === "eyePadShield" &&
+    requested === PAD_SHIELD_FULL_ANIMATION_PAGE
+  ) {
+    showProcedurePage(requested);
+    await initializePadShieldFullAnimation();
   } else if (videoKey) {
     if (procedure.folder) lessons.querySelector("[data-nested-folder]").click();
     showProcedurePage(requested);

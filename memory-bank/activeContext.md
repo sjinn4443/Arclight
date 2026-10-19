@@ -2,6 +2,19 @@
 
 # Active Context
 
+## Eye Pad / Shield Full animation — 19 October 2026
+
+- Added a Full animation video row below the scrolly. The procedure-owned page
+  `makeEyePadShieldFullAnimationVideoPage` reuses the Front of Eye player and
+  all nine Front of Eye narration/caption languages.
+- Low is now 240p, high remains 720p and explicit limited-range BT.709 encoding
+  matches scrolly colours. Three 3s section cards make the video 134s; scroll
+  stays 125s. Video narration lives in `full-animation/video/`.
+- Rebuild with `scripts/build-eye-pad-shield-video.cjs`; translations and both
+  scripts are maintained by `scripts/localize-eye-pad-shield-narration.cjs`.
+- Progress/My Learning and selective procedure downloads use the same target
+  and media paths. Source service-worker cache is `arclight-static-v95`.
+
 ## VS Code localhost shortcut - 19 October 2026
 
 - The launcher extension has a separate `localhost:3000` status bar button and

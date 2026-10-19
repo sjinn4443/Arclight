@@ -113,6 +113,29 @@ describe("My Learning in-progress tab", () => {
     jest.restoreAllMocks();
   });
 
+  it("keeps the procedure animation's saved progress linked to Eye Pad / Shield", async () => {
+    localStorage.clear();
+    localStorage.setItem("myLearningActiveTab", "inProgress");
+    setStoredProgress(
+      "videoProgress:",
+      "makeEyePadShieldFullAnimationVideoPage",
+      35,
+    );
+    jest.spyOn(global, "fetch").mockImplementation(async () => ({
+      ok: true,
+      text: async () => "<div></div>",
+    }));
+    const { initializeMyLearning } = await import("../public/js/mylearning.js");
+    initializeMyLearning();
+    await waitForRender();
+    const row = document.querySelector(".ml-progress-item");
+    expect(row.textContent).toContain("Full animation");
+    expect(row.dataset.route).toBe("eyePadShield");
+    expect(row.dataset.subPageId).toBe(
+      "makeEyePadShieldFullAnimationVideoPage",
+    );
+  });
+
   it("groups partial progress under the workshop and hides lesson rows until opened", async () => {
     jest.spyOn(global, "fetch").mockImplementation(async (url) => ({
       ok: true,

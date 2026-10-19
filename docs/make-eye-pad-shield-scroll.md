@@ -5,6 +5,58 @@ video in **Eye Pad / Shield**, or open
 `#/eyePadShield/makeEyePadShieldScrollPage`. The original two procedure videos
 remain available.
 
+## Full animation video — 19 October 2026
+
+The **Full animation** row immediately follows the scroll row and opens
+`#/eyePadShield/makeEyePadShieldFullAnimationVideoPage`. It uses the same page
+shell and shared player as Front of Eye: quality selection, narration menu,
+caption panel, playback controls, full screen and sharing. Both pages offer
+English, Latin American Spanish, Korean, Nepali, French, Luganda, Hausa, Yoruba
+and Igbo using the same voices as Front of Eye. There are 13 spoken cues.
+Video progress belongs to Eye Pad / Shield in My Learning. Selective procedure
+downloads include the chosen resolution and language for both narration clocks.
+
+`scripts/build-eye-pad-shield-video.cjs` renders the shipped nine Lottie JSONs
+using the canvas renderer at 30fps. It inserts three silent title cards before
+the sections, preserving the original one-second narration lead-in. It produces
+`public/videos/FullAnim/MakeEyePadShieldFullAnim_240p.mp4` (220 × 240) and
+`MakeEyePadShieldFullAnim_720p.mp4` (658 × 720), with one-second keyframes and
+fast-start MP4 metadata. Audio remains a separate track, as on Front of Eye.
+Lossless PNG frames are converted explicitly to limited-range BT.709 H.264.
+The browser-decoded background is RGB (167, 162, 145), versus (168, 162, 146)
+in the scrolly. This replaces the brighter, full-range JPEG-derived export.
+
+| Section            | Scrolly start | Video title card | Video scene start        |
+| ------------------ | ------------- | ---------------- | ------------------------ |
+| Preparation        | 0s            | 0–3s             | 3s (speech starts at 4s) |
+| Make an eye pad    | 17s           | 20–23s           | 23s                      |
+| Make an eye shield | 59s           | 65–68s           | 68s                      |
+
+The scrolly retains its 125s clock. Video has a 134s clock, with a separate
+script, captions and audio under `full-animation/video/`. English titles are
+baked into the video; other languages receive translated title captions.
+The scrolly's section headings follow its selected narration language.
+
+Rebuild after changing the scrolly scenes. Run `node scripts/build-eye-pad-shield-video.cjs`
+with Playwright Chromium installed, or set `CHROME_CHANNEL=chrome` to use a local
+Chrome installation. Set `FFMPEG_PATH` if the existing local imageio-ffmpeg
+installation is unavailable. Maintained translations are in
+`scripts/eye-pad-shield-translations.json`. Run
+`node scripts/localize-eye-pad-shield-narration.cjs` to update both scripts,
+generate the changed languages with the shared narration generator, then run
+the localiser with `--connect`. Follow the generation commands in the
+[delivery notes](../public/narration/make-eye-pad-shield/full-animation/README.md).
+Playback checks live in
+`tests-e2e/eye-pad-shield-video.spec.js`.
+
+Chrome desktop/mobile cover all nine voice choices, translated captions and
+headings, title-card boundaries, colour values, quality selection, direct links
+and progress. The first delivery's packaging size gate failed at 20,007,617 bytes
+against the unchanged 20,000,000-byte shell limit; that is a separate build issue.
+Focused Jest checks total 182 passing tests. The accessibility audit covers 174
+HTML files. Translated tracks are levelled to within 0.5 LU of the English
+reference and verified below -1 dBTP after AAC encoding.
+
 ## Content and motion
 
 The revised first stage reuses the exact hand-washing animation from

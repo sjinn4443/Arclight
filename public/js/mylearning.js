@@ -303,6 +303,10 @@ const GLAUCOMA_TARGET_ROUTES = Object.freeze({
 });
 
 const PROGRESS_TARGET_ROUTES = Object.freeze({
+  makeEyePadShieldFullAnimationVideoPage: {
+    route: "eyePadShield",
+    subPageId: "makeEyePadShieldFullAnimationVideoPage",
+  },
   makeEyePadShieldScrollPage: {
     route: "eyePadShield",
     subPageId: "makeEyePadShieldScrollPage",
@@ -1139,6 +1143,12 @@ function getStoredProgressTargets() {
 async function getInProgressGroups(searchDictionaries) {
   const seenTargets = new Set();
   const targetCatalog = new Map();
+  targetCatalog.set("makeEyePadShieldFullAnimationVideoPage", {
+    title: "Full animation",
+    kind: "Video",
+    source: getProgressSourceByRoute("eyePadShield"),
+    ...PROGRESS_TARGET_ROUTES.makeEyePadShieldFullAnimationVideoPage,
+  });
   // Procedure rows are created at runtime, so their fragment has no static row
   // for the catalog reader. Keep this lesson's title and destination explicit.
   targetCatalog.set("makeEyePadShieldScrollPage", {

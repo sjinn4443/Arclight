@@ -784,10 +784,15 @@ function getVideoResolutionTier(url) {
   return resolution <= 360 ? "low" : "high";
 }
 
-function getAlternateVideoQualityUrl(url, videoQuality) {
+function getAlternateVideoQualityUrl(url, videoQuality, availableUrls) {
   const sourcePattern =
-    videoQuality === "high" ? /_220p(?=\.mp4$)/i : /_720p(?=\.mp4$)/i;
-  const replacement = videoQuality === "high" ? "_720p" : "_220p";
+    videoQuality === "high" ? /_(?:220|240)p(?=\.mp4$)/i : /_720p(?=\.mp4$)/i;
+  const replacement =
+    videoQuality === "high"
+      ? "_720p"
+      : availableUrls.has(String(url).replace(sourcePattern, "_240p"))
+        ? "_240p"
+        : "_220p";
   const urlString = String(url || "");
   return sourcePattern.test(urlString)
     ? urlString.replace(sourcePattern, replacement)
@@ -800,7 +805,11 @@ function shouldIncludeVideoQuality(url, videoQuality, availableUrls) {
   const tier = getVideoResolutionTier(url);
   if (!tier || tier === videoQuality) return true;
 
-  const alternateUrl = getAlternateVideoQualityUrl(url, videoQuality);
+  const alternateUrl = getAlternateVideoQualityUrl(
+    url,
+    videoQuality,
+    availableUrls,
+  );
   return !alternateUrl || !availableUrls.has(alternateUrl);
 }
 

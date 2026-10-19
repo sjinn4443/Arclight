@@ -1,6 +1,23 @@
 // Authoring source shared by the asset builder, narration and runtime config.
 export const EYE_PAD_SHIELD_SCROLL_PAGE = "makeEyePadShieldScrollPage";
 export const EYE_PAD_SHIELD_SCROLL_ROUTE = "makeEyePadShieldScroll";
+export const EYE_PAD_SHIELD_LANGUAGES = {
+  en: "English",
+  "es-419": "Español (Latinoamérica)",
+  ko: "한국어",
+  ne: "नेपाली",
+  fr: "Français",
+  lg: "Luganda",
+  ha: "Hausa",
+  yo: "Yorùbá",
+  ig: "Igbo",
+};
+export const EYE_PAD_SHIELD_SECTIONS = [
+  { startIndex: 0, title: "Preparation" },
+  { startIndex: 2, title: "Make an eye pad" },
+  { startIndex: 5, title: "Make an eye shield" },
+];
+export const EYE_PAD_SHIELD_TITLE_SECONDS = 3;
 export const EYE_PAD_SHIELD_STAGES = [
   {
     name: "Hand hygiene",
@@ -156,7 +173,7 @@ export const EYE_PAD_SHIELD_SCROLL_CLIPS = EYE_PAD_SHIELD_STAGES.map(
 export const EYE_PAD_SHIELD_SCROLL_TIMING = {
   folder: "make-eye-pad-shield",
   route: "eyePadShield",
-  languages: ["en"],
+  languages: Object.keys(EYE_PAD_SHIELD_LANGUAGES),
   stages: EYE_PAD_SHIELD_SCROLL_CLIPS.map((clip, index) => [
     [clip.start, 0],
     [clip.end, EYE_PAD_SHIELD_STAGES[index].seconds * 30 - 1],
@@ -181,11 +198,7 @@ export const EYE_PAD_SHIELD_SCROLL_CONFIG = {
     (_, index) =>
       `/scrolly/eyeprocedures/make-eye-pad-shield/${index + 1}/data.json`,
   ),
-  sections: [
-    { startIndex: 0, title: "Preparation" },
-    { startIndex: 2, title: "Make an eye pad" },
-    { startIndex: 5, title: "Make an eye shield" },
-  ],
+  sections: EYE_PAD_SHIELD_SECTIONS,
   segmentRanges: EYE_PAD_SHIELD_STAGES.map((stage) => [
     { from: 0, to: stage.seconds * 30 - 1 },
   ]),
@@ -196,11 +209,14 @@ export const EYE_PAD_SHIELD_SCROLL_CONFIG = {
     stage.cues.map((cue) => cue.en),
   ),
   segmentTextModeByFile: EYE_PAD_SHIELD_STAGES.map(() => "append"),
-  narrationTracks: {
-    en: {
-      label: "English",
-      src: "/narration/make-eye-pad-shield/full-animation/en.m4a",
-    },
-  },
+  narrationTracks: Object.fromEntries(
+    Object.entries(EYE_PAD_SHIELD_LANGUAGES).map(([language, label]) => [
+      language,
+      {
+        label,
+        src: `/narration/make-eye-pad-shield/full-animation/${language}.m4a`,
+      },
+    ]),
+  ),
   narrationClipsByFile: EYE_PAD_SHIELD_SCROLL_CLIPS,
 };

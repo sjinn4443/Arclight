@@ -1563,7 +1563,11 @@ input {
   }
 }
 
-#videos .page.full-animation-video-page .video-container {
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
+  .video-container {
   display: flex;
   justify-content: center;
   max-height: none;
@@ -1572,14 +1576,21 @@ input {
   padding-bottom: 12px !important;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player {
   flex-direction: column;
   align-items: center;
 }
 
-#videos .page.full-animation-video-page .video-container > video {
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
+  .video-container
+  > video {
   display: block;
   width: min(100%, 64dvh, 720px);
   max-width: 100%;
@@ -1588,20 +1599,26 @@ input {
   object-fit: contain;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .dedicated-video-player
   > .childhood-pilot-subtitle-panel,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .dedicated-video-player
   > .dedicated-video-controls {
   box-sizing: border-box;
   width: min(100%, 64dvh, 720px);
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .dedicated-video-player
   > .childhood-pilot-subtitle-panel {
   min-height: 64px;
@@ -1613,8 +1630,10 @@ input {
   background: #000000;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .dedicated-video-player
   .childhood-pilot-subtitle-panel__cue {
   padding: 0;
@@ -1622,14 +1641,20 @@ input {
   background: transparent;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:fullscreen,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:-webkit-full-screen,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player.is-app-fullscreen {
   box-sizing: border-box;
   width: 100vw !important;
@@ -1645,24 +1670,32 @@ input {
   background: #000000;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player.is-app-fullscreen {
   position: fixed;
   inset: 0;
   z-index: 10000;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:fullscreen
   > video,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:-webkit-full-screen
   > video,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player.is-app-fullscreen
   > video {
   flex: 1 1 0;
@@ -1672,16 +1705,22 @@ input {
   object-fit: contain;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:fullscreen
   > .childhood-pilot-subtitle-panel,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:-webkit-full-screen
   > .childhood-pilot-subtitle-panel,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player.is-app-fullscreen
   > .childhood-pilot-subtitle-panel {
   flex: 0 0 auto;
@@ -1696,31 +1735,43 @@ input {
   background: #000000 !important;
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:fullscreen
   .childhood-pilot-subtitle-panel__cue,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:-webkit-full-screen
   .childhood-pilot-subtitle-panel__cue,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player.is-app-fullscreen
   .childhood-pilot-subtitle-panel__cue {
   font-size: clamp(16px, 2.2vw, 28px);
 }
 
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:fullscreen
   > .dedicated-video-controls,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player:-webkit-full-screen
   > .dedicated-video-controls,
-#videos
-  .page.full-animation-video-page
+:is(
+    #videos .page.full-animation-video-page,
+    #makeEyePadShieldFullAnimationVideoPage
+  )
   .video-container.dedicated-video-player.is-app-fullscreen
   > .dedicated-video-controls {
   flex: 0 0 auto;
@@ -1730,16 +1781,25 @@ input {
 }
 
 @supports not (width: 1dvh) {
-  #videos .page.full-animation-video-page .video-container > video {
+  :is(
+      #videos .page.full-animation-video-page,
+      #makeEyePadShieldFullAnimationVideoPage
+    )
+    .video-container
+    > video {
     width: min(100%, 64vh, 720px);
   }
 
-  #videos
-    .page.full-animation-video-page
+  :is(
+      #videos .page.full-animation-video-page,
+      #makeEyePadShieldFullAnimationVideoPage
+    )
     .dedicated-video-player
     > .childhood-pilot-subtitle-panel,
-  #videos
-    .page.full-animation-video-page
+  :is(
+      #videos .page.full-animation-video-page,
+      #makeEyePadShieldFullAnimationVideoPage
+    )
     .dedicated-video-player
     > .dedicated-video-controls {
     width: min(100%, 64vh, 720px);
@@ -1747,16 +1807,25 @@ input {
 }
 
 @media (max-height: 740px) {
-  #videos .page.full-animation-video-page .video-container > video {
+  :is(
+      #videos .page.full-animation-video-page,
+      #makeEyePadShieldFullAnimationVideoPage
+    )
+    .video-container
+    > video {
     width: min(100%, 58dvh, 640px);
   }
 
-  #videos
-    .page.full-animation-video-page
+  :is(
+      #videos .page.full-animation-video-page,
+      #makeEyePadShieldFullAnimationVideoPage
+    )
     .dedicated-video-player
     > .childhood-pilot-subtitle-panel,
-  #videos
-    .page.full-animation-video-page
+  :is(
+      #videos .page.full-animation-video-page,
+      #makeEyePadShieldFullAnimationVideoPage
+    )
     .dedicated-video-player
     > .dedicated-video-controls {
     width: min(100%, 58dvh, 640px);

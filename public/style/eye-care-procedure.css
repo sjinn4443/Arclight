@@ -70,7 +70,7 @@
 .eye-care-procedure-box .lesson-row--scroll .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_scrollytell.webp");
 }
-.eye-care-procedure-box .lesson-row--scroll .lesson-progress {
+.eye-care-procedure-box .lesson-progress {
   margin-top: 7px;
   height: 4px;
   border-radius: 4px;
@@ -169,6 +169,24 @@
 
 .eye-care-procedure-video-page .video-header h3 {
   text-align: center;
+}
+
+#makeEyePadShieldFullAnimationVideoPage .video-header {
+  top: 0;
+  z-index: 1;
+}
+
+#makeEyePadShieldFullAnimationVideoPage .video-container {
+  box-sizing: border-box;
+  width: calc(100% - 36px);
+  max-width: 820px;
+  margin: 49px auto 0;
+  padding-left: 0;
+}
+
+#makeEyePadShieldFullAnimationVideoPage .video-share-btn {
+  display: flex;
+  margin: 0 18px 21px auto;
 }
 
 .eye-care-procedure-video-page .video-container {

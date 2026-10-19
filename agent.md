@@ -89,7 +89,7 @@ Last refreshed: 2026-10-09
   CSP handling and relative CSS imports. Keep developer fixtures excluded from
   deployment/offline manifests. Rebuild changed bundles with each app's
   canonical builder; keep clinical review and physical-device limits explicit.
-- Current source service-worker fallback: `arclight-static-v93`. Production
+- Current source service-worker fallback: `arclight-static-v95`. Production
   can inject `__BUILD_CACHE_NAME__`; read `public/sw.js` before assuming a value.
 
 ## Combined examination scroll guides
@@ -98,8 +98,11 @@ Last refreshed: 2026-10-09
   directly below its `make_eye_pad` video row. Read
   [its authoring record](./docs/make-eye-pad-shield-scroll.md) for artwork, timing,
   narration and validation. `eyePadShieldScroll.js` supplies nine configs to the
-  shared engine; scenes 10–12 remain one roll/tape/camera animation. English is
-  currently the only caption/narration language. Its first stage reuses DO hand
+  shared engine; scenes 10–12 remain one roll/tape/camera animation. Both scroll
+  and `makeEyePadShieldFullAnimationVideoPage` support the nine Front of Eye
+  caption/narration languages. Scroll remains 125s; video is 134s with three
+  silent section cards and separate tracks under `full-animation/video/`.
+  Low video is 240p and high is 720p. Its first stage reuses DO hand
   hygiene; fold/tape share stage 04 and circle/slit share stage 08.
   Preserve original hand proportions. Register `holdinghand_top.png` and
   `holdinghand_bottom.png` at one scale, above/below the held object, in 04/05/08.

@@ -10,6 +10,63 @@
       "locale": "en-GB",
       "voice": "en-GB-SoniaNeural",
       "style": "Calm, clear British English medical educator"
+    },
+    "es-419": {
+      "label": "Español (Latinoamérica)",
+      "locale": "es-419",
+      "voice": "es-MX-DaliaNeural",
+      "style": "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro"
+    },
+    "ko": {
+      "label": "한국어",
+      "locale": "ko-KR",
+      "voice": "ko-KR-SunHiNeural",
+      "style": "차분하고 친절한 성인 의료교육자; 약간 느린 교육용 속도; 과장 없는 중립적 말투"
+    },
+    "ne": {
+      "label": "नेपाली",
+      "locale": "ne-NP",
+      "voice": "ne-NP-HemkalaNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "fr": {
+      "label": "Français",
+      "locale": "fr-FR",
+      "voice": "fr-FR-DeniseNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "lg": {
+      "label": "Luganda",
+      "locale": "lg-UG",
+      "voice": "facebook/mms-tts-lug",
+      "style": "Calm medical educator; slightly slow",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0"
+    },
+    "ha": {
+      "label": "Hausa",
+      "locale": "ha-NG",
+      "voice": "facebook/mms-tts-hau",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "yo": {
+      "label": "Yorùbá",
+      "locale": "yo-NG",
+      "voice": "facebook/mms-tts-yor",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "ig": {
+      "label": "Igbo",
+      "locale": "ig-NG",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator",
+      "trimEdgeSilenceDb": -50
     }
   },
   "timingSource": "Nine Lottie scenes, beginning with DO hand hygiene. Folding/taping share stage 04; circle cutting and the single radial slit share stage 08. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
@@ -21,80 +78,233 @@
         "en": "Wash your hands and don P P E."
       },
       "start": 1,
-      "end": 7
+      "end": 7,
+      "es-419": "Lávese las manos y póngase el equipo de protección personal.",
+      "ko": "손을 씻고 개인 보호구를 착용합니다.",
+      "ne": "हात धुनुहोस् र व्यक्तिगत सुरक्षा सामग्री लगाउनुहोस्।",
+      "fr": "Lavez-vous les mains et mettez votre équipement de protection individuelle.",
+      "lg": "Naaba engalo, oyambale eby'okwekuuma.",
+      "ha": "Wanke hannuwanka, ka sa kayan kariya.",
+      "yo": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
+      "ig": "Saa aka gị ma yiri ngwa nchebe."
     },
     {
       "id": "equipment",
       "en": "You will need gauze, cotton wool, cardboard, pencil, cup, sticky paper and scissors.",
       "start": 7,
-      "end": 17
+      "end": 17,
+      "es-419": "Necesitará gasa, algodón, cartón, lápiz, taza, cinta adhesiva y tijeras.",
+      "ko": "거즈, 솜, 판지, 연필, 컵, 접착테이프와 가위가 필요합니다.",
+      "ne": "गज, कपास, गत्ता, पेन्सिल, कप, टेप र कैंची चाहिन्छ।",
+      "fr": "Il vous faut de la gaze, du coton, du carton, un crayon, une tasse, du ruban adhésif et des ciseaux.",
+      "lg": "Weetaaga gauze, ppamba, kaadi, ekkalaamu, ekikopo, teepu ne makansi.",
+      "ha": "Kana buƙatar gauze, auduga, kwali, fensir, kofi, tef da almakashi.",
+      "yo": "O nílò gáàsì, òwú, káàdì, pẹ́ńsù, ife, téèpù àti scissors.",
+      "ig": "Ị ga-achọ gauze, owu, kaadiboodu, pensụl, iko, teepu na mkpa."
     },
     {
       "id": "cotton",
       "en": "For the eye pad, spread a cotton wool ball into an oval shape about 5 to 6 centimetres wide.",
       "start": 17,
-      "end": 30
+      "end": 30,
+      "es-419": "Para la almohadilla ocular, extienda una bola de algodón en forma ovalada, de unos cinco a seis centímetros de ancho.",
+      "ko": "안대를 만들려면 솜뭉치를 펴서 너비가 약 오에서 육 센티미터인 타원 모양으로 만듭니다.",
+      "ne": "आँखाको प्याड बनाउन कपासको डल्लोलाई करिब पाँचदेखि छ सेन्टिमिटर चौडा अण्डाकारमा फैलाउनुहोस्।",
+      "fr": "Pour le pansement oculaire, étalez une boule de coton en ovale, d'environ cinq à six centimètres de large.",
+      "lg": "Okukola ppamba y'eriiso, yanjuza akapiira ka ppamba mu ngeri ey'ekigi, nga kagazi sentimita ttaano oba mukaaga.",
+      "ha": "Don audugar rufe ido, shimfiɗa ƙwallon auduga ya zama mai siffar ƙwai, faɗinsa santimita biyar zuwa shida.",
+      "yo": "Fún páàdì ojú, tẹ òwú kan sílẹ̀ ní ìrísí ẹyin, kí ìwọ̀n rẹ̀ jẹ́ sẹ̀ǹtímítà márùn-ún sí mẹ́fà.",
+      "ig": "Iji mee akwa mkpuchi anya, gbasaa bọọlụ owu ka ọ dị ka akwa, obosara ya dị sentimita ise ruo isii."
     },
     {
       "id": "gauze",
       "en": "Fold the gauze around the cotton wool.",
       "start": 30,
-      "end": 39
+      "end": 39,
+      "es-419": "Doble la gasa alrededor del algodón.",
+      "ko": "거즈로 솜을 감싸 접습니다.",
+      "ne": "कपास वरिपरि गज मोड्नुहोस्।",
+      "fr": "Repliez la gaze autour du coton.",
+      "lg": "Zinga gauze ku ppamba.",
+      "ha": "Nannaɗe gauze a kan audugar.",
+      "yo": "Pa gáàsì yí òwú náà ká.",
+      "ig": "Kechie gauze gburugburu owu ahụ."
     },
     {
       "id": "pad-tape",
       "en": "Tape at the open end.",
       "start": 39,
-      "end": 46
+      "end": 46,
+      "es-419": "Pegue cinta en el extremo abierto.",
+      "ko": "열린 끝부분에 테이프를 붙입니다.",
+      "ne": "खुला छेउमा टेप लगाउनुहोस्।",
+      "fr": "Collez du ruban adhésif sur l'extrémité ouverte.",
+      "lg": "Teeka teepu ku nkomerero enzigule.",
+      "ha": "Liƙa tef a buɗaɗɗen ƙarshen.",
+      "yo": "Fi téèpù sí ẹnu tí ó ṣí.",
+      "ig": "Tinye teepu n'ọnụ mepere emepe."
     },
     {
       "id": "trim",
       "en": "Trim the edges of the gauze to the shape of the cotton wool.",
       "start": 46,
-      "end": 56
+      "end": 56,
+      "es-419": "Recorte los bordes de la gasa siguiendo la forma del algodón.",
+      "ko": "솜 모양에 맞춰 거즈 가장자리를 다듬어 자릅니다.",
+      "ne": "कपासको आकारअनुसार गजको किनारा काट्नुहोस्।",
+      "fr": "Découpez les bords de la gaze en suivant la forme du coton.",
+      "lg": "Salako empenda za gauze nga ogoberera enkula ya ppamba.",
+      "ha": "Yanke gefunan gauze su bi siffar audugar.",
+      "yo": "Gé etí gáàsì náà ní ìrísí òwú náà.",
+      "ig": "Bee akụkụ gauze ahụ ka ọ soro ọdịdị owu ahụ."
     },
     {
       "id": "finished-pad",
       "en": "This is your eye pad.",
       "start": 56.5,
-      "end": 59
+      "end": 59,
+      "es-419": "Esta es su almohadilla.",
+      "ko": "이것이 안대입니다.",
+      "ne": "यो आँखाको प्याड हो।",
+      "fr": "Votre pansement oculaire.",
+      "lg": "Eno ye ppamba y'eriiso.",
+      "ha": "Audugar ido kenan.",
+      "yo": "Èyí ni páàdì ojú rẹ.",
+      "ig": "Akwa anya gị."
     },
     {
       "id": "cardboard",
       "en": "For the shield, find some clean cardboard. Reusing medical packaging works well.",
       "start": 59,
-      "end": 70
+      "end": 70,
+      "es-419": "Para el protector, busque cartón limpio. Puede reutilizar un envase médico.",
+      "ko": "눈 보호대에는 깨끗한 판지를 사용합니다. 의료용 포장재를 재활용해도 좋습니다.",
+      "ne": "कवचका लागि सफा गत्ता खोज्नुहोस्। औषधिको प्याकेट पुनः प्रयोग गर्न सकिन्छ।",
+      "fr": "Pour la coque, prenez du carton propre. Un emballage médical peut être réutilisé.",
+      "lg": "Ku kikuumi, funa kaadi ennyonjo. Osobola okuddamu okukozesa ekipaketi ky'eddagala.",
+      "ha": "Don garkuwar ido, samo kwali mai tsabta. Za a iya sake amfani da marufin kayan lafiya.",
+      "yo": "Fún ààbò ojú, wá káàdì tó mọ́. O lè tún àpótí ohun èlò ìṣègùn lò.",
+      "ig": "Maka ọta anya, chọta kaadiboodu dị ọcha. I nwere ike iji ngwugwu ọgwụ ọzọ."
     },
     {
       "id": "draw",
       "en": "Using a cup as a template, draw a circle with a diameter of about 8 centimetres.",
       "start": 70,
-      "end": 84
+      "end": 84,
+      "es-419": "Use una taza como plantilla y dibuje un círculo de unos ocho centímetros de diámetro.",
+      "ko": "컵을 본으로 삼아 지름이 약 팔 센티미터인 원을 그립니다.",
+      "ne": "कपलाई नमुना बनाएर करिब आठ सेन्टिमिटर व्यासको वृत्त कोर्नुहोस्।",
+      "fr": "Avec une tasse comme gabarit, tracez un cercle d'environ huit centimètres de diamètre.",
+      "lg": "Kozesa ekikopo ng'ekyokulabirako, okube ekikulungo ekigazi nga sentimita munaana.",
+      "ha": "Yi amfani da kofi a matsayin samfuri, ka zana da'ira mai faɗin santimita takwas.",
+      "yo": "Lo ife gẹ́gẹ́ bí àwòṣe, kí o fa àyíká tó fẹ̀ tó sẹ̀ǹtímítà mẹ́jọ.",
+      "ig": "Jiri iko dị ka ihe atụ see okirikiri nke obosara ya dị ihe dị ka sentimita asatọ."
     },
     {
       "id": "cut",
       "en": "Cut out the circle.",
       "start": 84,
-      "end": 97
+      "end": 97,
+      "es-419": "Recorte el círculo.",
+      "ko": "원을 오려 냅니다.",
+      "ne": "वृत्त काटेर निकाल्नुहोस्।",
+      "fr": "Découpez le cercle.",
+      "lg": "Salayo ekikulungo.",
+      "ha": "Yanke da'irar.",
+      "yo": "Gé àyíká náà jáde.",
+      "ig": "Bee okirikiri ahụ."
     },
     {
       "id": "slit",
       "en": "Then make a cut from the edge to the centre.",
       "start": 97,
-      "end": 104
+      "end": 104,
+      "es-419": "Luego haga un corte desde el borde hasta el centro.",
+      "ko": "그런 다음 가장자리에서 중심까지 한 번 자릅니다.",
+      "ne": "त्यसपछि किनाराबाट केन्द्रसम्म काट्नुहोस्।",
+      "fr": "Puis faites une entaille du bord jusqu'au centre.",
+      "lg": "Oluvannyuma sala okuva ku ludda okutuuka wakati.",
+      "ha": "Sannan ka yanka daga gefen zuwa tsakiyar.",
+      "yo": "Lẹ́yìn náà, gé láti etí rẹ̀ dé àárín.",
+      "ig": "Mgbe ahụ, bee site n'akụkụ ya ruo n'etiti."
     },
     {
       "id": "cone",
       "en": "Curve the card into a cone and secure with sticky tape.",
       "start": 104,
-      "end": 115
+      "end": 115,
+      "es-419": "Curve el cartón para formar un cono y fíjelo con cinta adhesiva.",
+      "ko": "판지를 구부려 원뿔 모양으로 만들고 접착테이프로 고정합니다.",
+      "ne": "गत्तालाई सोलीको आकारमा मोडेर टेपले अड्याउनुहोस्।",
+      "fr": "Courbez le carton en cône et fixez-le avec du ruban adhésif.",
+      "lg": "Zinga kaadi ekole ekifunvu, oginyweze ne teepu.",
+      "ha": "Lanƙwasa kwali ya zama mazubi, ka ɗaure shi da tef.",
+      "yo": "Yí káàdì náà sí ìrísí kọ́ọ̀nù, kí o fi téèpù mú un dúró.",
+      "ig": "Gbagọọ kaadiboodu ahụ ka ọ dị ka kọnụ, jiri teepu jide ya."
     },
     {
       "id": "finished-shield",
       "en": "This is your eye shield.",
       "start": 115,
-      "end": 125
+      "end": 125,
+      "es-419": "Este es el protector ocular.",
+      "ko": "눈 보호대가 완성되었습니다.",
+      "ne": "यो आँखाको सुरक्षा कवच हो।",
+      "fr": "Voici la coque de protection oculaire.",
+      "lg": "Kino kye kikuumi ky'eriiso.",
+      "ha": "Wannan ita ce garkuwar ido.",
+      "yo": "Èyí ni ààbò ojú rẹ.",
+      "ig": "Nke a bụ ọta anya gị."
     }
   ],
-  "videoTitleCues": []
+  "videoTitleCues": [
+    {
+      "id": "video-title-preparation",
+      "start": 0,
+      "end": 3,
+      "sourceText": "Preparation",
+      "translations": {
+        "es-419": "Preparación",
+        "ko": "준비",
+        "ne": "तयारी",
+        "fr": "Préparation",
+        "lg": "Okweteekateeka",
+        "ha": "Shiri",
+        "yo": "Ìmúrasílẹ̀",
+        "ig": "Nkwadebe"
+      }
+    },
+    {
+      "id": "video-title-eye-pad",
+      "start": 17,
+      "end": 20,
+      "sourceText": "Make an eye pad",
+      "translations": {
+        "es-419": "Cómo hacer una almohadilla ocular",
+        "ko": "안대 만들기",
+        "ne": "आँखाको प्याड बनाउने",
+        "fr": "Fabriquer un pansement oculaire",
+        "lg": "Okukola ppamba y'eriiso",
+        "ha": "Yin audugar rufe ido",
+        "yo": "Ṣíṣe páàdì ojú",
+        "ig": "Ime akwa mkpuchi anya"
+      }
+    },
+    {
+      "id": "video-title-eye-shield",
+      "start": 59,
+      "end": 62,
+      "sourceText": "Make an eye shield",
+      "translations": {
+        "es-419": "Cómo hacer un protector ocular",
+        "ko": "눈 보호대 만들기",
+        "ne": "आँखाको सुरक्षा कवच बनाउने",
+        "fr": "Fabriquer une coque de protection",
+        "lg": "Okukola ekikuumi ky'eriiso",
+        "ha": "Yin garkuwar ido",
+        "yo": "Ṣíṣe ààbò ojú",
+        "ig": "Ime ọta anya"
+      }
+    }
+  ]
 }

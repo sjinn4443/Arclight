@@ -53,10 +53,16 @@ existing DO hand-washing animation and use the supplied
 01–12 artwork, with rolling, taping and the change of camera angle in one final
 sequence. Folding and taping share stage 04; circle cutting and the radial slit
 share stage 08. Split holding-hand crops surround the material, visited edges
-trim progressively, and the English-only narration is 125s.
+trim progressively, and the narration is 125s in nine languages.
 The shield completion cue starts during the camera move. It reuses the same stage
 engine, replay, scroll locks and completion restore, with procedure-owned progress
-and My Learning navigation. See [authoring and checks](./docs/make-eye-pad-shield-scroll.md).
+and My Learning navigation. A **Full animation** video row follows the scroll row
+at `#/eyePadShield/makeEyePadShieldFullAnimationVideoPage`. Its 134s MP4 renders
+the same nine scenes with three section title cards and 240p/720p quality.
+Both pages offer the same nine narration/caption languages as Front of Eye.
+Video colour range matches the scrolly artwork. Video and scroll narration use
+separate timelines so title cards do not alter scroll playback.
+See [authoring and checks](./docs/make-eye-pad-shield-scroll.md).
 
 ## Primary eye and ear care workshops
 

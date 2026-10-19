@@ -1,5 +1,17 @@
 # Progress
 
+## Eye Pad / Shield Full animation — 19 October 2026
+
+- Added Full animation immediately below the scroll lesson, with a procedure
+  deep link and shared Full Animation controls. Both pages now have the nine
+  Front of Eye voice/caption languages and translated scrolly headings.
+- Low quality is 240p and high is 720p. Lossless input and explicit video colour
+  range match the scrolly within one RGB level in the measured background.
+- Added Preparation, Make an eye pad and Make an eye shield cards. The video
+  is 134s; separate narration/captions retain the scrolly's original 125s clock.
+- Downloads select 240p/720p and the requested language for both audio clocks.
+  Source service-worker cache is v95.
+
 ## VS Code localhost status bar shortcut - 19 October 2026
 
 - Added a separate `localhost:3000` status bar item and contributed command to

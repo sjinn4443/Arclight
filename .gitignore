@@ -50,6 +50,7 @@ ArclightApp.zip
 
 # Test artifacts
 /.codex-artifacts/make-eye-pad-shield-narration/*.wav
+/.codex-artifacts/make-eye-pad-shield-video-narration/*.wav
 /tmp/
 /tmp_*
 /tmp-*
