@@ -2,6 +2,13 @@
 
 # Active Context
 
+## Lighthouse trace recovery — 19 October 2026
+
+- Playwright prepares local storage then disconnects before Lighthouse records
+  navigation. Valid samples retain the prepared profile. Only `NO_NAVSTART` is
+  retried, with a fresh browser, at most three attempts and failure evidence.
+  Dashboard/Eyes still require three valid runs and the original median scores.
+
 ## Production shell budget — 19 October 2026
 
 - Build output compacts JSON under `translation/` and `video-localization/`

@@ -742,6 +742,11 @@ screenshot dimensions/content and a Chromium service-worker offline project.
 journeys. `npm run test:lighthouse` requires Node >=22.19 and produces three
 mobile runs each for dashboard and Eyes, with median gates of 80 performance,
 95 accessibility, 95 best practices and 90 SEO. Reports remain local/CI artifacts.
+Lighthouse disconnects Playwright after preparing onboarding storage and retains
+the prepared profile between valid samples. Missing navigation traces (`NO_NAVSTART`)
+are retried up to three attempts with a fresh browser and failure reports retained. Valid low scores
+and other runtime errors are not retried. `CHROME_PATH` can select a local Chrome
+executable; CI uses the pinned Playwright Chromium by default.
 
 Fundal Spanish and Korean timed captions/speech already contained the reported
 safety instructions. The stale broad cue outline is now synchronized and the

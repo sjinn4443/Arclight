@@ -1,5 +1,20 @@
 # Progress
 
+## Lighthouse trace recovery — 19 October 2026
+
+- Added bounded recovery for `NO_NAVSTART`, fresh browsers on trace recovery and
+  Playwright disconnect before Lighthouse recording. Failed attempt details
+  and available reports are retained under `quality-reports/lighthouse/`.
+- Eight regression checks cover reported/thrown trace errors, awaited recovery, exhausted retries,
+  other errors and missing reports. Valid low scores are never retried, and
+  the existing three-run median thresholds are unchanged.
+- Full Jest validation passed all 72 suites and 568 tests. Syntax checks,
+  focused formatting and `git diff --check` passed.
+- Six live Windows measurements completed without trace errors using CI's locked
+  Chromium 143. Dashboard/Eyes performance medians were 79/78, below the unchanged
+  threshold of 80; accessibility, best practices and SEO passed. These local
+  measurements do not establish Linux CI performance.
+
 ## Production shell budget — 19 October 2026
 
 - The Eye Pad / Shield additions pushed the raw shell above its 20 MB budget.
