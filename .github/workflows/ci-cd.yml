@@ -10,7 +10,8 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    # Pin the OS to a release supported by the locked Playwright browsers.
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
       DASHBOARD_PASSWORD: ci-quality-dashboard-password-2026
