@@ -2,6 +2,12 @@
 
 # Active Context
 
+## Production shell budget — 19 October 2026
+
+- Build output compacts JSON under `translation/` and `video-localization/`
+  before offline manifests and media revisions are generated. Source catalogues
+  remain formatted. The 20 MB raw shell budget is unchanged.
+
 ## Eye Pad / Shield Full animation — 19 October 2026
 
 - Added a Full animation video row below the scrolly. The procedure-owned page

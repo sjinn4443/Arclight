@@ -725,6 +725,8 @@ content at the same URL paths), `dist-sourcemaps/` and `dist-size-report.json`.
 Deploy both the shell and media trees; the Express host and Dockerfile serve
 both without changing lesson URLs. Source maps are a separate CI artifact.
 The shell budgets are 20 MB raw and 12 MB summed gzip; content has a 2 GB budget.
+The build compacts translation and video catalogue JSON in the output trees,
+preserving source formatting and data while reducing download sizes.
 `offline-assets.json` and `shell-assets.json` are generated from final output.
 Media pack retries reuse completed files; an interrupted file restarts. SHA-256
 revisions prevent reusing changed pack files. Media stays opt-in and is retained

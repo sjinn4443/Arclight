@@ -1,5 +1,17 @@
 # Progress
 
+## Production shell budget — 19 October 2026
+
+- The Eye Pad / Shield additions pushed the raw shell above its 20 MB budget.
+  The build now removes JSON formatting whitespace from deployed translation
+  and video catalogues before calculating offline sizes and revisions.
+  Source data and all distribution budget limits are preserved.
+- Production build passed: shell 19,921,582 bytes, summed gzip 10,068,500 bytes
+  and media 1,698,180,522 bytes. All 28 deployed catalogues retain their source
+  data and matching manifest sizes and media hashes. The shell saves 98,672
+  bytes and catalogue files save 1,500,997 bytes overall. All 63 focused Jest
+  checks, type checking, focused lint and formatting passed.
+
 ## Eye Pad / Shield Full animation — 19 October 2026
 
 - Added Full animation immediately below the scroll lesson, with a procedure

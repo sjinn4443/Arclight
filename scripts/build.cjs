@@ -563,7 +563,21 @@ const build = async () => {
       await fs.writeFile(file, minified);
     }
 
-    // 7. Generate the immutable offline manifest once from final build bytes.
+    // 7. Compact runtime catalogues without changing the editable source JSON.
+    // Do this before packaging so offline sizes and revisions use final bytes.
+    console.log("[build] minifying translation and video catalogues");
+    for (const directory of ["translation", "video-localization"]) {
+      const jsonFiles = await findFiles(
+        path.join(distPath, directory),
+        ".json",
+      );
+      for (const file of jsonFiles) {
+        const catalogue = JSON.parse(await fs.readFile(file, "utf8"));
+        await fs.writeFile(file, JSON.stringify(catalogue));
+      }
+    }
+
+    // 8. Generate the immutable offline manifest once from final build bytes.
     console.log("[build] generating offline asset manifest");
     await require("./package-distribution.cjs").packageDistribution(distPath);
 
