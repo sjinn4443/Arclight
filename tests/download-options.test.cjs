@@ -139,6 +139,10 @@ describe("download options", () => {
         { url: "/js/main.js", bytes: 100 },
         { url: "/images/workshop/PEC/FundalReflex.webp", bytes: 200 },
         { url: "/videos/Workshop/MedStudents/Media1.mp4", bytes: 300 },
+        {
+          url: "/images/learning/PaediatricSurgicalEyeEar/normal.webp",
+          bytes: 700,
+        },
         { url: "/videos/Workshop/Diabetic/lesson.mp4", bytes: 400 },
         { url: "/videos/USAID/lesson.mp4", bytes: 500 },
         { url: "/videos/Workshop/Glaucoma/lesson.mp4", bytes: 600 },
@@ -153,6 +157,7 @@ describe("download options", () => {
     ).toEqual([
       "PEC",
       "Medical Students",
+      "Paediatric Surgical Eye & Ear",
       "Childhood Eye Screening",
       "Glaucoma",
       "Diabetic Retinopathy",
