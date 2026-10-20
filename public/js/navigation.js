@@ -196,7 +196,12 @@ function syncInteractiveSubappOpenState(target) {
     target?.classList?.contains("interactive-subapp-page") === true;
 
   if (isInteractiveSubapp) {
-    document.body.setAttribute("data-interactive-subapp-open", "true");
+    document.body.setAttribute(
+      "data-interactive-subapp-open",
+      target.classList.contains("interactive-subapp-page--host-topbar")
+        ? "host-topbar"
+        : "true",
+    );
   } else {
     document.body.removeAttribute("data-interactive-subapp-open");
   }

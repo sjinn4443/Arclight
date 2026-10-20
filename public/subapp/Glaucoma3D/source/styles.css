@@ -1,0 +1,1071 @@
+:root {
+  color-scheme: dark;
+  --muted: #bcb7ab;
+  --accent: #f25600;
+  --cyan: #75f0ee;
+  --line: #ffffff24;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #11110f;
+  color: #f3eee5;
+  font:
+    16px/1.5 Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+  overflow: hidden;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #ffffff08;
+  color: inherit;
+  padding: 10px 15px;
+  min-height: 44px;
+}
+button:hover {
+  background: #ffffff16;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+[hidden] {
+  display: none !important;
+}
+#app {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 28px 14px;
+  gap: 18px;
+  z-index: 20;
+}
+.eyebrow {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.19em;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+h1 {
+  font-weight: 550;
+  font-size: clamp(25px, 2.1vw, 34px);
+  letter-spacing: -0.035em;
+  margin: 0;
+  line-height: 1.2;
+}
+.sub {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.header-actions,
+#view-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.header-actions button {
+  white-space: nowrap;
+}
+.header-actions label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+}
+input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--accent);
+}
+#more-tools,
+#details-toggle,
+#settings-toggle {
+  display: none;
+}
+.viewer {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  padding: 0 20px;
+  gap: 12px;
+}
+.scene-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  background: radial-gradient(ellipse at 52% 46%, #30302999, transparent 70%);
+}
+.scene-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  outline: none;
+}
+#loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 8px;
+  color: var(--muted);
+  padding: 30px;
+  pointer-events: none;
+}
+#loading strong {
+  color: #eee7dc;
+  font-weight: 500;
+}
+.overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  pointer-events: none;
+  z-index: 3;
+}
+.stage-chip {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  border: 1px solid #f2560066;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: #262219eb;
+  color: #f25600;
+  box-shadow: 0 3px 20px #0004;
+}
+.stage-chip.changed {
+  animation: stage-pop 0.5s ease;
+}
+.hint {
+  position: absolute;
+  bottom: 7px;
+  width: 100%;
+  text-align: center;
+  color: #aaa69d;
+  font-size: 12px;
+  pointer-events: none;
+}
+#anatomy-card {
+  align-self: center;
+  width: clamp(280px, 24vw, 340px);
+  flex-shrink: 0;
+  margin-left: 8px;
+  padding: 24px;
+  background: #1c1c18;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  max-height: calc(100% - 24px);
+  overflow: auto;
+}
+#anatomy-title {
+  font-size: 26px;
+  font-weight: 550;
+  line-height: 1.25;
+  margin: 8px 0 16px;
+}
+#anatomy-description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #d1ccc0;
+  margin: 0 0 14px;
+}
+.light-path {
+  font-size: 12px;
+  color: var(--accent);
+  line-height: 1.8;
+  margin: 0 0 16px;
+}
+.part-index {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.part-index button {
+  font-size: 14px;
+  text-align: left;
+  padding: 9px 10px;
+  white-space: nowrap;
+}
+.part-index button.selected {
+  background: #133537;
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+.anatomy-nav {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+.anatomy-nav button {
+  font-size: 14px;
+  flex: 1;
+  padding: 10px 8px;
+}
+#begin {
+  background: var(--accent);
+  color: #211b12;
+  border-color: var(--accent);
+}
+.sources {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #aaa69d;
+  margin: 14px 0 0;
+}
+.sources a {
+  color: inherit;
+}
+#selection-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cyan);
+  margin: 0 0 14px;
+}
+.labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.labels svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.part-label {
+  position: absolute;
+  width: 122px;
+  min-height: 40px;
+  pointer-events: auto;
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 14px;
+  background: #191914f2;
+  border: 1px solid #f2560080;
+  text-align: left;
+  box-shadow: 0 2px 10px #0005;
+  color: #f0e6d6;
+  transform: translateY(-50%);
+}
+.part-label.selected {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: #133537;
+}
+.controls {
+  margin: 8px 28px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px 20px;
+  background: #191917;
+  flex-shrink: 0;
+}
+.stage-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.stage-row button {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 9px 14px;
+  text-align: center;
+  background: #242420;
+  color: #d5d0c4;
+  border: 1px solid #ffffff20;
+}
+.stage-row button span {
+  font-size: 12px;
+  margin-right: 8px;
+  opacity: 0.75;
+}
+.stage-row button.active {
+  background: #f25600;
+  color: #211b12;
+  border-color: #f25600;
+  box-shadow: 0 0 0 2px #f2560020;
+}
+.stage-row button:disabled {
+  opacity: 0.65;
+}
+input[type="range"] {
+  display: block;
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+  height: 24px;
+  margin: 0;
+}
+.bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 12px;
+}
+.left-buttons,
+.options {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#play {
+  background: var(--accent);
+  color: #211b12;
+  border-color: var(--accent);
+  min-width: 150px;
+  font-size: 16px;
+  font-weight: 600;
+}
+#restart {
+  font-size: 15px;
+}
+#clock {
+  color: var(--muted);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.options {
+  font-size: 14px;
+  color: var(--muted);
+}
+select {
+  background: #242420;
+  color: inherit;
+  border: 1px solid var(--line);
+  min-height: 44px;
+  padding: 7px;
+  border-radius: 8px;
+}
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#error {
+  display: none;
+}
+footer {
+  font-size: 12px;
+  color: #aaa69d;
+  margin-top: 9px;
+}
+.intro-status {
+  color: var(--accent);
+}
+#attention {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+#attention-card {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  max-width: 260px;
+  background: #282216f5;
+  border: 1px solid #f2560099;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 25px #0005;
+}
+#attention-card strong,
+#attention-card > span:last-child {
+  display: block;
+}
+#attention-card strong {
+  font-size: 17px;
+}
+#attention-card > span:last-child {
+  font-size: 13px;
+  color: #f6b08a;
+  margin-top: 3px;
+}
+#attention-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#attention-lines > path {
+  fill: none;
+  stroke: #f25600;
+  stroke-width: 2;
+  marker-end: url(#cue-arrow);
+}
+#attention-lines > circle {
+  fill: #f2560018;
+  stroke: #f25600;
+  stroke-width: 2;
+  animation: cue-pulse 1.15s ease-in-out infinite;
+}
+@keyframes cue-pulse {
+  50% {
+    stroke-opacity: 0.5;
+    fill: #f2560044;
+  }
+}
+@keyframes stage-pop {
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 25px #f2560055;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+}
+@media (min-width: 761px) and (max-height: 790px) {
+  header {
+    padding-top: 14px;
+    padding-bottom: 8px;
+  }
+  .sub {
+    display: none;
+  }
+  #anatomy-card {
+    padding: 18px;
+  }
+  #anatomy-title {
+    font-size: 23px;
+    margin-bottom: 10px;
+  }
+  #anatomy-description {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .light-path,
+  .sources {
+    display: none;
+  }
+  .part-index button {
+    min-height: 40px;
+    padding: 6px 8px;
+  }
+  .controls {
+    margin-bottom: 12px;
+    padding: 12px 16px;
+  }
+  footer {
+    display: none;
+  }
+}
+@media (max-width: 1080px) and (min-width: 761px) {
+  .sub {
+    display: none;
+  }
+  .header-actions,
+  #view-tools {
+    gap: 5px;
+    font-size: 13px;
+  }
+  .header-actions button {
+    padding: 9px;
+  }
+  .options #mode-hint {
+    display: none;
+  }
+  #anatomy-card {
+    width: 280px;
+  }
+  .part-label {
+    width: 108px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  body {
+    font-size: 14px;
+  }
+  header {
+    padding: 12px 14px 9px;
+    gap: 10px;
+    align-items: center;
+  }
+  .brand .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 19px;
+    max-width: 225px;
+    line-height: 1.18;
+  }
+  .sub {
+    display: none;
+  }
+  .header-actions {
+    gap: 5px;
+    font-size: 12px;
+    position: relative;
+  }
+  .header-actions button {
+    font-size: 12px;
+    padding: 7px 10px;
+    min-height: 40px;
+  }
+  #more-tools {
+    display: block;
+  }
+  #view-tools {
+    display: none;
+    position: absolute;
+    top: 48px;
+    right: 0;
+    min-width: 165px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    background: #25251ff5;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px #0008;
+  }
+  #view-tools.open {
+    display: flex;
+  }
+  .header-actions label {
+    min-height: 42px;
+  }
+  .viewer {
+    flex-direction: column;
+    padding: 0 10px;
+    gap: 4px;
+  }
+  #anatomy-card {
+    width: 100%;
+    margin: 0;
+    padding: 10px 12px;
+    max-height: 35dvh;
+    align-self: stretch;
+    border-radius: 12px;
+  }
+  .card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  #anatomy-card .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.13em;
+    margin: 0 0 3px;
+  }
+  #anatomy-title {
+    font-size: 18px;
+    margin: 0;
+    line-height: 1.2;
+  }
+  #details-toggle {
+    display: block;
+    min-height: 40px;
+    font-size: 12px;
+    padding: 6px 10px;
+    flex-shrink: 0;
+  }
+  #anatomy-details {
+    display: none;
+    margin-top: 10px;
+  }
+  #anatomy-details.open {
+    display: block;
+  }
+  #anatomy-description {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  #selection-note {
+    font-size: 12px;
+    margin: 8px 0 0;
+  }
+  .light-path,
+  .part-index,
+  .sources,
+  .anatomy-nav {
+    display: none;
+  }
+  .scene-wrap {
+    min-height: 0;
+  }
+  .scene-viewport {
+    min-height: 110px;
+  }
+  .labels {
+    position: relative;
+    inset: auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    padding: 7px 2px 4px;
+    overflow: visible;
+    flex-shrink: 0;
+    pointer-events: auto;
+  }
+  .labels svg {
+    display: none;
+  }
+  .part-label {
+    position: static;
+    width: 100%;
+    min-height: 40px;
+    transform: none;
+    padding: 6px 3px;
+    text-align: center;
+    font-size: 12px;
+    border-color: #f2560045;
+    box-shadow: none;
+    white-space: nowrap;
+  }
+  .overlay {
+    top: 7px;
+    left: 6px;
+  }
+  .stage-chip {
+    font-size: 13px;
+    padding: 7px 11px;
+    border-radius: 9px;
+  }
+  .hint {
+    display: none;
+  }
+  .controls {
+    margin: 5px 10px max(9px, env(safe-area-inset-bottom));
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .stage-row {
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .stage-row button {
+    font-size: 14px;
+    padding: 6px;
+    min-height: 40px;
+  }
+  .stage-row button span {
+    display: none;
+  }
+  .bottom-row {
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 6px;
+  }
+  .left-buttons {
+    flex: 1;
+    gap: 7px;
+  }
+  #play {
+    min-width: 86px;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  #restart {
+    font-size: 12px;
+    padding: 7px 9px;
+    min-height: 42px;
+  }
+  #clock {
+    font-size: 11px;
+    margin-left: auto;
+  }
+  #settings-toggle {
+    display: block;
+    font-size: 12px;
+    padding: 7px 10px;
+    min-height: 42px;
+  }
+  .options {
+    display: none;
+    width: 100%;
+    font-size: 13px;
+    padding-top: 7px;
+    border-top: 1px solid var(--line);
+  }
+  .options.open {
+    display: flex;
+    justify-content: space-between;
+  }
+  .options #mode-hint,
+  footer {
+    display: none;
+  }
+  body[data-mode="anatomy"] .stage-row,
+  body[data-mode="anatomy"] #progress,
+  body[data-mode="anatomy"] #restart,
+  body[data-mode="anatomy"] #clock,
+  body[data-mode="anatomy"] #settings-toggle,
+  body[data-mode="anatomy"] #playback-settings {
+    display: none;
+  }
+  body[data-mode="anatomy"] .bottom-row {
+    margin: 0;
+  }
+  body[data-mode="anatomy"] #play {
+    width: 100%;
+  }
+  #attention-card {
+    top: 7px;
+    right: 6px;
+    padding: 8px 10px;
+    max-width: 190px;
+  }
+  #attention-card .eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  #attention-card strong {
+    font-size: 13px;
+  }
+  #attention-card > span:last-child {
+    font-size: 11px;
+  }
+}
+@media (max-width: 360px) {
+  h1 {
+    font-size: 17px;
+  }
+  .header-actions button {
+    padding: 6px 8px;
+  }
+  .part-label {
+    font-size: 11px;
+  }
+  #clock {
+    display: none;
+  }
+}
+@media (max-width: 760px) and (max-height: 500px),
+  (max-height: 500px) and (pointer: coarse) {
+  header {
+    padding: 6px 12px;
+  }
+  .brand .eyebrow {
+    display: none;
+  }
+  h1 {
+    font-size: 17px;
+  }
+  #anatomy-card {
+    padding: 6px 10px;
+    max-height: 25dvh;
+  }
+  #anatomy-card .eyebrow {
+    display: none;
+  }
+  #anatomy-title {
+    font-size: 15px;
+  }
+  #details-toggle {
+    min-height: 34px;
+  }
+  #anatomy-details.open {
+    max-height: 52px;
+    overflow: auto;
+  }
+  .labels {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 3px;
+    padding: 3px 0;
+  }
+  .part-label {
+    font-size: 10px;
+    min-height: 35px;
+  }
+  .controls {
+    padding: 6px 9px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+  }
+  .stage-row button {
+    min-height: 32px;
+    padding: 3px;
+  }
+  .bottom-row {
+    margin-top: 2px;
+  }
+  #play,
+  #restart,
+  #settings-toggle {
+    min-height: 34px;
+    padding: 4px 9px;
+  }
+  input[type="range"] {
+    height: 18px;
+  }
+  .options.open {
+    position: absolute;
+    bottom: 58px;
+    right: 12px;
+    width: 260px;
+    background: #25251f;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    z-index: 30;
+  }
+}
+
+/* Disc anatomy and selected mobile leader. */
+#attention-card {
+  left: 50%;
+  right: auto;
+  top: 13%;
+  transform: translateX(-50%);
+}
+#mobile-leader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
+#mobile-leader-line {
+  fill: none;
+  stroke: #75f0ee;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#mobile-leader-dot {
+  fill: #75f0ee;
+  stroke: #102c2b;
+  stroke-width: 1.5;
+}
+#disc-details {
+  padding: 12px;
+  margin: 12px 0 16px;
+  background: #11110f88;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+#disc-diagram {
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.disc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px 12px;
+  font-size: 12px;
+  color: #c8c3b8;
+  margin: 6px 0;
+}
+.disc-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.disc-legend span:last-child {
+  width: 100%;
+  justify-content: center;
+}
+.disc-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.disc-key {
+  background: #f25600;
+}
+.cup-key {
+  background: #75f0ee;
+}
+#ratio-formula {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 10px 0;
+  color: #f6b08a;
+}
+#disc-reference {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+#disc-reference button {
+  min-height: 36px;
+  font-size: 12px;
+  padding: 5px;
+}
+.diagram-note {
+  font-size: 11px;
+  color: #a9a499;
+  margin: 8px 0 0;
+}
+#disc-reference button.active {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: #133537;
+}
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  #attention-card {
+    top: 15%;
+    left: 50%;
+    right: auto;
+    width: 190px;
+  }
+  #disc-details {
+    margin: 10px 0 0;
+    padding: 10px;
+  }
+  #disc-diagram {
+    width: 135px;
+  }
+  .labels {
+    z-index: 4;
+  }
+  .part-label {
+    white-space: normal;
+    line-height: 1.25;
+  }
+  #anatomy-details.open {
+    max-height: 24dvh;
+    overflow: auto;
+  }
+  #disc-reference button {
+    min-height: 40px;
+  }
+}
+
+/* Rim alignment, visible cue connectors and mobile open/close controls. */
+#attention-card {
+  left: 62%;
+  z-index: 2;
+}
+#attention-lines {
+  z-index: 1;
+}
+#attention-lines > path {
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+#attention-lines > path.cue-shadow {
+  stroke: #080b0cd9;
+  stroke-width: 6;
+  marker-end: none;
+  filter: none;
+}
+#mobile-leader-line-cup {
+  fill: none;
+  stroke: #75f0ee;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#mobile-leader-dot-cup {
+  fill: #75f0ee;
+  stroke: #102c2b;
+  stroke-width: 1.5;
+}
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  #attention-card {
+    left: 64%;
+  }
+}
+
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  #anatomy-card {
+    display: flex;
+    flex-direction: column;
+    max-height: 28dvh;
+    overflow: hidden;
+  }
+  .card-heading {
+    flex-shrink: 0;
+  }
+  #anatomy-details.open {
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+  }
+  .anatomy-nav {
+    display: none;
+  }
+}
+@media (max-height: 500px) and (pointer: coarse),
+  (max-width: 760px) and (max-height: 500px) {
+  #anatomy-card {
+    max-height: 24dvh;
+  }
+}
+
+#mobile-leader-trunk {
+  fill: none;
+  stroke: #75f0ee;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  .disc-visual-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 82px;
+    align-items: center;
+    gap: 10px;
+  }
+  #disc-reference {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    margin-top: 0;
+    gap: 6px;
+  }
+  #disc-reference button {
+    min-height: 40px;
+  }
+}

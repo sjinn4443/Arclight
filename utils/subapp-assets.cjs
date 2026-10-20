@@ -30,8 +30,18 @@ function isSubappDevelopmentAsset(assetPath) {
   )
     return true;
   const filename = parts.at(-1) ?? "";
+  if (
+    parts[1] === "glaucoma3d" &&
+    (parts[2] === "source" ||
+      filename === "readme.txt" ||
+      /^viewer-.*\.txt$/.test(filename) ||
+      /^(?:anatomy(?:-highlight)?-preview|preview-stage-\d+)\.png$/.test(
+        filename,
+      ))
+  )
+    return true;
   return (
-    /\.(?:md|csv|py|drawio|xlsx?|map|cjs|cmd)$/.test(filename) ||
+    /\.(?:md|csv|py|drawio|blend\d*|xlsx?|map|cjs|cmd)$/.test(filename) ||
     (/\.mjs$/.test(filename) && filename !== "mcq-engine.mjs") ||
     /^(?:package(?:-lock)?\.json|jsconfig\.json|qa-|report-|.*\.config\.|.*-baseline\.json)/.test(
       filename,

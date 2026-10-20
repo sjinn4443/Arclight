@@ -460,6 +460,7 @@ function go(target) {
     "morphSimulatorPage",
     "glaucomaInteractivePage",
     "glaucomaSimulatorPage",
+    "glaucoma3DInteractivePage",
     "glaucomaPrimaryQuizPage",
     "glaucomaIntermediateQuizPage",
     "glaucomaAdvancedQuizPage",

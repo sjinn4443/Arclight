@@ -14,6 +14,7 @@ const EXPERIMENTAL_MINI_APP_PAGE_IDS = new Set([
   "amslerInteractivePage",
   "miresPage",
   "glaucomaSimulatorPage",
+  "glaucoma3DInteractivePage",
   "fieldsInteractivePage",
   "refractInteractivePage",
   "sauronInteractivePage",

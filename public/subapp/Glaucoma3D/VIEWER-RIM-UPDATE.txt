@@ -1,0 +1,27 @@
+Interactive glaucoma viewer — rim and connector update, 2026-10-20
+
+Open glaucoma-eye-interactive.html in Chrome or Edge. Refresh an existing tab
+to load this update. The viewer remains self-contained and works offline.
+
+Changes:
+- Watch the Change panel moved right of center; its connectors have a dark
+  backing so they remain visible over the model.
+- Disc selection follows a contour aligned with the native retinal image.
+- Rim selection emphasizes only a narrow peripheral band, leaving the cup clear.
+- Iris surface highlight is magenta; the rest of the interface retains cyan.
+- Mobile label selections automatically open their description; Open/Close
+  replaces the former Info button.
+- Mobile optic nerve selection connects both the posterior bundle and the
+  retinal cup. Each connector has one bend at roughly one third of its length.
+- Lower local lighting, softer highlights and no nerve emission improve
+  visibility of the posterior nerve and its white outer sheaths.
+
+Validation:
+- Interaction, material configuration and projected geometry checks passed at
+  six viewport configurations, including dual mobile connectors and Open/Close.
+- CPU image checks confirmed that the rim selection excludes central cup pixels
+  and all reference cup contours fit inside the adjusted disc border.
+- Actual browser/WebGL rendering was not verified by the editing agent because
+  its browser tool does not permit file:// pages.
+
+THIRD-PARTY-LICENSES.txt applies to the embedded libraries.

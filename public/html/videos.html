@@ -3444,6 +3444,40 @@
           <button
             type="button"
             class="pupil-card module-card"
+            data-page="glaucoma3DInteractivePage"
+          >
+            <div
+              class="lesson-row lesson-row--interactive"
+              data-target="glaucoma3DInteractivePage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" id="videos-lesson-title-glaucoma3d"
+                    >Glaucoma 3D</span
+                  >
+                </div>
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-labelledby="videos-lesson-title-glaucoma3d"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="pupil-card module-card"
             data-page="miresPage"
           >
             <div
@@ -6331,6 +6365,33 @@
           data-src="subapp/Glaucoma/index.html"
           loading="lazy"
           title="Glaucoma Interactive"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glaucoma 3D keeps the host Eyes bar above its anatomy controls. -->
+  <div
+    id="glaucoma3DInteractivePage"
+    class="page interactive-subapp-page interactive-subapp-page--host-topbar"
+  >
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title" data-i18n="auto.videos.eyes">Eyes</div>
+        <div class="eyes-topbar__icons">
+          <span
+            class="icon menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+            >☰</span
+          >
+        </div>
+      </div>
+      <div class="video-container interactive-subapp-container">
+        <iframe
+          data-src="subapp/Glaucoma3D/glaucoma-eye-interactive.html"
+          loading="lazy"
+          title="Glaucoma 3D"
         ></iframe>
       </div>
     </div>

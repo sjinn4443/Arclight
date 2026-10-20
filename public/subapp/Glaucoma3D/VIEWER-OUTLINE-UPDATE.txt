@@ -1,0 +1,20 @@
+Glaucoma viewer — solid outlines and ratio bracket, 2026-10-20
+
+Refresh glaucoma-eye-interactive.html in Chrome or Edge to load this update.
+The HTML remains self-contained and works offline.
+
+- Opaque cyan borders added to the other model highlights, retaining translucent
+  interior fills. Pupil, disc, cup and rim outlines also use solid color.
+- Selecting Cup-to-disc ratio displays a capped I-shaped marker between the cup
+  and disc boundaries on the retinal surface.
+- The ratio label points to the marker midpoint. Its endpoints and length follow
+  the reference stage, and it stays attached to the model when rotated or zoomed.
+- The sidebar diagram continues to explain cup and disc diameters. The new gap
+  marker is a visual reference, not a clinical measurement or numeric C:D value.
+
+Interaction and coordinate checks passed at six viewport configurations,
+including marker placement, stage updates and label attachment. Actual browser/
+WebGL rendering was not verified by the editing agent because its browser tool
+does not permit file:// pages.
+
+See THIRD-PARTY-LICENSES.txt for embedded library licenses.

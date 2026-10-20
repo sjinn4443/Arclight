@@ -6,6 +6,11 @@ const vm = require("node:vm");
 
 test.each([
   "/subapp/Refract/tools/allan-rx-full.csv",
+  "/subapp/Glaucoma3D/eye-glaucoma-animated.blend",
+  "/subapp/Glaucoma3D/source/viewer.js",
+  "/subapp/Glaucoma3D/anatomy-highlight-preview.png",
+  "/subapp/Glaucoma3D/preview-stage-1.png",
+  "/subapp/Glaucoma3D/README.txt",
   "/subapp/Refract/outputs/weighted-20260930/candidate.mjs",
   "/subapp/Refract/tests/weighted-rules.mjs",
   "/subapp/Swollen%20Discs/memory-bank/progress.md",
@@ -19,6 +24,10 @@ test.each([
 
 test.each([
   "/subapp/Refract/index.html",
+  "/subapp/Glaucoma3D/glaucoma-eye-interactive.html",
+  "/subapp/Glaucoma3D/eye-glaucoma.glb",
+  "/subapp/Glaucoma3D/vendor/three.module.js",
+  "/subapp/Glaucoma3D/THIRD-PARTY-LICENSES.txt",
   "/subapp/Refract/app.bundle.js?v=20260930",
   "/subapp/Refract/src/prescription-config.js",
   "/subapp/Swollen%20Discs/mcq-engine.mjs",

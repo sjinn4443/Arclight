@@ -1,0 +1,19 @@
+Glaucoma viewer — iris border and shared leader update, 2026-10-20
+
+Refresh glaucoma-eye-interactive.html in Chrome or Edge to load this update.
+The HTML remains self-contained and works offline.
+
+- Rim display radius enlarged by 6%; disc size remains as previously aligned.
+- Iris highlight has solid cyan borders over its translucent surface fill.
+- Mobile optic nerve leaders share one stem, then branch at the midpoint to the
+  nerve bundle and the retinal cup. Other labels keep their existing routing.
+- On phones, Stage 1/2/3 comparison buttons are stacked to the right of the diagram.
+- Central nerve color uses the same sRGB #edc78b as the UI, without lighting or
+  tone mapping altering its color. Outer sheaths retain softer lighting.
+
+Code and geometry checks passed at six viewport configurations. Checks cover
+the shared stem and branch endpoints, opaque iris border, rim size and sRGB
+material color. Actual browser/WebGL rendering was not verified by the editing
+agent because its browser tool does not permit file:// pages.
+
+See THIRD-PARTY-LICENSES.txt for embedded library licenses.

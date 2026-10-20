@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>Glaucoma 3D</title>
+    <style>
+      /* VIEWER_CSS */
+    </style>
+  </head>
+  <body data-mode="anatomy">
+    <main id="app">
+      <header>
+        <div class="brand">
+          <p class="eyebrow">ARCLIGHT · GLAUCOMA</p>
+          <h1>Eye anatomy &amp; progression</h1>
+          <p class="sub">Meet the eye, then explore the changes.</p>
+        </div>
+        <div class="header-actions">
+          <button id="anatomy" disabled>Anatomy</button
+          ><button
+            id="more-tools"
+            aria-expanded="false"
+            aria-controls="view-tools"
+          >
+            View ▾
+          </button>
+          <div id="view-tools">
+            <button id="focus-nerve" disabled>Focus nerve</button
+            ><label
+              ><input type="checkbox" id="show-labels" checked disabled />
+              Parts</label
+            ><button id="reset" disabled>Reset view</button>
+          </div>
+        </div>
+      </header>
+      <section class="viewer" aria-label="Interactive eye anatomy">
+        <aside id="anatomy-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">EXPLORE THE ANATOMY</p>
+              <h2 id="anatomy-title">Explore the eye</h2>
+            </div>
+            <button
+              id="details-toggle"
+              aria-controls="anatomy-details"
+              aria-expanded="false"
+            >
+              Open ▾
+            </button>
+          </div>
+          <div id="anatomy-details">
+            <p id="anatomy-description">
+              Select a part to see it highlighted on the eye.
+            </p>
+            <p id="selection-note" hidden></p>
+            <div id="disc-details" hidden>
+              <div class="disc-visual-row">
+                <svg
+                  id="disc-diagram"
+                  viewBox="0 0 160 118"
+                  role="img"
+                  aria-label="Optic disc, central cup, and the rim between them. Brackets compare vertical cup and disc diameters."
+                >
+                  <ellipse
+                    cx="74"
+                    cy="58"
+                    rx="48"
+                    ry="46"
+                    fill="#f2560024"
+                    stroke="#f25600"
+                    stroke-width="2"
+                  />
+                  <ellipse
+                    id="diagram-cup"
+                    cx="74"
+                    cy="65"
+                    rx="12"
+                    ry="12"
+                    fill="#75f0ee44"
+                    stroke="#75f0ee"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M 131 12 h 6 M 134 12 V 104 M 131 104 h 6"
+                    fill="none"
+                    stroke="#f25600"
+                    stroke-width="2"
+                  />
+                  <text x="143" y="63" fill="#f25600" font-size="12">D</text>
+                  <path
+                    id="diagram-cup-bracket"
+                    fill="none"
+                    stroke="#75f0ee"
+                    stroke-width="2"
+                  />
+                  <text
+                    id="diagram-cup-letter"
+                    x="4"
+                    y="68"
+                    fill="#75f0ee"
+                    font-size="12"
+                  >
+                    C
+                  </text>
+                </svg>
+                <div
+                  id="disc-reference"
+                  role="group"
+                  aria-label="Compare reference cup sizes"
+                >
+                  <button data-reference="0">Stage 1</button
+                  ><button data-reference=".5">Stage 2</button
+                  ><button data-reference="1">Stage 3</button>
+                </div>
+              </div>
+              <div class="disc-legend">
+                <span><i class="disc-key"></i>Disc</span
+                ><span><i class="cup-key"></i>Cup</span
+                ><span>Between them: rim</span>
+              </div>
+              <p id="ratio-formula">
+                C:D = vertical cup diameter ÷ vertical disc diameter
+              </p>
+              <p class="diagram-note">
+                Illustration, not a clinical measurement.
+              </p>
+            </div>
+            <p class="light-path">
+              CORNEA → PUPIL → LENS → RETINA → OPTIC NERVE
+            </p>
+            <div class="part-index" id="part-index"></div>
+            <p class="sources">
+              Anatomy:
+              <a
+                href="https://www.nei.nih.gov/eye-health-information/healthy-vision/how-eyes-work"
+                target="_blank"
+                rel="noopener"
+                >National Eye Institute</a
+              >
+              ·
+              <a
+                href="https://eyewiki.aao.org/Examination_of_the_optic_nerve_at_the_slit-lamp_biomicroscope_with_a_handheld_lens"
+                target="_blank"
+                rel="noopener"
+                >Disc, cup &amp; rim</a
+              >
+            </p>
+          </div>
+          <div class="anatomy-nav">
+            <button id="next-part" disabled>Next part →</button
+            ><button id="begin" disabled>Start progression</button>
+          </div>
+        </aside>
+        <div class="scene-wrap">
+          <div class="scene-viewport">
+            <canvas
+              id="canvas"
+              tabindex="0"
+              aria-label="Eye model. Drag to rotate, scroll or pinch to zoom. Arrow keys rotate; plus and minus zoom."
+            ></canvas>
+            <div class="overlay">
+              <span
+                class="stage-chip"
+                id="stage"
+                role="status"
+                aria-live="polite"
+                >ANATOMY</span
+              >
+            </div>
+            <div id="attention" hidden>
+              <div id="attention-card">
+                <span class="eyebrow">WATCH THE CHANGE</span
+                ><strong>Optic nerve &amp; cup</strong
+                ><span>Watch the central cup expand.</span>
+              </div>
+              <svg id="attention-lines" aria-hidden="true">
+                <defs>
+                  <marker
+                    id="cue-arrow"
+                    viewBox="0 0 10 10"
+                    refX="9"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#f25600" />
+                  </marker>
+                </defs>
+                <path class="cue-shadow" id="cue-nerve-shadow" />
+                <path class="cue-shadow" id="cue-disc-shadow" />
+                <path id="cue-nerve" />
+                <path id="cue-disc" />
+                <circle id="cue-nerve-ring" />
+                <circle id="cue-disc-ring" />
+              </svg>
+            </div>
+            <div id="loading">
+              <strong>Loading eye model</strong><span>Please wait.</span>
+            </div>
+            <p id="error" role="alert"></p>
+            <div class="hint">Drag to rotate · Scroll / pinch to zoom</div>
+          </div>
+          <div
+            class="labels"
+            id="labels-layer"
+            role="group"
+            aria-label="Eye parts"
+          >
+            <svg id="label-lines" aria-hidden="true"></svg>
+          </div>
+          <svg id="mobile-leader" aria-hidden="true" hidden>
+            <path id="mobile-leader-trunk" />
+            <path id="mobile-leader-line" />
+            <circle id="mobile-leader-dot" />
+            <path id="mobile-leader-line-cup" />
+            <circle id="mobile-leader-dot-cup" />
+          </svg>
+        </div>
+      </section>
+      <section class="controls" aria-label="Progression playback">
+        <div class="stage-row">
+          <button data-stage="0" disabled><span>01</span> Stage 1</button
+          ><button data-stage=".5" disabled><span>02</span> Stage 2</button
+          ><button data-stage="1" disabled><span>03</span> Stage 3</button>
+        </div>
+        <input
+          id="progress"
+          type="range"
+          min="0"
+          max="1000"
+          value="0"
+          step="1"
+          disabled
+          aria-label="Progression stage"
+        />
+        <div class="bottom-row">
+          <div class="left-buttons">
+            <button id="play" disabled>Start progression</button
+            ><button id="restart" disabled>Restart</button
+            ><span id="clock">0:00 / 0:24</span>
+          </div>
+          <button
+            id="settings-toggle"
+            aria-expanded="false"
+            aria-controls="playback-settings"
+          >
+            Settings ▾
+          </button>
+          <div id="playback-settings" class="options">
+            <label
+              >Speed
+              <select id="speed" disabled aria-label="Playback speed">
+                <option value=".5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.5">1.5×</option>
+                <option value="2">2×</option>
+              </select></label
+            ><label><input id="loop" type="checkbox" disabled /> Loop</label
+            ><span id="mode-hint" class="intro-status"
+              >Select a part, then start.</span
+            >
+          </div>
+        </div>
+        <footer>Reference stages 1 → 2 → 3 · 24-second progression</footer>
+      </section>
+    </main>
+    <!-- EMBEDDED_ASSETS -->
+    <script>
+      /* VIEWER_JS */
+    </script>
+  </body>
+</html>

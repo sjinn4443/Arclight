@@ -1,0 +1,17 @@
+Glaucoma viewer — circular anatomy update, 2026-10-20
+
+Refresh glaucoma-eye-interactive.html in Chrome or Edge to load this update.
+The HTML remains self-contained and works offline.
+
+- Disc and rim now use a smooth circular boundary, shifted slightly right in
+  the default view and enlarged. Rim selection remains a narrow outer band.
+- Iris surface highlight restored to the original cyan, #60e8ef.
+- Mobile leaders bend once, at one third of the way from the MODEL toward the
+  label, preserving both optic nerve connections and automatic descriptions.
+- Central optic nerve material color is #edc78b. Existing softer lighting remains.
+
+Code, material settings and connector geometry checks passed at six viewport
+configurations. Actual browser/WebGL rendering was not verified by the editing
+agent because its browser tool does not permit file:// pages.
+
+See THIRD-PARTY-LICENSES.txt for embedded library licenses.

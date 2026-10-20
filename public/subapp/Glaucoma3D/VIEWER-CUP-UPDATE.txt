@@ -1,0 +1,24 @@
+Interactive glaucoma viewer — cup update, 2026-10-20
+
+Open glaucoma-eye-interactive.html in Chrome or Edge. Refresh an existing tab
+to load this update. The viewer remains self-contained and works offline.
+
+Changes:
+- Watch the Change panel moved toward the center of the viewport.
+- Only the bright central optic CUP grows, using traced reference contours.
+- The expanded cup hands over aligned image detail to the next reference cup.
+- The outer DISC, surrounding retinal texture and vessels stay anchored.
+- Separate anatomy entries and highlights for the full disc, central cup,
+  neuroretinal rim and cup-to-disc ratio.
+- Disc anatomy includes an illustrative diameter diagram and stage comparisons.
+- Mobile selections draw one cyan leader and dot from the selected dock button
+  to the corresponding model feature. Labels remain below the canvas.
+
+Validation:
+- Geometry and interaction checks passed at six viewport configurations.
+- CPU image checks confirmed fixed pixels outside the moving cup, an unchanged
+  initial image, and matching source cup interiors at stages 2 and 3.
+- Actual browser/WebGL rendering was not verified by the editing agent because
+  its browser tool does not permit file:// pages.
+
+The accompanying THIRD-PARTY-LICENSES.txt applies to the embedded libraries.

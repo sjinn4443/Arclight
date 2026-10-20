@@ -3116,6 +3116,45 @@ body[data-interactive-subapp-open="true"] #backBtnGlobal {
   background: #ffffff;
 }
 
+/* Lessons with their own controls keep the standard Eyes bar in the host. */
+html:has(body[data-interactive-subapp-open="host-topbar"]) {
+  scrollbar-gutter: auto;
+}
+
+#videos .page.interactive-subapp-page--host-topbar {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  overflow: hidden;
+  z-index: 100;
+}
+
+#videos .interactive-subapp-page--host-topbar > div {
+  box-sizing: border-box;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 62px;
+  padding-bottom: 0;
+}
+
+#videos .interactive-subapp-page--host-topbar .eyes-topbar {
+  box-sizing: border-box;
+  width: auto;
+  flex-shrink: 0;
+}
+
+#videos
+  .page.interactive-subapp-page--host-topbar
+  .interactive-subapp-container {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+}
+
 @media (max-width: 48em) {
   #videos .page .interactive-subapp-container {
     width: 100vw;
