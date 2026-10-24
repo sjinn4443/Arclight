@@ -58,6 +58,47 @@ describe("download options", () => {
     );
   });
 
+  it.each(["low", "high"])(
+    "includes every Tools and Kits lesson and its player dependencies at %s quality",
+    (videoQuality) => {
+      const quality = videoQuality === "low" ? "220p" : "720p";
+      const common = [
+        "/videos/Arclight/PhoneAttach.mp4",
+        "/videos/USAID%20Childhood%20eye%20screening/1.%20How%20to%20use%20the%20Arclight%20-%20ENGLISH%20-%20HD_220p.mp4",
+        "/video-localization/childhood-eye-screening.json",
+        "/video-localization/app-video-subtitles.json",
+        "/narration/direct-ophthalmoscopy/full-animation/en.m4a",
+        "/narration/binocular-indirect-ophthalmoscopy/full-animation/en.vtt",
+        "/scrolly/coreexam/ophths/DO/1/data.json",
+        "/images/PDF/Workshop/DO/1.webp",
+        "/video-subtitles/app-videos/phoneAttachmentVideoPage/en.vtt",
+      ];
+      const videos = [
+        "/videos/Tools/BIOvideo_",
+        "/videos/FullAnim/DOFullAnim_",
+        "/videos/FullAnim/BIOFullAnim_",
+      ];
+      const urls = [
+        ...common,
+        ...videos.flatMap((base) => [base + "220p.mp4", base + "720p.mp4"]),
+      ];
+      const result = app.resolveOfflineDownloadSelection(
+        { assets: urls.map((url) => ({ url, bytes: 1 })) },
+        { mode: "select", catalogId: "tools", videoQuality },
+      );
+      expect(result.urls).toEqual(
+        expect.arrayContaining([
+          ...common,
+          ...videos.map((base) => base + quality + ".mp4"),
+        ]),
+      );
+      for (const base of videos)
+        expect(result.urls).not.toContain(
+          base + (quality === "220p" ? "720p" : "220p") + ".mp4",
+        );
+    },
+  );
+
   it.each([
     ["procedure-lid-hygiene", "1.Cleananeye"],
     ["procedure-lid-hygiene", "2.Warmcompress"],

@@ -57,6 +57,11 @@ export const PUPILS_PEC_STAGES = [
       },
       {
         id: "clear-view",
+        caption: {
+          en: "Make sure they do not look at the examiner or the light itself.",
+          ko: "검사자나 조명 자체를 바라보지 않도록 합니다.",
+        },
+        captionUntil: "avoid-light",
         offset: 6,
         end: 9.5,
         en: "Make sure they do not look at the examiner",
@@ -64,6 +69,7 @@ export const PUPILS_PEC_STAGES = [
       },
       {
         id: "avoid-light",
+        caption: { en: "", ko: "" },
         offset: 9.5,
         end: 18,
         en: "or the light itself.",
@@ -187,7 +193,7 @@ export const PUPILS_PEC_SCROLL_CONFIG = {
     (stage) => stage.seconds * 30 - 1,
   ),
   segmentStartTexts: PUPILS_PEC_STAGES.map((stage) =>
-    stage.cues.map((cue) => cue.en),
+    stage.cues.map((cue) => cue.caption?.en ?? cue.en),
   ),
   segmentTextModeByFile: PUPILS_PEC_STAGES.map(() => "append"),
   narrationTracks: Object.fromEntries(

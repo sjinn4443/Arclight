@@ -2,6 +2,46 @@
 
 Last checked: 17 September 2026.
 
+## Scrolly-to-Full-Animation workflow — 24 October 2026
+
+The reusable authoring procedure is maintained in
+[README.md](../README.md#creating-full-animation-videos-from-scrolly-lessons).
+Use Eye Pad / Shield as the section-card/player reference and Pupils PEC as the
+worked conversion of an existing six-stage scrolly. The request is to render
+the existing animation, narration and captions as a continuous video, retaining
+the original scroll experience and separate progress.
+
+- Source: `public/js/pupilsPecScroll.js`, six generated Lottie JSONs and the
+  original 102s English/Korean tracks in `narration/pupils-pec/full-animation/`.
+- Builder: `scripts/build-pupils-pec-video.cjs`. Canvas renders over local HTTP
+  at 30fps with image-load gating and exact frame seeks. A one-second first-frame
+  hold preserves the narration lead-in. Lossless PNGs become limited-range
+  BT.709 H.264 MP4s, 658 × 720 and 220 × 240, with one-second keyframes, square
+  pixels and fast-start metadata. Audio is not embedded.
+- Cards: 3s each, `Observation` at video 0–3s and `Direct Light Response` at
+  22–25s. English is baked in white on `#0f0f0f`; Korean titles are caption-only
+  (`관찰`, `직접 대광반사`). Cards have no spoken audio.
+- Clocks: scroll remains 102s; video is 108s. Original cues starting before 19s
+  move by +3s; remaining cues move by +6s. Both cue ends move together. The builder
+  inserts matching silence into the original audio, regenerates video VTT/script
+  and a manifest with output and source SHA-256 checksums under `video/`.
+  Never overwrite scroll audio or re-encode an earlier video track as the source.
+- Integration: row below Pupils PEC on `videos/pupilsPage`, target
+  `pupilsPecFullAnimationVideoPage`; shared hidden shell and player, source map,
+  dedicated subtitle-panel set, localization catalogue, Back to `pupilsPage`,
+  progress/My Learning and Core Pupils offline language/quality matching.
+- Rebuild with `node scripts/build-pupils-pec-video.cjs`; use
+  `CHROME_CHANNEL=chrome` or `FFMPEG_PATH` when needed. Check title boundaries,
+  all cues, silent intervals, seeking/sync, quality/time retention, final images,
+  route cleanup, direct links and progress on desktop/mobile. Run focused
+  asset/browser/offline tests, accessibility and a build; inspect generated media
+  and offline manifest. Preserve shared scrolly playback and original narration.
+
+For other lessons, derive sections and durations from their own config rather
+than copying Pupils PEC's numeric offsets. Keep route ownership and lesson IDs
+aligned. Use the existing narration generator's cached utterances when source
+speech needs rebuilding; no new TTS is needed just to insert silent cards.
+
 ### Eye pad and shield scroll narration — 7 October 2026
 
 The **Full animation** row added on 19 October opens the procedure-hosted

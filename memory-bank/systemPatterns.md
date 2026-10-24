@@ -5,7 +5,8 @@ standard `1169 / 1280` canvas unless an established page requires another size.
 Keep the animation, poster and configured aspect ratio aligned; arrange extracted
 components proportionally inside that rectangle instead of adopting each PDF
 crop's ratio. To fill the rect, preserve the source aspect ratio and use a
-proportional cover crop with explicit clipping; never stretch width and height
+proportional cover crop with explicit clipping at initial, intermediate and final
+frames. Reposition essential labels inside the crop. Never stretch width and height
 independently. Reposition important subjects or inserts within that crop.
 Reuse arrows from the supplied file. Check intermediate motion
 frames on desktop and the iOS Canvas renderer. See the

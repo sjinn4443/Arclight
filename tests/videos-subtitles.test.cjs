@@ -321,6 +321,7 @@ describe("childhood eye screening subtitle pilot", () => {
     });
 
     fetchSpy = jest.spyOn(global, "fetch").mockImplementation(async (url) => {
+      if (url === "/healthz") return { ok: true };
       if (
         String(url).endsWith("/video-localization/childhood-eye-screening.json")
       ) {
@@ -841,6 +842,54 @@ describe("childhood eye screening subtitle pilot", () => {
     page.querySelector('[data-narration-selection="auto"]').click();
     await new Promise((resolve) => setTimeout(resolve, 0));
     expectLanguage("ha");
+  });
+
+  it("uses local video when the browser reports online but the network is unreachable", async () => {
+    Object.defineProperty(navigator, "onLine", {
+      configurable: true,
+      value: true,
+    });
+    const originalFetch = fetchSpy.getMockImplementation();
+    fetchSpy.mockImplementation((url, ...args) =>
+      url === "/healthz"
+        ? Promise.reject(new Error("offline"))
+        : originalFetch(url, ...args),
+    );
+    localStorage.setItem("videoMode:assessmentVisionPage", "online");
+    videos.showVideosPageById("assessmentVisionPage");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const page = document.getElementById("assessmentVisionPage");
+    expect(page.querySelector("iframe")).toBeNull();
+    expect(page.querySelector("video source").getAttribute("src")).toMatch(
+      /_220p\.mp4$/,
+    );
+  });
+
+  it("uses local video for a saved online preference when offline", async () => {
+    Object.defineProperty(navigator, "onLine", {
+      configurable: true,
+      value: false,
+    });
+    localStorage.setItem("videoMode:assessmentVisionPage", "online");
+    try {
+      videos.showVideosPageById("assessmentVisionPage");
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      const page = document.getElementById("assessmentVisionPage");
+      expect(page.querySelector("iframe")).toBeNull();
+      expect(page.querySelector("video source").getAttribute("src")).toMatch(
+        /_220p\.mp4$/,
+      );
+      expect(
+        page.querySelector('[data-mode="low"]').getAttribute("aria-checked"),
+      ).toBe("true");
+    } finally {
+      Object.defineProperty(navigator, "onLine", {
+        configurable: true,
+        value: true,
+      });
+    }
   });
 
   it("defaults iOS pilot pages to HLS online playback and hides high only", async () => {

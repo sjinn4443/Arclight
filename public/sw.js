@@ -1,7 +1,7 @@
 /* sw.js — Arclight PWA service worker */
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v97"
+    ? "arclight-static-v107"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -46,6 +46,18 @@ function canCacheResponse(response) {
     .trim()
     .toLowerCase();
   return !/(?:^|,)\s*(?:no-store|private)(?:\s|,|$)/.test(cacheControl);
+}
+
+function canCacheDownload(url, response) {
+  if (!canCacheResponse(response) || response.status !== 200) return false;
+  if (/\.(?:mp4|m4a)(?:\?|$)/i.test(url)) {
+    // Some static hosts return their HTML fallback with 200 for missing media.
+    // That response must never be reported as a downloaded video.
+    const type = response.headers.get("Content-Type") || "";
+    if (/text\/html|application\/json/i.test(type)) return false;
+    if (response.headers.get("Content-Length") === "0") return false;
+  }
+  return true;
 }
 
 function normalizeCacheMessageUrls(payload) {
@@ -145,7 +157,8 @@ function getAlternateMp4Urls(requestUrl) {
   const alternates = [];
   const replacements = [
     [/_720p(?=\.mp4$)/i, "_220p"],
-    [/_220p(?=\.mp4$)/i, "_720p"],
+    [/_720p(?=\.mp4$)/i, "_240p"],
+    [/_(?:220|240)p(?=\.mp4$)/i, "_720p"],
   ];
 
   replacements.forEach(([pattern, replacement]) => {
@@ -209,10 +222,11 @@ async function cacheUrls(urls, port) {
       });
       const revision = revisions[new URL(requestUrl).pathname];
       const targetCache = revision ? cache : shellCache;
-      const existing = await matchPack(targetCache, requestUrl);
+      const stored = await matchPack(targetCache, requestUrl);
+      const existing = canCacheDownload(requestUrl, stored) ? stored : null;
       const res = existing || (await fetch(request));
       if (controller.signal.aborted) break;
-      if (canCacheResponse(res)) {
+      if (canCacheDownload(requestUrl, res)) {
         if (!existing) {
           const headers = new Headers(res.headers);
           if (revision) headers.set("X-Arclight-Revision", revision);

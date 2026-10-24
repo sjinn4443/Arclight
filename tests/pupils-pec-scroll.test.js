@@ -73,7 +73,9 @@ test("both recorded narration tracks cover every teaching cue and match the mani
     ).toBeLessThan(0.25);
     expect(
       fs.readFileSync(`${folder}/${language}.vtt`, "utf8").match(/-->/g),
-    ).toHaveLength(script.cues.length);
+    ).toHaveLength(
+      script.cues.filter((c) => c.caption?.[language] ?? c[language]).length,
+    );
   }
 });
 

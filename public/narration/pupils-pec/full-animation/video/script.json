@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "title": "Pupils PEC",
+  "sourceDocument": "/pdfbasedanims/Pupils PEC_110826.pdf",
+  "durationSeconds": 108,
+  "defaultLanguage": "en",
+  "languages": {
+    "en": {
+      "label": "English",
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural"
+    },
+    "ko": {
+      "label": "한국어",
+      "locale": "ko-KR",
+      "voice": "ko-KR-SunHiNeural"
+    }
+  },
+  "cues": [
+    {
+      "id": "observe",
+      "en": "Observe the size, shape and symmetry of both pupils.",
+      "ko": "양쪽 동공의 크기, 모양, 대칭성을 관찰합니다.",
+      "start": 4,
+      "end": 10
+    },
+    {
+      "id": "compare-observation",
+      "en": "Compare normal pupils with changes in colour or shape, unequal pupil size and eyelids.",
+      "ko": "정상 동공과 색이나 모양의 변화, 양쪽 동공 크기의 차이, 눈꺼풀을 비교합니다.",
+      "start": 10,
+      "end": 22
+    },
+    {
+      "id": "light",
+      "en": "Switch on the Arclight and select the brightest light setting. Use a quiet, dim room.",
+      "ko": "조용하고 어두운 방에서 아크라이트를 켜고 조명을 가장 밝게 설정합니다.",
+      "start": 25,
+      "end": 34
+    },
+    {
+      "id": "distance",
+      "en": "Ask the patient to look at a distant target.",
+      "ko": "환자가 멀리 있는 목표물을 보게 합니다.",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "id": "clear-view",
+      "en": "Make sure they do not look at the examiner",
+      "ko": "검사자를 바라보지 않도록 합니다.",
+      "start": 40,
+      "end": 43.5,
+      "caption": {
+        "en": "Make sure they do not look at the examiner or the light itself.",
+        "ko": "검사자나 조명 자체를 바라보지 않도록 합니다."
+      },
+      "captionUntil": "avoid-light"
+    },
+    {
+      "id": "avoid-light",
+      "en": "or the light itself.",
+      "ko": "조명 자체도 바라보지 않도록 합니다.",
+      "start": 43.5,
+      "end": 52,
+      "caption": {
+        "en": "",
+        "ko": ""
+      }
+    },
+    {
+      "id": "move-light",
+      "en": "Move the light from the side towards the pupil.",
+      "ko": "조명을 옆에서 동공 쪽으로 움직입니다.",
+      "start": 52,
+      "end": 58
+    },
+    {
+      "id": "watch",
+      "en": "Watch the illuminated pupil for the direct light response.",
+      "ko": "빛을 비춘 동공의 직접 대광반사를 관찰합니다.",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "id": "shine-constrict",
+      "en": "Shine the light into the eye and watch the pupil constrict.",
+      "ko": "눈에 빛을 비추고 동공이 수축하는지 관찰합니다.",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "id": "compare-responses",
+      "en": "Look for reduced or absent constriction.",
+      "ko": "동공 수축이 약하거나 없는지 확인합니다.",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "id": "corresponding-examples",
+      "en": "The pupil responses on the left may be associated with the conditions at the back of the eye shown on the right.",
+      "ko": "왼쪽과 같은 동공 반응은 오른쪽 그림처럼 눈 뒤쪽의 상태와 관련이 있을 수 있습니다.",
+      "start": 76,
+      "end": 84
+    },
+    {
+      "id": "pupil-colour",
+      "en": "Pupil colour does not determine the light response.",
+      "ko": "동공의 색이 대광반사를 결정하는 것은 아닙니다.",
+      "start": 84,
+      "end": 92
+    },
+    {
+      "id": "cataract-constriction",
+      "en": "A cataract may make the pupil look grey or white, but the pupil should still constrict if the light reflex pathway is intact.",
+      "ko": "백내장이 있으면 동공이 회색이나 흰색으로 보일 수 있지만, 대광반사 경로가 정상이라면 동공은 여전히 수축해야 합니다.",
+      "start": 92,
+      "end": 108
+    }
+  ],
+  "videoTitleCues": [
+    {
+      "id": "video-title-1",
+      "sourceText": "Observation",
+      "start": 0,
+      "end": 3,
+      "translations": {
+        "ko": "관찰"
+      }
+    },
+    {
+      "id": "video-title-2",
+      "sourceText": "Direct Light Response",
+      "start": 22,
+      "end": 25,
+      "translations": {
+        "ko": "직접 대광반사"
+      }
+    }
+  ],
+  "sourceVideo": "/videos/FullAnim/PupilsPecFullAnim_720p.mp4",
+  "timingSource": "Original 102s scrolly clock with silent 3s section cards inserted at scroll 0s and 19s. Original scroll assets are unchanged."
+}

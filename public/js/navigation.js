@@ -1092,7 +1092,12 @@ const STRUCTURAL_BACK_SUBPAGES = {
   },
   visualAcuityPage: { routeName: "eyes" },
   pupilsPage: { routeName: "eyes" },
+  pupilsPecFullAnimationVideoPage: {
+    routeName: "videos",
+    subPageId: "pupilsPage",
+  },
   pupilsPecScrollPage: { routeName: "videos", subPageId: "pupilsPage" },
+  pupilsAdvancedScrollPage: { routeName: "videos", subPageId: "pupilsPage" },
   frontOfEyePage: { routeName: "eyes" },
   fundalExamPage: {
     routeName: "videos",

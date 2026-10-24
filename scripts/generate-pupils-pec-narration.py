@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 import sys
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +39,7 @@ async def main():
         tracks[language] = {"src": track.name, "label": voice["label"], "voice": voice["voice"], "bytes": track.stat().st_size, "sha256": hashlib.sha256(track.read_bytes()).hexdigest(), "durationSeconds": duration}
         (work / "qa.json").write_text(json.dumps(qa, indent=2), encoding="utf-8")
     (folder / "manifest.json").write_text(json.dumps({"schemaVersion": 1, "durationSeconds": script["durationSeconds"], "tracks": tracks}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    subprocess.run(["node", str(ROOT / "scripts/lib/pupils-caption-authoring.cjs")], check=True, cwd=ROOT)
 
 
 if __name__ == "__main__":

@@ -1,12 +1,14 @@
 import { VISUAL_ACUITY_SCROLL_TIMING } from "./visualAcuityExaminationScroll.js";
 import { EYE_PAD_SHIELD_SCROLL_TIMING } from "./eyePadShieldScroll.js";
 import { PUPILS_PEC_SCROLL_TIMING } from "./pupilsPecScroll.js";
+import { PUPILS_ADVANCED_SCROLL_TIMING } from "./pupilsAdvancedScroll.js";
 
 // Absolute narration times -> local Lottie frames. Repeated frames are teaching
 // holds, matching the scenes/cues in the corresponding Full Animation lesson.
 // Keep the final frames and the WebKit renderer/snapshot settings in the engine.
 export const EXAMINATION_SCROLL_TIMING = {
   pupilsPecScrollPage: PUPILS_PEC_SCROLL_TIMING,
+  pupilsAdvancedScrollPage: PUPILS_ADVANCED_SCROLL_TIMING,
   makeEyePadShieldScrollPage: EYE_PAD_SHIELD_SCROLL_TIMING,
   visualAcuityExaminationScrollPage: VISUAL_ACUITY_SCROLL_TIMING,
   frontOfEyeExaminationScrollPage: {
@@ -326,7 +328,9 @@ export function configureExaminationTiming(cfg) {
   };
   cfg.getSegmentStartTexts = (index, language) =>
     script
-      ? cfg.getNarrationCues(index).map((cue) => cue[language] || cue.en)
+      ? cfg
+          .getNarrationCues(index)
+          .map((cue) => cue.caption?.[language] ?? cue[language] ?? cue.en)
       : previousTexts?.(index, language);
   cfg.segmentTextModeByFile = timing.stages.map(() => "append");
 }

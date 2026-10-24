@@ -92,7 +92,58 @@ Last refreshed: 2026-10-09
 - Current source service-worker fallback: `arclight-static-v95`. Production
   can inject `__BUILD_CACHE_NAME__`; read `public/sw.js` before assuming a value.
 
+## Scrolly-based Full Animation video authoring
+
+- Follow [the reusable workflow](./README.md#creating-full-animation-videos-from-scrolly-lessons)
+  and [the production record](./memory-bank/narration-and-subtitles.md#scrolly-to-full-animation-workflow--24-october-2026)
+  when asked to make a Full Animation video from an existing scrolly.
+- Reuse the shipped Lottie scenes, teaching order, original frame clock, cue
+  wording and narration voices. Render exact decoded Canvas frames over HTTP,
+  then encode lossless PNGs to limited-range BT.709 H.264 with `yuv420p`,
+  one-second keyframes and fast-start metadata. Keep narration separate.
+- Match Eye Pad / Shield's silent 3s section cards: centred white English text
+  on `#0f0f0f`, with translated title captions. Encode cards into the video.
+  Preserve original scroll files and create video-clock audio/script/VTT/manifest
+  under `full-animation/video/`. Retiming must include both cue ends and matching
+  audio silence. Always read original audio or cached utterances on rebuild.
+- Pupils PEC uses `scripts/build-pupils-pec-video.cjs`, six scenes and English/
+  Korean tracks. Scroll stays 102s; video is 108s. Observation is 0–3s and Direct
+  Light Response is 22–25s. Low is 240p; high is 720p. The video row follows
+  `pupilsPecScrollPage` on `pupilsPage` and opens `pupilsPecFullAnimationVideoPage`.
+- Reuse the Full Animation shell and player; align source mapping, dedicated
+  subtitle panel registration, catalogue, Back, progress/My Learning and offline
+  language/quality selection. Verify title boundaries, all cues, seeking, quality
+  retention, final images and route cleanup on desktop/mobile, then run focused
+  tests, accessibility and the build. Inspect offline assets and bump cached
+  behavior's service-worker version. Do not change the shared scrolly engine
+  just to create a video. See the lesson's narration README for regeneration.
+
 ## Combined examination scroll guides
+
+- Advanced Pupils uses `pupilsAdvancedScrollPage` / `pupilsAdvancedScroll`, a
+  **Pupils** row immediately below Pupils Advanced PDF in `videos/pupilsPage`.
+  `pupilsAdvancedScroll.js` owns fifteen stages, seven sections and 35 English/
+  Korean cues (315s). Rebuild with `extract-pupils-advanced-art.py`,
+  `build-pupils-advanced-scroll.cjs`, then `generate-pupils-advanced-narration.py`.
+  Follow [the source and authoring record](./public/narration/pupils-advanced/full-animation/README.md).
+  Reuse PEC stage paths and source audio for Observation and all five Direct Light
+  Response scenes. Keep device brightness constant, move its light pool together,
+  grow full arrows tail-to-tip, and keep flow signals behind opaque boxes. Near
+  results contain two faces with iris motion followed by result symbols. PDF-filled
+  sclera masks must explicitly close (`c: true`) for Lottie. Follow the proportional
+  cover rule in [the authoring workflow](./docs/lottie-examination-scroll-pages.md).
+  Preserve original PDF layers and source labels, uniform status-circle size,
+  `lessonProgress:` storage, both Videos initialization paths and narration-clock
+  registration. Fixed Lottie properties must use `a: 0`; a single animated
+  keyframe can interrupt rendering even when completion assertions pass. Inspect
+  rendered final frames and run the Advanced asset/offline/browser tests plus PEC
+  regressions after editing these scenes.
+
+- Pupils caption groups use `caption` / `captionUntil` metadata independently of
+  spoken cue times. Regenerate their VTT with `scripts/lib/pupils-caption-authoring.cjs`.
+  Keep a single distance-matched afferent head per colour, full soft light pools,
+  and RAPD dilation after affected-eye arrival. Preserve requested source margins
+  in Near Response and keep face texture resolution comparable to vector irises.
 
 - The Eye Pad / Shield procedure owns `makeEyePadShieldScrollPage`, launched
   directly below its `make_eye_pad` video row. Read

@@ -210,6 +210,7 @@ test("download options support multiple sections and show cache status on deskto
   await expect(workshops.locator(".download-section__title")).toHaveText([
     "PEC",
     "Medical Students",
+    "Paediatric Surgical Eye & Ear",
     "Childhood Eye Screening",
     "Glaucoma",
     "Diabetic Retinopathy",

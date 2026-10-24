@@ -33,6 +33,7 @@
     "security:rotate-local-secrets": "node scripts/rotate-local-secrets.cjs",
     "security:migrate-data": "cross-env UV_THREADPOOL_SIZE=16 node scripts/migrate-security-data.cjs",
     "test:quality": "playwright test --config playwright.quality.config.js",
+    "test:offline": "playwright test --config playwright.offline.config.js",
     "test:animations": "playwright test tests-e2e/front-of-eye-scroll.spec.js tests-e2e/examination-scroll-sync.spec.js tests-e2e/examination-scroll-headings.spec.js",
     "check:clinical": "node scripts/check-clinical-equivalence.cjs",
     "check:clinical-approval": "node scripts/check-clinical-equivalence.cjs --require-approval",

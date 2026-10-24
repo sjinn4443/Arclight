@@ -815,6 +815,8 @@ function shouldIncludeVideoQuality(url, videoQuality, availableUrls) {
 
 function isAppShellAsset(url) {
   const assetPath = getAssetPath(url);
+  // The player needs these small catalogues before it can resolve local media.
+  if (assetPath.startsWith("/video-localization/")) return true;
   if (isVideoAssetUrl(assetPath)) return false;
   return !CONTENT_ASSET_PREFIXES.some((prefix) => assetPath.startsWith(prefix));
 }
@@ -1005,6 +1007,23 @@ export function matchesOfflineCatalog(url, catalogId) {
     return (
       assetPath.startsWith("/videos/tools/") ||
       assetPath.startsWith("/videos/arclight/") ||
+      assetPath.startsWith(
+        "/videos/usaid childhood eye screening/1. how to use the arclight",
+      ) ||
+      [
+        "/videos/fullanim/dofullanim_",
+        "/videos/fullanim/biofullanim_",
+        "/narration/direct-ophthalmoscopy/",
+        "/narration/binocular-indirect-ophthalmoscopy/",
+        "/scrolly/coreexam/ophths/do/",
+        "/scrolly/coreexam/ophths/bio/",
+        "/images/pdf/workshop/do/",
+        "/images/pdf/workshop/bio/",
+      ].some((prefix) => assetPath.startsWith(prefix)) ||
+      (assetPath.startsWith("/video-subtitles/") &&
+        /arclight|phoneattach|mobilephone|directophthalmoscopy|binocularindirectophthalmoscopy/.test(
+          assetPath,
+        )) ||
       assetPath.startsWith("/images/icon/eyes/tools/") ||
       assetPath.includes("arclight_device")
     );

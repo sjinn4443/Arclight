@@ -186,6 +186,39 @@ describe("service worker sensitive-cache policy", () => {
     expect(self.skipWaiting).toHaveBeenCalledTimes(1);
   });
 
+  test.each([
+    { status: 200, headers: { "Content-Type": "text/html" } },
+    {
+      status: 200,
+      headers: { "Content-Type": "video/mp4", "Content-Length": "0" },
+    },
+    { status: 206, headers: { "Content-Type": "video/mp4" } },
+  ])(
+    "does not report missing, empty or partial media as downloaded: %j",
+    async (options) => {
+      const { cache, handlers } = loadServiceWorker(
+        jest.fn().mockResolvedValue(new Response("bad response", options)),
+      );
+      const messages = [];
+      let work;
+      handlers.message({
+        data: { type: "CACHE_URLS", payload: ["/missing.mp4"] },
+        ports: [{ postMessage: (message) => messages.push(message) }],
+        waitUntil: (promise) => {
+          work = promise;
+        },
+      });
+      await work;
+      expect(messages.at(-1)).toMatchObject({
+        type: "CACHE_DONE",
+        cached: 0,
+        total: 1,
+      });
+      expect(messages.at(-1).failed).toHaveLength(1);
+      expect(cache.put).not.toHaveBeenCalled();
+    },
+  );
+
   test("rejects an incomplete shell installation and cleans its partial cache", async () => {
     const { cache, cacheName, caches, handlers, self } = loadServiceWorker(
       jest
@@ -266,6 +299,35 @@ describe("service worker sensitive-cache policy", () => {
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
+  test.each(["220", "240"])(
+    "serves a cached %sp MP4 when the saved quality requests 720p",
+    async (resolution) => {
+      const fetchImpl = jest.fn().mockRejectedValue(new Error("offline"));
+      const { cache, handlers } = loadServiceWorker(fetchImpl);
+      cache.match.mockImplementation(async (request) => {
+        const url = typeof request === "string" ? request : request.url;
+        return url.endsWith(`/lesson_${resolution}p.mp4`)
+          ? new Response("0123456789", {
+              headers: { "Content-Type": "video/mp4" },
+            })
+          : undefined;
+      });
+      let response;
+      handlers.fetch({
+        request: new Request("https://app.example.com/lesson_720p.mp4", {
+          headers: { Range: "bytes=2-5" },
+        }),
+        respondWith: (promise) => {
+          response = promise;
+        },
+      });
+      const result = await response;
+      expect(result.status).toBe(206);
+      expect(await result.text()).toBe("2345");
+      expect(fetchImpl).not.toHaveBeenCalled();
+    },
+  );
+
   test.each(["current", "old"])(
     "resumes %s media by revision without reusing changed content",
     async (revision) => {
@@ -302,6 +364,35 @@ describe("service worker sensitive-cache policy", () => {
         ).toBe("current");
     },
   );
+
+  test("retries an invalid media response left in the cache by an older worker", async () => {
+    const fetchImpl = jest
+      .fn()
+      .mockResolvedValue(
+        new Response("video", { headers: { "Content-Type": "video/mp4" } }),
+      );
+    const { cache, handlers } = loadServiceWorker(fetchImpl);
+    cache.match.mockImplementation(async (request) =>
+      request === "/shell-assets.json"
+        ? undefined
+        : new Response("<html>missing</html>", {
+            headers: { "Content-Type": "text/html" },
+          }),
+    );
+    const messages = [];
+    let work;
+    handlers.message({
+      data: { type: "CACHE_URLS", payload: ["/lesson.mp4"] },
+      ports: [{ postMessage: (message) => messages.push(message) }],
+      waitUntil: (promise) => {
+        work = promise;
+      },
+    });
+    await work;
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(cache.put).toHaveBeenCalledTimes(1);
+    expect(messages.at(-1)).toMatchObject({ cached: 1, failed: [] });
+  });
 
   test("offline subapp navigation returns its downloaded document", async () => {
     const { caches, handlers, packCacheName } = loadServiceWorker(

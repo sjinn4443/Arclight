@@ -64,6 +64,77 @@ Video colour range matches the scrolly artwork. Video and scroll narration use
 separate timelines so title cards do not alter scroll playback.
 See [authoring and checks](./docs/make-eye-pad-shield-scroll.md).
 
+## Advanced Pupils scroll lesson
+
+Advanced Pupils now has a **Pupils** scrolly row immediately below **Pupils Advanced
+PDF** on `#/videos/pupilsPage`, opening `#/videos/pupilsAdvancedScrollPage`. The
+Advanced PDF/AI sources supply nine local Lottie scenes; Observation and all five
+Direct Light Response scenes reuse PEC verbatim, for fifteen scenes with seven
+sections and 35 English/Korean cues on a 315s clock. It uses the same shared stage
+engine as Pupils PEC, including replay, narration controls, saved progress,
+My Learning and Core Pupils offline selection. See the
+[Advanced authoring record](./public/narration/pupils-advanced/full-animation/README.md)
+for source ownership, regeneration and checks.
+
+## Creating Full Animation videos from scrolly lessons
+
+Pupils PEC is the current worked example: its **Pupils PEC Full Animation** row
+immediately follows the scrolly on `#/videos/pupilsPage` and opens
+`#/videos/pupilsPecFullAnimationVideoPage`. It renders the same six scenes and
+uses the existing English/Korean narration and captions. Two silent 3-second
+cards introduce Observation (video 0–3s) and Direct Light Response (22–25s).
+The scrolly stays 102s; the video is 108s. Eye Pad / Shield uses the same pattern
+with nine scenes, three cards and separate 125s/134s clocks.
+
+Use this workflow when converting another existing scrolly into a video:
+
+1. Read its config module, generated Lottie JSONs, section boundaries, frame
+   ranges and narration script. Treat the shipped scrolly as the visual and
+   timing source. Reuse its artwork, teaching order, wording and voice tracks.
+2. Render each scene from a local HTTP origin with pinned Lottie Canvas, after
+   `DOMLoaded` and image decoding. Resolve image paths relative to each JSON.
+   Seek exact frames with `goToAndStop(frame, true)` at the authored frame rate;
+   include opening holds and any teaching pauses explicitly in the export.
+3. Insert silent 3s section cards with centred bold white English text on
+   `#0f0f0f`, as in Eye Pad / Shield. Encode these into the MP4 so seeking works
+   independently of runtime timers. Provide translated title captions; avoid
+   duplicating the baked English heading in the caption panel.
+4. Keep the original scroll clock and audio files unchanged. Create a separate
+   `full-animation/video/` script, M4A tracks, VTT captions and checksum manifest.
+   Shift each cue by all cards preceding its source start; shift both ends by
+   the same amount. Insert matching silence into the source audio, or reuse
+   cached utterances with the shared narration generator. Never shift only the
+   picture or route the scrolly to the longer video track. Rebuild from original
+   audio rather than repeatedly re-encoding an earlier video delivery.
+5. Pipe lossless PNG frames into FFmpeg. Encode limited-range BT.709 H.264,
+   `yuv420p`, square pixels, one-second keyframes and `+faststart`. Keep narration
+   separate (`-an` for video). Pupils PEC and Eye Pad / Shield ship 658 × 720
+   high and 220 × 240 low outputs, named `_720p.mp4` and `_240p.mp4`.
+6. Add an accessible video row immediately below the source scrolly, a hidden
+   `.page.full-animation-video-page` shell, `VIDEO_PAGE_SOURCES` entry and
+   `DEDICATED_SUBTITLE_PANEL_PAGE_IDS` entry in `videos.js`. Use the shared player
+   for quality, voice selection, captions, full screen and sharing. Connect the
+   video-clock tracks in `video-localization/childhood-eye-screening.json`.
+   Align structural Back, progress and My Learning IDs with the owning route.
+   Procedure-hosted pages initialise via `initializeFullAnimationVideoPage`;
+   Videos-hosted pages use the existing `show` flow. Avoid duplicate router
+   handlers on procedure rows.
+7. Verify card boundaries, translated titles, every spoken cue, audio sync after
+   seeking, quality/time retention, final frames, replay, route exit, Back,
+   progress, My Learning and direct links. Check desktop and mobile layouts,
+   selected offline language/quality and English fallback. Run focused tests,
+   accessibility and a build; inspect exported frames and confirm both MP4s and
+   all delivery tracks appear in the offline manifest. Bump the source service
+   worker cache for changed cached behavior; builds refresh media revisions.
+
+For Pupils PEC, run `node scripts/build-pupils-pec-video.cjs`; it generates the
+video and retimed narration/captions together. Set `CHROME_CHANNEL=chrome` to use
+installed Chrome and `FFMPEG_PATH` if needed. The tests are
+`tests/pupils-pec-video-assets.test.js`, `tests-e2e/pupils-pec-video.spec.js` and
+the Core Pupils cases in `tests/languageinstall-offline-narration.test.cjs`.
+See the [Pupils PEC delivery notes](./public/narration/pupils-pec/full-animation/README.md)
+and [persistent workflow record](./memory-bank/narration-and-subtitles.md#scrolly-to-full-animation-workflow--24-october-2026).
+
 ## Primary eye and ear care workshops
 
 The Primary Eye Care route (`#/pecWorkshop`) is owned by

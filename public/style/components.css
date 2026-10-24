@@ -3484,6 +3484,13 @@ input:checked + .slider:before {
 /* ---------- Advanced ---------- */
 :is(#pupilsPage, .pupils-like)
   .pupil-level--advanced
+  .lesson-row--scrollytelling
+  .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_scrollytell.webp");
+  background-position: center;
+}
+:is(#pupilsPage, .pupils-like)
+  .pupil-level--advanced
   .lesson-row--video
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/advanced_video.webp");

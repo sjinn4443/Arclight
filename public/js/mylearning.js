@@ -303,7 +303,15 @@ const GLAUCOMA_TARGET_ROUTES = Object.freeze({
 });
 
 const PROGRESS_TARGET_ROUTES = Object.freeze({
+  pupilsPecFullAnimationVideoPage: {
+    route: "videos",
+    subPageId: "pupilsPecFullAnimationVideoPage",
+  },
   pupilsPecScrollPage: { route: "videos", subPageId: "pupilsPecScrollPage" },
+  pupilsAdvancedScrollPage: {
+    route: "videos",
+    subPageId: "pupilsAdvancedScrollPage",
+  },
   makeEyePadShieldFullAnimationVideoPage: {
     route: "eyePadShield",
     subPageId: "makeEyePadShieldFullAnimationVideoPage",
@@ -438,6 +446,8 @@ function go(target) {
     "frontOfEyePage",
     "pupilsPage",
     "pupilsPecScrollPage",
+    "pupilsAdvancedScrollPage",
+    "pupilsPecFullAnimationVideoPage",
     "rapdTestVideoPage",
     "phoneAttachmentVideoPage",
     "visualAcuityPage",

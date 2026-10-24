@@ -40,6 +40,7 @@ const VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID =
 const FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID =
   "frontOfEyeExaminationScrollPage";
 const PUPILS_PEC_SCROLL_PAGE_ID = "pupilsPecScrollPage";
+const PUPILS_ADVANCED_SCROLL_PAGE_ID = "pupilsAdvancedScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
@@ -406,6 +407,42 @@ function syncFrontOfEyeExaminationScrollProgress() {
 
 function syncPupilsPecScrollProgress() {
   syncScrollProgressForTarget(PUPILS_PEC_SCROLL_PAGE_ID, setLessonProgress);
+}
+
+function syncPupilsAdvancedScrollProgress() {
+  syncScrollProgressForTarget(
+    PUPILS_ADVANCED_SCROLL_PAGE_ID,
+    setLessonProgress,
+  );
+}
+
+const pendingPupilsAdvancedPages = new WeakMap();
+let pupilsAdvancedInitialization = Promise.resolve();
+function initializePupilsAdvancedScrollGuide() {
+  const page = document.getElementById(PUPILS_ADVANCED_SCROLL_PAGE_ID);
+  if (!page) return;
+  if (pendingPupilsAdvancedPages.has(page))
+    return pendingPupilsAdvancedPages.get(page);
+  const task = pupilsAdvancedInitialization
+    .catch(() => {})
+    .then(async () => {
+      const { initializeChildhoodFundalReflexScrollPage } =
+        await import("./childhoodFundalPreparation.js");
+      if (
+        document.body.dataset.currentRoute !== "videos" ||
+        document.getElementById(PUPILS_ADVANCED_SCROLL_PAGE_ID) !== page ||
+        page.style.display === "none"
+      )
+        return;
+      await initializeChildhoodFundalReflexScrollPage("pupilsAdvancedScroll");
+      requestAnimationFrame(syncPupilsAdvancedScrollProgress);
+    })
+    .catch((error) =>
+      console.error("[videos] Pupils Advanced guide failed", error),
+    );
+  pupilsAdvancedInitialization = task;
+  pendingPupilsAdvancedPages.set(page, task);
+  return task.finally(() => pendingPupilsAdvancedPages.delete(page));
 }
 
 // Coalesce only the same live page; discard work after a hash refresh or exit.
@@ -1102,6 +1139,10 @@ function showPageFallback(id) {
     void initializePupilsPecScrollGuide();
   }
 
+  if (id === PUPILS_ADVANCED_SCROLL_PAGE_ID) {
+    void initializePupilsAdvancedScrollGuide();
+  }
+
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
     void initializeFrontOfEyeExaminationScrollGuide();
   }
@@ -1615,6 +1656,16 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fe-full",
   },
 
+  pupilsPecFullAnimationVideoPage: {
+    key: "videoMode:pupilsPecFullAnimationVideoPage",
+    containerSelector: "#pupilsPecFullAnimationVideoContainer",
+    videoSelector: "#pupilsPecFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/PupilsPecFullAnim_240p.mp4",
+      high: "videos/FullAnim/PupilsPecFullAnim_720p.mp4",
+    },
+  },
+
   makeEyePadShieldFullAnimationVideoPage: {
     key: "videoMode:makeEyePadShieldFullAnimationVideoPage",
     containerSelector: "#makeEyePadShieldFullAnimationVideoContainer",
@@ -1966,6 +2017,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
   Object.keys(VIDEO_PAGE_SOURCES),
 );
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
+  "pupilsPecFullAnimationVideoPage",
   "makeEyePadShieldFullAnimationVideoPage",
   "visualAcuityFullAnimationVideoPage",
   "fundalReflexFullAnimationVideoPage",
@@ -2884,6 +2936,25 @@ function shouldPreferOnlineIOSChildhoodPilotMode(pageId) {
 
 function isNavigatorOnline() {
   return typeof navigator.onLine !== "boolean" ? true : navigator.onLine;
+}
+
+async function canReachOnlineVideo() {
+  if (!isNavigatorOnline()) return false;
+  // A reopened PWA can report online even with no working network connection.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 3000);
+  try {
+    const response = await fetch("/healthz", {
+      method: "HEAD",
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    return response.ok;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function getChildhoodPilotIosHlsState(video) {
@@ -4189,24 +4260,28 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   const cfg = VIDEO_PAGE_SOURCES[pageId];
   if (!cfg) return;
   if (!GENERIC_VIDEO_MODES.includes(mode)) mode = "low";
+  if (mode === "online" && !isNavigatorOnline()) mode = "low";
 
   const page = document.getElementById(pageId);
   if (!page) return;
+  const requestToken = String(
+    (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
+  );
+  page.dataset.videoModeRequestToken = requestToken;
   const childhoodPilotEntry = await getChildhoodPilotCatalogEntry(pageId);
   const canUseIosHls = shouldUseIOSChildhoodPilotHls(
     pageId,
     childhoodPilotEntry,
   );
+  if (mode === "online" && !cfg.sources?.online && !canUseIosHls) mode = "low";
+  if (mode === "online" && !(await canReachOnlineVideo())) mode = "low";
+  if (page.dataset.videoModeRequestToken !== requestToken) return;
   const iosHlsFallbackMode =
     childhoodPilotEntry?.iosHls?.offlineFallbackMode || "low";
   if (canUseIosHls && mode === "high") mode = iosHlsFallbackMode;
   if (canUseIosHls && mode === "online" && !isNavigatorOnline()) {
     mode = iosHlsFallbackMode;
   }
-  const requestToken = String(
-    (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
-  );
-  page.dataset.videoModeRequestToken = requestToken;
   page.dataset.currentVideoMode = mode;
 
   const toggle = page.querySelector(".tri-toggle");
@@ -4491,11 +4566,21 @@ function wireVideoPageTriToggle(pageId) {
   });
 }
 
-function applyPupilMode(mode, { preserveTime = true } = {}) {
+async function applyPupilMode(mode, { preserveTime = true } = {}) {
   if (!PUPIL_MODES.includes(mode)) mode = "low";
+  if (mode === "online" && !isNavigatorOnline()) mode = "low";
 
   const page = document.getElementById("pupilFullExamPage");
   if (!page) return;
+  const requestToken = String(
+    (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
+  );
+  page.dataset.videoModeRequestToken = requestToken;
+  if (mode === "online" && !(await canReachOnlineVideo())) mode = "low";
+  if (page.dataset.videoModeRequestToken !== requestToken) return;
+
+  const toggle = page.querySelector(".tri-toggle");
+  if (toggle) setTriToggleUI(toggle, mode);
 
   const container = page.querySelector("#pupilFullExamContainer");
   if (!container) return;
@@ -4763,6 +4848,10 @@ function show(id) {
 
   if (id === PUPILS_PEC_SCROLL_PAGE_ID) {
     void initializePupilsPecScrollGuide();
+  }
+
+  if (id === PUPILS_ADVANCED_SCROLL_PAGE_ID) {
+    void initializePupilsAdvancedScrollGuide();
   }
 
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
@@ -5117,7 +5206,10 @@ if (!window[__videosGlobalBoundKey]) {
       setLessonProgress(target, 100, { mode: "replace" });
       return;
     }
-    if (target === PUPILS_PEC_SCROLL_PAGE_ID) {
+    if (
+      target === PUPILS_PEC_SCROLL_PAGE_ID ||
+      target === PUPILS_ADVANCED_SCROLL_PAGE_ID
+    ) {
       setLessonProgress(target, 100);
       return;
     }
@@ -5151,6 +5243,7 @@ if (!window[__videosGlobalBoundKey]) {
       syncVisualAcuityExaminationScrollProgress();
       syncFrontOfEyeExaminationScrollProgress();
       syncPupilsPecScrollProgress();
+      syncPupilsAdvancedScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
@@ -5164,6 +5257,7 @@ if (!window[__videosGlobalBoundKey]) {
       requestAnimationFrame(syncVisualAcuityExaminationScrollProgress);
       requestAnimationFrame(syncFrontOfEyeExaminationScrollProgress);
       requestAnimationFrame(syncPupilsPecScrollProgress);
+      requestAnimationFrame(syncPupilsAdvancedScrollProgress);
       scheduleFundalReflexExaminationScrollProgressSync();
       scheduleDirectOphthalmoscopyScrollProgressSync();
       scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
@@ -5195,6 +5289,7 @@ if (!window[__videosGlobalBoundKey]) {
       syncVisualAcuityExaminationScrollProgress();
       syncFrontOfEyeExaminationScrollProgress();
       syncPupilsPecScrollProgress();
+      syncPupilsAdvancedScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();

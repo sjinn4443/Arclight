@@ -2,6 +2,21 @@
 
 Playwright-based end-to-end checks live here.
 
+## Offline downloads
+
+Build the app, then run `npm run test:offline`. This suite enables real service
+workers, uses the Download dialog to select Tools and Kits at low resolution,
+checks the stored files, closes the online page, opens a new page with networking
+disabled, and plays/seeks all five Tools and Kits videos. A second test checks
+failed downloads, resuming, and cached 240p MP4 byte ranges requested as 720p.
+
+Projects cover desktop Chromium, Android phone/tablet emulation, and iPhone/iPad
+WebKit emulation. Windows WebKit rejects cached fetches and navigation when
+offline emulation is enabled; those projects are explicitly skipped on Windows.
+Run them on macOS WebKit, and run the installed-device checks in
+`docs/offline-download-audit.md` on actual iOS/iPadOS devices.
+The existing `download-options.spec.js` mocks the worker and checks UI behavior.
+
 ## Fundal validation
 
 The fundal suite covers:

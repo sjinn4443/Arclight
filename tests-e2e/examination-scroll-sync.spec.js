@@ -48,6 +48,13 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
     const launcherPage = ownedRoute ? timing.route : hub;
     await page.goto(ownedRoute ? `/#/${timing.route}` : `/#/videos/${hub}`);
     await expect(page.locator(`#${launcherPage}`)).toBeVisible();
+    // The fragment becomes visible before Videos finishes its async setup.
+    // Wait for its existing ready boundary so setup cannot reset a just-clicked
+    // lesson back to the hub while this test is checking the speech clock.
+    if (!ownedRoute)
+      await page.waitForFunction(
+        () => document.getElementById("videos")?.style.visibility === "visible",
+      );
     await page.locator(`#${launcherPage} [data-target="${pageId}"]`).click();
     const guide = page.locator(`#${pageId}`);
     const audio = guide.locator("audio");
@@ -128,7 +135,10 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
             ".childhood-fundal-segment-text__line, .childhood-fundal-segment-text__bullet-item",
           ),
         ).toHaveText(
-          cues.filter((cue) => cue.start <= time).map((entry) => entry.en),
+          cues
+            .filter((cue) => cue.start <= time)
+            .map((entry) => entry.caption?.en ?? entry.en)
+            .filter(Boolean),
         );
         if (landmarks.includes(sampleTime))
           await page.screenshot({
@@ -219,7 +229,9 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
           .locator(
             ".childhood-fundal-segment-text__line, .childhood-fundal-segment-text__bullet-item",
           ),
-      ).toHaveText(cues.map((cue) => cue.en));
+      ).toHaveText(
+        cues.map((cue) => cue.caption?.en ?? cue.en).filter(Boolean),
+      );
     }
     expect(errors).toEqual([]);
   });

@@ -1,5 +1,57 @@
 # Progress
 
+## Advanced Pupils scrolly — 24 October 2026
+
+- Added **Pupils** immediately below **Pupils Advanced PDF** on Pupils, targeting
+  `pupilsAdvancedScrollPage`. The original two-page PDF and PDF-compatible AI
+  master supply nine 1169 x 1280 Lotties alongside six shared PEC scenes, with
+  seven sections and 35 bilingual cues over 315 seconds. Source masks, proportions, labels and signal colours are
+  preserved; pupils, signals, instrument movement and teaching marks animate.
+- Uses the shared stage engine and narration clock, English/Korean recorded
+  tracks, replay, forward-scroll gating, saved lesson progress, My Learning,
+  structural Back and Core Pupils downloads with English language fallback.
+- Source provenance, regeneration and validation are documented in
+  [the Advanced authoring record](../public/narration/pupils-advanced/full-animation/README.md).
+- Revised lighting to sequence device → retina → afferent signals and efferent
+  arrival → pupil constriction. Flowchart signals sit behind text; radial and
+  swinging arrows reveal tail-to-tip. The device keeps constant brightness while
+  its pool and soft face illumination move. Near Response keeps the source bird
+  visible and uses two faces with moving irises and delayed status symbols.
+- Observation plus five Direct Light Response rects now reference the original PEC
+  Lotties and reuse its 101-second English/Korean audio block. Proportional cover
+  fills each source-art rect without stretching. Verification is recorded in the
+  Advanced authoring record.
+
+- Further Advanced revisions separate instant device/pool illumination from the
+  upward shaft, remove duplicate sensory heads, restore full-art reflex wipes and
+  shrink the lower flow cards with margin. Consensual circles precede fills/ticks;
+  full soft pools move with faster devices. RAPD waits until affected-eye arrival.
+  Near scenes preserve source margins, lift the hand before concurrent cues and
+  use sharper faces. PEC/Advanced/Full Animation share the early complete fixation
+  caption while speech keeps its original timing.
+- Revision verification: 26 Jest checks and 16 distinct desktop/mobile browser
+  checks passed, with corrected grouped-caption restore assertions rerun. SVG and
+  Canvas views, 177 HTML accessibility checks, packaging budgets and 205 runtime
+  file/hash comparisons passed. Packaging resumed after a Windows file lock.
+
+## Pupils PEC scrolly-based Full Animation — 24 October 2026
+
+- Added `pupilsPecFullAnimationVideoPage` below Pupils PEC scrolly on Pupils.
+  It uses the shared Full Animation player, 240p/720p outputs, English/Korean
+  speech and captions, saved progress/My Learning and Core Pupils downloads.
+- Added Eye Pad / Shield-style silent section cards: Observation 0–3s and Direct
+  Light Response 22–25s. Video is 108s; original scrolly remains 102s. Video-only
+  audio, VTT, script and manifest live under `full-animation/video/`.
+- `scripts/build-pupils-pec-video.cjs` rebuilds the MP4s and retimed audio/captions
+  from original scene/audio assets. Reusable English instructions are in root
+  README, agent.md and memory-bank/narration-and-subtitles.md.
+- Verification: 77 focused asset/scroll/offline tests, desktop/mobile Chrome
+  video tests and the accessibility audit (177 HTML files) pass. Rendered card
+  screenshots match the reference; FFmpeg silence detection confirms both card
+  intervals in both languages. The production build passes unchanged budgets
+  (19,990,932-byte shell, 1,710,536,976-byte media). Physical iPhone audio/rendering
+  was not established by the Chrome mobile-emulation checks.
+
 ## Lighthouse trace recovery — 19 October 2026
 
 - Added bounded recovery for `NO_NAVSTART`, fresh browsers on trace recovery and

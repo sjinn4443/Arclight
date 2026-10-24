@@ -70,7 +70,13 @@ same engine config and combined-page CSS still apply. Its timing entry specifies
   with explicit clipping, and reposition an insert separately if necessary.
   Keep equal horizontal and vertical scale factors: fill the rect by cropping
   overflow, while preserving the original face/device proportions. Verify both
-  the full rect coverage and the source aspect ratio in the rendered page.
+  the full rect coverage and the source aspect ratio in the rendered page. Check
+  this at initial, intermediate and final frames. Reposition essential labels or
+  components inside the cover crop so they stay visible; filling only a background
+  behind a smaller illustration does not satisfy full-rect artwork coverage.
+- When source margins are explicitly requested, use proportional contain within
+  the standard rect. Preserve padding instead of enlarging faces to the edges.
+  Match raster face detail to vector iris detail at the intended display scale.
 - Reuse arrows from the supplied file as separate original-art layers. Do not
   redraw substitute arrows. Separate status circles and their glyphs together
   from the underlying illustration, using transparency rather than rectangular

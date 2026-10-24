@@ -325,34 +325,51 @@ describe("language-specific offline narration", () => {
     expect(selection.urls).toEqual(["/js/main.js"]);
   });
 
-  it.each(["en", "ko", "fr"])(
-    "includes Pupils PEC artwork and narration with %s fallback",
-    (language) => {
+  it.each(
+    ["en", "ko", "fr"].flatMap((language) =>
+      ["low", "high"].map((videoQuality) => [language, videoQuality]),
+    ),
+  )(
+    "includes Pupils PEC artwork, narration and video with %s fallback at %s quality",
+    (language, videoQuality) => {
       const base = "/narration/pupils-pec/full-animation/";
       const artwork = "/scrolly/coreexam/pupils-pec/1/data.json";
+      const media = "/videos/FullAnim/PupilsPecFullAnim_";
       const urls = [
         artwork,
+        media + "240p.mp4",
+        media + "720p.mp4",
         base + "script.json",
+        base + "video/script.json",
         ...["en", "ko"].flatMap((lang) => [
           base + lang + ".m4a",
           base + lang + ".vtt",
+          base + "video/" + lang + ".m4a",
+          base + "video/" + lang + ".vtt",
         ]),
         "/narration/unrelated/en.m4a",
       ];
       const selection = languageInstall.resolveOfflineDownloadSelection(
         { assets: urls.map((url) => ({ url, bytes: 1000 })) },
-        { language, mode: "select", catalogId: "core-pupils" },
+        { language, mode: "select", catalogId: "core-pupils", videoQuality },
       );
       const expectedLanguage = language === "ko" ? "ko" : "en";
       expect(selection.urls).toEqual(
         expect.arrayContaining([
           artwork,
+          media + (videoQuality === "low" ? "240p.mp4" : "720p.mp4"),
           base + "script.json",
           base + expectedLanguage + ".m4a",
           base + expectedLanguage + ".vtt",
+          base + "video/script.json",
+          base + "video/" + expectedLanguage + ".m4a",
+          base + "video/" + expectedLanguage + ".vtt",
         ]),
       );
       expect(selection.urls).not.toContain("/narration/unrelated/en.m4a");
+      expect(selection.urls).not.toContain(
+        media + (videoQuality === "low" ? "720p.mp4" : "240p.mp4"),
+      );
     },
   );
 });

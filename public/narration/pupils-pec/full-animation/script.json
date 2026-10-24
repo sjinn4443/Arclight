@@ -50,14 +50,23 @@
       "en": "Make sure they do not look at the examiner",
       "ko": "검사자를 바라보지 않도록 합니다.",
       "start": 34,
-      "end": 37.5
+      "end": 37.5,
+      "caption": {
+        "en": "Make sure they do not look at the examiner or the light itself.",
+        "ko": "검사자나 조명 자체를 바라보지 않도록 합니다."
+      },
+      "captionUntil": "avoid-light"
     },
     {
       "id": "avoid-light",
       "en": "or the light itself.",
       "ko": "조명 자체도 바라보지 않도록 합니다.",
       "start": 37.5,
-      "end": 46
+      "end": 46,
+      "caption": {
+        "en": "",
+        "ko": ""
+      }
     },
     {
       "id": "move-light",

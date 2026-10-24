@@ -32,7 +32,7 @@ test("Pupils PEC opens above Primary Eye Care Exam and plays the source illustra
   await expect(row).toHaveClass(/lesson-row--scrollytelling/);
   await expect(row.getByRole("progressbar")).toHaveAccessibleName("Pupils PEC");
   expect(await row.evaluate((el) => el.nextElementSibling.dataset.target)).toBe(
-    "pupilExamPECPage",
+    "pupilsPecFullAnimationVideoPage",
   );
   await page.screenshot({ path: testInfo.outputPath("pupils-lesson-row.png") });
   await row.click();
@@ -105,7 +105,7 @@ test("Pupils PEC opens above Primary Eye Care Exam and plays the source illustra
     ).toBeGreaterThan(0);
     await expect(
       stage.locator("..").locator(".childhood-fundal-segment-text__line"),
-    ).toHaveText(cfg.segmentStartTexts[i]);
+    ).toHaveText(cfg.segmentStartTexts[i].filter(Boolean));
     if (i === 0) {
       await page.screenshot({
         path: testInfo.outputPath("first-stage-layout.png"),

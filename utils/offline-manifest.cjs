@@ -22,6 +22,7 @@ function isSensitiveManifestUrl(rawUrl) {
     url.startsWith("/track?") ||
     url === "/healthz" ||
     url.startsWith("/healthz?") ||
+    url.startsWith("/html/demo/") ||
     isSubappDevelopmentAsset(rawUrl) ||
     url.includes("reports")
   );

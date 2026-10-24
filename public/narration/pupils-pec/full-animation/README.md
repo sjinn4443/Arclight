@@ -11,6 +11,34 @@ timing. Each stage uses the shared autoplay engine, a packaged AAC track, and
 translated caption text from `script.json`. Other app languages fall back to
 English. No speech synthesis or PDF rendering is needed at runtime.
 
+The **Pupils PEC Full Animation** row below the scrolly opens
+`#/videos/pupilsPecFullAnimationVideoPage`. It uses the shared Full Animation
+player with quality selection, English/Korean narration, captions, full screen,
+sharing and saved video progress. The MP4 contains the same six Lottie scenes
+at 30fps, preserving the one-second opening hold. Two silent 3-second section
+cards introduce **Observation** at video 0–3s and **Direct Light Response** at
+22–25s. English headings are baked into the MP4 as centred white text on
+`#0f0f0f`, matching Eye Pad / Shield; Korean title captions appear below it.
+The scrolly retains its 102-second clock. The video runs for 108 seconds with
+separate M4A/VTT/script/manifest files under `video/`. The builder inserts silence
+into the existing English/Korean audio and offsets the cues, without new TTS.
+It always reads the original scroll audio, avoiding cumulative AAC re-encoding.
+
+After changing the scenes, regenerate both delivery videos:
+
+```sh
+node scripts/build-pupils-pec-video.cjs
+```
+
+Use `CHROME_CHANNEL=chrome` for installed Chrome or `FFMPEG_PATH` for a different
+FFmpeg executable. Outputs are `public/videos/FullAnim/PupilsPecFullAnim_240p.mp4`
+(220 × 240) and `PupilsPecFullAnim_720p.mp4` (658 × 720). Lossless Canvas PNG
+frames are encoded as limited-range BT.709 H.264 with one-second keyframes and
+fast-start metadata. Audio stays separate so language switching uses the same
+video. The Core Pupils selective download includes the selected quality and
+narration language, with English fallback. Playback coverage lives in
+`tests-e2e/pupils-pec-video.spec.js`.
+
 Rebuild artwork and the cue sheet from the repository root:
 
 ```sh
@@ -97,3 +125,9 @@ Generation sends the cue text to Microsoft's speech synthesis service. Cue
 masters and timing QA stay in ignored `tmp/pupils-pec/narration`; only the AAC,
 VTT, cue sheet and checksum manifest are packaged. Each voice uses its natural
 delivery with a maximum 1.08 playback adjustment enforced by the shared pipeline.
+
+The fixation caption now displays the complete examiner/light sentence at the
+`clear-view` cue. The spoken `avoid-light` cue and its visual light highlight keep
+their later timing. `caption`/`captionUntil` metadata groups text independently of
+speech; `scripts/lib/pupils-caption-authoring.cjs` updates PEC, Advanced and the
+Full Animation VTT without re-encoding narration or video.

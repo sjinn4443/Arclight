@@ -2730,5 +2730,27 @@
       "low": "/videos/FullAnim/MakeEyePadShieldFullAnim_240p.mp4",
       "high": "/videos/FullAnim/MakeEyePadShieldFullAnim_720p.mp4"
     }
+  },
+  "pupilsPecFullAnimationVideoPage": {
+    "subtitles": {
+      "en": "/narration/pupils-pec/full-animation/video/en.vtt",
+      "ko": "/narration/pupils-pec/full-animation/video/ko.vtt"
+    },
+    "audioVariants": {
+      "en": {
+        "label": "English",
+        "src": "/narration/pupils-pec/full-animation/video/en.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/pupils-pec/full-animation/video/ko.m4a"
+      }
+    },
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "/videos/FullAnim/PupilsPecFullAnim_240p.mp4",
+      "high": "/videos/FullAnim/PupilsPecFullAnim_720p.mp4"
+    }
   }
 }
