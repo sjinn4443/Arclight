@@ -10,7 +10,7 @@ const EXCLUDED_FILENAMES = new Set([
   OFFLINE_MANIFEST_FILENAME,
   "shell-assets.json",
 ]);
-const EXCLUDED_DIRECTORIES = new Set(["audit-reports"]);
+const EXCLUDED_DIRECTORIES = new Set(["audit-reports", "pdfbasedanims"]);
 
 /** @typedef {{assets: {bytes: number, url: string}[], bytes: number, count: number, urls: string[]}} OfflineManifest */
 /** @param {string} rawUrl */

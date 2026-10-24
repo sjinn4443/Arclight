@@ -430,6 +430,9 @@ const build = async () => {
     // JS is bundled from source by esbuild below, so skip copied source files.
     console.log("[build] copying public assets");
     const publicJsPath = path.join(publicPath, "js");
+    // Illustrator/PDF authoring masters are local sources; ship their extracted
+    // scrolly artwork and narration instead of adding masters to the app shell.
+    const animationSourceMastersPath = path.join(publicPath, "pdfbasedanims");
     // PEC's original masters are kept locally; the app serves their 220p/720p exports.
     const pecSourceMastersPath = path.join(
       publicPath,
@@ -442,6 +445,7 @@ const build = async () => {
       filter: (src) =>
         !isSubappDevelopmentAsset(path.relative(publicPath, src)) &&
         !isPathWithinOrEqual(publicJsPath, src) &&
+        !isPathWithinOrEqual(animationSourceMastersPath, src) &&
         !isPathWithinOrEqual(pecSourceMastersPath, src) &&
         !src
           .split(path.sep)

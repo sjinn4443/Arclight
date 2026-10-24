@@ -41,7 +41,7 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       script.videoTitleCues.find((cue) => cue.sourceText === title),
     );
     expect(cues.every(Boolean)).toBe(true);
-    for (const language of [
+    const languages = timing.languages || [
       "ko",
       "fr",
       "es-419",
@@ -51,16 +51,20 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       "yo",
       "ig",
       "en",
-    ]) {
+    ];
+    for (const language of languages) {
       await select.selectOption(language);
       await expect(headings).toHaveText(
         cues.map((cue) => cue.translations[language] || cue.sourceText),
       );
     }
-    await select.selectOption("fr");
+    const savedLanguage = languages.includes("fr") ? "fr" : "ko";
+    await select.selectOption(savedLanguage);
     await page.reload();
-    await expect(select).toHaveValue("fr");
-    await expect(headings).toHaveText(cues.map((cue) => cue.translations.fr));
+    await expect(select).toHaveValue(savedLanguage);
+    await expect(headings).toHaveText(
+      cues.map((cue) => cue.translations[savedLanguage] || cue.sourceText),
+    );
     await page.evaluate(() => {
       localStorage.setItem("prefLang", "ko");
       window.dispatchEvent(new CustomEvent("i18n:languageChanged"));

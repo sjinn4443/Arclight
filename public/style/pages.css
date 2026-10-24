@@ -7434,6 +7434,7 @@ select.onb-input.has-value + .onb-select-caret {
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #makeEyePadShieldScrollPage,
+    #pupilsPecScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
@@ -7697,6 +7698,7 @@ select.onb-input.has-value + .onb-select-caret {
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #makeEyePadShieldScrollPage,
+    #pupilsPecScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
@@ -7711,6 +7713,7 @@ select.onb-input.has-value + .onb-select-caret {
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #makeEyePadShieldScrollPage,
+    #pupilsPecScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
@@ -7725,6 +7728,7 @@ select.onb-input.has-value + .onb-select-caret {
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #makeEyePadShieldScrollPage,
+    #pupilsPecScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
@@ -7746,6 +7750,7 @@ select.onb-input.has-value + .onb-select-caret {
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #makeEyePadShieldScrollPage,
+    #pupilsPecScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
@@ -7759,6 +7764,7 @@ select.onb-input.has-value + .onb-select-caret {
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
     #makeEyePadShieldScrollPage,
+    #pupilsPecScrollPage,
     #directOphthalmoscopyScrollPage,
     #binocularIndirectOphthalmoscopyScrollPage
   )
@@ -8656,6 +8662,7 @@ select.onb-input.has-value + .onb-select-caret {
       #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #makeEyePadShieldScrollPage,
+      #pupilsPecScrollPage,
       #directOphthalmoscopyScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )
@@ -8669,6 +8676,7 @@ select.onb-input.has-value + .onb-select-caret {
       #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
       #makeEyePadShieldScrollPage,
+      #pupilsPecScrollPage,
       #directOphthalmoscopyScrollPage,
       #binocularIndirectOphthalmoscopyScrollPage
     )
@@ -32015,4 +32023,25 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
   .lesson-row--quiz[data-pec-target="fundalReflexQuizPage"]
   .lesson-cta {
   color: #f25600;
+}
+
+/* Match the Eye Pad / Shield scene and caption geometry. */
+#pupilsPecScrollPage .childhood-fundal-prep-stage {
+  margin-inline: auto;
+}
+#pupilsPecScrollPage .childhood-fundal-segment-text {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 680px;
+  text-wrap: pretty;
+}
+#pupilsPecScrollPage .eyes-topbar__title {
+  max-width: min(52vw, 360px);
+  white-space: normal;
+  line-height: 1.2;
+}
+@media (min-width: 1024px) {
+  #pupilsPecScrollPage .childhood-fundal-segment-text {
+    width: min(66.6667%, calc(68vh * (1169 / 1280)));
+  }
 }

@@ -1,5 +1,19 @@
 # System Patterns
 
+PDF/AI scrolly artwork must match the displayed stage rectangle, using the
+standard `1169 / 1280` canvas unless an established page requires another size.
+Keep the animation, poster and configured aspect ratio aligned; arrange extracted
+components proportionally inside that rectangle instead of adopting each PDF
+crop's ratio. To fill the rect, preserve the source aspect ratio and use a
+proportional cover crop with explicit clipping; never stretch width and height
+independently. Reposition important subjects or inserts within that crop.
+Reuse arrows from the supplied file. Check intermediate motion
+frames on desktop and the iOS Canvas renderer. See the
+[PDF/AI authoring rules](../docs/lottie-examination-scroll-pages.md#preparing-artwork-from-pdf--ai).
+Tick, exclamation and X status icons must share the same visible outer-circle
+diameter across scenes. Trim transparent padding, keep the circle and glyph
+together, and size these icons independently of the surrounding illustration.
+
 ## Videos Lottie examination page contract
 
 The [implementation guide](../docs/lottie-examination-scroll-pages.md), reviewed

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1119" height="1386" viewBox="0 0 373 462">
+  <!-- One broad beam spans the optical housing and the approved face-side footprint. -->
+  <defs>
+    <!-- The gradient spans the whole beam, rather than drawing a separate eye halo. -->
+    <radialGradient id="beam" cx=".40" cy=".48" r=".55">
+      <stop offset="0" stop-color="white" stop-opacity=".08"/>
+      <stop offset=".40" stop-color="white" stop-opacity=".12"/>
+      <stop offset=".72" stop-color="white" stop-opacity=".30"/>
+      <stop offset="1" stop-color="white" stop-opacity=".60"/>
+    </radialGradient>
+  </defs>
+  <path d="M249 134C258 130 266 124 276 124A24 36 0 0 1 300 160C300 184 287 204 271 205C254 206 240 181 234 168Z" fill="url(#beam)"/>
+</svg>

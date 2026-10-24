@@ -23,11 +23,13 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
   }, testInfo) => {
     test.setTimeout(240_000);
     const route = pageId.replace(/Page$/, "");
-    const hub = pageId.startsWith("visualAcuity")
-      ? "visualAcuityPage"
-      : pageId.startsWith("front")
-        ? "frontOfEyePage"
-        : "directOphthalmoscopy";
+    const hub = pageId.startsWith("pupils")
+      ? "pupilsPage"
+      : pageId.startsWith("visualAcuity")
+        ? "visualAcuityPage"
+        : pageId.startsWith("front")
+          ? "frontOfEyePage"
+          : "directOphthalmoscopy";
     const script = JSON.parse(
       fs.readFileSync(
         `public/narration/${timing.folder}/full-animation/script.json`,
@@ -42,11 +44,11 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       localStorage.setItem("arclight:onboarded", "1");
       localStorage.setItem("prefLang", "en");
     });
-    await page.goto(timing.route ? `/#/${timing.route}` : `/#/videos/${hub}`);
-    await expect(page.locator(`#${timing.route || hub}`)).toBeVisible();
-    await page
-      .locator(`#${timing.route || hub} [data-target="${pageId}"]`)
-      .click();
+    const ownedRoute = timing.route && timing.route !== "videos";
+    const launcherPage = ownedRoute ? timing.route : hub;
+    await page.goto(ownedRoute ? `/#/${timing.route}` : `/#/videos/${hub}`);
+    await expect(page.locator(`#${launcherPage}`)).toBeVisible();
+    await page.locator(`#${launcherPage} [data-target="${pageId}"]`).click();
     const guide = page.locator(`#${pageId}`);
     const audio = guide.locator("audio");
     const toggle = guide.locator("[data-fundal-scroll-narration-toggle]");

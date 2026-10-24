@@ -1,6 +1,7 @@
 import { VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG } from "./visualAcuityExaminationScroll.js";
 import { FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG } from "./frontOfEyeExaminationScroll.js";
 import { EYE_PAD_SHIELD_SCROLL_CONFIG } from "./eyePadShieldScroll.js";
+import { PUPILS_PEC_SCROLL_CONFIG } from "./pupilsPecScroll.js";
 import {
   configureExaminationTiming,
   frameAtNarrationTime,
@@ -1512,6 +1513,7 @@ ROUTE_CONFIG.visualAcuityExaminationScroll = {
 };
 
 ROUTE_CONFIG.makeEyePadShieldScroll = { ...EYE_PAD_SHIELD_SCROLL_CONFIG };
+ROUTE_CONFIG.pupilsPecScroll = { ...PUPILS_PEC_SCROLL_CONFIG };
 
 Object.values(ROUTE_CONFIG).forEach(configureExaminationTiming);
 
@@ -9244,19 +9246,63 @@ function initializeStageAutoplayMode(
     );
   }
 
+  function getCenteredGroupScrollTop(
+    stage,
+    metrics,
+    captionHeight = 0,
+    gap = 0,
+  ) {
+    const available = Math.max(0, metrics.viewportHeight - getTopbarHeight());
+    const [w, h] = String(
+      cfg.stageAspectRatioByFile?.[Number(stage.dataset.fileIndex)] ||
+        "1169 / 1280",
+    )
+      .split("/")
+      .map(Number);
+    stage.style.maxWidth = `${(Math.max(120, available - captionHeight - gap - 32) * w) / h}px`;
+    const groupHeight =
+      stage.getBoundingClientRect().height + gap + captionHeight;
+    const desiredTop = getTopbarHeight() + (available - groupHeight) / 2;
+    // The first group needs enough leading space to centre even at scrollTop 0.
+    if (stage === stages[0]) {
+      const item = stage.parentElement;
+      const oldPadding = parseFloat(item.style.paddingTop) || 0;
+      const naturalTop = getAbsoluteTopForStage(stage, metrics) - oldPadding;
+      item.style.paddingTop = `${Math.max(0, desiredTop - naturalTop)}px`;
+    }
+    const target = Math.max(
+      0,
+      getAbsoluteTopForStage(stage, metrics) - desiredTop,
+    );
+    const host =
+      metrics.type === "page" ? pageContent : document.documentElement;
+    const maxScroll = Math.max(0, host.scrollHeight - metrics.viewportHeight);
+    if (target > maxScroll) {
+      const list = stage.closest(".childhood-fundal-prep-list");
+      if (list)
+        list.style.paddingBottom = `${(parseFloat(getComputedStyle(list).paddingBottom) || 0) + target - maxScroll + 1}px`;
+    }
+    return target;
+  }
+
   function getCenteredScrollTopForStage(
     stage,
     metrics = getScrollHostMetrics(),
   ) {
+    if (cfg.topAlignedFirstStage && stage === stages[0])
+      return getFirstStageStartScrollTop(metrics);
     const baseTop = getBaseCenteredScrollTopForStage(stage, metrics);
-    if (!cfg.fitCaptionsInViewport) return baseTop;
+    if (!cfg.fitCaptionsInViewport && !cfg.centerPlaybackGroup) return baseTop;
     const state = states[Number(stage.dataset.fileIndex)];
     const caption = state?.segmentTextEl;
     if (
       !caption ||
       page.classList.contains("childhood-fundal-segment-text-hidden")
-    )
+    ) {
+      if (cfg.centerPlaybackGroup)
+        return getCenteredGroupScrollTop(stage, metrics);
       return baseTop;
+    }
 
     // Reserve the final accumulated caption before playback, so new cues do not
     // move the scene. Measure at its real responsive width without changing layout.
@@ -9264,6 +9310,7 @@ function initializeStageAutoplayMode(
     measure.removeAttribute("aria-live");
     measure.setAttribute("aria-hidden", "true");
     Object.assign(measure.style, {
+      minHeight: "0",
       position: "absolute",
       visibility: "hidden",
       pointerEvents: "none",
@@ -9279,6 +9326,10 @@ function initializeStageAutoplayMode(
     const captionHeight = measure.getBoundingClientRect().height;
     measure.remove();
     const gap = parseFloat(getComputedStyle(caption).marginTop) || 0;
+    if (cfg.centerPlaybackGroup) {
+      caption.style.minHeight = `${captionHeight}px`;
+      return getCenteredGroupScrollTop(stage, metrics, captionHeight, gap);
+    }
     const bottom =
       getAbsoluteTopForStage(stage, metrics) -
       baseTop +
@@ -9298,6 +9349,8 @@ function initializeStageAutoplayMode(
   function getFirstStageStartScrollTop(metrics = getScrollHostMetrics()) {
     const firstStage = stages[0];
     if (!firstStage) return 0;
+    if (cfg.centerPlaybackGroup && !cfg.topAlignedFirstStage)
+      return getCenteredScrollTopForStage(firstStage, metrics);
 
     const anchorEl = resolveFirstStageAnchorElement(firstStage, cfg);
     const topbarHeight = getTopbarHeight();
@@ -9325,7 +9378,10 @@ function initializeStageAutoplayMode(
 
   function alignStageForPlayback(state) {
     if (!state?.stage) return;
-    if (state.fileIndex === 0) {
+    if (
+      state.fileIndex === 0 &&
+      (!cfg.centerPlaybackGroup || cfg.topAlignedFirstStage)
+    ) {
       scrollToFirstStageStart();
       return;
     }
@@ -9333,6 +9389,10 @@ function initializeStageAutoplayMode(
   }
 
   function alignStageForMobileAdvanceFallback(state) {
+    if (cfg.centerPlaybackGroup) {
+      centerStageForPlayback(state.stage);
+      return true;
+    }
     if (isDesktopViewport() || !state?.stage) return false;
     const metrics = getScrollHostMetrics();
     const absoluteTop = getAbsoluteTopForStage(state.stage, metrics);
@@ -10594,6 +10654,13 @@ function initializeStageAutoplayMode(
   }
 
   function onViewportChange() {
+    if (cfg.centerPlaybackGroup) {
+      const active = states.find((state) => state.playing);
+      if (active) {
+        centerStageForPlayback(active.stage);
+        rememberLockedScrollPosition();
+      }
+    }
     const metrics = getScrollHostMetrics();
     const currentScrollTop = Number(metrics?.scrollTop || 0);
     const isScrollingDown =

@@ -324,4 +324,35 @@ describe("language-specific offline narration", () => {
 
     expect(selection.urls).toEqual(["/js/main.js"]);
   });
+
+  it.each(["en", "ko", "fr"])(
+    "includes Pupils PEC artwork and narration with %s fallback",
+    (language) => {
+      const base = "/narration/pupils-pec/full-animation/";
+      const artwork = "/scrolly/coreexam/pupils-pec/1/data.json";
+      const urls = [
+        artwork,
+        base + "script.json",
+        ...["en", "ko"].flatMap((lang) => [
+          base + lang + ".m4a",
+          base + lang + ".vtt",
+        ]),
+        "/narration/unrelated/en.m4a",
+      ];
+      const selection = languageInstall.resolveOfflineDownloadSelection(
+        { assets: urls.map((url) => ({ url, bytes: 1000 })) },
+        { language, mode: "select", catalogId: "core-pupils" },
+      );
+      const expectedLanguage = language === "ko" ? "ko" : "en";
+      expect(selection.urls).toEqual(
+        expect.arrayContaining([
+          artwork,
+          base + "script.json",
+          base + expectedLanguage + ".m4a",
+          base + expectedLanguage + ".vtt",
+        ]),
+      );
+      expect(selection.urls).not.toContain("/narration/unrelated/en.m4a");
+    },
+  );
 });

@@ -303,6 +303,7 @@ const GLAUCOMA_TARGET_ROUTES = Object.freeze({
 });
 
 const PROGRESS_TARGET_ROUTES = Object.freeze({
+  pupilsPecScrollPage: { route: "videos", subPageId: "pupilsPecScrollPage" },
   makeEyePadShieldFullAnimationVideoPage: {
     route: "eyePadShield",
     subPageId: "makeEyePadShieldFullAnimationVideoPage",
@@ -436,6 +437,7 @@ function go(target) {
     "anteriorSegmentVideoPage",
     "frontOfEyePage",
     "pupilsPage",
+    "pupilsPecScrollPage",
     "rapdTestVideoPage",
     "phoneAttachmentVideoPage",
     "visualAcuityPage",
@@ -993,7 +995,8 @@ function getRowKindLabel(row) {
   if (row.classList.contains("lesson-row--pdf")) return "PDF";
   if (row.classList.contains("lesson-row--video")) return "Video";
   if (row.classList.contains("lesson-row--quiz")) return "Quiz";
-  if (row.classList.contains("lesson-row--scroll")) return "Scrolly";
+  if (row.matches(".lesson-row--scroll, .lesson-row--scrollytelling"))
+    return "Scrolly";
   return "Lesson";
 }
 

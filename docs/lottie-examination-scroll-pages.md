@@ -56,6 +56,39 @@ same engine config and combined-page CSS still apply. Its timing entry specifies
 
 ## Minimal page shell and launcher
 
+### Preparing artwork from PDF / AI
+
+- Compose the extracted artwork to match the actual animation stage `rect`, as on
+  the existing examination scroll pages. Start with the standard `1169 / 1280`
+  canvas and keep the Lottie dimensions, poster and `stageAspectRatioByFile` in
+  agreement. Do not use the source PDF crop's aspect ratio as the stage ratio.
+- Scale illustration components proportionally and lay them out inside that
+  rectangle. Avoid a small illustration floating inside a second, differently
+  proportioned canvas, and avoid stretching faces to fill a crop. Check the real
+  stage bounds on desktop, phone and iPad, including the iOS Canvas renderer.
+  When the illustration must fill the rectangle, use a proportional cover crop
+  with explicit clipping, and reposition an insert separately if necessary.
+  Keep equal horizontal and vertical scale factors: fill the rect by cropping
+  overflow, while preserving the original face/device proportions. Verify both
+  the full rect coverage and the source aspect ratio in the rendered page.
+- Reuse arrows from the supplied file as separate original-art layers. Do not
+  redraw substitute arrows. Separate status circles and their glyphs together
+  from the underlying illustration, using transparency rather than rectangular
+  background patches. Keep fixed faces/shadows separate from moving light and
+  device layers, and inspect the intermediate animation frames as well as the
+  final frame.
+- Keep tick, exclamation and X status icons the same visible size in every scene.
+  Treat the circle and glyph as one transparent asset, trim transparent padding,
+  and use one shared outer-circle diameter in stage coordinates. Do not let
+  illustration scaling or differently padded PDF crops resize the status icons.
+
+For pages opting into `centerPlaybackGroup`, autoplay reserves the full caption
+height and centres the animation plus caption in the area below the topbar. It
+limits the stage width proportionally on short viewports and adds scroll space
+when needed at the first/last scene. `topAlignedFirstStage` preserves the original
+top-aligned entry for the first scene while later scenes remain centred. Other
+pages retain their existing alignment.
+
 Use the existing topbar and an empty animation list. Replace every example ID,
 translation key, label and asset path with the new lesson's values. These snippets
 are authoring templates, not registered application content.

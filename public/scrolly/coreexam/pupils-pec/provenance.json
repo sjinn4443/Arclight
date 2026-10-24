@@ -1,0 +1,14 @@
+{
+  "source": "public/pdfbasedanims/Pupils PEC_110826.pdf",
+  "buttonAnimation": "PDF transparent-window instrument and lens light, extended PDF beam contour; Direct Ophthalmoscopy thumb, grip and rounded button. Beam and lens share three brightness steps.",
+  "artwork": "Separated original PDF vector components, with a thinner rounded three-dimensional body turning from the opposite side, with recessed window and tubular sight loop, source window/solar artwork, a clean sleeve hem between upper arm and forearm, a window-anchored teardrop light pool, and an 80-percent instrument with its lower case hidden inside the grip and nasal foreground. Further dimmed smooth source-contour light gradients only on the left; equal-area circular pools on the right. Comparison device windows sit left of the eye at pool-centre height. Status circles share a 110-unit diameter.",
+  "deviceViews": "scripts/assets/pupils-pec/front-side-back.png",
+  "stages": [
+    "/scrolly/coreexam/pupils-pec/1/data.json",
+    "/scrolly/coreexam/pupils-pec/2/data.json",
+    "/scrolly/coreexam/pupils-pec/3/data.json",
+    "/scrolly/coreexam/pupils-pec/4/data.json",
+    "/scrolly/coreexam/pupils-pec/5/data.json",
+    "/scrolly/coreexam/pupils-pec/6/data.json"
+  ]
+}

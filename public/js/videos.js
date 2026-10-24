@@ -39,6 +39,7 @@ const VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID =
   "visualAcuityExaminationScrollPage";
 const FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID =
   "frontOfEyeExaminationScrollPage";
+const PUPILS_PEC_SCROLL_PAGE_ID = "pupilsPecScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
@@ -403,6 +404,37 @@ function syncFrontOfEyeExaminationScrollProgress() {
   );
 }
 
+function syncPupilsPecScrollProgress() {
+  syncScrollProgressForTarget(PUPILS_PEC_SCROLL_PAGE_ID, setLessonProgress);
+}
+
+// Coalesce only the same live page; discard work after a hash refresh or exit.
+const pendingPupilsPecPages = new WeakMap();
+let pupilsPecInitialization = Promise.resolve();
+function initializePupilsPecScrollGuide() {
+  const page = document.getElementById(PUPILS_PEC_SCROLL_PAGE_ID);
+  if (!page) return;
+  if (pendingPupilsPecPages.has(page)) return pendingPupilsPecPages.get(page);
+  const task = pupilsPecInitialization
+    .catch(() => {})
+    .then(async () => {
+      const { initializeChildhoodFundalReflexScrollPage } =
+        await import("./childhoodFundalPreparation.js");
+      if (
+        document.body.dataset.currentRoute !== "videos" ||
+        document.getElementById(PUPILS_PEC_SCROLL_PAGE_ID) !== page ||
+        page.style.display === "none"
+      )
+        return;
+      await initializeChildhoodFundalReflexScrollPage("pupilsPecScroll");
+      requestAnimationFrame(syncPupilsPecScrollProgress);
+    })
+    .catch((error) => console.error("[videos] Pupils PEC guide failed", error));
+  pupilsPecInitialization = task;
+  pendingPupilsPecPages.set(page, task);
+  return task.finally(() => pendingPupilsPecPages.delete(page));
+}
+
 function syncFundalReflexExaminationScrollProgress() {
   syncScrollProgressForTarget(
     FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID,
@@ -497,6 +529,9 @@ function updateLessonProgressBars() {
 
     fill.style.width = `${percent}%`;
     fill.setAttribute("aria-valuenow", String(Math.round(percent)));
+    row
+      .querySelector('.lesson-progress[role="progressbar"]')
+      ?.setAttribute("aria-valuenow", String(Math.round(percent)));
     fill.title = `${Math.round(percent)}% watched`;
 
     // Colour match: Primary uses its green, Intermediate uses its orange
@@ -1061,6 +1096,10 @@ function showPageFallback(id) {
 
   if (id === VISUAL_ACUITY_EXAMINATION_SCROLL_PAGE_ID) {
     void initializeVisualAcuityExaminationScrollGuide();
+  }
+
+  if (id === PUPILS_PEC_SCROLL_PAGE_ID) {
+    void initializePupilsPecScrollGuide();
   }
 
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
@@ -4722,6 +4761,10 @@ function show(id) {
     void initializeVisualAcuityExaminationScrollGuide();
   }
 
+  if (id === PUPILS_PEC_SCROLL_PAGE_ID) {
+    void initializePupilsPecScrollGuide();
+  }
+
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
     void initializeFrontOfEyeExaminationScrollGuide();
   }
@@ -5074,6 +5117,10 @@ if (!window[__videosGlobalBoundKey]) {
       setLessonProgress(target, 100, { mode: "replace" });
       return;
     }
+    if (target === PUPILS_PEC_SCROLL_PAGE_ID) {
+      setLessonProgress(target, 100);
+      return;
+    }
     if (target === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
       setLessonProgress(target, 100, { mode: "replace" });
       return;
@@ -5103,6 +5150,7 @@ if (!window[__videosGlobalBoundKey]) {
     () => {
       syncVisualAcuityExaminationScrollProgress();
       syncFrontOfEyeExaminationScrollProgress();
+      syncPupilsPecScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
@@ -5115,6 +5163,7 @@ if (!window[__videosGlobalBoundKey]) {
     () => {
       requestAnimationFrame(syncVisualAcuityExaminationScrollProgress);
       requestAnimationFrame(syncFrontOfEyeExaminationScrollProgress);
+      requestAnimationFrame(syncPupilsPecScrollProgress);
       scheduleFundalReflexExaminationScrollProgressSync();
       scheduleDirectOphthalmoscopyScrollProgressSync();
       scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
@@ -5145,6 +5194,7 @@ if (!window[__videosGlobalBoundKey]) {
     () => {
       syncVisualAcuityExaminationScrollProgress();
       syncFrontOfEyeExaminationScrollProgress();
+      syncPupilsPecScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
