@@ -1,7 +1,8 @@
 /* sw.js — Arclight PWA service worker */
+/* global __BUILD_CACHE_NAME__ */
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v107"
+    ? "arclight-static-v108"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -16,17 +17,36 @@ async function packRevisions() {
     })().catch(() => ({}));
   return revisionsPromise;
 }
-async function matchPack(cache, request) {
-  const response = await cache.match(request, { ignoreSearch: true });
+async function matchPack(cache, request, { allowStale = false } = {}) {
+  const response = await matchCachedUrl(cache, request);
   if (!response) return null;
   const url = new URL(
     typeof request === "string" ? request : request.url,
     self.location.origin,
   );
   const expected = (await packRevisions())[url.pathname];
-  return !expected || response.headers.get("X-Arclight-Revision") === expected
+  // A shell update must not make an already downloaded lesson unavailable.
+  // Only download/resume requires the current revision; playback can use the
+  // retained download until the user refreshes that content.
+  return allowStale ||
+    !expected ||
+    response.headers.get("X-Arclight-Revision") === expected
     ? response
     : null;
+}
+
+async function matchCachedUrl(cache, request) {
+  const response = await cache.match(request);
+  if (response) return response;
+  const url = new URL(
+    typeof request === "string" ? request : request.url,
+    self.location.origin,
+  );
+  if (!url.search) return null;
+  // Download manifests use canonical URLs. Look up that exact key rather than
+  // scanning a large media cache with ignoreSearch on every file or request.
+  url.search = "";
+  return cache.match(url.href);
 }
 
 function isSensitivePath(pathname) {
@@ -174,14 +194,14 @@ function getAlternateMp4Urls(requestUrl) {
 async function matchCachedMedia(cache, request) {
   const packs = await caches.open(PACK_CACHE);
   const cached =
-    (await matchPack(packs, request)) ||
-    (await cache.match(request, { ignoreSearch: true }));
+    (await matchPack(packs, request, { allowStale: true })) ||
+    (await matchCachedUrl(cache, request));
   if (cached) return cached;
 
   for (const alternateUrl of getAlternateMp4Urls(request.url)) {
     const alternate =
-      (await matchPack(packs, alternateUrl)) ||
-      (await cache.match(alternateUrl, { ignoreSearch: true }));
+      (await matchPack(packs, alternateUrl, { allowStale: true })) ||
+      (await matchCachedUrl(cache, alternateUrl));
     if (alternate) return alternate;
   }
 
@@ -238,7 +258,15 @@ async function cacheUrls(urls, port) {
               headers,
             }),
           );
+          // Some storage failures can acknowledge a write without leaving a
+          // readable entry. Never turn that into a successful offline download.
+          const saved = await matchPack(targetCache, requestUrl);
+          const readable = canCacheDownload(requestUrl, saved);
+          saved?.body?.cancel().catch(() => {});
+          if (!readable)
+            throw new Error("Downloaded file could not be read from storage");
         }
+        existing?.body?.cancel().catch(() => {});
         cached += 1;
       } else {
         failed.push(url);
@@ -312,8 +340,9 @@ self.addEventListener("activate", (event) => {
 
 /**
  * Strategy:
- * - HTML navigations: network-first (fallback to cache)
- * - Static assets (css/js/images): cache-first (fallback to network)
+ * - Installed shell and downloaded content: cache-first, including navigations.
+ * - Missing content: network. Shell updates are installed in a new versioned
+ *   cache; explicit downloads refresh packs by revision.
  */
 self.addEventListener("fetch", (event) => {
   const req = event.request;
@@ -365,25 +394,24 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Prefer direct HLS loading when online, but keep cached HLS assets usable
-  // after the all-assets install download has completed.
+  // Downloaded HLS must also work when the network stalls rather than rejects.
   if (isChildhoodPilotHlsAsset) {
     event.respondWith(
       (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const packs = await caches.open(PACK_CACHE);
+        const cached =
+          (await matchPack(packs, req, { allowStale: true })) ||
+          (await matchCachedUrl(cache, req));
+        if (cached) return cached;
         try {
           const fresh = await fetch(req, { cache: "no-store" });
-          const cache = await caches.open(CACHE_NAME);
           if (canCacheResponse(fresh)) {
-            cache.put(req, fresh.clone()).catch(() => {});
+            event.waitUntil(cache.put(req, fresh.clone()).catch(() => {}));
           }
           return fresh;
         } catch {
-          const cache = await caches.open(CACHE_NAME);
-          const packs = await caches.open(PACK_CACHE);
-          const cached =
-            (await matchPack(packs, req)) ||
-            (await cache.match(req, { ignoreSearch: true }));
-          return cached || Response.error();
+          return Response.error();
         }
       })(),
     );
@@ -391,46 +419,52 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (req.mode === "navigate") {
-    // HTML navigation: try network, fallback to cached shell
+    // Reopening an installed app must not depend on a network timeout. Only
+    // top-level app entry URLs may fall back to index; an iframe needs its own
+    // downloaded HTML document, not the parent app inside the iframe.
     event.respondWith(
       (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const packs = await caches.open(PACK_CACHE);
+        const cached =
+          (await matchCachedUrl(cache, req)) ||
+          (await matchPack(packs, req, { allowStale: true })) ||
+          (["/", "/index.html"].includes(url.pathname)
+            ? await cache.match("/index.html")
+            : null);
+        if (cached) return cached;
         try {
           const fresh = await fetch(req);
-          const cache = await caches.open(CACHE_NAME);
           if (canCacheResponse(fresh)) {
-            cache.put(req, fresh.clone()).catch(() => {});
+            event.waitUntil(cache.put(req, fresh.clone()).catch(() => {}));
           }
           return fresh;
         } catch {
-          const cache = await caches.open(CACHE_NAME);
-          const packs = await caches.open(PACK_CACHE);
-          const cached =
-            (await cache.match(req)) ||
-            (await matchPack(packs, req)) ||
-            (await cache.match("/index.html"));
-          return cached || Response.error();
+          return Response.error();
         }
       })(),
     );
     return;
   }
 
-  // Static assets: network-first (fallback to cache)
+  // Shell modules, route fragments, images and downloaded lesson data must be
+  // readable immediately, even if onLine is true with an unusable connection.
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
-
+      const packs = await caches.open(PACK_CACHE);
+      const cached =
+        (await matchCachedUrl(cache, req)) ||
+        (await matchPack(packs, req, { allowStale: true }));
+      if (cached) return cached;
       try {
         const fresh = await fetch(req, { cache: "no-store" });
         if (canCacheResponse(fresh)) {
-          cache.put(req, fresh.clone()).catch(() => {});
+          event.waitUntil(cache.put(req, fresh.clone()).catch(() => {}));
         }
         return fresh;
       } catch {
-        const packs = await caches.open(PACK_CACHE);
-        const cached =
-          (await cache.match(req)) || (await matchPack(packs, req));
-        return cached || Response.error();
+        return Response.error();
       }
     })(),
   );

@@ -6,14 +6,20 @@ Playwright-based end-to-end checks live here.
 
 Build the app, then run `npm run test:offline`. This suite enables real service
 workers, uses the Download dialog to select Tools and Kits at low resolution,
-checks the stored files, closes the online page, opens a new page with networking
-disabled, and plays/seeks all five Tools and Kits videos. A second test checks
+checks the stored files, closes the browser process, cuts the server connection,
+and restarts the same stored browser profile to play/seek all five Tools and Kits
+videos. A second offline process restart checks the app, downloaded images with
+query strings, and the retained worker registration. A separate test checks
 failed downloads, resuming, and cached 240p MP4 byte ranges requested as 720p.
 
 Projects cover desktop Chromium, Android phone/tablet emulation, and iPhone/iPad
-WebKit emulation. Windows WebKit rejects cached fetches and navigation when
-offline emulation is enabled; those projects are explicitly skipped on Windows.
-Run them on macOS WebKit, and run the installed-device checks in
+WebKit emulation. The restart test uses a disconnectable local gateway, including
+when the browser still reports online. Windows WebKit also fails to install or
+read persistent CacheStorage in this runtime, so both tests retain explicit
+Windows WebKit skips; run those projects on macOS. Profiles use short temporary
+paths to avoid Windows CacheStorage path-length failures. Set
+`PLAYWRIGHT_PROFILE_ROOT` to an existing writable directory to choose another
+profile location. Run the installed-device checks in
 `docs/offline-download-audit.md` on actual iOS/iPadOS devices.
 The existing `download-options.spec.js` mocks the worker and checks UI behavior.
 

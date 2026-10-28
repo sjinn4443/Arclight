@@ -74,3 +74,51 @@ online page and opens a fresh page in the same browser storage context offline.
 
 These changes are local source changes; this audit does not deploy a release or
 update the app already installed on a phone.
+
+## Follow-up — 28 October 2026
+
+The reported device is an iPhone 13 mini running the Home Screen installed app.
+The worker still attempted the network before reading cached navigations, route
+fragments, scripts, images and HLS files. A stalled connection could therefore
+prevent startup despite a successful download. Shell revision changes could also
+hide retained pack entries, and localhost startup unregistered every worker,
+breaking later offline launches in local installs and production previews.
+
+The worker now serves the installed shell and downloaded files from CacheStorage
+first, including cache entries requested with query strings. Download/resume
+continues to validate revisions and refresh changed files, while playback retains
+access to an earlier completed download. Missing mini-app documents no longer
+receive the parent application as a fallback. Runtime cache writes are attached
+to the fetch event lifetime, and bootstrap preserves worker registrations.
+Canonical cache keys now use exact lookup instead of repeatedly scanning an
+entire growing pack with `ignoreSearch`. Each newly downloaded file must also be
+read back from CacheStorage before it contributes to a successful completion;
+an acknowledged but unreadable write is reported as a failed download.
+The source fallback worker version is v108.
+
+The real-worker test now uses a disconnectable HTTP gateway and a short persistent
+browser profile. It closes the browser process, disables the gateway, reopens the
+saved profile, plays/seeks all five Tools and Kits videos and restarts offline
+again to check the app, a downloaded image with a query string and registration
+retention. This exercises a disconnected server even if navigator.onLine remains
+true and avoids Windows WebKit's offline-emulation flag. Temporary profiles use
+short paths because long Windows test-output paths caused CacheStorage.open to
+fail internally before the worker could install.
+
+Windows WebKit was attempted both with the gateway and persistent profiles in
+short temporary locations. This runtime either lost its installation registration
+or returned empty cache inventories/unreadable responses after acknowledging
+writes. The Windows skips are therefore retained with explicit reasons; these
+attempts are not evidence that physical iPhone behavior has been verified.
+
+Final verification: 118 focused Jest tests passed; lint, formatting and diff
+checks passed. The real-worker suite passed all six desktop Chromium, Android
+phone and Android tablet tests, including full browser-process restarts, all five
+Tools and Kits videos, seeking, retained images, failure/resume and 240p ranges.
+Four Windows WebKit tests are explicitly skipped for the limitations above.
+The final browser report is saved locally at
+`quality-reports/offline-audit/20261028-results.json`.
+
+These checks still do not establish physical iOS Home Screen app behavior or OS
+storage retention. Repeat the installed-device checks above on the iPhone after
+deploying the updated shell and media outputs; keep existing site data.

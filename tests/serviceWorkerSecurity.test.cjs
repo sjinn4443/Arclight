@@ -8,10 +8,15 @@ const vm = require("vm");
 
 function loadServiceWorker(fetchImpl) {
   const handlers = {};
+  const stored = new Map();
+  const key = (request) =>
+    typeof request === "string" ? request : request.url;
   const cache = {
     addAll: jest.fn().mockResolvedValue(undefined),
-    match: jest.fn().mockResolvedValue(undefined),
-    put: jest.fn().mockResolvedValue(undefined),
+    match: jest.fn(async (request) => stored.get(key(request))?.clone()),
+    put: jest.fn(async (request, response) => {
+      stored.set(key(request), response.clone());
+    }),
   };
   const caches = {
     delete: jest.fn().mockResolvedValue(true),
@@ -51,10 +56,116 @@ function loadServiceWorker(fetchImpl) {
     "({ cacheName: CACHE_NAME, packCacheName: PACK_CACHE })",
     context,
   );
-  return { cache, cacheName, caches, handlers, packCacheName, self };
+  return { cache, cacheName, caches, handlers, packCacheName, self, stored };
 }
 
 describe("service worker sensitive-cache policy", () => {
+  test.each([
+    ["/js/main.js?version=108", "cors"],
+    ["/html/videos.html?version=108", "cors"],
+    ["/images/lesson.webp?version=108", "cors"],
+    ["/video-hls/childhood-eye-screening/lesson/master.m3u8", "cors"],
+    ["/?source=installed", "navigate"],
+  ])(
+    "loads cached %s without waiting for a stalled network",
+    async (pathname, mode) => {
+      const fetchImpl = jest.fn(() => new Promise(() => {}));
+      const { cache, handlers } = loadServiceWorker(fetchImpl);
+      cache.match.mockImplementation(async (request) => {
+        const url = new URL(
+          typeof request === "string" ? request : request.url,
+          "https://app.example.com",
+        );
+        if (
+          !url.search &&
+          [
+            "/index.html",
+            "/js/main.js",
+            "/html/videos.html",
+            "/images/lesson.webp",
+            "/video-hls/childhood-eye-screening/lesson/master.m3u8",
+          ].includes(url.pathname)
+        )
+          return new Response("downloaded content");
+      });
+      let response;
+      handlers.fetch({
+        request: {
+          url: `https://app.example.com${pathname}`,
+          method: "GET",
+          mode,
+          headers: new Headers(),
+        },
+        respondWith: (promise) => {
+          response = promise;
+        },
+      });
+      expect(await (await response).text()).toBe("downloaded content");
+      expect(fetchImpl).not.toHaveBeenCalled();
+    },
+  );
+
+  test.each(["/scrolly/lesson/data.json", "/lesson_220p.mp4"])(
+    "keeps downloaded %s usable after a shell revision update",
+    async (pathname) => {
+      const fetchImpl = jest.fn().mockRejectedValue(new Error("offline"));
+      const { cache, caches, handlers, packCacheName } =
+        loadServiceWorker(fetchImpl);
+      cache.match.mockImplementation(async (request) =>
+        request === "/shell-assets.json"
+          ? new Response(JSON.stringify({ revisions: { [pathname]: "new" } }))
+          : undefined,
+      );
+      const packs = {
+        match: jest.fn(
+          async () =>
+            new Response("0123456789", {
+              headers: { "X-Arclight-Revision": "downloaded-before-update" },
+            }),
+        ),
+      };
+      caches.open.mockImplementation(async (name) =>
+        name === packCacheName ? packs : cache,
+      );
+      let response;
+      handlers.fetch({
+        request: new Request(`https://app.example.com${pathname}`, {
+          headers: pathname.endsWith(".mp4") ? { Range: "bytes=2-5" } : {},
+        }),
+        respondWith: (promise) => {
+          response = promise;
+        },
+      });
+      const result = await response;
+      expect(await result.text()).toBe(
+        pathname.endsWith(".mp4") ? "2345" : "0123456789",
+      );
+      expect(fetchImpl).not.toHaveBeenCalled();
+    },
+  );
+
+  test("does not substitute the parent app for an undownloaded mini-app", async () => {
+    const { cache, handlers } = loadServiceWorker(
+      jest.fn().mockRejectedValue(new Error("offline")),
+    );
+    cache.match.mockImplementation(async (request) =>
+      request === "/index.html" ? new Response("parent app") : undefined,
+    );
+    let response;
+    handlers.fetch({
+      request: {
+        url: "https://app.example.com/subapp/missing/index.html",
+        method: "GET",
+        mode: "navigate",
+        headers: new Headers(),
+      },
+      respondWith: (promise) => {
+        response = promise;
+      },
+    });
+    expect((await response).type).toBe("error");
+  });
+
   test("pausing aborts the current file, retains cached files and skips later requests", async () => {
     let secondStarted;
     const downloading = new Promise((resolve) => {
@@ -332,13 +443,14 @@ describe("service worker sensitive-cache policy", () => {
     "resumes %s media by revision without reusing changed content",
     async (revision) => {
       const fetchImpl = jest.fn().mockResolvedValue(new Response("new media"));
-      const { cache, handlers } = loadServiceWorker(fetchImpl);
+      const { cache, handlers, stored } = loadServiceWorker(fetchImpl);
       cache.match.mockImplementation(async (request) =>
         request === "/shell-assets.json"
           ? new Response(
               JSON.stringify({ revisions: { "/clip.m4a": "current" } }),
             )
-          : new Response("stored media", {
+          : stored.get(request)?.clone() ||
+            new Response("stored media", {
               headers: { "X-Arclight-Revision": revision },
             }),
       );
@@ -371,11 +483,12 @@ describe("service worker sensitive-cache policy", () => {
       .mockResolvedValue(
         new Response("video", { headers: { "Content-Type": "video/mp4" } }),
       );
-    const { cache, handlers } = loadServiceWorker(fetchImpl);
+    const { cache, handlers, stored } = loadServiceWorker(fetchImpl);
     cache.match.mockImplementation(async (request) =>
       request === "/shell-assets.json"
         ? undefined
-        : new Response("<html>missing</html>", {
+        : stored.get(request)?.clone() ||
+          new Response("<html>missing</html>", {
             headers: { "Content-Type": "text/html" },
           }),
     );
@@ -392,6 +505,30 @@ describe("service worker sensitive-cache policy", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     expect(cache.put).toHaveBeenCalledTimes(1);
     expect(messages.at(-1)).toMatchObject({ cached: 1, failed: [] });
+  });
+
+  test("does not report success when a completed cache write cannot be read back", async () => {
+    const { cache, handlers } = loadServiceWorker(
+      jest.fn().mockResolvedValue(new Response("video")),
+    );
+    cache.match.mockResolvedValue(undefined);
+    const messages = [];
+    let work;
+    handlers.message({
+      data: { type: "CACHE_URLS", payload: ["/lesson.mp4"] },
+      ports: [{ postMessage: (message) => messages.push(message) }],
+      waitUntil: (promise) => {
+        work = promise;
+      },
+    });
+    await work;
+    expect(cache.put).toHaveBeenCalledTimes(1);
+    expect(messages.at(-1)).toMatchObject({
+      type: "CACHE_DONE",
+      cached: 0,
+      total: 1,
+    });
+    expect(messages.at(-1).failed).toHaveLength(1);
   });
 
   test("offline subapp navigation returns its downloaded document", async () => {
