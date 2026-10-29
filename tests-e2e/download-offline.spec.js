@@ -175,6 +175,8 @@ test("Tools and Kits low download stores every lesson for offline playback and s
     });
     const offline = await context.newPage();
     await offline.goto("/#/videos/arclightPage");
+    await expect(offline.locator("#offlineAccessNotice")).toBeVisible();
+    await offline.locator("#offlineAccessNotice button").click();
     await expect(offline.locator("#arclightPage")).toBeVisible();
     expect(
       await offline.evaluate(async () =>
@@ -190,6 +192,10 @@ test("Tools and Kits low download stores every lesson for offline playback and s
       await offline.goto(`/#/videos/${id}`);
       const lesson = offline.locator(`#${id}`);
       await expect(lesson).toBeVisible();
+      if (id === "directOphthalmoscopyFullAnimationVideoPage") {
+        await expect(lesson.locator('[data-mode="high"]')).toBeDisabled();
+        await expect(lesson.locator(".video-offline-note")).toBeVisible();
+      }
       const video = lesson.locator("video").first();
       await expect(video).toBeVisible();
       await expect(video.locator("source")).toHaveAttribute("src", /\.mp4$/);
@@ -228,6 +234,8 @@ test("Tools and Kits low download stores every lesson for offline playback and s
     });
     const reopened = await context.newPage();
     await reopened.goto("/?source=installed#/videos/arclightPage");
+    await expect(reopened.locator("#offlineAccessNotice")).toBeVisible();
+    await reopened.locator("#offlineAccessNotice button").click();
     await expect(reopened.locator("#arclightPage")).toBeVisible();
     const image = "/images/icon/eyes/tools/car_arclight.webp";
     expect(

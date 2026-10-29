@@ -2,6 +2,7 @@
  * @fileoverview This file contains pwa related functions and logic. Including service worker registration and handling the 'beforeinstallprompt' event for app installation.
  */
 
+import { initializeOfflineNotice } from "./offlineExperience.js";
 let deferredPrompt = null;
 let initialized = false;
 function showOfflineFailure() {
@@ -21,6 +22,7 @@ function showOfflineFailure() {
 export function initializePWA() {
   if (initialized) return;
   initialized = true;
+  initializeOfflineNotice();
   // 1) Capture beforeinstallprompt so we can trigger later
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();

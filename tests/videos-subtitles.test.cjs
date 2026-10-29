@@ -196,6 +196,7 @@ describe("childhood eye screening subtitle pilot", () => {
   let videos;
 
   beforeEach(async () => {
+    delete window.__arclightConnectivity;
     jest.resetModules();
     localStorage.clear();
     document.documentElement.lang = "en";

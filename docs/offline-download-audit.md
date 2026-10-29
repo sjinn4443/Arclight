@@ -122,3 +122,32 @@ The final browser report is saved locally at
 These checks still do not establish physical iOS Home Screen app behavior or OS
 storage retention. Repeat the installed-device checks above on the iPhone after
 deploying the updated shell and media outputs; keep existing site data.
+
+## iPhone follow-up — 29 October 2026
+
+Physical iPhone 13 mini testing confirmed that most downloaded lessons worked,
+but Mobile Phone Attachment did not. Its two shipped MP4s used HEVC `hev1` with
+the `moov` box at the end. The existing PhoneAttach URL is now H.264/AAC, 240p,
+with fast-start metadata; the Tools 720p counterpart is also H.264 with fast-start
+metadata. URLs and subtitle timing are preserved. These files were already in
+Tools and Kits selection: this fixes media compatibility rather than asserting
+that download inclusion alone proves iPhone playback. Existing cached copies need
+to be refreshed by downloading the pack again after deployment.
+
+An offline-entry dialog explains that only downloaded content and some features
+are available. Connectivity is checked in the background, including foreground
+returns where navigator.onLine can be misleading. Video toggles show an offline
+explanation, disable Online and unavailable High modes, and restore controls on
+reconnection. Saved unavailable High/Online preferences fall back to downloaded
+local media. Local playback no longer waits for subtitle catalogue retrieval,
+and inline metadata loading, visible loading/error messages and an immediately
+visible route shell replace blank-looking player waits.
+
+Verification: 120 focused tests passed; the build and distribution budgets passed.
+Chromium verified PhoneAttach playback at 240p plus the notice, mode restrictions
+and reconnection. WebKit iPhone emulation verified the notice and mode controls;
+Windows WebKit MP4 playback does not complete in this runtime and is explicitly
+excluded from that UI check. A real-worker Android phone test passed the complete
+Tools and Kits low pack, offline browser-process restarts, playback/seeking, the
+entry notice and High-mode restriction. Physical iPhone playback remains a
+post-deployment check, not an automated claim.

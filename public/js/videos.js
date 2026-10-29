@@ -3,6 +3,12 @@
  */
 
 import { setLessonProgress } from "./lessonProgress.js";
+import {
+  checkConnectivity,
+  isOffline,
+  updateOfflineVideoControls,
+  wireVideoFeedback,
+} from "./offlineExperience.js";
 import { primeExaminationNarration } from "./examinationScrollTiming.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
@@ -2935,26 +2941,11 @@ function shouldPreferOnlineIOSChildhoodPilotMode(pageId) {
 }
 
 function isNavigatorOnline() {
-  return typeof navigator.onLine !== "boolean" ? true : navigator.onLine;
+  return !isOffline();
 }
 
 async function canReachOnlineVideo() {
-  if (!isNavigatorOnline()) return false;
-  // A reopened PWA can report online even with no working network connection.
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 3000);
-  try {
-    const response = await fetch("/healthz", {
-      method: "HEAD",
-      cache: "no-store",
-      signal: controller.signal,
-    });
-    return response.ok;
-  } catch {
-    return false;
-  } finally {
-    clearTimeout(timer);
-  }
+  return checkConnectivity();
 }
 
 function getChildhoodPilotIosHlsState(video) {
@@ -4268,7 +4259,11 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
     (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
   );
   page.dataset.videoModeRequestToken = requestToken;
-  const childhoodPilotEntry = await getChildhoodPilotCatalogEntry(pageId);
+  const availability = await updateOfflineVideoControls(page, cfg.sources);
+  if (availability?.offline && (mode === "online" || !availability[mode]))
+    mode = availability.low ? "low" : availability.high ? "high" : "low";
+  const childhoodPilotEntry =
+    mode === "online" ? await getChildhoodPilotCatalogEntry(pageId) : null;
   const canUseIosHls = shouldUseIOSChildhoodPilotHls(
     pageId,
     childhoodPilotEntry,
@@ -4437,8 +4432,7 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
   }
 
   if (isChildhoodEyeScreeningSubtitlePilotPage(pageId)) {
-    await syncChildhoodPilotSubtitlesForPage(pageId);
-    if (page.dataset.videoModeRequestToken !== requestToken) return;
+    void syncChildhoodPilotSubtitlesForPage(pageId);
   } else {
     removeChildhoodPilotSubtitleTracks(video);
   }
@@ -4480,7 +4474,11 @@ function wireVideoPageTriToggle(pageId) {
   if (!page) return;
 
   const toggle = page.querySelector(".tri-toggle");
-  if (!toggle || toggle.dataset.wired === "1") return;
+  if (!toggle) {
+    void applyVideoPageMode(pageId, "low", { preserveTime: false });
+    return;
+  }
+  if (toggle.dataset.wired === "1") return;
   toggle.dataset.wired = "1";
   // ---- tri-toggle button count(2 or 3) + initial mode clamp ----
   const preferIosHls = shouldPreferOnlineIOSChildhoodPilotMode(pageId);
@@ -4534,7 +4532,7 @@ function wireVideoPageTriToggle(pageId) {
 
     // online 버튼이 숨김이면 무시
     const btn = toggle.querySelector(`.tri-toggle__btn[data-mode="${mode}"]`);
-    if (btn && btn.hidden) return;
+    if (btn && (btn.hidden || btn.disabled)) return;
 
     writeGenericVideoMode(cfg.key, mode);
     setTriToggleUI(toggle, mode);
@@ -4576,6 +4574,12 @@ async function applyPupilMode(mode, { preserveTime = true } = {}) {
     (Number(page.dataset.videoModeRequestToken || 0) || 0) + 1,
   );
   page.dataset.videoModeRequestToken = requestToken;
+  const availability = await updateOfflineVideoControls(
+    page,
+    PUPIL_VIDEO_SOURCES,
+  );
+  if (availability?.offline && (mode === "online" || !availability[mode]))
+    mode = availability.low ? "low" : availability.high ? "high" : "low";
   if (mode === "online" && !(await canReachOnlineVideo())) mode = "low";
   if (page.dataset.videoModeRequestToken !== requestToken) return;
 
@@ -4685,6 +4689,22 @@ async function applyPupilMode(mode, { preserveTime = true } = {}) {
     video.addEventListener("loadedmetadata", restore, { once: true });
   }
 }
+
+window.addEventListener("arclight:connectivity", () => {
+  for (const [id, cfg] of Object.entries(VIDEO_PAGE_SOURCES)) {
+    const page = document.getElementById(id);
+    if (!page || page.style.display === "none") continue;
+    if (
+      isOffline() &&
+      ["high", "online"].includes(page.dataset.currentVideoMode)
+    )
+      void applyVideoPageMode(id, page.dataset.currentVideoMode);
+    else void updateOfflineVideoControls(page, cfg.sources);
+  }
+  const pupil = document.getElementById("pupilFullExamPage");
+  if (pupil && pupil.style.display !== "none")
+    void updateOfflineVideoControls(pupil, PUPIL_VIDEO_SOURCES);
+});
 
 function wireTriToggle() {
   const page = document.getElementById("pupilFullExamPage");
@@ -4831,6 +4851,7 @@ function show(id) {
 
   // Show the new page
   newPageElement.style.display = "block";
+  wireVideoFeedback(newPageElement);
   currentPageElement = newPageElement;
   syncRouteHash("videos", { replace: true, subPageId: id });
   showExperimentalMiniAppNoticeForPage(id);
@@ -5005,7 +5026,7 @@ export function initializeVideos() {
     document.body;
 
   // Always hide first; we’ll reveal only when the target section exists.
-  if (root) root.style.visibility = "hidden";
+  if (root) root.style.visibility = "visible";
 
   // [ADD] videos route 들어올 때, videos 안의 모든 subpage를 일단 숨김 (기본으로 떠있는 visualAcuityPage 방지)
   const videosRoot =

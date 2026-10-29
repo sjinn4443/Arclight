@@ -720,3 +720,47 @@ video::cue {
   outline: 2px solid rgba(0, 0, 0, 0.35);
   outline-offset: -2px;
 }
+
+/* Offline access and media feedback */
+#offlineAccessNotice {
+  max-width: 440px;
+  width: calc(100% - 48px);
+  padding: 24px;
+  border: 0;
+  border-radius: 16px;
+  color: #222;
+  line-height: 1.6;
+}
+#offlineAccessNotice::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+#offlineAccessNotice h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+#offlineAccessNotice button {
+  display: block;
+  margin: 20px 0 0 auto;
+  padding: 10px 20px;
+  background: #b4342a;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+}
+.video-offline-note,
+.video-load-status {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #555;
+  margin: 10px auto;
+  max-width: 700px;
+  padding: 0 12px;
+}
+.tri-toggle__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.video-container video {
+  background: #111;
+  min-height: 160px;
+}
