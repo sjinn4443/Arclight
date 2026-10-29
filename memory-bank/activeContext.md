@@ -501,3 +501,7 @@ Visual Acuity review adjustments: caption blocks are constrained to the animatio
 ### Offline follow-up — realdownload04
 
 The offline notice uses the brighter app red. Short video availability text sits outside the action row, below the quality toggle on mobile. Shared PDF download interception prepares cached or online PDFs in a closable dialog and uses file sharing or a separate download context, preserving the installed app window. Physical iPhone Home Screen export still needs a post-deployment check.
+
+### Local-only Pupils Advanced preview — 29 October 2026
+
+The Advanced Pupils scroll page and its dedicated assets are ignored and removed from Git tracking, with local copies retained. Local HTML fragments are injected only for loopback development. Production/distribution serving rejects dedicated assets and redirects the old hash to Pupils. Shared engines load optional local configuration dynamically; fresh clones build without it. See docs/local-only-lessons.md.

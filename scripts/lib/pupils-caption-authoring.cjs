@@ -48,6 +48,7 @@ if (require.main === module) {
   ]) {
     const folder = path.join(root, relative),
       file = path.join(folder, "script.json");
+    if (!fs.existsSync(file)) continue; // Optional local lesson may be absent.
     const script = JSON.parse(fs.readFileSync(file));
     for (const cue of script.cues) {
       const original = source.cues.find((c) => c.id === cue.id);

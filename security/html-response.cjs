@@ -66,8 +66,14 @@ function resolveStaticHtmlFile(staticRoot, requestPath) {
   return resolvedPath;
 }
 
-function sendHtmlFileWithNonce(req, res, filePath, statusCode = 200) {
-  const rawHtml = fs.readFileSync(filePath, "utf8");
+function sendHtmlFileWithNonce(
+  req,
+  res,
+  filePath,
+  statusCode = 200,
+  transformHtml = (html) => html,
+) {
+  const rawHtml = transformHtml(fs.readFileSync(filePath, "utf8"));
   const html = injectTelemetryMetaIntoHtml(
     injectNonceIntoHtml(rawHtml, res.locals?.cspNonce),
     res.locals?.telemetryToken,

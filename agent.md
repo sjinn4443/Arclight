@@ -593,3 +593,7 @@ Historical record: these three embeds now load local content under
 - Mandatory rule: keep FR06 behavior as baseline for all Fundal routes (`Preparation`, `Examination`, `Newborn - Eyes Open/Closed`, `Unclear Findings`, `Possible Findings`, `After Examination`).
 - If white blank regression appears again, first step is FR06 comparison/restore for this file before adding new logic.
 - Do not ship new settle/pin/blank-detection experiments on this file unless explicitly requested and re-verified against FR06 behavior.
+
+## Temporary local-only lesson policy
+
+videos/pupilsAdvancedScrollPage is a localhost-only preview. Dedicated files, authoring scripts and lesson-specific tests are ignored and retained locally. Do not force-add them or restore the static engine imports unless the user explicitly asks to publish this lesson. Read docs/local-only-lessons.md. Pupils Advanced PDF stays public.

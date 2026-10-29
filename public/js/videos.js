@@ -4776,6 +4776,11 @@ function resumePupilFullExamIfNeeded() {
 
 // ----- Internal helper to show a specific videos subpage -----
 function show(id) {
+  if (id === PUPILS_ADVANCED_SCROLL_PAGE_ID && !document.getElementById(id)) {
+    syncRouteHash("videos", { subPageId: "pupilsPage", replace: true });
+    show("pupilsPage");
+    return;
+  }
   if (
     EXTERNAL_GLAUCOMA_SCROLL_TARGETS.has(id) &&
     !document.getElementById(id)
@@ -4945,7 +4950,22 @@ function show(id) {
 
 // ----- Public initializer: called by router when 'videos' is loaded -----
 // videos.js
-export function initializeVideos() {
+export async function initializeVideos() {
+  const localLesson = document.getElementById(PUPILS_ADVANCED_SCROLL_PAGE_ID);
+  if (localLesson?.dataset.localOnly === "pupils-advanced") {
+    // A variable import keeps the ignored module outside production bundles.
+    const localModule = "/js/pupilsAdvancedScroll.js";
+    const [lesson, engine] = await Promise.all([
+      import(localModule),
+      import("./childhoodFundalPreparation.js"),
+    ]);
+    if (!localLesson.isConnected) return;
+    engine.registerExaminationScrollRoute(
+      "pupilsAdvancedScroll",
+      lesson.PUPILS_ADVANCED_SCROLL_CONFIG,
+      lesson.PUPILS_ADVANCED_SCROLL_TIMING,
+    );
+  }
   const holoLessons = document.querySelector(
     "#holoOverviewPage .pupil-level--intermediate",
   );
@@ -5063,6 +5083,13 @@ export function initializeVideos() {
   }
 
   // Utility: wait until an element with this id exists (then resolve).
+  if (
+    pending === PUPILS_ADVANCED_SCROLL_PAGE_ID &&
+    !document.getElementById(pending)
+  ) {
+    pending = "pupilsPage";
+    syncRouteHash("videos", { subPageId: pending, replace: true });
+  }
   const waitForId = (id, { timeout = 4000 } = {}) =>
     new Promise((resolve, reject) => {
       const start = performance.now();

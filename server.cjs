@@ -57,6 +57,13 @@ const HOST = process.env.HOST || (prod ? "0.0.0.0" : "127.0.0.1");
 const serveDist =
   String(process.env.SERVE_DIST || "").toLowerCase() === "1" ||
   String(process.env.SERVE_DIST || "").toLowerCase() === "true";
+const {
+  isLocalOnlyLessonAsset,
+  canServeLocalLessons,
+  renderLocalLessonHtml,
+} = require("./utils/local-only-lessons.cjs");
+const allowLocalLessons = (req) =>
+  canServeLocalLessons(req, { production: prod, serveDist });
 
 function resolveStaticRootDir() {
   const envCandidate = String(
@@ -740,6 +747,12 @@ app.get("/shell-assets.json", async (req, res, next) => {
   }
 });
 
+app.use((req, res, next) => {
+  if (!isLocalOnlyLessonAsset(req.path)) return next();
+  res.set("Cache-Control", "no-store");
+  if (!allowLocalLessons(req)) return res.status(404).end();
+  next();
+});
 app.use("/js", express.static(path.join(staticRoot, "js")));
 app.use("/favicons", express.static(path.join(staticRoot, "favicons")));
 app.get("/robots.txt", (req, res, next) => {
@@ -1043,7 +1056,9 @@ app.use((req, res, next) => {
   ].find((candidate) => candidate && fs.existsSync(candidate));
   if (!htmlFile) return next();
 
-  return sendHtmlFileWithNonce(req, res, htmlFile);
+  return sendHtmlFileWithNonce(req, res, htmlFile, 200, (html) =>
+    renderLocalLessonHtml(html, staticRoot, allowLocalLessons(req)),
+  );
 });
 
 app.use(express.static(staticRoot));

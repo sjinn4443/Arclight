@@ -2,9 +2,9 @@ import { VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG } from "./visualAcuityExaminati
 import { FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG } from "./frontOfEyeExaminationScroll.js";
 import { EYE_PAD_SHIELD_SCROLL_CONFIG } from "./eyePadShieldScroll.js";
 import { PUPILS_PEC_SCROLL_CONFIG } from "./pupilsPecScroll.js";
-import { PUPILS_ADVANCED_SCROLL_CONFIG } from "./pupilsAdvancedScroll.js";
 import {
   configureExaminationTiming,
+  EXAMINATION_SCROLL_TIMING,
   frameAtNarrationTime,
   takePrimedExaminationAudio,
 } from "./examinationScrollTiming.js";
@@ -1515,9 +1515,16 @@ ROUTE_CONFIG.visualAcuityExaminationScroll = {
 
 ROUTE_CONFIG.makeEyePadShieldScroll = { ...EYE_PAD_SHIELD_SCROLL_CONFIG };
 ROUTE_CONFIG.pupilsPecScroll = { ...PUPILS_PEC_SCROLL_CONFIG };
-ROUTE_CONFIG.pupilsAdvancedScroll = { ...PUPILS_ADVANCED_SCROLL_CONFIG };
 
 Object.values(ROUTE_CONFIG).forEach(configureExaminationTiming);
+
+// Optional local lessons register at runtime; published bundles do not import
+// their ignored source modules or depend on those files existing in a clone.
+export function registerExaminationScrollRoute(routeName, config, timing) {
+  EXAMINATION_SCROLL_TIMING[config.pageId] = timing;
+  ROUTE_CONFIG[routeName] = { ...config };
+  configureExaminationTiming(ROUTE_CONFIG[routeName]);
+}
 
 function normalizeFundalNarrationLanguage(language) {
   const normalized = String(language || "")

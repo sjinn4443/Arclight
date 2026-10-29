@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const { initializeDiabeticDemoQuizzes } =
         await import("./diabeticRetinopathyWorkshop.js");
       initializeDiabeticDemoQuizzes?.();
-      initializeVideos?.();
+      await initializeVideos?.();
       const { initializeGlaucomaWorkshopNextFlowInfra } =
         await import("./glaucomaWorkshopNextFlow.js");
       initializeGlaucomaWorkshopNextFlowInfra?.();

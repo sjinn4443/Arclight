@@ -629,3 +629,7 @@ Visual Acuity review adjustments: caption blocks are constrained to the animatio
 ### Offline follow-up — realdownload04
 
 Adjusted the offline notice colour and shortened/repositioned quality guidance. Replaced default same-window PDF export with a closable save dialog, file-share support and a separate download fallback. Added cancellation, failed/pending request, download-context and real-worker offline PDF regression coverage.
+
+### Local-only Pupils Advanced preview — 29 October 2026
+
+Separated pupilsAdvancedScrollPage from published HTML, bundles and offline manifests. Kept the lesson and all dedicated files locally while removing Git tracking. Verified local rendering, production asset rejection and preserved Advanced PDF access. Publication requires a deliberate policy change and restoring the ignored files to Git.

@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { isSubappDevelopmentAsset } = require("./subapp-assets.cjs");
+const { isLocalOnlyLessonAsset } = require("./local-only-lessons.cjs");
 
 const OFFLINE_MANIFEST_FILENAME = "offline-assets.json";
 const EXCLUDED_FILENAMES = new Set([
@@ -24,6 +25,7 @@ function isSensitiveManifestUrl(rawUrl) {
     url.startsWith("/healthz?") ||
     url.startsWith("/html/demo/") ||
     isSubappDevelopmentAsset(rawUrl) ||
+    isLocalOnlyLessonAsset(rawUrl) ||
     url.includes("reports")
   );
 }
@@ -70,6 +72,8 @@ async function collectOfflineAssetManifest(rootDir) {
 
       const entryPath = path.join(dir, entry.name);
       if (isSubappDevelopmentAsset(path.relative(resolvedRoot, entryPath)))
+        continue;
+      if (isLocalOnlyLessonAsset(path.relative(resolvedRoot, entryPath)))
         continue;
       if (entry.isDirectory()) {
         if (EXCLUDED_DIRECTORIES.has(entry.name.toLowerCase())) continue;
