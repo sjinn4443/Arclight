@@ -833,3 +833,7 @@ Recorded results and coverage limits are in
 [the 18 September implementation report](docs/product-quality-2026-09-18.md).
 
 Visual Acuity Full Animation and its scroll lesson share the restored English conditional introductions for hand movements and light perception. Cue times remain unchanged.
+
+### Offline controls and PDF export — 29 October 2026
+
+Offline video guidance sits below the quality controls and uses a short download requirement. The offline notice uses the app red (`#e41e26`). PDF download links open a closable Save PDF dialog, load the cached or online file and export through file sharing where supported, with a separate download context as fallback. The app keeps its lesson window and restores focus when the dialog closes, including failed or cancelled exports.

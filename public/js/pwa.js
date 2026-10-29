@@ -3,6 +3,7 @@
  */
 
 import { initializeOfflineNotice } from "./offlineExperience.js";
+import { initializePdfDownloads } from "./pdfDownloads.js";
 let deferredPrompt = null;
 let initialized = false;
 function showOfflineFailure() {
@@ -23,6 +24,7 @@ export function initializePWA() {
   if (initialized) return;
   initialized = true;
   initializeOfflineNotice();
+  initializePdfDownloads();
   // 1) Capture beforeinstallprompt so we can trigger later
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();

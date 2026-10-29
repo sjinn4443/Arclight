@@ -151,3 +151,33 @@ excluded from that UI check. A real-worker Android phone test passed the complet
 Tools and Kits low pack, offline browser-process restarts, playback/seeking, the
 entry notice and High-mode restriction. Physical iPhone playback remains a
 post-deployment check, not an automated claim.
+
+## Offline controls and PDF export — realdownload04
+
+The offline Continue button uses the brighter app red (`#e41e26`). Video
+availability guidance is shorter and placed after the entire action row so flex
+and tablet grid layouts cannot put it beside the quality toggle.
+
+PDF download links previously delegated to native anchor behaviour, which can
+replace an iOS Home Screen app window with a PDF preview. A shared delegated
+handler now keeps the lesson in place and opens a Save PDF dialog with Close
+available during loading, success, failure and cancellation. The PDF is loaded
+through the service worker, validated as a PDF and exported through file sharing
+when supported. The fallback downloads a blob in a separate browsing context.
+No export navigates the app window. Closing aborts pending work and restores focus
+to the download link. This applies to shared workshop and Ear Care PDFs too.
+
+Regression coverage includes mobile notice colour and note geometry, file-share
+cancellation, download fallback, unavailable offline PDFs and a cached PDF export
+after real service-worker downloads and a full offline browser restart. Native
+iPhone share-sheet/Save to Files behaviour requires physical-device verification
+after deployment; automated sharing tests use a stub for the OS interface.
+
+Verification: 13 focused unit tests and eight Chromium/WebKit browser checks
+passed. iPhone 13 mini viewport screenshots confirmed the brighter notice button,
+guidance below the action row and visible PDF Close action. The real-worker Android
+phone Tools and Kits low pack test passed after complete browser restarts and a
+network disconnect, including cached PDF export/cancellation and Back. The build
+and distribution budgets passed. Two earlier full-pack runs were interrupted
+while correcting the new test's share stub and handling the notice on a new
+document entry; the final run passed in 56.1 seconds.

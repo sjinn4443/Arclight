@@ -141,8 +141,11 @@ export async function updateOfflineVideoControls(page, sources) {
     note = document.createElement("p");
     note.className = "video-offline-note";
     note.setAttribute("role", "status");
-    toggle.after(note);
   }
+  // Action rows use flex/grid for the toggle, narration and menu buttons.
+  // Keep the explanation outside that row so it always sits underneath.
+  const actions = toggle.closest(".video-page-actions");
+  (actions || toggle).after(note);
   const offline = isOffline();
   const [low, high] = offline
     ? await Promise.all([
@@ -158,15 +161,15 @@ export async function updateOfflineVideoControls(page, sources) {
         (button.dataset.mode === "high" && !high));
   }
   note.hidden = !offline;
-  note.textContent = offlineText(
-    "You're currently offline. Only downloaded content is available. Connect to the internet or download content for offline use.",
-    "현재 오프라인입니다. 다운로드한 콘텐츠만 사용할 수 있습니다. 인터넷에 연결하거나 오프라인용 콘텐츠를 다운로드해 주세요.",
-  );
-  if (offline && !high)
-    note.textContent += offlineText(
-      " High resolution requires an internet connection or a high-resolution download.",
-      " 고화질을 이용하려면 인터넷에 연결하거나 고화질 영상을 다운로드해 주세요.",
-    );
+  note.textContent = !high
+    ? offlineText(
+        "Offline · High resolution needs a download or internet.",
+        "오프라인 · 고화질은 다운로드 또는 인터넷 연결이 필요합니다.",
+      )
+    : offlineText(
+        "Offline · Downloaded videos only.",
+        "오프라인 · 다운로드한 영상만 재생할 수 있습니다.",
+      );
   window.I18N?.applyTranslations?.(note);
   return { offline, low, high };
 }

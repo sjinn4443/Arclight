@@ -497,3 +497,7 @@ Added `visualAcuityExaminationScrollPage` above Full Animation in Visual Acuity.
 Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.
 
 - 24 September 2026: Restored “If fingers cannot be counted,” and “If movement cannot be seen,” in the shared English Full Animation script, narration and captions and in the Visual Acuity scroll fallback text. Cue boundaries and the 222.93-second video timeline are unchanged.
+
+### Offline follow-up — realdownload04
+
+The offline notice uses the brighter app red. Short video availability text sits outside the action row, below the quality toggle on mobile. Shared PDF download interception prepares cached or online PDFs in a closable dialog and uses file sharing or a separate download context, preserving the installed app window. Physical iPhone Home Screen export still needs a post-deployment check.

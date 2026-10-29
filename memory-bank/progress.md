@@ -625,3 +625,7 @@ Validation: 26 focused Playwright cases passed across Chromium desktop and iPhon
 Visual Acuity review adjustments: caption blocks are constrained to the animation width on this scroll page only. The Low Vision hold uses local frame 151, before the woman/chart crossfade begins at 152. Near Vision stage 3 no longer holds at frame 170. Cue va-24 now reads "If the vision improves, it means they need glasses" in the shared script, scroll fallback copy, English VTT and regenerated English narration; audio duration and all cue times remain unchanged.
 
 - 24 September 2026: Restored “If fingers cannot be counted,” and “If movement cannot be seen,” in the shared English Full Animation script, narration and captions and in the Visual Acuity scroll fallback text. Cue boundaries and the 222.93-second video timeline are unchanged.
+
+### Offline follow-up — realdownload04
+
+Adjusted the offline notice colour and shortened/repositioned quality guidance. Replaced default same-window PDF export with a closable save dialog, file-share support and a separate download fallback. Added cancellation, failed/pending request, download-context and real-worker offline PDF regression coverage.

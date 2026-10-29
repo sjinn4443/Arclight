@@ -249,6 +249,42 @@ test("Tools and Kits low download stores every lesson for offline playback and s
         Boolean(await navigator.serviceWorker.getRegistration()),
       ),
     ).toBe(true);
+    // A downloaded PDF must export without replacing the installed app window.
+    await reopened.addInitScript(() => {
+      Object.defineProperty(navigator, "canShare", {
+        configurable: true,
+        value: () => true,
+      });
+      Object.defineProperty(navigator, "share", {
+        configurable: true,
+        value: async ({ files }) => {
+          window.offlinePdfBytes = files[0].size;
+          throw new DOMException("Cancelled", "AbortError");
+        },
+      });
+    });
+    await reopened.goto("/#/directOphthalmoscopyPdf");
+    // Removing the installed-launch query creates a new document/app entry.
+    await expect(reopened.locator("#offlineAccessNotice")).toBeVisible();
+    await reopened.locator("#offlineAccessNotice button").click();
+    const pdfLesson = reopened.locator("#directOphthalmoscopyPdfPage");
+    await expect(pdfLesson).toBeVisible();
+    const pdfUrl = reopened.url();
+    await pdfLesson.locator("a[download]").click();
+    const pdfDialog = reopened.locator("#pdfDownloadDialog");
+    const savePdf = pdfDialog.getByRole("button", {
+      name: "Save PDF",
+      exact: true,
+    });
+    await expect(savePdf).toBeEnabled();
+    await savePdf.click();
+    await expect
+      .poll(() => reopened.evaluate(() => window.offlinePdfBytes || 0))
+      .toBeGreaterThan(0);
+    await pdfDialog.getByRole("button", { name: "Close", exact: true }).click();
+    expect(reopened.url()).toBe(pdfUrl);
+    await reopened.locator("#backBtnGlobal").click();
+    await expect(pdfLesson).toBeHidden();
   } finally {
     await context?.close();
     await gateway.close();

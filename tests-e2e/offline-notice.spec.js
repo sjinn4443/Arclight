@@ -49,6 +49,10 @@ test("offline notice, unavailable high mode, reconnect and phone video", async (
     window.dispatchEvent(new Event("offline"));
   });
   await expect(page.locator("#offlineAccessNotice")).toBeVisible();
+  await expect(page.locator("#offlineAccessNotice button")).toHaveCSS(
+    "background-color",
+    "rgb(228, 30, 38)",
+  );
   await expect(page.locator("#offlineAccessMessage")).toContainText(
     "only downloaded content",
   );
@@ -62,6 +66,15 @@ test("offline notice, unavailable high mode, reconnect and phone video", async (
       "#directOphthalmoscopyFullAnimationVideoPage .video-offline-note",
     ),
   ).toContainText("High resolution");
+  const note = page.locator(
+    "#directOphthalmoscopyFullAnimationVideoPage .video-offline-note",
+  );
+  const toggle = page.locator(
+    "#directOphthalmoscopyFullAnimationVideoPage .tri-toggle",
+  );
+  const noteBox = await note.boundingBox();
+  const toggleBox = await toggle.boundingBox();
+  expect(noteBox.y).toBeGreaterThanOrEqual(toggleBox.y + toggleBox.height);
   await context.setOffline(false);
   await page.evaluate(() => {
     Object.defineProperty(navigator, "onLine", {

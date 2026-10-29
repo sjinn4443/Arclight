@@ -18,7 +18,7 @@ afterEach(() => {
 });
 test("low-only storage disables unavailable high/online and reconnect restores controls", async () => {
   document.body.innerHTML =
-    '<section id="lesson"><div class="tri-toggle"><button data-mode="low"></button><button data-mode="high"></button><button data-mode="online"></button></div></section>';
+    '<section id="lesson"><div class="video-page-actions"><div class="tri-toggle"><button data-mode="low"></button><button data-mode="high"></button><button data-mode="online"></button></div></div></section>';
   const page = document.getElementById("lesson");
   Object.defineProperty(navigator, "onLine", {
     configurable: true,
@@ -44,6 +44,12 @@ test("low-only storage disables unavailable high/online and reconnect restores c
   expect(page.querySelector(".video-offline-note").textContent).toContain(
     "High resolution",
   );
+  expect(page.querySelector(".video-page-actions").nextElementSibling).toBe(
+    page.querySelector(".video-offline-note"),
+  );
+  expect(
+    page.querySelector(".video-offline-note").textContent.length,
+  ).toBeLessThan(65);
   Object.defineProperty(navigator, "onLine", {
     configurable: true,
     value: true,
