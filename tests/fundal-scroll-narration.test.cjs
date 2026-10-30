@@ -178,6 +178,50 @@ describe("Fundal Reflex examination scroll narration", () => {
     ).toBeNull();
   });
 
+  it("uses localized clip endings on playback and language changes without mutating source clips", () => {
+    const page = document.getElementById("fundalReflexExaminationScrollPage");
+    const clip = {
+      start: 100,
+      end: 124,
+      endByLanguage: { en: 117.76, ko: 119.32 },
+    };
+    const controller = initializeFundalStageNarration(
+      "fundalReflexExaminationScroll",
+      {
+        pageId: page.id,
+        narrationTimeline: [
+          [
+            [100, 0],
+            [124, 719],
+          ],
+        ],
+        narrationTracks: FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS,
+        narrationClipsByFile: [clip],
+      },
+      page,
+    );
+    const audio = page.querySelector("audio"),
+      select = page.querySelector("select");
+    controller.playForStage(0);
+    audio.currentTime = 118;
+    expect(controller.getPosition().finished).toBe(false);
+    select.value = "en";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    audio.currentTime = 117.77;
+    expect(controller.getPosition().finished).toBe(true);
+    expect(audio.currentTime).toBe(117.76);
+    expect(clip.end).toBe(124);
+    select.value = "ko";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    controller.playForStage(0);
+    audio.currentTime = 119.31;
+    expect(controller.getPosition().finished).toBe(false);
+    audio.currentTime = 119.33;
+    expect(controller.getPosition().finished).toBe(true);
+    expect(audio.currentTime).toBe(119.32);
+    controller.destroy();
+  });
+
   it.each([
     [
       "DIRECT_OPHTHALMOSCOPY",

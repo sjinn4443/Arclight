@@ -1845,6 +1845,10 @@ export function initializeFundalStageNarration(
 
     const currentSource = audio.getAttribute("src") || "";
     activeLanguage = normalizedLanguage;
+    if (activeClip?.endByLanguage) {
+      activeClip.end =
+        activeClip.endByLanguage[normalizedLanguage] ?? activeClip.defaultEnd;
+    }
     audio.setAttribute("lang", normalizedLanguage);
     if (currentSource === track.src) {
       if (Number.isFinite(Number(resumeTime))) {
@@ -1925,7 +1929,7 @@ export function initializeFundalStageNarration(
     } catch {
       // A fresh seek below still replaces any prior stage clip.
     }
-    activeClip = clip;
+    activeClip = { ...clip, defaultEnd: clip.end };
     elapsed = 0;
     clockUpdatedAt = performance.now();
     clipActive = true;
@@ -10492,14 +10496,24 @@ function initializeStageAutoplayMode(
   }
 
   function playStageWithNarrationClock(state) {
-    const points = cfg.narrationTimeline[state.fileIndex];
+    const originalPoints = cfg.narrationTimeline[state.fileIndex];
     state.manualSegmentPlayback = true;
-    state.timelineTime = points[0][0];
+    state.timelineTime = originalPoints[0][0];
     let renderedFrame = null;
     let narrationFinishedAt = null;
-    const visualEnd = points[points.length - 1][0];
     const tick = () => {
       if (sessionDisposed || !state.playing) return;
+      const localizedEnd =
+        cfg.narrationClipsByFile?.[state.fileIndex]?.endByLanguage?.[
+          stageNarration.getLanguage()
+        ];
+      const points = Number.isFinite(localizedEnd)
+        ? [
+            ...originalPoints.slice(0, -1),
+            [localizedEnd, originalPoints.at(-1)[1]],
+          ]
+        : originalPoints;
+      const visualEnd = points[points.length - 1][0];
       const position = stageNarration.getPosition();
       // Let a normal-speed animation finish in silence when its narration is
       // shorter. Never play into the next stage's speech to fill this tail.

@@ -49,18 +49,8 @@ ArclightApp.zip
 /public/videos/Workshop/PEC/New folder/
 
 # Test artifacts
-# Pupils Advanced scroll is a local preview until explicitly published.
+# Local preview fragments (published lesson HTML is embedded in videos.html).
 /public/local-only/
-/public/js/pupilsAdvancedScroll.js
-/public/scrolly/coreexam/pupils-advanced/
-/public/narration/pupils-advanced/
-/scripts/build-pupils-advanced-scroll.cjs
-/scripts/extract-pupils-advanced-art.py
-/scripts/generate-pupils-advanced-narration.py
-/scripts/lib/pupils-advanced-authoring.cjs
-/tests/pupils-advanced-scroll.test.js
-/tests/pupils-advanced-offline.test.js
-/tests-e2e/pupils-advanced-scroll.spec.js
 
 /.codex-artifacts/make-eye-pad-shield-narration/*.wav
 /.codex-artifacts/make-eye-pad-shield-video-narration/*.wav

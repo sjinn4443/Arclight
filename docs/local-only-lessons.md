@@ -1,17 +1,5 @@
-# Local-only lesson previews
+# Lesson publication
 
-`videos/pupilsAdvancedScrollPage` is temporarily a local preview. Its dedicated
-module, scrolly artwork, narration, authoring tools and lesson-specific tests are
-ignored by Git and kept on the local machine. Pupils Advanced PDF remains public.
+Pupils Advanced scroll is published at `#/videos/pupilsAdvancedScrollPage`. Its configuration, artwork, bilingual narration and authoring scripts are tracked in Git. The page and lesson row are embedded in videos.html, and the module is bundled for production. Advanced runtime assets are included in distribution and offline manifests.
 
-Run the normal development server at `localhost` or `127.0.0.1` to open the lesson.
-The ignored HTML fragments in `public/local-only/` are inserted only for loopback
-development requests. Built distributions and production mode omit the lesson and
-reject its asset URLs, even if local source files exist. Its old hash link returns
-to the Pupils list. Offline manifests and the worker exclude its dedicated files.
-
-The shared engine loads the ignored configuration dynamically, so a fresh clone
-builds without local lesson files. To publish it again, deliberately restore Git
-tracking for the ignored files and revise the delivery policy; adding a page link
-alone does not enable publication. Existing deployed versions change only after
-these tracked policy changes are committed and deployed.
+Only the unused local-only fragment directory remains excluded from delivery. Illustrator/PDF authoring masters remain outside distribution; the existing Pupils Advanced PDF stays available.

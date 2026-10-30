@@ -2,7 +2,7 @@
 /* global __BUILD_CACHE_NAME__ */
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v113"
+    ? "arclight-static-v114"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -57,10 +57,7 @@ function isSensitivePath(pathname) {
     pathname === "/reports.html" ||
     pathname === "/html/reports.html" ||
     pathname === "/js/reports.js" ||
-    pathname === "/js/pupilsAdvancedScroll.js" ||
-    pathname.startsWith("/local-only/") ||
-    pathname.startsWith("/scrolly/coreexam/pupils-advanced/") ||
-    pathname.startsWith("/narration/pupils-advanced/")
+    pathname.startsWith("/local-only/")
   );
 }
 

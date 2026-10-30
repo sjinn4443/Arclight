@@ -4951,15 +4951,15 @@ function show(id) {
 // ----- Public initializer: called by router when 'videos' is loaded -----
 // videos.js
 export async function initializeVideos() {
-  const localLesson = document.getElementById(PUPILS_ADVANCED_SCROLL_PAGE_ID);
-  if (localLesson?.dataset.localOnly === "pupils-advanced") {
-    // A variable import keeps the ignored module outside production bundles.
-    const localModule = "/js/pupilsAdvancedScroll.js";
+  const advancedLesson = document.getElementById(
+    PUPILS_ADVANCED_SCROLL_PAGE_ID,
+  );
+  if (advancedLesson) {
     const [lesson, engine] = await Promise.all([
-      import(localModule),
+      import("./pupilsAdvancedScroll.js"),
       import("./childhoodFundalPreparation.js"),
     ]);
-    if (!localLesson.isConnected) return;
+    if (!advancedLesson.isConnected) return;
     engine.registerExaminationScrollRoute(
       "pupilsAdvancedScroll",
       lesson.PUPILS_ADVANCED_SCROLL_CONFIG,

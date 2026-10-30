@@ -1,12 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const LOCAL_ONLY_ASSETS = [
-  "local-only",
-  "js/pupilsadvancedscroll.js",
-  "scrolly/coreexam/pupils-advanced",
-  "narration/pupils-advanced",
-];
+const LOCAL_ONLY_ASSETS = ["local-only"];
 
 function isLocalOnlyLessonAsset(assetPath) {
   let normalized;

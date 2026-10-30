@@ -838,6 +838,6 @@ Visual Acuity Full Animation and its scroll lesson share the restored English co
 
 Offline video guidance sits below the quality controls and uses a short download requirement. The offline notice uses the app red (`#e41e26`). PDF download links open a closable Save PDF dialog, load the cached or online file and export through file sharing where supported, with a separate download context as fallback. The app keeps its lesson window and restores focus when the dialog closes, including failed or cancelled exports.
 
-### Local-only Pupils Advanced preview
+### Published Pupils Advanced lesson
 
-videos/pupilsAdvancedScrollPage is temporarily available only on the localhost development server. Dedicated source, artwork, narration and authoring tools are ignored and retained locally. Production builds omit the lesson; its former link returns to Pupils. The existing Pupils Advanced PDF remains available. See docs/local-only-lessons.md for the publication policy.
+videos/pupilsAdvancedScrollPage is published. Track its dedicated configuration, artwork, narration, authoring scripts and tests. Production builds and offline manifests include its runtime assets. See docs/local-only-lessons.md.

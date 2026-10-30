@@ -38,11 +38,10 @@ test("local lessons require loopback development, including when source files ex
 test.each([
   "/js/pupilsAdvancedScroll.js",
   "/js/%70upilsAdvancedScroll.js?cache=1",
-  "/local-only/pupils-advanced-page.html",
   "/scrolly/coreexam/pupils-advanced/1/data.json",
   "/narration/pupils-advanced/full-animation/en.m4a",
-])("%s is excluded from delivery and offline manifests", (url) => {
-  expect(isLocalOnlyLessonAsset(url)).toBe(true);
+])("%s is included in delivery and offline manifests", (url) => {
+  expect(isLocalOnlyLessonAsset(url)).toBe(false);
 });
 
 test("the existing PDF and PEC guide stay public", () => {
@@ -83,9 +82,9 @@ test("ignored HTML is inserted only for a local preview and never enters the man
       'id="pupilsAdvancedScrollPage"',
     );
     expect(renderLocalLessonHtml(html, root)).toBe("");
-    expect((await collectOfflineAssetManifest(root)).urls).toEqual([
-      "/js/public.js",
-    ]);
+    expect((await collectOfflineAssetManifest(root)).urls).toEqual(
+      expect.arrayContaining(["/js/public.js", "/js/pupilsAdvancedScroll.js"]),
+    );
     fs.unlinkSync(path.join(root, "js/pupilsAdvancedScroll.js"));
     expect(renderLocalLessonHtml(html, root, true)).toBe("");
   } finally {
@@ -93,7 +92,7 @@ test("ignored HTML is inserted only for a local preview and never enters the man
   }
 });
 
-test("published bundles do not import the ignored Advanced lesson", async () => {
+test("published bundles include the Advanced lesson", async () => {
   const result = await build({
     entryPoints: ["public/js/main.js", "public/js/videos.js"],
     bundle: true,
@@ -106,5 +105,5 @@ test("published bundles do not import the ignored Advanced lesson", async () => 
     Object.keys(result.metafile.inputs).some((file) =>
       file.endsWith("/pupilsAdvancedScroll.js"),
     ),
-  ).toBe(false);
+  ).toBe(true);
 });
