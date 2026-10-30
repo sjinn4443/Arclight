@@ -10513,7 +10513,9 @@ function initializeStageAutoplayMode(
             [localizedEnd, originalPoints.at(-1)[1]],
           ]
         : originalPoints;
-      const visualEnd = points[points.length - 1][0];
+      const visualEnd =
+        points[points.length - 1][0] +
+        Math.max(0, Number(cfg.narrationCompletionPauseSeconds) || 0);
       const position = stageNarration.getPosition();
       // Let a normal-speed animation finish in silence when its narration is
       // shorter. Never play into the next stage's speech to fill this tail.

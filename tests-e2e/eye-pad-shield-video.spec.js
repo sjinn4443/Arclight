@@ -56,7 +56,7 @@ test("Full animation uses the procedure route and synchronised full-animation co
   await expect
     .poll(() => video.evaluate((el) => el.readyState))
     .toBeGreaterThanOrEqual(1);
-  expect(await video.evaluate((el) => el.duration)).toBeCloseTo(134, 1);
+  expect(await video.evaluate((el) => el.duration)).toBeCloseTo(128, 1);
   expect(await video.evaluate((el) => el.videoHeight)).toBe(240);
   await video.evaluate((el) => el.play());
   await expect.poll(() => audio.evaluate((el) => el.paused)).toBe(false);
@@ -65,11 +65,11 @@ test("Full animation uses the procedure route and synchronised full-animation co
     .toBeGreaterThan(1);
   await video.evaluate((el) => {
     el.pause();
-    el.currentTime = 46;
+    el.currentTime = 40;
   });
   await expect
     .poll(() => audio.evaluate((el) => el.currentTime))
-    .toBeCloseTo(46, 0);
+    .toBeCloseTo(40, 0);
   await expect(
     lesson.locator("[data-childhood-pilot-subtitle-panel]"),
   ).toContainText("Tape at the open end.");
@@ -84,14 +84,14 @@ test("Full animation uses the procedure route and synchronised full-animation co
     .toBeGreaterThanOrEqual(1);
   await expect
     .poll(() => video.evaluate((el) => el.currentTime))
-    .toBeCloseTo(46, 0);
+    .toBeCloseTo(40, 0);
   await expect.poll(() => video.evaluate((el) => el.videoHeight)).toBe(720);
   await expect(lesson.locator('[data-mode="high"]')).toHaveAttribute(
     "aria-checked",
     "true",
   );
   await expect(lesson.locator(".dedicated-video-controls__time")).toHaveText(
-    "0:46 / 2:14",
+    "0:40 / 2:08",
   );
   const background = await video.evaluate((el) => {
     const canvas = document.createElement("canvas");
@@ -171,7 +171,7 @@ test("all nine video voices keep translated speech and section-title captions on
     await expect
       .poll(() => audio.evaluate((el) => el.readyState))
       .toBeGreaterThanOrEqual(1);
-    expect(await audio.evaluate((el) => el.duration)).toBeCloseTo(134, 1);
+    expect(await audio.evaluate((el) => el.duration)).toBeCloseTo(128, 1);
     await video.evaluate((el) => {
       el.pause();
       el.currentTime = 4.25;

@@ -14,25 +14,11 @@ export const EYE_PAD_SHIELD_LANGUAGES = {
 };
 export const EYE_PAD_SHIELD_SECTIONS = [
   { startIndex: 0, title: "Preparation" },
-  { startIndex: 2, title: "Make an eye pad" },
-  { startIndex: 5, title: "Make an eye shield" },
+  { startIndex: 1, title: "Make an eye pad" },
+  { startIndex: 4, title: "Make an eye shield" },
 ];
 export const EYE_PAD_SHIELD_TITLE_SECONDS = 3;
 export const EYE_PAD_SHIELD_STAGES = [
-  {
-    name: "Hand hygiene",
-    seconds: 6,
-    scenes: [],
-    cues: [
-      {
-        id: "hygiene",
-        offset: 0,
-        end: 6,
-        en: "Wash your hands and don PPE.",
-        ttsText: { en: "Wash your hands and don P P E." },
-      },
-    ],
-  },
   {
     name: "Equipment",
     seconds: 10,
@@ -158,14 +144,44 @@ export const EYE_PAD_SHIELD_STAGES = [
   },
 ];
 
+// Last visible movement in each supplied scene; the remaining frames are holds.
+export const EYE_PAD_SHIELD_MOTION_END_FRAMES = [
+  0, 350, 395, 276, 0, 385, 510, 435,
+];
+// Actual spoken ends from the nine delivered tracks' narration QA report.
+// Keep source audio/caption slots intact; skip only their trailing silence.
+export const EYE_PAD_SHIELD_SPEECH_ENDS = {
+  en: [8.39, 17.91, 34.99, 52.47, 59.48, 70.07, 94.19, 111.14],
+  "es-419": [8.68, 19.14, 36.17, 52.97, 59.67, 70.17, 94.82, 111.88],
+  ko: [8.61, 18.7, 36.72, 53, 60.94, 69.18, 95.56, 112.31],
+  ne: [6.18, 19.11, 35.98, 52.9, 60.08, 69.64, 94.98, 112],
+  fr: [8.8, 18.34, 37.1, 53, 60.13, 69.93, 94.36, 112.43],
+  lg: [6.3, 21.94, 36.6, 52.63, 59.61, 72.21, 96.28, 111.3],
+  ha: [7.45, 21.18, 36.22, 52.44, 60.26, 71.62, 95.27, 111.51],
+  yo: [5.1, 16.82, 34.79, 51.99, 57.8, 68.91, 93.67, 110.41],
+  ig: [7.02, 20.14, 35.78, 51.7, 59.76, 72.1, 95.96, 111.8],
+};
+
 let clock = 1;
 export const EYE_PAD_SHIELD_SCROLL_CLIPS = EYE_PAD_SHIELD_STAGES.map(
-  (stage) => {
+  (stage, index) => {
     const clip = {
       start: clock,
       end: clock + stage.seconds,
       cueIds: stage.cues.map((cue) => cue.id),
     };
+    clip.endByLanguage = Object.fromEntries(
+      Object.entries(EYE_PAD_SHIELD_SPEECH_ENDS).map(([language, ends]) => [
+        language,
+        Math.min(
+          clip.end,
+          Math.max(
+            clip.start + EYE_PAD_SHIELD_MOTION_END_FRAMES[index] / 30 + 0.001,
+            ends[index] + 0.12,
+          ),
+        ),
+      ]),
+    );
     clock = clip.end;
     return clip;
   },
@@ -176,6 +192,14 @@ export const EYE_PAD_SHIELD_SCROLL_TIMING = {
   languages: Object.keys(EYE_PAD_SHIELD_LANGUAGES),
   stages: EYE_PAD_SHIELD_SCROLL_CLIPS.map((clip, index) => [
     [clip.start, 0],
+    [
+      clip.start + EYE_PAD_SHIELD_MOTION_END_FRAMES[index] / 30,
+      EYE_PAD_SHIELD_MOTION_END_FRAMES[index],
+    ],
+    [
+      clip.start + EYE_PAD_SHIELD_MOTION_END_FRAMES[index] / 30 + 0.001,
+      EYE_PAD_SHIELD_STAGES[index].seconds * 30 - 1,
+    ],
     [clip.end, EYE_PAD_SHIELD_STAGES[index].seconds * 30 - 1],
   ]),
 };
@@ -187,6 +211,7 @@ export const EYE_PAD_SHIELD_SCROLL_CONFIG = {
   enableReplay: true,
   segmentTextToggleOnTitle: true,
   fitCaptionsInViewport: true,
+  narrationCompletionPauseSeconds: 1.5,
   strictFrameLockNoFallback: true,
   strictFrameRemountOnBlank: true,
   persistentSettleSnapshotOverlay: true,
@@ -196,7 +221,7 @@ export const EYE_PAD_SHIELD_SCROLL_CONFIG = {
   progressStoragePrefix: "lessonProgress:",
   paths: EYE_PAD_SHIELD_STAGES.map(
     (_, index) =>
-      `/scrolly/eyeprocedures/make-eye-pad-shield/${index + 1}/data.json`,
+      `/scrolly/eyeprocedures/make-eye-pad-shield/${index + 2}/data.json`,
   ),
   sections: EYE_PAD_SHIELD_SECTIONS,
   segmentRanges: EYE_PAD_SHIELD_STAGES.map((stage) => [

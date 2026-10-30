@@ -36,7 +36,111 @@ test.beforeEach(async ({ page, browserName }) => {
   });
 });
 
-test("the new row plays nine stages, replays, saves completion and returns to the procedure", async ({
+for (const language of ["en", "ko"]) {
+  test(`${language}: completion controls appear 1–2 seconds after the content ends`, async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(120_000);
+    await page.addInitScript(
+      ({ language, pageId }) => {
+        window.__ARCLIGHT_E2E__.fundalPlaybackRate = 1;
+        localStorage.setItem(`videoNarrationLanguage:${pageId}`, language);
+      },
+      { language, pageId },
+    );
+    await page.goto("/#/eyePadShield");
+    await page.locator(`#eyePadShield [data-target="${pageId}"]`).click();
+    const guide = page.locator(`#${pageId}`);
+    const audio = guide.locator("audio");
+    const stages = guide.locator(".childhood-fundal-prep-stage");
+    await expect(audio).toHaveCount(1);
+    await audio.evaluate((el) => {
+      el.pause();
+      const play = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function (...args) {
+        const result = play.apply(this, args);
+        if ((this.getAttribute("src") || "").includes("/narration/"))
+          Promise.resolve(result).then(
+            () => this.pause(),
+            () => {},
+          );
+        return result;
+      };
+    });
+    const delays = [];
+    for (let index = 0; index < cfg.paths.length; index++) {
+      await expect
+        .poll(() =>
+          page.evaluate(
+            ({ route, index }) =>
+              window.__ARCLIGHT_E2E__.fundal.getStageState(route, index)
+                ?.playing,
+            { route, index },
+          ),
+        )
+        .toBe(true);
+      await expect
+        .poll(() => audio.evaluate((el) => el.readyState))
+        .toBeGreaterThanOrEqual(2);
+      await audio.evaluate((el, time) => {
+        el.pause();
+        el.currentTime = time;
+        el.dispatchEvent(new Event("timeupdate"));
+      }, cfg.narrationClipsByFile[index].endByLanguage[language] - 0.2);
+      const replay = stages
+        .nth(index)
+        .locator(".childhood-fundal-stage-replay-btn");
+      await expect(replay).toBeHidden();
+      const delay = await page.evaluate(
+        ({ route, index, end }) =>
+          new Promise((resolve) => {
+            const audio = document.querySelector(
+              "[data-fundal-scroll-narration-audio]",
+            );
+            const start = performance.now();
+            // Chrome quantizes media seeks to microseconds. Cross the end
+            // boundary instead of landing fractionally below a 30fps time.
+            audio.currentTime = end + 0.03;
+            audio.dispatchEvent(new Event("timeupdate"));
+            const check = () => {
+              if (
+                window.__ARCLIGHT_E2E__.fundal.getStageState(route, index)
+                  ?.completed ||
+                performance.now() - start > 5000
+              )
+                resolve(performance.now() - start);
+              else requestAnimationFrame(check);
+            };
+            check();
+          }),
+        {
+          route,
+          index,
+          end: cfg.narrationClipsByFile[index].endByLanguage[language],
+        },
+      );
+      delays.push(delay);
+      expect(delay).toBeGreaterThanOrEqual(1400);
+      expect(delay).toBeLessThan(2200);
+      await expect(replay).toBeVisible();
+      if (index < cfg.paths.length - 1) {
+        const arrow = stages
+          .nth(index)
+          .locator("..")
+          .locator(".childhood-fundal-scroll-down-arrow");
+        await expect(arrow).toBeEnabled();
+        await arrow.evaluate((el) => el.focus({ preventScroll: true }));
+        await page.keyboard.press("Enter");
+      }
+    }
+    await testInfo.attach("completion-delays-ms", {
+      body: JSON.stringify(delays),
+      contentType: "application/json",
+    });
+  });
+}
+
+test("the new row plays eight stages, replays, saves completion and returns to the procedure", async ({
   page,
 }, testInfo) => {
   test.setTimeout(180_000);
@@ -103,6 +207,9 @@ test("the new row plays nine stages, replays, saves completion and returns to th
       await page.screenshot({
         path: testInfo.outputPath(`lesson-layout-${i}.png`),
       });
+      console.log(
+        `${language}: completion controls in ${Math.round(Math.min(...delays))}–${Math.round(Math.max(...delays))}ms`,
+      );
     }
     shots.push({
       input: await sharp(await stage.screenshot())
@@ -125,7 +232,7 @@ test("the new row plays nine stages, replays, saves completion and returns to th
   })
     .composite(shots)
     .png()
-    .toFile(testInfo.outputPath("nine-scenes.png"));
+    .toFile(testInfo.outputPath("eight-scenes.png"));
   await expect
     .poll(() =>
       page.evaluate(
@@ -140,7 +247,7 @@ test("the new row plays nine stages, replays, saves completion and returns to th
     .poll(() =>
       page.evaluate(
         (route) =>
-          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 8)?.playing,
+          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 7)?.playing,
         route,
       ),
     )
@@ -149,10 +256,10 @@ test("the new row plays nine stages, replays, saves completion and returns to th
     stages.last().locator(".childhood-fundal-stage-replay-btn"),
   ).toBeVisible({ timeout: 30_000 });
   // Inspect the continuous final sequence using the real route renderer.
-  for (const frame of [45, 130, 180, 255, 370, 435, 539]) {
+  for (const frame of [45, 60, 90, 105, 130, 180, 255, 370, 435, 539]) {
     await page.evaluate(
       ({ route, frame }) =>
-        window.__ARCLIGHT_E2E__.fundal.seekStage(route, 8, frame),
+        window.__ARCLIGHT_E2E__.fundal.seekStage(route, 7, frame),
       { route, frame },
     );
     await stages
@@ -162,11 +269,11 @@ test("the new row plays nine stages, replays, saves completion and returns to th
   // Review the changed intermediate motions through each browser's real
   // renderer, including the composite fade, visited trim and merged slit.
   for (const [i, frames] of [
-    [3, [0, 130, 190]],
-    [4, [120, 240]],
-    [5, [282]],
-    [6, [90, 160]],
-    [7, [120, 480, 510]],
+    [2, [0, 130, 190]],
+    [3, [120, 240]],
+    [4, [282]],
+    [5, [90, 160]],
+    [6, [120, 480, 510]],
   ]) {
     await stages.nth(i).scrollIntoViewIfNeeded();
     for (const frame of frames) {

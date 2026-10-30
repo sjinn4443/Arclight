@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "title": "Make an eye pad and eye shield",
   "sourceVideo": "/videos/Workshop/PEC/7.MakepadNshield_720p.mp4",
-  "durationSeconds": 125,
+  "durationSeconds": 119,
   "defaultLanguage": "en",
   "languages": {
     "en": {
@@ -69,30 +69,13 @@
       "trimEdgeSilenceDb": -50
     }
   },
-  "timingSource": "Nine Lottie scenes, beginning with DO hand hygiene. Folding/taping share stage 04; circle cutting and the single radial slit share stage 08. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
+  "timingSource": "Eight Lottie scenes, beginning with equipment. Hand hygiene has been removed. Folding/taping share one stage; circle cutting and the single radial slit share one stage. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
   "cues": [
-    {
-      "id": "hygiene",
-      "en": "Wash your hands and don PPE.",
-      "ttsText": {
-        "en": "Wash your hands and don P P E."
-      },
-      "start": 1,
-      "end": 7,
-      "es-419": "Lávese las manos y póngase el equipo de protección personal.",
-      "ko": "손을 씻고 개인 보호구를 착용합니다.",
-      "ne": "हात धुनुहोस् र व्यक्तिगत सुरक्षा सामग्री लगाउनुहोस्।",
-      "fr": "Lavez-vous les mains et mettez votre équipement de protection individuelle.",
-      "lg": "Naaba engalo, oyambale eby'okwekuuma.",
-      "ha": "Wanke hannuwanka, ka sa kayan kariya.",
-      "yo": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
-      "ig": "Saa aka gị ma yiri ngwa nchebe."
-    },
     {
       "id": "equipment",
       "en": "You will need gauze, cotton wool, cardboard, pencil, cup, sticky paper and scissors.",
-      "start": 7,
-      "end": 17,
+      "start": 1,
+      "end": 11,
       "es-419": "Necesitará gasa, algodón, cartón, lápiz, taza, cinta adhesiva y tijeras.",
       "ko": "거즈, 솜, 판지, 연필, 컵, 접착테이프와 가위가 필요합니다.",
       "ne": "गज, कपास, गत्ता, पेन्सिल, कप, टेप र कैंची चाहिन्छ।",
@@ -105,8 +88,8 @@
     {
       "id": "cotton",
       "en": "For the eye pad, spread a cotton wool ball into an oval shape about 5 to 6 centimetres wide.",
-      "start": 17,
-      "end": 30,
+      "start": 11,
+      "end": 24,
       "es-419": "Para la almohadilla ocular, extienda una bola de algodón en forma ovalada, de unos cinco a seis centímetros de ancho.",
       "ko": "안대를 만들려면 솜뭉치를 펴서 너비가 약 오에서 육 센티미터인 타원 모양으로 만듭니다.",
       "ne": "आँखाको प्याड बनाउन कपासको डल्लोलाई करिब पाँचदेखि छ सेन्टिमिटर चौडा अण्डाकारमा फैलाउनुहोस्।",
@@ -119,8 +102,8 @@
     {
       "id": "gauze",
       "en": "Fold the gauze around the cotton wool.",
-      "start": 30,
-      "end": 39,
+      "start": 24,
+      "end": 33,
       "es-419": "Doble la gasa alrededor del algodón.",
       "ko": "거즈로 솜을 감싸 접습니다.",
       "ne": "कपास वरिपरि गज मोड्नुहोस्।",
@@ -133,8 +116,8 @@
     {
       "id": "pad-tape",
       "en": "Tape at the open end.",
-      "start": 39,
-      "end": 46,
+      "start": 33,
+      "end": 40,
       "es-419": "Pegue cinta en el extremo abierto.",
       "ko": "열린 끝부분에 테이프를 붙입니다.",
       "ne": "खुला छेउमा टेप लगाउनुहोस्।",
@@ -147,8 +130,8 @@
     {
       "id": "trim",
       "en": "Trim the edges of the gauze to the shape of the cotton wool.",
-      "start": 46,
-      "end": 56,
+      "start": 40,
+      "end": 50,
       "es-419": "Recorte los bordes de la gasa siguiendo la forma del algodón.",
       "ko": "솜 모양에 맞춰 거즈 가장자리를 다듬어 자릅니다.",
       "ne": "कपासको आकारअनुसार गजको किनारा काट्नुहोस्।",
@@ -161,8 +144,8 @@
     {
       "id": "finished-pad",
       "en": "This is your eye pad.",
-      "start": 56.5,
-      "end": 59,
+      "start": 50.5,
+      "end": 53,
       "es-419": "Esta es su almohadilla.",
       "ko": "이것이 안대입니다.",
       "ne": "यो आँखाको प्याड हो।",
@@ -175,8 +158,8 @@
     {
       "id": "cardboard",
       "en": "For the shield, find some clean cardboard. Reusing medical packaging works well.",
-      "start": 59,
-      "end": 70,
+      "start": 53,
+      "end": 64,
       "es-419": "Para el protector, busque cartón limpio. Puede reutilizar un envase médico.",
       "ko": "눈 보호대에는 깨끗한 판지를 사용합니다. 의료용 포장재를 재활용해도 좋습니다.",
       "ne": "कवचका लागि सफा गत्ता खोज्नुहोस्। औषधिको प्याकेट पुनः प्रयोग गर्न सकिन्छ।",
@@ -189,8 +172,8 @@
     {
       "id": "draw",
       "en": "Using a cup as a template, draw a circle with a diameter of about 8 centimetres.",
-      "start": 70,
-      "end": 84,
+      "start": 64,
+      "end": 78,
       "es-419": "Use una taza como plantilla y dibuje un círculo de unos ocho centímetros de diámetro.",
       "ko": "컵을 본으로 삼아 지름이 약 팔 센티미터인 원을 그립니다.",
       "ne": "कपलाई नमुना बनाएर करिब आठ सेन्टिमिटर व्यासको वृत्त कोर्नुहोस्।",
@@ -203,8 +186,8 @@
     {
       "id": "cut",
       "en": "Cut out the circle.",
-      "start": 84,
-      "end": 97,
+      "start": 78,
+      "end": 91,
       "es-419": "Recorte el círculo.",
       "ko": "원을 오려 냅니다.",
       "ne": "वृत्त काटेर निकाल्नुहोस्।",
@@ -217,8 +200,8 @@
     {
       "id": "slit",
       "en": "Then make a cut from the edge to the centre.",
-      "start": 97,
-      "end": 104,
+      "start": 91,
+      "end": 98,
       "es-419": "Luego haga un corte desde el borde hasta el centro.",
       "ko": "그런 다음 가장자리에서 중심까지 한 번 자릅니다.",
       "ne": "त्यसपछि किनाराबाट केन्द्रसम्म काट्नुहोस्।",
@@ -231,8 +214,8 @@
     {
       "id": "cone",
       "en": "Curve the card into a cone and secure with sticky tape.",
-      "start": 104,
-      "end": 115,
+      "start": 98,
+      "end": 109,
       "es-419": "Curve el cartón para formar un cono y fíjelo con cinta adhesiva.",
       "ko": "판지를 구부려 원뿔 모양으로 만들고 접착테이프로 고정합니다.",
       "ne": "गत्तालाई सोलीको आकारमा मोडेर टेपले अड्याउनुहोस्।",
@@ -245,8 +228,8 @@
     {
       "id": "finished-shield",
       "en": "This is your eye shield.",
-      "start": 115,
-      "end": 125,
+      "start": 109,
+      "end": 119,
       "es-419": "Este es el protector ocular.",
       "ko": "눈 보호대가 완성되었습니다.",
       "ne": "यो आँखाको सुरक्षा कवच हो।",
@@ -276,8 +259,8 @@
     },
     {
       "id": "video-title-eye-pad",
-      "start": 17,
-      "end": 20,
+      "start": 11,
+      "end": 14,
       "sourceText": "Make an eye pad",
       "translations": {
         "es-419": "Cómo hacer una almohadilla ocular",
@@ -292,8 +275,8 @@
     },
     {
       "id": "video-title-eye-shield",
-      "start": 59,
-      "end": 62,
+      "start": 53,
+      "end": 56,
       "sourceText": "Make an eye shield",
       "translations": {
         "es-419": "Cómo hacer un protector ocular",

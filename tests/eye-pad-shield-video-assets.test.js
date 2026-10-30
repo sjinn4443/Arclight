@@ -14,22 +14,22 @@ const catalog = read(
   "public/video-localization/childhood-eye-screening.json",
 ).makeEyePadShieldFullAnimationVideoPage;
 
-test("title cards follow the three scrolly sections without changing its 125-second clock", () => {
-  expect(scroll.durationSeconds).toBe(125);
-  expect(video.durationSeconds).toBe(134);
+test("title cards follow the three scrolly sections without changing its 119-second clock", () => {
+  expect(scroll.durationSeconds).toBe(119);
+  expect(video.durationSeconds).toBe(128);
   expect(
     video.videoTitleCues.map((cue) => [cue.start, cue.end, cue.sourceText]),
   ).toEqual([
     [0, 3, "Preparation"],
-    [20, 23, "Make an eye pad"],
-    [65, 68, "Make an eye shield"],
+    [14, 17, "Make an eye pad"],
+    [59, 62, "Make an eye shield"],
   ]);
   expect(video.videoTitleCues.map((cue) => cue.sourceText)).toEqual(
     cfg.sections.map((section) => section.title),
   );
   video.cues.forEach((cue, i) => {
     const original = scroll.cues[i];
-    const offset = original.start < 17 ? 3 : original.start < 59 ? 6 : 9;
+    const offset = original.start < 11 ? 3 : original.start < 53 ? 6 : 9;
     expect(cue.start).toBe(original.start + offset);
     expect(cue.end).toBe(original.end + offset);
     expect(cue.id).toBe(original.id);
@@ -68,7 +68,7 @@ test("both timelines ship the Front of Eye languages and voices with valid audio
         track.sha256,
       );
       const vtt = fs.readFileSync(folder + subfolder + track.captions, "utf8");
-      expect(vtt.match(/-->/g)).toHaveLength(13 + (language === "en" ? 0 : 3));
+      expect(vtt.match(/-->/g)).toHaveLength(12 + (language === "en" ? 0 : 3));
       if (subfolder) {
         expect(catalog.audioVariants[language].src).toBe(
           `/narration/make-eye-pad-shield/full-animation/video/${language}.m4a`,

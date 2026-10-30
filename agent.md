@@ -148,13 +148,12 @@ Last refreshed: 2026-10-09
 - The Eye Pad / Shield procedure owns `makeEyePadShieldScrollPage`, launched
   directly below its `make_eye_pad` video row. Read
   [its authoring record](./docs/make-eye-pad-shield-scroll.md) for artwork, timing,
-  narration and validation. `eyePadShieldScroll.js` supplies nine configs to the
+  narration and validation. `eyePadShieldScroll.js` supplies eight configs to the
   shared engine; scenes 10–12 remain one roll/tape/camera animation. Both scroll
   and `makeEyePadShieldFullAnimationVideoPage` support the nine Front of Eye
-  caption/narration languages. Scroll remains 125s; video is 134s with three
+  caption/narration languages. Scroll is 119s; video is 128s with three
   silent section cards and separate tracks under `full-animation/video/`.
-  Low video is 240p and high is 720p. Its first stage reuses DO hand
-  hygiene; fold/tape share stage 04 and circle/slit share stage 08.
+  Low video is 240p and high is 720p. Hand hygiene has been removed; equipment comes first. Fold/tape share stage 04 and circle/slit share stage 08.
   Preserve original hand proportions. Register `holdinghand_top.png` and
   `holdinghand_bottom.png` at one scale, above/below the held object, in 04/05/08.
   Show complete gauze textures at 700px width and register the flap along their
@@ -172,9 +171,22 @@ Last refreshed: 2026-10-09
   Its right paper edge
   moves over the left with a narrow tracking contact shadow; no gap or broad
   quarter-disc shading. Cast its tape shadow left. Move the camera only afterwards.
-  Keep the paper stiff with a straight free edge and subtle roll shading; overlap travel
+  Keep the paper stiff with a straight free edge. The 30 October revision lifts
+  and foreshortens the cut lip before it sweeps sideways, with directional
+  surface lighting to reveal the cone from above. It settles before tape lands;
+  frame 315–435 camera geometry and the final white finish stay unchanged. Overlap travel
   is 0.85 radians, and the oval deformation follows the visible start of the roll.
   Contact-shadow angular width is 0.11 radians; cone tape sits at 56% of the radius.
+  The follow-up makes the contact shadow use the same lifted projection as the
+  free edge. The user subsequently requested the original scene-11 tape graphic
+  again. Use `11tape.webp` through 32 masked strips for a trapezoid projection,
+  wider above and narrower below, while retaining the earlier cone geometry. Preserve its original final rotation 0,
+  scale [125, 90] and position at frame 435. Do not replace it with a vector strip.
+  All nine narration languages skip trailing silence using the motion-end and
+  speech-end tables in `eyePadShieldScroll.js`; refresh spoken ends from QA when
+  regenerating voices. Its optional `narrationCompletionPauseSeconds: 1.5`
+  shows controls after both motion and speech finish. Preserve the source audio,
+  cue slots and other lessons' default completion behaviour.
   Use lower-scissor corrections of 1.28 for trimming and 1.22 for circle cutting.
   Register its grip slightly closer to the upper palm with anchor [115, 217].
   Omit the brown finger extension; mask the source's two extended finger portions

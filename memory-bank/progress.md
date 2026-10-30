@@ -1,5 +1,20 @@
 # Progress
 
+## Eye pad and shield revision — 30 October 2026
+
+- Removed the complete hand-hygiene stage, narration and captions. Eight stages
+  now start with equipment. Source audio is 119s and Full Animation is 128s;
+  all nine existing voices are retimed without synthesising replacements.
+- Rebuilt both 240p/720p videos from the updated scrolly. The twelve remaining
+  cues, three title cards, narration menus and lesson routes remain aligned.
+- Paper lifts before overlapping; the shadow ends at the lifted edge. Original
+  tape artwork uses a wider-top/narrower-bottom projection, then returns to its
+  original final pose. Completion controls follow motion and speech by 1.5s.
+- Builders: `build-eye-pad-shield-scroll.cjs --scenes-only`,
+  `localize-eye-pad-shield-narration.cjs`,
+  `retime-eye-pad-shield-narration.cjs` and `build-eye-pad-shield-video.cjs`.
+  Source cache is v119. Detailed checks are in the authoring record.
+
 ## Advanced Pupils scrolly — 24 October 2026
 
 - Added **Pupils** immediately below **Pupils Advanced PDF** on Pupils, targeting

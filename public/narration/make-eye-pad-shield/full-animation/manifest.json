@@ -1,96 +1,61 @@
 {
   "schemaVersion": 1,
-  "durationSeconds": 125,
+  "durationSeconds": 119,
   "script": "script.json",
   "tracks": {
     "en": {
       "src": "en.m4a",
       "captions": "en.vtt",
-      "bytes": 342727,
-      "sha256": "71fb0f6d7d0fa591a0876e24ae6f1f6573436da9eaf7cc5bf3dedf00067fde7e"
+      "bytes": 325083,
+      "sha256": "627330880416fabe0e69b71088a1fba1d70dbf06983fc45bf541bc2b1f0f2b6a"
     },
     "lg": {
       "src": "lg.m4a",
       "captions": "lg.vtt",
-      "bytes": 431162,
-      "sha256": "ca6304471ca95d5fb7b7a060e1f0c23fcfc6cb57f022721692c6ccc7479f15bd",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.71,
-        "truePeakDbTP": -3.38
-      }
+      "bytes": 406242,
+      "sha256": "0809e62cd402433c79478860efc8f99f8de6446e61c42e677a5e71938881825a"
     },
     "ha": {
       "src": "ha.m4a",
       "captions": "ha.vtt",
-      "bytes": 417848,
-      "sha256": "3e7693a71d49a7f5e6f535a6a66028db7f0c8484b4e48e5a9b11276183c768ca",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.39,
-        "truePeakDbTP": -3.93
-      }
+      "bytes": 391706,
+      "sha256": "1bdcc6c70c65f888339bcee87704da9db85d89b30764f59989fc38b455f0f25e"
     },
     "yo": {
       "src": "yo.m4a",
       "captions": "yo.vtt",
-      "bytes": 291516,
-      "sha256": "fd5d7fe0c891e8df79d4d7033e4f9fb86b387eee64c527c79ddba5a4dd12e0c6",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.42,
-        "truePeakDbTP": -4.36
-      }
+      "bytes": 273457,
+      "sha256": "860d6f8ffd388d2505704990bc4e06dcb060038d843768e3d63c8fe5ca03af80"
     },
     "ig": {
       "src": "ig.m4a",
       "captions": "ig.vtt",
-      "bytes": 395569,
-      "sha256": "f58e2e84fd86edbd4c406f6f9c0f2fab30c563416f5c7ce0a17ee594c09fdf32",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.54,
-        "truePeakDbTP": -4.29
-      }
+      "bytes": 377299,
+      "sha256": "0c4a601e3d5daa925881b78fc265f0fa06e377e8dd105d305e55c13be07e956f"
     },
     "es-419": {
       "src": "es-419.m4a",
       "captions": "es-419.vtt",
-      "bytes": 352197,
-      "sha256": "7baae49593ed72848d8db421ea38ee2e31e8206b2ad3f36744bf599c63e0b0d5"
+      "bytes": 329396,
+      "sha256": "34033bc900a324294854e6a3f373da865fdac972a20242f1f79451a3772a8218"
     },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
-      "bytes": 368568,
-      "sha256": "65ebcfd6e26110d861140ad45f937a76e4507f14facdd06f2bf455f1948d1741",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.32,
-        "truePeakDbTP": -4.47
-      }
+      "bytes": 343461,
+      "sha256": "415d33e8e1452d11b4cf07adfe8d997b37e83f2f9a6137c325ad49ad51ed1c35"
     },
     "ne": {
       "src": "ne.m4a",
       "captions": "ne.vtt",
-      "bytes": 336137,
-      "sha256": "fb976a69aad1846fe16fc0d162a38e899e8149616a2326cb232d6d617be304dd",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.46,
-        "truePeakDbTP": -3.94
-      }
+      "bytes": 309297,
+      "sha256": "dd7725272ec5b5f05929c82389530a0def6ededa64467b8726ee355e405833c5"
     },
     "fr": {
       "src": "fr.m4a",
       "captions": "fr.vtt",
-      "bytes": 358640,
-      "sha256": "bd27c852521d34884e6c7d5cace4b7be4270758f96b0aabb0613ac7dcfd660e1",
-      "loudness": {
-        "referenceLanguage": "en",
-        "integratedLUFS": -18.52,
-        "truePeakDbTP": -2.97
-      }
+      "bytes": 328248,
+      "sha256": "fe5c651fa1e943e66b5a0542a1ea4d3532ce325850f5b27cecc8be42250e0dc8"
     }
   }
 }

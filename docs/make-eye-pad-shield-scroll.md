@@ -1,5 +1,32 @@
 # Make an eye pad and eye shield scroll lesson
 
+## Current delivery — 30 October 2026
+
+Hand hygiene is removed from the animation, narration and captions in both
+lessons. Eight stages start with equipment; the twelve remaining instructions
+retain all nine voices. The source narration clock is 119s and Full Animation
+is 128s, with section cards at 0–3s, 14–17s and 59–62s. Both 240p and 720p videos
+are regenerated from the updated Lottie scenes. Asset folders remain 2–9;
+the retired hygiene scene and its copied images are deleted.
+
+The cone uses the geometry from the first shadow-length correction. The
+original tape artwork is projected through masked strips with a wider upper
+edge and narrower lower edge; the original bitmap pose resumes at frame 435.
+Mask bounds overlap to avoid visible strip seams, and shadows stay behind all
+texture strips. Scrolly controls retain their 1.5s completion pause.
+
+`retime-eye-pad-shield-narration.cjs` removes the retired six-second audio slot
+once, rebuilds video narration with the new section-card silences and rewrites
+VTT files and checksums. Existing voices are retained. Earlier delivery records
+below describe superseded timing and motion. Source cache is v119.
+
+Validation: 23 focused unit checks pass, including both clocks, all nine audio
+checksums, caption counts and the trapezoid geometry. Chrome passes both
+completion-delay cases, all nine video voices, scrolly language switching and
+the Full Animation player's route, seeking and 240p/720p switching. The production
+build passes the original shell and media size limits. Latest renders cover
+the paper/tape sequence in Chrome and WebKit.
+
 Implemented 7 October and motion revised 19 October 2026. Launch the scroll row immediately below the matching
 video in **Eye Pad / Shield**, or open
 `#/eyePadShield/makeEyePadShieldScrollPage`. The original two procedure videos
@@ -58,6 +85,62 @@ HTML files. Translated tracks are levelled to within 0.5 LU of the English
 reference and verified below -1 dBTP after AAC encoding.
 
 ## Content and motion
+
+### Original tape restored — 30 October 2026
+
+The user's follow-up retains the original `11tape.webp` graphic. The overhead
+attachment accounts for the graphic's measured principal angle and paper
+centroid, with radial foreshortening derived from the cone's 310px radius and
+280px height. Its visible centre lands at 56% of the seam radius. This correction
+blends into the original camera-end transform: rotation 0, scale [125, 90] and
+the original position at frame 435. The paper camera path is unchanged. The
+straight replacement strip described below is superseded. The 1.5s completion
+behaviour and shortened overlap shadow remain. Source cache is v117.
+
+### Completion, shadow and tape follow-up — 30 October 2026
+
+Each scrolly stage now finishes 1.5–1.62 seconds after its last visible movement
+and spoken words. `EYE_PAD_SHIELD_MOTION_END_FRAMES` records the final movement;
+`EYE_PAD_SHIELD_SPEECH_ENDS` records actual spoken ends for all nine delivered
+languages from the narration QA report. Refresh that table when regenerating
+voices. `endByLanguage` skips trailing silence while preserving every utterance
+and the original source audio/caption clock. The shared engine's optional
+`narrationCompletionPauseSeconds` adds a 1.5s final hold for this lesson only.
+Other lessons retain their existing completion behaviour. English and Korean
+finish the final scene at about source time 120s instead of 125s.
+
+The overlap contact shadow now shares the raised lip's projection, so it ends
+at the folding edge throughout the movement. The tape is a straight paper strip
+with small torn ends. Its long axis crosses the projected seam at a right angle,
+and camera motion uses uniform scaling so its proportions remain fixed. The
+separate encoded Full animation video retains its previous export.
+
+Follow-up verification: 21 focused Jest checks and the production build pass.
+The new completion-control browser checks pass for all nine stages in English
+and Korean on Chrome desktop and WebKit iPhone. They freeze the media clock,
+verify controls stay hidden before the content ends, then measure the 1.5s hold
+and check both replay and forward controls. Updated Canvas renders in both
+browsers cover the fold, attachment and camera sequence.
+
+### Overhead cone revision — 30 October 2026
+
+The final scrolly scene now follows the supplied folding video: lift the right
+cut lip before sweeping it over the stationary edge, then lower it onto the
+overlap before applying tape. Projected foreshortening makes that lift visible
+from above. Directional surface lighting develops with the cone so the paper
+reads as a curved surface rather than a rotating flat disc. Intermediate mesh
+keys are spaced fifteen frames apart during the fold. The camera stays overhead
+through taping; its existing frame 315–435 movement and final geometry remain.
+The 125s timeline, narration and tape attachment are unchanged. This revision
+applies to the scrolly JSON; the separate encoded Full animation video retains
+its previous export.
+
+Verification: the 10 focused Jest checks and production build pass. Both Chrome
+layouts pass playback/replay; Chrome desktop also passes deep links/downloads.
+Chrome mobile's My Learning check fails to find its saved row. WebKit renders
+all revised cone frames and passes deep links/downloads, but the broader playback
+case times out during subsequent intermediate-stage captures. The final Chrome
+frame is pixel-identical to the original. Preview: `tmp/eye-shield-fold-preview.gif`.
 
 The revised first stage reuses the exact hand-washing animation from
 `videos/directOphthalmoscopyScrollPage`. The introductory sentence is removed.
@@ -147,21 +230,24 @@ pencil finishes, without fading. The measurement line
 uses a left-to-right mask wipe before the 8cm label appears.
 
 The cone keeps an overhead camera throughout folding and taping, with only a
-10px apex rise to give the paper slight relief. Its right-hand material sweeps
-across the left cut edge by 0.85 radians (about 49 degrees). Its radial edge
+10px apex rise. Before that surface settles, its right cut lip lifts towards
+the viewer and foreshortens, then sweeps across the left cut edge by 0.85 radians
+(about 49 degrees). Its radial edge
 stays straight as the stiff sheet rolls, without a wave. A narrow, subtle shading
-band marks the rolled edge and settles away once the overlap is complete. The oval
-deformation starts after the free edge is already rolling; no wedge-shaped gap
-opens and no camera motion is used to suggest the fold. A narrow
-contact shadow tracks that moving edge and fades left. Its angular width is
+band marks the lifted edge and settles away once the overlap is complete. The oval
+deformation starts after the free edge is already rolling. The lifted lip
+settles onto the overlap without a gap. A narrow contact shadow tracks that
+moving edge and fades left. Its angular width is
 0.11 radians, twice the previous 0.055 (about 33px at the outer rim). The paper
-faces use the same less-bright white (RGB 0.955), without a bright wedge or broad
-dark quarter-disc.
+faces use the same less-bright white stock (RGB 0.955), with directional surface
+lighting during folding and taping. That lighting blends back to the original
+white finish during the later camera move.
 Tape crosses the overlapped edge before the camera moves at frames
 315–435. Tape is attached at 56% of the radius, moved in from 72%, and follows
-that same surface position during the camera move. Its supplied paper texture
-is masked to remove the baked right-hand shadow, with a new left-cast silhouette
-following exactly the same tape transforms. No source texture is modified.
+that same surface position during the camera move. Its straight paper shape and
+left-cast shadow share the same position, rotation and uniform scale. The supplied
+scene-11 texture remains untouched but is no longer used for this strip because
+its already-curved silhouette distorted the overhead attachment.
 
 ## Ownership and integration
 

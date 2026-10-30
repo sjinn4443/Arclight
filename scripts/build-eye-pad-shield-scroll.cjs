@@ -368,9 +368,14 @@ async function coneSequence() {
   const checkpoints = [
     [0, 0, Math.PI / 2, 322, 0],
     [45, 0, Math.PI / 2, 322, 0],
+    [60, (280 * 15) / 135, Math.PI / 2, 320.5, 0],
     [75, (280 * 30) / 135, Math.PI / 2, 319, 0],
+    [90, (280 * 45) / 135, Math.PI / 2, 317.5, 0],
     [105, (280 * 60) / 135, Math.PI / 2, 316, 0],
+    [120, (280 * 75) / 135, Math.PI / 2, 314.5, 0],
     [135, (280 * 90) / 135, Math.PI / 2, 313, 0],
+    [150, (280 * 105) / 135, Math.PI / 2, 312, 0],
+    [165, (280 * 120) / 135, Math.PI / 2, 311, 0],
     [180, 280, Math.PI / 2, 310, 0],
     [285, 280, Math.PI / 2, 310, 0],
     [315, 280, Math.PI / 2, 310, 0],
@@ -378,28 +383,62 @@ async function coneSequence() {
     [539, 350, Math.PI / 6, 384, 0.85],
   ];
   const rollAt = (t) => Math.max(0, Math.min(1, (t - 45) / 135));
+  // Lift the cut lip first, then slide it across the stationary cut. This
+  // separates bending the card from merely rotating a sector in its plane.
+  const overlapAt = (t) => Math.max(0, Math.min(1, (t - 65) / 115));
   const overlap = 0.85;
-  const cutAngle = (t) => Math.PI / 2 + overlap * rollAt(t);
+  const cutAngle = (t) => Math.PI / 2 + overlap * overlapAt(t);
   const curlAt = (t) => Math.sin(Math.PI * rollAt(t));
   const edgeAngle = (_radius, t) => cutAngle(t);
-  const project = (r, theta, height, elevation, radius, yaw) => {
+  const liftAt = (u, t) => curlAt(t) * Math.exp(-(((1 - u) / 0.12) ** 2));
+  const project = (r, theta, height, elevation, radius, yaw, lift = 0) => {
     const overhead = Math.max(
       0,
       Math.min(1, (elevation - Math.PI / 6) / (Math.PI / 3)),
     );
-    // The outline changes after the free edge has visibly started rolling.
-    // Keep the camera overhead. A ten-pixel apex rise gives the stiff sheet
-    // slight relief while its straight radial edge rolls over the other edge.
+    // The camera remains overhead: a raised lip is foreshortened towards the
+    // apex, exposing the sheet beneath it. Lift is linear along each generator
+    // so the stiff card's cut edge stays straight. It settles before taping;
+    // the established camera projection from frame 315 is unchanged.
     const forming = Math.max(0, Math.min(1, (height / 280 - 0.35) / 0.65));
     const oval = 1 - 0.16 * forming * forming * (3 - 2 * forming) * overhead;
     return [
-      584 + r * radius * Math.cos(theta - yaw),
+      584 + r * radius * (1 - 0.18 * lift * overhead) * Math.cos(theta - yaw),
       600 +
         (1 - Math.sin(elevation)) * 280 +
-        r * radius * Math.sin(theta - yaw) * Math.sin(elevation) * oval -
+        r *
+          radius *
+          (1 - 0.18 * lift * overhead) *
+          Math.sin(theta - yaw) *
+          Math.sin(elevation) *
+          oval -
+        12 * r * lift * overhead -
         height * (1 - r) * Math.cos(elevation) -
         10 * Math.min(1, height / 280) * (1 - r) * overhead,
     ];
+  };
+  const paperColor = (u) => {
+    const property = linearKeys(
+      checkpoints.map(([t]) => {
+        const theta = Math.PI / 2 + u * (2 * Math.PI + overlap * overlapAt(t));
+        const light = (1 + Math.cos(theta + 2.35)) / 2;
+        // Surface-normal lighting makes the cone readable from directly above.
+        // Keep the same white stock and return to the original camera finish.
+        const relief = Math.sin((Math.min(1, rollAt(t)) * Math.PI) / 2);
+        const cameraFade = 1 - Math.max(0, Math.min(1, (t - 315) / 120));
+        const tone =
+          0.955 -
+          cameraFade * relief * (0.025 + 0.17 * light + 0.07 * liftAt(u, t));
+        return [t, [tone, tone, tone, 1]];
+      }),
+    );
+    return property;
+  };
+  const shadePaper = (layer, u) => {
+    const color = paperColor(u);
+    for (const item of layer.shapes[0].it) {
+      if (item.ty === "fl" || item.ty === "st") item.c = color;
+    }
   };
   const frameShape = (verticesAt) => {
     const values = checkpoints.map(([t, h, e, r, yaw]) => [
@@ -425,13 +464,13 @@ async function coneSequence() {
   const vertices = (index, h, e, r, t, yaw) => {
     // Stretch the material's angular span beyond a full turn: the right cut
     // edge moves left over the stationary edge, rather than opening a gap.
-    const span = 2 * Math.PI + overlap * rollAt(t);
+    const span = 2 * Math.PI + overlap * overlapAt(t);
     const a = Math.PI / 2 + (index * span) / count;
     const b = Math.PI / 2 + ((index + 1) * span) / count;
     return [
       project(0, 0, h, e, r, yaw),
-      project(1, a - 0.002, h, e, r, yaw),
-      project(1, b + 0.002, h, e, r, yaw),
+      project(1, a - 0.002, h, e, r, yaw, liftAt(index / count, t)),
+      project(1, b + 0.002, h, e, r, yaw, liftAt((index + 1) / count, t)),
     ];
   };
   const order = [...Array(count).keys()].sort(
@@ -440,20 +479,29 @@ async function coneSequence() {
       Math.sin(Math.PI / 2 + (b * 2 * Math.PI) / count),
   );
   for (const i of order) {
-    shapeLayer(
+    const facet = shapeLayer(
       `Paper cone facet ${i}`,
       frameShape((h, e, r, t, yaw) => vertices(i, h, e, r, t, yaw)),
       [0.955, 0.955, 0.955, 1],
       { edgeStroke: 2.2 },
     );
+    shadePaper(facet, (i + 0.5) / count);
   }
   // Only a narrow contact shadow under the moving edge, darkest at contact
   // and fading left. It has zero area before the paper starts overlapping.
-  const edgeBand = (h, e, r, t, yaw, offsetA, offsetB) => {
+  const edgeBand = (h, e, r, t, yaw, offsetA, offsetB, raised = false) => {
     const side = (offset) =>
       Array.from({ length: 9 }, (_, j) => {
         const radius = j / 8;
-        return project(radius, edgeAngle(radius, t) + offset, h, e, r, yaw);
+        return project(
+          radius,
+          edgeAngle(radius, t) + offset,
+          h,
+          e,
+          r,
+          yaw,
+          raised ? liftAt(1, t) : 0,
+        );
       });
     return [...side(offsetA), ...side(offsetB).reverse()];
   };
@@ -470,6 +518,7 @@ async function coneSequence() {
           yaw,
           (i * width) / 8,
           ((i + 1) * width) / 8,
+          true,
         );
       }),
       [0.45, 0.45, 0.45, 1],
@@ -488,14 +537,14 @@ async function coneSequence() {
   // Its vertices move from the right of the slit to the left as the disc rolls.
   for (let i = 0; i < 12; i++) {
     for (let ring = 0; ring < 6; ring++) {
-      shapeLayer(
+      const flap = shapeLayer(
         `Rolling paper flap ${i}${ring ? ` ring ${ring}` : ""}`,
         frameShape((h, e, r, t, yaw) => {
-          const span = 2 * Math.PI + overlap * rollAt(t);
+          const span = 2 * Math.PI + overlap * overlapAt(t);
           const point = (fraction, radius) => {
             const u = (count - 12 + i + fraction) / count;
             const angle = Math.PI / 2 + u * span;
-            return project(radius, angle, h, e, r, yaw);
+            return project(radius, angle, h, e, r, yaw, liftAt(u, t));
           };
           return [
             point(0, ring / 6),
@@ -507,6 +556,7 @@ async function coneSequence() {
         [0.955, 0.955, 0.955, 1],
         { edgeStroke: 1.2 },
       );
+      shadePaper(flap, (count - 12 + i + 0.5) / count);
     }
   }
   // A subtle straight band describes the stiff rolled edge, without a wave.
@@ -524,6 +574,7 @@ async function coneSequence() {
           yaw,
           (-i * width) / 8,
           (-(i + 1) * width) / 8,
+          true,
         );
       }),
       [tone, tone, tone, 1],
@@ -628,41 +679,62 @@ async function coneSequence() {
     if (key.e) key.e = key.e.map((v) => v * 0.35);
   }
   behind(shadow, tape);
+  // Top-view perspective: retain the original bitmap, but make its upper edge
+  // wider than its lower edge. Masked horizontal strips form a trapezoid;
+  // their projection relaxes during the existing camera move. The original
+  // unmodified image takes over at frame 435, preserving that final pose.
+  tape.ip = 435;
+  shadow.ip = 435;
+  const strips = 32;
+  let firstTapeStrip;
+  for (let j = 0; j < strips; j++) {
+    const y0 = (j * info.height) / strips - 0.5;
+    const y1 = ((j + 1) * info.height) / strips + 0.5;
+    const rows = paperOutline.filter(([, y]) => y >= y0 && y <= y1);
+    const minY = Math.min(...rows.map(([, y]) => y));
+    const maxY = Math.max(...rows.map(([, y]) => y));
+    // Overlap real polygon bounds, not just the row-selection window: otherwise
+    // antialiased mask boundaries leave faint stripes between adjacent strips.
+    const outline = rows.map(([x, y]) => [
+      x,
+      y === minY ? y - 0.75 : y === maxY ? y + 0.75 : y,
+    ]);
+    if (outline.length < 4) continue;
+    const strip = image("11tape.webp", 0, 0);
+    strip.nm = `Tape perspective strip ${j}`;
+    firstTapeStrip ||= strip;
+    strip.ks = structuredClone(tape.ks);
+    strip.op = 435;
+    strip.hasMask = true;
+    strip.masksProperties = [
+      {
+        inv: false,
+        mode: "a",
+        pt: constant(pointsShape(outline)),
+        o: constant(100),
+        x: constant(0),
+      },
+    ];
+    const factor = 1.18 - (0.36 * (j + 0.5)) / strips;
+    for (const key of strip.ks.s.k) {
+      if (key.t < 435) key.s[0] *= factor;
+      if (key.e && key.t < 315) key.e[0] *= factor;
+    }
+    const contact = shapeLayer(
+      `Tape perspective shadow ${j}`,
+      constant(pointsShape(outline.map(([x, y]) => [x - 10, y + 5]))),
+      [0.55, 0.55, 0.55, 1],
+    );
+    contact.ks = structuredClone(strip.ks);
+    contact.op = 435;
+    for (const key of contact.ks.o.k) {
+      key.s = key.s.map((v) => v * 0.35);
+      if (key.e) key.e = key.e.map((v) => v * 0.35);
+    }
+    behind(contact, firstTapeStrip);
+  }
 }
 
-async function hygieneScene() {
-  const source = path.join(
-    ROOT,
-    "public/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/1",
-  );
-  const scene = JSON.parse(
-    await fs.readFile(path.join(source, "data.json"), "utf8"),
-  );
-  const ratio = endFrame / scene.op;
-  const retime = (value) => {
-    if (!value || typeof value !== "object") return;
-    for (const [name, child] of Object.entries(value)) {
-      if (["t", "ip", "op", "st"].includes(name) && typeof child === "number")
-        value[name] = child * ratio;
-      else retime(child);
-    }
-  };
-  retime(scene);
-  scene.fr = FPS;
-  scene.op = endFrame;
-  scene.nm = "Hand hygiene — reused Direct Ophthalmoscopy animation";
-  const target = path.join(OUT, "1/images");
-  await fs.mkdir(target, { recursive: true });
-  for (const asset of scene.assets) {
-    if (!asset.p || asset.e) continue;
-    await fs.copyFile(
-      path.join(source, asset.u, asset.p),
-      path.join(target, asset.p),
-    );
-    asset.u = "images/";
-  }
-  return scene;
-}
 function equipmentScene() {
   image("01background.webp", 0, 0, { width: W });
 }
@@ -1290,7 +1362,6 @@ async function main() {
     endFrame = stage.seconds * FPS;
     bg();
     const sceneBuilders = [
-      null,
       equipmentScene,
       cottonScene,
       foldScene,
@@ -1302,23 +1373,20 @@ async function main() {
     ];
     await sceneBuilders[index]?.();
     const used = new Set(layers.filter((l) => l.refId).map((l) => l.refId));
-    const json =
-      index === 0
-        ? await hygieneScene()
-        : {
-            v: "5.13.0",
-            fr: FPS,
-            ip: 0,
-            op: endFrame,
-            w: W,
-            h: H,
-            nm: stage.name,
-            ddd: 0,
-            assets: [...A.values()].filter((a) => used.has(a.id)),
-            layers,
-            markers: [],
-          };
-    const dir = path.join(OUT, String(index + 1));
+    const json = {
+      v: "5.13.0",
+      fr: FPS,
+      ip: 0,
+      op: endFrame,
+      w: W,
+      h: H,
+      nm: stage.name,
+      ddd: 0,
+      assets: [...A.values()].filter((a) => used.has(a.id)),
+      layers,
+      markers: [],
+    };
+    const dir = path.join(OUT, String(index + 2));
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(path.join(dir, "data.json"), JSON.stringify(json));
   }
@@ -1351,7 +1419,7 @@ async function main() {
       },
     },
     timingSource:
-      "Nine Lottie scenes, beginning with DO hand hygiene. Folding/taping share stage 04; circle cutting and the single radial slit share stage 08. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
+      "Eight Lottie scenes, beginning with equipment. Hand hygiene has been removed. Folding/taping share one stage; circle cutting and the single radial slit share one stage. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
     cues: stages.flatMap((stage, i) =>
       stage.cues.map(({ offset, end, ...cue }) => ({
         ...cue,

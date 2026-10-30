@@ -6,7 +6,6 @@
       "Cómo hacer un protector ocular"
     ],
     "cues": [
-      "Lávese las manos y póngase el equipo de protección personal.",
       "Necesitará gasa, algodón, cartón, lápiz, taza, cinta adhesiva y tijeras.",
       "Para la almohadilla ocular, extienda una bola de algodón en forma ovalada, de unos cinco a seis centímetros de ancho.",
       "Doble la gasa alrededor del algodón.",
@@ -24,7 +23,6 @@
   "ko": {
     "titles": ["준비", "안대 만들기", "눈 보호대 만들기"],
     "cues": [
-      "손을 씻고 개인 보호구를 착용합니다.",
       "거즈, 솜, 판지, 연필, 컵, 접착테이프와 가위가 필요합니다.",
       "안대를 만들려면 솜뭉치를 펴서 너비가 약 오에서 육 센티미터인 타원 모양으로 만듭니다.",
       "거즈로 솜을 감싸 접습니다.",
@@ -42,7 +40,6 @@
   "ne": {
     "titles": ["तयारी", "आँखाको प्याड बनाउने", "आँखाको सुरक्षा कवच बनाउने"],
     "cues": [
-      "हात धुनुहोस् र व्यक्तिगत सुरक्षा सामग्री लगाउनुहोस्।",
       "गज, कपास, गत्ता, पेन्सिल, कप, टेप र कैंची चाहिन्छ।",
       "आँखाको प्याड बनाउन कपासको डल्लोलाई करिब पाँचदेखि छ सेन्टिमिटर चौडा अण्डाकारमा फैलाउनुहोस्।",
       "कपास वरिपरि गज मोड्नुहोस्।",
@@ -64,7 +61,6 @@
       "Fabriquer une coque de protection"
     ],
     "cues": [
-      "Lavez-vous les mains et mettez votre équipement de protection individuelle.",
       "Il vous faut de la gaze, du coton, du carton, un crayon, une tasse, du ruban adhésif et des ciseaux.",
       "Pour le pansement oculaire, étalez une boule de coton en ovale, d'environ cinq à six centimètres de large.",
       "Repliez la gaze autour du coton.",
@@ -86,7 +82,6 @@
       "Okukola ekikuumi ky'eriiso"
     ],
     "cues": [
-      "Naaba engalo, oyambale eby'okwekuuma.",
       "Weetaaga gauze, ppamba, kaadi, ekkalaamu, ekikopo, teepu ne makansi.",
       "Okukola ppamba y'eriiso, yanjuza akapiira ka ppamba mu ngeri ey'ekigi, nga kagazi sentimita ttaano oba mukaaga.",
       "Zinga gauze ku ppamba.",
@@ -104,7 +99,6 @@
   "ha": {
     "titles": ["Shiri", "Yin audugar rufe ido", "Yin garkuwar ido"],
     "cues": [
-      "Wanke hannuwanka, ka sa kayan kariya.",
       "Kana buƙatar gauze, auduga, kwali, fensir, kofi, tef da almakashi.",
       "Don audugar rufe ido, shimfiɗa ƙwallon auduga ya zama mai siffar ƙwai, faɗinsa santimita biyar zuwa shida.",
       "Nannaɗe gauze a kan audugar.",
@@ -122,7 +116,6 @@
   "yo": {
     "titles": ["Ìmúrasílẹ̀", "Ṣíṣe páàdì ojú", "Ṣíṣe ààbò ojú"],
     "cues": [
-      "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
       "O nílò gáàsì, òwú, káàdì, pẹ́ńsù, ife, téèpù àti scissors.",
       "Fún páàdì ojú, tẹ òwú kan sílẹ̀ ní ìrísí ẹyin, kí ìwọ̀n rẹ̀ jẹ́ sẹ̀ǹtímítà márùn-ún sí mẹ́fà.",
       "Pa gáàsì yí òwú náà ká.",
@@ -140,7 +133,6 @@
   "ig": {
     "titles": ["Nkwadebe", "Ime akwa mkpuchi anya", "Ime ọta anya"],
     "cues": [
-      "Saa aka gị ma yiri ngwa nchebe.",
       "Ị ga-achọ gauze, owu, kaadiboodu, pensụl, iko, teepu na mkpa.",
       "Iji mee akwa mkpuchi anya, gbasaa bọọlụ owu ka ọ dị ka akwa, obosara ya dị sentimita ise ruo isii.",
       "Kechie gauze gburugburu owu ahụ.",

@@ -72,6 +72,16 @@ Fold/tape cues share stage 04; circle/slit cues share stage 08 with the same abs
 11s within the final stage, while its camera moves over local seconds 10.5–14.5.
 
 Source artwork 10–12 shares one cone animation: roll, tape, then camera motion.
+The 30 October scrolly-only revision adds a lifted cut lip and overhead surface
+lighting. It preserves all narration times and the camera path. The separate
+MP4 export is unchanged.
+
+The follow-up uses actual per-language spoken ends from narration QA to skip
+trailing silence in the scrolly. `eyePadShieldScroll.js` retains the source
+125s slots but records last-motion frames and spoken ends for all nine tracks.
+Its `narrationCompletionPauseSeconds: 1.5` reveals controls after both are done.
+Refresh the spoken-end table after voice regeneration; do not trim or retime
+the delivery files or video tracks for this behaviour.
 The PEC video is a 73.73s motion reference, so narration generation skips a review
 video against that source. The WAV master stays local; the cue durations,
 delivery checksum and rate checks are in

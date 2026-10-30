@@ -58,8 +58,7 @@ async function main() {
   const video = structuredClone(script);
   video.sourceVideo = "/videos/FullAnim/MakeEyePadShieldFullAnim_720p.mp4";
   video.durationSeconds += sections.length * seconds;
-  video.timingSource =
-    "The scrolly's 125s timeline with three silent 3s section title cards at scroll times 0, 17 and 59. The video is 134s; the scrolly retains its original clock.";
+  video.timingSource = `The ${script.durationSeconds}s scrolly with three silent ${seconds}s section cards; video is ${video.durationSeconds}s. Hand hygiene is omitted.`;
   const offsetAt = (time) =>
     seconds *
     script.videoTitleCues.filter((title) => title.start <= time).length;

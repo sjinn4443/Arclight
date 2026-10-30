@@ -1,9 +1,9 @@
 # Eye pad and shield narration
 
 Both the scrolly and Full animation support English, Latin American Spanish,
-Korean, Nepali, French, Luganda, Hausa, Yoruba and Igbo. The 13 instructions
+Korean, Nepali, French, Luganda, Hausa, Yoruba and Igbo. The 12 instructions
 retain the supplied procedure's meaning. The scrolly uses `script.json` and
-125s tracks here; the video uses `video/script.json` and 134s tracks in `video/`.
+119s tracks here; the video uses `video/script.json` and 128s tracks in `video/`.
 Three silent 3s cards introduce Preparation, Make an eye pad and Make an eye
 shield. Translated title captions supplement the English titles in the MP4.
 
@@ -35,7 +35,10 @@ node scripts/normalize-eye-pad-shield-narration.cjs
 node scripts/localize-eye-pad-shield-narration.cjs --connect
 ```
 
-Keep the original English scrolly audio unchanged. Cue caches are reused for
+Hand hygiene was removed from all languages on 30 October. The existing voices
+were retained by trimming the retired six-second slot and rebuilding card
+silences with `node scripts/retime-eye-pad-shield-narration.cjs`. The script is
+idempotent after the source manifest is updated to 119s. Cue caches are reused for
 the video, with new delays around title cards. Captions and speech use the
 same media clock, including after seeking. Manifests record bytes and SHA-256
 for both sets of delivery files. WAV masters and timing/loudness QA stay in

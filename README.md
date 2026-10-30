@@ -46,22 +46,19 @@ stage DOM and are separate from workshop article/image reveal pages.
 Source review recorded 7 October 2026; this update documents the implementation
 without changing lesson behaviour.
 
-The Eye Pad / Shield procedure now has a **Make an eye pad and eye shield** scroll
-row immediately below the matching video. Its URL is
-`#/eyePadShield/makeEyePadShieldScrollPage`. Nine Lottie stages begin with the
-existing DO hand-washing animation and use the supplied
-01–12 artwork, with rolling, taping and the change of camera angle in one final
-sequence. Folding and taping share stage 04; circle cutting and the radial slit
-share stage 08. Split holding-hand crops surround the material, visited edges
-trim progressively, and the narration is 125s in nine languages.
-The shield completion cue starts during the camera move. It reuses the same stage
-engine, replay, scroll locks and completion restore, with procedure-owned progress
-and My Learning navigation. A **Full animation** video row follows the scroll row
-at `#/eyePadShield/makeEyePadShieldFullAnimationVideoPage`. Its 134s MP4 renders
-the same nine scenes with three section title cards and 240p/720p quality.
-Both pages offer the same nine narration/caption languages as Front of Eye.
-Video colour range matches the scrolly artwork. Video and scroll narration use
-separate timelines so title cards do not alter scroll playback.
+The Eye Pad / Shield procedure includes **Make an eye pad and eye shield** at
+`#/eyePadShield/makeEyePadShieldScrollPage` and its **Full animation** video at
+`#/eyePadShield/makeEyePadShieldFullAnimationVideoPage`.
+The 30 October revision removes hand hygiene completely. Eight scrolly stages
+start with equipment and retain the twelve procedure instructions in nine
+languages. Source narration is 119s; the video is 128s including three silent
+3s section cards, with regenerated 240p and 720p versions.
+
+The shield paper lifts before overlapping, with its contact shadow ending at
+the lifted edge. The original tape graphic uses an overhead trapezoid projection
+with a wider upper edge, returning to the original final camera pose. Scrolly
+controls appear about 1.5s after both motion and speech finish. Existing progress,
+My Learning, narration menus, section titles and downloads retain their routes.
 See [authoring and checks](./docs/make-eye-pad-shield-scroll.md).
 
 ## Advanced Pupils scroll lesson

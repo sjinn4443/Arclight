@@ -7,17 +7,19 @@ import {
   EYE_PAD_SHIELD_SCROLL_CONFIG as cfg,
   EYE_PAD_SHIELD_STAGES as stages,
   EYE_PAD_SHIELD_SCROLL_TIMING as timing,
+  EYE_PAD_SHIELD_SPEECH_ENDS as speechEnds,
+  EYE_PAD_SHIELD_MOTION_END_FRAMES as motionEnds,
 } from "../public/js/eyePadShieldScroll.js";
 import { frameAtNarrationTime } from "../public/js/examinationScrollTiming.js";
 
 const folder = "public/narration/make-eye-pad-shield/full-animation";
 const script = JSON.parse(fs.readFileSync(`${folder}/script.json`, "utf8"));
 
-test("the twelve references and DO hygiene form nine locally available Lottie stages", () => {
+test("the twelve references form eight local stages without hand hygiene", () => {
   expect(stages.flatMap((stage) => stage.scenes)).toEqual(
     Array.from({ length: 12 }, (_, i) => i + 1),
   );
-  expect(cfg.paths).toHaveLength(9);
+  expect(cfg.paths).toHaveLength(8);
   for (const [index, file] of cfg.paths.entries()) {
     const data = JSON.parse(fs.readFileSync(`public${file}`, "utf8"));
     expect(data.op).toBe(stages[index].seconds * data.fr);
@@ -40,11 +42,7 @@ test("the twelve references and DO hygiene form nine locally available Lottie st
         asset.p,
       );
       expect(fs.statSync(assetFile).size).toBeGreaterThan(0);
-      if (index > 0) expect(Math.max(asset.w, asset.h)).toBeLessThan(2048);
-      else {
-        const original = `public/scrolly/coreexam/ophths/DO/01ObservationandFundalReflex/1/images/${asset.p}`;
-        expect(fs.readFileSync(assetFile)).toEqual(fs.readFileSync(original));
-      }
+      expect(Math.max(asset.w, asset.h)).toBeLessThan(2048);
     }
     expect(
       frameAtNarrationTime(
@@ -67,12 +65,13 @@ test("captions and narration retain every supplied English instruction in order"
     "yo",
     "ig",
   ]);
-  expect(script.cues[0].en).toBe("Wash your hands and don PPE.");
+  expect(script.cues[0].id).toBe("equipment");
+  expect(script.cues.some((c) => c.id === "hygiene")).toBe(false);
   expect(script.cues.some((cue) => cue.id === "introduction")).toBe(false);
   expect(script.cues.some((cue) => cue.id === "prepare")).toBe(false);
-  expect(stages[3].cues.map((cue) => cue.id)).toEqual(["gauze", "pad-tape"]);
-  expect(stages[7].cues.map((cue) => cue.id)).toEqual(["cut", "slit"]);
-  expect(stages[7].seconds).toBe(20);
+  expect(stages[2].cues.map((cue) => cue.id)).toEqual(["gauze", "pad-tape"]);
+  expect(stages[6].cues.map((cue) => cue.id)).toEqual(["cut", "slit"]);
+  expect(stages[6].seconds).toBe(20);
   expect(stages.at(-1).cues[1].offset).toBeGreaterThanOrEqual(315 / 30);
   expect(stages.at(-1).cues[1].offset).toBeLessThan(435 / 30);
   expect(script.cues.find((cue) => cue.id === "finished-pad").en).toBe(
@@ -107,10 +106,37 @@ test("captions and narration retain every supplied English instruction in order"
   ).toHaveLength(script.cues.length);
 });
 
+test("completion skips trailing silence and holds for 1.5s after motion and speech", () => {
+  expect(cfg.narrationCompletionPauseSeconds).toBe(1.5);
+  for (const [i, clip] of cfg.narrationClipsByFile.entries()) {
+    const motionTime = clip.start + motionEnds[i] / 30;
+    const points = timing.stages[i];
+    expect(frameAtNarrationTime(points, motionTime)).toBe(motionEnds[i]);
+    for (const [language, ends] of Object.entries(speechEnds)) {
+      const end = clip.endByLanguage[language];
+      expect(end).toBeGreaterThanOrEqual(ends[i]);
+      expect(end).toBeGreaterThanOrEqual(motionTime);
+      expect(end).toBeLessThanOrEqual(clip.end); // never play the next cue
+      const localizedPoints = [...points.slice(0, -1), [end, points.at(-1)[1]]];
+      expect(frameAtNarrationTime(localizedPoints, end)).toBe(
+        cfg.completionHoldFrameByFile[i],
+      );
+      const contentEnd = Math.max(motionTime, ends[i]);
+      expect(
+        end + cfg.narrationCompletionPauseSeconds - contentEnd,
+      ).toBeGreaterThanOrEqual(1.5);
+      expect(
+        end + cfg.narrationCompletionPauseSeconds - contentEnd,
+      ).toBeLessThan(1.63);
+    }
+  }
+  expect(cfg.narrationClipsByFile.at(-1).endByLanguage.en).toBeCloseTo(112.501);
+});
+
 test("short cutting arcs reveal finished shapes and keep the scissor pieces joined", () => {
   for (const stage of [5, 8]) {
     const data = JSON.parse(
-      fs.readFileSync(`public${cfg.paths[stage - 1]}`, "utf8"),
+      fs.readFileSync(`public${cfg.paths[stage - 2]}`, "utf8"),
     );
     const paper = data.layers.find(
       (layer) =>
@@ -247,10 +273,20 @@ test("rolling, taping and the camera move share one continuous cone scene", () =
   for (const layer of data.layers.filter((layer) =>
     /^(Paper cone facet|Rolling paper flap)/.test(layer.nm),
   )) {
-    expect(layer.shapes[0].it.find((shape) => shape.ty === "fl").c.k).toEqual([
-      0.955, 0.955, 0.955, 1,
-    ]);
+    const color = layer.shapes[0].it.find((shape) => shape.ty === "fl").c;
+    const at = (t) => color.k.find((key) => key.t === t).s;
+    expect(at(45)).toEqual([0.955, 0.955, 0.955, 1]);
+    expect(at(180)[0]).toBeLessThan(at(45)[0]);
+    expect(at(435)).toEqual(at(45));
   }
+  const tones = facets.map(
+    (layer) =>
+      layer.shapes[0].it
+        .find((shape) => shape.ty === "fl")
+        .c.k.find((key) => key.t === 180).s[0],
+  );
+  // The completed overhead cone has directional relief, not a flat white disc.
+  expect(Math.max(...tones) - Math.min(...tones)).toBeGreaterThan(0.15);
   const boundsAt = (t) => {
     const points = facets.flatMap(
       (layer) => layer.shapes[0].it[0].ks.k.find((key) => key.t === t).s[0].v,
@@ -280,6 +316,7 @@ test("rolling, taping and the camera move share one continuous cone scene", () =
   const shadowWidth = Math.hypot(first[0] - last[0], first[1] - last[1]);
   expect(shadowWidth).toBeGreaterThan(30);
   expect(shadowWidth).toBeLessThan(40);
+  const asset = data.assets.find((a) => a.id === tape.refId);
   const attachedTape = tape.ks.p.k.find((key) => key.t === 255).s;
   const tapeRadius = Math.hypot(
     (attachedTape[0] - 584) / 310,
@@ -292,6 +329,26 @@ test("rolling, taping and the camera move share one continuous cone scene", () =
   }
   const movingEdge = data.layers.find(
     (layer) => layer.nm === "Rolling paper flap 11 ring 5",
+  );
+  // Every contact-shadow tip follows the shortened, raised paper edge.
+  for (const t of [60, 75, 90, 105, 120, 135, 150, 165, 180]) {
+    const shadowTip = shapeAt(orderedShadows[0], t)[8];
+    const paperTip = shapeAt(movingEdge, t)[2];
+    expect(shadowTip[0]).toBeCloseTo(paperTip[0], 5);
+    expect(shadowTip[1]).toBeCloseTo(paperTip[1], 5);
+  }
+  const fixedEdge = facets.find((layer) => layer.nm === "Paper cone facet 0");
+  const lifted = shapeAt(movingEdge, 60)[2];
+  const stationary = shapeAt(fixedEdge, 60)[1];
+  // Foreshortening begins before any sideways sweep. A rigid rotation could
+  // not shorten this edge while the opposite side of the slit stays put.
+  expect(lifted[0]).toBeCloseTo(584);
+  expect(Math.abs(stationary[0] - 584)).toBeLessThan(1); // facet edge bleed
+  expect(stationary[1] - lifted[1]).toBeGreaterThan(20);
+  const tip = apex(105);
+  const distance = (p) => Math.hypot(p[0] - tip[0], p[1] - tip[1]);
+  expect(distance(shapeAt(movingEdge, 105)[2])).toBeLessThan(
+    distance(shapeAt(fixedEdge, 105)[1]) * 0.85,
   );
   expect(Math.abs(shapeAt(movingEdge, 45)[2][0] - 584)).toBeLessThan(1);
   expect(shapeAt(movingEdge, 180)[2][0]).toBeLessThan(400);
@@ -316,11 +373,35 @@ test("rolling, taping and the camera move share one continuous cone scene", () =
   expect(tapeShadow.ks.p).toEqual(tape.ks.p);
   expect(tapeShadow.ks.r).toEqual(tape.ks.r);
   const shadowOutline = tapeShadow.shapes[0].it[0].ks.k.v;
-  expect(shadowOutline[0][0]).toBe(tape.masksProperties[0].pt.k.v[0][0] - 10);
+  const tapeOutline = tape.masksProperties[0].pt.k.v;
+  expect(shadowOutline[0][0]).toBe(tapeOutline[0][0] - 10);
+  // The bitmap is unchanged. Only its overhead surface projection differs.
+  expect(asset.p).toBe("11tape.webp");
+  expect(tape.ks.s.k[0].s).toEqual([100, 100, 100]);
+  const strips = data.layers
+    .filter((l) => /^Tape perspective strip/.test(l.nm))
+    .sort(
+      (a, b) => Number(a.nm.split(" ").at(-1)) - Number(b.nm.split(" ").at(-1)),
+    );
+  expect(strips.length).toBeGreaterThan(24);
+  expect(strips[0].ks.s.k[0].s[0]).toBeGreaterThan(
+    strips.at(-1).ks.s.k[0].s[0],
+  );
+  for (const strip of strips) {
+    expect(strip.refId).toBe(tape.refId);
+    expect(strip.op).toBe(435);
+    expect(strip.ks.s.k.at(-1).s).toEqual([125, 90, 100]);
+  }
+  expect(tape.ip).toBe(435);
+  expect(tape.ks.s.k.find((k) => k.t === 435).s).toEqual([125, 90, 100]);
+  expect(tape.ks.r.k.find((k) => k.t === 435).s).toEqual([0]);
+  expect(tape.ks.p.k.find((k) => k.t === 435).s).toEqual([
+    584, 714.1520878171964, 0,
+  ]);
 });
 
 test("the pad tape grazes the gauze's upper edge", async () => {
-  const scene = JSON.parse(fs.readFileSync(`public${cfg.paths[3]}`, "utf8"));
+  const scene = JSON.parse(fs.readFileSync(`public${cfg.paths[2]}`, "utf8"));
   const imageData = async (layer) => {
     const asset = scene.assets.find((a) => a.id === layer.refId);
     return sharp(
@@ -370,7 +451,7 @@ test("the pad tape grazes the gauze's upper edge", async () => {
 });
 
 test("hands retain their source proportions and the slit uses only one upper-blade snip", () => {
-  const cotton = JSON.parse(fs.readFileSync(`public${cfg.paths[2]}`, "utf8"));
+  const cotton = JSON.parse(fs.readFileSync(`public${cfg.paths[1]}`, "utf8"));
   for (const side of ["left", "right"]) {
     const hand = cotton.layers.find(
       (layer) => layer.nm === `02${side}hand.webp`,
@@ -388,7 +469,7 @@ test("hands retain their source proportions and the slit uses only one upper-bla
         hand.ks.p.k[i].s.map((n, axis) => n - thumb.ks.p.k[i].s[axis]),
       ).toEqual(registration);
   }
-  const fold = JSON.parse(fs.readFileSync(`public${cfg.paths[3]}`, "utf8"));
+  const fold = JSON.parse(fs.readFileSync(`public${cfg.paths[2]}`, "utf8"));
   const flap = fold.layers.find((layer) => layer.nm === "03gauze_folding.webp");
   const strips = fold.layers.filter((layer) =>
     /^03gauze_folding/.test(layer.nm),
@@ -456,7 +537,7 @@ test("hands retain their source proportions and the slit uses only one upper-bla
     fold.layers.some((layer) => /02right(hand|thumb)/.test(layer.nm)),
   ).toBe(false);
   expect(fold.layers.some((layer) => layer.nm === "03tape.webp")).toBe(true);
-  const slit = JSON.parse(fs.readFileSync(`public${cfg.paths[7]}`, "utf8"));
+  const slit = JSON.parse(fs.readFileSync(`public${cfg.paths[6]}`, "utf8"));
   const upper = slit.layers.find(
     (layer) => layer.nm === "scissorupperhand.png",
   );
@@ -476,7 +557,7 @@ test("hands retain their source proportions and the slit uses only one upper-bla
 });
 
 test("choosing cardboard holds only the box illustration", () => {
-  const data = JSON.parse(fs.readFileSync(`public${cfg.paths[5]}`, "utf8"));
+  const data = JSON.parse(fs.readFileSync(`public${cfg.paths[4]}`, "utf8"));
   expect(data.layers.map((layer) => layer.nm)).toEqual([
     "05cardboard.webp",
     "othersbackground.webp",
@@ -487,7 +568,7 @@ test("choosing cardboard holds only the box illustration", () => {
 });
 
 test("the pencil graphite and the growing ellipse share a continuous path", () => {
-  const data = JSON.parse(fs.readFileSync(`public${cfg.paths[6]}`, "utf8"));
+  const data = JSON.parse(fs.readFileSync(`public${cfg.paths[5]}`, "utf8"));
   const circle = data.layers.find((layer) => layer.nm === "Pencil circle");
   const points = circle.shapes[0].it[0].ks.k.v;
   const trim = circle.shapes[0].it.find((shape) => shape.ty === "tm").e.k;
