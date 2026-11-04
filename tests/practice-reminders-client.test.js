@@ -137,6 +137,21 @@ describe("Practice reminder permissions and offline state", () => {
     expect(subscription.unsubscribe).toHaveBeenCalled();
     registration.pushManager.getSubscription.mockResolvedValue(subscription);
   });
+  test("database unavailability is explained before asking for phone permission", async () => {
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ available: false, reason: "storage_unavailable" }),
+    });
+    settings();
+    await flush();
+    await expect(reminders.enablePracticeReminders()).rejects.toThrow(
+      "database",
+    );
+    expect(
+      document.getElementById("practiceReminderStatus").textContent,
+    ).toContain("database");
+    expect(notification.requestPermission).not.toHaveBeenCalled();
+  });
   test("offline opt-out is persisted and deletes the server record on reconnect", async () => {
     localStorage.setItem(
       KEY,

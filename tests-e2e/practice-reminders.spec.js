@@ -5,6 +5,11 @@ test.beforeEach(async ({ page }) => {
     localStorage.setItem("arclight:onboarded", "1");
     localStorage.setItem("language", "en");
     localStorage.setItem("settings:notifications", "true");
+    // Model an installed iOS Home Screen app; permission/subscription are mocked.
+    Object.defineProperty(navigator, "standalone", {
+      configurable: true,
+      value: true,
+    });
     window.__reminderRequests = 0;
     let permission = JSON.parse(
       localStorage.getItem("arclight:practice-reminders:v1") || "{}",
@@ -110,6 +115,22 @@ test("unconfigured push does not request permission or enable the toggle", async
     "aria-pressed",
     "false",
   );
+  expect(await page.evaluate(() => window.__reminderRequests)).toBe(0);
+});
+
+test("server database problems display an actionable message without requesting phone permission", async ({
+  page,
+}) => {
+  await page.route("**/api/reminders/config", (route) =>
+    route.fulfill({
+      json: { available: false, reason: "storage_unavailable" },
+    }),
+  );
+  await page.goto("/#/settings");
+  await expect(page.locator("#practiceReminderStatus")).toContainText(
+    "database",
+  );
+  await page.locator("#settingsNotificationsToggle").click();
   expect(await page.evaluate(() => window.__reminderRequests)).toBe(0);
 });
 

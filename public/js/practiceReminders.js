@@ -21,6 +21,15 @@ const watchedFrames = new WeakSet();
 let mutationQueue = Promise.resolve();
 let mediaSeconds = 0;
 const copy = (text) => translateLiteral(text, text);
+function unavailableMessage() {
+  if (config?.reason === "disabled")
+    return "Practice reminders are turned off on the server.";
+  if (config?.reason === "configuration_invalid")
+    return "The notification server configuration needs attention. Please contact support.";
+  if (config?.reason === "storage_unavailable")
+    return "The notification server could not connect to its database. Please try again later.";
+  return "Practice reminders are not available yet. Please try again later.";
+}
 
 export function readReminderState() {
   try {
@@ -128,10 +137,7 @@ async function upload(state, subscription, { enabling = false } = {}) {
 export async function enablePracticeReminders() {
   const unsupported = supportMessage();
   if (unsupported) throw new Error(unsupported);
-  if (!config?.available)
-    throw new Error(
-      "Practice reminders are not available yet. Please try again later.",
-    );
+  if (!config?.available) throw new Error(unavailableMessage());
   // Call before any await: iOS requires permission requests in a user gesture.
   const permission =
     Notification.permission === "granted"
@@ -227,7 +233,7 @@ export function renderReminderSettings() {
       ? "Reminders are off on this device. Reconnect to finish turning them off on the server."
       : supportMessage() ||
           (config?.available === false
-            ? "Practice reminders are not available yet. Please try again later."
+            ? unavailableMessage()
             : on
               ? "Reminders after 1, 3, 7 and 30 days without practice, at your local time. Then they pause until you practise again."
               : "Choose gentle reminders after 1, 3, 7 and 30 days without practice."),

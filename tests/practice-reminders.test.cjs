@@ -162,6 +162,7 @@ describe("Practice reminder API", () => {
     disabled.use(createReminderRouter({ store, config: () => null }));
     expect((await request(disabled).get("/config")).body).toEqual({
       available: false,
+      reason: "disabled",
     });
     const keys = require("web-push").generateVAPIDKeys();
     const savedEnv = { ...process.env };

@@ -26,10 +26,16 @@ practice reminders. DST uses the saved IANA timezone, refreshed when the app syn
 ## Server setup
 
 1. Install dependencies normally (`npm ci`).
-2. Run `node scripts/generate-web-push-keys.cjs` once. Set the generated
-   `WEB_PUSH_PUBLIC_KEY` and `WEB_PUSH_PRIVATE_KEY` in the server environment.
-   Retain the same keys across deployments; changing them requires resubscription.
-3. Set `WEB_PUSH_SUBJECT` to a real contact mailto URL and `WEB_PUSH_ENABLED=true`.
+2. With working persistent storage, Web Push now initializes automatically when
+   manual keys are absent. One VAPID key pair is stored in the private
+   `practice_reminder_settings` database table (or the encrypted development
+   store), shared across replicas and reused after restarts and deployments.
+   The default contact is `mailto:support@arclightproject.com`.
+3. Optionally override the contact with `WEB_PUSH_SUBJECT`. To use managed keys,
+   set all three of `WEB_PUSH_PUBLIC_KEY`, `WEB_PUSH_PRIVATE_KEY` and
+   `WEB_PUSH_SUBJECT`; incomplete/invalid overrides fail closed. Retain keys
+   across deployments. Set `WEB_PUSH_ENABLED=false` to explicitly disable push.
+   An unset flag or `true` permits automatic setup; device consent is still required.
 4. Configure `DATABASE_URL` with permission to create `practice_reminders`.
    Production requires Postgres. Local development may use the existing
    `ENCRYPTION_SECRET` and an encrypted file; `REMINDER_STORAGE=file` selects it
@@ -40,9 +46,13 @@ practice reminders. DST uses the saved IANA timezone, refreshed when the app syn
 6. Deploy over HTTPS. On iOS/iPadOS 16.4+, add Arclight to the Home Screen and
    open that installation. Allow outbound HTTPS to browser push providers.
 
-Without working configuration/storage, the client reports that reminders are
-unavailable and does not ask for notification permission. The public config
+Without working configuration/storage, the client reports the reason and does
+not ask for notification permission. `/api/reminders/config` distinguishes
+`disabled`, `configuration_invalid`, and `storage_unavailable`, without exposing
+internal errors or credentials. The public config
 endpoint exposes only the public VAPID key. The private key is never bundled.
+Restrict the settings table to the application's DB role and protected backups;
+it contains the server's private signing key. Losing it requires resubscription.
 
 ## Data and delivery
 

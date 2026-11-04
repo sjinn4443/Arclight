@@ -1,6 +1,7 @@
 const crypto = require("node:crypto");
 const fs = require("node:fs/promises");
 const path = require("node:path");
+const PUSH_CONFIG_ID = "__web_push_config";
 
 // The callback serializes updates and delivery for each device. Production uses
 // row locks so multiple app replicas cannot send the same milestone concurrently.
@@ -39,7 +40,13 @@ function createMemoryReminderStore({ file, encrypt, decrypt } = {}) {
     async ready() {
       await run(() => {});
     },
-    ids: () => run((db) => Object.keys(db)),
+    ids: () =>
+      run((db) => Object.keys(db).filter((id) => id !== PUSH_CONFIG_ID)),
+    getOrCreatePushConfig: (create) =>
+      run((db) => {
+        db[PUSH_CONFIG_ID] ||= create();
+        return structuredClone(db[PUSH_CONFIG_ID]);
+      }),
     mutate: (id, operation) =>
       run(async (db) => {
         const next = await operation(db[id] || null);
@@ -91,6 +98,9 @@ function createPostgresReminderStore(connectionString) {
       .query(
         `CREATE TABLE IF NOT EXISTS practice_reminders (
     id TEXT PRIMARY KEY, endpoint_hash TEXT UNIQUE NOT NULL, data JSONB NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS practice_reminder_settings (
+    id TEXT PRIMARY KEY, data JSONB NOT NULL
   )`,
       )
       .catch((error) => {
@@ -99,6 +109,24 @@ function createPostgresReminderStore(connectionString) {
       }));
   return {
     ready,
+    async getOrCreatePushConfig(create) {
+      await ready();
+      const existing = (
+        await pool.query(
+          "SELECT data FROM practice_reminder_settings WHERE id=$1",
+          [PUSH_CONFIG_ID],
+        )
+      ).rows[0];
+      if (existing) return existing.data;
+      // Concurrent replicas retain the winning key pair rather than rotating it.
+      return (
+        await pool.query(
+          `INSERT INTO practice_reminder_settings (id, data) VALUES ($1,$2)
+        ON CONFLICT (id) DO UPDATE SET id=EXCLUDED.id RETURNING data`,
+          [PUSH_CONFIG_ID, JSON.stringify(create())],
+        )
+      ).rows[0].data;
+    },
     async ids() {
       await ready();
       return (

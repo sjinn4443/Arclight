@@ -31,6 +31,13 @@ export default defineConfig({
       },
   projects: [
     {
+      name: "iphone-13-mini",
+      // Validate the installed iOS notification settings; the synthetic iframe
+      // practice fixture below remains covered by the existing Chromium projects.
+      grep: /settings opt in|unconfigured push|server database problems/,
+      use: { ...devices["iPhone 13 Mini"], browserName: "webkit" },
+    },
+    {
       name: "desktop",
       use: {
         browserName: "chromium",

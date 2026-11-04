@@ -3,30 +3,16 @@ const crypto = require("node:crypto");
 const rateLimit = require("express-rate-limit");
 const { getReminderStore } = require("../storage/reminder-store.cjs");
 const {
+  readPushConfig,
+  resolvePushConfig,
+} = require("../utils/web-push-config.cjs");
+const {
   validTimezone,
   safePracticeUrl,
 } = require("../utils/practice-reminder-policy.cjs");
 
 const digest = (value) =>
   crypto.createHash("sha256").update(value).digest("hex");
-function readPushConfig() {
-  const publicKey = process.env.WEB_PUSH_PUBLIC_KEY || "";
-  const privateKey = process.env.WEB_PUSH_PRIVATE_KEY || "";
-  const subject = process.env.WEB_PUSH_SUBJECT || "";
-  if (
-    process.env.WEB_PUSH_ENABLED !== "true" ||
-    !publicKey ||
-    !privateKey ||
-    !subject
-  )
-    return null;
-  try {
-    require("web-push").setVapidDetails(subject, publicKey, privateKey);
-    return { publicKey, privateKey, subject };
-  } catch {
-    return null;
-  }
-}
 function validSubscription(input) {
   if (
     !input ||
@@ -78,12 +64,11 @@ function sameOrigin(req) {
     return false;
   }
 }
-function createReminderRouter({
-  store: providedStore,
-  config = readPushConfig,
-} = {}) {
+function createReminderRouter({ store: providedStore, config } = {}) {
   const router = express.Router();
   const store = () => providedStore || getReminderStore();
+  const configuration = () =>
+    config ? config() : resolvePushConfig({ store: providedStore });
   const limit = rateLimit({
     windowMs: 15 * 60000,
     limit: 120,
@@ -95,13 +80,16 @@ function createReminderRouter({
     next();
   });
   router.get("/config", async (_req, res) => {
-    const details = config();
-    if (!details) return res.json({ available: false });
     try {
+      const details = await configuration();
+      if (!details) return res.json({ available: false, reason: "disabled" });
       await store().ready();
       return res.json({ available: true, publicKey: details.publicKey });
-    } catch {
-      return res.json({ available: false });
+    } catch (error) {
+      return res.json({
+        available: false,
+        reason: error.reason || "storage_unavailable",
+      });
     }
   });
   router.use(limit);
@@ -128,7 +116,7 @@ function createReminderRouter({
   router.put(
     "/subscription",
     action(async (req, res) => {
-      if (!config())
+      if (!(await configuration()))
         return res.status(503).json({ error: "reminders_unavailable" });
       const { subscription, timezone, reminderTime, lastPracticedAt } =
         req.body;

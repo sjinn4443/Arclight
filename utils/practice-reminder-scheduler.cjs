@@ -1,5 +1,5 @@
 const { getReminderStore } = require("../storage/reminder-store.cjs");
-const { readPushConfig } = require("../security/reminder-api.cjs");
+const { resolvePushConfig } = require("./web-push-config.cjs");
 const {
   dueMilestone,
   MESSAGES,
@@ -36,16 +36,17 @@ async function dispatchPracticeReminders({ store, send, now = Date.now() }) {
 }
 
 function startPracticeReminderScheduler() {
-  const config = readPushConfig();
-  if (!config) return () => {};
   const webpush = require("web-push");
   let running = false;
   const tick = async () => {
     if (running) return;
     running = true;
     try {
+      const store = getReminderStore();
+      const config = await resolvePushConfig({ store });
+      if (!config) return;
       await dispatchPracticeReminders({
-        store: getReminderStore(),
+        store,
         send: (subscription, payload) =>
           webpush.sendNotification(subscription, payload, {
             vapidDetails: config,
