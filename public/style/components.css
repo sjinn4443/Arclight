@@ -3753,7 +3753,7 @@ input:checked + .slider:before {
 /* Case study chat                               */
 /* ============================================= */
 
-#caseStudyChatPagePrimary .casechat,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat,
 
 
 /* ============================================= */
@@ -3767,7 +3767,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-back,
-#caseStudyChatPagePrimary .casechat-back,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-back,
 #caseStudyChatPageAdvanced .casechat-back {
   width: 34px;
   height: 34px;
@@ -3783,7 +3783,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-log,
 #caseStudyChatPage .casechat-log,
-#caseStudyChatPagePrimary .casechat-log,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-log,
 #caseStudyChatPageAdvanced .casechat-log {
   background: transparent;
   border-radius: 0;
@@ -3794,23 +3794,23 @@ input:checked + .slider:before {
 }
 
 /* Primary chat: bottom space + timer smooth animation */
-#caseStudyChatPagePrimary .casechat-log {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-log {
   padding: 4px 0 63px;
 }
 
-#caseStudyChatPagePrimary .caseTimer__fg {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .caseTimer__fg {
   transition:
     stroke-dashoffset 1s linear,
     stroke 150ms linear;
 }
 
-#caseStudyChatPagePrimary .caseTimer__text {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .caseTimer__text {
   transition: fill 150ms linear;
 }
 
 #glaucomaHistoryCaseStudy .casechat-bubble--system,
 #caseStudyChatPage .casechat-bubble--system,
-#caseStudyChatPagePrimary .casechat-bubble--system,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--system,
 #caseStudyChatPageAdvanced .casechat-bubble--system {
   justify-content: center;
 }
@@ -3821,7 +3821,7 @@ input:checked + .slider:before {
 
 
 /* ===== Chat bubbles: match screenshot ===== */
-#caseStudyChatPagePrimary .casechat-bubble,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble,
 
 
 /* ===== Chat bubbles: match screenshot ===== */
@@ -3836,7 +3836,7 @@ input:checked + .slider:before {
 
 
 /* 사용자(칩을 누른 질문) = 오른쪽 */
-#caseStudyChatPagePrimary .casechat-bubble--user,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--user,
 
 
 /* 사용자(칩을 누른 질문) = 오른쪽 */
@@ -3850,7 +3850,7 @@ input:checked + .slider:before {
 
 
 /* 봇(환자 답변) = 왼쪽 */
-#caseStudyChatPagePrimary .casechat-bubble--bot,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--bot,
 
 
 /* 봇(환자 답변) = 왼쪽 */
@@ -3864,7 +3864,7 @@ input:checked + .slider:before {
 
 
 /* 말풍선 기본 */
-#caseStudyChatPagePrimary .casechat-text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-text,
 
 
 /* 말풍선 기본 */
@@ -3886,7 +3886,7 @@ input:checked + .slider:before {
 
 
 /* 사용자(오른쪽) 말풍선 꼬리 */
-#caseStudyChatPagePrimary .casechat-bubble--user .casechat-text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--user .casechat-text,
 
 
 /* 사용자(오른쪽) 말풍선 꼬리 */
@@ -3897,7 +3897,9 @@ input:checked + .slider:before {
 }
 #glaucomaHistoryCaseStudy .casechat-bubble--user .casechat-text::after,
 #caseStudyChatPage .casechat-bubble--user .casechat-text::after,
-#caseStudyChatPagePrimary .casechat-bubble--user .casechat-text::after,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-bubble--user
+  .casechat-text::after,
 #caseStudyChatPageAdvanced .casechat-bubble--user .casechat-text::after {
   content: "";
   position: absolute;
@@ -3917,7 +3919,7 @@ input:checked + .slider:before {
 
 
 /* 봇(왼쪽) 말풍선 = 검정 */
-#caseStudyChatPagePrimary .casechat-bubble--bot .casechat-text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--bot .casechat-text,
 
 
 /* 봇(왼쪽) 말풍선 = 검정 */
@@ -3928,7 +3930,9 @@ input:checked + .slider:before {
 }
 #glaucomaHistoryCaseStudy .casechat-bubble--bot .casechat-text::after,
 #caseStudyChatPage .casechat-bubble--bot .casechat-text::after,
-#caseStudyChatPagePrimary .casechat-bubble--bot .casechat-text::after,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-bubble--bot
+  .casechat-text::after,
 #caseStudyChatPageAdvanced .casechat-bubble--bot .casechat-text::after {
   content: "";
   position: absolute;
@@ -3947,7 +3951,7 @@ input:checked + .slider:before {
 
 
 /* system 메시지(가운데) */
-#caseStudyChatPagePrimary .casechat-system,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-system,
 
 
 /* system 메시지(가운데) */
@@ -3960,7 +3964,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-system,
-#caseStudyChatPagePrimary .casechat-system,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-system,
 #caseStudyChatPageAdvanced .casechat-system {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.55);
@@ -3969,7 +3973,9 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-system .casechat-caseindex,
-#caseStudyChatPagePrimary .casechat-system .casechat-caseindex,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-system
+  .casechat-caseindex,
 #caseStudyChatPageAdvanced .casechat-system .casechat-caseindex {
   display: block;
   font-size: 14px; /* 원하는 크기로 */
@@ -3979,7 +3985,9 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-system .casechat-firstprompt,
-#caseStudyChatPagePrimary .casechat-system .casechat-firstprompt,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-system
+  .casechat-firstprompt,
 #caseStudyChatPageAdvanced .casechat-system .casechat-firstprompt {
   display: block;
   margin-top: 6px;
@@ -3992,7 +4000,7 @@ input:checked + .slider:before {
 
 
 /* (1/10)만 더 연하게: 아래 Take a history와 비슷한 톤 */
-#caseStudyChatPagePrimary .casechat-system .casechat-casecount,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-system .casechat-casecount,
 
 
 /* (1/10)만 더 연하게: 아래 Take a history와 비슷한 톤 */
@@ -4003,7 +4011,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-botstack,
-#caseStudyChatPagePrimary .casechat-botstack,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-botstack,
 #caseStudyChatPageAdvanced .casechat-botstack {
   display: flex;
   flex-direction: column;
@@ -4012,7 +4020,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-img,
-#caseStudyChatPagePrimary .casechat-img,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-img,
 #caseStudyChatPageAdvanced .casechat-img {
   height: auto;
   border-radius: 23px;
@@ -4025,7 +4033,7 @@ input:checked + .slider:before {
 
 
 /* Case image: centre it and add a bit of top spacing */
-#caseStudyChatPagePrimary .casechat-imgwrap,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgwrap,
 
 
 /* Case image: centre it and add a bit of top spacing */
@@ -4037,7 +4045,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-img,
-#caseStudyChatPagePrimary .casechat-img,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-img,
 #caseStudyChatPageAdvanced .casechat-img {
   width: 100%;
   height: auto;
@@ -4049,7 +4057,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-choices,
 #caseStudyChatPage .casechat-choices,
-#caseStudyChatPagePrimary .casechat-choices,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-choices,
 #caseStudyChatPageAdvanced .casechat-choices {
   display: flex;
   flex-wrap: wrap;
@@ -4062,7 +4070,7 @@ input:checked + .slider:before {
 
 
 /* ✅ chips panel should be hidden on first entry */
-#caseStudyChatPagePrimary #caseChatChoices[hidden],
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatChoices[hidden],
 
 
 /* ✅ chips panel should be hidden on first entry */
@@ -4072,7 +4080,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-chip,
 #caseStudyChatPage .casechat-chip,
-#caseStudyChatPagePrimary .casechat-chip,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-chip,
 #caseStudyChatPageAdvanced .casechat-chip {
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #fff;
@@ -4083,14 +4091,14 @@ input:checked + .slider:before {
 }
 #glaucomaHistoryCaseStudy .casechat-chip:disabled,
 #caseStudyChatPage .casechat-chip:disabled,
-#caseStudyChatPagePrimary .casechat-chip:disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-chip:disabled,
 #caseStudyChatPageAdvanced .casechat-chip:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
 
 #caseStudyChatPage .casechat-submit,
-#caseStudyChatPagePrimary .casechat-submit,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-submit,
 #caseStudyChatPageAdvanced .casechat-submit {
   width: 100%;
   border: 0;
@@ -4103,7 +4111,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-submit:disabled,
-#caseStudyChatPagePrimary .casechat-submit:disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-submit:disabled,
 #caseStudyChatPageAdvanced .casechat-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -4115,7 +4123,7 @@ input:checked + .slider:before {
 
 
 /* Modals */
-#caseStudyChatPagePrimary .casechat-modal,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal,
 
 
 /* Modals */
@@ -4133,7 +4141,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-modal[hidden],
 #caseStudyChatPage .casechat-modal[hidden],
-#caseStudyChatPagePrimary .casechat-modal[hidden],
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal[hidden],
 #caseStudyChatPageAdvanced .casechat-modal[hidden] {
   display: none !important;
 }
@@ -4157,7 +4165,7 @@ input:checked + .slider:before {
   position: relative;
 }
 
-#caseStudyChatPagePrimary .casechat-modalCard {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modalCard {
   background: #fff;
   width: min(79vw, 440px);
   border-radius: 14px;
@@ -4168,7 +4176,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-modalTop,
 #caseStudyChatPage .casechat-modalTop,
-#caseStudyChatPagePrimary .casechat-modalTop,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modalTop,
 #caseStudyChatPageAdvanced .casechat-modalTop {
   display: flex;
   align-items: center;
@@ -4185,7 +4193,7 @@ input:checked + .slider:before {
   color: #111;
 }
 
-#caseStudyChatPagePrimary .casechat-modalTitle {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modalTitle {
   font-weight: 750;
   font-size: 16px;
   color: #111;
@@ -4196,7 +4204,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-modalClose,
 #caseStudyChatPage .casechat-modalClose,
-#caseStudyChatPagePrimary .casechat-modalClose,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modalClose,
 #caseStudyChatPageAdvanced .casechat-modalClose {
   border: 0;
   background: transparent;
@@ -4206,7 +4214,7 @@ input:checked + .slider:before {
   color: #666;
 }
 
-#caseStudyChatPagePrimary .casechat-modalClos {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modalClos {
   border: 0;
   background: transparent;
   font-size: 26px;
@@ -4217,7 +4225,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-dxlist,
-#caseStudyChatPagePrimary .casechat-dxlist,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxlist,
 #caseStudyChatPageAdvanced .casechat-dxlist {
   display: flex;
   flex-direction: column;
@@ -4230,7 +4238,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-dxitem,
-#caseStudyChatPagePrimary .casechat-dxitem,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem,
 #caseStudyChatPageAdvanced .casechat-dxitem {
   text-align: start;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -4241,7 +4249,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-resultOk,
-#caseStudyChatPagePrimary .casechat-resultOk,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-resultOk,
 #caseStudyChatPageAdvanced .casechat-resultOk {
   margin: 23px 0 11px;
 }
@@ -4261,7 +4269,7 @@ input:checked + .slider:before {
   margin-top: 16px;
 }
 
-#caseStudyChatPagePrimary .casechat-resultWhy {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-resultWhy {
   color: #333;
   font-size: 14px;
   line-height: 1.4;
@@ -4270,7 +4278,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-next,
-#caseStudyChatPagePrimary .casechat-next,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-next,
 #caseStudyChatPageAdvanced .casechat-next {
   width: 100%;
   margin-top: 14px;
@@ -4288,7 +4296,7 @@ input:checked + .slider:before {
 
 
 /* Try again feedback + shake */
-#caseStudyChatPagePrimary .casechat-tryagain,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-tryagain,
 
 
 /* Try again feedback + shake */
@@ -4327,7 +4335,7 @@ input:checked + .slider:before {
   }
 }
 #caseStudyChatPage .casechat-modalCard.shake,
-#caseStudyChatPagePrimary .casechat-modalCard.shake,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modalCard.shake,
 #caseStudyChatPageAdvanced .casechat-modalCard.shake {
   animation: casechatShake 0.35s ease-in-out;
 }
@@ -4337,7 +4345,7 @@ input:checked + .slider:before {
 
 
 /* ===== Case study chat: overall page polish ===== */
-#caseStudyChatPagePrimary .container.pupils-container,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .container.pupils-container,
 
 
 /* ===== Case study chat: overall page polish ===== */
@@ -4353,7 +4361,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-header,
-#caseStudyChatPagePrimary .casechat-header,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-header,
 #caseStudyChatPageAdvanced .casechat-header {
   display: flex;
   align-items: center;
@@ -4367,7 +4375,7 @@ input:checked + .slider:before {
 
 
 /* (선택) “First Case” 같은 상단 텍스트 느낌 */
-#caseStudyChatPagePrimary .pupils-subtitle,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .pupils-subtitle,
 
 
 /* (선택) “First Case” 같은 상단 텍스트 느낌 */
@@ -4381,7 +4389,7 @@ input:checked + .slider:before {
 
 
 /* ===== Case image: small card style like screenshot ===== */
-#caseStudyChatPagePrimary .casechat-image-wrap,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-image-wrap,
 
 
 /* ===== Case image: small card style like screenshot ===== */
@@ -4392,7 +4400,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage #caseChatImage,
-#caseStudyChatPagePrimary #caseChatImage,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatImage,
 #caseStudyChatPageAdvanced #caseChatImage {
   width: 120px !important;
   height: auto !important;
@@ -4402,7 +4410,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-confirm__text,
-#caseStudyChatPagePrimary .casechat-confirm__text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-confirm__text,
 #caseStudyChatPageAdvanced .casechat-confirm__text {
   font-size: 13px;
   color: #333;
@@ -4411,7 +4419,8 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-confirm__actions,
-#caseStudyChatPagePrimary .casechat-confirm__actions,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-confirm__actions,
 #caseStudyChatPageAdvanced .casechat-confirm__actions {
   display: flex;
   gap: 10px;
@@ -4419,7 +4428,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-confirm__btn,
-#caseStudyChatPagePrimary .casechat-confirm__btn,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-confirm__btn,
 #caseStudyChatPageAdvanced .casechat-confirm__btn {
   width: 100% !important; /* 두 버튼 반반 */
   margin: 0 !important;
@@ -4434,13 +4443,15 @@ input:checked + .slider:before {
   color: #111 !important;
 }
 
-#caseStudyChatPagePrimary .casechat-confirm__btn.is-cancel {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-confirm__btn.is-cancel {
   background: #e41e26 !important;
   color: #111 !important;
 }
 
 #caseStudyChatPage .casechat-confirm__btn.is-ok,
-#caseStudyChatPagePrimary .casechat-confirm__btn.is-ok,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-confirm__btn.is-ok,
 #caseStudyChatPageAdvanced .casechat-confirm__btn.is-ok {
   background: #e41e26 !important;
   color: #fff !important;
@@ -4463,7 +4474,7 @@ input:checked + .slider:before {
 }
 
 /* ===== Bottom panel (chips + submit) ===== */
-#caseStudyChatPagePrimary #caseChatChoices,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatChoices,
 
 
 /* ===== Bottom panel (chips + submit) ===== */
@@ -4488,7 +4499,7 @@ input:checked + .slider:before {
 
 
 /* 칩 버튼을 사진처럼 pill */
-#caseStudyChatPagePrimary .casechat-chip,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-chip,
 
 
 /* 칩 버튼을 사진처럼 pill */
@@ -4505,7 +4516,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-chip:active,
 #caseStudyChatPage .casechat-chip:active,
-#caseStudyChatPagePrimary .casechat-chip:active,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-chip:active,
 #caseStudyChatPageAdvanced .casechat-chip:active {
   transform: translateY(1px);
 }
@@ -4516,7 +4527,7 @@ input:checked + .slider:before {
 
 
 /* Submit 버튼: 오른쪽 위에 빨간 pill */
-#caseStudyChatPagePrimary .casechat-footer,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-footer,
 
 
 /* Submit 버튼: 오른쪽 위에 빨간 pill */
@@ -4533,7 +4544,7 @@ input:checked + .slider:before {
 
 
 /* 버튼만 클릭 가능하게 */
-#caseStudyChatPagePrimary #caseChatSubmitBtn,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatSubmitBtn,
 
 
 /* 버튼만 클릭 가능하게 */
@@ -4559,7 +4570,7 @@ input:checked + .slider:before {
 
 
 /* disabled 상태 */
-#caseStudyChatPagePrimary #caseChatSubmitBtn:disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatSubmitBtn:disabled,
 
 
 /* disabled 상태 */
@@ -4714,7 +4725,7 @@ input:checked + .slider:before {
 /* Case study chat polish (to match reference screenshot)                  */
 /* ======================================================================= */
 
-#caseStudyChatPagePrimary,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage),
 
 
 /* ======================================================================= */
@@ -4730,7 +4741,7 @@ input:checked + .slider:before {
 
 
 /* ----- Top quiz header (Quiz | submit answer >) ----- */
-#caseStudyChatPagePrimary .casechat-quizheader,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-quizheader,
 
 
 /* ----- Top quiz header (Quiz | submit answer >) ----- */
@@ -4744,7 +4755,7 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-quizheader__row,
-#caseStudyChatPagePrimary .casechat-quizheader__row,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-quizheader__row,
 #caseStudyChatPageAdvanced .casechat-quizheader__row {
   display: grid;
   grid-template-columns: 40px 1fr auto;
@@ -4752,7 +4763,8 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-quizheader__back,
-#caseStudyChatPagePrimary .casechat-quizheader__back,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-quizheader__back,
 #caseStudyChatPageAdvanced .casechat-quizheader__back {
   width: 34px !important;
   height: 34px !important;
@@ -4767,7 +4779,8 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-quizheader__title,
-#caseStudyChatPagePrimary .casechat-quizheader__title,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-quizheader__title,
 #caseStudyChatPageAdvanced .casechat-quizheader__title {
   text-align: center;
   font-size: 16px;
@@ -4776,7 +4789,8 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-quizheader__submit,
-#caseStudyChatPagePrimary .casechat-quizheader__submit,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-quizheader__submit,
 #caseStudyChatPageAdvanced .casechat-quizheader__submit {
   width: auto !important;
   margin: 0 !important;
@@ -4790,7 +4804,9 @@ input:checked + .slider:before {
 }
 
 #caseStudyChatPage .casechat-quizheader__submit .chev,
-#caseStudyChatPagePrimary .casechat-quizheader__submit .chev,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-quizheader__submit
+  .chev,
 #caseStudyChatPageAdvanced .casechat-quizheader__submit .chev {
   margin-inline-start: 4px;
 }
@@ -4801,7 +4817,7 @@ input:checked + .slider:before {
 
 
 /* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
-#caseStudyChatPagePrimary .casechat-log,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-log,
 
 
 /* ----- Chat log spacing so it doesn't hide behind the bottom sheet ----- */
@@ -4812,7 +4828,7 @@ input:checked + .slider:before {
 
 #glaucomaHistoryCaseStudy .casechat-log,
 #caseStudyChatPage .casechat-log,
-#caseStudyChatPagePrimary .casechat-log,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-log,
 #caseStudyChatPageAdvanced .casechat-log {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -4826,7 +4842,10 @@ input:checked + .slider:before {
 
 subtle */
 #caseStudyChatPage .casechat-bubble--system,
-subtle */ #caseStudyChatPagePrimary .casechat-bubble--system,
+subtle
+  */
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-bubble--system,
 subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
   justify-content: center;
 }
@@ -4838,7 +4857,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
   padding: 8px 0;
 }
 
-#caseStudyChatPagePrimary .casechat-system {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-system {
   font-size: 13px;
   font-weight: 400;
   color: #000;
@@ -4852,7 +4871,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 
 /* Bot/User bubbles polish */
-#caseStudyChatPagePrimary .casechat-bubble--bot .casechat-text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--bot .casechat-text,
 
 
 /* Bot/User bubbles polish */
@@ -4866,7 +4885,9 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 }
 #glaucomaHistoryCaseStudy .casechat-bubble--user .casechat-text,
 #caseStudyChatPage .casechat-bubble--user .casechat-text,
-#caseStudyChatPagePrimary .casechat-bubble--user .casechat-text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-bubble--user
+  .casechat-text,
 #caseStudyChatPageAdvanced .casechat-bubble--user .casechat-text {
   background: #111;
   color: #fff;
@@ -4880,7 +4901,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 
 /* Case image */
-#caseStudyChatPagePrimary .casechat-image-wrap,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-image-wrap,
 
 
 /* Case image */
@@ -4889,7 +4910,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
   background: transparent !important;
 }
 #caseStudyChatPage #caseChatImage,
-#caseStudyChatPagePrimary #caseChatImage,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatImage,
 #caseStudyChatPageAdvanced #caseChatImage {
   width: 120px;
   height: auto;
@@ -4905,7 +4926,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 /* ----- Bottom sheet (chips panel) ----- */
 
-#caseStudyChatPagePrimary #caseChatSubmitBtn.casechat-submitpill,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatSubmitBtn.casechat-submitpill,
 
 
 /* ----- Bottom sheet (chips panel) ----- */
@@ -4928,7 +4949,8 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 #glaucomaHistoryCaseStudy #caseChatSubmitBtn.casechat-submitpill:disabled,
 #caseStudyChatPage #caseChatSubmitBtn.casechat-submitpill:disabled,
-#caseStudyChatPagePrimary #caseChatSubmitBtn.casechat-submitpill:disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  #caseChatSubmitBtn.casechat-submitpill:disabled,
 #caseStudyChatPageAdvanced #caseChatSubmitBtn.casechat-submitpill:disabled {
   opacity: 0.5;
   box-shadow: none;
@@ -4936,7 +4958,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 #glaucomaHistoryCaseStudy #caseChatSubmitBtn .chev,
 #caseStudyChatPage #caseChatSubmitBtn .chev,
-#caseStudyChatPagePrimary #caseChatSubmitBtn .chev,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatSubmitBtn .chev,
 #caseStudyChatPageAdvanced #caseChatSubmitBtn .chev {
   margin-inline-start: 6px;
 }
@@ -4947,7 +4969,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 
 /* Chips container sits inside bottom sheet */
-#caseStudyChatPagePrimary #caseChatChoices.casechat-choices,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatChoices.casechat-choices,
 
 
 /* Chips container sits inside bottom sheet */
@@ -4964,7 +4986,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 
 /* ✅ chips panel should be hidden on first entry */
-#caseStudyChatPagePrimary #caseChatChoices[hidden],
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatChoices[hidden],
 
 
 /* ✅ chips panel should be hidden on first entry */
@@ -4975,7 +4997,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 /* Chip buttons - IMPORTANT: override the global `button{...}` */
 #glaucomaHistoryCaseStudy button.casechat-chip,
 #caseStudyChatPage button.casechat-chip,
-#caseStudyChatPagePrimary button.casechat-chip,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) button.casechat-chip,
 #caseStudyChatPageAdvanced button.casechat-chip {
   width: auto !important;
   margin: 0 !important;
@@ -4995,7 +5017,8 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 #glaucomaHistoryCaseStudy button.casechat-chip:disabled,
 #caseStudyChatPage button.casechat-chip:disabled,
-#caseStudyChatPagePrimary button.casechat-chip:disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  button.casechat-chip:disabled,
 #caseStudyChatPageAdvanced button.casechat-chip:disabled {
   opacity: 0.45;
 }
@@ -5005,7 +5028,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 
 /* Dx list buttons (inside modal) also must not inherit global red button */
-#caseStudyChatPagePrimary .casechat-dxlist button,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxlist button,
 
 
 /* Dx list buttons (inside modal) also must not inherit global red button */
@@ -5015,7 +5038,7 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 #caseStudyChatPage .casechat-dxitem,
 
 
-#caseStudyChatPagePrimary .casechat-dxitem,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem,
 
 
 #caseStudyChatPageAdvanced .casechat-dxitem {
@@ -5033,7 +5056,15 @@ subtle */ #caseStudyChatPageAdvanced .casechat-bubble--system {
 
 so it must NOT be fixed */
 #caseStudyChatPage #caseChatChoices,
-so it must NOT be fixed */ #caseStudyChatPagePrimary #caseChatChoices,
+so
+  it
+  must
+  NOT
+  be
+  fixed
+  */
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  #caseChatChoices,
 so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
   position: static !important;
   left: auto !important;
@@ -5048,7 +5079,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-footer,
 #caseStudyChatPage .casechat-footer,
-#caseStudyChatPagePrimary .casechat-footer,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-footer,
 #caseStudyChatPageAdvanced .casechat-footer {
   position: fixed;
   left: 50%;
@@ -5065,7 +5096,9 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #glaucomaHistoryCaseStudy .casechat-footer.is-expanded #caseChatChoices,
-#caseStudyChatPagePrimary .casechat-footer.is-expanded #caseChatChoices,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-footer.is-expanded
+  #caseChatChoices,
 #caseStudyChatPageAdvanced .casechat-footer.is-expanded #caseChatChoices {
   position: absolute;
   left: 0;
@@ -5084,7 +5117,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-composer,
 #caseStudyChatPage .casechat-composer,
-#caseStudyChatPagePrimary .casechat-composer,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-composer,
 #caseStudyChatPageAdvanced .casechat-composer {
   position: relative;
   width: 100%;
@@ -5096,7 +5129,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-draft,
 #caseStudyChatPage .casechat-draft,
-#caseStudyChatPagePrimary .casechat-draft,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-draft,
 #caseStudyChatPageAdvanced .casechat-draft {
   width: 265px;
   min-height: 39px;
@@ -5119,14 +5152,15 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-draft.is-placeholder,
 #caseStudyChatPage .casechat-draft.is-placeholder,
-#caseStudyChatPagePrimary .casechat-draft.is-placeholder,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-draft.is-placeholder,
 #caseStudyChatPageAdvanced .casechat-draft.is-placeholder {
   color: #11111170;
 }
 
 #glaucomaHistoryCaseStudy .casechat-send,
 #caseStudyChatPage .casechat-send,
-#caseStudyChatPagePrimary .casechat-send,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-send,
 #caseStudyChatPageAdvanced .casechat-send {
   position: absolute;
   right: -4px;
@@ -5152,7 +5186,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-send:disabled,
 #caseStudyChatPage .casechat-send:disabled,
-#caseStudyChatPagePrimary .casechat-send:disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-send:disabled,
 #caseStudyChatPageAdvanced .casechat-send:disabled {
   color: rgba(0, 0, 0, 0.35);
   opacity: 0.45;
@@ -5261,7 +5295,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
-#caseStudyChatPagePrimary .casechat-modal__content,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__content,
 
 
 /* ===== Case Study modal (MATCHES casestudy.html: __content/__top/__title/__close) ===== */
@@ -5280,7 +5314,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-modal__top,
 #caseStudyChatPage .casechat-modal__top,
-#caseStudyChatPagePrimary .casechat-modal__top,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__top,
 #caseStudyChatPageAdvanced .casechat-modal__top {
   display: flex;
   align-items: center;
@@ -5291,7 +5325,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-modal__meta,
 #caseStudyChatPage .casechat-modal__meta,
-#caseStudyChatPagePrimary .casechat-modal__meta,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__meta,
 #caseStudyChatPageAdvanced .casechat-modal__meta {
   display: flex;
   align-items: center;
@@ -5304,21 +5338,21 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-modal__dxTimer,
 #caseStudyChatPage .casechat-modal__dxTimer,
-#caseStudyChatPagePrimary .casechat-modal__dxTimer,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__dxTimer,
 #caseStudyChatPageAdvanced .casechat-modal__dxTimer {
   font-weight: 650;
 }
 
 #glaucomaHistoryCaseStudy .casechat-modal__dxHint,
 #caseStudyChatPage .casechat-modal__dxHint,
-#caseStudyChatPagePrimary .casechat-modal__dxHint,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__dxHint,
 #caseStudyChatPageAdvanced .casechat-modal__dxHint {
   text-align: end;
 }
 
 #glaucomaHistoryCaseStudy .casechat-modal__icons,
 #caseStudyChatPage .casechat-modal__icons,
-#caseStudyChatPagePrimary .casechat-modal__icons,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__icons,
 #caseStudyChatPageAdvanced .casechat-modal__icons {
   display: inline-flex;
   align-items: center;
@@ -5327,7 +5361,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .caseTimer--sm,
 #caseStudyChatPage .caseTimer--sm,
-#caseStudyChatPagePrimary .caseTimer--sm,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .caseTimer--sm,
 #caseStudyChatPageAdvanced .caseTimer--sm {
   width: 32px;
   height: 32px;
@@ -5335,13 +5369,15 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 #glaucomaHistoryCaseStudy .caseTimer--sm .caseTimer__text,
 #caseStudyChatPage .caseTimer--sm .caseTimer__text,
-#caseStudyChatPagePrimary .caseTimer--sm .caseTimer__text,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .caseTimer--sm
+  .caseTimer__text,
 #caseStudyChatPageAdvanced .caseTimer--sm .caseTimer__text {
   font-size: 10px;
 }
 #glaucomaHistoryCaseStudy .casechat-modal__dxHint,
 #caseStudyChatPage .casechat-modal__dxHint,
-#caseStudyChatPagePrimary .casechat-modal__dxHint,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__dxHint,
 #caseStudyChatPageAdvanced .casechat-modal__dxHint {
   margin: -11px 166px 10px 8px;
   font-size: 12px;
@@ -5351,7 +5387,8 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-modal__dxAttempts,
 #caseStudyChatPage .casechat-modal__dxAttempts,
-#caseStudyChatPagePrimary .casechat-modal__dxAttempts,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-modal__dxAttempts,
 #caseStudyChatPageAdvanced .casechat-modal__dxAttempts {
   margin: 2px 6px 10px;
   font-size: 12px;
@@ -5361,7 +5398,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-modal__title,
 #caseStudyChatPage .casechat-modal__title,
-#caseStudyChatPagePrimary .casechat-modal__title,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__title,
 #caseStudyChatPageAdvanced .casechat-modal__title {
   font-weight: 750;
   font-size: 14px;
@@ -5375,7 +5412,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
-#caseStudyChatPagePrimary .casechat-modal__close,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__close,
 
 
 /* ✅ 이게 지금 스크린샷의 ‘빨간 막대 X’ 문제를 직접 잡는 부분 */
@@ -5391,7 +5428,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #caseStudyChatPage .casechat-dxcard,
-#caseStudyChatPagePrimary .casechat-dxcard,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxcard,
 #caseStudyChatPageAdvanced .casechat-dxcard {
   flex: 0 0 auto;
   margin-top: -3px;
@@ -5402,7 +5439,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* Correct text + answer in green */
-#caseStudyChatPagePrimary .casechat-resultOk,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-resultOk,
 
 
 /* Correct text + answer in green */
@@ -5412,7 +5449,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #caseStudyChatPage .casechat-resultWhy b,
-#caseStudyChatPagePrimary .casechat-resultWhy b,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-resultWhy b,
 #caseStudyChatPageAdvanced .casechat-resultWhy b {
   color: #198754;
   font-weight: 700;
@@ -5423,7 +5460,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* (선택) Dx 리스트에서 정답 선택지 텍스트도 초록 */
-#caseStudyChatPagePrimary .casechat-dxitem.is-correct .casechat-dxlabel,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem.is-correct .casechat-dxlabel,
 
 
 /* (선택) Dx 리스트에서 정답 선택지 텍스트도 초록 */
@@ -5434,7 +5471,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 #glaucomaHistoryCaseStudy .casechat-toggle,
 #caseStudyChatPage .casechat-toggle,
-#caseStudyChatPagePrimary .casechat-toggle,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-toggle,
 #caseStudyChatPageAdvanced .casechat-toggle {
   position: absolute;
   left: 9px;
@@ -5463,7 +5500,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 /* ================= Case Study (Chat / Dx) ================= */
 
-#caseStudyChatPagePrimary .casechat-dxitem,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem,
 
 
 /* ================= Case Study (Chat / Dx) ================= */
@@ -5484,7 +5521,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #caseStudyChatPage .casechat-radio,
-#caseStudyChatPagePrimary .casechat-radio,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-radio,
 #caseStudyChatPageAdvanced .casechat-radio {
   width: 18px;
   height: 18px;
@@ -5501,7 +5538,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* 선택됨: radio fill */
-#caseStudyChatPagePrimary .casechat-dxitem.is-selected .casechat-radio::after,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem.is-selected .casechat-radio::after,
 
 
 /* 선택됨: radio fill */
@@ -5518,7 +5555,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* 오답: 빨간 박스 + radio 빨강 */
-#caseStudyChatPagePrimary .casechat-dxitem.is-wrong,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem.is-wrong,
 
 
 /* 오답: 빨간 박스 + radio 빨강 */
@@ -5528,13 +5565,17 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio,
-#caseStudyChatPagePrimary .casechat-dxitem.is-wrong .casechat-radio,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-dxitem.is-wrong
+  .casechat-radio,
 #caseStudyChatPageAdvanced .casechat-dxitem.is-wrong .casechat-radio {
   border-color: #ef4444;
 }
 
 #caseStudyChatPage .casechat-dxitem.is-wrong .casechat-radio::after,
-#caseStudyChatPagePrimary .casechat-dxitem.is-wrong .casechat-radio::after,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-dxitem.is-wrong
+  .casechat-radio::after,
 #caseStudyChatPageAdvanced .casechat-dxitem.is-wrong .casechat-radio::after {
   background: #ef4444;
 }
@@ -5544,7 +5585,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* 정답: 초록 박스 + radio 초록 */
-#caseStudyChatPagePrimary .casechat-dxitem.is-correct,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem.is-correct,
 
 
 /* 정답: 초록 박스 + radio 초록 */
@@ -5554,13 +5595,17 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 #caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio,
-#caseStudyChatPagePrimary .casechat-dxitem.is-correct .casechat-radio,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-dxitem.is-correct
+  .casechat-radio,
 #caseStudyChatPageAdvanced .casechat-dxitem.is-correct .casechat-radio {
   border-color: #22c55e;
 }
 
 #caseStudyChatPage .casechat-dxitem.is-correct .casechat-radio::after,
-#caseStudyChatPagePrimary .casechat-dxitem.is-correct .casechat-radio::after,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-dxitem.is-correct
+  .casechat-radio::after,
 #caseStudyChatPageAdvanced .casechat-dxitem.is-correct .casechat-radio::after {
   background: #22c55e;
 }
@@ -5570,7 +5615,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* 비활성화된 다른 선택지 */
-#caseStudyChatPagePrimary .casechat-dxitem.is-disabled,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-dxitem.is-disabled,
 
 
 /* 비활성화된 다른 선택지 */
@@ -5584,7 +5629,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* footer 아래 채팅 비침을 막는 '불투명 마스크' */
-#caseStudyChatPagePrimary .casechat-footer-mask,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-footer-mask,
 
 
 /* footer 아래 채팅 비침을 막는 '불투명 마스크' */
@@ -5609,7 +5654,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* Case Study: modal header buttons must not inherit the global button style */
-#caseStudyChatPagePrimary .casechat-modal__close,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__close,
 
 
 /* Case Study: modal header buttons must not inherit the global button style */
@@ -5620,7 +5665,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 #caseStudyChatPage .caseTimer,
 
 
-#caseStudyChatPagePrimary .caseTimer,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .caseTimer,
 
 
 #caseStudyChatPageAdvanced .caseTimer {
@@ -5640,7 +5685,7 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 
 
 /* ✅ typing(…) 말풍선: 카톡처럼 위아래로 ‘둥둥’ */
-#caseStudyChatPagePrimary .casechat-bubble.is-typing,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble.is-typing,
 
 
 /* ✅ typing(…) 말풍선: 카톡처럼 위아래로 ‘둥둥’ */
@@ -5705,16 +5750,16 @@ so it must NOT be fixed */ #caseStudyChatPageAdvanced #caseChatChoices {
 }
 
 /* Primary: image choice buttons feel more rounded */
-#caseStudyChatPagePrimary .casechat-imgbtn {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgbtn {
   border-radius: 20px;
   overflow: hidden;
 }
 
-#caseStudyChatPagePrimary .casechat-imgopt {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgopt {
   border-radius: 20px;
   display: block;
 }
-#caseStudyChatPagePrimary .casechat-attemptsNote {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-attemptsNote {
   display: block;
   font-size: 11px;
   font-weight: 600;
@@ -7657,7 +7702,7 @@ body[data-experimental-miniapp-notice-open="true"] {
 
 
 /* Case Study: prevent global button styles from breaking icon buttons */
-#caseStudyChatPagePrimary .casechat-modal__close,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__close,
 
 
 /* Case Study: prevent global button styles from breaking icon buttons */
@@ -7668,7 +7713,7 @@ body[data-experimental-miniapp-notice-open="true"] {
 #caseStudyChatPage .caseTimer,
 
 
-#caseStudyChatPagePrimary .caseTimer,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .caseTimer,
 
 
 #caseStudyChatPageAdvanced .caseTimer {
@@ -7691,7 +7736,7 @@ body[data-experimental-miniapp-notice-open="true"] {
 
 
 /* close button sizing */
-#caseStudyChatPagePrimary .casechat-modal__close,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__close,
 
 
 /* close button sizing */
@@ -7707,7 +7752,7 @@ body[data-experimental-miniapp-notice-open="true"] {
 
 
 /* keep the small timer actually small */
-#caseStudyChatPagePrimary .caseTimer--sm,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .caseTimer--sm,
 
 
 /* keep the small timer actually small */

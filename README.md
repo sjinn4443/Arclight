@@ -12,6 +12,28 @@ The app is primarily static (served from `public/` in dev, and `dist/` plus `dis
 
 ## Contents
 
+Interactive Learning → Cataract includes Facilitators Material (the simulator)
+and an eight-case quiz. Cases are shuffled on first entry and restart; the
+90-second timer, two attempts, progress, review and previous/next navigation
+remain attached to each case. The quiz presents third-person histories and
+paired right/left fundal-reflex and back-of-eye findings using existing teaching
+assets. White reflexes and obscured retinal views are illustrative overlays.
+The retinal-detachment example uses an edited fundus photograph, with its
+synthetic provenance and full Imagegen prompt in
+`public/images/quiz/cataract/sources.json`.
+Answer feedback uses bold answer and next-step rows with selective red urgency
+and referral terms. Case navigation sits 48px below the answer explanation.
+The current detachment edit follows the supplied reference
+photograph's tear and folded retinal surface.
+Three illustrated steps introduce the quiz. Eye labels sit above each image;
+left-eye retinal references are mirrored to preserve disc/macula laterality.
+Submit Answer is enabled from the start and remains below the final history
+position, with space reserved as each line is revealed.
+Retinal clarity is modelled separately from retinal disease; see the
+[eight-case clinical consistency review](./docs/cataract-case-quiz-clinical-review.md)
+for evidence, source-image corrections and the urgent proliferative-retinopathy
+teaching update.
+
 Dashboard's Ears card opens the Ears catalog (`#/ears`), which shares the Eyes
 catalog layout. Its four rows are Exam: Extent Ear & Otoscopy, Hearing Assessment,
 Primary Ear Care Procedures, and Workshops. The first three rows contain unnamed,

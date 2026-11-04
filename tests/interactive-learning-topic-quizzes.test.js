@@ -200,7 +200,6 @@ describe("Interactive Learning topic quiz pages", () => {
     ).toHaveLength(1);
 
     const interactiveLearningTargets = {
-      Cataract: "cataractSimulatorPage",
       Glaucoma: "glaucomaSimulatorPage",
       "Fundal Reflex": "fundalReflexSimulatorPage",
       "Back of the Eye": "morphSimulatorPage",
@@ -218,6 +217,17 @@ describe("Interactive Learning topic quiz pages", () => {
         target,
       );
     });
+    const cataractFolder = document.querySelector(
+      '#interactiveLearningPage [data-folder="cataract"]',
+    );
+    expect(cataractFolder.getAttribute("aria-controls")).toBe(
+      "interactiveCataractInline",
+    );
+    expect(
+      document.querySelector(
+        "#interactiveCataractInline .lesson-row--interactive",
+      ).dataset.target,
+    ).toBe("cataractSimulatorPage");
 
     const glaucomaCard = document.querySelector("#diseasesPage #glaucomaCard");
     expect(glaucomaCard).not.toBeNull();

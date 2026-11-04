@@ -3458,11 +3458,39 @@
             Primary
           </div>
 
-          <button
-            type="button"
-            class="pupil-card module-card"
-            data-page="cataractSimulatorPage"
+          <div
+            class="interactive-folders pupil-card module-card"
+            id="interactiveCataractFolders"
           >
+            <div
+              class="lesson-row lesson-row--folder diabetic-folder-row interactive-folder-row"
+              data-folder="cataract"
+              role="button"
+              tabindex="0"
+              aria-expanded="false"
+              aria-controls="interactiveCataractInline"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type">Cataract</span>
+                </div>
+              </div>
+              <span
+                class="lesson-cta interactive-folder-cta"
+                data-i18n="i18nLiteral.See all >"
+                >See all &gt;</span
+              >
+            </div>
+          </div>
+          <div
+            id="interactiveCataractInline"
+            class="pupil-card module-card diabetic-section-card interactive-section-card"
+            data-section="cataract"
+            style="display: none"
+          >
+            <h3><span>Cataract</span></h3>
+
             <div
               class="lesson-row lesson-row--interactive"
               data-target="cataractSimulatorPage"
@@ -3470,17 +3498,12 @@
               tabindex="0"
             >
               <div class="thumb" aria-hidden="true"></div>
-
               <div class="lesson-main">
                 <div class="lesson-top">
-                  <span
-                    class="lesson-type"
-                    data-i18n="auto.videos.cataract"
-                    id="videos-lesson-title-27"
-                    >Cataract</span
+                  <span class="lesson-type" id="videos-lesson-title-27"
+                    >Facilitators Material</span
                   >
                 </div>
-
                 <div
                   class="lesson-progress"
                   role="progressbar"
@@ -3491,12 +3514,39 @@
                   <div class="lesson-progress__fill"></div>
                 </div>
               </div>
-
               <span class="lesson-cta" data-i18n="auto.videos.start"
                 >Start &gt;</span
               >
             </div>
-          </button>
+
+            <div
+              class="lesson-row lesson-row--quiz"
+              data-target="cataractCaseQuizPage"
+              role="button"
+              tabindex="0"
+            >
+              <div class="thumb" aria-hidden="true"></div>
+              <div class="lesson-main">
+                <div class="lesson-top">
+                  <span class="lesson-type" id="cataract-quiz-lesson-title"
+                    >Quiz</span
+                  >
+                </div>
+                <div
+                  class="lesson-progress"
+                  role="progressbar"
+                  aria-labelledby="cataract-quiz-lesson-title"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="lesson-progress__fill"></div>
+                </div>
+              </div>
+              <span class="lesson-cta" data-i18n="auto.videos.start"
+                >Start &gt;</span
+              >
+            </div>
+          </div>
 
           <button
             type="button"
@@ -7524,6 +7574,70 @@
       </div>
     </div>
   </section>
+
+  <div
+    id="cataractCaseQuizPage"
+    class="page has-eyes-topbar"
+    style="display: none"
+  >
+    <div class="container pupils-container">
+      <div class="eyes-topbar">
+        <div class="eyes-topbar__title">Cataract Quiz</div>
+        <div class="eyes-topbar__icons">
+          <button
+            id="cataractQuizTimerBtn"
+            class="caseTimer"
+            type="button"
+            aria-label="Case timer"
+          >
+            <svg
+              class="caseTimer__svg"
+              viewBox="0 0 36 36"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                class="caseTimer__bg"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                id="cataractQuizTimerFg"
+                class="caseTimer__fg"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <text
+                id="cataractQuizTimerText"
+                x="18"
+                y="21"
+                class="caseTimer__text"
+              >
+                90
+              </text>
+            </svg>
+          </button>
+
+          <span
+            class="icon menuBtn"
+            aria-label="Menu"
+            data-i18n="i18nExtra.menu_aria_label:aria-label"
+            >☰</span
+          >
+        </div>
+      </div>
+
+      <!-- Primary log -->
+      <div id="cataractQuizChatLog" class="casechat-log"></div>
+      <div
+        class="casechat-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cataractQuizDialogTitle"
+        hidden
+      >
+        <div class="casechat-modalCard"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Cataract Simulator Page -->
   <div id="cataractSimulatorPage" class="page interactive-subapp-page">

@@ -2,6 +2,42 @@
 
 # Active Context
 
+## Cataract case quiz — 4 November 2026
+
+- First entry and restart shuffle all eight cases, with session findings,
+  attempts and scores preserved during previous/next navigation.
+- Histories use a clinician's third-person presentation. Both examinations show
+  labelled right/left eyes; unilateral cases retain a normal fellow eye.
+- Reflex drawings reuse Fundal Reflex previews, with a generic white-pupil
+  overlay. Retinal views reuse Diabetic/Disc teaching assets; poor views obscure
+  the normal retinal reference. The simulator's clinical decisions are unchanged.
+- Cataract folder titles and nested lesson content are vertically centred.
+  The launcher reserves 62px for its thumbnail so the title cannot overlap it.
+  Submit Answer is enabled immediately at a reserved final history position;
+  the attempt hint is left aligned without a final period and navigation uses 14px.
+- Three illustrated onboarding steps replace the introductory paragraph. Eye
+  labels form top-rounded tabs above each image, and left retinal views are
+  mirrored so optic disc/macula positions match the displayed eye.
+- Onboarding uses green primary actions, left-aligned white history bubbles and
+  an animated MCQ selection. Eye tabs use white 600-weight text; source top
+  corners are cropped and white-pupil overlays now cover the full reflex.
+- Per-eye retinal clarity distinguishes diffuse/central/mild haze from obscured
+  views and retinal pathology. PDR teaching now includes urgent retinal referral;
+  the detachment case uses an edited right-eye fundus photo. Evidence and
+  the eight-case audit are in `docs/cataract-case-quiz-clinical-review.md`.
+- The examination introduction gap is 56px. The examination/history gap is now
+  larger and the final submit gap is approximately 80px, with a stable enabled control.
+- Eye tab text is black with weight 600. Onboarding green accents use the bright
+  Primary green and the selection cursor is slightly lower. Correct answers use
+  a bright green border and radio mark on a pale green background, including
+  answers revealed after two wrong attempts. Explanations and next steps use
+  simpler British English without Oxford commas.
+- The detachment asset now follows the user's tear/detachment reference, with
+  a visible tear and pale folded retina. Answer feedback uses bold Correct
+  answer and Next step rows with red urgency/referral terms only.
+- The answer dialog's case navigation has a 48px top margin, three times the
+  previous 16px gap below the explanation.
+
 ## Ears catalog — 4 November 2026
 
 - Dashboard now opens `ears`, using the shared Eyes catalog styles at desktop

@@ -2845,19 +2845,19 @@ input {
     line-height: 1.1;
   }
 
-  #caseStudyChatPagePrimary .casechat-imgwrap {
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgwrap {
     width: min(220px, 58%) !important;
   }
 
-  #caseStudyChatPagePrimary .casechat-imggrid {
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imggrid {
     max-width: min(420px, 58vw);
     margin-left: auto;
     margin-right: auto;
     gap: 8px;
   }
 
-  #caseStudyChatPagePrimary .casechat-imgbtn,
-  #caseStudyChatPagePrimary .casechat-imgopt {
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgbtn,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgopt {
     border-radius: 12px;
   }
 
@@ -2896,21 +2896,21 @@ input {
 
   #glaucomaHistoryCaseStudy .casechat-bubble--user,
   #caseStudyChatPage .casechat-bubble--user,
-  #caseStudyChatPagePrimary .casechat-bubble--user,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--user,
   #caseStudyChatPageAdvanced .casechat-bubble--user {
     transform: translateX(-90px);
   }
 
   #glaucomaHistoryCaseStudy .casechat-bubble--bot,
   #caseStudyChatPage .casechat-bubble--bot,
-  #caseStudyChatPagePrimary .casechat-bubble--bot,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-bubble--bot,
   #caseStudyChatPageAdvanced .casechat-bubble--bot {
     transform: translateX(90px);
   }
 
   #glaucomaHistoryCaseStudy .casechat-footer,
   #caseStudyChatPage .casechat-footer,
-  #caseStudyChatPagePrimary .casechat-footer,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-footer,
   #caseStudyChatPageAdvanced .casechat-footer,
   #glaucomaHistoryCaseStudy .caseChatFooter {
     width: min(80vw, 1040px) !important;
@@ -2921,8 +2921,10 @@ input {
   #glaucomaHistoryCaseStudy .casechat-footer.is-expanded,
   #caseStudyChatPage .casechat-footer.is-collapsed,
   #caseStudyChatPage .casechat-footer.is-expanded,
-  #caseStudyChatPagePrimary .casechat-footer.is-collapsed,
-  #caseStudyChatPagePrimary .casechat-footer.is-expanded,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+    .casechat-footer.is-collapsed,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+    .casechat-footer.is-expanded,
   #caseStudyChatPageAdvanced .casechat-footer.is-expanded,
   #caseStudyChatPageAdvanced .casechat-footer.is-collapsed {
     width: min(70vw, 820px) !important;
@@ -2931,7 +2933,8 @@ input {
 
   #glaucomaHistoryCaseStudy .casechat-footer.is-collapsed,
   #caseStudyChatPage .casechat-footer.is-collapsed,
-  #caseStudyChatPagePrimary .casechat-footer.is-collapsed,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+    .casechat-footer.is-collapsed,
   #caseStudyChatPageAdvanced .casechat-footer.is-collapsed {
     background: transparent !important;
     box-shadow: none !important;
@@ -2939,7 +2942,7 @@ input {
 
   #glaucomaHistoryCaseStudy .casechat-composer,
   #caseStudyChatPage .casechat-composer,
-  #caseStudyChatPagePrimary .casechat-composer,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-composer,
   #caseStudyChatPageAdvanced .casechat-composer {
     width: min(70vw, 820px);
     max-width: 820px;
@@ -2949,7 +2952,7 @@ input {
 
   #glaucomaHistoryCaseStudy .casechat-footer-mask,
   #caseStudyChatPage .casechat-footer-mask,
-  #caseStudyChatPagePrimary .casechat-footer-mask,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-footer-mask,
   #caseStudyChatPageAdvanced .casechat-footer-mask {
     width: min(80vw, 1040px) !important;
     max-width: 1040px;
@@ -2957,7 +2960,7 @@ input {
 
   #glaucomaHistoryCaseStudy button.casechat-chip,
   #caseStudyChatPage button.casechat-chip,
-  #caseStudyChatPagePrimary button.casechat-chip,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) button.casechat-chip,
   #caseStudyChatPageAdvanced button.casechat-chip {
     width: auto !important;
     min-width: 0 !important;
@@ -2975,10 +2978,10 @@ input {
 
   #glaucomaHistoryCaseStudy #caseChatDraft,
   #caseStudyChatPage #caseChatDraft,
-  #caseStudyChatPagePrimary #caseChatDraft,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) #caseChatDraft,
   #caseStudyChatPageAdvanced #caseChatDraft,
   #caseStudyChatPage .casechat-draft,
-  #caseStudyChatPagePrimary .casechat-draft,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-draft,
   #caseStudyChatPageAdvanced .casechat-draft,
   #glaucomaHistoryCaseStudy .casechat-draft {
     width: auto !important;
@@ -2989,7 +2992,9 @@ input {
 
   #glaucomaHistoryCaseStudy .casechat-footer.is-expanded #caseChatChoices,
   #caseStudyChatPage .casechat-footer.is-expanded #caseChatChoices,
-  #caseStudyChatPagePrimary .casechat-footer.is-expanded #caseChatChoices,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+    .casechat-footer.is-expanded
+    #caseChatChoices,
   #caseStudyChatPageAdvanced .casechat-footer.is-expanded #caseChatChoices {
     position: static !important;
     left: auto !important;
@@ -3662,19 +3667,19 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
     white-space: nowrap !important;
   }
 
-  #caseStudyChatPagePrimary .casechat-imggrid {
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imggrid {
     width: min(315px, 60vw) !important;
     max-width: min(315px, 60vw) !important;
     gap: 8px !important;
     margin: 14px auto 12px !important;
   }
 
-  #caseStudyChatPagePrimary .casechat-imgbtn,
-  #caseStudyChatPagePrimary .casechat-imgopt {
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgbtn,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgopt {
     border-radius: 10px !important;
   }
 
-  #caseStudyChatPagePrimary .casechat-attemptsNote {
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-attemptsNote {
     margin-left: 0 !important;
     text-align: left !important;
   }
@@ -3750,7 +3755,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   }
 
   #caseStudyChatPage .casechat-modal__dxHint,
-  #caseStudyChatPagePrimary .casechat-modal__dxHint,
+  :is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-modal__dxHint,
   #caseStudyChatPageAdvanced .casechat-modal__dxHint {
     margin: 0 0 10px 8px !important;
     text-align: left !important;
@@ -4275,13 +4280,14 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
 }
 
 /* Keep primary case-study chat feedback inside the viewport. */
-#caseStudyChatPagePrimary,
-#caseStudyChatPagePrimary .container.pupils-container {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage),
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .container.pupils-container {
   max-width: 100%;
   overflow-x: hidden;
 }
 
-#caseStudyChatPagePrimary .casechat-log {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-log {
   box-sizing: border-box;
   width: min(720px, 100%);
   max-width: 100%;
@@ -4290,8 +4296,8 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   overflow-x: hidden;
 }
 
-#caseStudyChatPagePrimary .casechat-imggrid,
-#caseStudyChatPagePrimary .casechat-imgfeedback {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imggrid,
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-imgfeedback {
   box-sizing: border-box;
   width: min(460px, calc(100vw - 32px)) !important;
   max-width: calc(100vw - 32px) !important;
@@ -4299,7 +4305,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   margin-right: auto !important;
 }
 
-#caseStudyChatPagePrimary .casechat-tryagain {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-tryagain {
   margin: 8px 0 0 !important;
   overflow: visible;
   padding: 0 2px;
@@ -4308,11 +4314,12 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
 }
 
 /* The final bubble must not pull the next-case button into its content. */
-#caseStudyChatPagePrimary .casechat-bubble:has(+ .casechat-nextcase) {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage)
+  .casechat-bubble:has(+ .casechat-nextcase) {
   margin-bottom: 0;
 }
 
-#caseStudyChatPagePrimary .casechat-nextcase {
+:is(#caseStudyChatPagePrimary, #cataractCaseQuizPage) .casechat-nextcase {
   box-sizing: border-box;
   display: block;
   width: min(460px, calc(100vw - 32px)) !important;
@@ -6210,4 +6217,737 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag {
     padding-inline: 6px;
   }
+}
+
+/* Cataract uses the Eyes expanded-folder proportions. */
+#interactiveLearningPage #interactiveCataractFolders {
+  width: 100%;
+  display: block !important;
+}
+#interactiveLearningPage #interactiveCataractFolders .lesson-row--folder {
+  max-width: none;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto !important;
+  align-items: center;
+  gap: 8px;
+}
+#interactiveLearningPage #interactiveCataractFolders .lesson-main {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  align-self: center;
+  margin: 0;
+  padding: 0;
+  transform: none;
+}
+#interactiveLearningPage #interactiveCataractFolders .lesson-top {
+  margin: 0;
+  min-height: 0;
+  width: auto;
+}
+#interactiveLearningPage #interactiveCataractFolders .lesson-type {
+  margin: 0 !important;
+}
+#interactiveLearningPage #interactiveCataractFolders .thumb {
+  grid-column: 1;
+  grid-row: 1;
+  width: 62px;
+  height: 52px;
+  background-image: url("/images/icon/eyes/moduleicons/primary_folder.webp");
+}
+#interactiveLearningPage #interactiveCataractFolders .lesson-cta {
+  grid-column: 3;
+  grid-row: 1;
+}
+#interactiveLearningPage #interactiveCataractFolders .lesson-cta,
+#interactiveLearningPage #interactiveCataractInline .see-all-toggle {
+  color: #15e115;
+}
+#interactiveLearningPage #interactiveCataractInline {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+}
+#interactiveLearningPage #interactiveCataractInline > h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: calc(100% - 12px);
+  box-sizing: border-box;
+  margin: 8px 6px 2px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 700;
+}
+#interactiveLearningPage #interactiveCataractInline .see-all-toggle {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12px;
+  font-weight: 800;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-row {
+  width: calc(100% - 52px);
+  max-width: 348px;
+  margin: 8px auto 12px;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-top {
+  width: auto;
+  margin: 0 !important;
+  min-height: 0;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-type {
+  white-space: normal;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-progress {
+  width: 100%;
+  margin-left: 0;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-cta {
+  margin-left: 0;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-row--quiz .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
+}
+
+/* Reuse Primary chat styling; only examination and answer controls are new. */
+#cataractCaseQuizPage {
+  --cataract-primary: #15e115;
+  --cataract-primary-soft: #e8ffe8;
+}
+#cataractCaseQuizPage .cataract-quiz-findings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  width: min(460px, calc(100% - 16px));
+  margin: 56px auto 40px;
+}
+#cataractCaseQuizPage .cataract-quiz-findings figure {
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+#cataractCaseQuizPage .cataract-quiz-findings img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 14px;
+}
+#cataractCaseQuizPage .cataract-quiz-findings figcaption {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+#cataractCaseQuizPage .cataract-quiz-eye {
+  min-width: 0;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--fundal {
+  /* Crop the source bitmap's baked-in rounded top corners (12 source pixels). */
+  aspect-ratio: 172 / 113;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--fundal img {
+  position: absolute;
+  width: 200%;
+  max-width: none;
+  height: 110.6195%;
+  top: -10.6195%;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--fundal .is-left-half {
+  left: -100%;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--fundal .is-right-half {
+  left: 0;
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye[data-finding="white"]
+  .cataract-quiz-eye-view--fundal::after {
+  content: "";
+  position: absolute;
+  left: 51.75%;
+  top: 43.8%;
+  width: 21%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff 4%, #eee8cf 45%, #c4bda5);
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye[data-eye="left"][data-finding="white"]
+  .cataract-quiz-eye-view--fundal::after {
+  left: 47.96%;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--back {
+  aspect-ratio: 1;
+  background: #322418;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--back img {
+  height: 100%;
+  object-fit: cover;
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye-view--back[data-clarity="obscured"]
+  img {
+  visibility: hidden;
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye-view--back[data-clarity="diffuse"]
+  img {
+  filter: blur(0.7px) contrast(0.72) saturate(0.78) brightness(0.94);
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--back[data-clarity="mild"] img {
+  filter: blur(0.35px) contrast(0.87) saturate(0.9);
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye-view--back[data-clarity="central"]
+  img {
+  filter: blur(0.8px) contrast(0.75);
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye-view--back[data-clarity="diffuse"]::after,
+#cataractCaseQuizPage
+  .cataract-quiz-eye-view--back[data-clarity="central"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #bbaa792e;
+}
+#cataractCaseQuizPage
+  .cataract-quiz-eye-view--back[data-clarity="central"]::after {
+  background: radial-gradient(ellipse at center, #aaa07d80, transparent 65%);
+}
+#cataractCaseQuizPage .cataract-quiz-eye-label {
+  display: block;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  border-radius: 12px 12px 0 0;
+  background: #15e115;
+  color: #111;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view,
+#cataractCaseQuizPage .cataract-quiz-eye-view--back img {
+  border-radius: 0 0 12px 12px;
+}
+#cataractCaseQuizPage .cataract-quiz-eye-view--back .is-mirrored,
+#cataractCaseQuizPage .cataract-quiz-intro-retinas .is-mirrored {
+  transform: scaleX(-1);
+}
+#cataractCaseQuizPage .cataract-quiz-submit {
+  display: block;
+  position: static;
+  width: min(460px, calc(100% - 16px));
+  margin: 36px auto 12px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 18px;
+  background: #e41e26;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+#cataractCaseQuizPage .cataract-quiz-submit:disabled {
+  opacity: 0.5;
+}
+#cataractCaseQuizPage .casechat-modalCard {
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+}
+#cataractCaseQuizPage .casechat-modalTitle {
+  white-space: normal;
+  margin-block: 0 10px;
+}
+#cataractCaseQuizPage .casechat-dxitem {
+  width: 100%;
+  margin: 0;
+  color: #111;
+  font-size: 14px;
+}
+#cataractCaseQuizPage .casechat-confirm__actions {
+  flex-wrap: wrap;
+}
+#cataractCaseQuizPage .cataract-quiz-review {
+  margin: 28px auto;
+  padding: 16px;
+  max-width: 460px;
+  border-radius: 14px;
+  background: #fff;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+#interactiveLearningPage #interactiveCataractInline .lesson-row {
+  width: calc(100% - 52px) !important;
+  grid-template-columns: 62px minmax(0, 1fr) 42px !important;
+  gap: 8px !important;
+  padding: 8px 10px !important;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-main {
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  min-width: 0;
+  align-self: center !important;
+  min-height: 0;
+  justify-content: center !important;
+  gap: 5px !important;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-type {
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+#interactiveLearningPage #interactiveCataractInline .thumb {
+  width: 62px;
+  height: 52px;
+  background-position: center;
+}
+#interactiveLearningPage #interactiveCataractInline .lesson-cta {
+  margin: 0 !important;
+  align-self: end;
+}
+
+/* Keep the Cataract launcher aligned with its sibling lesson cards. */
+#interactiveLearningPage #interactiveCataractFolders {
+  box-sizing: border-box;
+}
+#interactiveLearningPage[data-interactive-open-folder="cataract"]
+  #interactiveCataractFolders {
+  padding: 0;
+  margin-inline: 0;
+}
+#interactiveLearningPage.diabetic-folder-open
+  .pupil-level
+  > .pupil-card.module-card:not(.interactive-section-card):not(
+    .interactive-folders
+  ),
+#interactiveLearningPage.diabetic-folder-open .interactive-folder-row {
+  opacity: 0.72;
+}
+
+/* The answer dialog uses the same radio rows and case navigation as Case Study. */
+#cataractCaseQuizPage .casechat-modal__content {
+  box-sizing: border-box;
+  width: min(88vw, 480px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+#cataractCaseQuizPage .casechat-modal__top {
+  flex: 0 0 auto;
+  margin-bottom: 8px;
+}
+#cataractCaseQuizPage .casechat-modal__title {
+  margin: 0;
+  font-size: 14px;
+}
+#cataractCaseQuizPage .casechat-modal__close {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #666;
+  font-size: 23px;
+  line-height: 1;
+}
+#cataractCaseQuizPage .casechat-modal__dxHint {
+  text-align: left;
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: #777;
+}
+#cataractCaseQuizPage .casechat-dxlist {
+  flex: 0 0 auto;
+  max-height: none;
+  overflow: visible;
+  margin: 0;
+}
+#cataractCaseQuizPage .casechat-dxitem {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 12px;
+}
+#cataractCaseQuizPage .casechat-dxitem.is-correct {
+  background: var(--cataract-primary-soft) !important;
+  border: 2px solid var(--cataract-primary) !important;
+  opacity: 1 !important;
+}
+#cataractCaseQuizPage .casechat-dxitem.is-correct .casechat-radio {
+  position: relative;
+  border-color: var(--cataract-primary) !important;
+}
+#cataractCaseQuizPage .casechat-dxitem.is-correct .casechat-radio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  width: auto;
+  height: auto;
+  border-radius: 50%;
+  background: var(--cataract-primary) !important;
+  opacity: 1;
+}
+#cataractCaseQuizPage .casechat-dxlabel {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#cataractCaseQuizPage .cataract-quiz-answer-feedback {
+  flex: 0 0 auto;
+}
+#cataractCaseQuizPage .cataract-quiz-answer-feedback:empty {
+  display: none;
+}
+#cataractCaseQuizPage .cataract-quiz-answer-feedback .casechat-resultWhy {
+  margin: 10px 0;
+}
+#cataractCaseQuizPage .cataract-quiz-feedback-summary strong {
+  font-weight: 700;
+}
+#cataractCaseQuizPage .cataract-quiz-urgent-term {
+  color: #e41e26;
+}
+#cataractCaseQuizPage .cataract-quiz-answer-feedback .casechat-case-navigation {
+  margin-top: 48px;
+}
+#cataractCaseQuizPage .casechat-case-navigation .casechat-nextcase {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  min-width: 0;
+  font-size: 14px;
+}
+#cataractCaseQuizPage .cataract-quiz-footer {
+  position: static;
+  width: min(460px, calc(100% - 32px));
+  max-width: 460px;
+  margin: 72px auto 28px;
+}
+#cataractCaseQuizPage .cataract-quiz-footer .cataract-quiz-submit {
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+#cataractCaseQuizPage .casechat-log {
+  flex: 0 0 auto;
+  height: auto;
+  overflow: visible;
+  padding-bottom: 28px;
+}
+#cataractCaseQuizPage .container.pupils-container {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+#cataractCaseQuizPage .casechat-bubble--pending {
+  visibility: hidden;
+}
+
+/* Short visual walkthrough, matching the app's step-by-step onboarding. */
+#cataractCaseQuizPage .cataract-quiz-onboarding {
+  width: min(88vw, 430px);
+  padding: 20px;
+  border-radius: 28px;
+  text-align: center;
+}
+#cataractCaseQuizPage .cataract-quiz-onboarding .casechat-modal__top {
+  margin-bottom: 12px;
+}
+#cataractCaseQuizPage .cataract-quiz-onboarding .casechat-modal__title {
+  color: #727b86;
+  font-size: 12px;
+  font-weight: 600;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 9px;
+  background: #d9dde2;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-dots .is-current {
+  width: 24px;
+  background: #15e115;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-visual {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  width: min(100%, 260px);
+  height: 205px;
+  margin: 0 auto 20px;
+  padding: 14px;
+  border: 1px solid #dce1e7;
+  border-radius: 18px;
+  background: #f7f8fa;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-visual > img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-retinas {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-retinas img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-bubble {
+  position: relative;
+  align-self: flex-start;
+  max-width: 90%;
+  padding: 10px 12px;
+  border-radius: 12px 12px 12px 2px;
+  background: #fff;
+  box-shadow: 0 1px 3px #00000012;
+  color: #283440;
+  font-size: 12px;
+  text-align: left;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-stats,
+#cataractCaseQuizPage .cataract-quiz-intro-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-clock {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 3px solid #15e115;
+  border-radius: 50%;
+  color: #18232e;
+  font-size: 15px;
+  font-weight: 800;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-attempts {
+  font-size: 13px;
+  font-weight: 700;
+  color: #56616f;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-options {
+  position: relative;
+  flex-direction: column;
+  gap: 5px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-options .casechat-dxitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 6px 8px;
+  border: 1px solid #d4dae1;
+  border-radius: 9px;
+  background: #fff;
+  font-size: 11px;
+  text-align: left;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-options .casechat-radio {
+  position: relative;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  border: 1.5px solid #c8d3df;
+  border-radius: 50%;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-options .is-demo-selected {
+  animation: cataract-demo-choice 3.6s infinite;
+}
+#cataractCaseQuizPage
+  .cataract-quiz-intro-options
+  .is-demo-selected
+  .casechat-radio::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: var(--cataract-primary);
+  animation: cataract-demo-dot 3.6s infinite;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-pointer {
+  position: absolute;
+  left: 58%;
+  top: 43%;
+  width: 15px;
+  height: 21px;
+  background: #19232d;
+  clip-path: polygon(
+    0 0,
+    100% 62%,
+    57% 64%,
+    78% 100%,
+    57% 100%,
+    38% 68%,
+    0 90%
+  );
+  animation: cataract-demo-pointer 3.6s infinite;
+}
+@keyframes cataract-demo-choice {
+  0%,
+  32%,
+  100% {
+    background: #fff;
+    border-color: #d4dae1;
+  }
+  42%,
+  88% {
+    background: var(--cataract-primary-soft);
+    border-color: var(--cataract-primary);
+  }
+}
+@keyframes cataract-demo-dot {
+  0%,
+  32%,
+  100% {
+    transform: scale(0);
+  }
+  42%,
+  88% {
+    transform: scale(1);
+  }
+}
+@keyframes cataract-demo-pointer {
+  0%,
+  15% {
+    transform: translate(28px, 28px);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  38% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 1;
+  }
+  46%,
+  65% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  80%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #cataractCaseQuizPage .cataract-quiz-intro-options .is-demo-selected {
+    animation: none;
+    background: var(--cataract-primary-soft);
+    border-color: var(--cataract-primary);
+  }
+  #cataractCaseQuizPage
+    .cataract-quiz-intro-options
+    .is-demo-selected
+    .casechat-radio::after {
+    animation: none;
+  }
+  #cataractCaseQuizPage .cataract-quiz-intro-pointer {
+    display: none;
+  }
+}
+#cataractCaseQuizPage .cataract-quiz-intro-step {
+  color: var(--cataract-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-title {
+  margin: 8px 0;
+  color: #18232e;
+  font-size: 22px;
+  line-height: 1.2;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-hint {
+  min-height: 32px;
+  margin: 0 0 24px;
+  color: #727b86;
+  font-size: 13px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: 8px;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-actions button {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  border: 0;
+  border-radius: 24px !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-actions .is-ok {
+  background: #15e115 !important;
+  color: #111 !important;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-back {
+  background: #f0f2f5;
+  color: #56616f;
+}
+#cataractCaseQuizPage .cataract-quiz-intro-back:disabled {
+  color: #a5adb5;
+}
+#cataractCaseQuizPage,
+#cataractCaseQuizPage .casechat-log,
+#cataractCaseQuizPage .casechat-modal__content,
+#cataractCaseQuizPage .casechat-dxlist {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#cataractCaseQuizPage::-webkit-scrollbar,
+#cataractCaseQuizPage .casechat-log::-webkit-scrollbar,
+#cataractCaseQuizPage .casechat-modal__content::-webkit-scrollbar,
+#cataractCaseQuizPage .casechat-dxlist::-webkit-scrollbar {
+  display: none;
+}
+:is(html, body):has(#cataractCaseQuizPage[style*="display: block"]) {
+  scrollbar-width: none;
+}
+:is(html, body):has(
+    #cataractCaseQuizPage[style*="display: block"]
+  )::-webkit-scrollbar {
+  display: none;
 }

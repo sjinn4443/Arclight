@@ -17,6 +17,10 @@ import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 import { initializeInteractiveLearningTopicQuizzes } from "./interactiveLearningTopicQuizzes.js";
 import { syncLocalizedVideoSubtitles } from "./videoSubtitles.js";
 import { initializeEyeExaminationConnectGame } from "./eyeExaminationConnect.js";
+import {
+  initializeCataractCaseQuiz,
+  syncCataractCaseQuiz,
+} from "./cataractCaseQuiz.js";
 
 // Keep track of the currently active subpage element within videos.html
 let currentPageElement = null;
@@ -679,6 +683,7 @@ function setupInteractiveLearningFolders() {
   updateInteractiveFolderItemBadges(page);
 
   const hideAllSectionCards = () => {
+    folders.forEach((row) => row.setAttribute("aria-expanded", "false"));
     sectionCards.forEach((card) => {
       card.style.display = "none";
       const titleEl = card.querySelector("h3");
@@ -701,7 +706,18 @@ function setupInteractiveLearningFolders() {
     });
 
     openFolderRow.style.display = "none";
+    openFolderRow.setAttribute("aria-expanded", "true");
+    if (key === "cataract") {
+      try {
+        sessionStorage.setItem("interactiveLearning:cataractFolderOpen", "1");
+      } catch {}
+    } else {
+      try {
+        sessionStorage.removeItem("interactiveLearning:cataractFolderOpen");
+      } catch {}
+    }
     page.classList.add("diabetic-folder-open");
+    page.dataset.interactiveOpenFolder = key;
     openFolderRow.insertAdjacentElement("afterend", card);
     card.style.display = "";
 
@@ -727,6 +743,14 @@ function setupInteractiveLearningFolders() {
       toggle.remove();
       openFolderRow.style.display = "";
       page.classList.remove("diabetic-folder-open");
+      delete page.dataset.interactiveOpenFolder;
+      openFolderRow.setAttribute("aria-expanded", "false");
+      if (key === "cataract") {
+        try {
+          sessionStorage.removeItem("interactiveLearning:cataractFolderOpen");
+        } catch {}
+      }
+      openFolderRow.focus();
     };
 
     toggle.addEventListener("click", closeNow);
@@ -746,6 +770,7 @@ function setupInteractiveLearningFolders() {
     container.style.display = "flex";
   });
   page.classList.remove("diabetic-folder-open");
+  delete page.dataset.interactiveOpenFolder;
 
   folders.forEach((row) => {
     if (row.dataset.interactiveFolderWired === "1") return;
@@ -765,6 +790,13 @@ function setupInteractiveLearningFolders() {
       if (event.key === "Enter" || event.key === " ") openNow(event);
     });
   });
+  try {
+    if (
+      sessionStorage.getItem("interactiveLearning:cataractFolderOpen") === "1"
+    ) {
+      showSectionByKey("cataract");
+    }
+  } catch {}
 }
 
 // Wire progress tracking for a given pageId's local <video> (low/high only)
@@ -4858,6 +4890,7 @@ function show(id) {
   newPageElement.style.display = "block";
   wireVideoFeedback(newPageElement);
   currentPageElement = newPageElement;
+  syncCataractCaseQuiz(id);
   syncRouteHash("videos", { replace: true, subPageId: id });
   showExperimentalMiniAppNoticeForPage(id);
   document.dispatchEvent(new CustomEvent("page:shown", { detail: { id } }));
@@ -5065,6 +5098,7 @@ export async function initializeVideos() {
   // Wire video progress tracking (safe to call even if DOM not ready yet)
   wirePupilFullExamProgress();
   setupInteractiveLearningFolders();
+  initializeCataractCaseQuiz({ showPage: show });
   initializeInteractiveLearningTopicQuizzes({ showPage: show });
   initializeEyeExaminationConnectGame();
 

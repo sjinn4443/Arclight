@@ -1,5 +1,38 @@
 # Progress
 
+## Cataract case quiz — 4 November 2026
+
+- Updated first-run randomisation, third-person histories, paired examination
+  findings, folder alignment and answer controls in the Cataract quiz.
+- Eleven focused unit tests cover first-run/restart shuffle, all case assets,
+  unilateral/bilateral findings, immediate answers, scoring, progress, timeout and review.
+- Replaced the intro paragraph with a three-step illustrated walkthrough, moved
+  eye labels to top tabs, mirrored left retinal views, and reserved full history
+  space so the enabled Submit Answer control does not move as lines appear.
+- Reviewed all eight reflex/retina pairings against published guidance. Added
+  case-specific media haze, obscured views, provisional diagnostic wording,
+  urgent PDR teaching, and corrected the detachment image/orientation. Recorded
+  sources and limitations in `docs/cataract-case-quiz-clinical-review.md`.
+- Refined walkthrough colours, history bubbles and MCQ animation; corrected
+  pupil coverage and bitmap corner seams, removed the under-image view label,
+  and increased examination/submit spacing.
+- Replaced the detachment diagram with an Imagegen edit of the normal fundus
+  reference. Saved the new WebP asset and full prompt with source provenance.
+  The image is included under the shared quiz asset prefix. Updated the
+  development shell cache version to v127 for the new required asset.
+- Applied the latest black eye-label text, Primary green accents and lower
+  cursor position. Increased history and submit gaps, strengthened the revealed
+  correct-answer styling and simplified all case explanations and next steps.
+- Remade the detachment image from the user's tear/detachment reference and
+  retained right-eye orientation. Added bold answer/next-step feedback rows and
+  selective red urgency/referral text without changing the clinical wording.
+- Increased the gap above Previous Case/Next Case in the answer dialog from
+  16px to 48px, scoped to the Cataract quiz feedback.
+- Nine browser checks passed with installed Chrome at desktop, phone and tablet
+  sizes, covering folder/simulator return, all eight quiz cases and the correct
+  answer revealed after two wrong attempts. Bundled
+  Playwright Chromium/WebKit executables are absent on this machine.
+
 ## Ears catalog — 4 November 2026
 
 - Added the four-row Ears catalog, empty unnamed carousel cards, and the

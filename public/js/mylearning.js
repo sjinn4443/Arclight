@@ -488,6 +488,7 @@ function go(target) {
     "squintAdvancedQuizPage",
     "cataractPage",
     "cataractSimulatorPage",
+    "cataractCaseQuizPage",
     "cataractPrimaryQuizPage",
     "cataractIntermediateQuizPage",
     "cataractAdvancedQuizPage",

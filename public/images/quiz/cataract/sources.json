@@ -1,0 +1,16 @@
+{
+  "asset": "retinal-detachment-reference-v2.webp",
+  "previousAsset": "retinal-detachment-edited.webp",
+  "reference": "User-supplied retinal tear and detachment photograph, codex-clipboard-ca7881e8-d311-444e-bc1a-d8604b7e747d.png",
+  "date": "2026-11-04",
+  "type": "AI-edited educational fundus image, not a patient photograph",
+  "tool": "built-in image_gen",
+  "editTarget": "/images/quiz/cataract/retinal-detachment-edited.webp",
+  "orientation": "right eye, optic disc to the right of the macula",
+  "processing": "resized to 512 by 512 and encoded as WebP",
+  "prompt": "Use case: precise-object-edit. Asset: a photo-based educational colour fundus image for a cataract case quiz. Image 1 is the edit target, the existing generated right-eye fundus image. Image 2 is the user's supplied reference for the visible retinal tear and retinal-detachment appearance only; ignore every piece of UI, text, label, arrow and border in that screenshot. Remake image 1 to show the clear pathological features in image 2: a large full-thickness retinal tear with a rounded horseshoe-like edge, orange underlying fundus visible through the opening and a broad pale grey-cream opaque detached retina with pronounced soft corrugations and folded vascular surface. The previous image was too orange and too subtle. Make the detached sheet and the tear easy to recognise at a 220-pixel display size, while keeping a credible photographic ophthalmic appearance. Preserve the target's RIGHT-EYE orientation: optic disc remains on the RIGHT of the macula. Mirror the reference's clinical arrangement as needed, putting the large tear in the upper temporal LEFT area and the detached folded sheet predominantly left/centre, with recognisable attached orange retina and the optic disc to the right. Keep a single anatomically coherent vessel tree; vessels over the raised retina follow its folds. Square framing, fundus fills the image, match the photo-like colour and camera style. This is a synthetic educational illustration, not a clinical record. No lettering, no arrows, no icons, no browser UI, no black border, no watermarks, no detached-eye cross-section, no diagram, no extra optic discs and no dramatic blood.",
+  "clinicalReferences": [
+    "https://eyewiki.aao.org/Retinal_Detachment",
+    "https://www.nei.nih.gov/eye-health-information/eye-conditions-and-diseases/retinal-detachment"
+  ]
+}
