@@ -88,6 +88,10 @@
     "coming_soon_note": "ພົບກັນໃນໄວໆນີ້."
   },
   "ears": {
+    "examTitle": "ການກວດ: ຫູຊັ້ນນອກ ແລະ ການສ່ອງກວດຫູ",
+    "hearingAssessmentTitle": "ການປະເມີນການໄດ້ຍິນ",
+    "proceduresTitle": "ຂັ້ນຕອນການດູແລຫູຂັ້ນຕົ້ນ",
+    "pecWorkshopTitle": "ການຝຶກອົບຮົມ PEC",
     "title": "ຫູ",
     "learning_modules_title": "ໂມດູນການຮຽນ",
     "see_all": "ເບິ່ງທັງຫມົດ >",

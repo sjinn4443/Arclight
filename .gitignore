@@ -76,4 +76,6 @@ tmp-codex-build*/
 reports/data/*.ndjson
 reports/data/*.sql
 reports/data/users.json
+reports/data/reminders.enc
+reports/data/reminders.enc.*.tmp
 test-results-*/

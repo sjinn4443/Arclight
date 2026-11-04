@@ -29,6 +29,14 @@ Last refreshed: 2026-10-09
 - Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
 - `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
 
+## VS Code localhost launcher
+
+- Reuse `vscode-alanui-launcher/` for the bottom-right `localhost:3000` button.
+  Both status bar commands start `server.cjs` when needed and open Google
+  Chrome directly. Package 0.0.8 includes this behavior; install its VSIX and
+  reload an already-open VS Code window. Do not replace it with
+  `vscode.env.openExternal()`, which delegates to the default browser.
+
 ## Primary workshops, downloads and mini-apps
 
 - Paediatric Surgical Eye & Ear uses `paediatricSurgicalEyeEarWorkshop` and the

@@ -1,10 +1,10 @@
 import { getLanguage, translateLiteral } from "./i18n.js";
+import { initializeReminderSettings } from "./practiceReminders.js";
 import { loadPage } from "./navigation.js";
 import { PROFILE_STORAGE_KEYS, dispatchProfileUpdated } from "./profileData.js";
 
 const SETTINGS_STORAGE_KEYS = Object.freeze({
   dataConsent: "settings:dataConsent",
-  notifications: "settings:notifications",
 });
 
 const PROGRESS_PREFIXES = Object.freeze([
@@ -35,40 +35,10 @@ const LANGUAGE_LABELS = Object.freeze({
   zh: "Chinese",
 });
 
-function readBooleanSetting(key, fallback) {
-  const value = localStorage.getItem(key);
-  if (value === null) return fallback;
-  return value === "true";
-}
-
-function writeBooleanSetting(key, value) {
-  localStorage.setItem(key, value ? "true" : "false");
-}
-
 function setStatus(message) {
   const status = document.getElementById("settingsStatus");
   if (!status) return;
   status.textContent = translateLiteral(message, message);
-}
-
-function renderToggle(button, enabled) {
-  if (!button) return;
-  button.classList.toggle("is-on", enabled);
-  button.setAttribute("aria-pressed", String(enabled));
-}
-
-function wireToggle(buttonId, storageKey, fallback) {
-  const button = document.getElementById(buttonId);
-  if (!button || button.dataset.settingsWired === "1") return;
-
-  button.dataset.settingsWired = "1";
-  renderToggle(button, readBooleanSetting(storageKey, fallback));
-  button.addEventListener("click", () => {
-    const next = !readBooleanSetting(storageKey, fallback);
-    writeBooleanSetting(storageKey, next);
-    renderToggle(button, next);
-    setStatus("Settings saved.");
-  });
 }
 
 function renderLanguageLabel() {
@@ -326,11 +296,7 @@ function wireAccountActions() {
 
 export function initializeSettings() {
   renderLanguageLabel();
-  wireToggle(
-    "settingsNotificationsToggle",
-    SETTINGS_STORAGE_KEYS.notifications,
-    true,
-  );
+  initializeReminderSettings();
   wireAccountActions();
   void renderVersion();
 

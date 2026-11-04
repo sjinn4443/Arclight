@@ -3839,7 +3839,7 @@ select.onb-input.has-value + .onb-select-caret {
   min-height: 368px;
 }
 
-#eyesCatalogPage .eyes-card.eyes-card--blank-black {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card.eyes-card--blank-black {
   background: #000;
 }
 
@@ -32073,4 +32073,10 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
     .childhood-fundal-segment-text {
     width: min(66.6667%, calc(68vh * (1169 / 1280)));
   }
+}
+
+/* Empty Ears slots retain the catalog card size without suggesting an action. */
+#earsCatalogPage .ears-card--empty {
+  background: #000;
+  cursor: default;
 }

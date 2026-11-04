@@ -33,17 +33,30 @@
       </button>
 
       <div class="settings-row">
-        <span data-i18n="auto.settings.notifications">Notifications</span>
+        <span data-i18n="reminders.practice_reminders">Practice reminders</span>
         <button
           type="button"
           class="settings-toggle"
           id="settingsNotificationsToggle"
-          aria-label="Notifications"
-          aria-pressed="true"
+          aria-label="Practice reminders"
+          aria-describedby="practiceReminderStatus"
+          aria-pressed="false"
         >
           <span class="settings-toggle__thumb"></span>
         </button>
       </div>
+
+      <label class="settings-row" for="practiceReminderTime">
+        <span data-i18n="reminders.reminder_time">Reminder time</span>
+        <input type="time" id="practiceReminderTime" value="18:00" />
+      </label>
+      <p
+        class="practice-reminder-description"
+        id="practiceReminderStatus"
+        role="status"
+      >
+        Choose gentle reminders after 1, 3, 7 and 30 days without practice.
+      </p>
 
       <div class="settings-row">
         <span data-i18n="auto.settings.privacy_data_consent"

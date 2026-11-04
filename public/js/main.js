@@ -31,6 +31,7 @@ import {
 import { initializeGlaucomaQuizCaseStudy } from "./glaucomaQuizCaseStudy.js";
 import { captureClientError, installSafeConsole } from "./safe-logging.js";
 import { buildTelemetryRequestHeaders } from "./telemetry.js";
+import { initializePracticeReminders } from "./practiceReminders.js";
 
 installSafeConsole();
 initializeTopbarLogos();
@@ -135,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initializePageNavigation();
   initializePWA();
+  initializePracticeReminders();
   // Keep workshop "Next >" flow available even on direct deep links.
   void import("./paediatricSurgicalEyeEarWorkshop.js")
     .then((m) => m.initializePaediatricWorkshopFlowInfra?.())

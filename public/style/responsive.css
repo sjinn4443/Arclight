@@ -113,7 +113,7 @@ input {
 
   /* Keep the Eyes menu control at its original viewport-right position even
      when the wider Arclight logo changes the topbar's flex geometry. */
-  #eyesCatalogPage .eyes-top .menuBtn {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top .menuBtn {
     position: fixed !important;
     top: 13px !important;
     right: max(20px, env(safe-area-inset-right)) !important;
@@ -605,7 +605,7 @@ input {
     grid-auto-columns: 21%;
   }
 
-  #eyesCatalogPage .eyes-top {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top {
     position: fixed;
     top: 0;
     left: calc(7vw - 4px);
@@ -1015,7 +1015,7 @@ input {
 }
 
 @media (min-width: 1024px) {
-  #eyesCatalogPage .eyes-carousel {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel {
     gap: 24px;
   }
 }
@@ -1105,7 +1105,7 @@ input {
     max-width: 55vw;
   }
 
-  #eyesCatalogPage .eyes-carousel {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel {
     /* Account for the 16% grid track and fixed 224px card width. */
     gap: calc(4vw + 107px - 8%);
   }
@@ -1123,7 +1123,7 @@ input {
     gap: 0px;
   }
 
-  #eyesCatalogPage .eyes-top {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top {
     position: fixed;
     top: 0;
     left: calc(22vw - 4px);
@@ -1863,7 +1863,7 @@ input {
     transform: none;
   }
 
-  #eyesCatalogPage .eyes-top,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top,
   .page .eyes-topbar,
   #pupilsPage .eyes-topbar {
     left: 50% !important;
@@ -3445,7 +3445,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
     margin-left: 0 !important;
   }
 
-  #eyesCatalogPage .eyes-top,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top,
   #earsCatalogPage .ears-top,
   .page .eyes-topbar,
   #pupilsPage .eyes-topbar {
@@ -3466,7 +3466,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
     margin-right: 0 !important;
   }
 
-  #eyesCatalogPage .eyes-title,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-title,
   #earsCatalogPage .ears-title,
   .page .eyes-topbar__title,
   #pupilsPage .eyes-topbar__title {
@@ -3478,13 +3478,13 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
     line-height: 1 !important;
   }
 
-  #eyesCatalogPage .eyes-title,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-title,
   .page .eyes-topbar__title,
   #pupilsPage .eyes-topbar__title {
     margin-left: 20px !important;
   }
 
-  #eyesCatalogPage .eyes-top .icons,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top .icons,
   #earsCatalogPage .ears-top .icons,
   .page .eyes-topbar__icons,
   #pupilsPage .eyes-topbar__icons,
@@ -3520,7 +3520,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   #myProfilePage .profile-topbar .menuBtn,
   #editProfilePage .profile-topbar .menuBtn,
   #settingsPage .profile-topbar .menuBtn,
-  #eyesCatalogPage .eyes-top .menuBtn,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn,
   #pupilsPage .eyes-topbar .menuBtn,
@@ -4369,7 +4369,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   #myProfilePage .profile-topbar .menuBtn,
   #editProfilePage .profile-topbar .menuBtn,
   #settingsPage .profile-topbar .menuBtn,
-  #eyesCatalogPage .eyes-top .menuBtn,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-top .menuBtn,
   .page.has-eyes-topbar .eyes-topbar .menuBtn,
   #videos .page .eyes-topbar .menuBtn,
   #pupilsPage .eyes-topbar .menuBtn,
@@ -4381,7 +4381,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
     line-height: 1 !important;
   }
 
-  #eyesCatalogPage .eyes-card .tag {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag {
     font-weight: 400;
   }
 
@@ -4850,8 +4850,8 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
     opacity: 1 !important;
   }
 
-  #eyesCatalogPage .eyes-card .tag,
-  #eyesCatalogPage .eyes-card .tag-row .tag {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag,
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag-row .tag {
     font-weight: 700 !important;
     -webkit-font-smoothing: auto !important;
     text-shadow: 0 0 0 #fff !important;
@@ -5985,18 +5985,18 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   color: #6b6b6b;
 }
 /* Restore the compact Eyes headings and indicators shown with the catalog cards. */
-#eyesCatalogPage .catalog-h2 {
+:is(#eyesCatalogPage, #earsCatalogPage) .catalog-h2 {
   padding-block-start: 0;
   margin-bottom: 14px;
 }
-#eyesCatalogPage .catalog-h2:first-of-type {
+:is(#eyesCatalogPage, #earsCatalogPage) .catalog-h2:first-of-type {
   margin-top: 70px;
 }
-#eyesCatalogPage .catalog-h2 .carousel-dots {
+:is(#eyesCatalogPage, #earsCatalogPage) .catalog-h2 .carousel-dots {
   top: -6px;
   gap: 2px;
 }
-#eyesCatalogPage .catalog-h2 .carousel-dots .dot {
+:is(#eyesCatalogPage, #earsCatalogPage) .catalog-h2 .carousel-dots .dot {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6006,7 +6006,10 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   background: none;
   appearance: none;
 }
-#eyesCatalogPage .catalog-h2 .carousel-dots .dot::before {
+:is(#eyesCatalogPage, #earsCatalogPage)
+  .catalog-h2
+  .carousel-dots
+  .dot::before {
   content: "";
   display: block;
   flex: 0 0 5px;
@@ -6015,7 +6018,10 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   border-radius: 50%;
   background: #cfcfd6;
 }
-#eyesCatalogPage .catalog-h2 .carousel-dots .dot.active::before {
+:is(#eyesCatalogPage, #earsCatalogPage)
+  .catalog-h2
+  .carousel-dots
+  .dot.active::before {
   background: #e41e26;
 }
 /* Match the mobile container padding without creating WebKit overflow. */
@@ -6138,70 +6144,70 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 
 /* Eyes catalog spacing and card proportions on phones only. */
 @media (max-width: 600px) {
-  #eyesCatalogPage .catalog-h2 {
+  :is(#eyesCatalogPage, #earsCatalogPage) .catalog-h2 {
     margin-top: 4px;
     margin-bottom: 6px;
   }
 
-  #eyesCatalogPage .catalog-h2:first-of-type {
+  :is(#eyesCatalogPage, #earsCatalogPage) .catalog-h2:first-of-type {
     margin-top: 56px;
   }
 
-  #eyesCatalogPage .eyes-carousel {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel {
     grid-auto-columns: 65%;
     gap: 12px;
     padding-bottom: 0;
     margin: 0 0 13px;
   }
 
-  #eyesCatalogPage #procedureCarousel {
+  :is(#eyesCatalogPage, #earsCatalogPage) #procedureCarousel {
     margin-bottom: 13px;
   }
 
-  #eyesCatalogPage .eyes-carousel-divider {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel-divider {
     margin-bottom: 23px;
   }
 
-  #eyesCatalogPage .eyes-card {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card {
     height: auto;
     aspect-ratio: 245 / 148;
     padding: 16px 12px;
     border-radius: 14px;
   }
 
-  #eyesCatalogPage .eyes-card .eyes-card__title {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .eyes-card__title {
     max-width: calc(100% - 24px);
   }
 
-  #eyesCatalogPage .eyes-card .tag-row {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag-row {
     inset-inline-start: 12px;
     bottom: 9px;
     gap: 4px;
   }
 
-  #eyesCatalogPage .eyes-card .tag {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag {
     padding: 4px 7px;
     border-radius: 7px;
     font-size: 10.5px;
   }
 
-  #eyesCatalogPage .eyes-card .heart-btn {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .heart-btn {
     top: 5px;
     inset-inline-end: 5px;
   }
 }
 
 @media (max-width: 600px) and (max-height: 720px) {
-  #eyesCatalogPage .eyes-card {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card {
     padding: 12px 10px;
   }
 
-  #eyesCatalogPage .eyes-card .tag-row {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag-row {
     inset-inline-start: 10px;
     bottom: 7px;
   }
 
-  #eyesCatalogPage .eyes-card .tag {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag {
     padding-inline: 6px;
   }
 }

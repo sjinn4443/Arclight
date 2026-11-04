@@ -88,6 +88,10 @@
     "coming_soon_note": "Bientôt."
   },
   "ears": {
+    "examTitle": "Examen : oreille externe et otoscopie",
+    "hearingAssessmentTitle": "Évaluation de l’audition",
+    "proceduresTitle": "Soins auriculaires primaires",
+    "pecWorkshopTitle": "Atelier PEC",
     "title": "Oreilles",
     "learning_modules_title": "Modules d'apprentissage",
     "see_all": "Voir tout >",

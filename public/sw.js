@@ -2,7 +2,7 @@
 /* global __BUILD_CACHE_NAME__ */
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v119"
+    ? "arclight-static-v122"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -499,4 +499,66 @@ async function handleMessage(event) {
 /* --------- Pre-cache on demand via postMessage from the app ---------- */
 self.addEventListener("message", (event) => {
   event.waitUntil(handleMessage(event));
+});
+
+/* Practice reminders use the existing worker so offline lesson caches survive. */
+self.addEventListener("push", (event) => {
+  let payload = {};
+  try {
+    payload = event.data?.json() || {};
+  } catch {
+    /* Show the default reminder. */
+  }
+  const url =
+    typeof payload.url === "string" &&
+    /^\/#\/[a-zA-Z][a-zA-Z0-9_-]{0,79}(?:\/[a-zA-Z][a-zA-Z0-9_-]{0,119})?$/.test(
+      payload.url,
+    )
+      ? payload.url
+      : "/#/mylearning";
+  event.waitUntil(
+    self.registration.showNotification("Arclight practice", {
+      body:
+        typeof payload.body === "string"
+          ? payload.body.slice(0, 240)
+          : "Ready for a little practice? Continue where you left off.",
+      icon: "/favicons/android-chrome-192x192.png",
+      badge: "/favicons/android-chrome-192x192.png",
+      tag: "arclight-practice",
+      renotify: false,
+      data: { url },
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  if (event.notification.tag !== "arclight-practice") return;
+  event.notification.close();
+  const value = event.notification.data?.url;
+  const path =
+    typeof value === "string" &&
+    /^\/#\/[a-zA-Z][a-zA-Z0-9_-]{0,79}(?:\/[a-zA-Z][a-zA-Z0-9_-]{0,119})?$/.test(
+      value,
+    )
+      ? value
+      : "/#/mylearning";
+  const target = new URL(path, self.location.origin).href;
+  event.waitUntil(
+    (async () => {
+      const clients = await self.clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+      const client = clients.find(
+        (item) =>
+          new URL(item.url).origin === self.location.origin &&
+          !new URL(item.url).pathname.startsWith("/subapp/"),
+      );
+      if (client && "navigate" in client) {
+        const navigated = await client.navigate(target);
+        if (navigated) return navigated.focus();
+      }
+      return self.clients.openWindow(target);
+    })(),
+  );
 });

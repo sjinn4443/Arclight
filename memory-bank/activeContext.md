@@ -2,6 +2,15 @@
 
 # Active Context
 
+## Ears catalog — 4 November 2026
+
+- Dashboard now opens `ears`, using the shared Eyes catalog styles at desktop
+  and phone sizes. Four rows cover Exam: Extent Ear & Otoscopy, Hearing
+  Assessment, Primary Ear Care Procedures, and Workshops.
+- The first three rows contain blank non-interactive slots. PEC workshop in
+  Workshops opens the existing `primaryEarCareWorkshop`; structural Back returns
+  to Ears and then Dashboard. New catalog labels are available in all locales.
+
 ## Eye pad and shield revision — 30 October 2026
 
 - Removed the complete hand-hygiene stage, narration and captions. Eight stages
@@ -43,13 +52,13 @@
 - Progress/My Learning and selective procedure downloads use the same target
   and media paths. Source service-worker cache is `arclight-static-v95`.
 
-## VS Code localhost shortcut - 19 October 2026
+## VS Code localhost shortcut - 26 October 2026
 
 - The launcher extension has a separate `localhost:3000` status bar button and
   Command Palette command. When port 3000 is not responding, it starts
   `server.cjs` with VS Code's bundled Node runtime, waits for loopback readiness,
-  then opens the browser through `vscode.env.openExternal()`.
-- Extension package 0.0.7 contributes both commands and activates after startup.
+  then opens Google Chrome directly in an external browser window.
+- Extension package 0.0.8 contributes both commands and activates after startup.
   After installing a VSIX into an already-open VS Code window, run
   **Developer: Reload Window** to activate it.
 

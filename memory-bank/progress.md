@@ -1,5 +1,15 @@
 # Progress
 
+## Ears catalog — 4 November 2026
+
+- Added the four-row Ears catalog, empty unnamed carousel cards, and the
+  Workshops → PEC workshop → Primary Ear Care Workshop navigation path.
+- Reused Eyes responsive styling and kept the existing workshop routes and
+  lesson progress intact. Added catalog labels across the supported locales.
+- Four focused browser checks passed in desktop Chrome and mobile Chrome,
+  covering Dashboard entry, PEC workshop entry, Back, direct links, reload,
+  card geometry, and carousel scrolling.
+
 ## Eye pad and shield revision — 30 October 2026
 
 - Removed the complete hand-hygiene stage, narration and captions. Eight stages
@@ -14,6 +24,16 @@
   `localize-eye-pad-shield-narration.cjs`,
   `retime-eye-pad-shield-narration.cjs` and `build-eye-pad-shield-video.cjs`.
   Source cache is v119. Detailed checks are in the authoring record.
+
+## VS Code Chrome launcher installation - 26 October 2026
+
+- Confirmed the existing 0.0.8 source and VSIX already provide the
+  `localhost:3000` status bar button, server startup and direct Google Chrome
+  launching. Installed the packaged extension in local VS Code.
+- TypeScript no-emit compilation and compiled JavaScript syntax checks passed.
+  Reload an already-open VS Code window to activate the newly installed extension.
+- Updated README, agent notes and active context to describe Chrome-specific
+  behavior instead of the older default-browser implementation.
 
 ## Advanced Pupils scrolly — 24 October 2026
 

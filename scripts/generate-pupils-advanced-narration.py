@@ -23,10 +23,15 @@ async def record_word_boundaries(script, language, cue, work):
         "voice": voice, "volume": "+0%"}, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
     signature_file = work / f"{cue['id']}.sha256"
     metadata = work / f"{cue['id']}.boundaries.jsonl"
-    if metadata.exists() and signature_file.exists() and signature_file.read_text().strip() == signature:
+    if metadata.exists() and metadata.stat().st_size and signature_file.exists() and signature_file.read_text().strip() == signature:
         return
+    # A failed network request must never truncate a reusable recording.
+    pending_audio = work / f"{cue['id']}.pending.mp3"
+    pending_metadata = work / f"{cue['id']}.pending.jsonl"
     await edge_tts.Communicate(text, voice, rate="-8%", boundary="WordBoundary").save(
-        str(work / f"{cue['id']}.mp3"), str(metadata))
+        str(pending_audio), str(pending_metadata))
+    pending_audio.replace(work / f"{cue['id']}.mp3")
+    pending_metadata.replace(metadata)
     signature_file.write_text(signature + "\n", encoding="ascii")
 
 

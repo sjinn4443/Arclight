@@ -75,6 +75,10 @@
     "coming_soon": "Segera Hadir."
   },
   "ears": {
+    "examTitle": "Pemeriksaan: Telinga luar dan otoskopi",
+    "hearingAssessmentTitle": "Penilaian pendengaran",
+    "proceduresTitle": "Prosedur perawatan telinga primer",
+    "pecWorkshopTitle": "Lokakarya PEC",
     "title": "Telinga",
     "learning_modules_title": "Modul Pembelajaran",
     "see_all": "Lihat Semua >",

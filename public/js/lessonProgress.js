@@ -101,7 +101,11 @@ export function setLessonProgress(
 
   document.dispatchEvent(
     new CustomEvent(LESSON_PROGRESS_EVENT, {
-      detail: { target, percent: finalPercent },
+      detail: {
+        target,
+        percent: finalPercent,
+        advanced: next > previous.percent,
+      },
     }),
   );
 

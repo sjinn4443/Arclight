@@ -32,7 +32,11 @@ source coordinates so the full retinal cone remains visible after reframing.
 Afferent signals retain one original rounded Bezier head per colour, overlapping
 each shaft along a distance-matched trajectory. Brain perimeter paths reach a shared
 junction before two branches draw together. Retina, optic nerve, chiasm, tract and
-nuclei highlight in signal order. Reflex diagrams use
+nuclei use filled lavender gradient pools at their spoken English onsets, rather
+than outline circles. `PUPILS_ADVANCED_AFFERENT_WORD_FRAMES` records the reviewed
+audio onsets; both shafts and their distance-matched heads follow that clock.
+The pathway is complete at frame 441 and its final glow clears at frame 453.
+Reflex diagrams use
 the earlier full-art vertical wipes, keeping independent pupil and label timing.
 Flow signals run behind opaque boxes/text; original radial arrows trim inward for
 the constrictor and outward for the dilator, with progressive muscle aperture changes.
@@ -119,6 +123,13 @@ Controls appear 1.5 seconds after the later of visual and spoken completion.
 An intermediate narration/frame anchor preserves the original animation speed.
 Only the illuminated left pupil in the reflex explanation sits beneath its light beam.
 The Consensual and Near technique dividers use the same full-width 6px stroke.
+
+The English opening now says “afferent, or sensory pathway.” The 4 November 2026
+edit removes 220ms of existing silence after “sensory”, retaining the original
+voice. The cut was checked below -54dBFS; all later PCM samples and the 315-second
+track duration remain unchanged. The normal TTS regeneration uses the corrected
+punctuation. Boundary recordings are staged in temporary files so a failed
+request cannot truncate cached speech.
 
 Checks: `tests/pupils-advanced-scroll.test.js`,
 `tests/pupils-advanced-offline.test.js` and

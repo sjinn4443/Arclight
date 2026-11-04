@@ -85,6 +85,10 @@
     "coming_soon": "जल्द आ रहा है।"
   },
   "ears": {
+    "examTitle": "परीक्षण: बाहरी कान और ओटोस्कोपी",
+    "hearingAssessmentTitle": "श्रवण आकलन",
+    "proceduresTitle": "प्राथमिक कान देखभाल प्रक्रियाएँ",
+    "pecWorkshopTitle": "PEC कार्यशाला",
     "title": "कान",
     "learning_modules_title": "सीखने के मॉड्यूल",
     "see_all": "सभी देखें >",

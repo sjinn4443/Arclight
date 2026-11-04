@@ -12,6 +12,12 @@ The app is primarily static (served from `public/` in dev, and `dist/` plus `dis
 
 ## Contents
 
+Dashboard's Ears card opens the Ears catalog (`#/ears`), which shares the Eyes
+catalog layout. Its four rows are Exam: Extent Ear & Otoscopy, Hearing Assessment,
+Primary Ear Care Procedures, and Workshops. The first three rows contain unnamed,
+non-interactive placeholder cards; Workshops contains PEC workshop, which opens
+the existing `primaryEarCareWorkshop` route.
+
 - App docs (this file): setup, scripts, env vars
 - CI/CD: [`.github/README.md`](./.github/README.md)
 - Tests: [`tests/README.md`](./tests/README.md)
@@ -348,6 +354,21 @@ If you do not need watch/live-reload:
 npm start
 # open http://localhost:3000
 ```
+
+## VS Code status bar shortcut
+
+Open this repo root in VS Code and install the packaged launcher:
+
+```bash
+code --install-extension vscode-alanui-launcher/vscode-alanui-launcher-0.0.8.vsix
+```
+
+Run **Developer: Reload Window** if VS Code is already open. Click
+**localhost:3000** in the bottom-right status bar to open the app in external
+**Google Chrome**. The extension starts `server.cjs` if needed and waits for
+port 3000 before opening Chrome. **Start Arclight (3000)** does the same thing.
+Chrome must be installed; the launcher does not use the default browser or
+VS Code's embedded preview. See the [launcher guide](./vscode-alanui-launcher/README.md).
 
 ## Scripts
 

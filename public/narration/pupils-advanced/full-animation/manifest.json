@@ -6,8 +6,8 @@
       "src": "en.m4a",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 1209066,
-      "sha256": "1b14a72688d9f4a7d008424b2bfce03a18e36036f4d0293cc3fdd5eedec79c93",
+      "bytes": 1207813,
+      "sha256": "e62d15ef7612e8efe266223483673c416d2d5597b81951eec75c1a2882060dde",
       "durationSeconds": 315.0,
       "reusedPecSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5"
     },

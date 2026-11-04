@@ -85,6 +85,10 @@
     "recommended_subtitle_mini_apps": "미니 앱"
   },
   "ears": {
+    "examTitle": "검사: 외이 및 이경 검사",
+    "hearingAssessmentTitle": "청력 평가",
+    "proceduresTitle": "일차 귀 관리 술기",
+    "pecWorkshopTitle": "PEC 워크숍",
     "title": "귀",
     "learning_modules_title": "학습 모듈",
     "see_all": "모두 보기 >",

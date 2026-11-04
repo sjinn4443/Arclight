@@ -36,7 +36,7 @@ const OWN_STAGES = [
         id: "afferent-light",
         offset: 0,
         end: 8,
-        en: "Light entering the eye starts a signal in the afferent, or sensory, pathway.",
+        en: "Light entering the eye starts a signal in the afferent, or sensory pathway.",
         ko: "눈으로 들어온 빛은 구심성 감각 경로의 신호를 시작합니다.",
       },
       {
@@ -246,7 +246,16 @@ export const PUPILS_ADVANCED_STAGES = [
   ...OWN_STAGES.slice(4),
 ];
 let clock = 1;
-export const PUPILS_ADVANCED_VISUAL_END_FRAMES = { 0: 662, 10: 390 };
+// Reviewed onsets in the existing English recording, relative to stage start.
+// The gaps between the spoken anatomy names are visible in its audio waveform.
+export const PUPILS_ADVANCED_AFFERENT_WORD_FRAMES = {
+  retina: 304,
+  "optic nerve": 331,
+  chiasm: 368,
+  tract: 397,
+  nuclei: 421,
+};
+export const PUPILS_ADVANCED_VISUAL_END_FRAMES = { 0: 453, 10: 390 };
 const clips = PUPILS_ADVANCED_STAGES.map((stage, i) => {
   const clip = {
     start: clock,
@@ -256,8 +265,8 @@ const clips = PUPILS_ADVANCED_STAGES.map((stage, i) => {
   clock = clip.end;
   if (i === 0)
     clip.endByLanguage = {
-      en: clip.start + 662 / 30 + 1.5,
-      ko: clip.start + 662 / 30 + 1.5,
+      en: clip.start + Math.max(453 / 30, 15.01) + 1.5,
+      ko: clip.start + Math.max(453 / 30, 17.12) + 1.5,
     };
   // Keep the reused PEC recording intact and skip only its silent tail.
   if (i === 9)

@@ -1,139 +1,112 @@
-/**
- * @fileoverview This file contains ears related functions and logic, which will be added later on
+/** Ears catalog navigation and carousel controls. */
+import { loadPage } from "./navigation.js";
+import { openMenu } from "./menu.js";
 
-import { loadPage } from './navigation.js';
-import { openMenu } from './menu.js';
-import { readLikes as getLikes, toggleLike } from './likes.js';
+function initializeCarousel(carousel) {
+  const cards = Array.from(carousel.querySelectorAll(".eyes-card"));
+  if (cards.length < 2) return;
 
-// Navigate helper (same pattern as eyes.js)
-function go(target) {
-  if (!target) return;
-  if (typeof window.showPage === 'function') window.showPage(target);
-  else loadPage(target);
+  const dots = document.createElement("span");
+  dots.className = "carousel-dots";
+  cards.forEach((card, index) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "dot";
+    const prefix =
+      window.I18N?.t?.("i18nExtra.eyes_go_to_item") || "Go to item";
+    dot.setAttribute("aria-label", `${prefix} ${index + 1}`);
+    dot.addEventListener("click", () => {
+      const rtl = getComputedStyle(carousel).direction === "rtl";
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      const left =
+        index === 0
+          ? 0
+          : index === cards.length - 1
+            ? rtl
+              ? -maxScroll
+              : maxScroll
+            : carousel.scrollLeft +
+              card.getBoundingClientRect().left -
+              carousel.getBoundingClientRect().left -
+              (carousel.clientWidth - card.offsetWidth) / 2;
+      carousel.scrollTo({ left, behavior: "smooth" });
+    });
+    dots.appendChild(dot);
+  });
+  carousel.previousElementSibling.appendChild(dots);
+
+  const updateDots = () => {
+    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+    const position = Math.abs(carousel.scrollLeft);
+    const bounds = carousel.getBoundingClientRect();
+    const center = bounds.left + bounds.width / 2;
+    let active = 0;
+    if (position >= maxScroll - 2 && maxScroll > 0) {
+      active = cards.length - 1;
+    } else if (position > 2) {
+      let distance = Infinity;
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        const nextDistance = Math.abs(rect.left + rect.width / 2 - center);
+        if (nextDistance < distance) {
+          distance = nextDistance;
+          active = index;
+        }
+      });
+    }
+    Array.from(dots.children).forEach((dot, index) => {
+      dot.classList.toggle("active", index === active);
+      dot.setAttribute("aria-pressed", String(index === active));
+    });
+  };
+  carousel.addEventListener("scroll", updateDots, { passive: true });
+  updateDots();
+
+  // Touch scrolling is native; mouse users can drag the empty slots as in Eyes.
+  let drag = null;
+  carousel.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    drag = { id: event.pointerId, x: event.clientX, left: carousel.scrollLeft };
+  });
+  carousel.addEventListener("pointermove", (event) => {
+    if (!drag || drag.id !== event.pointerId) return;
+    const delta = event.clientX - drag.x;
+    if (Math.abs(delta) < 5 && !carousel.hasPointerCapture(drag.id)) return;
+    carousel.setPointerCapture(drag.id);
+    carousel.classList.add("is-pointer-dragging");
+    carousel.scrollLeft = drag.left - delta;
+    event.preventDefault();
+  });
+  const endDrag = () => {
+    if (drag && carousel.hasPointerCapture(drag.id)) {
+      carousel.releasePointerCapture(drag.id);
+    }
+    drag = null;
+    carousel.classList.remove("is-pointer-dragging");
+  };
+  carousel.addEventListener("pointerup", endDrag);
+  carousel.addEventListener("pointercancel", endDrag);
+  carousel.addEventListener("lostpointercapture", endDrag);
+  carousel.addEventListener("pointerleave", () => {
+    if (drag && !carousel.hasPointerCapture(drag.id)) endDrag();
+  });
 }
 
 export function initializeEars() {
-  const pageEl = document.getElementById('earsCatalogPage');
-  if (!pageEl) return;
+  const page = document.getElementById("earsCatalogPage");
+  if (!page || page.dataset.earsInitialized === "true") return;
+  page.dataset.earsInitialized = "true";
 
-  // Menu button (identical behavior to Eyes)
-  const menuBtn = pageEl.querySelector('.menuBtn');
-  if (menuBtn) {
-    menuBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openMenu();
-    }, { once: true });
-  }
-
-  // --- Sections: mirror Eyes layout but with Ears content targets you already have ---
-  // Targets come from your existing ears subpages (otoscopyPage, earHealthPage, etc.) :contentReference[oaicite:4]{index=4}
-  const sections = {
-    earsCoreCarousel: [
-      { label: 'Otoscopy',                 target: 'otoscopyPage',    tags: ['Video', 'Poster', 'Flowchart'] },
-      { label: 'Ear Health & Hearing',     target: 'earHealthPage',   tags: ['Visual'] },
-    ],
-    earsDiseaseCarousel: [
-      // Populate as you add disease content; placeholder example:
-      { label: 'Otitis Media (Coming Soon)', target: 'comingSoon',    tags: ['Coming Soon'] },
-    ],
-    earsProceduresCarousel: [
-      { label: 'How to Examine the Ear',  target: 'howToExamineEarPage', tags: ['Video'] },
-      { label: 'Otoscopy Poster',         target: 'earConditionsPage',   tags: ['Visual'] },
-      { label: 'Common Ear Conditions',   target: 'earFlowchartPage',    tags: ['Visual'] },
-    ],
-    earsToolsCarousel: [
-      { label: 'Tuning Fork (Coming Soon)', target: 'comingSoon',     tags: ['Coming Soon'] },
-    ],
-  };
-
-  // Render helper – identical markup/classes to Eyes for pixel parity :contentReference[oaicite:5]{index=5}
-  const render = (containerId, items) => {
-    const el = pageEl.querySelector(`#${containerId}`);
-    if (!el) return;
-    const likes = getLikes();
-
-    el.classList.add('eyes-track'); // reuse same track class for styling
-
-    const cardTemplate = pageEl.querySelector('#earsCardTemplate');
-    if (!cardTemplate) return;
-
-    el.textContent = '';
-    items.forEach((i) => {
-      const card = cardTemplate.content.querySelector('.eyes-card').cloneNode(true);
-      card.classList.toggle('liked', likes.has(i.label));
-      card.dataset.target = i.target;
-      card.dataset.label = i.label;
-
-      const heart = card.querySelector('.heart-btn');
-      if (heart) heart.setAttribute('aria-label', `Like ${i.label}`);
-
-      const title = card.querySelector('.eyes-card__title');
-      if (title) title.textContent = i.label;
-
-      const tagRow = card.querySelector('.tag-row');
-      if (tagRow) {
-        if (i.tags?.length) {
-          i.tags.forEach((t) => {
-            const tag = document.createElement('span');
-            tag.className = 'tag';
-            tag.textContent = t;
-            tagRow.appendChild(tag);
-          });
-        } else {
-          tagRow.remove();
-        }
-      }
-
-      el.appendChild(card);
-    });
-  };
-
-  Object.entries(sections).forEach(([id, list]) => render(id, list));
-
-  // hearts: same behavior as Eyes (pointer-events + toggle like) :contentReference[oaicite:6]{index=6}
-  pageEl.querySelectorAll('.heart-btn, .heart-btn *').forEach((n) => {
-    try { n.style.pointerEvents = 'auto'; } catch {}
+  const menu = page.querySelector(".menuBtn");
+  menu?.addEventListener("click", () => openMenu());
+  menu?.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    openMenu();
   });
-
-  const consume = (e) => {
-    e.preventDefault(); e.stopPropagation();
-    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
-  };
-
-  const onHeartToggle = (e) => {
-    consume(e);
-    const heart = e.currentTarget;
-    const card = heart.closest('.eyes-card');
-    const label = card?.getAttribute('data-label');
-    if (!label) return;
-    const likes = toggleLike(label);
-    card.classList.toggle('liked', likes.has(String(label)));
-  };
-
-  pageEl.querySelectorAll('.heart-btn').forEach((hb) => {
-    hb.addEventListener('pointerdown', consume, { capture: true });
-    hb.addEventListener('click', onHeartToggle, { capture: true });
-    hb.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') onHeartToggle(e);
-    });
+  page.querySelectorAll(".eyes-carousel").forEach(initializeCarousel);
+  page.querySelector(".eyes-card__open")?.addEventListener("click", () => {
+    loadPage("primaryEarCareWorkshop");
   });
-
-  // Card navigation (identical to Eyes’ non-video path) :contentReference[oaicite:7]{index=7}
-  pageEl.addEventListener('click', async (e) => {
-    const card = e.target.closest?.('.eyes-card');
-    if (!card) return;
-    e.preventDefault();
-
-    const target =
-      card.dataset?.target ||
-      card.dataset?.route  ||
-      card.dataset?.page   ||
-      '';
-
-    // All current Ears cards are non-video → show subpage directly
-    if (target) {
-      // If you keep Ears as part of the SPA, this will reveal the existing subpage from ears.html
-      go(target);
-    }
-  }, { passive: false });
-} */
+  window.I18N?.applyTranslations?.(page);
+}

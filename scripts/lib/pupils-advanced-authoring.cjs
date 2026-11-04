@@ -4,6 +4,7 @@ const path = require("node:path");
 const crypto = require("node:crypto");
 const { pathToFileURL } = require("node:url");
 const sharp = require("sharp");
+const prettier = require("prettier");
 const ROOT = path.resolve(__dirname, "../..");
 const INPUT = path.join(ROOT, "tmp/pupils-advanced/layers");
 const OUTPUT = path.join(ROOT, "public/scrolly/coreexam/pupils-advanced");
@@ -139,6 +140,7 @@ let layers = [],
   end,
   art,
   statuses,
+  afferentWords,
   reflexConstrictFrame = 390,
   rapdDilationFrame = 590;
 function add(layer) {
@@ -528,59 +530,73 @@ function brainFork(outer, inner, box) {
   directed.v[0] = clone(junction);
   pdfVector({ ...inner, curves: [directed] }, box, 550, 650);
 }
-function anatomyHighlights(a, box) {
+function anatomyHighlights(box) {
   const pulse = (start, finish) =>
     keys([
       [0, 0],
       [start, 0],
-      [start + 6, 95],
+      [start + 3, 95],
       [finish, 95],
       [finish + 12, 0],
     ]);
-  const outline = (name, curves, start, finish, options = {}) =>
-    shape(
-      "Anatomy highlight: " + name,
-      curves.map((p) => moveCurve(p, -box[0], -box[1])),
-      { stroke: "#ffe266", width: 2.4 },
-      { o: pulse(start, finish), ...options },
-    );
-  outline("retina", [ellipse(90.5, 291.7, 24.3)], 145, 240);
-  shape(
-    "Anatomy highlight: optic nerve",
-    [ellipse(0, 0, 7, 24)],
-    { stroke: "#ffe266", width: 2.4 },
-    { o: pulse(240, 330), p: c([116 - box[0], 244 - box[1], 0]), r: c(32) },
+  const names = Object.keys(afferentWords);
+  names.forEach((name, i) =>
+    nativeImage("afferent-glow-" + name.replaceAll(" ", "-"), box, {
+      name: "Anatomy highlight: " + name,
+      o: pulse(afferentWords[name], afferentWords[names[i + 1]] ?? 441),
+    }),
   );
-  outline("chiasm", [ellipse(133, 220, 11, 9)], 330, 390);
-  const tract = (points) => ({
-    c: false,
-    v: points,
-    i: points.map(() => [0, 0]),
-    o: points.map(() => [0, 0]),
-  });
-  outline(
-    "tract",
-    [
-      tract([
-        [136, 217],
-        [156, 205],
-        [179, 186],
-      ]),
-      tract([
-        [129, 217],
-        [109, 204],
-        [92, 186],
-      ]),
-    ],
-    390,
-    450,
-  );
-  outline(
-    "nuclei",
-    a.nuclei.flatMap((r) => r.curves),
-    450,
-    650,
-  );
+}
+// Keep the original distance-matched heads and shafts together while retiming
+// their progress through the nerve, chiasm and tract to the spoken anatomy list.
+function syncAfferentSignals(signalLayers) {
+  const anchors = [
+    [0, 0],
+    [240, afferentWords["optic nerve"]],
+    [330, afferentWords.chiasm],
+    [390, afferentWords.tract],
+    [450, afferentWords.nuclei],
+    [550, 430],
+    [650, 441],
+  ];
+  const at = (time) => {
+    const i = anchors.findIndex(([old]) => old >= time);
+    if (i <= 0) return time;
+    const [x0, y0] = anchors[i - 1],
+      [x1, y1] = anchors[i];
+    return y0 + ((time - x0) * (y1 - y0)) / (x1 - x0);
+  };
+  const visit = (value) => {
+    if (!value || typeof value !== "object") return;
+    if (value.a === 1 && Array.isArray(value.k)) {
+      const original = clone(value.k);
+      // Insert interpolation anchors before remapping linear scalar/vector keys.
+      // This matters for Trim Paths: its progress must follow the head's clock.
+      for (const [time] of anchors) {
+        if (original.some((key) => key.t === time)) continue;
+        const i = original.findIndex((key) => key.t > time);
+        if (i <= 0) continue;
+        const a = original[i - 1],
+          b = original[i];
+        if (a.h || !a.s?.every(Number.isFinite) || !b.s?.every(Number.isFinite))
+          continue;
+        const f = (time - a.t) / (b.t - a.t);
+        value.k.push({
+          ...clone(a),
+          t: time,
+          s: a.s.map((v, j) => v + (b.s[j] - v) * f),
+        });
+      }
+      value.k.sort((a, b) => a.t - b.t);
+      value.k.forEach((key, i) => {
+        key.t = at(key.t);
+        if (i < value.k.length - 1) key.e = clone(value.k[i + 1].s);
+      });
+      return;
+    }
+    Object.values(value).forEach(visit);
+  };
+  signalLayers.forEach(visit);
 }
 function neural(name) {
   const a = art.neural[name],
@@ -615,11 +631,12 @@ function neural(name) {
         [150, [full]],
       ]);
       nativeImage(name + "-retina", box);
-      if (name === "afferent") anatomyHighlights(a, box);
+      if (name === "afferent") anatomyHighlights(box);
       const input = a.signals.filter((v) =>
         ["#0b00ff", "#00fffa"].includes(v.stroke || v.fill),
       );
       if (name === "afferent") {
+        const previous = new Set(layers);
         const origin = box[1] + 65;
         for (const r of input.filter((r) => r.stroke && r.bounds[3] > origin))
           pdfVector(r, box, 240, 450, "up");
@@ -640,6 +657,7 @@ function neural(name) {
             head = input.find((r) => r.fill === colour && !r.stroke);
           if (line && head) travellingHead(head, line, box, 240, 450);
         }
+        syncAfferentSignals(layers.filter((layer) => !previous.has(layer)));
       } else {
         // Restore the original full-art directional wipes, including the long
         // side arrows. Pupil response and label timing remain independently set.
@@ -1361,6 +1379,7 @@ async function main() {
     PUPILS_ADVANCED_LANGUAGES: languages,
     PUPILS_ADVANCED_TITLE_TRANSLATIONS: titles,
   } = config;
+  afferentWords = config.PUPILS_ADVANCED_AFFERENT_WORD_FRAMES;
   try {
     const work = path.join(ROOT, "tmp/pupils-advanced/narration/en"),
       boundaries = (
@@ -1439,6 +1458,42 @@ async function main() {
       p: file,
       e: 0,
       sourceBox: info.box,
+    });
+  }
+  // Soft, filled pools of lavender light, with transparent edges. Rasterizing
+  // these small overlays gives Canvas and SVG the same gradient appearance.
+  const glowBox = art.neural.afferent.box;
+  const glowRegions = {
+    retina: [[90.5, 291.7, 27, 27, 0]],
+    "optic-nerve": [[115, 244, 11, 29, 32]],
+    chiasm: [[132, 220, 16, 13, 0]],
+    tract: [
+      [110, 202, 10, 31, -45],
+      [156, 202, 10, 32, 47],
+    ],
+    nuclei: art.neural.afferent.nuclei.map(({ bounds: b }) => [
+      (b[0] + b[2]) / 2,
+      (b[1] + b[3]) / 2,
+      (b[2] - b[0]) * 0.85,
+      (b[3] - b[1]) * 0.85,
+      0,
+    ]),
+  };
+  for (const [region, ellipses] of Object.entries(glowRegions)) {
+    const name = "afferent-glow-" + region,
+      file = name + ".webp";
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1296" viewBox="${glowBox.join(" ")}"><defs><radialGradient id="glow"><stop stop-color="#ead4ff" stop-opacity=".86"/><stop offset=".3" stop-color="#d9b3f2" stop-opacity=".65"/><stop offset=".7" stop-color="#db92f2" stop-opacity=".25"/><stop offset="1" stop-color="#db00ff" stop-opacity="0"/></radialGradient></defs>${ellipses.map(([x, y, rx, ry, r]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${r} ${x} ${y})" fill="url(#glow)"/>`).join("")}</svg>`;
+    await sharp(Buffer.from(svg))
+      .webp({ lossless: true })
+      .toFile(path.join(OUTPUT, "images", file));
+    assets.set(name, {
+      id: name,
+      w: 1080,
+      h: 1296,
+      u: "../images/",
+      p: file,
+      e: 0,
+      sourceBox: glowBox,
     });
   }
   for (const [name, face] of Object.entries(art.faces))
@@ -1557,7 +1612,22 @@ async function main() {
     };
     const dir = path.join(OUTPUT, "" + (index + 1));
     await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(path.join(dir, "data.json"), JSON.stringify(data));
+    const jsonFile = path.join(dir, "data.json");
+    const existing = await fs.readFile(jsonFile, "utf8").catch((error) => {
+      if (error.code === "ENOENT") return null;
+      throw error;
+    });
+    if (
+      existing == null ||
+      JSON.stringify(JSON.parse(existing)) !== JSON.stringify(data)
+    )
+      await fs.writeFile(
+        jsonFile,
+        await prettier.format(JSON.stringify(data), {
+          parser: "json",
+          objectWrap: "collapse",
+        }),
+      );
     await poster(path.join(dir, "images/img_0.png"));
   }
   // Only the generator's obsolete numeric folders and images may be removed.
@@ -1603,6 +1673,12 @@ async function main() {
         languages,
         cues,
         visualCues: [
+          ...Object.entries(afferentWords).map(([word, frame]) => ({
+            id: "afferent-" + word.replaceAll(" ", "-"),
+            language: "en",
+            word,
+            at: 1 + frame / FPS,
+          })),
           {
             id: "reflex-constriction",
             language: "en",

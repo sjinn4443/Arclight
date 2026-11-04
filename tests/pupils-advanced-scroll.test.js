@@ -8,6 +8,7 @@ import {
   PUPILS_ADVANCED_SCROLL_CONFIG as cfg,
   PUPILS_ADVANCED_SCROLL_TIMING as timing,
   PUPILS_ADVANCED_STAGES as stages,
+  PUPILS_ADVANCED_AFFERENT_WORD_FRAMES as afferentWords,
 } from "../public/js/pupilsAdvancedScroll.js";
 import {
   PUPILS_PEC_SCROLL_CONFIG as pec,
@@ -238,7 +239,8 @@ test("travelling afferent heads stay attached to the trimmed shafts throughout t
         l.nm.startsWith("Original path") &&
         JSON.stringify(l.shapes[0].it.find((i) => i.ty === "st")?.c.k) ===
           JSON.stringify(colour) &&
-        l.shapes[0].it.find((i) => i.ty === "tm").e.k.at(-1).t === 450,
+        l.shapes[0].it.find((i) => i.ty === "tm").e.k.at(-1).t ===
+          afferentWords.nuclei,
     );
     const curve = line.shapes[0].it[0].ks.k;
     const table = Array.from({ length: 2049 }, (_, j) => {
@@ -264,8 +266,19 @@ test("travelling afferent heads stay attached to the trimmed shafts throughout t
       table[i].d =
         table[i - 1].d +
         Math.hypot(...table[i].p.map((v, k) => v - table[i - 1].p[k]));
-    for (const key of head.ks.p.k.filter((k) => k.t >= 240)) {
-      const d = ((key.t - 240) / 210) * table.at(-1).d;
+    const trim = line.shapes[0].it.find((i) => i.ty === "tm").e.k;
+    for (const key of head.ks.p.k.filter(
+      (k) => k.t >= afferentWords["optic nerve"],
+    )) {
+      const i = Math.max(
+        1,
+        trim.findIndex((k) => k.t >= key.t),
+      );
+      const a0 = trim[i - 1],
+        b0 = trim[i];
+      const fraction = (key.t - a0.t) / (b0.t - a0.t);
+      const d =
+        ((a0.s[0] + (b0.s[0] - a0.s[0]) * fraction) / 100) * table.at(-1).d;
       const next = Math.max(
         1,
         table.findIndex((p) => p.d >= d - 1e-8),
@@ -291,12 +304,13 @@ test("brain perimeter draws before its two branches and only the reflex rect is 
       list
         .find((l) => l.nm === "Original path " + id)
         .shapes[0].it.find((it) => it.ty === "tm").e.k;
-    expect(trim(outer).at(-1).t).toBeLessThanOrEqual(trim(branch)[1].t);
+    const start = (id) => trim(id).findLast((k) => k.s[0] === 0).t;
+    expect(trim(outer).at(-1).t).toBeLessThanOrEqual(start(branch));
     const path = (id) =>
       list.find((l) => l.nm === "Original path " + id).shapes[0].it[0].ks.k;
     expect(path(outer).v.at(-1)).toEqual(path(branch).v[0]);
     expect(path(outer).v.at(-1)).toEqual(path(outer + " continuation").v[0]);
-    expect(trim(outer + " continuation")[1].t).toBe(trim(branch)[1].t);
+    expect(start(outer + " continuation")).toBe(start(branch));
   }
   expect(cfg.stageAspectRatioByFile.filter((r) => r !== "1169 / 1280")).toEqual(
     ["1169 / 1093"],
@@ -630,7 +644,7 @@ test("cataract controls follow speech by 1.5 seconds without changing PEC audio"
 
 test("afferent and consensual controls follow completed visuals and speech without accelerating the animation", () => {
   for (const [index, visualFrame, speechEnds] of [
-    [0, 662, { en: 15.01, ko: 17.12 }],
+    [0, 453, { en: 15.01, ko: 17.12 }],
     [10, 390, { en: 13.93, ko: 14.62 }],
   ]) {
     const clip = cfg.narrationClipsByFile[index];
@@ -651,7 +665,7 @@ test("afferent and consensual controls follow completed visuals and speech witho
   }
 });
 
-test("each named afferent structure highlights in signal order and the lit pupil sits below its beam", () => {
+test("each named afferent structure glows at its spoken cue and the lit pupil sits below its beam", () => {
   const list = allLayers(scene(0));
   const highlights = ["retina", "optic nerve", "chiasm", "tract", "nuclei"].map(
     (name) => list.find((l) => l.nm === "Anatomy highlight: " + name),
@@ -659,6 +673,13 @@ test("each named afferent structure highlights in signal order and the lit pupil
   const starts = highlights.map((l) => l.ks.o.k[1].t);
   expect(starts).toEqual([...starts].sort((a, b) => a - b));
   for (const l of highlights) {
+    const name = l.nm.replace("Anatomy highlight: ", "");
+    expect(l.ty).toBe(2);
+    expect(l.ks.o.k[1].t).toBe(afferentWords[name]);
+    const cue = script.visualCues.find(
+      (c) => c.id === "afferent-" + name.replaceAll(" ", "-"),
+    );
+    expect((cue.at - 1) * 30).toBeCloseTo(afferentWords[name]);
     expect(l.ks.o.k[2].s[0]).toBeGreaterThan(0);
     expect(l.ks.o.k.at(-1).s[0]).toBe(0);
   }
@@ -669,6 +690,33 @@ test("each named afferent structure highlights in signal order and the lit pupil
     .sort((a, b) => a.ks.p.k[0] - b.ks.p.k[0]);
   expect(layers.indexOf(pupils[0])).toBeGreaterThan(beam);
   expect(layers.indexOf(pupils[1])).toBeLessThan(beam);
+});
+
+test("anatomy glow textures have filled lavender centres and fully transparent edges", async () => {
+  const data = scene(0);
+  const asset = data.assets.find((a) => a.id === "afferent-glow-retina");
+  const { data: pixels, info } = await sharp(
+    path.join("public", path.dirname(cfg.paths[0]), asset.u, asset.p),
+  )
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const [x, y, w, h] = asset.sourceBox;
+  const pixel = (px, py) => {
+    const i =
+      (Math.round(((py - y) / h) * info.height) * info.width +
+        Math.round(((px - x) / w) * info.width)) *
+      4;
+    return [...pixels.subarray(i, i + 4)];
+  };
+  const centre = pixel(90.5, 291.7),
+    middle = pixel(104, 291.7),
+    edge = pixel(118, 291.7);
+  expect(centre[3]).toBeGreaterThan(middle[3]);
+  expect(middle[3]).toBeGreaterThan(edge[3]);
+  expect(edge[3]).toBe(0);
+  expect(centre[2]).toBeGreaterThan(centre[0]);
+  expect(centre[0]).toBeGreaterThan(centre[1]);
 });
 
 test("examination pupils wait 0.4 seconds after full illumination before constricting", () => {

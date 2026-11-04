@@ -19,7 +19,7 @@
   "cues": [
     {
       "id": "afferent-light",
-      "en": "Light entering the eye starts a signal in the afferent, or sensory, pathway.",
+      "en": "Light entering the eye starts a signal in the afferent, or sensory pathway.",
       "ko": "눈으로 들어온 빛은 구심성 감각 경로의 신호를 시작합니다.",
       "start": 1,
       "end": 9
@@ -286,6 +286,36 @@
     }
   ],
   "visualCues": [
+    {
+      "id": "afferent-retina",
+      "language": "en",
+      "word": "retina",
+      "at": 11.133333333333333
+    },
+    {
+      "id": "afferent-optic-nerve",
+      "language": "en",
+      "word": "optic nerve",
+      "at": 12.033333333333333
+    },
+    {
+      "id": "afferent-chiasm",
+      "language": "en",
+      "word": "chiasm",
+      "at": 13.266666666666667
+    },
+    {
+      "id": "afferent-tract",
+      "language": "en",
+      "word": "tract",
+      "at": 14.233333333333333
+    },
+    {
+      "id": "afferent-nuclei",
+      "language": "en",
+      "word": "nuclei",
+      "at": 15.033333333333333
+    },
     {
       "id": "reflex-constriction",
       "language": "en",

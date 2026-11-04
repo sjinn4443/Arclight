@@ -1067,6 +1067,7 @@ const STRUCTURAL_BACK_TARGETS = {
   diabeticRetinopathyWorkshop: { routeName: "eyes" },
   directOphthalmoscopyPdf: { routeName: "diabeticRetinopathyWorkshop" },
   editProfile: { routeName: "myprofile" },
+  ears: { routeName: "dashboard" },
   eyes: { routeName: "dashboard" },
   fundalReflexPdf: { routeName: "childhoodEyeScreeningWorkshop" },
   fundalReflexQuiz: { routeName: "pecWorkshop" },

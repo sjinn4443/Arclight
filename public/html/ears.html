@@ -1,66 +1,88 @@
-<!-- Ears Catalog Page -->
+<!-- Ears catalog shares the Eyes catalog layout. -->
 <div id="earsCatalogPage" class="page">
-  <div class="container ears-container">
-    <div class="ears-top">
-      <div class="ears-title" data-i18n="ears.earsCatalogTitle">Ears</div>
+  <div class="container eyes-container ears-container">
+    <div class="eyes-top">
+      <div class="eyes-title" data-i18n="ears.earsCatalogTitle">Ears</div>
       <div class="icons">
         <span
           class="icon menuBtn"
+          role="button"
+          tabindex="0"
           aria-label="Menu"
           data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >☰</span
+          >&#9776;</span
         >
       </div>
     </div>
-
-    <a
-      class="ear-workshop-entry lesson-row lesson-row--folder"
-      href="#/primaryEarCareWorkshop"
-    >
-      <div class="thumb" aria-hidden="true"></div>
-      <div class="lesson-main">
-        <div class="lesson-top">
-          <span class="lesson-type" data-i18n="primaryEarCareWorkshop.title"
-            >Primary Ear Care Workshop</span
-          >
-        </div>
-      </div>
-      <span class="lesson-cta" data-i18n="primaryEarCareWorkshop.start"
-        >Start &gt;</span
-      >
-    </a>
-
-    <!-- Learning Modules -->
-    <h2 class="catalog-h2" data-i18n="ears.learningModulesTitle">
-      Learning Modules
-      <span class="see-all" data-i18n="ears.seeAll">See all ></span>
+    <h2 class="catalog-h2" id="earsExamCarouselHeading">
+      <span data-i18n="ears.examTitle">Exam: Extent Ear & Otoscopy</span>
     </h2>
-    <div id="earsLearningCarousel" class="ears-carousel"></div>
-
-    <template id="earsCardTemplate">
-      <button type="button" class="eyes-card">
+    <div
+      id="earsExamCarousel"
+      class="eyes-carousel"
+      aria-labelledby="earsExamCarouselHeading"
+    >
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+    </div>
+    <div class="eyes-carousel-divider" aria-hidden="true"></div>
+    <h2 class="catalog-h2" id="earsHearingCarouselHeading">
+      <span data-i18n="ears.hearingAssessmentTitle">Hearing Assessment</span>
+    </h2>
+    <div
+      id="earsHearingCarousel"
+      class="eyes-carousel"
+      aria-labelledby="earsHearingCarouselHeading"
+    >
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+    </div>
+    <div class="eyes-carousel-divider" aria-hidden="true"></div>
+    <h2 class="catalog-h2" id="earsProceduresCarouselHeading">
+      <span data-i18n="ears.proceduresTitle">Primary Ear Care Procedures</span>
+    </h2>
+    <div
+      id="earsProceduresCarousel"
+      class="eyes-carousel"
+      aria-labelledby="earsProceduresCarouselHeading"
+    >
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+      <div class="eyes-card ears-card--empty" aria-hidden="true"></div>
+    </div>
+    <div class="eyes-carousel-divider" aria-hidden="true"></div>
+    <h2 class="catalog-h2" id="earsWorkshopsCarouselHeading">
+      <span data-i18n="primaryEyeCareProceduresTitle">Workshops</span>
+    </h2>
+    <div
+      id="earsWorkshopsCarousel"
+      class="eyes-carousel"
+      aria-labelledby="earsWorkshopsCarouselHeading"
+    >
+      <div
+        class="eyes-card eyes-card--blank-black"
+        data-target="primaryEarCareWorkshop"
+      >
+        <button
+          type="button"
+          class="eyes-card__open"
+          aria-label="PEC workshop"
+          data-i18n="ears.pecWorkshopTitle:aria-label"
+          aria-labelledby="earsPecWorkshopTitle"
+        ></button>
         <span
-          class="heart-btn"
-          aria-label="Like"
-          role="button"
-          tabindex="0"
-          style="pointer-events: auto"
+          id="earsPecWorkshopTitle"
+          class="eyes-card__title"
+          data-i18n="ears.pecWorkshopTitle"
+          >PEC workshop</span
         >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            style="pointer-events: auto"
-          >
-            <path
-              style="pointer-events: auto"
-              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"
-            />
-          </svg>
-        </span>
-        <span class="eyes-card__title"></span>
-        <div class="tag-row"></div>
-      </button>
-    </template>
+      </div>
+    </div>
   </div>
 </div>
 

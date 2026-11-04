@@ -1,4 +1,8 @@
 {
+  "reminders": {
+    "practice_reminders": "Practice reminders",
+    "reminder_time": "Reminder time"
+  },
   "onboarding": {
     "title": "Create Account",
     "info_button_aria": "More information about creating an account",
@@ -88,6 +92,10 @@
     "coming_soon_note": "Coming soon."
   },
   "ears": {
+    "examTitle": "Exam: Extent Ear & Otoscopy",
+    "hearingAssessmentTitle": "Hearing Assessment",
+    "proceduresTitle": "Primary Ear Care Procedures",
+    "pecWorkshopTitle": "PEC workshop",
     "title": "Ears",
     "learning_modules_title": "Learning Modules",
     "see_all": "See All >",

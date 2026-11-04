@@ -2,7 +2,7 @@
   components.css - Styles for reusable UI components such as buttons, inputs, cards, and progress bars.
 */
 
-#eyesCatalogPage .eyes-card__open {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card__open {
   position: absolute;
   inset: 0;
   margin: 0;
@@ -13,11 +13,11 @@
   border-radius: inherit;
   z-index: 3;
 }
-#eyesCatalogPage .eyes-card__open:focus-visible {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card__open:focus-visible {
   outline: 3px solid #fff;
   outline-offset: -4px;
 }
-#eyesCatalogPage .eyes-card .heart-btn {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .heart-btn {
   z-index: 4;
 }
 [dir="rtl"] #backBtnGlobal svg {
@@ -2354,7 +2354,7 @@ input:checked + .slider:before {
 
 /* ============================================= Eyes page components ============================================= */
 
-#eyesCatalogPage .eyes-top {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-top {
   position: fixed;
   top: 0;
   left: 0;
@@ -2371,7 +2371,7 @@ input:checked + .slider:before {
   box-shadow: none;
 }
 
-#eyesCatalogPage .eyes-title {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-title {
   margin-inline-start: 0;
   font-size: 15px;
   font-weight: 600;
@@ -2379,7 +2379,7 @@ input:checked + .slider:before {
 }
 
 /* Make sure icons stay vertically centred */
-#eyesCatalogPage .eyes-top .icons {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-top .icons {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -2403,7 +2403,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-#eyesCatalogPage .eyes-carousel.is-demo-scrolling {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel.is-demo-scrolling {
   scroll-snap-type: none;
   scroll-behavior: auto;
 }
@@ -2565,19 +2565,21 @@ input:checked + .slider:before {
   }
 }
 
-#eyesCatalogPage .eyes-carousel.is-pointer-dragging,
-#eyesCatalogPage .eyes-carousel.is-pointer-dragging .eyes-card {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel.is-pointer-dragging,
+:is(#eyesCatalogPage, #earsCatalogPage)
+  .eyes-carousel.is-pointer-dragging
+  .eyes-card {
   cursor: grabbing;
   -webkit-user-select: none;
   user-select: none;
 }
 
-#eyesCatalogPage .eyes-carousel.is-pointer-dragging {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel.is-pointer-dragging {
   scroll-snap-type: none;
   scroll-behavior: auto;
 }
 
-#eyesCatalogPage .eyes-carousel-divider {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel-divider {
   height: 2px;
   width: 100vw;
   margin: 0 calc(50% - 50vw) 14px;
@@ -2585,7 +2587,7 @@ input:checked + .slider:before {
 }
 
 @media (min-width: 1024px) {
-  #eyesCatalogPage .eyes-carousel-divider {
+  :is(#eyesCatalogPage, #earsCatalogPage) .eyes-carousel-divider {
     width: calc(100% + 8px);
     margin: 0 0 14px -4px;
   }
@@ -2622,7 +2624,7 @@ input:checked + .slider:before {
   pointer-events: none;
 }
 
-#eyesCatalogPage .eyes-card .eyes-card__title {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .eyes-card__title {
   color: #ffffff !important;
   position: relative;
   z-index: 1;
@@ -2631,7 +2633,7 @@ input:checked + .slider:before {
   white-space: normal;
 }
 
-#eyesCatalogPage .eyes-card .tag-row {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .tag-row {
   position: absolute;
   inset-inline-start: 18px;
   bottom: 12px;
@@ -2652,7 +2654,7 @@ input:checked + .slider:before {
   pointer-events: none;
 }
 
-#eyesCatalogPage .eyes-card .heart-btn {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .heart-btn {
   position: absolute;
   top: 10px;
   inset-inline-end: 10px;
@@ -2668,18 +2670,18 @@ input:checked + .slider:before {
   z-index: 4;
   pointer-events: auto;
 }
-#eyesCatalogPage .eyes-card .heart-btn,
-#eyesCatalogPage .eyes-card .heart-btn * {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .heart-btn,
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .heart-btn * {
   pointer-events: auto;
 }
-#eyesCatalogPage .eyes-card .heart-btn svg {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card .heart-btn svg {
   width: 18px;
   height: 18px;
   stroke: #ffffff;
   stroke-width: 2;
   fill: none;
 }
-#eyesCatalogPage .eyes-card.liked .heart-btn svg {
+:is(#eyesCatalogPage, #earsCatalogPage) .eyes-card.liked .heart-btn svg {
   fill: #e41e26;
   stroke: #e41e26;
 }

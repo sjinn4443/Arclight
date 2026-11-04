@@ -707,6 +707,10 @@ app.use(
   sensitiveRateLimiter,
 );
 app.use(emergencyGate);
+app.use(
+  "/api/reminders",
+  require("./security/reminder-api.cjs").createReminderRouter(),
+);
 app.use(express.json({ limit: "100kb" }));
 app.use(ensureTelemetryState);
 
@@ -1104,13 +1108,19 @@ app.use((req, res) => {
 });
 
 let server;
+let stopReminders = () => {};
 if (require.main === module) {
   server = app.listen(PORT, HOST, () => {
     console.log(`Arclight app listening on http://${HOST}:${PORT}`);
+    stopReminders =
+      require("./utils/practice-reminder-scheduler.cjs").startPracticeReminderScheduler();
   });
 }
 
 module.exports = {
   app,
-  closeServer: () => server?.close(),
+  closeServer: () => {
+    stopReminders();
+    return server?.close();
+  },
 };

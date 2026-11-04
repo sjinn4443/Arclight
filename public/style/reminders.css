@@ -1,0 +1,61 @@
+#practiceReminderOffer {
+  position: fixed;
+  z-index: 1100;
+  inset-inline: 16px;
+  bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+  max-width: 420px;
+  margin-inline: auto;
+  padding: 18px;
+  border: 1px solid #e3e3e8;
+  border-radius: 16px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 6px 28px #0002;
+  font-size: 14px;
+  line-height: 1.5;
+}
+#practiceReminderOffer p {
+  margin: 8px 0;
+}
+#practiceReminderOffer [role="status"]:empty {
+  display: none;
+}
+#practiceReminderOffer > div {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#practiceReminderOffer button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #b4342a;
+  border-radius: 9px;
+  background: #b4342a;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+#practiceReminderOffer [data-reminder-dismiss] {
+  background: white;
+  color: #333;
+  border-color: #ccc;
+}
+#practiceReminderOffer button:focus-visible,
+#practiceReminderTime:focus-visible {
+  outline: 3px solid #245fc2;
+  outline-offset: 3px;
+}
+#settingsPage .practice-reminder-description {
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555;
+}
+#practiceReminderTime {
+  width: auto;
+  min-height: 44px;
+  padding: 6px;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}

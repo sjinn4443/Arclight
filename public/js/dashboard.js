@@ -237,11 +237,12 @@ export function initializeDashboard() {
   // 3) Category cards
   const LEGACY_TO_ROUTE = {
     eyesModules: "eyes",
-    earsModules: "primaryEarCareWorkshop",
+    earsModules: "ears",
     skinModules: "videos",
     teachModules: "videos",
     eyesCatalogPage: "eyes",
-    earsLearningModules: "primaryEarCareWorkshop",
+    earsLearningModules: "ears",
+    earsCatalogPage: "ears",
   };
 
   const DISABLED_TARGETS = new Set(["skinModules", "teachModules"]);
