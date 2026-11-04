@@ -81,6 +81,7 @@ test("settings opt in, save local time, persist across reload, and opt out", asy
   expect(await page.evaluate(() => window.__reminderRequests)).toBe(0);
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  await expect(toggle).toHaveCSS("background-color", "rgb(21, 225, 21)");
   await page.locator("#practiceReminderTime").fill("19:30");
   await page.locator("#practiceReminderTime").blur();
   await expect
@@ -190,4 +191,89 @@ test("practice in an embedded simulator resets the reminder clock", async ({
           .lastPracticedAt,
     ),
   ).toBeGreaterThan(0);
+});
+
+test("notification history opens from the profile bell and closes with focus restored", async ({
+  page,
+}, testInfo) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "arclight:practice-reminders:v1",
+      JSON.stringify({
+        token: "a".repeat(64),
+        enabled: true,
+        reminderTime: "18:00",
+      }),
+    );
+  });
+  await page.route("**/api/reminders/**", async (route) => {
+    if (route.request().url().includes("/config"))
+      return route.fulfill({ json: { available: true, publicKey: "AQID" } });
+    if (route.request().url().includes("/history"))
+      return route.fulfill({
+        json: {
+          enabled: true,
+          notifications: [
+            {
+              id: "welcome-v1",
+              title: "Arclight practice",
+              body: "Ready for a little practice? Continue where you left off.",
+              url: "/#/mylearning",
+              sentAt: Date.now(),
+            },
+          ],
+        },
+      });
+    return route.fulfill({ status: 204 });
+  });
+  await page.goto("/#/myprofile");
+  const bell = page.locator(
+    "#myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn)",
+  );
+  await bell.click();
+  const dialog = page.getByRole("dialog", {
+    name: "Notifications",
+    exact: true,
+  });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText("Ready for a little practice?");
+  await expect(dialog.locator("time")).toContainText("Sent");
+  await page.screenshot({
+    path: testInfo.outputPath("notification-inbox.png"),
+  });
+  await page
+    .getByRole("button", { name: "Close notifications", exact: true })
+    .click();
+  await expect(dialog).not.toBeVisible();
+  await expect(bell).toBeFocused();
+  await page.route("**/api/reminders/history", (route) => route.abort());
+  await bell.click();
+  await expect(dialog).toContainText("Connect to the internet");
+  await expect(dialog).toContainText("Ready for a little practice?");
+  await dialog
+    .getByRole("button", { name: "Practice reminder settings" })
+    .click();
+  await expect(page).toHaveURL(/#\/settings$/);
+});
+
+test("notification inbox shows a helpful empty state before enabling notifications", async ({
+  page,
+}) => {
+  await page.route("**/api/reminders/config", (route) =>
+    route.fulfill({ json: { available: true, publicKey: "AQID" } }),
+  );
+  await page.goto("/#/myprofile");
+  await page
+    .locator("#myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn)")
+    .click();
+  const dialog = page.getByRole("dialog", {
+    name: "Notifications",
+    exact: true,
+  });
+  await expect(dialog).toContainText("No notifications yet.");
+  await expect(dialog).toContainText("Enable practice reminders in Settings");
+  await page
+    .getByRole("button", { name: "Close notifications", exact: true })
+    .click();
+  await expect(dialog).not.toBeVisible();
 });

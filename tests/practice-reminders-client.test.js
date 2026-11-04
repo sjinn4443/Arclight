@@ -107,6 +107,30 @@ describe("Practice reminder permissions and offline state", () => {
     expect(JSON.parse(put[1].body).reminderTime).toBe("18:00");
     expect(put[1].headers.Authorization).toMatch(/^Bearer [a-f0-9]{64}$/);
   });
+  test("iOS keeps a confirmed subscription green while the permission property is temporarily default", async () => {
+    await reminders.enablePracticeReminders();
+    expect(notification.permission).toBe("default");
+    reminders.renderReminderSettings();
+    expect(
+      document
+        .getElementById("settingsNotificationsToggle")
+        .getAttribute("aria-pressed"),
+    ).toBe("true");
+    await reminders.syncPracticeReminders();
+    expect(reminders.readReminderState().enabled).toBe(true);
+    expect(
+      global.fetch.mock.calls.some(
+        ([, options]) => options.method === "DELETE",
+      ),
+    ).toBe(false);
+    notification.permission = "denied";
+    reminders.renderReminderSettings();
+    expect(
+      document
+        .getElementById("settingsNotificationsToggle")
+        .getAttribute("aria-pressed"),
+    ).toBe("false");
+  });
   test("blocked permission and disabled server do not request permission", async () => {
     notification.permission = "denied";
     await expect(reminders.enablePracticeReminders()).rejects.toThrow(

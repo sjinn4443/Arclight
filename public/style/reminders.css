@@ -59,3 +59,108 @@
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+
+#settingsPage #settingsNotificationsToggle[aria-pressed="true"] {
+  background-color: #15e115;
+}
+#settingsPage
+  #settingsNotificationsToggle[aria-pressed="true"]
+  .settings-toggle__thumb {
+  transform: translateX(18px);
+}
+
+#myProfilePage .notif-dot[hidden] {
+  display: none !important;
+}
+#myProfilePage
+  .profile-topbar
+  .profile-topbar__icons
+  .icon-btn[aria-haspopup="dialog"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+@media (min-width: 1024px) {
+  #myProfilePage .profile-topbar .icon-btn[aria-haspopup="dialog"] {
+    position: fixed;
+    top: 9px;
+    right: calc(var(--desktop-topbar-icon-right, 24px) + 44px);
+  }
+}
+#myProfilePage .icon-btn[aria-haspopup="dialog"] .notif-dot {
+  top: 5px;
+  right: 5px;
+}
+.notification-inbox {
+  box-sizing: border-box;
+  width: min(440px, calc(100vw - 32px));
+  max-height: min(80dvh, 650px);
+  padding: 20px;
+  border: 0;
+  border-radius: 18px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 10px 40px #0003;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.notification-inbox::backdrop {
+  background: #0007;
+}
+.notification-inbox header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.notification-inbox h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.notification-inbox button {
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.notification-inbox [data-inbox-close] {
+  width: 44px;
+  flex: 0 0 44px;
+  margin: 0;
+  border: 0;
+  font-size: 26px;
+  padding: 0;
+}
+.notification-inbox [data-inbox-list] {
+  margin: 12px 0;
+}
+.notification-inbox__item {
+  display: block;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+  color: inherit;
+  text-decoration: none;
+}
+.notification-inbox__item p {
+  margin: 6px 0;
+}
+.notification-inbox__item time {
+  font-size: 12px;
+  color: #666;
+}
+.notification-inbox [data-inbox-status] {
+  color: #555;
+}
+.notification-inbox button:focus-visible,
+.notification-inbox a:focus-visible {
+  outline: 3px solid #245fc2;
+  outline-offset: 2px;
+}

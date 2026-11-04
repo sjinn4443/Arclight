@@ -41,7 +41,11 @@ function createMemoryReminderStore({ file, encrypt, decrypt } = {}) {
       await run(() => {});
     },
     ids: () =>
-      run((db) => Object.keys(db).filter((id) => id !== PUSH_CONFIG_ID)),
+      run((db) =>
+        Object.keys(db).filter(
+          (id) => id !== PUSH_CONFIG_ID && db[id]?.subscription,
+        ),
+      ),
     getOrCreatePushConfig: (create) =>
       run((db) => {
         db[PUSH_CONFIG_ID] ||= create();
@@ -131,7 +135,7 @@ function createPostgresReminderStore(connectionString) {
       await ready();
       return (
         await pool.query(
-          "SELECT id FROM practice_reminders WHERE (data->>'sentMilestone')::int < 30",
+          "SELECT id FROM practice_reminders WHERE data->'subscription' IS NOT NULL AND data->'subscription' <> 'null'::jsonb AND ((data->>'sentMilestone')::int < 30 OR data->>'welcomeSentAt' IS NULL)",
         )
       ).rows.map((r) => r.id);
     },

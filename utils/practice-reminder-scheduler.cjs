@@ -1,42 +1,33 @@
 const { getReminderStore } = require("../storage/reminder-store.cjs");
 const { resolvePushConfig } = require("./web-push-config.cjs");
 const {
-  dueMilestone,
-  MESSAGES,
-  safePracticeUrl,
-} = require("./practice-reminder-policy.cjs");
+  deliverNotification,
+  sendPush,
+} = require("./notification-delivery.cjs");
+const { dueMilestone } = require("./practice-reminder-policy.cjs");
 
 async function dispatchPracticeReminders({ store, send, now = Date.now() }) {
   let sent = 0;
   for (const id of await store.ids()) {
     await store.mutate(id, async (record) => {
-      if (!record) return null;
+      if (!record?.subscription) return record;
+      if (!record.welcomeSentAt) {
+        const next = await deliverNotification(record, { send, now });
+        if (next.welcomeSentAt) sent += 1;
+        return next;
+      }
+      if (now - (record.lastNotificationAt || 0) < 86400000) return record;
       const milestone = dueMilestone(record, now);
       if (!milestone) return record;
-      try {
-        await send(
-          record.subscription,
-          JSON.stringify({
-            title: "Arclight practice",
-            body: MESSAGES[milestone],
-            url: safePracticeUrl(record.url),
-            sentAt: now,
-          }),
-        );
-        sent += 1;
-        return { ...record, sentMilestone: milestone, retryAfter: 0 };
-      } catch (error) {
-        if ([404, 410].includes(error.statusCode)) return null;
-        // Retry during a later delivery window, never in a tight loop.
-        return { ...record, retryAfter: now + 3600000 };
-      }
+      const next = await deliverNotification(record, { send, now, milestone });
+      if (next.sentMilestone === milestone) sent += 1;
+      return next;
     });
   }
   return sent;
 }
 
 function startPracticeReminderScheduler() {
-  const webpush = require("web-push");
   let running = false;
   const tick = async () => {
     if (running) return;
@@ -48,13 +39,7 @@ function startPracticeReminderScheduler() {
       await dispatchPracticeReminders({
         store,
         send: (subscription, payload) =>
-          webpush.sendNotification(subscription, payload, {
-            vapidDetails: config,
-            TTL: 3600,
-            urgency: "normal",
-            topic: "arclight-practice",
-            timeout: 10000,
-          }),
+          sendPush(subscription, payload, config),
       });
     } catch {
       console.warn(
@@ -64,7 +49,7 @@ function startPracticeReminderScheduler() {
       running = false;
     }
   };
-  const timer = setInterval(tick, 5 * 60000);
+  const timer = setInterval(tick, 60000);
   timer.unref();
   void tick();
   return () => clearInterval(timer);

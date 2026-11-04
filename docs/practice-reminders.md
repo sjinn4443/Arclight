@@ -18,9 +18,9 @@ exact inactivity claims because offline activity may not have synced yet.
 Each device receives a reminder at 1, 3, 7 and 30 elapsed days from its last
 practice. Each check selects only the latest reached milestone; missed reminders
 are not replayed together. After day 30, reminders pause until practice resumes.
-Delivery is attempted within one hour of the preferred local time, every five
+Delivery is attempted within one hour of the preferred local time, every one
 minutes. It is best effort: connectivity, OS settings, Focus and power saving can
-delay or prevent delivery. Push messages expire after one hour and replace older
+delay or prevent delivery. Regular push messages expire after one hour and replace older
 practice reminders. DST uses the saved IANA timezone, refreshed when the app syncs.
 
 ## Server setup
@@ -72,6 +72,33 @@ including across multiple server replicas. Successful delivery advances the
 milestone; temporary provider failures wait at least an hour before retrying.
 Provider acceptance and the DB commit cannot be atomic: a process crash between
 them can cause a retry. Notification tags replace a previous practice reminder.
+
+## First notification and notification history
+
+After an opted-in device subscription is saved, the server immediately attempts
+one welcome notification: "Ready for a little practice? Continue where you left off."
+This does not require a practice timestamp. Existing active subscriptions without
+a welcome marker are processed by the next scheduler check. Temporary failures
+retry after at least one minute; expired subscriptions are disabled. A successful
+welcome marker survives resubscription, practice updates and turning reminders
+off/on, so ordinary reloads and deployments do not send another welcome.
+The welcome notification expires after 24 hours if the phone remains offline.
+Regular reminders wait at least 24 hours after a successful notification.
+
+My Profile's bell opens a device-specific notification inbox with the latest 100
+successful server sends, newest first, dates and lesson links. History starts
+with this feature's deployment; previous sends cannot be reconstructed. "Sent"
+means accepted by the push provider, not proof the phone displayed the alert.
+Turning reminders off keeps the device's history and welcome marker but removes
+its active subscription. `/api/reminders/history` requires the same device bearer
+token; it returns only notifications and active status, never subscription keys.
+The popup caches history locally for offline reading and tracks read status on
+this device. This history is independent of optional learning accounts.
+
+The Settings toggle reflects a confirmed stored subscription and only an explicit
+permission denial turns it off; iOS may temporarily report a default permission
+value after its prompt. Safari subscription keys with optional base64 padding
+are accepted and normalized before storage.
 
 ## Manual device check
 

@@ -33,6 +33,7 @@ function subscription(
   };
 }
 const base = () => ({
+  welcomeSentAt: NOW - 2 * DAY,
   subscription: subscription(),
   endpointHash: "endpoint",
   timezone: "Asia/Seoul",
@@ -125,7 +126,7 @@ describe("Practice reminder delivery", () => {
 });
 
 describe("Practice reminder API", () => {
-  let app, store, body;
+  let app, store, body, pushSend;
   const mutate = (method, path, data, secret = token) =>
     request(app)
       [method](`/api/reminders${path}`)
@@ -135,12 +136,14 @@ describe("Practice reminder API", () => {
       .send(data);
   beforeEach(() => {
     store = createMemoryReminderStore();
+    pushSend = jest.fn(async () => {});
     app = express();
     app.use(
       "/api/reminders",
       createReminderRouter({
         store,
         config: () => ({ publicKey: "public-only" }),
+        sendNotification: pushSend,
       }),
     );
     body = {
@@ -235,6 +238,46 @@ describe("Practice reminder API", () => {
     ).toBe(409);
     await mutate("delete", "/subscription", undefined, "b".repeat(64));
     expect(await store.ids()).toEqual([id]);
+    expect(pushSend).toHaveBeenCalledTimes(1);
+  });
+  test("subscribing sends the first notification immediately once, with no practice timestamp", async () => {
+    const payload = { ...body, lastPracticedAt: 0 };
+    expect((await mutate("put", "/subscription", payload)).status).toBe(204);
+    expect(pushSend).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(pushSend.mock.calls[0][1])).toMatchObject({
+      id: "welcome-v1",
+      body: "Ready for a little practice? Continue where you left off.",
+    });
+    await mutate("put", "/subscription", payload);
+    await mutate("delete", "/subscription");
+    const off = await request(app)
+      .get("/api/reminders/history")
+      .set("Authorization", `Bearer ${token}`);
+    expect(off.body.enabled).toBe(false);
+    expect(off.body.notifications).toHaveLength(1);
+    await mutate("put", "/subscription", payload);
+    expect(pushSend).toHaveBeenCalledTimes(1);
+    const response = await request(app)
+      .get("/api/reminders/history")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.body.notifications).toHaveLength(1);
+    expect(response.body.enabled).toBe(true);
+    expect(response.text).not.toContain(payload.subscription.endpoint);
+    expect((await request(app).get("/api/reminders/history")).status).toBe(401);
+  });
+  test("accepts padded Safari subscription keys and normalizes them", async () => {
+    const padded = {
+      ...body,
+      subscription: {
+        ...body.subscription,
+        keys: {
+          auth: body.subscription.keys.auth + "==",
+          p256dh: body.subscription.keys.p256dh + "=",
+        },
+      },
+    };
+    expect((await mutate("put", "/subscription", padded)).status).toBe(204);
+    expect(pushSend.mock.calls[0][0].keys).toEqual(body.subscription.keys);
   });
   test("rejects malformed times, zones, timestamps and endpoints", async () => {
     for (const patch of [

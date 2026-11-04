@@ -1,4 +1,5 @@
 import { translateLiteral } from "./i18n.js";
+import { initializeNotificationInbox } from "./notificationInbox.js";
 
 const KEY = "arclight:practice-reminders:v1";
 const DEFAULTS = {
@@ -91,8 +92,11 @@ function request(method, path, state, body) {
     });
     if (!response.ok)
       throw new Error(
-        "Could not save reminders. Connect to the internet and try again.",
+        `Could not save reminders (HTTP ${response.status || "error"}). Connect to the internet and try again.`,
       );
+    return response.headers?.get("content-type")?.includes("application/json")
+      ? response.json()
+      : null;
   });
   mutationQueue = operation.catch(() => {});
   return operation;
@@ -147,6 +151,7 @@ export async function enablePracticeReminders() {
     throw new Error(
       "Reminders were not enabled. You can enable them later in Settings.",
     );
+  setStatus("Connecting this device to practice reminders…");
   const state = save({
     token: readReminderState().token || deviceToken(),
     pendingDisable: false,
@@ -195,14 +200,29 @@ export async function syncPracticeReminders() {
       state.pendingDisable ||
       (state.enabled &&
         "Notification" in window &&
-        Notification.permission !== "granted")
+        Notification.permission === "denied")
     ) {
       await request("DELETE", "/subscription", state);
       save({ enabled: false, pendingDisable: false });
     } else if (state.enabled && config?.available) {
       const subscription = await (await worker()).pushManager.getSubscription();
       if (subscription) await upload(state, subscription);
-      else save({ enabled: false });
+      else
+        setStatus(
+          "Reconnect and enable reminders again to renew this device's subscription.",
+        );
+    } else if (
+      !state.enabled &&
+      config?.available &&
+      "Notification" in window &&
+      Notification.permission !== "denied"
+    ) {
+      const remote = await request("GET", "/history", state);
+      if (
+        remote?.enabled &&
+        (await (await worker()).pushManager.getSubscription())
+      )
+        save({ enabled: true });
     }
     lastSync = Date.now();
   } catch {
@@ -223,7 +243,7 @@ export function renderReminderSettings() {
   const on =
     state.enabled &&
     "Notification" in window &&
-    Notification.permission === "granted";
+    Notification.permission !== "denied";
   toggle.classList.toggle("is-on", on);
   toggle.setAttribute("aria-pressed", String(Boolean(on)));
   const time = document.getElementById("practiceReminderTime");
@@ -391,6 +411,7 @@ export function recordPractice() {
 export function initializePracticeReminders() {
   if (initialized) return;
   initialized = true;
+  initializeNotificationInbox({ readState: readReminderState, request });
   void loadConfig().then(syncPracticeReminders);
   if ("serviceWorker" in navigator)
     void navigator.serviceWorker

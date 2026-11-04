@@ -3,6 +3,10 @@ const crypto = require("node:crypto");
 const rateLimit = require("express-rate-limit");
 const { getReminderStore } = require("../storage/reminder-store.cjs");
 const {
+  deliverNotification,
+  sendPush,
+} = require("../utils/notification-delivery.cjs");
+const {
   readPushConfig,
   resolvePushConfig,
 } = require("../utils/web-push-config.cjs");
@@ -39,8 +43,8 @@ function validSubscription(input) {
     )
       return false;
     if (
-      !/^[A-Za-z0-9_-]{87}$/.test(input.keys?.p256dh || "") ||
-      !/^[A-Za-z0-9_-]{22}$/.test(input.keys?.auth || "")
+      !/^[A-Za-z0-9_-]{87}=?$/.test(input.keys?.p256dh || "") ||
+      !/^[A-Za-z0-9_-]{22}(?:==)?$/.test(input.keys?.auth || "")
     )
       return false;
     crypto.ECDH.convertKey(
@@ -64,7 +68,11 @@ function sameOrigin(req) {
     return false;
   }
 }
-function createReminderRouter({ store: providedStore, config } = {}) {
+function createReminderRouter({
+  store: providedStore,
+  config,
+  sendNotification = sendPush,
+} = {}) {
   const router = express.Router();
   const store = () => providedStore || getReminderStore();
   const configuration = () =>
@@ -94,7 +102,7 @@ function createReminderRouter({ store: providedStore, config } = {}) {
   });
   router.use(limit);
   router.use((req, res, next) => {
-    if (!sameOrigin(req))
+    if (req.method !== "GET" && !sameOrigin(req))
       return res.status(403).json({ error: "same_origin_required" });
     const token = /^Bearer ([a-f0-9]{64})$/.exec(
       req.get("authorization") || "",
@@ -116,7 +124,8 @@ function createReminderRouter({ store: providedStore, config } = {}) {
   router.put(
     "/subscription",
     action(async (req, res) => {
-      if (!(await configuration()))
+      const pushConfig = await configuration();
+      if (!pushConfig)
         return res.status(503).json({ error: "reminders_unavailable" });
       const { subscription, timezone, reminderTime, lastPracticedAt } =
         req.body;
@@ -132,12 +141,13 @@ function createReminderRouter({ store: providedStore, config } = {}) {
       const timestamp = Math.min(lastPracticedAt, Date.now());
       await store().mutate(req.reminderId, (old) => {
         const latest = Math.max(old?.lastPracticedAt || 0, timestamp);
-        return {
+        const next = {
+          ...old,
           subscription: {
             endpoint: subscription.endpoint,
             keys: {
-              auth: subscription.keys.auth,
-              p256dh: subscription.keys.p256dh,
+              auth: subscription.keys.auth.replace(/=+$/, ""),
+              p256dh: subscription.keys.p256dh.replace(/=+$/, ""),
             },
           },
           endpointHash: digest(subscription.endpoint),
@@ -150,9 +160,19 @@ function createReminderRouter({ store: providedStore, config } = {}) {
               : old.url,
           sentMilestone:
             latest > (old?.lastPracticedAt || 0) ? 0 : old?.sentMilestone || 0,
-          retryAfter: 0,
+          retryAfter:
+            latest > (old?.lastPracticedAt || 0) ? 0 : old?.retryAfter || 0,
         };
+        return next;
       });
+      // Persist ownership before sending, so a duplicate endpoint cannot receive
+      // a notification from a registration that will be rejected at commit.
+      await store().mutate(req.reminderId, (old) =>
+        deliverNotification(old, {
+          send: (subscription, payload) =>
+            sendNotification(subscription, payload, pushConfig),
+        }),
+      );
       res.status(204).end();
     }),
   );
@@ -184,8 +204,23 @@ function createReminderRouter({ store: providedStore, config } = {}) {
   router.delete(
     "/subscription",
     action(async (req, res) => {
-      await store().mutate(req.reminderId, () => null);
+      await store().mutate(req.reminderId, (old) =>
+        old ? { ...old, subscription: null } : null,
+      );
       res.status(204).end();
+    }),
+  );
+  router.get(
+    "/history",
+    action(async (req, res) => {
+      let notifications = [];
+      let enabled = false;
+      await store().mutate(req.reminderId, (old) => {
+        notifications = (old?.history || []).slice(0, 100);
+        enabled = Boolean(old?.subscription);
+        return old;
+      });
+      res.json({ notifications, enabled });
     }),
   );
   return router;
