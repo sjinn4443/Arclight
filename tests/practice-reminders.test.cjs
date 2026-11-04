@@ -202,6 +202,56 @@ describe("Practice reminder API", () => {
       ).status,
     ).toBe(403);
   });
+  test.each(["same-origin", "same-site", "none"])(
+    "accepts the public HTTPS app behind an HTTP proxy (%s)",
+    async (site) => {
+      const result = await request(app)
+        .put("/api/reminders/subscription")
+        .set("Host", "www.arclightproject.app")
+        .set("Origin", "https://www.arclightproject.app")
+        .set("Sec-Fetch-Site", site)
+        .set("Authorization", `Bearer ${token}`)
+        .send(body);
+      expect(result.status).toBe(204);
+    },
+  );
+  test("public alias is allowed but insecure origins, spoofed proxy headers and cross-site requests are rejected", async () => {
+    const send = (
+      origin,
+      host = "www.arclightproject.app",
+      site = "same-origin",
+    ) =>
+      request(app)
+        .put("/api/reminders/subscription")
+        .set("Host", host)
+        .set("Origin", origin)
+        .set("Sec-Fetch-Site", site)
+        .set("X-Forwarded-Host", "www.arclightproject.app")
+        .set("X-Forwarded-Proto", "https")
+        .set("Authorization", `Bearer ${token}`)
+        .send(body);
+    expect((await send("https://arclightproject.app")).status).toBe(204);
+    for (const origin of [
+      "null",
+      "http://www.arclightproject.app",
+      "https://www.arclightproject.app.evil.example",
+      "https://evil.example",
+      "https://www.arclightproject.app:444",
+    ])
+      expect((await send(origin)).status).toBe(403);
+    expect(
+      (await send("https://www.arclightproject.app", "evil.example")).status,
+    ).toBe(403);
+    expect(
+      (
+        await send(
+          "https://www.arclightproject.app",
+          "www.arclightproject.app",
+          "cross-site",
+        )
+      ).status,
+    ).toBe(403);
+  });
   test("practice advances monotonically and resets delivery only on new practice", async () => {
     expect((await mutate("put", "/subscription", body)).status).toBe(204);
     await store.mutate(id, (row) => ({ ...row, sentMilestone: 7 }));

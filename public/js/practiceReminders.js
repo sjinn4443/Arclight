@@ -90,10 +90,15 @@ function request(method, path, state, body) {
       },
       body: body ? JSON.stringify(body) : undefined,
     });
-    if (!response.ok)
+    if (!response.ok) {
+      if (response.status === 403)
+        throw new Error(
+          "Arclight rejected this app's request. Close and reopen the Home Screen app, then try again. Your internet connection is not the cause.",
+        );
       throw new Error(
-        `Could not save reminders (HTTP ${response.status || "error"}). Connect to the internet and try again.`,
+        `Could not save reminders (HTTP ${response.status || "error"}). Please try again later.`,
       );
+    }
     return response.headers?.get("content-type")?.includes("application/json")
       ? response.json()
       : null;
@@ -124,7 +129,10 @@ async function worker() {
 }
 async function upload(state, subscription, { enabling = false } = {}) {
   const current = readReminderState();
-  if (current.pendingDisable || (!enabling && !current.enabled))
+  if (
+    current.pendingDisable ||
+    (enabling ? !current.pendingEnable : !current.enabled)
+  )
     throw new Error("Practice reminders are off.");
   if (!subscription)
     throw new Error(
@@ -155,6 +163,7 @@ export async function enablePracticeReminders() {
   const state = save({
     token: readReminderState().token || deviceToken(),
     pendingDisable: false,
+    pendingEnable: true,
   });
   const reg = await worker();
   let subscription = await reg.pushManager.getSubscription();
@@ -165,7 +174,12 @@ export async function enablePracticeReminders() {
       applicationServerKey: bytes(config.publicKey),
     });
     await upload(state, subscription, { enabling: true });
-    save({ enabled: true, pendingDisable: false, offered: true });
+    save({
+      enabled: true,
+      pendingDisable: false,
+      pendingEnable: false,
+      offered: true,
+    });
     document.getElementById("practiceReminderOffer")?.remove();
     setStatus(
       "Practice reminders are on. They pause after the one-month reminder until you practise again.",
@@ -177,7 +191,12 @@ export async function enablePracticeReminders() {
   }
 }
 export async function disablePracticeReminders() {
-  const state = save({ enabled: false, pendingDisable: true, offered: true });
+  const state = save({
+    enabled: false,
+    pendingDisable: true,
+    pendingEnable: false,
+    offered: true,
+  });
   document.getElementById("practiceReminderOffer")?.remove();
   try {
     const reg = await navigator.serviceWorker?.getRegistration("/");
@@ -223,6 +242,14 @@ export async function syncPracticeReminders() {
         (await (await worker()).pushManager.getSubscription())
       )
         save({ enabled: true });
+      else if (
+        Notification.permission === "granted" &&
+        (state.pendingEnable || (!state.offered && !state.pendingDisable))
+      ) {
+        // Finish a previously permitted registration that failed with 403.
+        // Explicit opt-outs set offered=true and pendingEnable=false.
+        await enablePracticeReminders();
+      }
     }
     lastSync = Date.now();
   } catch {

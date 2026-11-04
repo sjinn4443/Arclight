@@ -131,11 +131,12 @@ function createPostgresReminderStore(connectionString) {
         )
       ).rows[0].data;
     },
-    async ids() {
+    async ids({ campaign = null } = {}) {
       await ready();
       return (
         await pool.query(
-          "SELECT id FROM practice_reminders WHERE data->'subscription' IS NOT NULL AND data->'subscription' <> 'null'::jsonb AND ((data->>'sentMilestone')::int < 30 OR data->>'welcomeSentAt' IS NULL)",
+          "SELECT id FROM practice_reminders WHERE data->'subscription' IS NOT NULL AND data->'subscription' <> 'null'::jsonb AND ((data->>'sentMilestone')::int < 30 OR data->>'welcomeSentAt' IS NULL OR ($1::text IS NOT NULL AND data->'campaigns'->>$1 IS NULL AND COALESCE((data->>'registeredAt')::bigint,0) <= $2))",
+          [campaign?.id || null, campaign?.cutoff || 0],
         )
       ).rows.map((r) => r.id);
     },

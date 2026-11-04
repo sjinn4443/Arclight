@@ -1,6 +1,7 @@
 const express = require("express");
 const crypto = require("node:crypto");
 const rateLimit = require("express-rate-limit");
+const { sameReminderOrigin } = require("./reminder-origin.cjs");
 const { getReminderStore } = require("../storage/reminder-store.cjs");
 const {
   deliverNotification,
@@ -56,18 +57,6 @@ function validSubscription(input) {
     return false;
   }
 }
-function sameOrigin(req) {
-  try {
-    return (
-      (!req.get("sec-fetch-site") ||
-        req.get("sec-fetch-site") === "same-origin") &&
-      new URL(req.get("origin")).origin ===
-        `${req.protocol}://${req.get("host")}`
-    );
-  } catch {
-    return false;
-  }
-}
 function createReminderRouter({
   store: providedStore,
   config,
@@ -102,7 +91,7 @@ function createReminderRouter({
   });
   router.use(limit);
   router.use((req, res, next) => {
-    if (req.method !== "GET" && !sameOrigin(req))
+    if (req.method !== "GET" && !sameReminderOrigin(req))
       return res.status(403).json({ error: "same_origin_required" });
     const token = /^Bearer ([a-f0-9]{64})$/.exec(
       req.get("authorization") || "",
@@ -143,6 +132,7 @@ function createReminderRouter({
         const latest = Math.max(old?.lastPracticedAt || 0, timestamp);
         const next = {
           ...old,
+          registeredAt: old ? old.registeredAt : Date.now(),
           subscription: {
             endpoint: subscription.endpoint,
             keys: {

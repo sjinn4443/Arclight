@@ -2,16 +2,24 @@ const { MESSAGES, safePracticeUrl } = require("./practice-reminder-policy.cjs");
 
 async function deliverNotification(
   record,
-  { send, now = Date.now(), milestone = 0 } = {},
+  { send, now = Date.now(), milestone = 0, campaignId = "" } = {},
 ) {
   if (!record?.subscription) return record;
-  if (record.retryAfter > now && (milestone || record.welcomeAttemptedAt))
+  if (campaignId && record.campaigns?.[campaignId]) return record;
+  if (
+    record.retryAfter > now &&
+    (campaignId
+      ? record.campaignAttempts?.[campaignId]
+      : milestone || record.welcomeAttemptedAt)
+  )
     return record;
-  if (!milestone && record.welcomeSentAt) return record;
+  if (!campaignId && !milestone && record.welcomeSentAt) return record;
   const notification = {
-    id: milestone
-      ? `practice:${record.lastPracticedAt}:${milestone}`
-      : "welcome-v1",
+    id:
+      campaignId ||
+      (milestone
+        ? `practice:${record.lastPracticedAt}:${milestone}`
+        : "welcome-v1"),
     title: "Arclight practice",
     body: MESSAGES[milestone || 1],
     url: safePracticeUrl(record.url),
@@ -23,7 +31,11 @@ async function deliverNotification(
       ...record,
       retryAfter: 0,
       lastNotificationAt: now,
-      ...(milestone ? { sentMilestone: milestone } : { welcomeSentAt: now }),
+      ...(campaignId
+        ? { campaigns: { ...record.campaigns, [campaignId]: now } }
+        : milestone
+          ? { sentMilestone: milestone }
+          : { welcomeSentAt: now }),
       history: [
         notification,
         ...(record.history || []).filter((item) => item.id !== notification.id),
@@ -34,7 +46,13 @@ async function deliverNotification(
       return { ...record, subscription: null };
     return {
       ...record,
-      ...(!milestone ? { welcomeAttemptedAt: now } : {}),
+      ...(campaignId
+        ? {
+            campaignAttempts: { ...record.campaignAttempts, [campaignId]: now },
+          }
+        : !milestone
+          ? { welcomeAttemptedAt: now }
+          : {}),
       retryAfter: now + (milestone ? 3600000 : 60000),
     };
   }
@@ -43,7 +61,7 @@ async function deliverNotification(
 function sendPush(subscription, payload, config) {
   return require("web-push").sendNotification(subscription, payload, {
     vapidDetails: config,
-    TTL: JSON.parse(payload).id === "welcome-v1" ? 86400 : 3600,
+    TTL: JSON.parse(payload).id.startsWith("practice:") ? 3600 : 86400,
     urgency: "normal",
     topic: "arclight-practice",
     timeout: 10000,

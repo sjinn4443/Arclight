@@ -100,6 +100,29 @@ permission denial turns it off; iOS may temporarily report a default permission
 value after its prompt. Safari subscription keys with optional base64 padding
 are accepted and normalized before storage.
 
+## noti04 proxy fix and one-time send
+
+The public app's exact HTTPS origins (`https://www.arclightproject.app` and
+`https://arclightproject.app`) are accepted through Railway's backend HTTP
+connection. The check does not trust client-supplied forwarded headers or accept
+insecure public origins, other sites, suffix matches, or arbitrary subdomains.
+Device bearer authentication remains required. A 403 now explains app request
+verification instead of incorrectly suggesting an internet connection problem.
+
+An explicitly permitted registration that failed before being saved is resumed
+when the Home Screen app is reopened. Intentional opt-outs remain off. A phone
+with only OS permission but no saved subscription cannot receive server push
+until this registration completes.
+
+The user-requested `noti04-practice-check` campaign attempts one practice
+notification to active subscriptions registered before 2026-11-04 13:35:08 UTC.
+Unknown registration dates on legacy records qualify. New subscribers receive
+their welcome instead; a pending welcome also satisfies the campaign without
+sending two messages. Per-device campaign receipts survive practice updates,
+resubscription, restarts and history trimming. Temporary failures retry after a
+minute, and provider acceptance counts are logged privately by the scheduler.
+The campaign is deployment-triggered; no unauthenticated broadcast API exists.
+
 ## Manual device check
 
 - Install on iPhone and Android, practise, enable reminders, and allow permission.

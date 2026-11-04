@@ -155,7 +155,7 @@ describe("Practice reminder permissions and offline state", () => {
       ok: options.method !== "PUT",
     }));
     await expect(reminders.enablePracticeReminders()).rejects.toThrow(
-      "Connect",
+      "Please try again",
     );
     expect(reminders.readReminderState().enabled).toBe(false);
     expect(subscription.unsubscribe).toHaveBeenCalled();
@@ -237,5 +237,41 @@ describe("Practice reminder permissions and offline state", () => {
       configurable: true,
       value: "visible",
     });
+  });
+  test("a granted but failed registration resumes, while explicit opt-out stays off", async () => {
+    notification.permission = "granted";
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        enabled: false,
+        token: "a".repeat(64),
+        pendingEnable: true,
+      }),
+    );
+    global.fetch.mockImplementation(async () => ({
+      ok: true,
+      headers: { get: () => "application/json" },
+      json: async () => ({ enabled: false, notifications: [] }),
+    }));
+    await reminders.syncPracticeReminders();
+    expect(reminders.readReminderState().enabled).toBe(true);
+    expect(
+      global.fetch.mock.calls.some(([, options]) => options.method === "PUT"),
+    ).toBe(true);
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({
+        enabled: false,
+        token: "a".repeat(64),
+        pendingEnable: false,
+        offered: true,
+      }),
+    );
+    global.fetch.mockClear();
+    await reminders.syncPracticeReminders();
+    expect(reminders.readReminderState().enabled).toBe(false);
+    expect(
+      global.fetch.mock.calls.some(([, options]) => options.method === "PUT"),
+    ).toBe(false);
   });
 });

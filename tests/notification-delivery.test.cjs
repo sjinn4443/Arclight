@@ -4,6 +4,7 @@ const {
   dispatchPracticeReminders,
 } = require("../utils/practice-reminder-scheduler.cjs");
 const { createMemoryReminderStore } = require("../storage/reminder-store.cjs");
+const { NOTI04_CAMPAIGN } = require("../utils/noti04-campaign.cjs");
 const record = () => ({
   subscription: { endpoint: "https://fcm.googleapis.com/test" },
   endpointHash: "endpoint",
@@ -56,4 +57,52 @@ test("regular notifications preserve the welcome and history and are capped", as
   row.history = Array.from({ length: 100 }, (_, i) => ({ id: String(i) }));
   row = await deliverNotification(row, { send, now: 300000, milestone: 7 });
   expect(row.history).toHaveLength(100);
+});
+
+test("noti04 broadcasts once to existing active devices, including paused regular reminders", async () => {
+  const store = createMemoryReminderStore();
+  const send = jest.fn(async () => {});
+  await store.mutate("existing", () => ({
+    ...record(),
+    welcomeSentAt: NOTI04_CAMPAIGN.cutoff - 10000,
+  }));
+  await store.mutate("new", () => ({
+    ...record(),
+    endpointHash: "endpoint-new",
+    welcomeSentAt: NOTI04_CAMPAIGN.cutoff + 1,
+    registeredAt: NOTI04_CAMPAIGN.cutoff + 1,
+  }));
+  const dispatch = () =>
+    dispatchPracticeReminders({
+      store,
+      send,
+      now: NOTI04_CAMPAIGN.cutoff + 20000,
+      campaign: NOTI04_CAMPAIGN,
+    });
+  await Promise.all([dispatch(), dispatch()]);
+  expect(send).toHaveBeenCalledTimes(1);
+  expect(JSON.parse(send.mock.calls[0][1]).id).toBe(NOTI04_CAMPAIGN.id);
+  await store.mutate("existing", (old) => ({ ...old, subscription: null }));
+  await store.mutate("existing", (old) => ({
+    ...old,
+    subscription: record().subscription,
+  }));
+  await dispatch();
+  expect(send).toHaveBeenCalledTimes(1);
+});
+test("a queued welcome satisfies the broadcast without sending two notifications", async () => {
+  const store = createMemoryReminderStore();
+  await store.mutate("existing", record);
+  const send = jest.fn(async () => {});
+  const dispatch = () =>
+    dispatchPracticeReminders({
+      store,
+      send,
+      now: NOTI04_CAMPAIGN.cutoff + 20000,
+      campaign: NOTI04_CAMPAIGN,
+    });
+  await dispatch();
+  await dispatch();
+  expect(send).toHaveBeenCalledTimes(1);
+  expect(JSON.parse(send.mock.calls[0][1]).id).toBe("welcome-v1");
 });
