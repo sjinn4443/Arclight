@@ -417,7 +417,7 @@ const build = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const buildOutputDir = resolveBuildOutputDir();
-  const distPath = path.join(__dirname, "..", buildOutputDir);
+  const distPath = path.resolve(__dirname, "..", buildOutputDir);
   const publicPath = path.join(__dirname, "..", "public");
   const versionDate = resolveBuildVersionDate();
   const versionSequence = await resolveBuildVersionSequence(versionDate);

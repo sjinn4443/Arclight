@@ -1,11 +1,11 @@
 WEBVTT
 
 afferent-light
-00:00:01.000 --> 00:00:09.000
+00:00:01.000 --> 00:00:06.600
 Light entering the eye starts a signal in the afferent, or sensory pathway.
 
 afferent-brain
-00:00:09.000 --> 00:00:31.000
+00:00:06.600 --> 00:00:31.000
 Follow the coloured pathways (retina, optic nerve, chiasm, tract and nuclei).
 
 efferent-definition
@@ -118,14 +118,15 @@ In the normal example, the pupil remains constricted when the light returns to t
 
 swing-rapd
 00:04:20.000 --> 00:04:34.000
-A relative afferent pupillary defect, or RAPD, means a weaker light signal from one eye. Here, the pupils paradoxically dilate when light moves to the affected right eye.
+A relative afferent pupillary defect, or RAPD, means a weaker light signal from one eye.
+Here, the pupils paradoxically dilate when light moves to the affected right eye.
 
 near-distance
-00:04:34.000 --> 00:04:43.000
+00:04:34.000 --> 00:04:39.375
 First ask the patient to look at a distant target.
 
 near-target
-00:04:43.000 --> 00:04:55.000
+00:04:39.375 --> 00:04:55.000
 Then ask them to look at a near target, as shown here with the Arclight.
 
 near-normal

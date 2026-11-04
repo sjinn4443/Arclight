@@ -35,13 +35,13 @@ const OWN_STAGES = [
       {
         id: "afferent-light",
         offset: 0,
-        end: 8,
+        end: 5.6,
         en: "Light entering the eye starts a signal in the afferent, or sensory pathway.",
         ko: "눈으로 들어온 빛은 구심성 감각 경로의 신호를 시작합니다.",
       },
       {
         id: "afferent-brain",
-        offset: 8,
+        offset: 5.6,
         end: 30,
         en: "Follow the coloured pathways (retina, optic nerve, chiasm, tract and nuclei).",
         ko: "색으로 표시된 경로(망막, 시신경, 시신경교차, 시삭, 신경핵)를 따라갑니다.",
@@ -192,6 +192,9 @@ const OWN_STAGES = [
         offset: 10,
         end: 24,
         en: "A relative afferent pupillary defect, or RAPD, means a weaker light signal from one eye. Here, the pupils paradoxically dilate when light moves to the affected right eye.",
+        caption: {
+          en: "A relative afferent pupillary defect, or RAPD, means a weaker light signal from one\u00a0eye.\nHere, the pupils paradoxically dilate when light moves to the affected right eye.",
+        },
         ko: "상대구심동공운동장애, 즉 RAPD는 한쪽 눈의 빛 신호가 약해진 상태입니다. 빛을 이상이 있는 오른쪽 눈으로 옮기면 동공이 역설적으로 커집니다.",
       },
     ],
@@ -203,13 +206,13 @@ const OWN_STAGES = [
       {
         id: "near-distance",
         offset: 0,
-        end: 9,
+        end: 161.25 / 30,
         en: "First ask the patient to look at a distant target.",
         ko: "먼저 환자가 멀리 있는 목표물을 보게 합니다.",
       },
       {
         id: "near-target",
-        offset: 9,
+        offset: 161.25 / 30,
         end: 21,
         en: "Then ask them to look at a near target, as shown here with the Arclight.",
         ko: "그다음 그림의 아크라이트처럼 가까이 있는 목표물을 보게 합니다.",
@@ -246,16 +249,32 @@ export const PUPILS_ADVANCED_STAGES = [
   ...OWN_STAGES.slice(4),
 ];
 let clock = 1;
-// Reviewed onsets in the existing English recording, relative to stage start.
-// The gaps between the spoken anatomy names are visible in its audio waveform.
+// The original signal clock is retained; speech is paced to each structure.
 export const PUPILS_ADVANCED_AFFERENT_WORD_FRAMES = {
-  retina: 304,
-  "optic nerve": 331,
-  chiasm: 368,
-  tract: 397,
-  nuclei: 421,
+  retina: 246,
+  "optic nerve": 294,
+  chiasm: 348,
+  tract: 399,
+  nuclei: 453,
 };
-export const PUPILS_ADVANCED_VISUAL_END_FRAMES = { 0: 453, 10: 390 };
+// Original utterance segments, bounded by its existing silent pauses. Slow the
+// voice by 15% and leave a deliberate pause between the named structures.
+export const PUPILS_ADVANCED_AFFERENT_PACING = {
+  speed: 0.85,
+  segments: [
+    { from: 0, to: 2.03, at: 5.6 },
+    { from: 2.03, to: 2.87, at: 8.06035 },
+    { from: 2.87, to: 4.07, at: 9.61965 },
+    { from: 4.07, to: 5.07, at: 11.3661 },
+    { from: 5.07, to: 5.76, at: 13.1219 },
+    { from: 5.76, to: 7.01, at: 14.62094 },
+  ],
+};
+export const PUPILS_ADVANCED_VISUAL_END_FRAMES = {
+  0: 562,
+  10: 390,
+  13: 341.25,
+};
 const clips = PUPILS_ADVANCED_STAGES.map((stage, i) => {
   const clip = {
     start: clock,
@@ -265,14 +284,19 @@ const clips = PUPILS_ADVANCED_STAGES.map((stage, i) => {
   clock = clip.end;
   if (i === 0)
     clip.endByLanguage = {
-      en: clip.start + Math.max(453 / 30, 15.01) + 1.5,
-      ko: clip.start + Math.max(453 / 30, 17.12) + 1.5,
+      en: clip.start + 562 / 30 + 1.5,
+      ko: clip.start + 562 / 30 + 1.5,
     };
   // Keep the reused PEC recording intact and skip only its silent tail.
   if (i === 9)
     clip.endByLanguage = { en: clip.start + 17.76, ko: clip.start + 19.32 };
   if (i === 10)
     clip.endByLanguage = { en: clip.start + 15.43, ko: clip.start + 16.12 };
+  if (i === 13)
+    clip.endByLanguage = {
+      en: clip.start + 341.25 / 30 + 1.5,
+      ko: clip.start + 341.25 / 30 + 1.5,
+    };
   return clip;
 });
 export const PUPILS_ADVANCED_SCROLL_TIMING = {

@@ -1154,6 +1154,10 @@ async function main() {
         o: fade(245),
       });
     } else responseGrid(index === 4 ? "clear" : "cataract");
+    if (index === 2)
+      layers.unshift(
+        ...require("./lib/pupils-positioning-dividers.cjs")(W, height, end),
+      );
     const used = new Set(),
       usedComps = new Set();
     function collect(list) {

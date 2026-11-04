@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "durationSeconds": 318.1,
+  "tracks": {
+    "en": {
+      "src": "en.m4a",
+      "captions": "en.vtt",
+      "label": "English",
+      "voice": "en-GB-SoniaNeural",
+      "bytes": 1223203,
+      "sha256": "9e857490509fe592f437fd9ac335e95ac003ac534af357b98fab112d05d60b93",
+      "durationSeconds": 318.1,
+      "sourceSha256": "d89368bce816453137f41665af9069df40794ce6ddae8c1c2e42508f9505d64a"
+    },
+    "ko": {
+      "src": "ko.m4a",
+      "captions": "ko.vtt",
+      "label": "한국어",
+      "voice": "ko-KR-SunHiNeural",
+      "bytes": 1251910,
+      "sha256": "5ab661fb440746ff2f224928efdef116ce3900d573bbfc6fb50616f84b7e4669",
+      "durationSeconds": 318.1,
+      "sourceSha256": "b6cbddeeab725bdf57512050b9207a3d3f94d3820de7aef8017757bc1b51ccc4"
+    }
+  }
+}

@@ -1,5 +1,40 @@
 {
   "schemaVersion": 1,
+  "afferentPacing": {
+    "speed": 0.85,
+    "segments": [
+      {
+        "from": 0,
+        "to": 2.03,
+        "at": 5.6
+      },
+      {
+        "from": 2.03,
+        "to": 2.87,
+        "at": 8.06035
+      },
+      {
+        "from": 2.87,
+        "to": 4.07,
+        "at": 9.61965
+      },
+      {
+        "from": 4.07,
+        "to": 5.07,
+        "at": 11.3661
+      },
+      {
+        "from": 5.07,
+        "to": 5.76,
+        "at": 13.1219
+      },
+      {
+        "from": 5.76,
+        "to": 7.01,
+        "at": 14.62094
+      }
+    ]
+  },
   "title": "Pupils",
   "sourceDocument": "/pdfbasedanims/Pupils Advanced_110826.pdf",
   "durationSeconds": 315,
@@ -22,13 +57,13 @@
       "en": "Light entering the eye starts a signal in the afferent, or sensory pathway.",
       "ko": "눈으로 들어온 빛은 구심성 감각 경로의 신호를 시작합니다.",
       "start": 1,
-      "end": 9
+      "end": 6.6
     },
     {
       "id": "afferent-brain",
       "en": "Follow the coloured pathways (retina, optic nerve, chiasm, tract and nuclei).",
       "ko": "색으로 표시된 경로(망막, 시신경, 시신경교차, 시삭, 신경핵)를 따라갑니다.",
-      "start": 9,
+      "start": 6.6,
       "end": 31
     },
     {
@@ -105,6 +140,13 @@
       "id": "observe",
       "en": "Observe the size, shape and symmetry of both pupils.",
       "ko": "양쪽 동공의 크기, 모양, 대칭성을 관찰합니다.",
+      "es-419": "Observe el tamaño, la forma y la simetría de ambas pupilas.",
+      "fr": "Observez la taille, la forme et la symétrie des deux pupilles.",
+      "ne": "दुवै नानीको आकार, आकृति र सममिति हेर्नुहोस्।",
+      "lg": "Tunula ku bunene, enkula n’okufaanagana kw’obutuli bw’amaaso gombi.",
+      "ha": "Duba girma, siffa da daidaiton ƙwayoyin idanu biyu.",
+      "yo": "Wo ìwọ̀n, ìrísí àti bí àwọn ọmọ ojú méjèèjì ṣe dọ́gba.",
+      "ig": "Lelee nha, ọdịdị na nhata ụmụ anya abụọ.",
       "start": 107,
       "end": 113,
       "source": "pupils-pec"
@@ -113,6 +155,13 @@
       "id": "compare-observation",
       "en": "Compare normal pupils with changes in colour or shape, unequal pupil size and eyelids.",
       "ko": "정상 동공과 색이나 모양의 변화, 양쪽 동공 크기의 차이, 눈꺼풀을 비교합니다.",
+      "es-419": "Compare las pupilas normales con cambios de color o forma, diferencias de tamaño y los párpados.",
+      "fr": "Comparez les pupilles normales aux changements de couleur ou de forme, aux différences de taille et aux paupières.",
+      "ne": "सामान्य नानीसँग रङ वा आकृतिमा परिवर्तन, नानीको असमान आकार र पलकहरू तुलना गर्नुहोस्।",
+      "lg": "Geraageranya obutuli obwa bulijjo n’enkyukakyuka mu langi oba enkula, obunene obutafaanagana n’ebikowe.",
+      "ha": "Kwatanta ƙwayoyin idanu na al’ada da sauyin launi ko siffa, bambancin girma da fatar ido.",
+      "yo": "Fi ọmọ ojú tó dára wé ìyípadà àwọ̀ tàbí ìrísí, ìwọ̀n tí kò dọ́gba àti ìpéǹpéjú.",
+      "ig": "Tụnyere ụmụ anya dị mma na mgbanwe agba ma ọ bụ ọdịdị, nha na-ahaghị nhata na mkpuchi anya.",
       "start": 113,
       "end": 125,
       "source": "pupils-pec"
@@ -121,6 +170,13 @@
       "id": "light",
       "en": "Switch on the Arclight and select the brightest light setting. Use a quiet, dim room.",
       "ko": "조용하고 어두운 방에서 아크라이트를 켜고 조명을 가장 밝게 설정합니다.",
+      "es-419": "Encienda el Arclight y seleccione la luz más brillante. Use una habitación tranquila y tenue.",
+      "fr": "Allumez l’Arclight et choisissez la lumière la plus forte. Utilisez une pièce calme et peu éclairée.",
+      "ne": "शान्त र मधुरो कोठामा आर्कलाइट बालेर सबैभन्दा चहकिलो प्रकाश छान्नुहोस्।",
+      "lg": "Koleeza Arclight olonde ekitangaala ekisinga. Kozesa ekisenge ekisirifu ekirimu ekitangaala ekitono.",
+      "ha": "Kunna Arclight ka zaɓi haske mafi ƙarfi. Yi amfani da ɗaki mai natsuwa da ƙarancin haske.",
+      "yo": "Tan Arclight kí o yan ìmọ́lẹ̀ tó lágbára jù. Lo yàrá tó dákẹ́ tí ìmọ́lẹ̀ rẹ̀ kéré.",
+      "ig": "Gbanye Arclight họrọ ìhè kacha enwu. Jiri ụlọ dị jụụ nke ìhè ya pere mpe.",
       "start": 125,
       "end": 134,
       "source": "pupils-pec"
@@ -129,6 +185,13 @@
       "id": "distance",
       "en": "Ask the patient to look at a distant target.",
       "ko": "환자가 멀리 있는 목표물을 보게 합니다.",
+      "es-419": "Pida al paciente que mire un objeto lejano.",
+      "fr": "Demandez au patient de fixer une cible éloignée.",
+      "ne": "बिरामीलाई टाढाको वस्तु हेर्न भन्नुहोस्।",
+      "lg": "Gamba omulwadde atunuulire ekintu ekiri ewala.",
+      "ha": "Ka ce majiyyaci ya kalli wani abu mai nisa.",
+      "yo": "Sọ fún aláìsàn kí ó wo ohun kan tó jìnnà.",
+      "ig": "Gwa onye ọrịa ka o lee ihe dị anya.",
       "start": 134,
       "end": 140,
       "source": "pupils-pec"
@@ -137,11 +200,28 @@
       "id": "clear-view",
       "caption": {
         "en": "Make sure they do not look at the examiner or the light itself.",
-        "ko": "검사자나 조명 자체를 바라보지 않도록 합니다."
+        "ko": "검사자나 조명 자체를 바라보지 않도록 합니다.",
+        "es-419": "Asegúrese de que no mire al examinador ni a la luz.",
+        "fr": "Veillez à ce qu’il ne regarde pas l’examinateur ni la lumière elle-même.",
+        "ne": "परीक्षकलाई नहेर्न भन्नुहोस् वा बत्तीलाई पनि।",
+        "lg": "Kakasa nti tatunuulira mukebera wadde ekitangaala kyennyini.",
+        "ha": "Tabbatar bai kalli mai bincike ba ko hasken kansa.",
+        "yo": "Rí i pé kò wo olùṣàyẹ̀wò tàbí ìmọ́lẹ̀ náà.",
+        "ig": "Hụ na ọ naghị ele onye na-enyocha anya ma ọ bụ ìhè ahụ n’onwe ya."
       },
       "captionUntil": "avoid-light",
       "en": "Make sure they do not look at the examiner",
       "ko": "검사자를 바라보지 않도록 합니다.",
+      "es-419": "Asegúrese de que no mire al examinador",
+      "fr": "Veillez à ce qu’il ne regarde pas l’examinateur",
+      "ne": "परीक्षकलाई नहेर्न भन्नुहोस्",
+      "lg": "Kakasa nti tatunuulira mukebera",
+      "ha": "Tabbatar bai kalli mai bincike ba",
+      "yo": "Rí i pé kò wo olùṣàyẹ̀wò",
+      "ig": "Hụ na ọ naghị ele onye na-enyocha anya",
+      "ttsText": {
+        "ig": "Ọ ghara ile onye nyocha."
+      },
       "start": 140,
       "end": 143.5,
       "source": "pupils-pec"
@@ -150,10 +230,24 @@
       "id": "avoid-light",
       "caption": {
         "en": "",
-        "ko": ""
+        "ko": "",
+        "es-419": "",
+        "fr": "",
+        "ne": "",
+        "lg": "",
+        "ha": "",
+        "yo": "",
+        "ig": ""
       },
       "en": "or the light itself.",
       "ko": "조명 자체도 바라보지 않도록 합니다.",
+      "es-419": "ni a la luz.",
+      "fr": "ni la lumière elle-même.",
+      "ne": "वा बत्तीलाई पनि।",
+      "lg": "wadde ekitangaala kyennyini.",
+      "ha": "ko hasken kansa.",
+      "yo": "tàbí ìmọ́lẹ̀ náà.",
+      "ig": "ma ọ bụ ìhè ahụ n’onwe ya.",
       "start": 143.5,
       "end": 152,
       "source": "pupils-pec"
@@ -162,6 +256,13 @@
       "id": "move-light",
       "en": "Move the light from the side towards the pupil.",
       "ko": "조명을 옆에서 동공 쪽으로 움직입니다.",
+      "es-419": "Mueva la luz desde un lado hacia la pupila.",
+      "fr": "Approchez la lumière de la pupille en venant du côté.",
+      "ne": "छेउबाट नानीतिर प्रकाश सार्नुहोस्।",
+      "lg": "Sembereza ekitangaala eri akatuli k’eriiso okuva ku bbali.",
+      "ha": "Matsar da haske daga gefe zuwa ƙwayar ido.",
+      "yo": "Gbé ìmọ́lẹ̀ láti ẹ̀gbẹ́ sí ọmọ ojú.",
+      "ig": "Bugharịa ìhè site n’akụkụ gaa n’ebe nwa anya dị.",
       "start": 152,
       "end": 158,
       "source": "pupils-pec"
@@ -170,6 +271,13 @@
       "id": "watch",
       "en": "Watch the illuminated pupil for the direct light response.",
       "ko": "빛을 비춘 동공의 직접 대광반사를 관찰합니다.",
+      "es-419": "Observe la pupila iluminada para evaluar su respuesta directa a la luz.",
+      "fr": "Observez la pupille éclairée pour évaluer le réflexe photomoteur direct.",
+      "ne": "प्रकाश परेको नानीको प्रत्यक्ष प्रतिक्रिया हेर्नुहोस्।",
+      "lg": "Tunula ku katuli akataddeko ekitangaala olabe bwe kaddaamu butereevu.",
+      "ha": "Duba ƙwayar idon da aka haskaka don amsarta kai tsaye.",
+      "yo": "Wo ọmọ ojú tí ìmọ́lẹ̀ ń tàn sí fún ìdáhùn tààrà sí ìmọ́lẹ̀.",
+      "ig": "Lelee nwa anya ìhè na-enwu na ya maka nzaghachi kpọmkwem nye ìhè.",
       "start": 158,
       "end": 164,
       "source": "pupils-pec"
@@ -178,6 +286,13 @@
       "id": "shine-constrict",
       "en": "Shine the light into the eye and watch the pupil constrict.",
       "ko": "눈에 빛을 비추고 동공이 수축하는지 관찰합니다.",
+      "es-419": "Ilumine el ojo y observe cómo se contrae la pupila.",
+      "fr": "Éclairez l’œil et observez la contraction de la pupille.",
+      "ne": "आँखामा प्रकाश पारेर नानी खुम्चिएको हेर्नुहोस्।",
+      "lg": "Yaka ekitangaala mu liiso olabe akatuli bwe kakendeera.",
+      "ha": "Haskaka idon ka lura da ƙanƙancewar ƙwayar ido.",
+      "yo": "Tan ìmọ́lẹ̀ sínú ojú kí o wo bí ọmọ ojú ṣe ń kéré.",
+      "ig": "Mee ka ìhè banye n’anya ma lelee nwa anya ka ọ na-ebelata.",
       "start": 164,
       "end": 170,
       "source": "pupils-pec"
@@ -186,6 +301,13 @@
       "id": "compare-responses",
       "en": "Look for reduced or absent constriction.",
       "ko": "동공 수축이 약하거나 없는지 확인합니다.",
+      "es-419": "Busque una contracción reducida o ausente.",
+      "fr": "Recherchez une contraction réduite ou absente.",
+      "ne": "खुम्चिने प्रतिक्रिया कम छ वा छैन हेर्नुहोस्।",
+      "lg": "Noonya okukendeera okutono oba obutakendeera.",
+      "ha": "Duba ko ƙanƙancewar ta ragu ko babu ita.",
+      "yo": "Ṣàyẹ̀wò bóyá kíkéré náà dín kù tàbí kò sí.",
+      "ig": "Lelee ma mbelata ahụ adịghị ike ma ọ bụ na ọ dịghị.",
       "start": 170,
       "end": 176,
       "source": "pupils-pec"
@@ -194,6 +316,16 @@
       "id": "corresponding-examples",
       "en": "The pupil responses on the left may be associated with the conditions at the back of the eye shown on the right.",
       "ko": "왼쪽과 같은 동공 반응은 오른쪽 그림처럼 눈 뒤쪽의 상태와 관련이 있을 수 있습니다.",
+      "es-419": "Las respuestas pupilares de la izquierda pueden asociarse con las alteraciones del fondo del ojo mostradas a la derecha.",
+      "fr": "Les réponses pupillaires à gauche peuvent être associées aux affections du fond de l’œil illustrées à droite.",
+      "ne": "बायाँका नानीका प्रतिक्रियाहरू दायाँ देखाइएका आँखाको पछाडिका अवस्थासँग सम्बन्धित हुन सक्छन्।",
+      "lg": "Obutuli obuli ku kkono buyinza okuddamu bwe butyo olw’embeera eziri emabega w’eriiso eziragiddwa ku ddyo.",
+      "ha": "Amsoshin ƙwayar ido a hagu na iya da alaƙa da cututtukan bayan ido da aka nuna a dama.",
+      "yo": "Ìdáhùn ọmọ ojú ní òsì lè ní í ṣe pẹ̀lú àwọn àìsàn ẹ̀yìn ojú tí a fi hàn ní ọ̀tún.",
+      "ig": "Nzaghachi ụmụ anya dị n’aka ekpe nwere ike ijikọ na ọnọdụ azụ anya ndị e gosiri n’aka nri.",
+      "ttsText": {
+        "lg": "Obutuli ku kkono buyinza okulaga embeera z’emabega w’eriiso eziri ku ddyo."
+      },
       "start": 176,
       "end": 184,
       "source": "pupils-pec"
@@ -202,6 +334,13 @@
       "id": "pupil-colour",
       "en": "Pupil colour does not determine the light response.",
       "ko": "동공의 색이 대광반사를 결정하는 것은 아닙니다.",
+      "es-419": "El color de la pupila no determina su respuesta a la luz.",
+      "fr": "La couleur de la pupille ne détermine pas sa réponse à la lumière.",
+      "ne": "नानीको रङले प्रकाशको प्रतिक्रिया निर्धारण गर्दैन।",
+      "lg": "Langi y’akatuli tesalawo bwe kaddaamu ekitangaala.",
+      "ha": "Launin ƙwayar ido ba ya ƙayyade amsarta ga haske.",
+      "yo": "Àwọ̀ ọmọ ojú kò pinnu ìdáhùn rẹ̀ sí ìmọ́lẹ̀.",
+      "ig": "Agba nwa anya anaghị ekpebi nzaghachi ya nye ìhè.",
       "start": 184,
       "end": 192,
       "source": "pupils-pec"
@@ -210,6 +349,13 @@
       "id": "cataract-constriction",
       "en": "A cataract may make the pupil look grey or white, but the pupil should still constrict if the light reflex pathway is intact.",
       "ko": "백내장이 있으면 동공이 회색이나 흰색으로 보일 수 있지만, 대광반사 경로가 정상이라면 동공은 여전히 수축해야 합니다.",
+      "es-419": "Una catarata puede hacer que la pupila parezca gris o blanca, pero debe contraerse si la vía del reflejo a la luz está intacta.",
+      "fr": "Une cataracte peut donner à la pupille un aspect gris ou blanc, mais elle doit se contracter si la voie du réflexe photomoteur est intacte.",
+      "ne": "मोतिबिन्दुले नानी खैरो वा सेतो देखिन सक्छ, तर प्रकाश प्रतिक्रियाको मार्ग ठीक छ भने नानी अझै खुम्चिनुपर्छ।",
+      "lg": "Ekire kiyinza okufuula akatuli okulabika nga ka kivu oba keeru, naye kasaanidde okukendeera singa ekkubo ly’okuddamu ekitangaala teririna buzibu.",
+      "ha": "Cataract na iya sa ƙwayar ido ta yi toka ko fari, amma ya kamata ta ƙanƙance idan hanyar amsa ga haske tana aiki.",
+      "yo": "Cataract lè mú ọmọ ojú dà bí eérú tàbí funfun, ṣùgbọ́n ó yẹ kí ó kéré bí ọ̀nà ìdáhùn sí ìmọ́lẹ̀ bá ń ṣiṣẹ́ dáadáa.",
+      "ig": "Cataract nwere ike ime ka nwa anya yie ntụ ntụ ma ọ bụ ọcha, mana ọ kwesịrị ibelata ma ọ bụrụ na ụzọ nzaghachi nye ìhè na-arụ ọrụ nke ọma.",
       "start": 192,
       "end": 208,
       "source": "pupils-pec"
@@ -252,6 +398,9 @@
     {
       "id": "swing-rapd",
       "en": "A relative afferent pupillary defect, or RAPD, means a weaker light signal from one eye. Here, the pupils paradoxically dilate when light moves to the affected right eye.",
+      "caption": {
+        "en": "A relative afferent pupillary defect, or RAPD, means a weaker light signal from one eye.\nHere, the pupils paradoxically dilate when light moves to the affected right eye."
+      },
       "ko": "상대구심동공운동장애, 즉 RAPD는 한쪽 눈의 빛 신호가 약해진 상태입니다. 빛을 이상이 있는 오른쪽 눈으로 옮기면 동공이 역설적으로 커집니다.",
       "start": 260,
       "end": 274
@@ -261,13 +410,13 @@
       "en": "First ask the patient to look at a distant target.",
       "ko": "먼저 환자가 멀리 있는 목표물을 보게 합니다.",
       "start": 274,
-      "end": 283
+      "end": 279.375
     },
     {
       "id": "near-target",
       "en": "Then ask them to look at a near target, as shown here with the Arclight.",
       "ko": "그다음 그림의 아크라이트처럼 가까이 있는 목표물을 보게 합니다.",
-      "start": 283,
+      "start": 279.375,
       "end": 295
     },
     {
@@ -287,34 +436,46 @@
   ],
   "visualCues": [
     {
+      "id": "third-nerve-eye-movements",
+      "language": "en",
+      "word": "eye movements",
+      "at": 58.733333333333334
+    },
+    {
+      "id": "near-further-examination",
+      "language": "en",
+      "word": "further",
+      "at": 309.06666666666666
+    },
+    {
       "id": "afferent-retina",
       "language": "en",
       "word": "retina",
-      "at": 11.133333333333333
+      "at": 9.2
     },
     {
       "id": "afferent-optic-nerve",
       "language": "en",
       "word": "optic nerve",
-      "at": 12.033333333333333
+      "at": 10.8
     },
     {
       "id": "afferent-chiasm",
       "language": "en",
       "word": "chiasm",
-      "at": 13.266666666666667
+      "at": 12.6
     },
     {
       "id": "afferent-tract",
       "language": "en",
       "word": "tract",
-      "at": 14.233333333333333
+      "at": 14.3
     },
     {
       "id": "afferent-nuclei",
       "language": "en",
       "word": "nuclei",
-      "at": 15.033333333333333
+      "at": 16.1
     },
     {
       "id": "reflex-constriction",

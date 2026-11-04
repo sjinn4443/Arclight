@@ -7,7 +7,10 @@ const sharp = require("sharp");
 const prettier = require("prettier");
 const ROOT = path.resolve(__dirname, "../..");
 const INPUT = path.join(ROOT, "tmp/pupils-advanced/layers");
-const OUTPUT = path.join(ROOT, "public/scrolly/coreexam/pupils-advanced");
+const OUTPUT = path.resolve(
+  process.env.PUPILS_ADVANCED_OUTPUT_DIR ||
+    path.join(ROOT, "public/scrolly/coreexam/pupils-advanced"),
+);
 const W = 1169,
   FPS = 30;
 let H = 1280;
@@ -142,7 +145,9 @@ let layers = [],
   statuses,
   afferentWords,
   reflexConstrictFrame = 390,
-  rapdDilationFrame = 590;
+  rapdDilationFrame = 590,
+  eyeMovementsFrame = 832,
+  nearFurtherFrame = 422;
 function add(layer) {
   layer.ind = layers.length + 1;
   layers.unshift(layer);
@@ -514,12 +519,12 @@ function brainFork(outer, inner, box) {
     p.o[p.o.length - 1] = [0, 0];
     return p;
   };
-  pdfVector({ ...outer, curves: [segment(0, 1)] }, box, 450, 550);
+  pdfVector({ ...outer, curves: [segment(0, 1)] }, box, 450, 500);
   pdfVector(
     { ...outer, index: outer.index + " continuation", curves: [segment(1, 2)] },
     box,
+    500,
     550,
-    650,
   );
   const branch = clone(inner.curves[0]);
   const distance = (p) => Math.hypot(p[0] - junction[0], p[1] - junction[1]);
@@ -528,7 +533,7 @@ function brainFork(outer, inner, box) {
       ? branch
       : reverse(branch);
   directed.v[0] = clone(junction);
-  pdfVector({ ...inner, curves: [directed] }, box, 550, 650);
+  pdfVector({ ...inner, curves: [directed] }, box, 500, 550);
 }
 function anatomyHighlights(box) {
   const pulse = (start, finish) =>
@@ -543,60 +548,9 @@ function anatomyHighlights(box) {
   names.forEach((name, i) =>
     nativeImage("afferent-glow-" + name.replaceAll(" ", "-"), box, {
       name: "Anatomy highlight: " + name,
-      o: pulse(afferentWords[name], afferentWords[names[i + 1]] ?? 441),
+      o: pulse(afferentWords[name], afferentWords[names[i + 1]] ?? 550),
     }),
   );
-}
-// Keep the original distance-matched heads and shafts together while retiming
-// their progress through the nerve, chiasm and tract to the spoken anatomy list.
-function syncAfferentSignals(signalLayers) {
-  const anchors = [
-    [0, 0],
-    [240, afferentWords["optic nerve"]],
-    [330, afferentWords.chiasm],
-    [390, afferentWords.tract],
-    [450, afferentWords.nuclei],
-    [550, 430],
-    [650, 441],
-  ];
-  const at = (time) => {
-    const i = anchors.findIndex(([old]) => old >= time);
-    if (i <= 0) return time;
-    const [x0, y0] = anchors[i - 1],
-      [x1, y1] = anchors[i];
-    return y0 + ((time - x0) * (y1 - y0)) / (x1 - x0);
-  };
-  const visit = (value) => {
-    if (!value || typeof value !== "object") return;
-    if (value.a === 1 && Array.isArray(value.k)) {
-      const original = clone(value.k);
-      // Insert interpolation anchors before remapping linear scalar/vector keys.
-      // This matters for Trim Paths: its progress must follow the head's clock.
-      for (const [time] of anchors) {
-        if (original.some((key) => key.t === time)) continue;
-        const i = original.findIndex((key) => key.t > time);
-        if (i <= 0) continue;
-        const a = original[i - 1],
-          b = original[i];
-        if (a.h || !a.s?.every(Number.isFinite) || !b.s?.every(Number.isFinite))
-          continue;
-        const f = (time - a.t) / (b.t - a.t);
-        value.k.push({
-          ...clone(a),
-          t: time,
-          s: a.s.map((v, j) => v + (b.s[j] - v) * f),
-        });
-      }
-      value.k.sort((a, b) => a.t - b.t);
-      value.k.forEach((key, i) => {
-        key.t = at(key.t);
-        if (i < value.k.length - 1) key.e = clone(value.k[i + 1].s);
-      });
-      return;
-    }
-    Object.values(value).forEach(visit);
-  };
-  signalLayers.forEach(visit);
 }
 function neural(name) {
   const a = art.neural[name],
@@ -636,7 +590,6 @@ function neural(name) {
         ["#0b00ff", "#00fffa"].includes(v.stroke || v.fill),
       );
       if (name === "afferent") {
-        const previous = new Set(layers);
         const origin = box[1] + 65;
         for (const r of input.filter((r) => r.stroke && r.bounds[3] > origin))
           pdfVector(r, box, 240, 450, "up");
@@ -657,7 +610,6 @@ function neural(name) {
             head = input.find((r) => r.fill === colour && !r.stroke);
           if (line && head) travellingHead(head, line, box, 240, 450);
         }
-        syncAfferentSignals(layers.filter((layer) => !previous.has(layer)));
       } else {
         // Restore the original full-art directional wipes, including the long
         // side arrows. Pupil response and label timing remain independently set.
@@ -733,6 +685,171 @@ function neural(name) {
     name === "reflex" ? "contain" : "cover",
   );
 }
+function sympatheticLidWidening(f, target) {
+  cover(f.left, target, () => {
+    const resting = art.flow.parasympathetic;
+    const centre = [
+      (f.irisBounds[0] + f.irisBounds[2]) / 2,
+      (f.irisBounds[1] + f.irisBounds[3]) / 2,
+    ];
+    const restingCentre = [
+      (resting.irisBounds[0] + resting.irisBounds[2]) / 2,
+      (resting.irisBounds[1] + resting.irisBounds[3]) / 2,
+    ];
+    const scale =
+      (f.irisBounds[2] - f.irisBounds[0]) /
+      (resting.irisBounds[2] - resting.irisBounds[0]);
+    const restPoint = (p) =>
+      p.map((v, k) => centre[k] + (v - restingCentre[k]) * scale - f.left[k]);
+    const restCurve = (p) => ({
+      ...clone(p),
+      v: p.v.map(restPoint),
+      i: p.i.map((t) => t.map((v) => v * scale)),
+      o: p.o.map((t) => t.map((v) => v * scale)),
+    });
+    // Morph to the unexaggerated sympathetic source drawing.
+    const bend = (original) => moveCurve(original, -f.left[0], -f.left[1]);
+    const compatible = (a, b, closed) => {
+      a.c = b.c = closed;
+      if (a.v.length === b.v.length) return [a, b];
+      const resample = (original) => {
+        const p = clone(original),
+          count = Math.max(a.v.length, b.v.length) > 12 ? 96 : 32;
+        if (
+          closed &&
+          Math.hypot(...p.v[0].map((v, k) => v - p.v.at(-1)[k])) > 1e-5
+        ) {
+          p.v.push(clone(p.v[0]));
+          p.i.push(clone(p.i[0]));
+          p.o.push(clone(p.o[0]));
+        }
+        return {
+          c: closed,
+          v: Array.from({ length: count }, (_, i) =>
+            sample(p, i / (closed ? count : count - 1)),
+          ),
+          i: Array.from({ length: count }, () => [0, 0]),
+          o: Array.from({ length: count }, () => [0, 0]),
+        };
+      };
+      return [resample(a), resample(b)];
+    };
+    const animate = (layer, original, before) => {
+      layer.shapes[0].it
+        .filter((it) => it.ty === "sh")
+        .forEach((it, i) => {
+          const [open, wide] = compatible(
+            before?.[i] ? restCurve(before[i]) : bend(original[i]),
+            bend(original[i]),
+            true,
+          );
+          it.ks = keys([
+            [0, [open]],
+            [390, [open]],
+            [414, [wide]],
+          ]);
+        });
+    };
+    const white = shape(
+      "Sclera revealed by sympathetic lid widening",
+      f.eyeOpening.map(bend),
+      { fill: "#ede5ce" },
+    );
+    animate(white, f.eyeOpening, resting.eyeOpening);
+    for (const [label, b, colour] of [
+      ["Stationary sympathetic iris", f.irisBounds, "#b18419"],
+      ["Stationary sympathetic pupil", f.eyePupilBounds, "#000000"],
+    ]) {
+      const l = shape(
+        label,
+        [
+          ellipse(
+            (b[0] + b[2]) / 2 - f.left[0],
+            (b[1] + b[3]) / 2 - f.left[1],
+            (b[2] - b[0]) / 2,
+          ),
+        ],
+        { fill: colour },
+      );
+      mask(l, clone(white.shapes[0].it[0].ks.k[0].s[0]));
+      l.masksProperties[0].pt = clone(white.shapes[0].it[0].ks);
+      if (label === "Stationary sympathetic pupil") {
+        const startRadius =
+          ((resting.eyePupilBounds[2] - resting.eyePupilBounds[0]) / 2) * scale;
+        const finishRadius = (b[2] - b[0]) / 2;
+        const pupil = (radius) =>
+          ellipse(centre[0] - f.left[0], centre[1] - f.left[1], radius);
+        l.shapes[0].it[0].ks = keys([
+          [0, [pupil(startRadius)]],
+          [390, [pupil(startRadius)]],
+          [414, [pupil(finishRadius)]],
+        ]);
+      }
+    }
+    nativeImage("sympathetic-motor-surface", f.left, {
+      name: "Sympathetic lower lid surface",
+      o: keys([
+        [0, 0],
+        [390, 0],
+        [414, 100],
+      ]),
+    });
+    const origin = restPoint(resting.left.slice(0, 2));
+    image(
+      "parasympathetic-motor-surface",
+      origin[0],
+      origin[1],
+      resting.left[2] * scale,
+      {
+        name: "Resting parasympathetic lower lid surface",
+        o: keys([
+          [0, 100],
+          [390, 100],
+          [414, 0],
+        ]),
+      },
+    );
+    for (const r of f.upperLid) {
+      const l = shape(
+        "Sympathetic upper lid rises " + r.index,
+        r.curves.map(bend),
+        {
+          ...(r.fill === "none" ? {} : { fill: r.fill || "#090806" }),
+          ...(r.stroke ? { stroke: r.stroke, width: r.width } : {}),
+        },
+      );
+      const source = resting.upperLid.find((p) => p.index === r.index + 269);
+      animate(l, r.curves, source?.curves);
+      if (!source)
+        l.ks.o = keys([
+          [0, 0],
+          [390, 0],
+          [414, 100],
+        ]);
+    }
+  });
+}
+function inactiveCard(name, x, y, width, activateAt) {
+  const card = image(name + "-inactive-wash", x, y, width, {
+    name: "Inactive card overlay: " + name,
+    o: keys([
+      [0, 72],
+      [activateAt, 72],
+      [activateAt + 12, 0],
+    ]),
+  });
+  const texture = assets.get(card.refId);
+  // PDF crops include opaque backdrop pixels outside their rounded boxes.
+  // Clip the wash to the card silhouette so inactive corners do not turn square.
+  mask(
+    card,
+    roundedRect(
+      texture.w,
+      texture.h,
+      (6.35 * texture.w) / texture.sourceBox[2],
+    ),
+  );
+}
 function flow(name) {
   const f = art.flow[name],
     purple = name === "sympathetic" ? "#3a005a" : "#db00ff",
@@ -743,10 +860,24 @@ function flow(name) {
     y: 170 + i * 125,
     w: i === 3 && name === "parasympathetic" ? 396 : 580,
   }));
+  const activation = [start];
+  // The line travels between box centres behind the opaque artwork. Reveal
+  // the next card as the head reaches its top edge, rather than its centre.
+  const arrival = (fromY, toY, edgeY, from, to) =>
+    from + ((to - from) * (edgeY - fromY)) / (toY - fromY);
   for (let i = 0; i < 3; i++) {
     const a = boxes[i],
       b = boxes[i + 1],
       ah = (a.w * a.box[3]) / a.box[2];
+    activation.push(
+      arrival(
+        a.y + ah / 2,
+        b.y + 55,
+        b.y,
+        start + i * 60,
+        start + (i + 1) * 60,
+      ),
+    );
     strokeLine(
       "Signal behind foreground boxes " + i,
       [
@@ -788,13 +919,27 @@ function flow(name) {
       750,
       845,
     );
+  else
+    strokeLine(
+      "Sympathetic ganglion to eyelid",
+      [
+        [last.x + last.w / 2, last.y + 55],
+        [leftX + leftW / 2, y + 130],
+      ],
+      purple,
+      start + 180,
+      start + 280,
+      12,
+    );
   image(name + "-heading", 0, 0, W);
   for (let i = 0; i < 4; i++) {
     const b = boxes[i];
     image(name + "-box-" + i, b.x, b.y, b.w);
+    inactiveCard(name + "-box-" + i, b.x, b.y, b.w, activation[i]);
   }
   image(name + "-motor", leftX, y, leftW);
   if (name === "parasympathetic") {
+    const blink = eyeMovementsFrame;
     cover(f.left, [leftX, y, leftW, f.left[3] * irisScale], () => {
       nativeImage(name + "-motor-eye", f.left, {
         name: "Eye opening and lower lid stay fixed",
@@ -806,10 +951,10 @@ function flow(name) {
       );
       closed.shapes[0].it[0].ks = keys([
         [0, [rect(244 - f.left[0], 270 - f.left[1], 61, 0)]],
-        [780, [rect(244 - f.left[0], 270 - f.left[1], 61, 0)]],
-        [785, [rect(244 - f.left[0], 270 - f.left[1], 61, 36)]],
-        [787, [rect(244 - f.left[0], 270 - f.left[1], 61, 36)]],
-        [795, [rect(244 - f.left[0], 270 - f.left[1], 61, 0)]],
+        [blink, [rect(244 - f.left[0], 270 - f.left[1], 61, 0)]],
+        [blink + 5, [rect(244 - f.left[0], 270 - f.left[1], 61, 36)]],
+        [blink + 7, [rect(244 - f.left[0], 270 - f.left[1], 61, 36)]],
+        [blink + 15, [rect(244 - f.left[0], 270 - f.left[1], 61, 0)]],
       ]);
       const opening = moveCurve(f.eyeOpening[0], -f.left[0], -f.left[1]);
       opening.c = true;
@@ -843,6 +988,24 @@ function flow(name) {
           ...(r.fill === "none" ? {} : { fill: r.fill || "#090806" }),
           ...(r.stroke ? { stroke: r.stroke, width: r.width } : {}),
         };
+        if ([775, 776].includes(r.index)) {
+          shape(
+            "Resting upper eyelid crease " + r.index,
+            r.curves.map((p) => moveCurve(p, -f.left[0], -f.left[1])),
+            style,
+            {
+              o: {
+                a: 1,
+                k: [
+                  { t: 0, s: [100], h: 1 },
+                  { t: blink, s: [0], h: 1 },
+                  { t: blink + 15, s: [100], h: 1 },
+                ],
+              },
+            },
+          );
+          continue;
+        }
         const upper = shape(
           "Upper eyelid flexes " + r.index,
           r.curves.map((p) => bend(p, 0)),
@@ -854,20 +1017,20 @@ function flow(name) {
             const open = [bend(r.curves[i], 0)],
               closed = [
                 r.index < 807
-                  ? moveCurve(r.curves[i], -f.left[0], -f.left[1] + 10)
+                  ? moveCurve(r.curves[i], -f.left[0], -f.left[1])
                   : bend(r.curves[i], 1),
               ];
             it.ks = keys([
               [0, open],
-              [780, open],
-              [785, closed],
-              [787, closed],
-              [795, open],
+              [blink, open],
+              [blink + 5, closed],
+              [blink + 7, closed],
+              [blink + 15, open],
             ]);
           });
       }
     });
-  }
+  } else sympatheticLidWidening(f, [leftX, y, leftW, f.left[3] * irisScale]);
   image(name + "-iris", rightX, y, rightW);
   const outside = layers;
   layers = [];
@@ -903,7 +1066,40 @@ function flow(name) {
         { stroke: "#908570", width: 0.45 },
       );
   } else {
-    for (const fibre of f.fibres) {
+    const coveredFibres = f.radial
+      .filter((r) => r.stroke && r.stroke !== "none")
+      .map((r) => {
+        const far = r.curves[0].v.reduce((a, b) =>
+          Math.hypot(a[0] - centre[0], a[1] - centre[1]) >
+          Math.hypot(b[0] - centre[0], b[1] - centre[1])
+            ? a
+            : b,
+        );
+        const d = Math.hypot(far[0] - centre[0], far[1] - centre[1]);
+        return {
+          index: r.index,
+          covered: true,
+          stroke: "#908570",
+          width: f.fibres[0].width,
+          curves: [
+            {
+              c: false,
+              v: [to, outerRadius].map((radius) =>
+                centre.map((v, k) => v + ((far[k] - v) * radius) / d),
+              ),
+              i: [
+                [0, 0],
+                [0, 0],
+              ],
+              o: [
+                [0, 0],
+                [0, 0],
+              ],
+            },
+          ],
+        };
+      });
+    for (const fibre of [...f.fibres, ...coveredFibres]) {
       const original = fibre.curves[0],
         curve = (radius) => {
           const p = clone(original);
@@ -920,10 +1116,16 @@ function flow(name) {
           });
           return p;
         },
-        l = shape("Original dilator fibre " + fibre.index, [curve(from)], {
-          stroke: fibre.stroke,
-          width: fibre.width,
-        });
+        l = shape(
+          (fibre.covered
+            ? "Fibre beneath radial arrow "
+            : "Original dilator fibre ") + fibre.index,
+          [curve(from)],
+          {
+            stroke: fibre.stroke,
+            width: fibre.width,
+          },
+        );
       l.shapes[0].it[0].ks = keys([
         [0, [curve(from)]],
         [at, [curve(from)]],
@@ -959,6 +1161,22 @@ function flow(name) {
     w: f.right[2],
     h: f.right[3],
   });
+  inactiveCard(
+    name + "-iris",
+    rightX,
+    y,
+    rightW,
+    arrival(last.y + 55, y + 179, y, start + 180, start + 280),
+  );
+  inactiveCard(
+    name + "-motor",
+    leftX,
+    y,
+    leftW,
+    name === "parasympathetic"
+      ? arrival(475, y + 130, y, 750, 845)
+      : arrival(last.y + 55, y + 130, y, start + 180, start + 280),
+  );
 }
 function pupilActor(name, bounds, box, values) {
   const x = (bounds[0] + bounds[2]) / 2 - box[0],
@@ -1001,7 +1219,7 @@ function litFace(
       const motion = move || [[0, 0]],
         dxRight = 130.4,
         lightRiseFrames = 3,
-        pupilStart = on + lightRiseFrames + 12;
+        pupilStart = on + lightRiseFrames + 19.5;
       for (let side = 0; side < 2; side++) {
         const poses = motion.map(([t, dx]) => [
           t,
@@ -1041,16 +1259,14 @@ function litFace(
           name + " pupil " + i,
           bounds,
           box,
-          // RAPD app: 250ms latency, 220ms pulse, then 520ms dilation after
-          // arrival on the affected eye (glaucomaWorkshop.js / rapdCases.js).
+          // Hold the constricted pupil for 800ms after affected-eye arrival.
           rapd
             ? [
                 [0, 155],
                 [pupilStart, 155],
                 [pupilStart + 25, 82],
-                [move.at(-2)[0] + 8, 82],
-                [move.at(-2)[0] + 14, 101],
-                [move.at(-2)[0] + 30, 120],
+                [move.at(-2)[0] + 24, 82],
+                [move.at(-2)[0] + 39.6, 120],
               ]
             : move
               ? [
@@ -1191,16 +1407,16 @@ function nearMethod() {
           tail.ks.p.k[0] += 24;
           actor(name + "-hand", box, [156, 771], [[0, 0]], {
             r: keys([
-              [0, -140],
-              [270, -140],
-              [340, 0],
+              [0, 140],
+              [161.25, 140],
+              [231.25, 0],
             ]),
           });
           const bubble = nativeImage(name + "-bubble", box);
           imageMask(bubble, box, rect(0, 0, 154.55 - box[0], box[3]));
           bubble.ks.p.k[0] += 24;
           const highlight = nativeImage(name + "-highlight", box, {
-            o: fade(340, 15),
+            o: fade(231.25, 15),
           });
           highlight.ks.p.k[0] += 24;
           for (const [i, b] of [
@@ -1209,7 +1425,7 @@ function nearMethod() {
           ]) {
             const arrow = nativeImage(name + "-arrow-" + i, box);
             if (i === 1) arrow.ks.p.k[0] += 24;
-            reveal(arrow, box, b, 340, 450, "left");
+            reveal(arrow, box, b, 231.25, 341.25, "left");
           }
         }
       },
@@ -1285,11 +1501,11 @@ function nearResults() {
     if (symbol)
       image(
         symbol.asset,
-        W - 140,
+        W - 185,
         (row * H) / 2 + H / 4 - 55 + (row === 0 ? 50 : -50),
         110,
         {
-          o: fade(row ? 550 : 250),
+          o: fade(row ? nearFurtherFrame - 3 : 60, row ? 3 : 5),
         },
       );
   }
@@ -1459,8 +1675,29 @@ async function main() {
       e: 0,
       sourceBox: info.box,
     });
+    if (/^(parasympathetic|sympathetic)-(box-[0-3]|motor|iris)$/.test(name)) {
+      // Keep the exact source alpha, including rounded corners. A neutral wash
+      // lowers contrast over the entire card without changing actor timing.
+      const { data, info: pixels } = await sharp(
+        path.join(OUTPUT, "images", file),
+      )
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      // Its lighter source cards need a black wash to match the dark inactive
+      // parasympathetic cards at the same opacity.
+      const grey = name.startsWith("sympathetic-") ? 0 : 40;
+      for (let i = 0; i < data.length; i += 4)
+        data[i] = data[i + 1] = data[i + 2] = grey;
+      const washName = name + "-inactive-wash",
+        washFile = washName + ".webp";
+      await sharp(data, { raw: pixels })
+        .webp({ lossless: true })
+        .toFile(path.join(OUTPUT, "images", washFile));
+      assets.set(washName, { ...assets.get(name), id: washName, p: washFile });
+    }
   }
-  // Soft, filled pools of lavender light, with transparent edges. Rasterizing
+  // Soft blue pools between the two signal colours, with transparent edges. Rasterizing
   // these small overlays gives Canvas and SVG the same gradient appearance.
   const glowBox = art.neural.afferent.box;
   const glowRegions = {
@@ -1482,7 +1719,7 @@ async function main() {
   for (const [region, ellipses] of Object.entries(glowRegions)) {
     const name = "afferent-glow-" + region,
       file = name + ".webp";
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1296" viewBox="${glowBox.join(" ")}"><defs><radialGradient id="glow"><stop stop-color="#ead4ff" stop-opacity=".86"/><stop offset=".3" stop-color="#d9b3f2" stop-opacity=".65"/><stop offset=".7" stop-color="#db92f2" stop-opacity=".25"/><stop offset="1" stop-color="#db00ff" stop-opacity="0"/></radialGradient></defs>${ellipses.map(([x, y, rx, ry, r]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${r} ${x} ${y})" fill="url(#glow)"/>`).join("")}</svg>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1296" viewBox="${glowBox.join(" ")}"><defs><radialGradient id="glow"><stop stop-color="#148cff" stop-opacity=".98"/><stop offset=".3" stop-color="#0680fd" stop-opacity=".88"/><stop offset=".7" stop-color="#007aff" stop-opacity=".45"/><stop offset="1" stop-color="#0680fd" stop-opacity="0"/></radialGradient></defs>${ellipses.map(([x, y, rx, ry, r]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${r} ${x} ${y})" fill="url(#glow)"/>`).join("")}</svg>`;
     await sharp(Buffer.from(svg))
       .webp({ lossless: true })
       .toFile(path.join(OUTPUT, "images", file));
@@ -1547,11 +1784,13 @@ async function main() {
     solid(
       index >= 10 && index <= 12
         ? "#000000"
-        : index === 0 || index === 3
-          ? "#443e32"
-          : index === 2
-            ? "#453f35"
-            : "#aaa393",
+        : index === 3
+          ? "#000000"
+          : index === 0
+            ? "#443e32"
+            : index === 2
+              ? "#453f35"
+              : "#aaa393",
     );
     if (index === 0) neural("afferent");
     else if (index === 1) flow("parasympathetic");
@@ -1582,8 +1821,8 @@ async function main() {
         on: 300,
         move: [
           [0, 130.4],
-          [rapdDilationFrame - 68, 130.4],
-          [rapdDilationFrame - 8, 0],
+          [rapdDilationFrame - 84, 130.4],
+          [rapdDilationFrame - 24, 0],
           [end - 1, 0],
         ],
         arrow: "swing-rapd-arrow",
@@ -1666,6 +1905,7 @@ async function main() {
     JSON.stringify(
       {
         schemaVersion: 1,
+        afferentPacing: config.PUPILS_ADVANCED_AFFERENT_PACING,
         title: "Pupils",
         sourceDocument: "/pdfbasedanims/Pupils Advanced_110826.pdf",
         durationSeconds: clock,
@@ -1673,6 +1913,21 @@ async function main() {
         languages,
         cues,
         visualCues: [
+          {
+            id: "third-nerve-eye-movements",
+            language: "en",
+            word: "eye movements",
+            at: 1 + stages[0].seconds + eyeMovementsFrame / FPS,
+          },
+          {
+            id: "near-further-examination",
+            language: "en",
+            word: "further",
+            at:
+              1 +
+              stages.slice(0, 14).reduce((sum, s) => sum + s.seconds, 0) +
+              nearFurtherFrame / FPS,
+          },
           ...Object.entries(afferentWords).map(([word, frame]) => ({
             id: "afferent-" + word.replaceAll(" ", "-"),
             language: "en",

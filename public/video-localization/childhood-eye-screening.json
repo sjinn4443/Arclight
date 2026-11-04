@@ -2787,5 +2787,27 @@
       "low": "/videos/FullAnim/PupilsPecFullAnim_240p.mp4",
       "high": "/videos/FullAnim/PupilsPecFullAnim_720p.mp4"
     }
+  },
+  "pupilsAdvancedFullAnimationVideoPage": {
+    "subtitles": {
+      "en": "/narration/pupils-advanced/full-animation/video/en.vtt",
+      "ko": "/narration/pupils-advanced/full-animation/video/ko.vtt"
+    },
+    "audioVariants": {
+      "en": {
+        "label": "English",
+        "src": "/narration/pupils-advanced/full-animation/video/en.m4a"
+      },
+      "ko": {
+        "label": "한국어",
+        "src": "/narration/pupils-advanced/full-animation/video/ko.m4a"
+      }
+    },
+    "defaultSubtitleLang": "en",
+    "defaultAudioLang": "en",
+    "localSources": {
+      "low": "/videos/FullAnim/PupilsAdvancedFullAnim_240p.mp4",
+      "high": "/videos/FullAnim/PupilsAdvancedFullAnim_720p.mp4"
+    }
   }
 }

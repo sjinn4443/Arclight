@@ -6,8 +6,8 @@
       "src": "en.m4a",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 1207813,
-      "sha256": "e62d15ef7612e8efe266223483673c416d2d5597b81951eec75c1a2882060dde",
+      "bytes": 1230329,
+      "sha256": "d89368bce816453137f41665af9069df40794ce6ddae8c1c2e42508f9505d64a",
       "durationSeconds": 315.0,
       "reusedPecSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5"
     },
@@ -15,8 +15,8 @@
       "src": "ko.m4a",
       "label": "한국어",
       "voice": "ko-KR-SunHiNeural",
-      "bytes": 1243976,
-      "sha256": "0ea7183fa3069fcefebdd14619e713ae82d9f610791ed35c2e57fa7c70f6c894",
+      "bytes": 1261267,
+      "sha256": "b6cbddeeab725bdf57512050b9207a3d3f94d3820de7aef8017757bc1b51ccc4",
       "durationSeconds": 315.0,
       "reusedPecSha256": "70c1eb4a982b6d18771ec7c4d913e5fcd12fdb3f135537ee57b96df7bb46a8c1"
     }

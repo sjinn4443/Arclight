@@ -1694,6 +1694,16 @@ const VIDEO_PAGE_SOURCES = {
     iframeClass: "videos-yt-fe-full",
   },
 
+  pupilsAdvancedFullAnimationVideoPage: {
+    key: "videoMode:pupilsAdvancedFullAnimationVideoPage",
+    containerSelector: "#pupilsAdvancedFullAnimationVideoContainer",
+    videoSelector: "#pupilsAdvancedFullAnimationVideo",
+    sources: {
+      low: "videos/FullAnim/PupilsAdvancedFullAnim_240p.mp4",
+      high: "videos/FullAnim/PupilsAdvancedFullAnim_720p.mp4",
+    },
+  },
+
   pupilsPecFullAnimationVideoPage: {
     key: "videoMode:pupilsPecFullAnimationVideoPage",
     containerSelector: "#pupilsPecFullAnimationVideoContainer",
@@ -2055,6 +2065,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS = new Set(
   Object.keys(VIDEO_PAGE_SOURCES),
 );
 const DEDICATED_SUBTITLE_PANEL_PAGE_IDS = new Set([
+  "pupilsAdvancedFullAnimationVideoPage",
   "pupilsPecFullAnimationVideoPage",
   "makeEyePadShieldFullAnimationVideoPage",
   "visualAcuityFullAnimationVideoPage",

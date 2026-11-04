@@ -239,8 +239,7 @@ test("travelling afferent heads stay attached to the trimmed shafts throughout t
         l.nm.startsWith("Original path") &&
         JSON.stringify(l.shapes[0].it.find((i) => i.ty === "st")?.c.k) ===
           JSON.stringify(colour) &&
-        l.shapes[0].it.find((i) => i.ty === "tm").e.k.at(-1).t ===
-          afferentWords.nuclei,
+        l.shapes[0].it.find((i) => i.ty === "tm").e.k.at(-1).t === 450,
     );
     const curve = line.shapes[0].it[0].ks.k;
     const table = Array.from({ length: 2049 }, (_, j) => {
@@ -267,9 +266,7 @@ test("travelling afferent heads stay attached to the trimmed shafts throughout t
         table[i - 1].d +
         Math.hypot(...table[i].p.map((v, k) => v - table[i - 1].p[k]));
     const trim = line.shapes[0].it.find((i) => i.ty === "tm").e.k;
-    for (const key of head.ks.p.k.filter(
-      (k) => k.t >= afferentWords["optic nerve"],
-    )) {
+    for (const key of head.ks.p.k.filter((k) => k.t >= 240)) {
       const i = Math.max(
         1,
         trim.findIndex((k) => k.t >= key.t),
@@ -291,6 +288,70 @@ test("travelling afferent heads stay attached to the trimmed shafts throughout t
         0.08,
       );
     }
+  }
+});
+
+test("sympathetic inactive cards are as dark as the parasympathetic cards", async () => {
+  const background = async (name) => {
+    const dir = "public/scrolly/coreexam/pupils-advanced/images/";
+    const source = await sharp(dir + name + ".webp")
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const wash = await sharp(dir + name + "-inactive-wash.webp")
+      .ensureAlpha()
+      .raw()
+      .toBuffer();
+    const i =
+      (Math.floor(source.info.height / 2) * source.info.width +
+        Math.floor(source.info.width * 0.1)) *
+      4;
+    return [0, 1, 2].map((k) => source.data[i + k] * 0.28 + wash[i + k] * 0.72);
+  };
+  const para = await background("parasympathetic-box-0"),
+    symp = await background("sympathetic-box-0");
+  for (let i = 0; i < 3; i++)
+    expect(Math.abs(para[i] - symp[i])).toBeLessThan(6);
+});
+
+test("flowchart cards start muted and recover their original appearance when the signal enters", () => {
+  for (const [index, name] of [
+    [1, "parasympathetic"],
+    [2, "sympathetic"],
+  ]) {
+    const data = scene(index),
+      cards = data.layers.filter((l) =>
+        l.nm.startsWith("Inactive card overlay: "),
+      );
+    expect(cards).toHaveLength(6);
+    const box = (i) =>
+      cards.find((l) => l.nm === `Inactive card overlay: ${name}-box-${i}`);
+    const onsets = [0, 1, 2, 3].map((i) => box(i).ks.o.k[1].t);
+    expect(onsets).toEqual([...onsets].sort((a, b) => a - b));
+    for (const card of cards) {
+      expect(card.ks.o.k[0].s[0]).toBe(72);
+      expect(card.ks.o.k.at(-1).s[0]).toBe(0);
+      expect(card.ks.o.k.at(-1).t - card.ks.o.k[1].t).toBeCloseTo(12);
+      expect(card.ks.p.a).toBe(0);
+      expect(card.masksProperties[0].pt.k.c).toBe(true);
+    }
+    for (let i = 1; i < 4; i++) {
+      const line = data.layers.find(
+        (l) => l.nm === "Signal behind foreground boxes " + (i - 1),
+      );
+      const path = line.shapes[0].it.find((it) => it.ty === "sh").ks.k;
+      const trim = line.shapes[0].it.find((it) => it.ty === "tm").e.k;
+      const entry = 170 + i * 125;
+      const expected =
+        trim[1].t +
+        ((trim[2].t - trim[1].t) * (entry - path.v[0][1])) /
+          (path.v[1][1] - path.v[0][1]);
+      expect(onsets[i]).toBeCloseTo(expected);
+    }
+    const iris = cards.find((l) => l.nm.endsWith("-iris"));
+    expect(data.layers.indexOf(iris)).toBeLessThan(
+      data.layers.findIndex((l) => l.nm === "Original radial arrows: " + name),
+    );
   }
 });
 
@@ -492,7 +553,11 @@ test("Near response has two faces, closed sclera masks, moving irises and delaye
     const icon = list.find(
       (l) => l.refId === "near-result-" + row + "-marks-symbol-0",
     );
-    expect(icon.ks.o.k[1].t).toBeGreaterThan(row * 300 + 180);
+    expect(
+      icon.ks.p.k[0] - (icon.ks.a.k[0] * icon.ks.s.k[0]) / 100,
+    ).toBeCloseTo(984);
+    if (row === 0) expect(icon.ks.o.k.at(-1).t).toBe(65);
+    else expect(icon.ks.o.k.at(-1).t).toBe(422);
   }
   const { data: rgb } = await sharp(
     "public/scrolly/coreexam/pupils-advanced/images/near-target-bubble.webp",
@@ -528,11 +593,11 @@ test("RAPD stays constricted during the swing and dilates only after light reach
   expect(pupils).toHaveLength(2);
   expect(pupils[0].ks.s).toEqual(pupils[1].ks.s);
   const k = pupils[0].ks.s.k;
-  expect(k.find((p) => p.t === arrival + 8).s[0]).toBe(82);
+  expect(k.find((p) => p.t === arrival + 24).s[0]).toBe(82);
   expect(k.at(-1).t).toBeGreaterThan(arrival);
   expect(k.at(-1).s[0]).toBe(120);
   const spoken = script.visualCues.find((c) => c.id === "rapd-dilation");
-  expect(arrival + 8).toBe(
+  expect(arrival + 24).toBe(
     Math.round((spoken.at - cfg.narrationClipsByFile[12].start) * 30),
   );
   expect(arrival).toBeGreaterThan(500);
@@ -542,7 +607,7 @@ test("near hand settles before simultaneous highlight/arrows and face textures r
   const list = allLayers(scene(13));
   const hand = list.find((l) => l.nm === "near-target-hand");
   expect(hand.ks.p.a).toBe(0);
-  expect(hand.ks.r.k[0].s[0]).toBe(-140);
+  expect(hand.ks.r.k[0].s[0]).toBe(140);
   expect(hand.ks.r.k.at(-1).s[0]).toBe(0);
   const settled = hand.ks.r.k.at(-1).t;
   expect(list.find((l) => l.nm === "near-target-highlight").ks.o.k[1].t).toBe(
@@ -601,7 +666,7 @@ test("muscle apertures change with radial signals and the third-nerve eye blinks
   expect(lid.ks.p.a).toBe(0);
   const k = lid.shapes[0].it[0].ks.k,
     open = k[0].s[0],
-    closed = k.find((p) => p.t === 785).s[0];
+    closed = k.find((p) => p.t === 837).s[0];
   const length = (p) => Math.hypot(...p.v[0].map((v, i) => v - p.v[1][i]));
   expect(Math.abs(length(open) - length(closed))).toBeGreaterThan(0.1);
   expect(k.at(-1).s[0]).toEqual(open);
@@ -644,8 +709,9 @@ test("cataract controls follow speech by 1.5 seconds without changing PEC audio"
 
 test("afferent and consensual controls follow completed visuals and speech without accelerating the animation", () => {
   for (const [index, visualFrame, speechEnds] of [
-    [0, 453, { en: 15.01, ko: 17.12 }],
+    [0, 562, { en: 16.1, ko: 14.72 }],
     [10, 390, { en: 13.93, ko: 14.62 }],
+    [13, 341.25, { en: 13.85 - 108.75 / 30, ko: 14.45 - 108.75 / 30 }],
   ]) {
     const clip = cfg.narrationClipsByFile[index];
     for (const language of ["en", "ko"]) {
@@ -654,7 +720,7 @@ test("afferent and consensual controls follow completed visuals and speech witho
         [clip.endByLanguage[language], scene(index).op - 1],
       ];
       expect(frameAtNarrationTime(points, clip.start + visualFrame / 30)).toBe(
-        visualFrame,
+        Math.round(visualFrame),
       );
       expect(
         clip.endByLanguage[language] -
@@ -692,7 +758,7 @@ test("each named afferent structure glows at its spoken cue and the lit pupil si
   expect(layers.indexOf(pupils[1])).toBeLessThan(beam);
 });
 
-test("anatomy glow textures have filled lavender centres and fully transparent edges", async () => {
+test("anatomy glow textures use a middle blue between the arrows and fully transparent edges", async () => {
   const data = scene(0);
   const asset = data.assets.find((a) => a.id === "afferent-glow-retina");
   const { data: pixels, info } = await sharp(
@@ -715,18 +781,19 @@ test("anatomy glow textures have filled lavender centres and fully transparent e
   expect(centre[3]).toBeGreaterThan(middle[3]);
   expect(middle[3]).toBeGreaterThan(edge[3]);
   expect(edge[3]).toBe(0);
-  expect(centre[2]).toBeGreaterThan(centre[0]);
-  expect(centre[0]).toBeGreaterThan(centre[1]);
+  expect(centre[2]).toBeGreaterThan(centre[1]);
+  expect(centre[1]).toBeGreaterThan(centre[0]);
+  expect(centre[3]).toBeGreaterThan(240);
 });
 
-test("examination pupils wait 0.4 seconds after full illumination before constricting", () => {
+test("examination pupils wait 0.65 seconds after full illumination before constricting", () => {
   for (const index of [10, 11, 12]) {
     const list = allLayers(scene(index));
     for (const pupil of list.filter((l) => / pupil \d$/.test(l.nm))) {
       const pool = list.find(
         (l) => l.refId === pupil.nm.replace(/ pupil \d$/, "-pool"),
       );
-      expect((pupil.ks.s.k[1].t - pool.ks.o.k.at(-1).t) / 30).toBeCloseTo(0.4);
+      expect((pupil.ks.s.k[1].t - pool.ks.o.k.at(-1).t) / 30).toBeCloseTo(0.65);
       expect(pupil.ks.s.k[1].s[0]).toBe(155);
       expect(pupil.ks.s.k[2].s[0]).toBeLessThan(155);
     }
@@ -736,24 +803,155 @@ test("examination pupils wait 0.4 seconds after full illumination before constri
 test("second swinging arrows reveal only the area already traversed by the device", () => {
   const data = scene(12),
     list = allLayers(data);
-  for (const [name, mid] of [
-    ["swing-normal", 146],
-    ["swing-rapd", 542],
-  ]) {
+  for (const name of ["swing-normal", "swing-rapd"]) {
+    const motion = list.find((l) => l.refId === name + "-device").ks.p.k;
+    const mid = (motion.at(-3).t + motion.at(-2).t) / 2;
     const arrow = list.find((l) => l.refId === name + "-arrow");
     const asset = data.assets.find((a) => a.id === arrow.refId);
-    const curve = arrow.masksProperties[0].pt.k.find((k) => k.t === mid).s[0];
+    const sample = arrow.masksProperties[0].pt.k.reduce((a, b) =>
+      Math.abs(a.t - mid) < Math.abs(b.t - mid) ? a : b,
+    );
+    const curve = sample.s[0];
     const sourceLeft =
       curve.v[0][0] / (asset.w / asset.sourceBox[2]) + asset.sourceBox[0];
-    expect(sourceLeft).toBeCloseTo(475.2);
+    const from = motion.at(-3),
+      to = motion.at(-2);
+    const progress = (sample.t - from.t) / (to.t - from.t);
+    expect(sourceLeft).toBeCloseTo(475.2 + 130.4 * (0.5 - progress));
     const reveal = arrow.masksProperties[0].pt.k.map(
       (k) => k.s[0].v[1][0] - k.s[0].v[0][0],
     );
     expect(reveal[0]).toBe(0);
     expect(reveal.at(-1)).toBeGreaterThan(
-      reveal.find((_, i) => arrow.masksProperties[0].pt.k[i].t === mid),
+      reveal.find((_, i) => arrow.masksProperties[0].pt.k[i].t === sample.t),
     );
   }
+});
+
+test("anatomy speech slows while the original signal clock is preserved", () => {
+  expect(script.afferentPacing.speed).toBe(0.85);
+  const list = allLayers(scene(0));
+  for (const head of list.filter(
+    (l) => l.nm === "Travelling original sensory arrow",
+  )) {
+    expect(head.ks.p.k[1].t).toBe(240);
+    expect(head.ks.p.k.at(-1).t).toBe(450);
+  }
+  expect(
+    list
+      .find((l) => l.nm === "Original path 254 continuation")
+      .shapes[0].it.find((it) => it.ty === "tm")
+      .e.k.at(-1).t,
+  ).toBe(550);
+});
+
+test("reflex backdrop is black and examination positioning strips have white separators", () => {
+  expect(scene(3).layers.find((layer) => layer.ty === 1).sc).toBe("#000000");
+  const positioning = scene(6);
+  const lines = positioning.layers.filter((layer) =>
+    layer.nm.startsWith("Positioning white divider"),
+  );
+  expect(lines).toHaveLength(2);
+  for (const [i, line] of lines.entries()) {
+    expect(line.sc).toBe("#ffffff");
+    expect(line.sw).toBe(positioning.w);
+    expect(line.sh).toBe(6);
+    expect(line.ks.p.k[1]).toBeCloseTo((positioning.h * (i + 1)) / 3 - 3);
+  }
+});
+
+test("dilator fibres fill the future arrow positions before the signals grow", () => {
+  const radial = scene(2).assets.find((a) => /^radial/.test(a.id));
+  const fibres = radial.layers.filter((l) =>
+    l.nm.startsWith("Fibre beneath radial arrow "),
+  );
+  expect(fibres).toHaveLength(8);
+  for (const l of fibres) {
+    expect(l.ks.o.k).toBe(100);
+    const stroke = l.shapes[0].it.find((it) => it.ty === "st");
+    expect(stroke.w.k).toBe(0.663);
+    expect(stroke.c.k.slice(0, 3)).toEqual([144 / 255, 133 / 255, 112 / 255]);
+  }
+});
+
+test("blink hides the crease only during movement and the sympathetic eye starts in the parasympathetic state", () => {
+  for (const crease of allLayers(scene(1)).filter((l) =>
+    l.nm.startsWith("Resting upper eyelid crease "),
+  )) {
+    expect(crease.ks.o.k.map((k) => [k.t, k.s[0]])).toEqual([
+      [0, 100],
+      [832, 0],
+      [847, 100],
+    ]);
+    expect(crease.shapes[0].it[0].ks.a).toBe(0);
+  }
+  const list = allLayers(scene(2));
+  const opening = list.find(
+    (l) => l.nm === "Sclera revealed by sympathetic lid widening",
+  );
+  const k = opening.shapes[0].it[0].ks.k,
+    before = k[1].s[0],
+    after = k[2].s[0];
+  const rise = after.v.map((v, i) => v[1] - before.v[i][1]);
+  expect(Math.min(...rise)).toBeLessThan(-0.1);
+  expect(Math.min(...rise)).toBeGreaterThan(-1);
+  const pupil = list.find((l) => l.nm === "Stationary sympathetic pupil");
+  const frames = pupil.shapes[0].it[0].ks.k;
+  const diameter = (p) => Math.abs(p.v[0][1] - p.v[2][1]);
+  expect(diameter(frames[0].s[0])).toBeLessThan(diameter(frames.at(-1).s[0]));
+  for (const l of list.filter((l) =>
+    /Stationary sympathetic|Sympathetic lower lid/.test(l.nm),
+  )) {
+    expect(l.ks.p.a).toBe(0);
+    expect(l.ks.s.a).toBe(0);
+  }
+});
+
+test("near technique halves the upper-to-lower pause and the warning follows further examination", () => {
+  const list = allLayers(scene(13));
+  const topEnd = list
+    .find((l) => l.nm === "near-distance-arrow")
+    .masksProperties[0].pt.k.at(-1).t;
+  const bottomStart = list.find((l) => l.nm === "near-target-hand").ks.r.k[1].t;
+  expect(bottomStart - topEnd).toBe((197.5 - 125) / 2);
+  expect(stages[13].cues[1].offset * 30).toBeCloseTo(bottomStart);
+  const cue = script.visualCues.find(
+    (c) => c.id === "near-further-examination",
+  );
+  const icon = allLayers(scene(14)).find(
+    (l) => l.refId === "near-result-1-marks-symbol-0",
+  );
+  expect(icon.ks.o.k.at(-1).t).toBeCloseTo(
+    (cue.at - cfg.narrationClipsByFile[14].start) * 30,
+  );
+});
+
+test("RAPD captions join the definition and keep Here on the next line", () => {
+  const text = stages[12].cues.find((c) => c.id === "swing-rapd").caption.en;
+  expect(text.split("\n")[0]).toContain(
+    "or RAPD, means a weaker light signal from one\u00a0eye.",
+  );
+  expect(text.split("\n")[1]).toMatch(/^Here, the pupils/);
+  expect(fs.readFileSync(`${folder}/en.vtt`, "utf8")).toContain(text);
+});
+
+test("eye-movements narration triggers the blink and the sympathetic eye retains the original sclera tone", () => {
+  const cue = script.visualCues.find(
+    (c) => c.id === "third-nerve-eye-movements",
+  );
+  const expected = Math.round(
+    (cue.at - cfg.narrationClipsByFile[1].start) * 30,
+  );
+  const blink = allLayers(scene(1)).find(
+    (l) => l.nm === "Upper eyelid covers stationary iris",
+  );
+  expect(blink.shapes[0].it[0].ks.k[1].t).toBe(expected);
+  const white = allLayers(scene(2)).find(
+    (l) => l.nm === "Sclera revealed by sympathetic lid widening",
+  );
+  expect(
+    white.shapes[0].it.find((it) => it.ty === "fl").c.k.slice(0, 3),
+  ).toEqual([237 / 255, 229 / 255, 206 / 255]);
 });
 
 test("dilator retains all original fibres and arrowheads while near faces converge twice as fast", () => {

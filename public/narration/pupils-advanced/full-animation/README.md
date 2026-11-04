@@ -32,22 +32,37 @@ source coordinates so the full retinal cone remains visible after reframing.
 Afferent signals retain one original rounded Bezier head per colour, overlapping
 each shaft along a distance-matched trajectory. Brain perimeter paths reach a shared
 junction before two branches draw together. Retina, optic nerve, chiasm, tract and
-nuclei use filled lavender gradient pools at their spoken English onsets, rather
-than outline circles. `PUPILS_ADVANCED_AFFERENT_WORD_FRAMES` records the reviewed
-audio onsets; both shafts and their distance-matched heads follow that clock.
-The pathway is complete at frame 441 and its final glow clears at frame 453.
+nuclei use blue gradient pools midway between the cyan and deep-blue signal arrows at their spoken English onsets.
+`PUPILS_ADVANCED_AFFERENT_WORD_FRAMES` records those onsets. The original arrow
+clock is preserved: shafts and heads travel from frame 240 to 450, with the brain
+branches completing at 550 and the final glow clearing at 562. The nuclei
+branches now draw in half their previous time (450–550 instead of 450–650). Cached English
+anatomy speech plays at 0.85x speed with pauses between names; the source utterance
+is retained and `afferentPacing` makes this edit reproducible without new TTS.
 Reflex diagrams use
 the earlier full-art vertical wipes, keeping independent pupil and label timing.
 Flow signals run behind opaque boxes/text; original radial arrows trim inward for
 the constrictor and outward for the dilator, with progressive muscle aperture changes.
-The third-nerve blink moves only the upper lid; lashes bend and flatten as it closes,
+Both motor-pathway flowcharts initially mute the four text cards and the two eye/
+muscle cards with a dark-grey, low-contrast wash. The sympathetic wash compensates
+for its lighter source backgrounds so the initial cards match the parasympathetic
+cards' darkness. Each card returns to its original
+appearance over 12 frames when the signal reaches its upper edge. The eye cards
+follow their respective branch; source rounded corners are preserved.
+The third-nerve blink shows the original upper crease while resting and hides it
+only during frames 832–847, aligned to “eye movements”; lashes bend and flatten as it closes,
 while the iris and lower lid stay fixed. Flowchart connectors restore source magenta
 for the parasympathetic diagram and the original radial-arrow purple for the sympathetic diagram. The
-dilator preserves all sixteen original fibres and eight complete arrowheads. Muscle discs
+dilator preserves all sixteen original fibres and eight complete arrowheads, with
+eight additional thin grey-brown fibres beneath the future arrow positions.
+During the minor-eyelid-muscle cue, the eye starts in the parasympathetic source
+state. Its pupil enlarges and its lid changes to the original sympathetic source
+shape without additional widening. The sclera retains the source cream tone
+`#ede5ce`, with the iris centre fixed and lower-lid surfaces registered to it. Muscle discs
 use their measured PDF centres and radii, with the original raster disc removed
 before the animated one is drawn. Swinging devices and their pools share
 motion; lens windows change from black to white with the pool. Examination pupils
-wait 0.4 seconds after full illumination before constricting. Only soft face patches brighten; the unlit eye is 40% brighter than
+wait 0.65 seconds after full illumination before constricting. Only soft face patches brighten; the unlit eye is 40% brighter than
 the dark face. The second swinging scene reveals arrows behind the moving device.
 Near technique preserves
 the red bird and its eye, with object highlight preceding directional arrows.
@@ -56,19 +71,29 @@ panel completes at frame 210, followed by the lower panel at 240: a one-second
 handoff. A foreground white divider spans the entire rect. Swinging-test panels
 omit the original baked white dividers and put the Arclight above the arrows. The
 moving light ellipse has a full transparent edge and padded scene bounds; swings
-take 42 rather than 60 frames. RAPD follows the pupil app: healthy-side light
+take 42 rather than 60 frames. In RAPD, healthy-side light
 constricts both pupils, which remain constricted during transit. Once the light
-reaches the affected eye, its 250ms latency/220ms pulse precede bilateral dilation.
-Near-target hand/Arclight rotates about its elbow, swinging from left to right
+reaches the affected eye, a 0.8-second hold precedes bilateral dilation; arrival
+is scheduled early enough for dilation to stay aligned to the spoken word.
+The English RAPD caption joins the definition and “means a weaker light signal”
+without a forced line break, keeps “one eye.” together and starts “Here, the pupils”
+on a new line. Only this scene adds half a normal line-height between its two
+caption blocks. Near-target hand/Arclight rotates upward from below about its elbow
 behind the speech-bubble body and above its tail, whose tip sits just left of the
 held device; both arrows and the highlight
 begin when it settles. The two panels fill their rects proportionally, use the
 original distance-arrow texture, and share a foreground full-width divider.
+The upper animation ends at frame 125 and the lower one starts at 161.25: its
+1.2083-second handoff is half the previous 2.4167-second gap. The existing near-target speech
+moves earlier with the hand; the overall 315-second audio clock is retained.
 Near results use smaller 800px-wide rounded face cards with unchanged 110px status
 symbols. Cards move 50px toward one another, and convergence takes 57.5 frames,
 twice the previous speed. Each face is extracted without its old baked corner clipping and receives
 one rounded-card mask. Animated source iris positions remain inside closed sclera
-masks, foreground eyelids above the irises, and result symbols after motion. PDF fill paths must explicitly close for
+masks and foreground eyelids above the irises. The normal tick is already visible
+at convergence onset; both status symbols sit 45px further left. The warning is
+visible at frame 422, aligned to the start of “further examination is needed”.
+PDF fill paths must explicitly close for
 Lottie's mask renderer, even when SVG/PDF implicitly fills an open path.
 
 The afferent anatomy detail was checked against [Stanford's pupil chapter](https://neuro-ophthalmology.stanford.edu/2019/10/neuro-ophthalmology-illustrated-chapter-12-the-pupil-2/).
@@ -99,6 +124,10 @@ node scripts/build-pupils-advanced-scroll.cjs
 python scripts/generate-pupils-advanced-narration.py
 ```
 
+`PUPILS_ADVANCED_OUTPUT_DIR` may stage generated artwork on another drive when
+workspace disk space is limited; publish those assets to the normal public path
+before checking playback.
+
 Extraction needs PyMuPDF 2.0; an authoring install may live at
 `tmp/pupils-pec/pdf-tools`. Sharp rasterizes authoring SVG layers to local WebP
 assets and writes the initial PNG posters. The speech generator reuses the shared
@@ -106,8 +135,37 @@ Fundal pipeline with Edge TTS and FFmpeg from `tmp/fundal-narration-tools`. It s
 cue text to Microsoft only while authoring. Cached utterances, WAV masters and
 timing QA remain in ignored `tmp/pupils-advanced/narration/`. Speech must fit each
 cue slot at no more than 1.08x speed; shorten a cue rather than truncating it.
-The shipped files are M4A, VTT, script and checksum manifest. There is no separate
-Advanced Full Animation video in this feature.
+The shipped scroll files are M4A, VTT, script and checksum manifest.
+
+The **Pupils Full Animation** video row immediately follows this scrolly in the
+Advanced section and opens `#/videos/pupilsAdvancedFullAnimationVideoPage`.
+It uses the PEC Full Animation shell and shared player for quality, narration,
+captions, fullscreen, sharing, Back, progress and My Learning. English and Korean
+reuse the existing Advanced recordings; other app languages fall back to English.
+
+`node scripts/build-pupils-advanced-video.cjs` renders all fifteen shipped scenes
+with pinned Lottie Canvas and decoded images at 30fps. The original 315-second
+scroll clock stays intact. Video delivery skips silent tails in the first pathway
+and near examination scenes, holding 1.5 seconds after visual completion without
+cutting either language's speech. With seven silent 3-second section cards the
+video lasts 318.1 seconds. `pupils-advanced-video-timeline.cjs` supplies one shared
+edit list for frames, audio, captions and visual cues; `videoSceneCues` records it.
+Long
+English titles wrap centrally without squeezing the letters. The shorter reflex
+diagram retains its aspect ratio with black letterboxing and a black backdrop
+that removes the former brown lower edge. The three positioning strips have two
+full-width white 6px dividers, also present in the shared PEC source scene.
+Lossless PNG frames
+become silent limited-range BT.709 H.264, `yuv420p`, one-second keyframes and
+fast-start MP4s: `PupilsAdvancedFullAnim_720p.mp4` (658 × 720) and
+`PupilsAdvancedFullAnim_240p.mp4` (220 × 240).
+
+Video-clock audio, captions, cues, visual cues and source/output checksums live
+under `full-animation/video/`; source scroll audio is unchanged. Core Pupils
+offline downloads select the requested video quality and narration language.
+Use `CHROME_CHANNEL=chrome` for installed Chrome. `PUPILS_ADVANCED_VIDEO_OUTPUT_DIR`
+can stage the two MP4s on another drive before publishing them to
+`public/videos/FullAnim/`.
 
 The authoring pipeline saves word boundaries for `reflex-output` and `swing-rapd`
 alongside cached speech. The builder records the measured English `constrict` and
@@ -118,7 +176,7 @@ language-specific endings 1.5 seconds after speech (English 17.76s, Korean 19.32
 after stage start). The shared PEC recording, animation and subsequent stage
 start times remain intact.
 
-The first afferent scene and Consensual Response also skip their silent tails.
+The first afferent scene, Consensual Response and Near technique skip their silent tails.
 Controls appear 1.5 seconds after the later of visual and spoken completion.
 An intermediate narration/frame anchor preserves the original animation speed.
 Only the illuminated left pupil in the reflex explanation sits beneath its light beam.

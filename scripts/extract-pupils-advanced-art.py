@@ -295,11 +295,13 @@ for name,x,blocks,left,right in [
     colours=SIGNALS|{"#3a005a"}
     export(name+"-heading",0,[x,136,160,22])
     for i,box in enumerate(blocks):export(f"{name}-box-{i}",0,box,clean=colours)
-    eye_nodes={i for i,(n,b) in enumerate(paints[0]) if centre_inside(b,left) and b[1]>left[1] and b[3]<310 and not colour(n).intersection(colours)} if name=="parasympathetic" else set()
+    eye_nodes={i for i,(n,b) in enumerate(paints[0]) if centre_inside(b,left) and b[1]>left[1] and b[3]<311 and not colour(n).intersection(colours)}
     export(name+"-motor",0,left,remove=eye_nodes,clean=colours)
     if eye_nodes:
-        upper_lid=set(range(775,778))|set(range(807,883))
+        upper_lid=(set(range(775,778))|set(range(807,883))) if name=="parasympathetic" else (set(range(506,509))|set(range(538,616)))
         export(name+"-motor-eye",0,left,only=eye_nodes-upper_lid)
+        eyeball={764,768,769} if name=="parasympathetic" else {495,499,500}
+        export(name+"-motor-surface",0,left,only=eye_nodes-upper_lid-eyeball)
         export(name+"-upper-lid",0,left,only=upper_lid)
     disc_index,pupil_index=(917,922) if name=="parasympathetic" else (634,635)
     muscle=set(range(917,924)) if name=="parasympathetic" else set(range(634,637))|set(range(653,669))
@@ -309,7 +311,14 @@ for name,x,blocks,left,right in [
     if name=="parasympathetic":
         art["flow"][name]["eyeOpening"]=curves(paints[0][764][0])
         art["flow"][name]["upperLid"]=vectors(0,upper_lid)
-    else:art["flow"][name]["fibres"]=vectors(0,set(range(653,669)))
+        art["flow"][name]["irisBounds"]=paints[0][768][1]
+        art["flow"][name]["eyePupilBounds"]=paints[0][769][1]
+    else:
+        art["flow"][name]["fibres"]=vectors(0,set(range(653,669)))
+        art["flow"][name]["eyeOpening"]=curves(paints[0][495][0])
+        art["flow"][name]["upperLid"]=vectors(0,upper_lid)
+        art["flow"][name]["irisBounds"]=paints[0][499][1]
+        art["flow"][name]["eyePupilBounds"]=paints[0][500][1]
 
 # Each face has a stable device texture. The white pool and the illuminated
 # face patch are independent, so neither the device nor the whole panel flashes.

@@ -303,6 +303,10 @@ const GLAUCOMA_TARGET_ROUTES = Object.freeze({
 });
 
 const PROGRESS_TARGET_ROUTES = Object.freeze({
+  pupilsAdvancedFullAnimationVideoPage: {
+    route: "videos",
+    subPageId: "pupilsAdvancedFullAnimationVideoPage",
+  },
   pupilsPecFullAnimationVideoPage: {
     route: "videos",
     subPageId: "pupilsPecFullAnimationVideoPage",
@@ -447,6 +451,7 @@ function go(target) {
     "pupilsPage",
     "pupilsPecScrollPage",
     "pupilsAdvancedScrollPage",
+    "pupilsAdvancedFullAnimationVideoPage",
     "pupilsPecFullAnimationVideoPage",
     "rapdTestVideoPage",
     "phoneAttachmentVideoPage",

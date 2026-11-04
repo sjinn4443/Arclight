@@ -146,6 +146,12 @@ Last refreshed: 2026-10-09
   keyframe can interrupt rendering even when completion assertions pass. Inspect
   rendered final frames and run the Advanced asset/offline/browser tests plus PEC
   regressions after editing these scenes.
+  Its **Pupils Full Animation** row follows the Advanced scrolly and opens
+  `pupilsAdvancedFullAnimationVideoPage`. Build with
+  `scripts/build-pupils-advanced-video.cjs`: fifteen scenes, seven silent 3s cards,
+  315s scroll / 318.1s video (first pathway and near examination tails trimmed to
+  1.5s after completion), separate English/Korean video-clock audio and captions,
+  and 240p/720p MP4s using the shared PEC Full Animation player and offline selection.
 
 - Pupils caption groups use `caption` / `captionUntil` metadata independently of
   spoken cue times. Regenerate their VTT with `scripts/lib/pupils-caption-authoring.cjs`.
