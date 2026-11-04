@@ -2,6 +2,8 @@
 
 ## Cataract case quiz — 4 November 2026
 
+- Added mobile-only history-following scroll up to 767px, with viewport-boundary
+  and answer-dialog regression tests.
 - Updated first-run randomisation, third-person histories, paired examination
   findings, folder alignment and answer controls in the Cataract quiz.
 - Eleven focused unit tests cover first-run/restart shuffle, all case assets,

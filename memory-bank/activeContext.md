@@ -4,6 +4,8 @@
 
 ## Cataract case quiz — 4 November 2026
 
+- New history bubbles scroll into view on mobile screens up to 767px, matching
+  Primary Case Study. Desktop/tablet and answer-dialog scrolling are unchanged.
 - First entry and restart shuffle all eight cases, with session findings,
   attempts and scores preserved during previous/next navigation.
 - Histories use a clinician's third-person presentation. Both examinations show

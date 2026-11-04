@@ -12,6 +12,9 @@ The app is primarily static (served from `public/` in dev, and `dist/` plus `dis
 
 ## Contents
 
+The Cataract quiz follows each newly revealed history bubble on mobile screens
+up to 767px.
+
 Interactive Learning → Cataract includes Facilitators Material (the simulator)
 and an eight-case quiz. Cases are shuffled on first entry and restart; the
 90-second timer, two attempts, progress, review and previous/next navigation

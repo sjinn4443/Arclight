@@ -236,6 +236,15 @@ export function initializeCataractCaseQuiz({ showPage } = {}) {
     const node = historyBubbles[state.revealed++];
     node.classList.remove("casechat-bubble--pending");
     node.removeAttribute("aria-hidden");
+    if (active && modal.hidden && !state.outcome && window.innerWidth <= 767) {
+      node.scrollIntoView({
+        block: "end",
+        behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")
+          .matches
+          ? "auto"
+          : "smooth",
+      });
+    }
   }
 
   function resume() {

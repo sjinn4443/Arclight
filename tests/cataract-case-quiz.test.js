@@ -176,6 +176,39 @@ test("clinical views preserve the fellow eye and distinguish haze from retinal d
   ).toBe("obscured");
 });
 
+test.each([390, 767, 768, 1440])(
+  "follows newly revealed history only on mobile at %ipx",
+  (width) => {
+    jest.replaceProperty(window, "innerWidth", width);
+    start();
+    Element.prototype.scrollIntoView.mockClear();
+    jest.advanceTimersByTime(1000);
+    const history = quiz().querySelectorAll(".casechat-bubble--bot");
+    if (width <= 767) {
+      expect(Element.prototype.scrollIntoView.mock.contexts).toEqual([
+        history[0],
+      ]);
+      jest.advanceTimersByTime(2000);
+      expect(Element.prototype.scrollIntoView.mock.contexts).toEqual([
+        history[0],
+        history[1],
+      ]);
+    } else {
+      jest.advanceTimersByTime(2000);
+      expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+    }
+  },
+);
+
+test("revealing the remaining history for feedback does not scroll behind the dialog", () => {
+  jest.replaceProperty(window, "innerWidth", 390);
+  start();
+  Element.prototype.scrollIntoView.mockClear();
+  click("Submit Answer");
+  click(CATARACT_QUIZ_CASES[0].answer);
+  expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+});
+
 test("reveals history sequentially, permits two attempts and records progress", () => {
   start();
   expect(

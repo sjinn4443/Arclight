@@ -13,6 +13,32 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
+test("new history scrolls into view on mobile only", async ({ page }) => {
+  await page.goto("/#videos/cataractCaseQuizPage");
+  const quiz = page.locator("#cataractCaseQuizPage");
+  await expect(quiz.locator(".cataract-quiz-onboarding")).toBeVisible();
+  await page.clock.install();
+  await quiz.getByRole("button", { name: "Next", exact: true }).click();
+  await quiz.getByRole("button", { name: "Next", exact: true }).click();
+  await quiz.getByRole("button", { name: "Start", exact: true }).click();
+  const initialScroll = await page.evaluate(() => window.scrollY);
+  await page.clock.runFor(1500);
+  const firstLine = quiz.locator(".casechat-bubble--bot").first();
+  await expect(firstLine).not.toHaveClass(/casechat-bubble--pending/);
+  if (page.viewportSize().width <= 767) {
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(initialScroll);
+    await expect
+      .poll(() =>
+        firstLine.evaluate((node) => node.getBoundingClientRect().bottom),
+      )
+      .toBeLessThanOrEqual(page.viewportSize().height + 1);
+  } else {
+    expect(await page.evaluate(() => window.scrollY)).toBe(initialScroll);
+  }
+});
+
 test("cataract folder preserves the simulator and restores on return", async ({
   page,
 }) => {
