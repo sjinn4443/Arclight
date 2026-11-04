@@ -12,6 +12,16 @@
       "durationSeconds": 108,
       "sourceSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5"
     },
+    "es-419": {
+      "src": "es-419.m4a",
+      "captions": "es-419.vtt",
+      "label": "Español (Latinoamérica)",
+      "voice": "es-MX-DaliaNeural",
+      "bytes": 376590,
+      "sha256": "196d064329b0ee746cc06eace09aa91f6eb827cc280b41ccdebb88d6e703bd93",
+      "durationSeconds": 108,
+      "sourceSha256": "0bdc93bf3bb3efc60019997b57908e0437e8e6ef8497e1f2b3d571c3a734556b"
+    },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
@@ -21,6 +31,66 @@
       "sha256": "9cb4895dc64008b35b74da1c23631f4622a2cb0c5161de93d98d2b067a95c0d5",
       "durationSeconds": 108,
       "sourceSha256": "70c1eb4a982b6d18771ec7c4d913e5fcd12fdb3f135537ee57b96df7bb46a8c1"
+    },
+    "ne": {
+      "src": "ne.m4a",
+      "captions": "ne.vtt",
+      "label": "नेपाली",
+      "voice": "ne-NP-HemkalaNeural",
+      "bytes": 386284,
+      "sha256": "363f962c87b2a5a81b755b213bf9b56577fe8a2ec2381bc35f3babba3b8f641b",
+      "durationSeconds": 108,
+      "sourceSha256": "531738d90860738890d4fe2bc6ee8ac034f1f6a7d3a088aa292aac6514947489"
+    },
+    "fr": {
+      "src": "fr.m4a",
+      "captions": "fr.vtt",
+      "label": "Français",
+      "voice": "fr-FR-DeniseNeural",
+      "bytes": 373776,
+      "sha256": "93adf107f9486e82af3f3b19222e58fc09210538af19ed47b836b5fda7b44092",
+      "durationSeconds": 108,
+      "sourceSha256": "e49de3dc8e60b47adbe96f8495e4011425990b87b2b99afd1dfc13989a1c087b"
+    },
+    "lg": {
+      "src": "lg.m4a",
+      "captions": "lg.vtt",
+      "label": "Luganda",
+      "voice": "facebook/mms-tts-lug",
+      "bytes": 525474,
+      "sha256": "9ecada639eae157e133712338985d052f82ec541ef21c72b3284b8f2078b7ccb",
+      "durationSeconds": 108,
+      "sourceSha256": "427fd10970b792bebcde59164f9a7f1e1973784516a9d47ea91182e5f3ae1f5d"
+    },
+    "ha": {
+      "src": "ha.m4a",
+      "captions": "ha.vtt",
+      "label": "Hausa",
+      "voice": "facebook/mms-tts-hau",
+      "bytes": 492825,
+      "sha256": "1ebf1d2902f571e033f16afbef804ecafd313c5c12f51ef8db72bea1582b2751",
+      "durationSeconds": 108,
+      "sourceSha256": "9a51e794bbba0e55f5307dab92c22cc540f34c594fdf8706533c601aea4881c9"
+    },
+    "yo": {
+      "src": "yo.m4a",
+      "captions": "yo.vtt",
+      "label": "Yorùbá",
+      "voice": "facebook/mms-tts-yor",
+      "bytes": 357457,
+      "sha256": "51195e9c9a816628122eb62bba3c9e604ea6f30d0387617b3772158307b10e37",
+      "durationSeconds": 108,
+      "sourceSha256": "bb063df510ec83718ac77215754a963e5003e1a1154edf63f195de7edc2b7e77"
+    },
+    "ig": {
+      "src": "ig.m4a",
+      "captions": "ig.vtt",
+      "label": "Igbo",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "bytes": 440922,
+      "sha256": "c2a89c09a962299af9fe71ce9650e044c51b7eb4bc3fe65404ec02d0745618fb",
+      "durationSeconds": 108,
+      "sourceSha256": "1a08470147a770af55bec73d20141d01592af14f97019bde973e1fe9996d4305"
     }
   }
 }

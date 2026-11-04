@@ -10,9 +10,29 @@ import {
   PUPILS_PEC_CANVAS_HEIGHTS as heights,
 } from "../public/js/pupilsPecScroll.js";
 import { frameAtNarrationTime } from "../public/js/examinationScrollTiming.js";
+import { EYE_PAD_SHIELD_LANGUAGES } from "../public/js/eyePadShieldScroll.js";
 
 const folder = "public/narration/pupils-pec/full-animation";
 const script = JSON.parse(fs.readFileSync(`${folder}/script.json`, "utf8"));
+
+test("PEC supports the same ordered languages and grouped captions as Eye Pad / Shield", () => {
+  const languages = Object.keys(EYE_PAD_SHIELD_LANGUAGES);
+  expect(Object.keys(cfg.narrationTracks)).toEqual(languages);
+  expect(timing.languages).toEqual(languages);
+  expect(Object.keys(script.languages)).toEqual(languages);
+  for (const language of languages) {
+    expect(cfg.narrationTracks[language].label).toBe(
+      EYE_PAD_SHIELD_LANGUAGES[language],
+    );
+    const first = script.cues.find((cue) => cue.id === "clear-view");
+    const last = script.cues.find((cue) => cue.id === "avoid-light");
+    expect(first.caption[language]).toBeTruthy();
+    expect(first.captionUntil).toBe(last.id);
+    expect(last.caption[language]).toBe("");
+    for (const title of script.videoTitleCues)
+      if (language !== "en") expect(title.translations[language]).toBeTruthy();
+  }
+});
 
 test("the source's two sections retain their order and six scenes have local artwork", () => {
   expect(cfg.sections).toEqual([
@@ -51,7 +71,7 @@ test("the source's two sections retain their order and six scenes have local art
   }
 });
 
-test("both recorded narration tracks cover every teaching cue and match the manifest", () => {
+test("all recorded narration tracks cover every teaching cue and match the manifest", () => {
   const manifest = JSON.parse(
     fs.readFileSync(`${folder}/manifest.json`, "utf8"),
   );

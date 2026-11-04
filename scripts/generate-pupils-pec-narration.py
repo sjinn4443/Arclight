@@ -1,4 +1,4 @@
-"""Build packaged English/Korean AAC and VTT using the existing narration pipeline.
+"""Build packaged nine-language AAC and VTT using the existing narration pipeline.
 
 Run after build-pupils-pec-scroll.cjs. Cue masters stay in ignored tmp/.
 """
@@ -39,7 +39,8 @@ async def main():
         tracks[language] = {"src": track.name, "label": voice["label"], "voice": voice["voice"], "bytes": track.stat().st_size, "sha256": hashlib.sha256(track.read_bytes()).hexdigest(), "durationSeconds": duration}
         (work / "qa.json").write_text(json.dumps(qa, indent=2), encoding="utf-8")
     (folder / "manifest.json").write_text(json.dumps({"schemaVersion": 1, "durationSeconds": script["durationSeconds"], "tracks": tracks}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    subprocess.run(["node", str(ROOT / "scripts/lib/pupils-caption-authoring.cjs")], check=True, cwd=ROOT)
+    # Update this lesson only; other lessons may reuse its English/Korean cues.
+    subprocess.run(["node", str(ROOT / "scripts/localize-pupils-pec-narration.cjs")], check=True, cwd=ROOT)
 
 
 if __name__ == "__main__":

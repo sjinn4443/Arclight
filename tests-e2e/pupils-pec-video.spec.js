@@ -20,6 +20,7 @@ test.beforeEach(async ({ page }) => {
 test("Pupils PEC Full Animation reuses the lesson clock, voices and captions", async ({
   page,
 }, testInfo) => {
+  test.setTimeout(180_000);
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/#/videos/pupilsPage");
@@ -110,6 +111,10 @@ test("Pupils PEC Full Animation reuses the lesson clock, voices and captions", a
         .toBeCloseTo(time, 1);
     }
   }
+  await lesson.locator("[data-video-narration-toggle]").click();
+  await lesson
+    .getByRole("menuitemradio", { name: "한국어", exact: true })
+    .click();
   await video.evaluate((v) => {
     v.currentTime = 66;
   });

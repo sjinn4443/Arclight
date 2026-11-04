@@ -2,26 +2,30 @@
 
 The lesson uses the illustrations in `public/pdfbasedanims/Pupils PEC_110826.pdf`.
 Its section order is Observation, then Direct Light Response. The PDF contains
-diagrams and short labels rather than a spoken script; the English and Korean
+diagrams and short labels rather than a spoken script; the multilingual
 captions are authored descriptions of those illustrations. The two diagnostic
 labels are retained from the source. No new diagnostic thresholds are introduced.
 
 `public/js/pupilsPecScroll.js` owns the six scenes, thirteen cues, languages and
 timing. Each stage uses the shared autoplay engine, a packaged AAC track, and
-translated caption text from `script.json`. Other app languages fall back to
-English. No speech synthesis or PDF rendering is needed at runtime.
+translated caption text from `script.json`. The nine supported languages match
+Eye Pad / Shield: English, Latin American
+Spanish, Korean, Nepali, French, Luganda, Hausa, Yoruba and Igbo. Other app
+languages fall back to English. No speech synthesis or PDF rendering is needed
+at runtime.
 
 The **Pupils PEC Full Animation** row below the scrolly opens
 `#/videos/pupilsPecFullAnimationVideoPage`. It uses the shared Full Animation
-player with quality selection, English/Korean narration, captions, full screen,
+player with quality selection, nine-language narration, captions, full screen,
 sharing and saved video progress. The MP4 contains the same six Lottie scenes
 at 30fps, preserving the one-second opening hold. Two silent 3-second section
 cards introduce **Observation** at video 0–3s and **Direct Light Response** at
 22–25s. English headings are baked into the MP4 as centred white text on
-`#0f0f0f`, matching Eye Pad / Shield; Korean title captions appear below it.
+`#0f0f0f`, matching Eye Pad / Shield; translated title captions appear below it
+for every non-English language.
 The scrolly retains its 102-second clock. The video runs for 108 seconds with
 separate M4A/VTT/script/manifest files under `video/`. The builder inserts silence
-into the existing English/Korean audio and offsets the cues, without new TTS.
+into the existing nine-language audio and offsets the cues, without new TTS.
 It always reads the original scroll audio, avoiding cumulative AAC re-encoding.
 
 After changing the scenes, regenerate both delivery videos:
@@ -29,6 +33,22 @@ After changing the scenes, regenerate both delivery videos:
 ```sh
 node scripts/build-pupils-pec-video.cjs
 ```
+
+For translation/audio updates without re-rendering the unchanged MP4:
+
+```sh
+node scripts/localize-pupils-pec-narration.cjs
+python scripts/generate-pupils-pec-narration.py
+node scripts/build-pupils-pec-video.cjs --narration-only
+node scripts/localize-pupils-pec-narration.cjs --connect
+```
+
+`pupilsPecTranslations.js` owns the seven added translations; the runtime
+configuration supplies all voice metadata and preserves grouped fixation captions.
+Spanish captions use the shared catalogue key `es` and the `es-419` audio track.
+Luganda, Hausa, Yoruba and Igbo reuse the local MMS providers and model attribution
+from Front of Eye (CC-BY-NC-4.0); the other voices use the existing Edge TTS pipeline.
+Short spoken variants for two tightly timed cues retain the complete written captions.
 
 Use `CHROME_CHANNEL=chrome` for installed Chrome or `FFMPEG_PATH` for a different
 FFmpeg executable. Outputs are `public/videos/FullAnim/PupilsPecFullAnim_240p.mp4`

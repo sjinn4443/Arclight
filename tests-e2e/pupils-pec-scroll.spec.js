@@ -2,8 +2,65 @@ import { expect, test } from "@playwright/test";
 import sharp from "sharp";
 import { PUPILS_PEC_SCROLL_CONFIG as cfg } from "../public/js/pupilsPecScroll.js";
 import { useWebKitNarrationClock } from "./helpers/webkit-narration-clock.js";
+import fs from "node:fs";
+import { PUPILS_PEC_OBSERVATION_LABELS } from "../public/js/pupilsPecArtworkLabels.js";
 const id = cfg.pageId;
 const route = "pupilsPecScroll";
+
+test("all nine languages switch narration, headings and accumulated scroll captions", async ({
+  page,
+}, testInfo) => {
+  const script = JSON.parse(
+    fs.readFileSync(
+      "public/narration/pupils-pec/full-animation/script.json",
+      "utf8",
+    ),
+  );
+  await page.goto(`/#/videos/${id}`);
+  const guide = page.locator(`#${id}`);
+  const first = guide.locator(".childhood-fundal-prep-stage").first();
+  await expect(first.locator(".childhood-fundal-stage-replay-btn")).toBeVisible(
+    { timeout: 30_000 },
+  );
+  for (const language of Object.keys(script.languages)) {
+    await guide
+      .locator("[data-fundal-scroll-narration-language]")
+      .selectOption(language);
+    await expect(guide.locator("audio")).toHaveAttribute(
+      "src",
+      new RegExp(`/${language}.m4a$`),
+    );
+    await expect(
+      guide.locator(".fundal-reflex-section-divider__title"),
+    ).toHaveText(
+      script.videoTitleCues.map(
+        (title) => title.translations[language] || title.sourceText,
+      ),
+    );
+    const text = guide.locator(".childhood-fundal-segment-text").first();
+    for (const cue of script.cues.slice(0, 2))
+      await expect(text).toContainText(cue[language]);
+    const labels = first.locator(".pupils-pec-artwork-label span");
+    await expect(labels).toHaveText(PUPILS_PEC_OBSERVATION_LABELS[language]);
+    await expect(first.locator(".pupils-pec-artwork-labels")).toHaveAttribute(
+      "aria-hidden",
+      "false",
+    );
+    for (const label of await labels.all()) {
+      expect(
+        await label.evaluate(
+          (el) =>
+            el.scrollHeight <= el.parentElement.clientHeight &&
+            el.scrollWidth <= el.parentElement.clientWidth,
+        ),
+      ).toBe(true);
+    }
+    if (language === "ko")
+      await first.screenshot({
+        path: testInfo.outputPath("korean-artwork-labels.png"),
+      });
+  }
+});
 
 test.beforeEach(async ({ page, browserName }) => {
   await useWebKitNarrationClock(page, browserName);
@@ -45,7 +102,7 @@ test("Pupils PEC opens above Primary Eye Care Exam and plays the source illustra
   ).toHaveText(["Observation", "Direct Light Response"]);
   await expect(
     guide.locator("[data-fundal-scroll-narration-language] option"),
-  ).toHaveCount(3);
+  ).toHaveCount(Object.keys(cfg.narrationTracks).length + 1);
   const shots = [];
   for (let i = 0; i < cfg.paths.length; i++) {
     const stage = stages.nth(i);

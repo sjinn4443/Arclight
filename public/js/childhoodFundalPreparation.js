@@ -8838,6 +8838,11 @@ function initializeStageAutoplayMode(
   }
 
   function updateStageTextForFrame(state, frame) {
+    cfg.renderStageArtwork?.(
+      state,
+      frame,
+      stageNarration?.getLanguage() || getFundalTextLanguage(cfg),
+    );
     if (!state || !Array.isArray(state.segments) || !state.segments.length) {
       return;
     }
@@ -10719,6 +10724,11 @@ function initializeStageAutoplayMode(
     }
     states.forEach((state) => {
       resolveStageSummary(state);
+      cfg.renderStageArtwork?.(
+        state,
+        state.anim?.currentFrame ?? 0,
+        stageNarration?.getLanguage() || getFundalTextLanguage(cfg),
+      );
       const replayBtn = ensureStageReplayButtonElement(
         state.stage,
         state.replayBtn,
@@ -10811,6 +10821,11 @@ function initializeStageAutoplayMode(
     };
 
     const onEnterFrame = () => {
+      cfg.renderStageArtwork?.(
+        state,
+        state.anim?.currentFrame ?? 0,
+        stageNarration?.getLanguage() || getFundalTextLanguage(cfg),
+      );
       if (
         state.activePauseFrame != null &&
         Number.isFinite(Number(state.activePauseFrame))

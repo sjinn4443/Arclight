@@ -511,6 +511,7 @@ async function main() {
     PUPILS_PEC_CANVAS_HEIGHTS: heights,
     PUPILS_PEC_SCROLL_CONFIG: config,
     PUPILS_PEC_LANGUAGES: languages,
+    PUPILS_PEC_TITLE_TRANSLATIONS: titles,
   } = await import(
     pathToFileURL(path.join(ROOT, "public/js/pupilsPecScroll.js"))
   );
@@ -1237,10 +1238,10 @@ async function main() {
         languages,
         cues,
         videoTitleCues: [
-          { sourceText: "Observation", translations: { ko: "관찰" } },
+          { sourceText: "Observation", translations: titles.Observation },
           {
             sourceText: "Direct Light Response",
-            translations: { ko: "직접 대광반사" },
+            translations: titles["Direct Light Response"],
           },
         ],
       },

@@ -8,12 +8,65 @@
     "en": {
       "label": "English",
       "locale": "en-GB",
-      "voice": "en-GB-SoniaNeural"
+      "voice": "en-GB-SoniaNeural",
+      "style": "Calm, clear adult medical educator; slightly slow; neutral rather than promotional"
+    },
+    "es-419": {
+      "label": "Español (Latinoamérica)",
+      "locale": "es-419",
+      "voice": "es-MX-DaliaNeural",
+      "style": "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro"
     },
     "ko": {
       "label": "한국어",
       "locale": "ko-KR",
-      "voice": "ko-KR-SunHiNeural"
+      "voice": "ko-KR-SunHiNeural",
+      "style": "차분하고 친절한 성인 의료교육자; 약간 느린 교육용 속도; 과장 없는 중립적 말투"
+    },
+    "ne": {
+      "label": "नेपाली",
+      "locale": "ne-NP",
+      "voice": "ne-NP-HemkalaNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "fr": {
+      "label": "Français",
+      "locale": "fr-FR",
+      "voice": "fr-FR-DeniseNeural",
+      "style": "Calm medical educator; slightly slow"
+    },
+    "lg": {
+      "label": "Luganda",
+      "locale": "lg-UG",
+      "voice": "facebook/mms-tts-lug",
+      "style": "Calm medical educator; slightly slow",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0"
+    },
+    "ha": {
+      "label": "Hausa",
+      "locale": "ha-NG",
+      "voice": "facebook/mms-tts-hau",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "yo": {
+      "label": "Yorùbá",
+      "locale": "yo-NG",
+      "voice": "facebook/mms-tts-yor",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator"
+    },
+    "ig": {
+      "label": "Igbo",
+      "locale": "ig-NG",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "provider": "Meta MMS (local)",
+      "modelLicense": "CC-BY-NC-4.0",
+      "style": "Calm medical educator",
+      "trimEdgeSilenceDb": -50
     }
   },
   "cues": [
@@ -22,28 +75,56 @@
       "en": "Observe the size, shape and symmetry of both pupils.",
       "ko": "양쪽 동공의 크기, 모양, 대칭성을 관찰합니다.",
       "start": 1,
-      "end": 7
+      "end": 7,
+      "es-419": "Observe el tamaño, la forma y la simetría de ambas pupilas.",
+      "ne": "दुवै नानीको आकार, आकृति र सममिति हेर्नुहोस्।",
+      "fr": "Observez la taille, la forme et la symétrie des deux pupilles.",
+      "lg": "Tunula ku bunene, enkula n’okufaanagana kw’obutuli bw’amaaso gombi.",
+      "ha": "Duba girma, siffa da daidaiton ƙwayoyin idanu biyu.",
+      "yo": "Wo ìwọ̀n, ìrísí àti bí àwọn ọmọ ojú méjèèjì ṣe dọ́gba.",
+      "ig": "Lelee nha, ọdịdị na nhata ụmụ anya abụọ."
     },
     {
       "id": "compare-observation",
       "en": "Compare normal pupils with changes in colour or shape, unequal pupil size and eyelids.",
       "ko": "정상 동공과 색이나 모양의 변화, 양쪽 동공 크기의 차이, 눈꺼풀을 비교합니다.",
       "start": 7,
-      "end": 19
+      "end": 19,
+      "es-419": "Compare las pupilas normales con cambios de color o forma, diferencias de tamaño y los párpados.",
+      "ne": "सामान्य नानीसँग रङ वा आकृतिमा परिवर्तन, नानीको असमान आकार र पलकहरू तुलना गर्नुहोस्।",
+      "fr": "Comparez les pupilles normales aux changements de couleur ou de forme, aux différences de taille et aux paupières.",
+      "lg": "Geraageranya obutuli obwa bulijjo n’enkyukakyuka mu langi oba enkula, obunene obutafaanagana n’ebikowe.",
+      "ha": "Kwatanta ƙwayoyin idanu na al’ada da sauyin launi ko siffa, bambancin girma da fatar ido.",
+      "yo": "Fi ọmọ ojú tó dára wé ìyípadà àwọ̀ tàbí ìrísí, ìwọ̀n tí kò dọ́gba àti ìpéǹpéjú.",
+      "ig": "Tụnyere ụmụ anya dị mma na mgbanwe agba ma ọ bụ ọdịdị, nha na-ahaghị nhata na mkpuchi anya."
     },
     {
       "id": "light",
       "en": "Switch on the Arclight and select the brightest light setting. Use a quiet, dim room.",
       "ko": "조용하고 어두운 방에서 아크라이트를 켜고 조명을 가장 밝게 설정합니다.",
       "start": 19,
-      "end": 28
+      "end": 28,
+      "es-419": "Encienda el Arclight y seleccione la luz más brillante. Use una habitación tranquila y tenue.",
+      "ne": "शान्त र मधुरो कोठामा आर्कलाइट बालेर सबैभन्दा चहकिलो प्रकाश छान्नुहोस्।",
+      "fr": "Allumez l’Arclight et choisissez la lumière la plus forte. Utilisez une pièce calme et peu éclairée.",
+      "lg": "Koleeza Arclight olonde ekitangaala ekisinga. Kozesa ekisenge ekisirifu ekirimu ekitangaala ekitono.",
+      "ha": "Kunna Arclight ka zaɓi haske mafi ƙarfi. Yi amfani da ɗaki mai natsuwa da ƙarancin haske.",
+      "yo": "Tan Arclight kí o yan ìmọ́lẹ̀ tó lágbára jù. Lo yàrá tó dákẹ́ tí ìmọ́lẹ̀ rẹ̀ kéré.",
+      "ig": "Gbanye Arclight họrọ ìhè kacha enwu. Jiri ụlọ dị jụụ nke ìhè ya pere mpe."
     },
     {
       "id": "distance",
       "en": "Ask the patient to look at a distant target.",
       "ko": "환자가 멀리 있는 목표물을 보게 합니다.",
       "start": 28,
-      "end": 34
+      "end": 34,
+      "es-419": "Pida al paciente que mire un objeto lejano.",
+      "ne": "बिरामीलाई टाढाको वस्तु हेर्न भन्नुहोस्।",
+      "fr": "Demandez au patient de fixer une cible éloignée.",
+      "lg": "Gamba omulwadde atunuulire ekintu ekiri ewala.",
+      "ha": "Ka ce majiyyaci ya kalli wani abu mai nisa.",
+      "yo": "Sọ fún aláìsàn kí ó wo ohun kan tó jìnnà.",
+      "ig": "Gwa onye ọrịa ka o lee ihe dị anya."
     },
     {
       "id": "clear-view",
@@ -53,9 +134,26 @@
       "end": 37.5,
       "caption": {
         "en": "Make sure they do not look at the examiner or the light itself.",
-        "ko": "검사자나 조명 자체를 바라보지 않도록 합니다."
+        "ko": "검사자나 조명 자체를 바라보지 않도록 합니다.",
+        "es-419": "Asegúrese de que no mire al examinador ni a la luz.",
+        "fr": "Veillez à ce qu’il ne regarde pas l’examinateur ni la lumière elle-même.",
+        "ne": "परीक्षकलाई नहेर्न भन्नुहोस् वा बत्तीलाई पनि।",
+        "lg": "Kakasa nti tatunuulira mukebera wadde ekitangaala kyennyini.",
+        "ha": "Tabbatar bai kalli mai bincike ba ko hasken kansa.",
+        "yo": "Rí i pé kò wo olùṣàyẹ̀wò tàbí ìmọ́lẹ̀ náà.",
+        "ig": "Hụ na ọ naghị ele onye na-enyocha anya ma ọ bụ ìhè ahụ n’onwe ya."
       },
-      "captionUntil": "avoid-light"
+      "captionUntil": "avoid-light",
+      "es-419": "Asegúrese de que no mire al examinador",
+      "ne": "परीक्षकलाई नहेर्न भन्नुहोस्",
+      "fr": "Veillez à ce qu’il ne regarde pas l’examinateur",
+      "lg": "Kakasa nti tatunuulira mukebera",
+      "ha": "Tabbatar bai kalli mai bincike ba",
+      "yo": "Rí i pé kò wo olùṣàyẹ̀wò",
+      "ig": "Hụ na ọ naghị ele onye na-enyocha anya",
+      "ttsText": {
+        "ig": "Ọ ghara ile onye nyocha."
+      }
     },
     {
       "id": "avoid-light",
@@ -65,70 +163,150 @@
       "end": 46,
       "caption": {
         "en": "",
-        "ko": ""
-      }
+        "ko": "",
+        "es-419": "",
+        "fr": "",
+        "ne": "",
+        "lg": "",
+        "ha": "",
+        "yo": "",
+        "ig": ""
+      },
+      "es-419": "ni a la luz.",
+      "ne": "वा बत्तीलाई पनि।",
+      "fr": "ni la lumière elle-même.",
+      "lg": "wadde ekitangaala kyennyini.",
+      "ha": "ko hasken kansa.",
+      "yo": "tàbí ìmọ́lẹ̀ náà.",
+      "ig": "ma ọ bụ ìhè ahụ n’onwe ya."
     },
     {
       "id": "move-light",
       "en": "Move the light from the side towards the pupil.",
       "ko": "조명을 옆에서 동공 쪽으로 움직입니다.",
       "start": 46,
-      "end": 52
+      "end": 52,
+      "es-419": "Mueva la luz desde un lado hacia la pupila.",
+      "ne": "छेउबाट नानीतिर प्रकाश सार्नुहोस्।",
+      "fr": "Approchez la lumière de la pupille en venant du côté.",
+      "lg": "Sembereza ekitangaala eri akatuli k’eriiso okuva ku bbali.",
+      "ha": "Matsar da haske daga gefe zuwa ƙwayar ido.",
+      "yo": "Gbé ìmọ́lẹ̀ láti ẹ̀gbẹ́ sí ọmọ ojú.",
+      "ig": "Bugharịa ìhè site n’akụkụ gaa n’ebe nwa anya dị."
     },
     {
       "id": "watch",
       "en": "Watch the illuminated pupil for the direct light response.",
       "ko": "빛을 비춘 동공의 직접 대광반사를 관찰합니다.",
       "start": 52,
-      "end": 58
+      "end": 58,
+      "es-419": "Observe la pupila iluminada para evaluar su respuesta directa a la luz.",
+      "ne": "प्रकाश परेको नानीको प्रत्यक्ष प्रतिक्रिया हेर्नुहोस्।",
+      "fr": "Observez la pupille éclairée pour évaluer le réflexe photomoteur direct.",
+      "lg": "Tunula ku katuli akataddeko ekitangaala olabe bwe kaddaamu butereevu.",
+      "ha": "Duba ƙwayar idon da aka haskaka don amsarta kai tsaye.",
+      "yo": "Wo ọmọ ojú tí ìmọ́lẹ̀ ń tàn sí fún ìdáhùn tààrà sí ìmọ́lẹ̀.",
+      "ig": "Lelee nwa anya ìhè na-enwu na ya maka nzaghachi kpọmkwem nye ìhè."
     },
     {
       "id": "shine-constrict",
       "en": "Shine the light into the eye and watch the pupil constrict.",
       "ko": "눈에 빛을 비추고 동공이 수축하는지 관찰합니다.",
       "start": 58,
-      "end": 64
+      "end": 64,
+      "es-419": "Ilumine el ojo y observe cómo se contrae la pupila.",
+      "ne": "आँखामा प्रकाश पारेर नानी खुम्चिएको हेर्नुहोस्।",
+      "fr": "Éclairez l’œil et observez la contraction de la pupille.",
+      "lg": "Yaka ekitangaala mu liiso olabe akatuli bwe kakendeera.",
+      "ha": "Haskaka idon ka lura da ƙanƙancewar ƙwayar ido.",
+      "yo": "Tan ìmọ́lẹ̀ sínú ojú kí o wo bí ọmọ ojú ṣe ń kéré.",
+      "ig": "Mee ka ìhè banye n’anya ma lelee nwa anya ka ọ na-ebelata."
     },
     {
       "id": "compare-responses",
       "en": "Look for reduced or absent constriction.",
       "ko": "동공 수축이 약하거나 없는지 확인합니다.",
       "start": 64,
-      "end": 70
+      "end": 70,
+      "es-419": "Busque una contracción reducida o ausente.",
+      "ne": "खुम्चिने प्रतिक्रिया कम छ वा छैन हेर्नुहोस्।",
+      "fr": "Recherchez une contraction réduite ou absente.",
+      "lg": "Noonya okukendeera okutono oba obutakendeera.",
+      "ha": "Duba ko ƙanƙancewar ta ragu ko babu ita.",
+      "yo": "Ṣàyẹ̀wò bóyá kíkéré náà dín kù tàbí kò sí.",
+      "ig": "Lelee ma mbelata ahụ adịghị ike ma ọ bụ na ọ dịghị."
     },
     {
       "id": "corresponding-examples",
       "en": "The pupil responses on the left may be associated with the conditions at the back of the eye shown on the right.",
       "ko": "왼쪽과 같은 동공 반응은 오른쪽 그림처럼 눈 뒤쪽의 상태와 관련이 있을 수 있습니다.",
       "start": 70,
-      "end": 78
+      "end": 78,
+      "es-419": "Las respuestas pupilares de la izquierda pueden asociarse con las alteraciones del fondo del ojo mostradas a la derecha.",
+      "ne": "बायाँका नानीका प्रतिक्रियाहरू दायाँ देखाइएका आँखाको पछाडिका अवस्थासँग सम्बन्धित हुन सक्छन्।",
+      "fr": "Les réponses pupillaires à gauche peuvent être associées aux affections du fond de l’œil illustrées à droite.",
+      "lg": "Obutuli obuli ku kkono buyinza okuddamu bwe butyo olw’embeera eziri emabega w’eriiso eziragiddwa ku ddyo.",
+      "ha": "Amsoshin ƙwayar ido a hagu na iya da alaƙa da cututtukan bayan ido da aka nuna a dama.",
+      "yo": "Ìdáhùn ọmọ ojú ní òsì lè ní í ṣe pẹ̀lú àwọn àìsàn ẹ̀yìn ojú tí a fi hàn ní ọ̀tún.",
+      "ig": "Nzaghachi ụmụ anya dị n’aka ekpe nwere ike ijikọ na ọnọdụ azụ anya ndị e gosiri n’aka nri.",
+      "ttsText": {
+        "lg": "Obutuli ku kkono buyinza okulaga embeera z’emabega w’eriiso eziri ku ddyo."
+      }
     },
     {
       "id": "pupil-colour",
       "en": "Pupil colour does not determine the light response.",
       "ko": "동공의 색이 대광반사를 결정하는 것은 아닙니다.",
       "start": 78,
-      "end": 86
+      "end": 86,
+      "es-419": "El color de la pupila no determina su respuesta a la luz.",
+      "ne": "नानीको रङले प्रकाशको प्रतिक्रिया निर्धारण गर्दैन।",
+      "fr": "La couleur de la pupille ne détermine pas sa réponse à la lumière.",
+      "lg": "Langi y’akatuli tesalawo bwe kaddaamu ekitangaala.",
+      "ha": "Launin ƙwayar ido ba ya ƙayyade amsarta ga haske.",
+      "yo": "Àwọ̀ ọmọ ojú kò pinnu ìdáhùn rẹ̀ sí ìmọ́lẹ̀.",
+      "ig": "Agba nwa anya anaghị ekpebi nzaghachi ya nye ìhè."
     },
     {
       "id": "cataract-constriction",
       "en": "A cataract may make the pupil look grey or white, but the pupil should still constrict if the light reflex pathway is intact.",
       "ko": "백내장이 있으면 동공이 회색이나 흰색으로 보일 수 있지만, 대광반사 경로가 정상이라면 동공은 여전히 수축해야 합니다.",
       "start": 86,
-      "end": 102
+      "end": 102,
+      "es-419": "Una catarata puede hacer que la pupila parezca gris o blanca, pero debe contraerse si la vía del reflejo a la luz está intacta.",
+      "ne": "मोतिबिन्दुले नानी खैरो वा सेतो देखिन सक्छ, तर प्रकाश प्रतिक्रियाको मार्ग ठीक छ भने नानी अझै खुम्चिनुपर्छ।",
+      "fr": "Une cataracte peut donner à la pupille un aspect gris ou blanc, mais elle doit se contracter si la voie du réflexe photomoteur est intacte.",
+      "lg": "Ekire kiyinza okufuula akatuli okulabika nga ka kivu oba keeru, naye kasaanidde okukendeera singa ekkubo ly’okuddamu ekitangaala teririna buzibu.",
+      "ha": "Cataract na iya sa ƙwayar ido ta yi toka ko fari, amma ya kamata ta ƙanƙance idan hanyar amsa ga haske tana aiki.",
+      "yo": "Cataract lè mú ọmọ ojú dà bí eérú tàbí funfun, ṣùgbọ́n ó yẹ kí ó kéré bí ọ̀nà ìdáhùn sí ìmọ́lẹ̀ bá ń ṣiṣẹ́ dáadáa.",
+      "ig": "Cataract nwere ike ime ka nwa anya yie ntụ ntụ ma ọ bụ ọcha, mana ọ kwesịrị ibelata ma ọ bụrụ na ụzọ nzaghachi nye ìhè na-arụ ọrụ nke ọma."
     }
   ],
   "videoTitleCues": [
     {
       "sourceText": "Observation",
       "translations": {
-        "ko": "관찰"
+        "ko": "관찰",
+        "es-419": "Observación",
+        "fr": "Observation",
+        "ne": "अवलोकन",
+        "lg": "Okutunuulira",
+        "ha": "Dubawa",
+        "yo": "Àkíyèsí",
+        "ig": "Nlele"
       }
     },
     {
       "sourceText": "Direct Light Response",
       "translations": {
-        "ko": "직접 대광반사"
+        "ko": "직접 대광반사",
+        "es-419": "Respuesta directa a la luz",
+        "fr": "Réflexe photomoteur direct",
+        "ne": "प्रकाशको प्रत्यक्ष प्रतिक्रिया",
+        "lg": "Akatuli k’eriiso okuddamu ekitangaala butereevu",
+        "ha": "Amsar ƙwayar ido ga haske kai tsaye",
+        "yo": "Ìdáhùn tààrà sí ìmọ́lẹ̀",
+        "ig": "Nzaghachi kpọmkwem nye ìhè"
       }
     }
   ]

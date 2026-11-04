@@ -32034,6 +32034,43 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 /* Match the Eye Pad / Shield scene and caption geometry. */
+#pupilsPecScrollPage .childhood-fundal-prep-stage {
+  container-type: inline-size;
+}
+.pupils-pec-artwork-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+.pupils-pec-artwork-label {
+  position: absolute;
+  top: 42.96875%;
+  left: 0;
+  width: 49.8%;
+  height: 6.8%;
+  box-sizing: border-box;
+  padding: 0 2%;
+  background: #1c0e01;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font:
+    3.1cqw / 1.15 Arial,
+    sans-serif;
+}
+.pupils-pec-artwork-label:nth-child(even) {
+  left: 50.2%;
+}
+.pupils-pec-artwork-label:nth-child(n + 3) {
+  top: 92.96875%;
+}
+.pupils-pec-artwork-label span {
+  opacity: var(--label-opacity, 0);
+}
+
 :is(#pupilsPecScrollPage, #pupilsAdvancedScrollPage)
   .childhood-fundal-prep-stage {
   margin-inline: auto;

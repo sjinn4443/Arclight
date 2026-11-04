@@ -14,10 +14,7 @@ const publicDir = path.join(root, "public");
 const output = path.join(publicDir, "videos/FullAnim");
 const stem = "PupilsPecFullAnim";
 const titleSeconds = 3;
-const titleTranslations = {
-  Observation: { ko: "관찰" },
-  "Direct Light Response": { ko: "직접 대광반사" },
-};
+let titleTranslations;
 
 function prepareNarration(config, ffmpeg) {
   const folder = path.join(publicDir, "narration/pupils-pec/full-animation");
@@ -148,9 +145,9 @@ function prepareNarration(config, ffmpeg) {
 }
 
 async function main() {
-  const { PUPILS_PEC_SCROLL_CONFIG: config } = await import(
-    pathToFileURL(path.join(publicDir, "js/pupilsPecScroll.js"))
-  );
+  const { PUPILS_PEC_SCROLL_CONFIG: config, PUPILS_PEC_TITLE_TRANSLATIONS } =
+    await import(pathToFileURL(path.join(publicDir, "js/pupilsPecScroll.js")));
+  titleTranslations = PUPILS_PEC_TITLE_TRANSLATIONS;
   const clips = config.narrationClipsByFile;
   const ffmpeg =
     process.env.FFMPEG_PATH ||
@@ -159,6 +156,10 @@ async function main() {
       "tmp/fundal-narration-tools/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe",
     );
   fs.mkdirSync(output, { recursive: true });
+  if (process.argv.includes("--narration-only")) {
+    prepareNarration(config, ffmpeg);
+    return;
+  }
   const server = http.createServer((req, res) => {
     const file = path.resolve(
       publicDir,

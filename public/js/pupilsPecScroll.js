@@ -1,9 +1,75 @@
+import { PUPILS_PEC_TRANSLATIONS } from "./pupilsPecTranslations.js";
+import { renderPupilsPecArtworkLabels } from "./pupilsPecArtworkLabels.js";
 // Teaching order and artwork follow Pupils PEC_110826.pdf (one-page handout).
 export const PUPILS_PEC_SCROLL_PAGE = "pupilsPecScrollPage";
 export const PUPILS_PEC_SCROLL_ROUTE = "pupilsPecScroll";
 export const PUPILS_PEC_LANGUAGES = {
-  en: { label: "English", locale: "en-GB", voice: "en-GB-SoniaNeural" },
-  ko: { label: "한국어", locale: "ko-KR", voice: "ko-KR-SunHiNeural" },
+  en: {
+    label: "English",
+    locale: "en-GB",
+    voice: "en-GB-SoniaNeural",
+    style:
+      "Calm, clear adult medical educator; slightly slow; neutral rather than promotional",
+  },
+  "es-419": {
+    label: "Español (Latinoamérica)",
+    locale: "es-419",
+    voice: "es-MX-DaliaNeural",
+    style:
+      "Educadora médica adulta, tranquila y cordial; ritmo ligeramente pausado; tono neutro",
+  },
+  ko: {
+    label: "한국어",
+    locale: "ko-KR",
+    voice: "ko-KR-SunHiNeural",
+    style:
+      "차분하고 친절한 성인 의료교육자; 약간 느린 교육용 속도; 과장 없는 중립적 말투",
+  },
+  ne: {
+    label: "नेपाली",
+    locale: "ne-NP",
+    voice: "ne-NP-HemkalaNeural",
+    style: "Calm medical educator; slightly slow",
+  },
+  fr: {
+    label: "Français",
+    locale: "fr-FR",
+    voice: "fr-FR-DeniseNeural",
+    style: "Calm medical educator; slightly slow",
+  },
+  lg: {
+    label: "Luganda",
+    locale: "lg-UG",
+    voice: "facebook/mms-tts-lug",
+    style: "Calm medical educator; slightly slow",
+    provider: "Meta MMS (local)",
+    modelLicense: "CC-BY-NC-4.0",
+  },
+  ha: {
+    label: "Hausa",
+    locale: "ha-NG",
+    voice: "facebook/mms-tts-hau",
+    provider: "Meta MMS (local)",
+    modelLicense: "CC-BY-NC-4.0",
+    style: "Calm medical educator",
+  },
+  yo: {
+    label: "Yorùbá",
+    locale: "yo-NG",
+    voice: "facebook/mms-tts-yor",
+    provider: "Meta MMS (local)",
+    modelLicense: "CC-BY-NC-4.0",
+    style: "Calm medical educator",
+  },
+  ig: {
+    label: "Igbo",
+    locale: "ig-NG",
+    voice: "Shinzmann/soro-tts-ibo",
+    provider: "Meta MMS (local)",
+    modelLicense: "CC-BY-NC-4.0",
+    style: "Calm medical educator",
+    trimEdgeSilenceDb: -50,
+  },
 };
 export const PUPILS_PEC_SECTIONS = [
   { startIndex: 0, title: "Observation" },
@@ -145,6 +211,32 @@ export const PUPILS_PEC_STAGES = [
     ],
   },
 ];
+const allCues = PUPILS_PEC_STAGES.flatMap((stage) => stage.cues);
+for (const [language, lines] of Object.entries(PUPILS_PEC_TRANSLATIONS)) {
+  if (lines.length !== allCues.length + 2)
+    throw new Error("Incomplete Pupils PEC translations: " + language);
+  allCues.forEach((cue, i) => {
+    cue[language] = lines[i + 2];
+  });
+  const first = allCues.find((cue) => cue.id === "clear-view");
+  first.caption[language] = lines[6] + " " + lines[7];
+  allCues.find((cue) => cue.id === "avoid-light").caption[language] = "";
+}
+// Keep the complete caption while fitting the spoken comparison into its 8s slot.
+allCues.find((cue) => cue.id === "corresponding-examples").ttsText = {
+  lg: "Obutuli ku kkono buyinza okulaga embeera z’emabega w’eriiso eziri ku ddyo.",
+};
+allCues.find((cue) => cue.id === "clear-view").ttsText = {
+  ig: "Ọ ghara ile onye nyocha.",
+};
+export const PUPILS_PEC_TITLE_TRANSLATIONS = {
+  Observation: { ko: "관찰" },
+  "Direct Light Response": { ko: "직접 대광반사" },
+};
+for (const [language, lines] of Object.entries(PUPILS_PEC_TRANSLATIONS)) {
+  PUPILS_PEC_TITLE_TRANSLATIONS.Observation[language] = lines[0];
+  PUPILS_PEC_TITLE_TRANSLATIONS["Direct Light Response"][language] = lines[1];
+}
 let time = 1;
 const clips = PUPILS_PEC_STAGES.map((stage) => {
   const clip = {
@@ -165,6 +257,7 @@ export const PUPILS_PEC_SCROLL_TIMING = {
   ]),
 };
 export const PUPILS_PEC_SCROLL_CONFIG = {
+  renderStageArtwork: renderPupilsPecArtworkLabels,
   pageId: PUPILS_PEC_SCROLL_PAGE,
   label: "Pupils PEC",
   playMode: "stageAutoplay",

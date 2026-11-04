@@ -2734,16 +2734,51 @@
   "pupilsPecFullAnimationVideoPage": {
     "subtitles": {
       "en": "/narration/pupils-pec/full-animation/video/en.vtt",
-      "ko": "/narration/pupils-pec/full-animation/video/ko.vtt"
+      "es": "/narration/pupils-pec/full-animation/video/es-419.vtt",
+      "ko": "/narration/pupils-pec/full-animation/video/ko.vtt",
+      "ne": "/narration/pupils-pec/full-animation/video/ne.vtt",
+      "fr": "/narration/pupils-pec/full-animation/video/fr.vtt",
+      "lg": "/narration/pupils-pec/full-animation/video/lg.vtt",
+      "ha": "/narration/pupils-pec/full-animation/video/ha.vtt",
+      "yo": "/narration/pupils-pec/full-animation/video/yo.vtt",
+      "ig": "/narration/pupils-pec/full-animation/video/ig.vtt"
     },
     "audioVariants": {
       "en": {
         "label": "English",
         "src": "/narration/pupils-pec/full-animation/video/en.m4a"
       },
+      "es-419": {
+        "label": "Español (Latinoamérica)",
+        "src": "/narration/pupils-pec/full-animation/video/es-419.m4a"
+      },
       "ko": {
         "label": "한국어",
         "src": "/narration/pupils-pec/full-animation/video/ko.m4a"
+      },
+      "ne": {
+        "label": "नेपाली",
+        "src": "/narration/pupils-pec/full-animation/video/ne.m4a"
+      },
+      "fr": {
+        "label": "Français",
+        "src": "/narration/pupils-pec/full-animation/video/fr.m4a"
+      },
+      "lg": {
+        "label": "Luganda",
+        "src": "/narration/pupils-pec/full-animation/video/lg.m4a"
+      },
+      "ha": {
+        "label": "Hausa",
+        "src": "/narration/pupils-pec/full-animation/video/ha.m4a"
+      },
+      "yo": {
+        "label": "Yorùbá",
+        "src": "/narration/pupils-pec/full-animation/video/yo.m4a"
+      },
+      "ig": {
+        "label": "Igbo",
+        "src": "/narration/pupils-pec/full-animation/video/ig.m4a"
       }
     },
     "defaultSubtitleLang": "en",

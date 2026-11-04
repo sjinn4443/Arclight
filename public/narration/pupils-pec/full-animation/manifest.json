@@ -10,12 +10,68 @@
       "sha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5",
       "durationSeconds": 102.0
     },
+    "es-419": {
+      "src": "es-419.m4a",
+      "label": "Español (Latinoamérica)",
+      "voice": "es-MX-DaliaNeural",
+      "bytes": 372638,
+      "sha256": "0bdc93bf3bb3efc60019997b57908e0437e8e6ef8497e1f2b3d571c3a734556b",
+      "durationSeconds": 102.0
+    },
     "ko": {
       "src": "ko.m4a",
       "label": "한국어",
       "voice": "ko-KR-SunHiNeural",
       "bytes": 400676,
       "sha256": "70c1eb4a982b6d18771ec7c4d913e5fcd12fdb3f135537ee57b96df7bb46a8c1",
+      "durationSeconds": 102.0
+    },
+    "ne": {
+      "src": "ne.m4a",
+      "label": "नेपाली",
+      "voice": "ne-NP-HemkalaNeural",
+      "bytes": 380583,
+      "sha256": "531738d90860738890d4fe2bc6ee8ac034f1f6a7d3a088aa292aac6514947489",
+      "durationSeconds": 102.0
+    },
+    "fr": {
+      "src": "fr.m4a",
+      "label": "Français",
+      "voice": "fr-FR-DeniseNeural",
+      "bytes": 370468,
+      "sha256": "e49de3dc8e60b47adbe96f8495e4011425990b87b2b99afd1dfc13989a1c087b",
+      "durationSeconds": 102.0
+    },
+    "lg": {
+      "src": "lg.m4a",
+      "label": "Luganda",
+      "voice": "facebook/mms-tts-lug",
+      "bytes": 526852,
+      "sha256": "427fd10970b792bebcde59164f9a7f1e1973784516a9d47ea91182e5f3ae1f5d",
+      "durationSeconds": 102.0
+    },
+    "ha": {
+      "src": "ha.m4a",
+      "label": "Hausa",
+      "voice": "facebook/mms-tts-hau",
+      "bytes": 489578,
+      "sha256": "9a51e794bbba0e55f5307dab92c22cc540f34c594fdf8706533c601aea4881c9",
+      "durationSeconds": 102.0
+    },
+    "yo": {
+      "src": "yo.m4a",
+      "label": "Yorùbá",
+      "voice": "facebook/mms-tts-yor",
+      "bytes": 351481,
+      "sha256": "bb063df510ec83718ac77215754a963e5003e1a1154edf63f195de7edc2b7e77",
+      "durationSeconds": 102.0
+    },
+    "ig": {
+      "src": "ig.m4a",
+      "label": "Igbo",
+      "voice": "Shinzmann/soro-tts-ibo",
+      "bytes": 437856,
+      "sha256": "1a08470147a770af55bec73d20141d01592af14f97019bde973e1fe9996d4305",
       "durationSeconds": 102.0
     }
   }

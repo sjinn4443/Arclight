@@ -29,7 +29,7 @@ test("section cards extend only the delivery clock and keep narration out of sil
   });
 });
 
-test("video tracks retain original source checksums and connect both languages to the new clock", () => {
+test("video tracks retain original source checksums and connect all languages to the new clock", () => {
   const manifest = read(folder + "video/manifest.json");
   const original = read(folder + "manifest.json");
   const catalog = read(
@@ -52,7 +52,7 @@ test("video tracks retain original source checksums and connect both languages t
     expect(catalog.audioVariants[language].src).toBe(
       `/narration/pupils-pec/full-animation/video/${language}.m4a`,
     );
-    expect(catalog.subtitles[language]).toBe(
+    expect(catalog.subtitles[language === "es-419" ? "es" : language]).toBe(
       `/narration/pupils-pec/full-animation/video/${language}.vtt`,
     );
   }
