@@ -190,7 +190,17 @@ export async function enablePracticeReminders() {
       userVisibleOnly: true,
       applicationServerKey: bytes(config.publicKey),
     });
-    const result = await upload(state, subscription, { enabling: true });
+    let result = await upload(state, subscription, { enabling: true });
+    if (result?.enabled === false) {
+      // A revoked Apple endpoint can remain in the browser. Renew once using
+      // the same request ID, so a lost response cannot duplicate this alert.
+      await subscription.unsubscribe().catch(() => {});
+      subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: bytes(config.publicKey),
+      });
+      result = await upload(state, subscription, { enabling: true });
+    }
     if (result?.enabled === false) {
       await subscription.unsubscribe().catch(() => {});
       subscription = null;

@@ -6,7 +6,7 @@ const {
 } = require("./notification-delivery.cjs");
 const { dueMilestone } = require("./practice-reminder-policy.cjs");
 const {
-  NOTI05_CAMPAIGN,
+  NOTI06_CAMPAIGN,
   eligibleForCampaign,
 } = require("./noti04-campaign.cjs");
 
@@ -66,13 +66,13 @@ function startPracticeReminderScheduler() {
       if (!config) return;
       const sent = await dispatchPracticeReminders({
         store,
-        campaign: NOTI05_CAMPAIGN,
+        campaign: NOTI06_CAMPAIGN,
         send: (subscription, payload) =>
           sendPush(subscription, payload, config),
       });
       if (sent || !startupLogged)
         console.warn(
-          `[reminders] provider accepted ${sent} notification(s); campaign=${NOTI05_CAMPAIGN.id}`,
+          `[reminders] provider accepted ${sent} notification(s); campaign=${NOTI06_CAMPAIGN.id}`,
         );
       startupLogged = true;
     } catch {

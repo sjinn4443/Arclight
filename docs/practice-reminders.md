@@ -100,6 +100,29 @@ permission denial turns it off; iOS may temporarily report a default permission
 value after its prompt. Safari subscription keys with optional base64 padding
 are accepted and normalized before storage.
 
+## Provider rejection diagnostics
+
+The reported noti05 logs show active registrations whose sends were rejected
+with HTTP 400. This occurs before the phone receives a message; phone permission
+alone cannot resolve a rejected server request. The transport now explicitly uses
+AES128GCM, high urgency, and omits the optional Topic header. Provider reason codes
+(for example BadWebPushTopic or BadJwtToken) are allowlisted before logging and
+stored privately on the device record. Raw response bodies, endpoints, bearer
+tokens and signing keys are never logged. HTTP 400 alone does not establish which
+field the provider rejected; use the reason in the next deployment's logs.
+BadWebPushToken and VapidPkHashMismatch invalidate the saved endpoint. Explicit
+enabling renews it once and retries with the same request ID. Signing errors
+retain the subscription rather than needlessly asking the phone to renew.
+
+The user-requested noti06-practice-check attempts one send to active registrations
+present before 2026-11-05 07:46:41 UTC. Pending welcomes and enable tests satisfy
+that send without a simultaneous duplicate. Provider acceptance still must be
+verified separately from phone display.
+
+The documented single-hop Railway topology defaults to TRUST_PROXY=1 when its
+project, service and environment markers are present in production. Explicit
+settings (including 0) win; other environments retain disabled proxy trust.
+
 ## noti05 immediate enable notification
 
 Every explicit switch-on requests an immediate test notification, including

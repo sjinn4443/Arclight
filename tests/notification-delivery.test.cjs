@@ -7,6 +7,7 @@ const { createMemoryReminderStore } = require("../storage/reminder-store.cjs");
 const {
   NOTI04_CAMPAIGN,
   NOTI05_CAMPAIGN,
+  NOTI06_CAMPAIGN,
 } = require("../utils/noti04-campaign.cjs");
 const record = () => ({
   subscription: { endpoint: "https://fcm.googleapis.com/test" },
@@ -121,4 +122,25 @@ test("a queued welcome satisfies the broadcast without sending two notifications
   await dispatch();
   expect(send).toHaveBeenCalledTimes(1);
   expect(JSON.parse(send.mock.calls[0][1]).id).toBe("welcome-v1");
+});
+
+test("noti06 retries all existing active phones once after earlier campaigns", async () => {
+  const store = createMemoryReminderStore();
+  const send = jest.fn(async () => {});
+  await store.mutate("old", () => ({
+    ...record(),
+    welcomeSentAt: 1,
+    campaigns: { [NOTI04_CAMPAIGN.id]: 1, [NOTI05_CAMPAIGN.id]: 1 },
+  }));
+  await store.mutate("new", () => ({
+    ...record(),
+    endpointHash: "new",
+    welcomeSentAt: 1,
+    registeredAt: NOTI06_CAMPAIGN.cutoff + 1,
+  }));
+  const dispatch = () =>
+    dispatchPracticeReminders({ store, send, campaign: NOTI06_CAMPAIGN });
+  await Promise.all([dispatch(), dispatch()]);
+  expect(send).toHaveBeenCalledTimes(1);
+  expect(JSON.parse(send.mock.calls[0][1]).id).toBe(NOTI06_CAMPAIGN.id);
 });

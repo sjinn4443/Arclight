@@ -2,7 +2,10 @@
  * @jest-environment node
  */
 
-const { validateRuntimeConfig } = require("../security/runtime-config.cjs");
+const {
+  validateRuntimeConfig,
+  resolveTrustProxy,
+} = require("../security/runtime-config.cjs");
 
 function prodEnv(overrides = {}) {
   return {
@@ -12,6 +15,22 @@ function prodEnv(overrides = {}) {
 }
 
 describe("runtime security config", () => {
+  test("the known Railway topology defaults to one trusted hop, while explicit settings win", () => {
+    const railway = {
+      NODE_ENV: "production",
+      RAILWAY_PROJECT_ID: "project",
+      RAILWAY_SERVICE_ID: "service",
+      RAILWAY_ENVIRONMENT_ID: "environment",
+    };
+    expect(resolveTrustProxy(railway)).toBe(1);
+    expect(resolveTrustProxy({ ...railway, TRUST_PROXY: "0" })).toBe(false);
+    expect(resolveTrustProxy({ ...railway, TRUST_PROXY: "2" })).toBe(2);
+    expect(resolveTrustProxy({ NODE_ENV: "production" })).toBe(false);
+    expect(resolveTrustProxy({ ...railway, NODE_ENV: "test" })).toBe(false);
+    expect(() =>
+      resolveTrustProxy({ ...railway, TRUST_PROXY: "true" }),
+    ).toThrow("TRUST_PROXY");
+  });
   test("rejects production NDJSON storage without encryption secret", () => {
     const result = validateRuntimeConfig(
       prodEnv({ ENABLE_NDJSON_STORAGE: "true" }),

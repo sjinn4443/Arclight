@@ -129,6 +129,29 @@ describe("Practice reminder permissions and offline state", () => {
     expect(registration.pushManager.subscribe).toHaveBeenCalledTimes(1);
     expect(reminders.readReminderState().enabled).toBe(true);
   });
+  test("an expired provider endpoint is renewed once using the same enable request", async () => {
+    let uploads = 0;
+    global.fetch.mockImplementation(async (_url, options) => ({
+      ok: true,
+      headers: { get: () => "application/json" },
+      json: async () =>
+        options.method === "PUT"
+          ? {
+              enabled: ++uploads > 1,
+              delivery: uploads > 1 ? "accepted" : "pending",
+            }
+          : { available: true, publicKey: "AQID" },
+    }));
+    await reminders.enablePracticeReminders();
+    expect(subscription.unsubscribe).toHaveBeenCalledTimes(1);
+    expect(registration.pushManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(uploads).toBe(2);
+    const requests = global.fetch.mock.calls
+      .filter(([, options]) => options.method === "PUT")
+      .map(([, options]) => JSON.parse(options.body).enableRequestId);
+    expect(requests[0]).toBe(requests[1]);
+    expect(reminders.readReminderState().testDelivery).toBe("accepted");
+  });
   test("iOS keeps a confirmed subscription green while the permission property is temporarily default", async () => {
     await reminders.enablePracticeReminders();
     expect(notification.permission).toBe("default");

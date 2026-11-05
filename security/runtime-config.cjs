@@ -82,6 +82,14 @@ function parseTrustProxy(value) {
 }
 
 function resolveTrustProxy(env = process.env) {
+  // The documented Railway deployment has one HTTPS edge proxy. Explicit
+  // TRUST_PROXY values always take precedence, including an intentional 0.
+  const railwayDefault =
+    env.NODE_ENV === "production" &&
+    env.RAILWAY_PROJECT_ID &&
+    env.RAILWAY_SERVICE_ID &&
+    env.RAILWAY_ENVIRONMENT_ID;
+  if (!String(env.TRUST_PROXY ?? "").trim() && railwayDefault) return 1;
   const parsed = parseTrustProxy(env.TRUST_PROXY);
   if (!parsed.valid) {
     throw new Error(
