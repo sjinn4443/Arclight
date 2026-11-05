@@ -42,11 +42,29 @@ test("push displays a notification and sanitizes external deep links", async () 
     }),
   );
 });
+test("different sends display distinct alerts, while duplicate push IDs replace themselves", async () => {
+  const { self, events } = worker();
+  for (const id of ["enabled:first", "enabled:second", "enabled:first"]) {
+    let task;
+    events.push({
+      data: { json: () => ({ id }) },
+      waitUntil: (value) => {
+        task = value;
+      },
+    });
+    await task;
+  }
+  const tags = self.registration.showNotification.mock.calls.map(
+    ([, options]) => options.tag,
+  );
+  expect(tags[0]).not.toBe(tags[1]);
+  expect(tags[0]).toBe(tags[2]);
+});
 test("notification tap opens the app route, or focuses an existing app window", async () => {
   const { self, events } = worker();
   const event = {
     notification: {
-      tag: "arclight-practice",
+      tag: "arclight-practice:enabled:test",
       close: jest.fn(),
       data: { url: "/#/videos/pupilsPage" },
     },

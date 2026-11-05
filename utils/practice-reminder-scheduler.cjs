@@ -6,7 +6,7 @@ const {
 } = require("./notification-delivery.cjs");
 const { dueMilestone } = require("./practice-reminder-policy.cjs");
 const {
-  NOTI04_CAMPAIGN,
+  NOTI05_CAMPAIGN,
   eligibleForCampaign,
 } = require("./noti04-campaign.cjs");
 
@@ -20,9 +20,13 @@ async function dispatchPracticeReminders({
   for (const id of await store.ids({ campaign })) {
     await store.mutate(id, async (record) => {
       if (!record?.subscription) return record;
-      if (!record.welcomeSentAt) {
+      if (record.pendingActivationId || !record.welcomeSentAt) {
         const next = await deliverNotification(record, { send, now });
-        if (next.welcomeSentAt) {
+        if (
+          record.pendingActivationId
+            ? next.activationSentId === record.pendingActivationId
+            : next.welcomeSentAt
+        ) {
           sent += 1;
           // One welcome satisfies the broadcast too; don't send two at once.
           if (eligibleForCampaign(record, campaign))
@@ -62,13 +66,13 @@ function startPracticeReminderScheduler() {
       if (!config) return;
       const sent = await dispatchPracticeReminders({
         store,
-        campaign: NOTI04_CAMPAIGN,
+        campaign: NOTI05_CAMPAIGN,
         send: (subscription, payload) =>
           sendPush(subscription, payload, config),
       });
       if (sent || !startupLogged)
         console.warn(
-          `[reminders] provider accepted ${sent} notification(s); campaign=${NOTI04_CAMPAIGN.id}`,
+          `[reminders] provider accepted ${sent} notification(s); campaign=${NOTI05_CAMPAIGN.id}`,
         );
       startupLogged = true;
     } catch {

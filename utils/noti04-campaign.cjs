@@ -12,4 +12,8 @@ function eligibleForCampaign(record, campaign) {
     !record.campaigns?.[campaign.id],
   );
 }
-module.exports = { NOTI04_CAMPAIGN, eligibleForCampaign };
+const NOTI05_CAMPAIGN = Object.freeze({
+  id: "noti05-practice-check",
+  cutoff: Date.parse("2026-11-05T06:11:10Z"),
+});
+module.exports = { NOTI04_CAMPAIGN, NOTI05_CAMPAIGN, eligibleForCampaign };

@@ -138,7 +138,8 @@ async function upload(state, subscription, { enabling = false } = {}) {
     throw new Error(
       "Enable practice reminders again to renew notifications on this device.",
     );
-  await request("PUT", "/subscription", state, {
+  return request("PUT", "/subscription", state, {
+    ...(enabling ? { enableRequestId: state.enableRequestId } : {}),
     subscription: subscription.toJSON(),
     timezone: timezone(),
     reminderTime: state.reminderTime,
@@ -164,21 +165,45 @@ export async function enablePracticeReminders() {
     token: readReminderState().token || deviceToken(),
     pendingDisable: false,
     pendingEnable: true,
+    enableRequestId:
+      (readReminderState().pendingEnable &&
+        readReminderState().enableRequestId) ||
+      deviceToken(),
   });
   const reg = await worker();
   let subscription = await reg.pushManager.getSubscription();
+  const previousKey = subscription?.options?.applicationServerKey;
+  if (previousKey) {
+    const actual = new Uint8Array(previousKey);
+    const expected = bytes(config.publicKey);
+    if (
+      actual.length !== expected.length ||
+      actual.some((value, index) => value !== expected[index])
+    ) {
+      await subscription.unsubscribe();
+      subscription = null;
+    }
+  }
   const created = !subscription;
   try {
     subscription ||= await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: bytes(config.publicKey),
     });
-    await upload(state, subscription, { enabling: true });
+    const result = await upload(state, subscription, { enabling: true });
+    if (result?.enabled === false) {
+      await subscription.unsubscribe().catch(() => {});
+      subscription = null;
+      throw new Error(
+        "This phone's push subscription has expired. Turn reminders on again to reconnect.",
+      );
+    }
     save({
       enabled: true,
       pendingDisable: false,
       pendingEnable: false,
       offered: true,
+      testDelivery: result?.delivery || "requested",
     });
     document.getElementById("practiceReminderOffer")?.remove();
     setStatus(
@@ -282,7 +307,12 @@ export function renderReminderSettings() {
           (config?.available === false
             ? unavailableMessage()
             : on
-              ? "Reminders after 1, 3, 7 and 30 days without practice, at your local time. Then they pause until you practise again."
+              ? (state.testDelivery === "pending"
+                  ? "Reminders are on. The test notification is queued; we will retry shortly. "
+                  : state.testDelivery === "accepted"
+                    ? "Reminders are on. A test notification was sent to this phone. "
+                    : "") +
+                "Reminders after 1, 3, 7 and 30 days without practice, at your local time. Then they pause until you practise again."
               : "Choose gentle reminders after 1, 3, 7 and 30 days without practice."),
   );
 }

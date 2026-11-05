@@ -4,7 +4,10 @@ const {
   dispatchPracticeReminders,
 } = require("../utils/practice-reminder-scheduler.cjs");
 const { createMemoryReminderStore } = require("../storage/reminder-store.cjs");
-const { NOTI04_CAMPAIGN } = require("../utils/noti04-campaign.cjs");
+const {
+  NOTI04_CAMPAIGN,
+  NOTI05_CAMPAIGN,
+} = require("../utils/noti04-campaign.cjs");
 const record = () => ({
   subscription: { endpoint: "https://fcm.googleapis.com/test" },
   endpointHash: "endpoint",
@@ -89,6 +92,19 @@ test("noti04 broadcasts once to existing active devices, including paused regula
   }));
   await dispatch();
   expect(send).toHaveBeenCalledTimes(1);
+});
+test("noti05 sends once even when noti04 was already accepted", async () => {
+  const store = createMemoryReminderStore();
+  await store.mutate("existing", () => ({
+    ...record(),
+    welcomeSentAt: 1,
+    campaigns: { [NOTI04_CAMPAIGN.id]: 1 },
+  }));
+  const send = jest.fn(async () => {});
+  for (let i = 0; i < 2; i++)
+    await dispatchPracticeReminders({ store, send, campaign: NOTI05_CAMPAIGN });
+  expect(send).toHaveBeenCalledTimes(1);
+  expect(JSON.parse(send.mock.calls[0][1]).id).toBe(NOTI05_CAMPAIGN.id);
 });
 test("a queued welcome satisfies the broadcast without sending two notifications", async () => {
   const store = createMemoryReminderStore();

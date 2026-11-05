@@ -107,6 +107,28 @@ describe("Practice reminder permissions and offline state", () => {
     expect(JSON.parse(put[1].body).reminderTime).toBe("18:00");
     expect(put[1].headers.Authorization).toMatch(/^Bearer [a-f0-9]{64}$/);
   });
+  test("explicit re-enabling requests a fresh immediate push, while sync does not", async () => {
+    await reminders.enablePracticeReminders();
+    const first = reminders.readReminderState().enableRequestId;
+    expect(first).toMatch(/^[a-f0-9]{64}$/);
+    await reminders.syncPracticeReminders();
+    const puts = global.fetch.mock.calls.filter(
+      ([, options]) => options.method === "PUT",
+    );
+    expect(JSON.parse(puts.at(-1)[1].body).enableRequestId).toBeUndefined();
+    await reminders.disablePracticeReminders();
+    await reminders.enablePracticeReminders();
+    expect(reminders.readReminderState().enableRequestId).not.toBe(first);
+  });
+  test("a subscription bound to an obsolete signing key is renewed before enabling", async () => {
+    subscription.options = {
+      applicationServerKey: new Uint8Array([9, 9, 9]).buffer,
+    };
+    await reminders.enablePracticeReminders();
+    expect(subscription.unsubscribe).toHaveBeenCalledTimes(1);
+    expect(registration.pushManager.subscribe).toHaveBeenCalledTimes(1);
+    expect(reminders.readReminderState().enabled).toBe(true);
+  });
   test("iOS keeps a confirmed subscription green while the permission property is temporarily default", async () => {
     await reminders.enablePracticeReminders();
     expect(notification.permission).toBe("default");
@@ -248,10 +270,13 @@ describe("Practice reminder permissions and offline state", () => {
         pendingEnable: true,
       }),
     );
-    global.fetch.mockImplementation(async () => ({
+    global.fetch.mockImplementation(async (_url, options) => ({
       ok: true,
       headers: { get: () => "application/json" },
-      json: async () => ({ enabled: false, notifications: [] }),
+      json: async () =>
+        options.method === "PUT"
+          ? { enabled: true, delivery: "accepted" }
+          : { enabled: false, notifications: [] },
     }));
     await reminders.syncPracticeReminders();
     expect(reminders.readReminderState().enabled).toBe(true);

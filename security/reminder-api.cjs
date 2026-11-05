@@ -116,9 +116,17 @@ function createReminderRouter({
       const pushConfig = await configuration();
       if (!pushConfig)
         return res.status(503).json({ error: "reminders_unavailable" });
-      const { subscription, timezone, reminderTime, lastPracticedAt } =
-        req.body;
+      const {
+        subscription,
+        timezone,
+        reminderTime,
+        lastPracticedAt,
+        enableRequestId,
+      } = req.body;
       if (
+        (enableRequestId !== undefined &&
+          (typeof enableRequestId !== "string" ||
+            !/^[a-f0-9]{64}$/.test(enableRequestId))) ||
         !validSubscription(subscription) ||
         !validTimezone(timezone) ||
         !/^([01]\d|2[0-3]):[0-5]\d$/.test(reminderTime || "") ||
@@ -133,6 +141,10 @@ function createReminderRouter({
         const next = {
           ...old,
           registeredAt: old ? old.registeredAt : Date.now(),
+          pendingActivationId:
+            enableRequestId && old?.activationSentId !== enableRequestId
+              ? enableRequestId
+              : old?.pendingActivationId || null,
           subscription: {
             endpoint: subscription.endpoint,
             keys: {
@@ -157,12 +169,25 @@ function createReminderRouter({
       });
       // Persist ownership before sending, so a duplicate endpoint cannot receive
       // a notification from a registration that will be rejected at commit.
-      await store().mutate(req.reminderId, (old) =>
+      const delivered = await store().mutate(req.reminderId, (old) =>
         deliverNotification(old, {
           send: (subscription, payload) =>
             sendNotification(subscription, payload, pushConfig),
         }),
       );
+      if (enableRequestId) {
+        const delivery =
+          delivered?.activationSentId === enableRequestId
+            ? "accepted"
+            : "pending";
+        console.warn(
+          `[reminders] enable notification ${delivery}; active=${Boolean(delivered?.subscription)}`,
+        );
+        return res.json({
+          enabled: Boolean(delivered?.subscription),
+          delivery,
+        });
+      }
       res.status(204).end();
     }),
   );
@@ -195,7 +220,7 @@ function createReminderRouter({
     "/subscription",
     action(async (req, res) => {
       await store().mutate(req.reminderId, (old) =>
-        old ? { ...old, subscription: null } : null,
+        old ? { ...old, subscription: null, pendingActivationId: null } : null,
       );
       res.status(204).end();
     }),

@@ -524,7 +524,11 @@ self.addEventListener("push", (event) => {
           : "Ready for a little practice? Continue where you left off.",
       icon: "/favicons/android-chrome-192x192.png",
       badge: "/favicons/android-chrome-192x192.png",
-      tag: "arclight-practice",
+      tag:
+        typeof payload.id === "string" &&
+        /^[a-zA-Z0-9:_-]{1,120}$/.test(payload.id)
+          ? `arclight-practice:${payload.id}`
+          : "arclight-practice",
       renotify: false,
       data: { url },
     }),
@@ -532,7 +536,11 @@ self.addEventListener("push", (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-  if (event.notification.tag !== "arclight-practice") return;
+  if (
+    event.notification.tag !== "arclight-practice" &&
+    !event.notification.tag?.startsWith("arclight-practice:")
+  )
+    return;
   event.notification.close();
   const value = event.notification.data?.url;
   const path =

@@ -315,6 +315,47 @@ describe("Practice reminder API", () => {
     expect(response.text).not.toContain(payload.subscription.endpoint);
     expect((await request(app).get("/api/reminders/history")).status).toBe(401);
   });
+  test("explicit enabling sends immediately each time, but retries and ordinary sync never duplicate it", async () => {
+    await mutate("put", "/subscription", body);
+    const first = { ...body, enableRequestId: "c".repeat(64) };
+    const response = await mutate("put", "/subscription", first);
+    expect(response.body).toEqual({ enabled: true, delivery: "accepted" });
+    await Promise.all([
+      mutate("put", "/subscription", first),
+      mutate("put", "/subscription", body),
+    ]);
+    expect(pushSend).toHaveBeenCalledTimes(2);
+    await mutate("delete", "/subscription");
+    await mutate("put", "/subscription", {
+      ...body,
+      enableRequestId: "d".repeat(64),
+    });
+    expect(pushSend).toHaveBeenCalledTimes(3);
+    expect(JSON.parse(pushSend.mock.calls[2][1]).id).toBe(
+      `enabled:${"d".repeat(64)}`,
+    );
+  });
+  test("an immediate delivery failure is reported and the scheduler retries even after day 30", async () => {
+    await mutate("put", "/subscription", body);
+    pushSend.mockRejectedValueOnce({ statusCode: 503 });
+    const response = await mutate("put", "/subscription", {
+      ...body,
+      enableRequestId: "e".repeat(64),
+    });
+    expect(response.body).toEqual({ enabled: true, delivery: "pending" });
+    await store.mutate(id, (row) => ({ ...row, sentMilestone: 30 }));
+    await dispatchPracticeReminders({
+      store,
+      send: pushSend,
+      now: Date.now() + 61000,
+    });
+    expect(pushSend).toHaveBeenCalledTimes(3);
+    await store.mutate(id, (row) => {
+      expect(row.pendingActivationId).toBeNull();
+      expect(row.activationSentId).toBe("e".repeat(64));
+      return row;
+    });
+  });
   test("accepts padded Safari subscription keys and normalizes them", async () => {
     const padded = {
       ...body,

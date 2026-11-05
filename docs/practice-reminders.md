@@ -100,6 +100,26 @@ permission denial turns it off; iOS may temporarily report a default permission
 value after its prompt. Safari subscription keys with optional base64 padding
 are accepted and normalized before storage.
 
+## noti05 immediate enable notification
+
+Every explicit switch-on requests an immediate test notification, including
+turning reminders off and back on after an earlier successful welcome. A random
+request ID survives failed registration retries; ordinary app sync does not
+create another request. Successful enable notifications are deduplicated by ID.
+The API reports provider acceptance or a pending retry instead of hiding delivery
+failures. Pending sends retry after a minute, including devices whose regular
+day-30 reminders have paused. Turning reminders off cancels pending enable sends.
+Distinct notification IDs use distinct notification tags so a new test can alert
+instead of silently replacing an earlier alert. Duplicate IDs still replace
+themselves. Provider acceptance does not prove iOS displayed an alert.
+
+The user-requested `noti05-practice-check` sends once to active subscriptions
+registered before 2026-11-05 06:11:10 UTC, including legacy records without dates.
+A pending enable or welcome satisfies that broadcast without two simultaneous
+messages. Server logs expose only acceptance counts and provider status codes.
+The chosen daily time still applies to inactivity reminders after 1/3/7/30 days;
+it is not a daily alarm independent of practice.
+
 ## noti04 proxy fix and one-time send
 
 The public app's exact HTTPS origins (`https://www.arclightproject.app` and
