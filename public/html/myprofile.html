@@ -1,179 +1,169 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n="myprofile.my_profile">My Profile</title>
+<div class="profile-page page active" id="myProfilePage">
+  <div class="profile-topbar">
+    <div class="profile-topbar__title" data-i18n="myprofile.my_profile">
+      My Profile
+    </div>
+    <div class="profile-topbar__icons">
+      <button
+        class="icon-btn"
+        aria-label="Notifications"
+        data-i18n="i18nExtra.notifications:aria-label"
+      >
+        🔔<span class="notif-dot" aria-hidden="true"></span>
+      </button>
+      <button
+        class="icon-btn menuBtn"
+        aria-label="Menu"
+        data-i18n="i18nExtra.menu_aria_label:aria-label"
+      >
+        ☰
+      </button>
+    </div>
+  </div>
 
-    <!-- Your existing global styles -->
-    <link rel="stylesheet" href="style/base.css" />
-    <link rel="stylesheet" href="style/components.css" />
-    <link rel="stylesheet" href="style/pages.css" />
-    <link rel="stylesheet" href="style/responsive.css" />
-  </head>
-
-  <body>
-    <div class="profile-page page active" id="myProfilePage">
-      <!-- Top bar -->
-      <div class="profile-topbar">
-        <div class="profile-topbar__title" data-i18n="myprofile.my_profile">
-          My Profile
+  <div class="profile-workspace">
+    <header class="profile-overview-heading">
+      <h1 data-i18n="myprofile.my_profile">My Profile</h1>
+      <p data-i18n="profileLayout.overview_description">
+        Your details and learning milestones.
+      </p>
+    </header>
+    <div class="profile-main-grid">
+      <section
+        class="profile-header profile-card"
+        aria-labelledby="profileName"
+      >
+        <div class="profile-card__cover">
+          <div class="profile-card__brand">
+            <span>ARCLIGHT</span
+            ><span data-i18n="profileLayout.learning_profile"
+              >Learning profile</span
+            >
+          </div>
+          <div class="profile-card__identity">
+            <div
+              class="profile-avatar"
+              id="profileAvatar"
+              role="img"
+              aria-label="Profile photo"
+              data-i18n="i18nExtra.profile_photo:aria-label"
+            ></div>
+            <div class="profile-identity">
+              <p class="profile-name" id="profileName" data-i18n-skip>
+                Your name
+              </p>
+              <p
+                class="profile-role"
+                id="profileRole"
+                data-i18n-skip
+                hidden
+              ></p>
+            </div>
+            <button
+              type="button"
+              class="profile-edit-trigger"
+              id="profileEditBtn"
+              disabled
+              aria-label="Edit Profile"
+              data-i18n="myprofile.edit_profile:aria-label"
+              aria-haspopup="dialog"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="m16 3 5 5-12 12-6 1 1-6L16 3Z M13 6l5 5" />
+              </svg>
+            </button>
+          </div>
         </div>
-
-        <div class="profile-topbar__icons">
-          <!-- Bell -->
-          <button
-            class="icon-btn"
-            aria-label="Notifications"
-            data-i18n="i18nExtra.notifications:aria-label"
-          >
-            🔔
-            <span class="notif-dot" aria-hidden="true"></span>
-          </button>
-
-          <!-- Menu -->
-          <button
-            class="icon-btn menuBtn"
-            aria-label="Menu"
-            data-i18n="i18nExtra.menu_aria_label:aria-label"
-          >
-            ☰
-          </button>
-        </div>
-      </div>
-
-      <!-- Profile header -->
-      <div class="profile-header">
-        <div class="profile-avatar-wrap">
+        <dl class="profile-card__details">
+          <div class="profile-card__row">
+            <dt data-i18n="onboarding.field_label">Interest(s)</dt>
+            <dd id="profileInterests" data-i18n-skip></dd>
+          </div>
           <div
-            class="profile-avatar"
-            id="profileAvatar"
-            aria-label="Profile photo"
-            data-i18n="i18nExtra.profile_photo:aria-label"
-            role="img"
-          ></div>
-          <button
-            type="button"
-            class="profile-avatar-edit"
-            id="profileAvatarEditBtn"
-            aria-label="Edit profile photo"
-            data-i18n="i18nExtra.edit; i18nExtra.edit_profile_photo:aria-label"
+            class="profile-card__row"
+            id="profileClinicalExperienceRow"
+            hidden
           >
-            Edit
-          </button>
-          <input type="file" id="profileAvatarInput" accept="image/*" hidden />
-        </div>
+            <dt data-i18n="onboarding.experience_label">Experience</dt>
+            <dd id="profileClinicalExperience" data-i18n-skip></dd>
+          </div>
+          <div class="profile-card__row">
+            <dt data-i18n="profileLayout.device_use">Arclight use</dt>
+            <dd id="profileDeviceUse" data-i18n-skip></dd>
+          </div>
+          <div class="profile-card__row">
+            <dt data-i18n="profileLayout.app_purpose">App use</dt>
+            <dd id="profilePurposes" data-i18n-skip></dd>
+          </div>
+        </dl>
+        <p
+          class="profile-edit-error"
+          id="profileEditError"
+          role="alert"
+          hidden
+        ></p>
+      </section>
 
-        <div>
-          <p class="profile-name" id="profileName" data-i18n-skip>Your name</p>
-          <p class="profile-role" id="profileRole" data-i18n-skip>
-            Role not set
-          </p>
-        </div>
-      </div>
-
-      <!-- Interest -->
-      <div class="section">
-        <div class="section-title" data-i18n="myprofile.interest">Interest</div>
-        <div class="interest-select">
-          <select
-            id="interestSelect"
-            aria-label="Interest"
-            data-i18n="myprofile.interest:aria-label"
-            data-profile-interest
+      <div class="profile-learning-column">
+        <section
+          class="section profile-achievements-panel"
+          aria-labelledby="profileAchievementsTitle"
+        >
+          <h2
+            class="section-title"
+            id="profileAchievementsTitle"
+            data-i18n="myprofile.achievements"
           >
-            <option selected data-i18n="myprofile.eyes">Eyes</option>
-            <option data-i18n="myprofile.ears">Ears</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Background -->
-      <div class="section">
-        <div class="section-title" data-i18n="myprofile.background">
-          Background
-        </div>
-
-        <div class="profile-detail-list">
-          <div class="profile-detail-row">
-            <div class="profile-detail-label" data-i18n="onboarding.job_label">
-              Role(s)
+            Achievements
+          </h2>
+          <dl class="profile-learning-stats">
+            <div>
+              <dt data-i18n="profileLayout.modules_completed">
+                Modules completed
+              </dt>
+              <dd id="profileCompletedCount" data-i18n-skip>0</dd>
             </div>
-            <div class="profile-detail-value" id="profileRoles" data-i18n-skip>
-              Not set
+            <div>
+              <dt data-i18n="profileLayout.stamps_earned">Stamps earned</dt>
+              <dd id="profileStampCount" data-i18n-skip>0</dd>
             </div>
-          </div>
+          </dl>
+          <div class="achievements-row" id="profileAchievements"></div>
+        </section>
 
-          <div class="profile-detail-row">
-            <div
-              class="profile-detail-label"
-              data-i18n="onboarding.experience_label"
-            >
-              Experience
-            </div>
-            <div
-              class="profile-detail-value"
-              id="profileExperience"
-              data-i18n-skip
-            >
-              Not set
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Achievements -->
-      <div class="section">
-        <div class="section-title" data-i18n="myprofile.achievements">
-          Achievements
-        </div>
-        <div class="achievements-row" id="profileAchievements">
-          <div class="achievement-tile"></div>
-          <div class="achievement-tile"></div>
-          <div class="achievement-tile"></div>
-        </div>
-      </div>
-
-      <!-- Account -->
-      <div class="section">
-        <div class="section-title" data-i18n="auto.myprofile.account">
-          Account
-        </div>
         <div class="settings-list">
-          <div
-            class="settings-item"
-            data-route="editProfile"
-            data-i18n="myprofile.edit_profile"
-          >
-            Edit Profile
-          </div>
-          <div class="menu-item" data-route="languageinstall">
-            <img
-              src="images/icon/base/language_b.webp"
-              alt="Language"
-              class="menu-item-icon"
-              width="24"
-              height="24"
-              data-i18n="menu.language_item:alt"
-            />
-
-            <span data-i18n="menu.language_item">Language</span>
-          </div>
-          <div
-            class="settings-item"
-            data-route="settings"
-            data-i18n="auto.myprofile.settings"
-          >
-            Settings
-          </div>
+          <button type="button" class="settings-item" data-route="settings">
+            <svg
+              class="profile-action-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="m9 3-.6 2.4-1.5.9-2.4-.7-3 5.2 1.8 1.7v1.8l-1.8 1.7 3 5.2 2.4-.7 1.5.9L9 24h6l.6-2.6 1.5-.9 2.4.7 3-5.2-1.8-1.7v-1.8l1.8-1.7-3-5.2-2.4.7-1.5-.9L15 3Z"
+                transform="translate(1 0) scale(.9)"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <span data-i18n="auto.myprofile.settings">Settings</span>
+            <span class="profile-settings-arrow" aria-hidden="true">›</span>
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- If your app uses the menu overlay globally -->
-    <script src="js/menu.js"></script>
-    <script>
-      if (window.initializeMenu) window.initializeMenu();
-    </script>
-  </body>
-</html>
+  </div>
+</div>

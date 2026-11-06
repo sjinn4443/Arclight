@@ -5,6 +5,12 @@
 import { ROUTES } from "./config.js";
 import { closeMenu } from "./menu.js";
 import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
+import { EAR_ROUTE_PARENTS } from "./earsRoutes.js";
+import {
+  DIABETIC_CONDITION_PAGE,
+  clearDiabeticConditionContextUnless,
+  isDiabeticConditionLesson,
+} from "./diabeticConditionContext.js";
 
 // === Guest Mode Guard ===
 const MAX_GUEST_CLICKS = 10;
@@ -1035,6 +1041,7 @@ const STRUCTURAL_BACK_TARGETS = {
   pupilsPecPdf: { routeName: "videos", subPageId: "pupilsPage" },
   pupilsAdvancedPdf: { routeName: "videos", subPageId: "pupilsPage" },
   frontOfEyePdf: { routeName: "videos", subPageId: "frontOfEyePage" },
+  frontOfEyePdfTest: { routeName: "videos", subPageId: "frontOfEyePage" },
   childhoodAskQuestionsObservePage: {
     routeName: "childhoodEyeScreeningWorkshop",
   },
@@ -1086,6 +1093,8 @@ const STRUCTURAL_BACK_TARGETS = {
 };
 
 const STRUCTURAL_BACK_SUBPAGES = {
+  diabeticRetinopathyPage: { routeName: "eyes" },
+  applyEyePadShieldScrollPage: { routeName: "eyePadShield" },
   extendedExaminationPage: { routeName: "eyes" },
   squintPalsyPage: {
     routeName: "videos",
@@ -1103,6 +1112,7 @@ const STRUCTURAL_BACK_SUBPAGES = {
   },
   pupilsPecScrollPage: { routeName: "videos", subPageId: "pupilsPage" },
   pupilsAdvancedScrollPage: { routeName: "videos", subPageId: "pupilsPage" },
+  cataractScrollPage: { routeName: "videos", subPageId: "cataractPage" },
   frontOfEyePage: { routeName: "eyes" },
   fundalExamPage: {
     routeName: "videos",
@@ -1224,6 +1234,8 @@ function normalizeStructuralBackTarget(target) {
 function getStructuralBackTarget(routeName, subPageId = null) {
   const normalizedRoute = normalizeRouteName(routeName);
   if (!normalizedRoute) return null;
+  if (EAR_ROUTE_PARENTS[normalizedRoute])
+    return { routeName: EAR_ROUTE_PARENTS[normalizedRoute] };
 
   const normalizedSubPage = normalizeSubPageId(subPageId);
   if (
@@ -1382,6 +1394,8 @@ export async function loadPage(routeName, options = {}) {
   const recordHistory = options?.recordHistory !== false;
   const syncHash = options?.syncHash !== false;
   const subPageId = normalizeSubPageId(options?.subPageId);
+
+  clearDiabeticConditionContextUnless(routeName, subPageId);
 
   if (recordHistory) {
     rememberMyLearningReturnTarget(routeName);
@@ -1618,6 +1632,23 @@ export function goBack() {
 
   const activeSubPageId = getActivePageId();
   const currentRouteForBack = normalizeRouteName(currentPageName);
+
+  if (isDiabeticConditionLesson(activeSubPageId, currentRouteForBack)) {
+    removePageHistoryEntry({
+      routeName: currentRouteForBack,
+      subPageId: activeSubPageId,
+    });
+    isApplyingBackNavigation = true;
+    loadPage("videos", {
+      replace: true,
+      force: true,
+      recordHistory: false,
+      subPageId: DIABETIC_CONDITION_PAGE,
+    }).finally(() => {
+      isApplyingBackNavigation = false;
+    });
+    return;
+  }
 
   try {
     const pecExternal = JSON.parse(

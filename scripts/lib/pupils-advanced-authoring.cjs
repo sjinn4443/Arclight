@@ -1596,6 +1596,34 @@ async function main() {
     PUPILS_ADVANCED_TITLE_TRANSLATIONS: titles,
   } = config;
   afferentWords = config.PUPILS_ADVANCED_AFFERENT_WORD_FRAMES;
+  // Keep the reviewed speech and its eye/lid and warning cues on the same clock.
+  for (const [id, word, offset] of [
+    ["third-nerve", /^eye$/i, 25],
+    ["near-abnormal", /^further$/i, 10],
+  ]) {
+    try {
+      const work = path.join(ROOT, "tmp/pupils-advanced/narration/en");
+      const words = (
+        await fs.readFile(path.join(work, id + ".boundaries.jsonl"), "utf8")
+      )
+        .trim()
+        .split(/\r?\n/)
+        .map(JSON.parse);
+      const qa = JSON.parse(
+        await fs.readFile(path.join(work, "qa.json"), "utf8"),
+      ).find((c) => c.id === id);
+      const spoken = words.find((w) => word.test(w.text));
+      if (spoken) {
+        const frame = Math.round(
+          (offset + spoken.offset / 1e7 / (qa?.playbackSpeed || 1)) * FPS,
+        );
+        if (id === "third-nerve") eyeMovementsFrame = frame;
+        else nearFurtherFrame = frame;
+      }
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }
   try {
     const work = path.join(ROOT, "tmp/pupils-advanced/narration/en"),
       boundaries = (

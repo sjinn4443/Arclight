@@ -1,6 +1,8 @@
 import { VISUAL_ACUITY_EXAMINATION_SCROLL_CONFIG } from "./visualAcuityExaminationScroll.js";
 import { FRONT_OF_EYE_EXAMINATION_SCROLL_CONFIG } from "./frontOfEyeExaminationScroll.js";
 import { EYE_PAD_SHIELD_SCROLL_CONFIG } from "./eyePadShieldScroll.js";
+import { APPLY_EYE_PAD_SHIELD_SCROLL_CONFIG } from "./applyEyePadShieldScroll.js";
+import { CATARACT_SCROLL_CONFIG } from "./cataractScroll.js";
 import { PUPILS_PEC_SCROLL_CONFIG } from "./pupilsPecScroll.js";
 import {
   configureExaminationTiming,
@@ -1514,6 +1516,10 @@ ROUTE_CONFIG.visualAcuityExaminationScroll = {
 };
 
 ROUTE_CONFIG.makeEyePadShieldScroll = { ...EYE_PAD_SHIELD_SCROLL_CONFIG };
+ROUTE_CONFIG.applyEyePadShieldScroll = {
+  ...APPLY_EYE_PAD_SHIELD_SCROLL_CONFIG,
+};
+ROUTE_CONFIG.cataractScroll = { ...CATARACT_SCROLL_CONFIG };
 ROUTE_CONFIG.pupilsPecScroll = { ...PUPILS_PEC_SCROLL_CONFIG };
 
 Object.values(ROUTE_CONFIG).forEach(configureExaminationTiming);

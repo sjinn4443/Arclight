@@ -6158,5 +6158,18 @@
       "scoreTemplate": "Anda mendapatkan {{correct}} dari {{total}} jawaban yang benar.",
       "incomplete": "Harap jawab semua {{count}} pertanyaan sebelum mengirimkan."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Sesuaikan pengalaman Anda",
+    "profile_hint": "Opsional — dapat diubah nanti di Profil.",
+    "name_label": "Kami harus memanggil Anda apa?",
+    "interest_label": "Apa yang ingin Anda pelajari?",
+    "not_sure": "Belum yakin",
+    "start": "Mulai belajar",
+    "skip": "Lewati dulu",
+    "specialist": "Spesialis atau pendidik",
+    "role_detail": "Apa peran Anda?",
+    "role_label": "Pilih peran Anda",
+    "other": "Lainnya"
   }
 }

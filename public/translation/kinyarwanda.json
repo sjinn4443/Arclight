@@ -6163,5 +6163,18 @@
       "scoreTemplate": "Wabonye {{correct}} muri {{total}} igisubizo nyacyo.",
       "incomplete": "Nyamuneka subiza ibibazo byose {{count}} mbere yo kohereza."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Hindura uko ukoresha porogaramu",
+    "profile_hint": "Si itegeko — ushobora kubihindura nyuma mu mwirondoro.",
+    "name_label": "Tukwite nde?",
+    "interest_label": "Ni iki wifuza kwiga?",
+    "not_sure": "Sindamenya neza",
+    "start": "Tangira kwiga",
+    "skip": "Simbuka ubu",
+    "specialist": "Inzobere cyangwa umwigisha",
+    "role_detail": "Ufite uruhe ruhare?",
+    "role_label": "Hitamo uruhare rwawe rw'akazi",
+    "other": "Ibindi"
   }
 }

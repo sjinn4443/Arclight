@@ -1,0 +1,476 @@
+/* Ears uses the established Eyes catalog and level / lesson-row components. */
+#earsCatalogPage .eyes-card {
+  background: #000;
+}
+#earsCatalogPage .ear-card-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 60%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+  pointer-events: none;
+  mask-image: linear-gradient(to right, transparent, black 45%);
+}
+[dir="rtl"] #earsCatalogPage .ear-card-art {
+  inset: 0 auto 0 0;
+  mask-image: linear-gradient(to left, transparent, black 45%);
+}
+#earsCatalogPage .eyes-card__title {
+  max-width: 72%;
+}
+#earsCatalogPage .eyes-card .tag-row {
+  flex-wrap: wrap;
+}
+#earsContentPage .ear-content-title {
+  width: min(100%, 760px);
+  margin: 16px auto !important;
+  overflow-wrap: anywhere;
+}
+/* Match the Eyes/Pupils topic cards without inheriting viewport-based offsets. */
+#earsContentPage.ears-topic-page {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+#earsContentPage.ears-topic-page > .container.pupils-container:first-child {
+  padding-top: 60px !important;
+}
+#earsContentPage.ears-topic-page .ear-content-title {
+  width: min(100%, 456px);
+  margin: 16px auto !important;
+}
+#earsContentPage .ear-lesson-list {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 27px 0 31px;
+}
+#earsContentPage .ear-lesson-list .lesson-row {
+  position: relative;
+  box-sizing: border-box !important;
+  /* Eyes: 88% of a card inset by 16px, plus its 24px content-box padding. */
+  width: calc(88% - 4.16px) !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  margin: 0 !important;
+  padding: 10px 12px !important;
+  grid-template-columns: 62px minmax(0, 1fr) 48px !important;
+  grid-template-rows: 52px;
+  gap: 4px !important;
+  align-items: center !important;
+  text-align: start;
+}
+#earsContentPage .ear-lesson-list .thumb {
+  width: 62px;
+  height: 52px;
+}
+#earsContentPage .ear-lesson-list .lesson-main {
+  position: relative;
+  align-self: stretch !important;
+  min-width: 0;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+#earsContentPage .ear-lesson-list .lesson-top {
+  position: absolute;
+  inset-inline: 0;
+  top: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+#earsContentPage .ear-lesson-list .lesson-type {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-width: 0;
+  margin: 0 !important;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25 !important;
+  color: #111;
+  overflow-wrap: anywhere;
+}
+#earsContentPage .ear-lesson-list .lesson-meta {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  font-size: 11px;
+  font-weight: 500;
+  color: #bbb;
+  white-space: nowrap;
+}
+#earsContentPage .ear-lesson-list .lesson-cta {
+  position: static !important;
+  margin: 0 !important;
+  grid-column: 3;
+  grid-row: 1;
+  width: 48px;
+  justify-self: end;
+  align-self: end !important;
+  font-size: 11px;
+  color: #bbb;
+  white-space: nowrap;
+}
+#earsContentPage .ear-lesson-list .lesson-progress {
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: 0;
+  width: min(165px, 100%) !important;
+  height: 6px;
+  margin: 0 !important;
+  background: #e9e9e9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+#earsContentPage .lesson-progress__fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+@media (max-width: 600px) {
+  #earsContentPage.ears-topic-page .ear-content-title {
+    width: calc(100% - 32px);
+    margin: 22px auto 16px !important;
+  }
+}
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #earsContentPage.ears-topic-page .ear-content-title {
+    width: min(100%, 420px);
+  }
+  #earsContentPage .ear-lesson-list .lesson-row {
+    /* Tablet Eyes rows use 97% inside the same 16px card inset. */
+    width: calc(97% - 31.04px) !important;
+    height: 68px !important;
+    min-height: 68px !important;
+    padding: 8px 10px !important;
+    grid-template-columns: 62px minmax(0, 1fr) 42px !important;
+    gap: 8px !important;
+  }
+  #earsContentPage .ear-lesson-list .lesson-top {
+    top: 5px;
+  }
+  #earsContentPage .ear-lesson-list .lesson-type {
+    line-height: 1.1 !important;
+  }
+  #earsContentPage .ear-lesson-list .lesson-progress {
+    width: min(146px, 100%) !important;
+  }
+  #earsContentPage .ear-lesson-list .lesson-cta {
+    width: auto;
+  }
+}
+.ear-image-dialog {
+  box-sizing: border-box;
+  width: min(96vw, 1200px);
+  max-width: 96vw;
+  max-height: 94dvh;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  background: #fff;
+}
+.ear-image-dialog::backdrop {
+  background: rgb(0 0 0 / 0.75);
+}
+.ear-image-dialog .ear-image-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.ear-image-dialog button {
+  width: auto;
+  min-height: 40px;
+  min-width: 40px;
+  margin: 0;
+  padding: 6px 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+}
+.ear-image-dialog .ear-image-frame {
+  max-height: 78dvh;
+  overflow: auto;
+  background: #f5f5f5;
+}
+.ear-image-dialog img {
+  display: block;
+  max-width: none;
+  width: 100%;
+  height: auto;
+}
+#earsContentPage .ear-figure-open {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+#earsContentPage .ear-source {
+  width: min(88vw, 760px);
+  margin: 24px auto 0;
+  color: #666;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: center;
+}
+#earsContentPage .ear-learning-panel {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: auto;
+}
+#earsContentPage .ear-step {
+  background: var(--medical-orange);
+  color: #fff;
+}
+#earsContentPage .diabetic-screening-eyebrow {
+  color: var(--medical-orange-dark);
+}
+#earsContentPage .ear-learning-panel .medical-learning-image {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#earsContentPage .ear-learning-panel img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  padding: 0;
+  object-fit: contain;
+}
+#earsContentPage .ear-learning-panel figcaption {
+  padding: 14px 0 0;
+  background: transparent;
+  color: #374151;
+  font-size: clamp(15px, 4.1vw, 18px);
+  font-weight: 550;
+  line-height: 1.65;
+  letter-spacing: -0.025em;
+  text-align: start;
+  text-transform: none;
+}
+#earsContentPage.ears-lesson-page {
+  padding: 0 0 34px;
+  --medical-orange: #00d900;
+  --medical-orange-dark: #00b900;
+  --medical-orange-soft: #ecffec;
+}
+#earsContentPage.ears-lesson-page[data-ear-level="intermediate"] {
+  --medical-orange: #f25600;
+  --medical-orange-dark: #c2410c;
+  --medical-orange-soft: #fff3eb;
+}
+#earsContentPage.ears-lesson-page > .container.pupils-container:first-child {
+  max-width: none;
+  width: 100%;
+  min-height: 0;
+  padding: 62px 0 0 !important;
+  --medical-orange: inherit;
+  --medical-orange-dark: inherit;
+  --medical-orange-soft: inherit;
+}
+#earsContentPage.ears-guide-page > .container > .ear-content-title,
+#earsContentPage.ears-video-page > .container > .ear-content-title {
+  display: none;
+}
+#earsContentPage.ears-lesson-page:not(.ears-guide-page):not(.ears-video-page)
+  .ear-content-title {
+  width: min(88vw, 760px);
+  margin: 28px auto !important;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+#earsContentPage .ear-video-wrap {
+  width: 100%;
+  margin: 0 auto;
+}
+#earsContentPage .ear-video-wrap video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto 16 / 9;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  background: #000;
+  object-fit: contain;
+  box-shadow: none;
+}
+#earsContentPage .ear-video-wrap .video-header {
+  position: static;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-height: 82px;
+  margin: 0;
+  padding: 23px 18px 26px;
+}
+#earsContentPage .ear-video-wrap .video-header h3 {
+  margin: 0;
+  text-align: center;
+}
+#earsContentPage .ear-video-wrap .video-container {
+  box-sizing: border-box;
+  width: calc(100% - 36px);
+  max-width: none;
+  max-height: none;
+  margin: 49px auto 0;
+  padding: 21px 0 0;
+}
+#earsContentPage .ear-quality {
+  --tri-cols: 2;
+  flex: 0 0 128px;
+  box-sizing: border-box;
+  width: 128px;
+  min-width: 128px;
+  height: 36px;
+  margin: 0;
+}
+#earsContentPage .ear-quality button {
+  margin: 0;
+  height: 28px;
+}
+#earsContentPage .ear-quality .tri-toggle__knob {
+  background: var(--medical-orange);
+}
+#earsContentPage .ear-reader {
+  width: 100%;
+  margin: 0 auto;
+}
+#earsContentPage .ear-reader-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: calc(100% - 32px);
+  margin: 12px auto 24px;
+}
+#earsContentPage .ear-reader-toolbar button,
+#earsContentPage .ear-reader-toolbar a,
+#earsContentPage .ear-reader-toolbar select,
+#earsContentPage .ear-download {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 36px;
+  margin: 0;
+  padding: 6px 12px;
+  border: 1px solid #d7d7d7;
+  border-radius: 18px;
+  background: white;
+  color: #111;
+  font-size: 12px;
+  text-decoration: none;
+}
+#earsContentPage button:focus-visible,
+#earsContentPage a:focus-visible,
+#earsContentPage select:focus-visible {
+  outline: 3px solid #1e8d1e;
+  outline-offset: 2px;
+}
+#earsContentPage .ear-reader-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#earsContentPage .ear-reader-frame {
+  overflow: auto;
+  width: 100%;
+  margin: 0 auto;
+  border: 0;
+  background: #fff;
+  overscroll-behavior: contain;
+}
+#earsContentPage .ear-reader-frame img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: 0 auto;
+}
+#earsContentPage .ear-reader-status {
+  color: #666;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+#earsContentPage .ear-flow {
+  width: min(88vw, 760px);
+  margin: 32px auto 0;
+  padding-top: 28px;
+}
+#earsContentPage .ear-flow button {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  border-radius: 14px;
+}
+#earsContentPage .ear-flow .medical-prev-btn {
+  border-color: var(--medical-orange);
+  color: var(--medical-orange-dark);
+}
+#earsContentPage .ear-flow .medical-next-btn {
+  box-shadow: 0 10px 22px
+    color-mix(in srgb, var(--medical-orange) 22%, transparent);
+}
+#earsContentPage .ear-download {
+  display: flex;
+  width: min(88vw, 430px);
+  min-height: 48px;
+  margin: 40px auto;
+  border-color: var(--medical-orange);
+  border-radius: 14px;
+  color: var(--medical-orange-dark);
+  font-size: 14px;
+  font-weight: 800;
+}
+#earsContentPage .ear-load-error {
+  padding: 24px;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  #earsContentPage .ear-reader-toolbar {
+    gap: 6px;
+  }
+  #earsContentPage .ear-reader-toolbar button,
+  #earsContentPage .ear-reader-toolbar a,
+  #earsContentPage .ear-reader-toolbar select {
+    min-height: 40px;
+    padding: 6px 10px;
+  }
+}
+@media (max-width: 47.98em) {
+  #earsContentPage .ear-flow {
+    width: min(88vw, 430px);
+  }
+}
+@media (min-width: 1024px) {
+  #earsContentPage .ear-reader-frame {
+    width: min(58vw, 760px);
+  }
+  #earsContentPage .ear-video-wrap .video-container,
+  #earsContentPage.ears-video-page .ear-flow {
+    width: calc(86vw - 22px);
+  }
+}
+@media (min-width: 1440px) {
+  #earsContentPage .ear-video-wrap .video-container,
+  #earsContentPage.ears-video-page .ear-flow {
+    width: calc(56vw - 22px);
+  }
+}

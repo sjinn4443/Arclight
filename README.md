@@ -39,9 +39,18 @@ teaching update.
 
 Dashboard's Ears card opens the Ears catalog (`#/ears`), which shares the Eyes
 catalog layout. Its four rows are Exam: Extent Ear & Otoscopy, Hearing Assessment,
-Primary Ear Care Procedures, and Workshops. The first three rows contain unnamed,
-non-interactive placeholder cards; Workshops contains PEC workshop, which opens
-the existing `primaryEarCareWorkshop` route.
+Primary Ear Care Procedures, and Workshops. The supplied Ears archive populates
+15 topic pages and 51 learning entries, including in-app PDF reading, source
+diagram panels, low/high otoscopy videos and teaching resources. Workshops keeps
+PEC workshop connected to `primaryEarCareWorkshop`. The
+[Ears source map](./docs/ears-content-source-map.md) records curriculum order,
+original materials, complete procedure page ranges and regeneration commands.
+Ears topic lists follow the Eyes lesson layout: compact rows, inline video
+durations, grey Start links and two grey dots between learning levels.
+Internal guides reuse the Eyes Medical Students scroll cards and typography;
+video pages follow the Eyes PEC player layout with the header quality toggle.
+Readers retain source-page selection and zoom on a white document surface.
+Lessons use the shared wide Previous/Next controls and their level colour.
 
 - App docs (this file): setup, scripts, env vars
 - CI/CD: [`.github/README.md`](./.github/README.md)
@@ -557,6 +566,9 @@ The Language/Install route and menu download actions now use the same offline-do
 - `GET /api/app/offline-assets` serves a build-generated manifest in production and one asynchronously cached manifest in development.
 - `public/js/languageinstall.js` turns that manifest into download choices: full content, one or more selected sections, or app-only/no-video content, with low/high video quality filtering where both MP4 tiers exist.
 - `public/js/menu.js` reuses the same helpers for the menu download action and the Downloaded Contents summary.
+- `offlineDownloadState.js` shares a cache-key inventory between download options and `downloadedContents.js`. The latter warms a summary in the background, refreshes on download completion/pause, foreground return and once per minute while visible, and lazily renders expanded details. Opening a warmed summary does not fetch the manifest or rescan files.
+- Download ratios count content bundles (video variants, image folders, animation scenes and mini-apps), not application pages or raw files. Green means complete, orange means partial and red means absent. Options check the selected video quality; the downloaded-content summary accepts either saved MP4 quality. Manifest metadata is retained for offline inspection.
+- After first dashboard entry, browser users receive one optional download invitation after 15 cumulative clicks. Dismissal, a previous download attempt, existing packs or standalone installation suppress it; preferences persist locally.
 - `public/sw.js` receives selected URL lists through `CACHE_URLS` / `CACHE_ASSETS`, reports progress, caches full MP4 files for offline playback, and serves cached MP4 range requests when the browser asks for partial content.
 - The service worker rejects sensitive cache-message URLs and bypasses API, tracking, reports, and health responses; it also honors `no-store` and caches only successful static responses.
 - Childhood Eye Screening HLS assets and subtitle catalogs are included in the cacheable asset model so iOS HLS playback can keep working offline after a successful download.

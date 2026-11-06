@@ -35,6 +35,102 @@ describe("download options", () => {
     delete global.MessageChannel;
   });
 
+  it("keeps Ears posters out of unrelated packs but includes their owners", () => {
+    const assets = [
+      { url: "/js/main.js", bytes: 10 },
+      { url: "/images/Ears/TeachingPoster.jpg", bytes: 1000 },
+      { url: "/videos/Core/FrontofEye/FE_Full_220p.mp4", bytes: 20 },
+    ];
+    const front = app.resolveOfflineDownloadSelection(
+      { assets },
+      {
+        mode: "select",
+        catalogId: "core-front-of-eye",
+        videoQuality: "low",
+      },
+    );
+    expect(front.bytes).toBe(30);
+    for (const catalogId of [
+      "ears-materials",
+      "workshop-paediatric-surgical",
+    ]) {
+      expect(
+        app.resolveOfflineDownloadSelection(
+          { assets },
+          {
+            mode: "select",
+            catalogId,
+          },
+        ).urls,
+      ).toContain(assets[1].url);
+    }
+  });
+
+  it("includes the shared low counterpart when its high alias belongs to the selected section", () => {
+    const assets = [
+      {
+        url: "/videos/Core/Intro/1.%20How%20to%20use%20the%20Arclight%20-%20ENGLISH%20-%20HD_720p.mp4",
+        bytes: 100,
+      },
+      {
+        url: "/videos/USAID%20Childhood%20eye%20screening/1.%20How%20to%20use%20the%20Arclight%20-%20ENGLISH%20-%20HD_220p.mp4",
+        bytes: 20,
+      },
+    ];
+    const result = app.resolveOfflineDownloadSelection(
+      { assets },
+      {
+        mode: "select",
+        catalogId: "core",
+        videoQuality: "low",
+      },
+    );
+    expect(result.urls).toEqual([assets[1].url]);
+    expect(result.bytes).toBe(20);
+  });
+
+  it.each(["low", "high"])(
+    "selects differently named phone variants at %s quality",
+    (videoQuality) => {
+      const assets = [
+        { url: "/videos/Arclight/PhoneAttach.mp4", bytes: 10 },
+        { url: "/videos/Tools/MobilePhoneAttachment_720p.mp4", bytes: 40 },
+      ];
+      const selected = app.resolveOfflineDownloadSelection(
+        { assets },
+        { videoQuality },
+      );
+      expect(selected.urls).toEqual([
+        assets[videoQuality === "low" ? 0 : 1].url,
+      ]);
+      expect(selected.bytes).toBe(videoQuality === "low" ? 10 : 40);
+      expect(
+        app.resolveOfflineDownloadSelection(
+          { assets: [assets[0]] },
+          { videoQuality },
+        ).urls,
+      ).toEqual([assets[0].url]);
+    },
+  );
+
+  it("keeps ATOMS teaching cards in their owning content packs", () => {
+    const assets = [{ url: "/images/atoms/Anatomy1.webp", bytes: 100 }];
+    expect(
+      app.resolveOfflineDownloadSelection(
+        { assets },
+        { mode: "select", catalogId: "tools" },
+      ).urls,
+    ).toEqual([]);
+    for (const catalogId of ["core", "ears-materials"]) {
+      expect(
+        app.resolveOfflineDownloadSelection(
+          { assets },
+          { mode: "select", catalogId },
+        ).urls,
+      ).toEqual([assets[0].url]);
+    }
+  });
+
   it("unions multiple sections once and preserves video quality filtering", () => {
     const selection = app.resolveOfflineDownloadSelection(manifest, {
       mode: "select",
@@ -140,16 +236,16 @@ describe("download options", () => {
     expect(
       document.querySelector('[data-download-status="core-history"]')
         .textContent,
-    ).toBe("Completed");
+    ).toBe("1/1");
     expect(
       document.querySelector('[data-download-status="core-pupils"]')
         .textContent,
-    ).toBe("Partly downloaded");
+    ).toBe("0/1");
     expect(
       document.querySelector(
         '[data-download-status="core-interactive-learning"]',
       ).textContent,
-    ).toBe("Not downloaded");
+    ).toBe("0/1");
     expect(document.getElementById("offlineFullContentSize").textContent).toBe(
       "Download size: 2 KB",
     );
@@ -167,7 +263,13 @@ describe("download options", () => {
           ".download-group summary > span:first-child",
         ),
       ].map((item) => item.textContent),
-    ).toEqual(["Examination", "Eye Care Procedure", "Conditions", "Workshops"]);
+    ).toEqual([
+      "Ears",
+      "Examination",
+      "Eye Care Procedure",
+      "Conditions",
+      "Workshops",
+    ]);
     document.querySelector('input[value="core-history"]').click();
     document.querySelector('input[value="core-pupils"]').click();
     document.getElementById("downloadAllBtn").click();

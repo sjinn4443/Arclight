@@ -1,7 +1,9 @@
 import { fetchDictionary, get, getLanguage } from "./i18n.js";
 import { loadPage } from "./navigation.js";
 import {
+  dispatchProfileUpdated,
   createProfileAvatarDataUrl,
+  getProfileAvatarDataUrl,
   getProfileInterests,
   getProfileName,
   getProfileRoles,
@@ -13,6 +15,61 @@ import {
   setProfileRoles,
   writePracticeByRole,
 } from "./profileData.js";
+
+function renderArclightExperience(form, translate) {
+  const fieldset = document.createElement("fieldset");
+  fieldset.className = "profile-edit-fieldset";
+  fieldset.id = "editProfileArclightExperience";
+  fieldset.innerHTML = `
+    <legend data-i18n="interest.title">Your Arclight experience</legend>
+    <label class="profile-edit-field">
+      <span data-i18n="interest.group_arclight_usage">How often do you use Arclight?</span>
+      <select id="editProfileDeviceUse">
+        <option value="" data-i18n="onboardingFlow.not_sure">Not sure yet</option>
+        <option value="occasionally" data-i18n="interest.chip_learning_to_use">Occasionally</option>
+        <option value="regularly" data-i18n="interest.chip_use_regularly">Regularly</option>
+        <option value="rarely" data-i18n="interest.chip_teaching_others2">Rarely</option>
+        <option value="no_device" data-i18n="interest.chip_no_device">No device</option>
+      </select>
+    </label>
+    <fieldset class="profile-edit-fieldset">
+      <legend data-i18n="interest.group_context_of_use">How will you use the app?</legend>
+      <div class="profile-edit-chip-grid">
+        <label class="profile-edit-chip"><input type="checkbox" value="studying" /><span data-i18n="interest.chip_for_my_studies">Studying</span></label>
+        <label class="profile-edit-chip"><input type="checkbox" value="teaching" /><span data-i18n="interest.chip_teaching_others">Teaching</span></label>
+      </div>
+    </fieldset>`;
+  let current = {};
+  try {
+    current =
+      JSON.parse(localStorage.getItem("arclightExperience") || "{}") || {};
+  } catch {
+    /* Older profiles have no experience answers. */
+  }
+  const frequency = fieldset.querySelector("select");
+  frequency.value = current.frequency || "";
+  fieldset.querySelectorAll("input").forEach((input) => {
+    input.checked =
+      Array.isArray(current.purposes) && current.purposes.includes(input.value);
+  });
+  fieldset.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = translate(element.dataset.i18n, element.textContent);
+  });
+  form.querySelector(".profile-edit-actions").before(fieldset);
+  window.I18N?.applyTranslations?.(fieldset);
+  return () => {
+    const purposes = [...fieldset.querySelectorAll("input:checked")].map(
+      (input) => input.value,
+    );
+    if (frequency.value || purposes.length)
+      localStorage.setItem(
+        "arclightExperience",
+        JSON.stringify({ frequency: frequency.value, purposes }),
+      );
+    else localStorage.removeItem("arclightExperience");
+    dispatchProfileUpdated();
+  };
+}
 
 const INTERESTS = Object.freeze([
   { value: "eyes", key: "onboarding.field_eyes", label: "Eyes" },
@@ -146,6 +203,7 @@ const ROLES = Object.freeze([
     key: "onboarding.job_dermatologist",
     label: "Dermatologist",
   },
+  { value: "other", key: "onboardingFlow.other", label: "Other" },
 ]);
 
 const STUDENT_EXPERIENCE = Object.freeze([
@@ -183,9 +241,9 @@ async function createTranslator() {
     String(get(dict, path) ?? get(fallbackDict, path) ?? fallback);
 }
 
-function selectedValues(select) {
-  return Array.from(select?.selectedOptions || [])
-    .map((option) => option.value)
+function selectedValues(host) {
+  return Array.from(host?.querySelectorAll("input:checked") || [])
+    .map((input) => input.value)
     .filter(Boolean);
 }
 
@@ -213,18 +271,33 @@ function renderInterestChips(translate) {
 }
 
 function renderRoles(translate) {
-  const select = document.getElementById("editProfileRoles");
-  if (!select) return;
+  const host = document.getElementById("editProfileRoles");
+  if (!host) return;
   const current = new Set(getProfileRoles());
-  select.innerHTML = "";
+  host.innerHTML = "";
 
   ROLES.forEach((role) => {
-    const option = document.createElement("option");
-    option.value = role.value;
-    option.textContent = translate(role.key, role.label);
-    option.selected = current.has(role.value);
-    select.appendChild(option);
+    const label = document.createElement("label");
+    label.className = "profile-edit-role-option";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = role.value;
+    input.checked = current.has(role.value);
+    const text = document.createElement("span");
+    text.textContent = translate(role.key, role.label);
+    label.append(input, text);
+    host.appendChild(label);
   });
+}
+
+function renderRoleSummary(translate) {
+  const selected = new Set(
+    selectedValues(document.getElementById("editProfileRoles")),
+  );
+  document.getElementById("editProfileRolesSummary").textContent =
+    ROLES.filter((role) => selected.has(role.value))
+      .map((role) => translate(role.key, role.label))
+      .join(", ") || translate("onboarding.field_placeholder", "Select");
 }
 
 function createSelect(options, value, translate) {
@@ -252,14 +325,14 @@ function createSelect(options, value, translate) {
   return select;
 }
 
-function renderExperienceFields(translate) {
+function renderExperienceFields(translate, draft) {
   const host = document.getElementById("editProfileExperience");
   const roleSelect = document.getElementById("editProfileRoles");
   if (!host || !roleSelect) return;
 
   const roles = selectedValues(roleSelect);
-  const practiceByRole = readPracticeByRole();
-  const currentStudentYears = localStorage.getItem("studentYears") || "";
+  const practiceByRole = draft.practiceByRole;
+  const currentStudentYears = draft.studentYears;
   host.innerHTML = "";
 
   if (!roles.length) return;
@@ -337,46 +410,133 @@ function saveProfileEdits() {
   writePracticeByRole(practiceByRole);
 }
 
-function wireAvatar() {
-  const input = document.getElementById("editProfileAvatarInput");
-  const button = document.getElementById("editProfileAvatarBtn");
-  button?.addEventListener("click", () => input?.click());
-  input?.addEventListener("change", async () => {
-    const file = input.files?.[0];
-    input.value = "";
-    if (!file) return;
-    try {
-      setProfileAvatarDataUrl(await createProfileAvatarDataUrl(file));
-      renderProfileAvatar(document.getElementById("editProfileAvatar"));
-    } catch (error) {
-      console.warn("[editProfile] avatar update failed", error);
-    }
-  });
-}
-
-export async function initializeEditProfile() {
+export async function initializeEditProfile({ onClose } = {}) {
   const translate = await createTranslator();
   const nameInput = document.getElementById("editProfileName");
   const roleSelect = document.getElementById("editProfileRoles");
   const form = document.getElementById("editProfileForm");
   const cancel = document.getElementById("editProfileCancel");
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = "true";
+  const saveArclightExperience = renderArclightExperience(form, translate);
+  const close = onClose || (() => loadPage("myprofile", { replace: true }));
+  const draft = {
+    avatar: getProfileAvatarDataUrl(),
+    avatarChanged: false,
+    practiceByRole: readPracticeByRole(),
+    studentYears: localStorage.getItem("studentYears") || "",
+  };
+  const previewAvatar = () =>
+    renderProfileAvatar(document.getElementById("editProfileAvatar"), {
+      name: nameInput.value.trim(),
+      avatar: draft.avatar,
+    });
+  const rememberExperience = () => {
+    const student = document.getElementById("editProfileStudentYears");
+    if (student) draft.studentYears = student.value;
+    for (const select of form.querySelectorAll(
+      "#editProfileExperience select[data-role]",
+    )) {
+      draft.practiceByRole[select.dataset.role] = { range: select.value };
+    }
+  };
 
   if (nameInput) nameInput.value = getProfileName();
   renderProfileAvatar(document.getElementById("editProfileAvatar"));
   renderInterestChips(translate);
   renderRoles(translate);
-  renderExperienceFields(translate);
-  wireAvatar();
+  renderRoleSummary(translate);
+  renderExperienceFields(translate, draft);
+  nameInput?.addEventListener("input", previewAvatar);
+  const input = document.getElementById("editProfileAvatarInput");
+  const avatarButton = document.getElementById("editProfileAvatarBtn");
+  const submit = document.getElementById("editProfileSaveBtn");
+  let readingAvatar = false;
+  avatarButton?.addEventListener("click", () => input?.click());
+  input?.addEventListener("change", async () => {
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file || readingAvatar) return;
+    readingAvatar = true;
+    submit.disabled = avatarButton.disabled = true;
+    const error = document.getElementById("editProfileError");
+    error.hidden = true;
+    try {
+      const avatar = await createProfileAvatarDataUrl(file);
+      if (!form.isConnected) return;
+      draft.avatar = avatar;
+      draft.avatarChanged = true;
+      previewAvatar();
+    } catch (failure) {
+      console.warn("[editProfile] avatar update failed", failure);
+      if (form.isConnected) {
+        error.textContent = translate(
+          "profileLayout.photo_error",
+          "Could not open that photo. Please choose another image.",
+        );
+        error.hidden = false;
+      }
+    } finally {
+      readingAvatar = false;
+      submit.disabled = avatarButton.disabled = false;
+    }
+  });
 
-  roleSelect?.addEventListener("change", () =>
-    renderExperienceFields(translate),
-  );
+  roleSelect?.addEventListener("change", () => {
+    rememberExperience();
+    renderRoleSummary(translate);
+    renderExperienceFields(translate, draft);
+  });
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
+    if (readingAvatar) return;
     saveProfileEdits();
-    loadPage("myprofile", { replace: true });
+    saveArclightExperience();
+    if (draft.avatarChanged) setProfileAvatarDataUrl(draft.avatar);
+    close();
   });
-  cancel?.addEventListener("click", () =>
-    loadPage("myprofile", { replace: true }),
+  cancel?.addEventListener("click", close);
+  document.getElementById("editProfileClose")?.addEventListener("click", close);
+}
+
+export async function openProfileEditor(launcher) {
+  const existing = document.getElementById("profileEditorDialog");
+  if (existing) return;
+  const response = await fetch("html/editProfile.html");
+  if (!response.ok) throw new Error("Profile editor unavailable");
+  const html = await response.text();
+  if (!launcher.isConnected) return;
+  const dialog = document.createElement("dialog");
+  dialog.id = "profileEditorDialog";
+  dialog.setAttribute("aria-labelledby", "editProfileTitle");
+  dialog.innerHTML = html;
+  const previousOverflow = document.body.style.overflow;
+  const onLeave = () => dialog.close();
+  dialog.addEventListener(
+    "close",
+    () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("page:loaded", onLeave);
+      dialog.remove();
+      if (launcher.isConnected) launcher.focus({ preventScroll: true });
+    },
+    { once: true },
   );
+  document.body.append(dialog);
+  try {
+    await initializeEditProfile({ onClose: () => dialog.close() });
+    if (!launcher.isConnected) {
+      dialog.remove();
+      return;
+    }
+    window.I18N?.applyTranslations?.(dialog);
+    window.addEventListener("page:loaded", onLeave);
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+  } catch (error) {
+    document.body.style.overflow = previousOverflow;
+    window.removeEventListener("page:loaded", onLeave);
+    dialog.remove();
+    throw error;
+  }
 }

@@ -6,10 +6,15 @@
       "src": "en.m4a",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 1230329,
-      "sha256": "d89368bce816453137f41665af9069df40794ce6ddae8c1c2e42508f9505d64a",
+      "bytes": 1238921,
+      "sha256": "30ff5dde5a82dd9fe2c581b5d557935588cd245c48206f317fa63b90def282bd",
       "durationSeconds": 315.0,
-      "reusedPecSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5"
+      "reusedPecSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5",
+      "overriddenPecCueIds": [
+        "compare-observation",
+        "corresponding-examples",
+        "pupil-colour"
+      ]
     },
     "ko": {
       "src": "ko.m4a",

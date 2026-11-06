@@ -6163,5 +6163,18 @@
       "scoreTemplate": "Mwapeza {{correct}} mwa {{total}} molondola.",
       "incomplete": "Chonde yankhani mafunso onse {{count}} musanatumize."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Sinthani momwe mumagwiritsira ntchito",
+    "profile_hint": "Si mokakamiza — mungasinthe pambuyo pake pa mbiri yanu.",
+    "name_label": "Tikutchuleni dzina liti?",
+    "interest_label": "Mukufuna kuphunzira chiyani?",
+    "not_sure": "Sindinatsimikizebe",
+    "start": "Yambani kuphunzira",
+    "skip": "Dumphani pakadali pano",
+    "specialist": "Katswiri kapena mphunzitsi",
+    "role_detail": "Ntchito yanu ndi iti?",
+    "role_label": "Sankhani udindo wanu",
+    "other": "Zina"
   }
 }

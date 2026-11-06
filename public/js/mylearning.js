@@ -6,6 +6,11 @@ import { ROUTES } from "./config.js";
 import { translateLiteral } from "./i18n.js";
 import { loadPage } from "./navigation.js";
 import { EYES_INDEX } from "./catalog-index.js";
+import {
+  EAR_LESSONS,
+  EAR_LESSON_PARENTS,
+  EAR_TOPICS,
+} from "./earsContentData.js";
 import { LESSON_PROGRESS_EVENT, readLessonProgress } from "./lessonProgress.js";
 import {
   PAEDIATRIC_ROUTE,
@@ -107,6 +112,12 @@ const MY_LEARNING_EYES_IMAGE_MAP = Object.freeze({
 });
 
 const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
+  {
+    route: "ears",
+    title: "Ears",
+    titleI18n: "ears.earsCatalogTitle",
+    image: "images/icon/dashboard/ears.webp",
+  },
   {
     route: PAEDIATRIC_ROUTE,
     title: PAEDIATRIC_TITLE,
@@ -312,6 +323,7 @@ const PROGRESS_TARGET_ROUTES = Object.freeze({
     subPageId: "pupilsPecFullAnimationVideoPage",
   },
   pupilsPecScrollPage: { route: "videos", subPageId: "pupilsPecScrollPage" },
+  cataractScrollPage: { route: "videos", subPageId: "cataractScrollPage" },
   pupilsAdvancedScrollPage: {
     route: "videos",
     subPageId: "pupilsAdvancedScrollPage",
@@ -323,6 +335,10 @@ const PROGRESS_TARGET_ROUTES = Object.freeze({
   makeEyePadShieldScrollPage: {
     route: "eyePadShield",
     subPageId: "makeEyePadShieldScrollPage",
+  },
+  applyEyePadShieldScrollPage: {
+    route: "eyePadShield",
+    subPageId: "applyEyePadShieldScrollPage",
   },
   ...CHILDHOOD_TARGET_ROUTES,
   ...GLAUCOMA_TARGET_ROUTES,
@@ -340,6 +356,7 @@ const PROGRESS_TARGET_ROUTES = Object.freeze({
   pupilsPecPdfPage: { route: "pupilsPecPdf" },
   pupilsAdvancedPdfPage: { route: "pupilsAdvancedPdf" },
   frontOfEyePdfPage: { route: "frontOfEyePdf" },
+  frontOfEyePdfTestPage: { route: "frontOfEyePdfTest" },
   directOphthalmoscopyScrollPage: {
     route: "videos",
     subPageId: "directOphthalmoscopyScrollPage",
@@ -492,8 +509,12 @@ function go(target) {
     "squintIntermediateQuizPage",
     "squintAdvancedQuizPage",
     "cataractPage",
+    "diabeticRetinopathyPage",
+    "cataractScrollPage",
     "cataractSimulatorPage",
     "cataractCaseQuizPage",
+    "cataractCaseQuizPrimaryPage",
+    "cataractCaseQuizAdvancedPage",
     "cataractPrimaryQuizPage",
     "cataractIntermediateQuizPage",
     "cataractAdvancedQuizPage",
@@ -1163,6 +1184,23 @@ function getStoredProgressTargets() {
 async function getInProgressGroups(searchDictionaries) {
   const seenTargets = new Set();
   const targetCatalog = new Map();
+  Object.entries(EAR_LESSONS).forEach(([target, lesson]) => {
+    targetCatalog.set(target, {
+      target,
+      route: target,
+      subPageId: "",
+      title: lesson.title,
+      titleI18n: `ears.content.${target}`,
+      kind:
+        lesson.type === "video"
+          ? "Video"
+          : lesson.type === "pdf"
+            ? "PDF"
+            : "Scrolly",
+      section: EAR_TOPICS[EAR_LESSON_PARENTS[target]]?.title || "Ears",
+      source: getProgressSourceByRoute("ears"),
+    });
+  });
   targetCatalog.set("makeEyePadShieldFullAnimationVideoPage", {
     title: "Full animation",
     kind: "Video",
@@ -1172,11 +1210,17 @@ async function getInProgressGroups(searchDictionaries) {
   // Procedure rows are created at runtime, so their fragment has no static row
   // for the catalog reader. Keep this lesson's title and destination explicit.
   targetCatalog.set("makeEyePadShieldScrollPage", {
-    title: "Make an eye pad and eye shield",
+    title: "Make an Eye Pad and Eye Shield",
     titleI18n: "pecWorkshop.make_eye_pad",
     kind: "Scrolly",
     source: getProgressSourceByRoute("eyePadShield"),
     ...PROGRESS_TARGET_ROUTES.makeEyePadShieldScrollPage,
+  });
+  targetCatalog.set("applyEyePadShieldScrollPage", {
+    title: "Apply an Eye Pad and Eye Shield",
+    kind: "Scrolly",
+    source: getProgressSourceByRoute("eyePadShield"),
+    ...PROGRESS_TARGET_ROUTES.applyEyePadShieldScrollPage,
   });
   const groups = new Map();
   const loadedSources = await Promise.all(

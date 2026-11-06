@@ -7,8 +7,12 @@
  * This configuration centralizes route management, making it easier to update and maintain navigation.
  */
 import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
+import { EAR_ROUTES } from "./earsRoutes.js";
 
 export const ROUTES = {
+  ...Object.fromEntries(
+    EAR_ROUTES.map((route) => [route, "html/earsContent.html"]),
+  ),
   ...Object.fromEntries(
     Object.keys(EYE_CARE_PROCEDURES).map((route) => [
       route,
@@ -48,6 +52,7 @@ export const ROUTES = {
   pupilsPecPdf: "html/fundalReflexPdf.html",
   pupilsAdvancedPdf: "html/fundalReflexPdf.html",
   frontOfEyePdf: "html/fundalReflexPdf.html",
+  frontOfEyePdfTest: "html/frontOfEyePdfTest.html",
   visualsystemeyesbrain: "html/visualsystemeyesbrain.html",
   childhoodAssessment: "html/childhoodAssessment.html",
   behavioursquiz: "html/behavioursquiz.html",

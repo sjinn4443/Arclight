@@ -14,7 +14,8 @@ import {
 } from "../public/js/cataractCaseQuiz.js";
 
 const html = fs.readFileSync("public/html/videos.html", "utf8");
-const quiz = () => document.getElementById("cataractCaseQuizPage");
+let activeQuizId = "cataractCaseQuizPage";
+const quiz = () => document.getElementById(activeQuizId);
 const click = (text) => {
   const target = [...quiz().querySelectorAll("button")].find(
     (b) => b.textContent === text,
@@ -22,15 +23,17 @@ const click = (text) => {
   expect(target).toBeTruthy();
   target.click();
 };
-const start = () => {
+const start = (pageId = "cataractCaseQuizPage") => {
+  activeQuizId = pageId;
   initializeCataractCaseQuiz();
-  syncCataractCaseQuiz("cataractCaseQuizPage");
+  syncCataractCaseQuiz(pageId);
   click("Next");
   click("Next");
   click("Start");
 };
 
 beforeEach(() => {
+  activeQuizId = "cataractCaseQuizPage";
   jest.spyOn(Math, "random").mockReturnValue(0.999999);
   jest.useFakeTimers();
   localStorage.clear();
@@ -50,7 +53,12 @@ test("cataract folder holds the original simulator target and the case quiz", ()
     [...folder.querySelectorAll(".lesson-type")].map((n) =>
       n.textContent.trim(),
     ),
-  ).toEqual(["Facilitators Material", "Quiz"]);
+  ).toEqual([
+    "Facilitators Material",
+    "Quiz · Primary",
+    "Quiz · Intermediate",
+    "Quiz · Advanced",
+  ]);
   expect(folder.querySelector(".lesson-row--interactive").dataset.target).toBe(
     "cataractSimulatorPage",
   );
@@ -95,7 +103,7 @@ test("shuffles all eight cases on first start and restart, preserving navigation
       CATARACT_QUIZ_CASES.find((item) => item.id === quiz().dataset.caseId)
         .answer,
     );
-    click("Next Case");
+    click("Next >");
   }
   expect(new Set(ids).size).toBe(8);
   expect(ids).not.toEqual(CATARACT_QUIZ_CASES.map((item) => item.id));
@@ -123,8 +131,8 @@ test("pairs findings for each eye and presents histories in the third person", (
   expect(panels).toHaveLength(2);
   for (const panel of panels) {
     expect(panel.querySelectorAll(".cataract-quiz-eye")).toHaveLength(2);
-    expect(panel.textContent).toContain("Right eye");
-    expect(panel.textContent).toContain("Left eye");
+    expect(panel.textContent).toContain("R.E.");
+    expect(panel.textContent).toContain("L.E.");
   }
   jest.advanceTimersByTime(9000);
   click("Submit Answer");
@@ -142,7 +150,7 @@ test("allows an answer immediately and reveals the remaining history after gradi
   expect(quiz().querySelectorAll(".casechat-bubble--pending")).toHaveLength(0);
   expect(
     quiz().querySelector(".cataract-quiz-answer-feedback").textContent,
-  ).toContain("Correct.");
+  ).toContain("Correct answer:");
 });
 
 test("clinical views preserve the fellow eye and distinguish haze from retinal disease", () => {
@@ -236,12 +244,12 @@ test("reveals history sequentially, permits two attempts and records progress", 
   click(CATARACT_QUIZ_CASES[0].answer);
   expect(
     quiz().querySelector(".cataract-quiz-answer-feedback").textContent,
-  ).toContain("Correct.");
+  ).toContain("Correct answer:");
   expect(
     JSON.parse(localStorage.getItem("lessonProgress:cataractCaseQuizPage"))
       .percent,
   ).toBe(12.5);
-  click("Next Case");
+  click("Next >");
   expect(
     quiz().querySelector(".cataract-quiz-case-heading").textContent,
   ).toContain("Case 2");
@@ -257,12 +265,12 @@ test("pauses on exit and handles timeout, completion, review and restart", () =>
   jest.advanceTimersByTime(88000);
   expect(quiz().textContent).toContain("Time is up.");
   for (let i = 1; i < CATARACT_QUIZ_CASES.length; i++) {
-    click("Next Case");
+    click("Next >");
     jest.advanceTimersByTime(9000);
     click("Submit Answer");
     click(CATARACT_QUIZ_CASES[i].answer);
   }
-  click("Next Case");
+  click("Next >");
   expect(quiz().querySelector(".casechat-modalCard").textContent).toContain(
     "7 out of 8",
   );
@@ -302,16 +310,16 @@ test("answer feedback stays in the dialog and previous/next preserves scores", (
   expect(quiz().querySelector(".casechat-log").textContent).not.toContain(
     "Correct answer:",
   );
-  click("Next Case");
+  click("Next >");
   jest.advanceTimersByTime(9000);
   click("Submit Answer");
   click(CATARACT_QUIZ_CASES[1].answer);
-  click("Previous Case");
+  click("< Previous");
   expect(
     quiz().querySelector(".cataract-quiz-case-heading").textContent,
   ).toContain("Case 1");
-  expect(modal.textContent).toContain("Correct.");
-  click("Next Case");
+  expect(modal.textContent).toContain("Correct answer:");
+  click("Next >");
   expect(
     quiz().querySelector(".cataract-quiz-case-heading").textContent,
   ).toContain("Case 2");
@@ -334,11 +342,11 @@ test("closing the dialog preserves attempts and two wrong answers still allow th
   click(CATARACT_QUIZ_CASES[0].distractors[1]);
   expect(
     quiz().querySelector(".cataract-quiz-answer-feedback").textContent,
-  ).toContain("Incorrect.");
+  ).toContain("Correct answer:");
   expect(
     quiz().querySelector(".cataract-quiz-answer-feedback").textContent,
   ).toContain(CATARACT_QUIZ_CASES[0].explanation);
-  click("Next Case");
+  click("Next >");
   expect(
     quiz().querySelector(".cataract-quiz-case-heading").textContent,
   ).toContain("Case 2");
@@ -371,3 +379,195 @@ test("answer summaries are bold and only urgent or referral terms are marked", (
   }
   expect(feedback.textContent).toContain(CATARACT_QUIZ_CASES[0].explanation);
 });
+
+test("finished answers hide the attempt hint and status, with equally unselected wrong options", () => {
+  start();
+  click("Submit Answer");
+  expect(quiz().querySelector(".casechat-modal__title").textContent).toBe(
+    "Answer",
+  );
+  click(CATARACT_QUIZ_CASES[0].distractors[0]);
+  expect(quiz().querySelector(".casechat-modal__dxHint").textContent).toContain(
+    "1",
+  );
+  click(CATARACT_QUIZ_CASES[0].distractors[1]);
+  expect(quiz().querySelector(".casechat-modal__dxHint")).toBeNull();
+  expect(
+    quiz().querySelector(".casechat-resultOk, .casechat-tryagain"),
+  ).toBeNull();
+  const wrong = quiz().querySelectorAll(".casechat-dxitem.is-wrong");
+  expect(wrong).toHaveLength(2);
+  for (const choice of wrong) {
+    expect(choice.getAttribute("aria-checked")).toBe("false");
+    expect(choice.classList.contains("is-selected")).toBe(false);
+  }
+  expect(
+    quiz().querySelector(".cataract-quiz-next-step").textContent,
+  ).toContain("Next step:");
+  click("Next >");
+  click("Submit Answer");
+  click(CATARACT_QUIZ_CASES[1].answer);
+  expect(quiz().querySelector(".casechat-modal__dxHint")).toBeNull();
+});
+
+test("Primary reveals inline choices after history and only grades on Submit Answer without a timeout", () => {
+  start("cataractCaseQuizPrimaryPage");
+  expect(quiz().querySelector(".caseTimer").hidden).toBe(true);
+  expect(quiz().querySelector(".cataract-quiz-eye-note").textContent).toBe(
+    "Poor view",
+  );
+  expect(quiz().querySelector(".cataract-quiz-inline-choices").hidden).toBe(
+    true,
+  );
+  expect(quiz().querySelector(".cataract-quiz-submit").disabled).toBe(true);
+  jest.advanceTimersByTime(9000);
+  expect(quiz().querySelector(".cataract-quiz-inline-choices").hidden).toBe(
+    false,
+  );
+  expect(
+    quiz().querySelectorAll('.cataract-quiz-inline-choices [role="radio"]'),
+  ).toHaveLength(4);
+  jest.advanceTimersByTime(180000);
+  expect(quiz().querySelector(".casechat-modal").hidden).toBe(true);
+  click(CATARACT_QUIZ_CASES[0].distractors[0]);
+  expect(
+    localStorage.getItem("lessonProgress:cataractCaseQuizPrimaryPage"),
+  ).toBeNull();
+  click("Submit Answer");
+  expect(quiz().querySelector(".casechat-modal").hidden).toBe(true);
+  expect(quiz().querySelectorAll(".casechat-dxitem.is-wrong")).toHaveLength(1);
+  expect(quiz().querySelector(".cataract-quiz-submit").disabled).toBe(true);
+  click(CATARACT_QUIZ_CASES[0].answer);
+  click("Submit Answer");
+  expect(quiz().querySelector(".casechat-modal").hidden).toBe(true);
+  expect(
+    quiz().querySelector(".cataract-quiz-inline-feedback").textContent,
+  ).toContain(CATARACT_QUIZ_CASES[0].explanation);
+  expect(quiz().querySelector(".cataract-quiz-submit")).toBeNull();
+  expect(quiz().querySelector(".cataract-quiz-footer").textContent).toContain(
+    "Next >",
+  );
+  expect(
+    JSON.parse(
+      localStorage.getItem("lessonProgress:cataractCaseQuizPrimaryPage"),
+    ).percent,
+  ).toBe(12.5);
+  expect(
+    localStorage.getItem("lessonProgress:cataractCaseQuizPage"),
+  ).toBeNull();
+});
+
+test("Advanced explains its viewing window, abbreviates eyes, allows keyboard exploration and expires at 30 seconds", () => {
+  activeQuizId = "cataractCaseQuizAdvancedPage";
+  initializeCataractCaseQuiz();
+  syncCataractCaseQuiz(activeQuizId);
+  expect(
+    quiz().querySelector(".cataract-quiz-intro-hint").textContent,
+  ).toContain("Drag");
+  click("Next");
+  click("Next");
+  expect(
+    quiz().querySelector(".cataract-quiz-intro-hint").textContent,
+  ).toContain("30 seconds");
+  click("Start");
+  expect(quiz().querySelector(".caseTimer text").textContent).toBe("30");
+  expect(quiz().querySelectorAll(".casechat-bubble--pending")).toHaveLength(0);
+  expect(quiz().querySelectorAll(".cataract-quiz-viewing-window")).toHaveLength(
+    2,
+  );
+  const mask = quiz().querySelector(".cataract-quiz-viewing-window");
+  mask.dispatchEvent(
+    new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+  );
+  expect(mask.style.getPropertyValue("--view-x")).toBe("55%");
+  jest.advanceTimersByTime(9000);
+  expect(quiz().querySelector(".casechat-log").textContent).toContain("R.E.");
+  expect(quiz().querySelector(".casechat-log").textContent).not.toMatch(
+    /right eye|left eye/i,
+  );
+  jest.advanceTimersByTime(20750);
+  expect(quiz().querySelector(".casechat-modal").hidden).toBe(true);
+  jest.advanceTimersByTime(250);
+  expect(quiz().querySelector(".casechat-modal").textContent).toContain(
+    "Time is up.",
+  );
+  expect(
+    JSON.parse(
+      localStorage.getItem("lessonProgress:cataractCaseQuizAdvancedPage"),
+    ).percent,
+  ).toBe(12.5);
+});
+
+test("switching levels pauses the inactive timer and keeps answers separate", () => {
+  start();
+  jest.advanceTimersByTime(2000);
+  start("cataractCaseQuizAdvancedPage");
+  jest.advanceTimersByTime(5000);
+  expect(
+    document.querySelector("#cataractCaseQuizPage .caseTimer text").textContent,
+  ).toBe("88");
+  syncCataractCaseQuiz("cataractCaseQuizPage");
+  jest.advanceTimersByTime(1000);
+  expect(
+    document.querySelector("#cataractCaseQuizPage .caseTimer text").textContent,
+  ).toBe("87");
+  expect(quiz().querySelector(".caseTimer text").textContent).toBe("25");
+});
+
+test.each([
+  "cataractCaseQuizPrimaryPage",
+  "cataractCaseQuizPage",
+  "cataractCaseQuizAdvancedPage",
+])(
+  "%s completes, reviews separated history and answers, and restores graded cases",
+  (pageId) => {
+    start(pageId);
+    const primary = pageId === "cataractCaseQuizPrimaryPage";
+    for (let i = 0; i < CATARACT_QUIZ_CASES.length; i++) {
+      const item = CATARACT_QUIZ_CASES[i];
+      if (primary) {
+        jest.advanceTimersByTime(9000);
+        click(item.answer);
+        click("Submit Answer");
+        if (i === 1) {
+          click("< Previous");
+          expect(quiz().querySelector(".casechat-modal").hidden).toBe(true);
+          expect(
+            quiz().querySelector(".cataract-quiz-inline-feedback").textContent,
+          ).toContain(CATARACT_QUIZ_CASES[0].explanation);
+          click("Next >");
+        }
+      } else {
+        click("Submit Answer");
+        click(item.answer);
+      }
+      click("Next >");
+    }
+    expect(
+      quiz().querySelector(".cataract-quiz-score-correct").textContent,
+    ).toBe("8 out of 8 correct.");
+    const actions = quiz().querySelector(".cataract-quiz-completion-actions");
+    expect(
+      [...actions.querySelectorAll("button")].map((node) => node.textContent),
+    ).toEqual(["Review", "Restart", "Quit"]);
+    click("Review");
+    expect(
+      quiz().querySelectorAll(
+        ".cataract-quiz-review-history .casechat-bubble--bot",
+      ),
+    ).toHaveLength(40);
+    expect(
+      quiz().querySelectorAll(".cataract-quiz-review-response"),
+    ).toHaveLength(8);
+    expect(
+      quiz().querySelectorAll(
+        ".cataract-quiz-review-explanation .cataract-quiz-next-step",
+      ),
+    ).toHaveLength(8);
+    expect(
+      quiz().querySelectorAll(".cataract-quiz-viewing-window"),
+    ).toHaveLength(0);
+    click("Restart");
+    expect(quiz().querySelectorAll(".cataract-quiz-review")).toHaveLength(0);
+  },
+);

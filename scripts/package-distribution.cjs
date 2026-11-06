@@ -12,11 +12,12 @@ const {
 /** @param {string} url */
 function isPackAsset(url) {
   return (
+    /^\/documents\/ears\//.test(url) ||
     /^\/(?:videos|video-hls|video-subtitles|narration|subapp|scrolly|scrolls|AnteriorSegmentQuiz)\//.test(
       url,
     ) ||
     /^\/translation\/(?!english\.json$)/.test(url) ||
-    /^\/images\/(?!icon\/|icons_pic\/|atoms\/)/.test(url) ||
+    /^\/images\/(?!icon\/|icons_pic\/)/.test(url) ||
     /^\/html\/.*\.json$/.test(url)
   );
 }

@@ -1,0 +1,59 @@
+<section id="frontOfEyePdfTestPage" class="page active has-eyes-topbar">
+  <div class="container">
+    <div class="eyes-topbar">
+      <div class="eyes-topbar__title">Front of Eye PDF(test)</div>
+      <div class="eyes-topbar__icons">
+        <span
+          class="icon menuBtn"
+          role="button"
+          tabindex="0"
+          aria-label="Menu"
+          data-i18n="i18nExtra.menu_aria_label:aria-label"
+          >&#9776;</span
+        >
+      </div>
+    </div>
+
+    <div class="foe-book">
+      <label class="foe-book__section-label" for="foeBookSection"
+        >Section</label
+      >
+      <select id="foeBookSection" class="foe-book__section">
+        <option value="0">1. Observation and Magnified Examination</option>
+        <option value="3">2. Anterior Chamber Depth</option>
+        <option value="4">
+          3. Fluorescein Corneal Staining and Upper Eyelid Eversion
+        </option>
+      </select>
+      <div
+        class="foe-book__position"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+      <article class="foe-book__sheet" aria-labelledby="foeBookHeading">
+        <h1 id="foeBookHeading" tabindex="-1"></h1>
+        <p class="foe-book__hint">Tap an image to enlarge.</p>
+        <div class="foe-book__panels"></div>
+      </article>
+      <nav class="foe-book__navigation" aria-label="PDF pages">
+        <button type="button" class="childhood-prev-btn" data-book-previous>
+          ← Previous page
+        </button>
+        <span class="foe-book__page-number" aria-hidden="true"></span>
+        <button
+          type="button"
+          class="childhood-next-btn is-ready"
+          data-book-next
+        >
+          Next page →
+        </button>
+      </nav>
+    </div>
+  </div>
+  <dialog class="foe-book__zoom" aria-label="Enlarged PDF illustration">
+    <form method="dialog">
+      <button type="submit" autofocus>Close ×</button>
+    </form>
+    <img alt="" />
+  </dialog>
+</section>

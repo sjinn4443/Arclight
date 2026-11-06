@@ -1,0 +1,320 @@
+/* Glaucoma lessons follow the PEC / Medical Students clinical teaching layout.
+   Keep these rules scoped: shared video pages also serve other workshops. */
+.glaucoma-clinical-page .glaucoma-scrolly-container {
+  padding-bottom: 40px !important;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-hero {
+  width: min(88vw, 760px);
+  min-height: 0 !important;
+  margin: 0 auto 28px !important;
+  padding: 36px 0 16px !important;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-hero h2 {
+  line-height: 1.08 !important;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-stack {
+  gap: 34px !important;
+  padding: 0 0 40px !important;
+}
+.glaucoma-clinical-page .glaucoma-clinical-panel {
+  width: min(88vw, 760px);
+  min-height: 0 !important;
+  align-content: start !important;
+  align-items: center;
+  gap: 24px !important;
+  padding: 24px 20px;
+  opacity: 1;
+  transform: none;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-copy {
+  min-width: 0;
+  gap: 14px !important;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-copy h3 {
+  line-height: 1.12 !important;
+  overflow-wrap: anywhere;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-index {
+  flex-shrink: 0;
+  margin: 0 0 2px !important;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure {
+  align-self: center;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure__images {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: #fff;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure figcaption {
+  background: var(--glaucoma-scrolly-accent);
+  letter-spacing: 0;
+}
+.glaucoma-clinical-page .glaucoma-diagram {
+  min-height: 0;
+  padding: 18px;
+  align-self: start;
+  animation: none;
+}
+.glaucoma-clinical-page .glaucoma-flow {
+  min-height: 0;
+}
+.glaucoma-clinical-page .glaucoma-flow span {
+  animation: none !important;
+}
+.glaucoma-clinical-page .glaucoma-next-wrap {
+  position: static;
+  box-sizing: border-box;
+  width: min(88vw, 760px);
+  margin: 28px auto 0;
+}
+/* Match PEC's centred inset folders and in-place expanded headings. */
+#glaucomaWorkshopPage.glaucoma-workshop-page #glaucomaWorkshopFolders {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px !important;
+  padding: 35px 0;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page .pupil-level__cap {
+  margin-bottom: 0 !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row {
+  box-sizing: border-box;
+  position: relative;
+  width: calc(79% + 24px) !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  grid-template-columns: 62px minmax(0, 1fr) !important;
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  gap: 5px !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .thumb {
+  width: 62px !important;
+  height: 52px !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-main {
+  display: block !important;
+  align-self: end !important;
+  min-height: 0 !important;
+  margin: 0 0 8px !important;
+  padding-right: 48px;
+  transform: none !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-top {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-type {
+  display: block !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row
+  .lesson-cta {
+  position: absolute;
+  right: 18px;
+  bottom: 10px;
+  margin: 0 !important;
+  line-height: 15px;
+}
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  #glaucomaWorkshopPage.glaucoma-workshop-page
+    #glaucomaWorkshopFolders
+    .glaucoma-folder-row {
+    width: calc(100% - 28px) !important;
+    max-width: 428px;
+    height: 68px !important;
+    min-height: 68px !important;
+    padding: 8px 18px !important;
+  }
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  :is(.glaucoma-section-card, .glaucoma-subsection-card) {
+  width: 100%;
+  gap: 12px !important;
+  padding: 0 !important;
+  background: transparent;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  :is(.glaucoma-section-card, .glaucoma-subsection-card)
+  > h3 {
+  box-sizing: border-box;
+  margin: 8px 0 0 !important;
+  padding: 0 8px !important;
+  font-size: 14px;
+  line-height: 1.35;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  .glaucoma-section-card
+  .lesson-row {
+  box-sizing: border-box;
+  width: 80% !important;
+  margin: 8px auto;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  .glaucoma-subsection-card
+  .lesson-row {
+  width: 72% !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page .see-all-toggle {
+  border: 0;
+  background: transparent;
+  color: #acacac;
+  font: inherit;
+  cursor: pointer;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  :is(.lesson-row, .see-all-toggle):focus-visible {
+  outline: 3px solid #15e115;
+  outline-offset: 4px;
+}
+/* PEC-style video framing while a Glaucoma workshop lesson owns navigation. */
+#videos .glaucoma-workshop-video .video-header {
+  position: static;
+  padding: 23px 18px 26px;
+}
+#videos .glaucoma-workshop-video .video-header h3 {
+  text-align: center;
+  line-height: 1.25;
+}
+#videos .glaucoma-workshop-video .video-container {
+  box-sizing: border-box;
+  width: calc(100% - 36px);
+  max-width: 960px;
+  max-height: none;
+  margin: 49px auto 0;
+  padding: 21px 0 0 !important;
+}
+#videos .glaucoma-workshop-video video {
+  width: 100%;
+  height: auto;
+  max-height: 70dvh;
+  object-fit: contain;
+}
+#videos .glaucoma-workshop-video .tri-toggle__knob {
+  background: #00d900;
+}
+#videos .glaucoma-workshop-video .glaucoma-next-wrap {
+  position: static;
+  box-sizing: border-box;
+  width: calc(100% - 36px);
+  max-width: 960px;
+  margin: 50px auto 28px;
+}
+@media (min-width: 48em) {
+  .glaucoma-clinical-page .glaucoma-clinical-panel {
+    grid-template-columns: minmax(0, 1.05fr) minmax(220px, 0.8fr);
+    padding: 34px;
+  }
+  .glaucoma-clinical-page .glaucoma-clinical-panel--text {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glaucoma-clinical-page [data-glaucoma-scroll-step] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+/* Crop the existing slide artwork in its original file, without duplicating media. */
+.glaucoma-clinical-page .glaucoma-clinical-figure__crop {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 10px;
+  background: #fff;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure__crop img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  border-radius: 0;
+}
+.glaucoma-clinical-page .glaucoma-scrolly-hero[data-glaucoma-scroll-step] {
+  opacity: 1;
+  transform: none;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  :is(.glaucoma-folder-row, .glaucoma-subfolder-row)[aria-expanded="true"] {
+  display: none !important;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  :is(.glaucoma-section-card, .glaucoma-subsection-card)
+  > h3 {
+  min-height: 32px;
+  white-space: nowrap;
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page .see-all-toggle {
+  flex: 0 0 auto;
+  width: auto !important;
+  min-width: 0;
+  min-height: 32px;
+  margin: 0 15px 0 auto !important;
+  padding: 4px 0;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure__item {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+.glaucoma-clinical-page .glaucoma-clinical-figure__item > span {
+  color: #374151;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+}
+@media (min-width: 48em) {
+  .glaucoma-clinical-page
+    .glaucoma-clinical-panel:has(.glaucoma-clinical-figure--series) {
+    grid-template-columns: 1fr;
+  }
+  .glaucoma-clinical-page
+    .glaucoma-clinical-figure--series
+    .glaucoma-clinical-figure__images {
+    grid-template-columns: repeat(
+      var(--glaucoma-series-columns),
+      minmax(0, 1fr)
+    );
+    align-items: center;
+  }
+}
+#glaucomaWorkshopPage.glaucoma-workshop-page
+  #glaucomaWorkshopFolders
+  .glaucoma-folder-row[aria-expanded="true"] {
+  display: none !important;
+}

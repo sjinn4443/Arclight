@@ -6163,5 +6163,18 @@
       "scoreTemplate": "Uthole {{correct}} kokungu {{total}} kulungile.",
       "incomplete": "Sicela uphendule yonke imibuzo ye-{{count}} ngaphambi kokuthumela."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Yenza uhlelo luhambisane nawe",
+    "profile_hint": "Akuphoqelekile — ungakushintsha kamuva kuphrofayela.",
+    "name_label": "Sikubize ngani?",
+    "interest_label": "Yini ongathanda ukuyifunda?",
+    "not_sure": "Angikaqiniseki",
+    "start": "Qala ukufunda",
+    "skip": "Yeqa okwamanje",
+    "specialist": "Uchwepheshe noma uthisha",
+    "role_detail": "Iyini indima yakho?",
+    "role_label": "Khetha indima yakho yomsebenzi",
+    "other": "Okunye"
   }
 }

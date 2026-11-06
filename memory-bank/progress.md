@@ -1,5 +1,71 @@
 # Progress
 
+## Optional two-step onboarding — 6 November 2026
+
+- Applied account details → optional personalisation → introduction → learning,
+  with direct guest entry and no dashboard introduction link. Existing APIs and sync contracts
+  remain unchanged; the optional `arclightExperience` profile record uses the
+  existing sync pipeline and needs no account data migration.
+- Added regressions for Unicode names, optional answers, Back/draft retention,
+  duplicate-submit prevention, recovery navigation and download interruption.
+- Desktop/mobile Chromium covered 44 account/profile scenarios. The initial run
+  passed 43; an early Edit Profile click exposed a readiness race. Disabling that
+  launcher until its handler is installed fixed it, and all eight affected profile
+  checks passed on rerun. All 33 API/storage/sync/prompt unit tests passed.
+- The production build passed its shell/media budgets, as did the 181-file HTML
+  accessibility audit and changed-file lint. Whole-repository translation QA still
+  reports unrelated existing gaps; all 20 new labels exist in all 26 dictionaries.
+  WebKit is not installed locally. The usual localhost:3000 server was refreshed;
+  the editor process was identified separately and retained. Account work was not
+  staged or published.
+
+- Follow-up layout revision restores the earlier vertical offset and focused
+  speech bubbles, changes the role question to “What is your role?” and matches
+  role choices to 14px interest chips. All 16 relevant desktop/mobile onboarding
+  checks passed, including saving/skipping through the intro and lesson return.
+  Accessibility and lint passed. Direct control of the existing browser tab was
+  disabled in Work settings; isolated repository tests supplied render checks.
+
+## Download discovery and inventory — 5 November 2026
+
+- Added the one-time 15-click browser invitation, content-bundle ratios and
+  green/orange/red status, with lazy expandable downloaded-content details.
+- Shared key enumeration and background snapshots remove full response scans
+  from repeated opens. Offline manifest metadata survives reloads.
+- 125 focused unit checks and six desktop/mobile Chrome UI checks passed,
+  including pause/resume, saved-manifest fallback and repeated opens. Changed
+  runtime modules passed lint/formatting; browser bundles compiled in memory.
+  The full translation audit reports missing keys, including invitation strings
+  with English/Korean entries and English fallback in other locales.
+  Full production build stopped with
+  ENOSPC; the temporary output from that attempt was removed. Windows WebKit
+  binaries were unavailable, so the mobile checks used Chrome emulation.
+
+## Ears source curriculum — 5 November 2026
+
+- Aligned the 51 internal Ears lessons with Eyes: shared Medical Students scroll
+  cards/typography, full-ratio images, PEC video geometry and header quality
+  toggle, white document surfaces and two wide level-coloured navigation buttons.
+  Kept source order, source pages, zoom, quality switching and earned progress.
+- Matched all 15 Ears topic lists to Eyes: compact lesson rows, aligned titles,
+  icons and progress, grey Start links, inline durations and two grey dots
+  between levels. Topic-only overrides keep lesson readers unchanged.
+  Thirty Chrome checks passed across desktop, tablet and phone, including
+  geometry comparisons for every topic and existing Ears navigation/readers.
+- Assigned the supplied archive to 15 topic pages and 51 learning entries across
+  examination, hearing assessment, primary ear care procedures and workshops.
+- Preserved 18 original PDFs and rendered all 228 pages for an in-app reader;
+  retained complete WHO practical page ranges and original teaching downloads.
+- Converted three unique source recordings to low/high variants, deduplicated
+  the OSCE recording, and built source-based landmark and illustrated panels.
+- Added topic/lesson Back flow, page restore, diagram zoom, shared progress,
+  My Learning, Dashboard search and Ears offline selection. Document originals
+  are packaged as optional content, and shared routing uses a small index.
+- Eighteen source and sixteen production desktop/mobile Chrome browser checks,
+  73 focused unit checks, accessibility and the complete production build passed.
+  Source ownership and packaging checks also cover the new assets; the complete
+  translation audit still reports the pre-existing missing keys.
+
 ## Cataract case quiz — 4 November 2026
 
 - Added mobile-only history-following scroll up to 767px, with viewport-boundary

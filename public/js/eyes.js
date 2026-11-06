@@ -161,6 +161,8 @@ const VIDEO_PAGE_IDS = new Set([
   "swollenDiscsInteractivePage",
   "squintPalsyPage",
   "cataractPage",
+  "diabeticRetinopathyPage",
+  "cataractScrollPage",
 ]);
 
 const EYES_CAROUSEL_STATE_KEY = "arclight:eyes:carousel-state:v1";
@@ -613,7 +615,7 @@ export function initializeEyesCatalog() {
       {
         label: "Diabetic Retinopathy",
         target: EYES_INDEX["Diabetic Retinopathy"],
-        tags: ["Coming Soon"],
+        tags: ["Scroll", "Video", "Quiz"],
       },
       {
         label: "Corneal Disease",

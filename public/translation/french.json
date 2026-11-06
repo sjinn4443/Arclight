@@ -10804,5 +10804,18 @@
   "splashscreenMid": {
     "ariaLabel": "Écran de démarrage intermédiaire",
     "logoOneAlt": "Logo un"
+  },
+  "onboardingFlow": {
+    "profile_title": "Personnalisez votre expérience",
+    "profile_hint": "Facultatif : vous pourrez modifier ces informations dans votre profil.",
+    "name_label": "Comment vous appeler ?",
+    "interest_label": "Que souhaitez-vous apprendre ?",
+    "not_sure": "Je ne sais pas encore",
+    "start": "Commencer à apprendre",
+    "skip": "Passer pour le moment",
+    "specialist": "Spécialiste ou formateur",
+    "role_detail": "Quel rôle ?",
+    "role_label": "Sélectionnez votre rôle",
+    "other": "Autre"
   }
 }

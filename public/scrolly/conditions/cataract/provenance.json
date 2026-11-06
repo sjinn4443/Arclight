@@ -1,0 +1,364 @@
+{
+  "sourceDocument": "Cataract_Edit5.pdf",
+  "pdfSha256": "4409873219ed9638157e1bb4a97598c2573313c1d0a34e5f32dcc882308e3572",
+  "pageCount": 1,
+  "artwork": "Original source PDF components; no replacement illustrations.",
+  "assets": {
+    "method-1": {
+      "box": [69, 129, 170, 96],
+      "width": 1190,
+      "height": 672
+    },
+    "cataract-1": {
+      "box": [273, 129, 131, 96],
+      "width": 917,
+      "height": 672
+    },
+    "refer-1": {
+      "box": [413, 129, 131, 96],
+      "width": 917,
+      "height": 672
+    },
+    "method-2": {
+      "box": [69, 230, 170, 120],
+      "width": 1190,
+      "height": 840
+    },
+    "cataract-2": {
+      "box": [273, 230, 131, 120],
+      "width": 917,
+      "height": 840
+    },
+    "refer-2": {
+      "box": [413, 230, 131, 120],
+      "width": 917,
+      "height": 840
+    },
+    "method-3": {
+      "box": [69, 355, 170, 120],
+      "width": 1190,
+      "height": 840
+    },
+    "cataract-3": {
+      "box": [273, 355, 131, 120],
+      "width": 917,
+      "height": 840
+    },
+    "refer-3": {
+      "box": [413, 355, 131, 120],
+      "width": 917,
+      "height": 840
+    },
+    "method-4": {
+      "box": [69, 480, 170, 121],
+      "width": 1190,
+      "height": 847
+    },
+    "cataract-4": {
+      "box": [273, 480, 131, 121],
+      "width": 917,
+      "height": 847
+    },
+    "refer-4": {
+      "box": [413, 480, 131, 121],
+      "width": 917,
+      "height": 847
+    },
+    "method-5": {
+      "box": [69, 606, 170, 106],
+      "width": 1190,
+      "height": 742
+    },
+    "cataract-5": {
+      "box": [273, 606, 131, 106],
+      "width": 917,
+      "height": 742
+    },
+    "refer-5": {
+      "box": [413, 606, 131, 106],
+      "width": 917,
+      "height": 742
+    },
+    "method-6": {
+      "box": [69, 717, 170, 106],
+      "width": 1190,
+      "height": 742
+    },
+    "cataract-6": {
+      "box": [273, 717, 131, 106],
+      "width": 917,
+      "height": 742
+    },
+    "refer-6": {
+      "box": [413, 717, 131, 106],
+      "width": 917,
+      "height": 742
+    },
+    "history-method-bubble-1": {
+      "box": [79, 139, 73, 31],
+      "width": 511,
+      "height": 217
+    },
+    "history-method-bubble-2": {
+      "box": [79, 174, 73, 32],
+      "width": 511,
+      "height": 224
+    },
+    "history-method-base": {
+      "box": [69, 129, 170, 96],
+      "width": 1190,
+      "height": 672
+    },
+    "history-cataract-bubble-1": {
+      "box": [345, 139, 53, 32],
+      "width": 371,
+      "height": 224
+    },
+    "history-cataract-bubble-2": {
+      "box": [345, 174, 53, 32],
+      "width": 371,
+      "height": 224
+    },
+    "history-cataract-base": {
+      "box": [273, 129, 131, 96],
+      "width": 917,
+      "height": 672
+    },
+    "history-refer-bubble-1": {
+      "box": [462, 137, 80, 35],
+      "width": 560,
+      "height": 245
+    },
+    "history-refer-bubble-2": {
+      "box": [462, 174, 68, 32],
+      "width": 476,
+      "height": 224
+    },
+    "history-refer-base": {
+      "box": [413, 129, 131, 96],
+      "width": 917,
+      "height": 672
+    },
+    "front-cataract-1": {
+      "box": [286, 363, 109, 46],
+      "width": 763,
+      "height": 322
+    },
+    "front-cataract-2": {
+      "box": [286, 418, 109, 46],
+      "width": 763,
+      "height": 322
+    },
+    "front-refer-1": {
+      "box": [425, 358, 119, 52],
+      "width": 833,
+      "height": 364
+    },
+    "front-refer-2": {
+      "box": [425, 416, 119, 49],
+      "width": 833,
+      "height": 343
+    },
+    "pupil-cataract-1": {
+      "box": [285, 491, 110, 42],
+      "width": 770,
+      "height": 294
+    },
+    "pupil-cataract-2": {
+      "box": [285, 541, 110, 44],
+      "width": 770,
+      "height": 308
+    },
+    "pupil-refer-1": {
+      "box": [423, 486, 114, 48],
+      "width": 798,
+      "height": 336
+    },
+    "pupil-refer-2": {
+      "box": [423, 538, 114, 47],
+      "width": 798,
+      "height": 329
+    },
+    "reflex-cataract-1": {
+      "box": [290, 616, 48, 39],
+      "width": 336,
+      "height": 273
+    },
+    "reflex-cataract-2": {
+      "box": [340, 616, 45, 39],
+      "width": 315,
+      "height": 273
+    },
+    "reflex-cataract-3": {
+      "box": [290, 663, 48, 39],
+      "width": 336,
+      "height": 273
+    },
+    "reflex-cataract-4": {
+      "box": [340, 663, 45, 39],
+      "width": 315,
+      "height": 273
+    },
+    "reflex-refer-1": {
+      "box": [426, 610, 118, 44],
+      "width": 826,
+      "height": 308
+    },
+    "reflex-refer-2": {
+      "box": [426, 665, 118, 39],
+      "width": 826,
+      "height": 273
+    },
+    "fundus-cataract-1": {
+      "box": [286, 727, 109, 41],
+      "width": 763,
+      "height": 287
+    },
+    "fundus-cataract-2": {
+      "box": [286, 774, 109, 41],
+      "width": 763,
+      "height": 287
+    },
+    "fundus-refer-1": {
+      "box": [420, 720, 124, 98],
+      "width": 868,
+      "height": 686
+    },
+    "pupil-cataract-1-pupil": {
+      "box": [377.9549, 516.315, 1.6970000000000027, 1.6959999999999127],
+      "width": 136,
+      "height": 136
+    },
+    "pupil-cataract-2-pupil": {
+      "box": [377.6468, 565.59087, 1.6970000000000027, 1.6959999999999127],
+      "width": 136,
+      "height": 136
+    },
+    "method-3-base": {
+      "box": [69, 355, 170, 120],
+      "width": 1190,
+      "height": 840
+    },
+    "method-3-light": {
+      "box": [69, 355, 170, 120],
+      "width": 1190,
+      "height": 840
+    },
+    "method-4-base": {
+      "box": [69, 480, 170, 121],
+      "width": 1190,
+      "height": 847
+    },
+    "method-4-light": {
+      "box": [69, 480, 170, 121],
+      "width": 1190,
+      "height": 847
+    },
+    "method-5-base": {
+      "box": [69, 606, 170, 106],
+      "width": 1190,
+      "height": 742
+    },
+    "method-5-light": {
+      "box": [69, 606, 170, 106],
+      "width": 1190,
+      "height": 742
+    },
+    "method-6-base": {
+      "box": [69, 717, 170, 106],
+      "width": 1190,
+      "height": 742
+    },
+    "method-6-light": {
+      "box": [69, 717, 170, 106],
+      "width": 1190,
+      "height": 742
+    },
+    "acuity-method-distance": {
+      "box": [75, 232, 57, 113],
+      "width": 399,
+      "height": 791
+    },
+    "acuity-method-cover": {
+      "box": [134, 267, 57, 78],
+      "width": 399,
+      "height": 546
+    },
+    "acuity-method-pinhole": {
+      "box": [137, 237, 42, 21],
+      "width": 294,
+      "height": 147
+    },
+    "acuity-method-near": {
+      "box": [180, 232, 57, 114],
+      "width": 399,
+      "height": 798
+    },
+    "acuity-cataract-distance": {
+      "box": [288, 239, 36, 50],
+      "width": 252,
+      "height": 350
+    },
+    "acuity-cataract-pinhole": {
+      "box": [290, 295, 35, 19],
+      "width": 245,
+      "height": 133
+    },
+    "acuity-cataract-near": {
+      "box": [288, 319, 40, 24],
+      "width": 280,
+      "height": 168
+    },
+    "acuity-cataract-down-1": {
+      "box": [359, 251, 27, 29],
+      "width": 189,
+      "height": 203
+    },
+    "acuity-cataract-no-gain": {
+      "box": [359, 294, 27, 23],
+      "width": 189,
+      "height": 161
+    },
+    "acuity-cataract-down-2": {
+      "box": [359, 318, 27, 29],
+      "width": 189,
+      "height": 203
+    },
+    "acuity-refer-distance": {
+      "box": [423, 251, 72, 51],
+      "width": 504,
+      "height": 357
+    },
+    "acuity-refer-near": {
+      "box": [424, 304, 39, 23],
+      "width": 273,
+      "height": 161
+    },
+    "acuity-refer-up": {
+      "box": [497, 279, 46, 25],
+      "width": 322,
+      "height": 175
+    }
+  },
+  "stages": [
+    "history-method",
+    "history-cataract",
+    "history-refer",
+    "acuity-method",
+    "acuity-cataract",
+    "acuity-refer",
+    "method-3",
+    "front-cataract",
+    "front-refer",
+    "method-4",
+    "pupil-cataract",
+    "pupil-refer",
+    "method-5",
+    "reflex-cataract",
+    "reflex-refer",
+    "method-6",
+    "fundus-cataract",
+    "fundus-refer"
+  ],
+  "readingOrder": "Each source row: examination, cataract-compatible findings, alternative causes/referral. Green row 5 is explicitly abnormal cataract artwork."
+}

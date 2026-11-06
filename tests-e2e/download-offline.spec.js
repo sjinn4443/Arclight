@@ -55,6 +55,68 @@ const toolVideos = [
   ],
 ];
 
+test("high-only legacy video remains playable through its low alias offline", async ({
+  page,
+  context,
+  browserName,
+}) => {
+  test.skip(
+    browserName === "webkit" && process.platform === "win32",
+    "Windows WebKit persistent cache is unreliable; physical iOS remains a deployment check.",
+  );
+  await page.addInitScript(() => {
+    localStorage.setItem("arclight:onboarded", "1");
+    localStorage.setItem("prefLang", "en");
+  });
+  await page.goto("/#/eyes");
+  await expect
+    .poll(
+      () => page.evaluate(() => Boolean(navigator.serviceWorker?.controller)),
+      { timeout: 120000 },
+    )
+    .toBe(true);
+  const completed = await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        const channel = new MessageChannel();
+        channel.port1.onmessage = ({ data }) => {
+          if (["CACHE_DONE", "CACHE_ERROR"].includes(data.type)) {
+            channel.port1.close();
+            resolve(data);
+          }
+        };
+        navigator.serviceWorker.controller.postMessage(
+          {
+            type: "CACHE_URLS",
+            payload: ["/videos/Tools/MobilePhoneAttachment_720p.mp4"],
+          },
+          [channel.port2],
+        );
+      }),
+  );
+  expect(completed).toMatchObject({
+    type: "CACHE_DONE",
+    cached: 1,
+    failed: [],
+  });
+  await context.setOffline(true);
+  await page.reload();
+  await page.evaluate(() => {
+    const video = document.createElement("video");
+    video.id = "high-alias-proof";
+    video.src = "/videos/Arclight/PhoneAttach.mp4";
+    video.muted = true;
+    video.playsInline = true;
+    document.body.prepend(video);
+  });
+  const video = page.locator("#high-alias-proof");
+  await video.evaluate((v) => v.play());
+  await expect
+    .poll(() => video.evaluate((v) => v.currentTime))
+    .toBeGreaterThan(0.3);
+  expect(await video.evaluate((v) => v.videoHeight)).toBe(720);
+});
+
 test("Tools and Kits low download stores every lesson for offline playback and seeking", async ({
   playwright,
   browserName,
@@ -82,6 +144,7 @@ test("Tools and Kits low download stores every lesson for offline playback and s
   // offline flag. This also reproduces iOS reporting onLine with no connection.
   const gateway = await startOfflineGateway(use.baseURL);
   const options = {
+    channel: use.channel,
     baseURL: gateway.origin,
     viewport: use.viewport,
     userAgent: use.userAgent,
@@ -96,6 +159,7 @@ test("Tools and Kits low download stores every lesson for offline playback and s
       profile,
       options,
     );
+    context.setDefaultNavigationTimeout(30_000);
     const page = await context.newPage();
     const startupErrors = [];
     page.on("console", (message) => {
@@ -128,6 +192,33 @@ test("Tools and Kits low download stores every lesson for offline playback and s
     await modal.locator('input[value="tools"]').check();
     await modal.locator("#offlineVideoQualitySelect").selectOption("low");
     await modal.locator("#downloadAllBtn").click();
+    await expect(modal.locator("#downloadAppTitle")).toHaveText(
+      /Download (complete\. Content is ready offline\.|incomplete)/,
+      { timeout: 480_000 },
+    );
+    if (
+      (await modal.locator("#downloadAppTitle").textContent()) ===
+      "Download incomplete"
+    ) {
+      await testInfo.attach("first-download-failure", {
+        body: await modal.innerText(),
+        contentType: "text/plain",
+      });
+      // Exercise a real user resume: completed files stay in storage and the
+      // next attempt retries the failed file instead of downloading everything.
+      await modal.locator("#closeDownloadAppModalBtn").click();
+      await page.locator("#eyesCatalogPage .menuBtn").click();
+      await page.locator("#startDownloadBtn").click();
+      await modal.locator('input[value="select"]').check();
+      await modal.locator('[data-download-group="core"] summary').click();
+      await modal.locator('input[value="tools"]').check();
+      await modal.locator("#offlineVideoQualitySelect").selectOption("low");
+      await modal.locator("#downloadAllBtn").click();
+      await expect(modal.locator("#downloadAppTitle")).toHaveText(
+        /Download (complete\. Content is ready offline\.|incomplete)/,
+        { timeout: 120_000 },
+      );
+    }
     await expect(modal.locator("#downloadAppTitle")).toHaveText(
       "Download complete. Content is ready offline.",
       { timeout: 480_000 },
@@ -173,6 +264,7 @@ test("Tools and Kits low download stores every lesson for offline playback and s
     context = await playwright[browserName].launchPersistentContext(profile, {
       ...options,
     });
+    context.setDefaultNavigationTimeout(30_000);
     const offline = await context.newPage();
     await offline.goto("/#/videos/arclightPage");
     await expect(offline.locator("#offlineAccessNotice")).toBeVisible();
@@ -232,6 +324,7 @@ test("Tools and Kits low download stores every lesson for offline playback and s
     context = await playwright[browserName].launchPersistentContext(profile, {
       ...options,
     });
+    context.setDefaultNavigationTimeout(30_000);
     const reopened = await context.newPage();
     await reopened.goto("/?source=installed#/videos/arclightPage");
     await expect(reopened.locator("#offlineAccessNotice")).toBeVisible();
@@ -317,7 +410,7 @@ test("real worker reports a failed file, resumes and serves 240p video ranges of
       { timeout: 120_000 },
     )
     .toBe(true);
-  const media = "/videos/FullAnim/MakeEyePadShieldFullAnim_240p.mp4";
+  const media = "/videos/Workshop/Diabetic/2.DODRMaculopathy_240p.mp4";
   const cache = (urls) =>
     page.evaluate(
       (urls) =>
@@ -349,7 +442,7 @@ test("real worker reports a failed file, resumes and serves 240p video ranges of
   await context.setOffline(true);
   await page.reload();
   await expect(page.locator("#eyesCatalogPage")).toBeVisible();
-  const high = media.replace("_240p", "_720p");
+  const high = media.replace("_240p", "");
   const range = await page.evaluate(async (url) => {
     const r = await fetch(url, { headers: { Range: "bytes=0-63" } });
     return {

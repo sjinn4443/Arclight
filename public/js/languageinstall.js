@@ -3,9 +3,16 @@
  */
 
 import { loadPage } from "./navigation.js";
+import "../video-localization/video-quality.js";
 import { initializePWA, canInstall, promptInstall } from "./pwa.js";
 import { setLanguage, getLanguage, translateLiteral } from "./i18n.js";
 import { saveProfile, bumpRefresh } from "./telemetry.js"; // Import bumpRefresh
+import {
+  getOfflineInventory,
+  invalidateOfflineInventory,
+  summarizeOfflineContent,
+  offlineContentState,
+} from "./offlineDownloadState.js";
 
 const CHILDHOOD_EYE_SCREENING_PILOT_SUBTITLE_TARGETS = [
   {
@@ -464,6 +471,9 @@ const VIDEO_ASSET_EXTENSIONS = new Set([
   ".webm",
 ]);
 const CONTENT_ASSET_PREFIXES = [
+  "/images/ears/",
+  "/images/atoms/",
+  "/documents/ears/",
   "/images/learning/",
   "/images/pdf/",
   "/images/quiz/",
@@ -478,6 +488,12 @@ const CONTENT_ASSET_PREFIXES = [
   "/videos/",
 ];
 export const OFFLINE_CATALOG_OPTIONS = [
+  {
+    id: "ears",
+    label: "Ears",
+    description:
+      "Downloads ear examination, hearing assessment, primary ear care procedures and teaching resources.",
+  },
   {
     id: "core",
     label: "Core Examination",
@@ -546,6 +562,7 @@ export const OFFLINE_CATALOG_OPTIONS = [
 const OFFLINE_DOWNLOAD_OPTIONS = [
   ...OFFLINE_CATALOG_OPTIONS,
   ...[
+    ["ears-materials", "Ear learning materials"],
     ["procedure-lid-hygiene", "Lid Hygiene"],
     ["procedure-irrigation", "Eye Irrigation"],
     ["procedure-eyelash-removal", "Eyelash Removal"],
@@ -572,6 +589,12 @@ const OFFLINE_DOWNLOAD_OPTIONS = [
   { id: "procedures", label: "Eye Care Procedure" },
 ];
 export const OFFLINE_CATALOG_GROUPS = [
+  {
+    id: "ears",
+    label: "Ears",
+    downloadLabel: "Download all Ears content",
+    sections: ["ears-materials"],
+  },
   {
     id: "core",
     label: "Examination",
@@ -672,10 +695,34 @@ const VIDEO_QUALITY_OPTIONS = [
 
 initializePWA();
 
-export async function fetchAllOfflineAssetUrls() {
-  const res = await fetch("/api/app/offline-assets", { cache: "no-store" });
-  if (!res.ok) {
-    throw new Error(`Offline asset manifest failed: ${res.status}`);
+export async function fetchAllOfflineAssetUrls({ preferCached = false } = {}) {
+  const metadataKey = "/offline-download-manifest.json";
+  let res;
+  const savedManifest = async () => {
+    try {
+      return await (
+        await caches.open("arclight-offline-metadata-v1")
+      ).match(metadataKey);
+    } catch {
+      return null;
+    }
+  };
+  if (preferCached) res = await savedManifest();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+  try {
+    if (!res?.ok)
+      res = await fetch("/api/app/offline-assets", {
+        cache: "no-store",
+        signal: controller.signal,
+      });
+    if (!res.ok)
+      throw new Error(`Offline asset manifest failed: ${res.status}`);
+  } catch (error) {
+    res = await savedManifest();
+    if (!res?.ok) throw error;
+  } finally {
+    clearTimeout(timeout);
   }
 
   const manifest = await res.json();
@@ -693,12 +740,24 @@ export async function fetchAllOfflineAssetUrls() {
         .filter((asset) => asset.url)
     : urls.map((url) => ({ bytes: 0, url }));
 
-  return {
+  const normalized = {
     assets,
     bytes: Number(manifest.bytes) || 0,
     count: Number(manifest.count) || urls.length,
     urls,
   };
+  try {
+    const cache = await caches.open("arclight-offline-metadata-v1");
+    await cache.put(
+      metadataKey,
+      new Response(JSON.stringify(normalized), {
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+  } catch {
+    /* Downloading remains available when metadata cannot be persisted. */
+  }
+  return normalized;
 }
 
 function getAssetPath(url) {
@@ -786,10 +845,14 @@ function getVideoResolutionTier(url) {
 
 function getAlternateVideoQualityUrl(url, videoQuality, availableUrls) {
   const sourcePattern =
-    videoQuality === "high" ? /_(?:220|240)p(?=\.mp4$)/i : /_720p(?=\.mp4$)/i;
+    videoQuality === "high"
+      ? /_(?:220|240)p(?=\.mp4$)/i
+      : /_(?:540|720)p(?=\.mp4$)/i;
   const replacement =
     videoQuality === "high"
-      ? "_720p"
+      ? availableUrls.has(String(url).replace(sourcePattern, "_720p"))
+        ? "_720p"
+        : "_540p"
       : availableUrls.has(String(url).replace(sourcePattern, "_240p"))
         ? "_240p"
         : "_220p";
@@ -802,6 +865,16 @@ function getAlternateVideoQualityUrl(url, videoQuality, availableUrls) {
 function shouldIncludeVideoQuality(url, videoQuality, availableUrls) {
   if (videoQuality === "both" || !isVideoAssetUrl(url)) return true;
 
+  const pair = globalThis.ArclightVideoQuality?.pair(url);
+  if (pair) {
+    const preferred = pair[videoQuality];
+    const preferredPath = getAssetPath(preferred);
+    const exists =
+      availableUrls.has(preferred) ||
+      availableUrls.has(preferred.split("/").map(encodeURIComponent).join("/"));
+    if (exists) return getAssetPath(url) === preferredPath;
+  }
+
   const tier = getVideoResolutionTier(url);
   if (!tier || tier === videoQuality) return true;
 
@@ -813,7 +886,7 @@ function shouldIncludeVideoQuality(url, videoQuality, availableUrls) {
   return !alternateUrl || !availableUrls.has(alternateUrl);
 }
 
-function isAppShellAsset(url) {
+export function isAppShellAsset(url) {
   const assetPath = getAssetPath(url);
   // The player needs these small catalogues before it can resolve local media.
   if (assetPath.startsWith("/video-localization/")) return true;
@@ -823,9 +896,41 @@ function isAppShellAsset(url) {
 
 export function matchesOfflineCatalog(url, catalogId) {
   const assetPath = getAssetPath(url);
+  if (catalogId === "ears-materials") {
+    return (
+      [
+        "/images/learning/ears/",
+        "/documents/ears/",
+        "/videos/ears/",
+        "/images/learning/primaryearcare/",
+        "/videos/workshop/primaryearcare/",
+        "/videos/workshop/shared/",
+        "/images/pdf/workshop/ent/",
+        "/videos/otoscopy/",
+        "/images/ears/",
+        "/images/atoms/",
+      ].some((prefix) => assetPath.startsWith(prefix)) ||
+      assetPath === "/data/ears-assets.json" ||
+      assetPath === "/html/primaryearcareworkshop.html" ||
+      assetPath === "/videos/workshop/pec/whatisarclight.mp4"
+    );
+  }
 
   const group = OFFLINE_CATALOG_GROUPS.find((item) => item.id === catalogId);
   if (group?.sections.some((id) => matchesOfflineCatalog(url, id))) return true;
+  if (catalogId === "condition-diabetic") {
+    return (
+      /diabetic/.test(assetPath) ||
+      assetPath.startsWith("/images/quiz/workshop/dr/") ||
+      assetPath === "/images/learning/000.png" ||
+      assetPath.startsWith("/images/pdf/workshop/do/") ||
+      assetPath.startsWith("/images/pdf/workshop/bio/") ||
+      assetPath.startsWith("/scrolly/coreexam/ophths/do/") ||
+      assetPath.startsWith("/scrolly/coreexam/ophths/bio/") ||
+      assetPath.startsWith("/narration/direct-ophthalmoscopy/") ||
+      assetPath.startsWith("/narration/binocular-indirect-ophthalmoscopy/")
+    );
+  }
   if (OFFLINE_SECTION_PATTERNS[catalogId])
     return OFFLINE_SECTION_PATTERNS[catalogId].test(assetPath);
   if (catalogId.startsWith("workshop-")) {
@@ -939,6 +1044,7 @@ export function matchesOfflineCatalog(url, catalogId) {
 
   if (catalogId === "core-interactive-learning") {
     return (
+      assetPath.startsWith("/images/atoms/") ||
       assetPath.startsWith("/subapp/") ||
       assetPath.startsWith("/images/quiz/connect/") ||
       assetPath.includes("interactive") ||
@@ -1187,6 +1293,19 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   }
 
   if (mode !== "app-only") {
+    // An existing counterpart can belong to another directory/catalogue.
+    // Substitute before filtering so it follows the selected lesson dependency.
+    if (videoQuality !== "both") {
+      const byPath = new Map(
+        allAssets.map((asset) => [getAssetPath(asset.url), asset]),
+      );
+      assets = assets.map((asset) => {
+        const preferred = globalThis.ArclightVideoQuality?.pair(asset.url)?.[
+          videoQuality
+        ];
+        return (preferred && byPath.get(getAssetPath(preferred))) || asset;
+      });
+    }
     assets = assets.filter((asset) =>
       shouldIncludeVideoQuality(asset.url, videoQuality, availableUrls),
     );
@@ -1246,21 +1365,6 @@ function renderDownloadEstimate(target, selection) {
   target.append(timeEl, networkNoteEl, sizeEl);
 }
 
-async function getCachedDownloadUrls() {
-  if (!("caches" in window)) return null;
-  try {
-    const names = (await caches.keys()).filter((name) =>
-      name.startsWith("arclight-"),
-    );
-    const requests = await Promise.all(
-      names.map(async (name) => (await caches.open(name)).keys()),
-    );
-    return new Set(requests.flat().map((request) => getAssetPath(request.url)));
-  } catch {
-    return null;
-  }
-}
-
 function setDownloadStatus(target, state, detail = "") {
   if (!target) return;
   const labels = {
@@ -1283,16 +1387,14 @@ function updateCachedDownloadStatus(target, selection, cachedUrls) {
   }
   // Shell pages are cached on install; they must not mark every section as partial.
   const contentUrls = selection.urls.filter((url) => !isAppShellAsset(url));
-  const cached = contentUrls.filter((url) =>
-    cachedUrls.has(getAssetPath(url)),
-  ).length;
-  const state =
-    cached && cached === contentUrls.length
-      ? "complete"
-      : cached
-        ? "partial"
-        : "empty";
-  setDownloadStatus(target, state);
+  const summary = summarizeOfflineContent(contentUrls, cachedUrls);
+  const state = offlineContentState(summary);
+  target.className = `download-status download-status--${state}`;
+  target.textContent = `${summary.completed}/${summary.total}`;
+  target.setAttribute(
+    "aria-label",
+    `${t("Downloaded contents")}: ${summary.completed}/${summary.total}`,
+  );
 }
 
 function ensureDownloadAppModal() {
@@ -1582,7 +1684,7 @@ export function showDownloadAppModal(manifest) {
     window.I18N?.applyTranslations?.(modal);
     updateChoiceDetails();
     modal.classList.remove("hidden");
-    getCachedDownloadUrls().then((urls) => {
+    getOfflineInventory().then((urls) => {
       if (settled || !content?.querySelector("#offlineCatalogSelect")) return;
       cachedUrls = urls;
       updateChoiceDetails();
@@ -1942,6 +2044,11 @@ async function sendUrlsToServiceWorker(urls, onProgress, signal) {
 }
 
 export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
+  try {
+    localStorage.setItem("arclight:download-started", "1");
+  } catch {
+    // Downloads can still run when browser preferences cannot be saved.
+  }
   ensureDownloadAppModal();
   const urlsToCache = Array.isArray(downloadSelection)
     ? downloadSelection
@@ -1995,6 +2102,8 @@ export async function cacheOfflineUrls(downloadSelection, totalBytes = 0) {
     downloadError.cached ??= lastProgress.cached;
     downloadError.total ??= lastProgress.total;
     throw downloadError;
+  } finally {
+    invalidateOfflineInventory();
   }
 
   showDownloadComplete(urlsToCache.length);

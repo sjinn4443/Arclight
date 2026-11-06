@@ -49,6 +49,7 @@ for (const language of ["en", "ko"]) {
       { language, pageId },
     );
     await page.goto("/#/eyePadShield");
+    await page.locator('#eyePadShield [data-nested-folder="make"]').click();
     await page.locator(`#eyePadShield [data-target="${pageId}"]`).click();
     const guide = page.locator(`#${pageId}`);
     const audio = guide.locator("audio");
@@ -154,6 +155,7 @@ test("the new row plays eight stages, replays, saves completion and returns to t
       errors.push(`${response.status()} ${response.url()}`);
   });
   await page.goto("/#/eyePadShield");
+  await page.locator('#eyePadShield [data-nested-folder="make"]').click();
   const row = page.locator(`#eyePadShield [data-target="${pageId}"]`);
   expect(
     await row.evaluate((el) => el.previousElementSibling.dataset.pecVideo),
@@ -163,7 +165,7 @@ test("the new row plays eight stages, replays, saves completion and returns to t
   );
   await expect(row.locator(".lesson-cta")).toHaveText("scroll >");
   await expect(row.getByRole("progressbar")).toHaveAccessibleName(
-    "Make an eye pad and eye shield",
+    "Make an Eye Pad and Eye Shield",
   );
   await page.screenshot({ path: testInfo.outputPath("lesson-row.png") });
   await row.click();

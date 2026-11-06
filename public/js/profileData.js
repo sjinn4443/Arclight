@@ -116,10 +116,29 @@ export function setProfileAvatarDataUrl(dataUrl) {
   dispatchProfileUpdated();
 }
 
-export function renderProfileAvatar(el) {
+export function renderProfileAvatar(
+  el,
+  { name = getProfileName(), avatar = getProfileAvatarDataUrl() } = {},
+) {
   if (!el) return;
-  const avatar = getProfileAvatarDataUrl();
+  // A name-seeded colour stays consistent across pages, reloads and devices.
+  const colours = [
+    "var(--primary-color, #b4342a)",
+    "#111111",
+    "#922b24",
+    "#353535",
+    "#b4342a",
+    "#222222",
+  ];
+  let seed = 0;
+  for (const letter of name)
+    seed = (Math.imul(seed, 31) + letter.codePointAt(0)) >>> 0;
+  const initial = Array.from(name)[0]?.toLocaleUpperCase() || "?";
   el.style.backgroundImage = avatar ? `url("${avatar}")` : "";
+  el.style.backgroundColor = avatar ? "" : colours[seed % colours.length];
+  el.textContent = avatar ? "" : initial;
+  el.setAttribute("data-i18n-skip", "");
+  el.classList.toggle("profile-avatar--initial", !avatar);
   el.classList.toggle("has-profile-avatar", Boolean(avatar));
 }
 

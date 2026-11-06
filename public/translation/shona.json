@@ -6163,5 +6163,18 @@
       "scoreTemplate": "Wawana {{correct}} kubva pa {{total}} chakarurama.",
       "incomplete": "Ndokumbira upindure mibvunzo yose {{count}} usati watumira."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Gadzirisa mashandisiro ako",
+    "profile_hint": "Hazvimanikidzwi — unogona kuchinja izvi gare gare paprofile.",
+    "name_label": "Tikushevedze nezita ripi?",
+    "interest_label": "Unoda kudzidza nezvei?",
+    "not_sure": "Handisati ndava nechokwadi",
+    "start": "Tanga kudzidza",
+    "skip": "Svetuka pari zvino",
+    "specialist": "Nyanzvi kana mudzidzisi",
+    "role_detail": "Basa rako nderei?",
+    "role_label": "Sarudza basa rako",
+    "other": "Zvimwe"
   }
 }

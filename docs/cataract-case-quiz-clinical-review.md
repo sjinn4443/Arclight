@@ -46,3 +46,28 @@ diagnostic accuracy of generated pixels.
 Quiz explanations and next steps use short British English sentences without
 Oxford commas. The detailed source review is kept here rather than repeated in
 the answer dialog.
+
+## Quiz levels (5 November 2026)
+
+All three levels share these eight cases, clinical findings and grading rules.
+The original `videos/cataractCaseQuizPage` remains Intermediate (orange, 90s).
+`videos/cataractCaseQuizPrimaryPage` has no deadline, labels obscured retinal
+images “Poor view” and reveals inline MCQs after the last history bubble. A
+selection is graded only when Submit Answer is pressed.
+`videos/cataractCaseQuizAdvancedPage` uses red, a 30s deadline and a draggable
+circular viewing window over each retinal image. Pointer capture supports mouse
+and touch; arrow keys move the window. Existing haze and obscured-image rules
+remain underneath the window, so moving it cannot reveal a hidden retina.
+Intermediate and Advanced use R.E./L.E. in labels, history and explanations.
+Each level records its own `lessonProgress:<pageId>` value. The original
+Intermediate progress key and simulator launcher are preserved.
+
+6 November 2026: Primary now groups its MCQs in a black user bubble labelled
+“My working diagnosis is…”. Graded explanations stay below that bubble and the
+submit button is replaced by Previous/Next navigation. Poor-view captions have
+a black background and white text. Advanced shows the complete history on entry
+and demonstrates its smaller draggable aperture in the opening walkthrough.
+Correct/incorrect MCQ feedback remains green/red across all levels; only the
+half-height Next step marker follows the level colour. Completion uses a green
+score and a single row of Review/Restart/Quit actions. Review separates white
+patient-history bubbles, the user's answer and the bold answer/explanation.

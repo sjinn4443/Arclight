@@ -90,7 +90,9 @@ test("cataract folder preserves the simulator and restores on return", async ({
   ).toHaveCSS("opacity", "0.72");
   await expect(panel.locator(".lesson-type")).toHaveText([
     "Facilitators Material",
-    "Quiz",
+    "Quiz · Primary",
+    "Quiz · Intermediate",
+    "Quiz · Advanced",
   ]);
   const bounds = await panel.evaluate((el) => {
     const p = el.getBoundingClientRect();
@@ -144,7 +146,7 @@ test("case quiz reveals symptoms, grades answers, reviews and restarts", async (
   );
   await expect(
     quiz.getByRole("button", { name: "Next", exact: true }),
-  ).toHaveCSS("background-color", "rgb(21, 225, 21)");
+  ).toHaveCSS("background-color", "rgb(255, 122, 0)");
   await quiz.getByRole("button", { name: "Next", exact: true }).click();
   await expect(quiz.locator(".cataract-quiz-onboarding")).toHaveAttribute(
     "data-step",
@@ -302,11 +304,11 @@ test("case quiz reveals symptoms, grades answers, reviews and restarts", async (
     }
     await quiz.getByRole("radio", { name: item.answer, exact: true }).click();
     await expect(quiz.locator(".cataract-quiz-answer-feedback")).toContainText(
-      "Correct.",
+      "Correct answer:",
     );
     await expect(quiz.getByRole("dialog")).toBeVisible();
     await expect(
-      quiz.getByRole("button", { name: "Next Case", exact: true }),
+      quiz.getByRole("button", { name: "Next >", exact: true }),
     ).toHaveCSS("font-size", "14px");
     if (i === 0)
       await quiz.locator(".casechat-modalCard").screenshot({
@@ -317,24 +319,22 @@ test("case quiz reveals symptoms, grades answers, reviews and restarts", async (
     );
     if (i === 1) {
       await quiz
-        .getByRole("button", { name: "Previous Case", exact: true })
+        .getByRole("button", { name: "< Previous", exact: true })
         .click();
       await expect(quiz.locator(".cataract-quiz-case-heading")).toContainText(
         "Case 1",
       );
       await expect(
         quiz.locator(".cataract-quiz-answer-feedback"),
-      ).toContainText("Correct.");
-      await quiz
-        .getByRole("button", { name: "Next Case", exact: true })
-        .click();
+      ).toContainText("Correct answer:");
+      await quiz.getByRole("button", { name: "Next >", exact: true }).click();
       await expect(quiz.locator(".cataract-quiz-case-heading")).toContainText(
         "Case 2",
       );
     }
     await quiz
       .getByRole("button", {
-        name: "Next Case",
+        name: "Next >",
         exact: true,
       })
       .click();
@@ -357,7 +357,7 @@ test("case quiz reveals symptoms, grades answers, reviews and restarts", async (
   expect(errors).toEqual([]);
 });
 
-test("two wrong answers reveal a bright green correct answer", async ({
+test("two wrong answers are equally unselected and highlight the correct answer", async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -382,22 +382,40 @@ test("two wrong answers reveal a bright green correct answer", async ({
   for (const answer of item.distractors.slice(0, 2))
     await quiz.getByRole("radio", { name: answer, exact: true }).click();
   const correct = quiz.getByRole("radio", { name: item.answer, exact: true });
+  await expect(quiz.locator(".casechat-modal__title")).toHaveText("Answer");
+  await expect(quiz.locator(".casechat-modal__dxHint")).toHaveCount(0);
+  await expect(
+    quiz.locator(".casechat-resultOk, .casechat-tryagain"),
+  ).toHaveCount(0);
+  for (const wrong of await quiz.locator(".casechat-dxitem.is-wrong").all()) {
+    await expect(wrong).toHaveAttribute("aria-checked", "false");
+    await expect(wrong).toHaveCSS("color", "rgb(199, 25, 32)");
+    expect(
+      await wrong
+        .locator(".casechat-radio")
+        .evaluate((el) => getComputedStyle(el, "::after").content),
+    ).toBe("none");
+  }
+  await expect(quiz.locator(".cataract-quiz-next-step strong")).toHaveCSS(
+    "background-image",
+    /linear-gradient.*255, 122, 0/,
+  );
   await expect(correct).toHaveClass(/is-correct/);
   await expect(correct).toBeDisabled();
-  await expect(correct).toHaveCSS("border-top-color", "rgb(21, 225, 21)");
-  await expect(correct).toHaveCSS("background-color", "rgb(232, 255, 232)");
+  await expect(correct).toHaveCSS("border-top-color", "rgb(21, 180, 56)");
+  await expect(correct).toHaveCSS("background-color", "rgb(232, 248, 236)");
   await expect(correct).toHaveCSS("opacity", "1");
   await expect(correct.locator(".casechat-radio")).toHaveCSS(
     "border-top-color",
-    "rgb(21, 225, 21)",
+    "rgb(21, 180, 56)",
   );
   expect(
     await correct
       .locator(".casechat-radio")
       .evaluate((el) => getComputedStyle(el, "::after").backgroundColor),
-  ).toBe("rgb(21, 225, 21)");
+  ).toBe("rgb(21, 180, 56)");
   await expect(quiz.locator(".cataract-quiz-answer-feedback")).toContainText(
-    "Incorrect.",
+    "Correct answer:",
   );
   const feedback = quiz.locator(".cataract-quiz-answer-feedback");
   await expect(
@@ -419,3 +437,242 @@ test("two wrong answers reveal a bright green correct answer", async ({
     .locator(".casechat-modalCard")
     .screenshot({ path: test.info().outputPath("two-wrong-answers.png") });
 });
+
+test("Primary shows choices below the history and waits for submission", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0.999999;
+  });
+  await page.goto("/#videos/cataractCaseQuizPrimaryPage");
+  const quiz = page.locator("#cataractCaseQuizPrimaryPage");
+  await expect(quiz.locator(".cataract-quiz-onboarding")).toBeVisible();
+  await page.clock.install();
+  await quiz.getByRole("button", { name: "Next", exact: true }).click();
+  await quiz.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(quiz.locator(".cataract-quiz-intro-hint")).toContainText(
+    "No time limit",
+  );
+  await quiz.getByRole("button", { name: "Start", exact: true }).click();
+  await expect(quiz.locator(".caseTimer")).toBeHidden();
+  await expect(quiz.locator(".cataract-quiz-eye-note")).toHaveText("Poor view");
+  await expect(quiz.getByRole("radio")).toHaveCount(0);
+  const submit = quiz.getByRole("button", {
+    name: "Submit Answer",
+    exact: true,
+  });
+  await expect(submit).toBeDisabled();
+  await page.clock.runFor(9000);
+  await expect(quiz.getByRole("radio")).toHaveCount(4);
+  await page.clock.runFor(100000);
+  await expect(quiz.getByRole("dialog")).toBeHidden();
+  const answer = quiz.getByRole("radio", {
+    name: CATARACT_QUIZ_CASES[0].answer,
+    exact: true,
+  });
+  await answer.click();
+  await expect(answer).toHaveAttribute("aria-checked", "true");
+  expect(
+    await page.evaluate(() =>
+      localStorage.getItem("lessonProgress:cataractCaseQuizPrimaryPage"),
+    ),
+  ).toBeNull();
+  await quiz.screenshot({ path: test.info().outputPath("primary-inline.png") });
+  await submit.click();
+  await expect(quiz.getByRole("dialog")).toBeHidden();
+  await expect(quiz.locator(".cataract-quiz-inline-feedback")).toContainText(
+    CATARACT_QUIZ_CASES[0].explanation,
+  );
+  await expect(submit).toHaveCount(0);
+  await expect(
+    quiz.locator(".cataract-quiz-footer").getByRole("button"),
+  ).toHaveText(["< Previous", "Next >"]);
+  await expect(quiz.locator(".cataract-quiz-inline-choices")).toHaveCSS(
+    "background-color",
+    "rgb(17, 17, 17)",
+  );
+  await quiz.screenshot({
+    path: test.info().outputPath("primary-inline-feedback.png"),
+  });
+  expect(
+    await page.evaluate(
+      () =>
+        JSON.parse(
+          localStorage.getItem("lessonProgress:cataractCaseQuizPrimaryPage"),
+        ).percent,
+    ),
+  ).toBe(12.5);
+});
+
+test("Advanced has a draggable retinal window and a 30 second timer", async ({
+  page,
+}) => {
+  await page.goto("/#videos/cataractCaseQuizAdvancedPage");
+  const quiz = page.locator("#cataractCaseQuizAdvancedPage");
+  await expect(quiz.locator(".cataract-quiz-onboarding")).toBeVisible();
+  await page.clock.install();
+  await expect(quiz.locator(".cataract-quiz-intro-hint")).toContainText("Drag");
+  const demo = quiz.locator(".cataract-quiz-demo-window").first();
+  await expect(demo).toBeVisible();
+  expect(
+    await demo.evaluate(
+      (node) => getComputedStyle(node, "::before").animationName,
+    ),
+  ).toBe("cataract-demo-scan");
+  await quiz
+    .locator(".casechat-modalCard")
+    .screenshot({ path: test.info().outputPath("advanced-drag-intro.png") });
+  await quiz.getByRole("button", { name: "Next", exact: true }).click();
+  await quiz.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(quiz.locator(".cataract-quiz-intro-hint")).toContainText(
+    "30 seconds",
+  );
+  await quiz.getByRole("button", { name: "Start", exact: true }).click();
+  await expect(quiz.locator(".caseTimer text")).toHaveText("30");
+  await expect(quiz.locator(".casechat-bubble--pending")).toHaveCount(0);
+  await expect(quiz.locator(".cataract-quiz-eye-label")).toHaveText([
+    "R.E.",
+    "L.E.",
+    "R.E.",
+    "L.E.",
+  ]);
+  await expect(quiz.locator(".cataract-quiz-eye-label").first()).toHaveCSS(
+    "background-color",
+    "rgb(228, 30, 38)",
+  );
+  const mask = quiz.locator(".cataract-quiz-viewing-window").first();
+  await mask.scrollIntoViewIfNeeded();
+  const box = await mask.boundingBox();
+  const apertureRadius = await mask.evaluate((node) => {
+    const stops = getComputedStyle(node).backgroundImage.match(
+      /rgb\(17, 17, 17\) ([\d.]+)px/,
+    );
+    return stops ? Number(stops[1]) : NaN;
+  });
+  expect(apertureRadius).toBeGreaterThan(0);
+  expect(apertureRadius).toBeLessThan(36);
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.75, box.y + box.height * 0.7, {
+    steps: 5,
+  });
+  await page.mouse.up();
+  expect(
+    parseFloat(
+      await mask.evaluate((node) => node.style.getPropertyValue("--view-x")),
+    ),
+  ).toBeGreaterThan(65);
+  await mask.press("ArrowLeft");
+  expect(
+    parseFloat(
+      await mask.evaluate((node) => node.style.getPropertyValue("--view-x")),
+    ),
+  ).toBeLessThan(75);
+  await page.clock.runFor(9000);
+  await quiz.screenshot({
+    path: test.info().outputPath("advanced-window.png"),
+  });
+  await page.clock.runFor(21000);
+  await expect(quiz.getByRole("dialog")).toContainText("Time is up.");
+  await expect(quiz.locator(".casechat-modal__dxHint")).toHaveCount(0);
+});
+
+for (const [level, id, markerColour] of [
+  ["Primary", "cataractCaseQuizPrimaryPage", "21, 225, 21"],
+  ["Intermediate", "cataractCaseQuizPage", "255, 122, 0"],
+  ["Advanced", "cataractCaseQuizAdvancedPage", "228, 30, 38"],
+]) {
+  test(`${level} completion keeps three buttons in one row and review separates the history and answers`, async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      Math.random = () => 0.999999;
+    });
+    await page.goto(`/#videos/${id}`);
+    const quiz = page.locator(`#${id}`);
+    await expect(quiz.locator(".cataract-quiz-onboarding")).toBeVisible();
+    await page.clock.install();
+    for (const name of ["Next", "Next", "Start"])
+      await quiz.getByRole("button", { name, exact: true }).click();
+    for (let i = 0; i < CATARACT_QUIZ_CASES.length; i++) {
+      const item = CATARACT_QUIZ_CASES[i];
+      if (level === "Primary") {
+        await page.clock.runFor(9000);
+        await quiz
+          .getByRole("radio", { name: item.answer, exact: true })
+          .click();
+        await quiz
+          .getByRole("button", { name: "Submit Answer", exact: true })
+          .click();
+      } else {
+        await quiz
+          .getByRole("button", { name: "Submit Answer", exact: true })
+          .click();
+        await quiz
+          .getByRole("radio", { name: item.answer, exact: true })
+          .click();
+      }
+      expect(
+        await quiz
+          .locator(".cataract-quiz-next-step strong")
+          .evaluate((node) => getComputedStyle(node).backgroundImage),
+      ).toContain(markerColour);
+      await quiz.getByRole("button", { name: "Next >", exact: true }).click();
+    }
+    await expect(quiz.locator(".cataract-quiz-score-correct")).toHaveText(
+      "8 out of 8 correct.",
+    );
+    await expect(quiz.locator(".cataract-quiz-score-correct")).toHaveCSS(
+      "color",
+      "rgb(25, 135, 84)",
+    );
+    const actions = quiz.locator(".cataract-quiz-completion-actions");
+    await expect(actions.getByRole("button")).toHaveText([
+      "Review",
+      "Restart",
+      "Quit",
+    ]);
+    const row = await actions.getByRole("button").evaluateAll((buttons) =>
+      buttons.map((button) => ({
+        top: button.getBoundingClientRect().top,
+        right: button.getBoundingClientRect().right,
+      })),
+    );
+    expect(
+      Math.max(...row.map((button) => button.top)) -
+        Math.min(...row.map((button) => button.top)),
+    ).toBeLessThan(1);
+    expect(row.at(-1).right).toBeLessThanOrEqual(page.viewportSize().width);
+    await quiz
+      .locator(".casechat-modalCard")
+      .screenshot({ path: test.info().outputPath(`${level}-completed.png`) });
+    await quiz.getByRole("button", { name: "Review", exact: true }).click();
+    await expect(
+      quiz.locator(".cataract-quiz-review-history .casechat-bubble--bot"),
+    ).toHaveCount(40);
+    await expect(quiz.locator(".cataract-quiz-review-response")).toHaveCount(8);
+    const first = quiz.locator(".cataract-quiz-review").first();
+    await expect(
+      first.getByRole("heading", { name: "Patient history", exact: true }),
+    ).toBeVisible();
+    await expect(first.locator(".casechat-text").first()).toHaveCSS(
+      "background-color",
+      "rgb(255, 255, 255)",
+    );
+    await expect(first.locator(".cataract-quiz-review-response")).toHaveCSS(
+      "background-color",
+      "rgb(17, 17, 17)",
+    );
+    await expect(
+      first.locator(".cataract-quiz-review-explanation"),
+    ).toContainText("Answer and explanation");
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth + 1,
+      ),
+    ).toBe(true);
+    await first.screenshot({
+      path: test.info().outputPath(`${level}-review.png`),
+    });
+  });
+}

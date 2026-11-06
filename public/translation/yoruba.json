@@ -10814,5 +10814,18 @@
   "splashscreenMid": {
     "ariaLabel": "Ìfáàlà Àárín",
     "logoOneAlt": "Àwòrán Àkọ́kọ́"
+  },
+  "onboardingFlow": {
+    "profile_title": "Ṣètò ìrírí rẹ",
+    "profile_hint": "Kì í ṣe dandan — o lè yí i padà lẹ́yìn náà nínú profaili.",
+    "name_label": "Orúkọ wo ni ká máa pè ọ́?",
+    "interest_label": "Kí lo fẹ́ kọ́?",
+    "not_sure": "Mi ò tíì dájú",
+    "start": "Bẹ̀rẹ̀ sí í kọ́ ẹ̀kọ́",
+    "skip": "Fò ó fún báyìí",
+    "specialist": "Amọ̀ja tàbí olùkọ́",
+    "role_detail": "Kí ni ipa rẹ?",
+    "role_label": "Yan ipo rẹ",
+    "other": "Awọn miiran"
   }
 }

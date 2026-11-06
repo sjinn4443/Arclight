@@ -118,6 +118,12 @@ test("all procedure cards open their PEC lessons and playable videos", async ({
       });
     }
     for (let i = 0; i < keys.length; i++) {
+      if (route === "eyePadShield") {
+        const folder = detail.locator(
+          `[data-nested-folder="${i === 0 ? "make" : "apply"}"]`,
+        );
+        if (await folder.isVisible()) await folder.click();
+      }
       await detail.locator(`[data-pec-video="${keys[i]}"]`).click();
       const videoPage = page.locator(`#eyeCareVideo-${keys[i]}`);
       await expect(videoPage).toBeVisible();

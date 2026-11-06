@@ -1,5 +1,5 @@
-import { getLanguage, translateLiteral } from "./i18n.js";
 import { initializeReminderSettings } from "./practiceReminders.js";
+import { getLanguage, translateLiteral } from "./i18n.js";
 import { loadPage } from "./navigation.js";
 import { PROFILE_STORAGE_KEYS, dispatchProfileUpdated } from "./profileData.js";
 

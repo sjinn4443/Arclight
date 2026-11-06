@@ -10804,5 +10804,18 @@
   "splashscreenMid": {
     "ariaLabel": "Pantalla de presentación media",
     "logoOneAlt": "Logotipo uno"
+  },
+  "onboardingFlow": {
+    "profile_title": "Personaliza tu experiencia",
+    "profile_hint": "Opcional: puedes cambiarlo después en tu perfil.",
+    "name_label": "¿Cómo te llamas?",
+    "interest_label": "¿Qué te gustaría aprender?",
+    "not_sure": "Aún no lo sé",
+    "start": "Empezar a aprender",
+    "skip": "Omitir por ahora",
+    "specialist": "Especialista o docente",
+    "role_detail": "¿Qué función?",
+    "role_label": "Elige tu puesto de trabajo",
+    "other": "Otro"
   }
 }

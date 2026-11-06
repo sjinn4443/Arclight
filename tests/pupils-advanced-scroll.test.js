@@ -132,10 +132,16 @@ const allLayers = (data) => [
   ...data.layers,
   ...data.assets.flatMap((a) => a.layers || []),
 ];
-test("Observation and all five Direct Light Response scenes reuse PEC verbatim", () => {
+test("shared PEC artwork is preserved with explicit Advanced English overrides", () => {
   expect(cfg.paths.slice(4, 10)).toEqual(pec.paths);
-  expect(stages.slice(4, 10).map((s) => s.cues)).toEqual(
-    pecStages.map((s) => s.cues),
+  stages.slice(4, 10).forEach((stage, i) =>
+    stage.cues.forEach((cue, j) => {
+      const original = pecStages[i].cues[j];
+      expect(cue.id).toBe(original.id);
+      expect(cue.ko).toBe(original.ko);
+      if (cue.en !== original.en)
+        expect(cue.narrationOverrideLanguages).toEqual(["en"]);
+    }),
   );
   expect(script.reusedAudio).toEqual({
     folder: "pupils-pec",
@@ -498,7 +504,9 @@ test("near panels preserve source arrows, arm occlusion and proportional rounded
     expect(layer.masksProperties[0].pt.k.v).toHaveLength(8);
   }
   expect(stages[14].cues[0].en).toContain("convergence");
-  expect(stages[14].cues.map((c) => c.en).join(" ")).not.toMatch(/constrict/i);
+  expect(stages[14].cues.map((c) => c.en).join(" ")).toMatch(
+    /pupil constriction and lens accommodation/,
+  );
 });
 test("device brightness stays fixed while device and pool share swinging positions", async () => {
   for (const i of [10, 11, 12]) {
@@ -557,7 +565,15 @@ test("Near response has two faces, closed sclera masks, moving irises and delaye
       icon.ks.p.k[0] - (icon.ks.a.k[0] * icon.ks.s.k[0]) / 100,
     ).toBeCloseTo(984);
     if (row === 0) expect(icon.ks.o.k.at(-1).t).toBe(65);
-    else expect(icon.ks.o.k.at(-1).t).toBe(422);
+    else
+      expect(icon.ks.o.k.at(-1).t).toBe(
+        Math.round(
+          (script.visualCues.find((c) => c.id === "near-further-examination")
+            .at -
+            cfg.narrationClipsByFile[14].start) *
+            30,
+        ),
+      );
   }
   const { data: rgb } = await sharp(
     "public/scrolly/coreexam/pupils-advanced/images/near-target-bubble.webp",
@@ -666,7 +682,7 @@ test("muscle apertures change with radial signals and the third-nerve eye blinks
   expect(lid.ks.p.a).toBe(0);
   const k = lid.shapes[0].it[0].ks.k,
     open = k[0].s[0],
-    closed = k.find((p) => p.t === 837).s[0];
+    closed = k[2].s[0];
   const length = (p) => Math.hypot(...p.v[0].map((v, i) => v - p.v[1][i]));
   expect(Math.abs(length(open) - length(closed))).toBeGreaterThan(0.1);
   expect(k.at(-1).s[0]).toEqual(open);
@@ -710,7 +726,7 @@ test("cataract controls follow speech by 1.5 seconds without changing PEC audio"
 test("afferent and consensual controls follow completed visuals and speech without accelerating the animation", () => {
   for (const [index, visualFrame, speechEnds] of [
     [0, 562, { en: 16.1, ko: 14.72 }],
-    [10, 390, { en: 13.93, ko: 14.62 }],
+    [10, 390, { en: 12.73, ko: 14.62 }],
     [13, 341.25, { en: 13.85 - 108.75 / 30, ko: 14.45 - 108.75 / 30 }],
   ]) {
     const clip = cfg.narrationClipsByFile[index];
@@ -880,8 +896,24 @@ test("blink hides the crease only during movement and the sympathetic eye starts
   )) {
     expect(crease.ks.o.k.map((k) => [k.t, k.s[0]])).toEqual([
       [0, 100],
-      [832, 0],
-      [847, 100],
+      [
+        Math.round(
+          (script.visualCues.find((c) => c.id === "third-nerve-eye-movements")
+            .at -
+            cfg.narrationClipsByFile[1].start) *
+            30,
+        ),
+        0,
+      ],
+      [
+        Math.round(
+          (script.visualCues.find((c) => c.id === "third-nerve-eye-movements")
+            .at -
+            cfg.narrationClipsByFile[1].start) *
+            30,
+        ) + 15,
+        100,
+      ],
     ]);
     expect(crease.shapes[0].it[0].ks.a).toBe(0);
   }
@@ -929,9 +961,9 @@ test("near technique halves the upper-to-lower pause and the warning follows fur
 test("RAPD captions join the definition and keep Here on the next line", () => {
   const text = stages[12].cues.find((c) => c.id === "swing-rapd").caption.en;
   expect(text.split("\n")[0]).toContain(
-    "or RAPD, means a weaker light signal from one\u00a0eye.",
+    "one eye sends a weaker light signal than the other.",
   );
-  expect(text.split("\n")[1]).toMatch(/^Here, the pupils/);
+  expect(text.split("\n")[1]).toMatch(/^Here, both pupils/);
   expect(fs.readFileSync(`${folder}/en.vtt`, "utf8")).toContain(text);
 });
 

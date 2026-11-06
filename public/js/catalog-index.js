@@ -31,7 +31,7 @@ export const EYES_INDEX = {
   "Uncorrected Refractive Error": "comingSoon",
   Cataract: "cataractPage",
   Glaucoma: "glaucomaInteractivePage",
-  "Diabetic Retinopathy": "comingSoon",
+  "Diabetic Retinopathy": "diabeticRetinopathyPage",
   "Corneal Disease": "comingSoon",
   "Childhood Eye Screening": "childhoodEyeScreeningPage",
   "Retinopathy of Prematurity": "comingSoon",

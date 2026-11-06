@@ -9,6 +9,7 @@ import {
   getRouteFromHash,
 } from "./navigation.js";
 import { initializeMenu, closeMenu, openMenu } from "./menu.js";
+import { initializeOfflineContentsBackground } from "./downloadedContents.js";
 import { initializePWA } from "./pwa.js";
 import { initializeVideoPlayers, initializeToolbar } from "./videoplayer.js";
 import { initializeLocation } from "./location-service.js";
@@ -123,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Init global systems once
   initializeLocation().catch((e) => console.warn("[geo] init failed", e));
   initializeMenu();
+  initializeOfflineContentsBackground();
   initializeExperimentalMiniAppNotice();
   initializeLessonCompletionTickObserver();
   initializeLocalizedVideoSubtitles();
@@ -331,6 +333,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (routeName === "frontOfEyePdf") {
       initializeFrontOfEyePdf();
+      return;
+    }
+
+    if (routeName === "frontOfEyePdfTest") {
+      const { initializeFrontOfEyePdfTest } =
+        await import("./frontOfEyePdfTest.js");
+      initializeFrontOfEyePdfTest();
       return;
     }
 
@@ -730,6 +739,9 @@ window.addEventListener("page:loaded", async (e) => {
   if (routeName === "ears") {
     const { initializeEars } = await import("./ears.js");
     initializeEars?.();
+  } else if (routeName?.startsWith("ears")) {
+    const { initializeEarsContent } = await import("./earsContent.js");
+    await initializeEarsContent(routeName);
   }
 });
 

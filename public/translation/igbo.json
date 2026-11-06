@@ -10809,5 +10809,18 @@
   "splashscreenMid": {
     "ariaLabel": "Ihuenyo Splash etiti",
     "logoOneAlt": "Logo Otu"
+  },
+  "onboardingFlow": {
+    "profile_title": "Hazie ahụmịhe gị",
+    "profile_hint": "Ọ bụghị iwu — ị nwere ike ịgbanwe ya ma emechaa na profaịlụ.",
+    "name_label": "Kedu aha anyị ga-akpọ gị?",
+    "interest_label": "Gịnị ka ị chọrọ ịmụ?",
+    "not_sure": "Amabeghị m ugbu a",
+    "start": "Malite ịmụ",
+    "skip": "Hapụ ya ugbu a",
+    "specialist": "Ọkachamara ma ọ bụ onye nkuzi",
+    "role_detail": "Kedu ọrụ gị?",
+    "role_label": "Họrọ ọrụ gị",
+    "other": "Ndị Ọzọ"
   }
 }

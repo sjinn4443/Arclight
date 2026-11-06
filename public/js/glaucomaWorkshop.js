@@ -286,6 +286,7 @@ function setupWorkshopFolders(page) {
   };
 
   const hideAllSectionCards = () => {
+    folders.forEach((row) => row.setAttribute("aria-expanded", "false"));
     sectionCards.forEach((card) => {
       card.style.display = "none";
 
@@ -320,6 +321,7 @@ function setupWorkshopFolders(page) {
     folders.forEach((r) => (r.style.display = ""));
 
     openFolderRow.style.display = "none";
+    openFolderRow.setAttribute("aria-expanded", "true");
     ssSet(SS_OPEN_KEY, key);
     page.classList.add("glaucoma-folder-open");
 
@@ -345,7 +347,8 @@ function setupWorkshopFolders(page) {
     titleEl.style.alignItems = "center";
     titleEl.style.width = "100%";
 
-    const toggle = document.createElement("span");
+    const toggle = document.createElement("button");
+    toggle.type = "button";
     toggle.className = "see-all-toggle";
     toggle.setAttribute("role", "button");
     toggle.setAttribute("tabindex", "0");
@@ -377,6 +380,8 @@ function setupWorkshopFolders(page) {
       }
 
       openFolderRow.style.display = "";
+      openFolderRow.setAttribute("aria-expanded", "false");
+      openFolderRow.focus({ preventScroll: true });
       ssRemove(SS_OPEN_KEY);
       ssRemove(SS_RESTORE_FLAG);
       page.classList.remove("glaucoma-folder-open");
@@ -449,6 +454,7 @@ function setupVisualFieldsSubfolder(page) {
   const closeExisting = () => {
     // 카드 숨김
     card.style.display = "none";
+    row.setAttribute("aria-expanded", "false");
 
     // h3에 붙인 Close 제거
     const titleEl = card.querySelector("h3");
@@ -476,6 +482,7 @@ function setupVisualFieldsSubfolder(page) {
 
     // 폴더 row 숨김
     row.style.display = "none";
+    row.setAttribute("aria-expanded", "true");
 
     // 카드 위치: anchor 바로 다음 (닫힐 때도 이 위치로 복귀)
     const anchor = page.querySelector("#visualFieldsSubsectionAnchor");
@@ -499,7 +506,8 @@ function setupVisualFieldsSubfolder(page) {
     titleEl.style.alignItems = "center";
     titleEl.style.width = "100%";
 
-    const toggle = document.createElement("span");
+    const toggle = document.createElement("button");
+    toggle.type = "button";
     toggle.className = "see-all-toggle";
     toggle.setAttribute("role", "button");
     toggle.setAttribute("tabindex", "0");
@@ -514,6 +522,7 @@ function setupVisualFieldsSubfolder(page) {
       ev.preventDefault();
       ev.stopPropagation();
       closeExisting();
+      row.focus({ preventScroll: true });
     };
 
     toggle.addEventListener("click", closeNow);

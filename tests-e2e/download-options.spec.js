@@ -63,6 +63,9 @@ test("download options support multiple sections and show cache status on deskto
       value: { ready: Promise.resolve({ active: worker }) },
     });
   });
+  await page.evaluate(async () =>
+    (await import("/js/offlineDownloadState.js")).invalidateOfflineInventory(),
+  );
   await page.locator("#eyesCatalogPage .menuBtn").click();
   await page.locator("#startDownloadBtn").click();
   const modal = page.locator("#downloadAppModal");
@@ -74,6 +77,7 @@ test("download options support multiple sections and show cache status on deskto
   await expect(
     modal.locator(".download-group summary > span:first-child"),
   ).toHaveText([
+    "Ears",
     "Examination",
     "Eye Care Procedure",
     "Conditions",
@@ -82,20 +86,20 @@ test("download options support multiple sections and show cache status on deskto
   await modal.locator('[data-download-group="core"] summary').click();
   await expect(
     modal.locator('[data-download-status="core-history"]'),
-  ).toHaveText("Completed");
+  ).toHaveText("1/1");
   await expect(
     modal.locator('[data-download-status="core-pupils"]'),
-  ).toHaveText("Partly downloaded");
+  ).toHaveText("0/1");
   await expect(
     modal.locator('[data-download-status="core-interactive-learning"]'),
-  ).toHaveText("Not downloaded");
+  ).toHaveText("0/1");
   await expect(modal.locator("#downloadAllBtn")).toBeDisabled();
   await modal.locator('input[value="core-history"]').check();
   await modal.locator('input[value="core-pupils"]').check();
   await modal.locator("#offlineVideoQualitySelect").selectOption("low");
   await expect(
     modal.locator('[data-download-status="core-pupils"]'),
-  ).toHaveText("Completed");
+  ).toHaveText("1/1");
   await expect(modal.locator("#offlineFullContentSize")).toHaveText(
     "Download size: 10 MB",
   );

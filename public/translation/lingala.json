@@ -6163,5 +6163,18 @@
       "scoreTemplate": "Ozalaki na {{correct}} kati na {{total}} malamu.",
       "incomplete": "S'il vous plaît eyana nyonso {{count}} mituna liboso ya kotinda."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Bongisa ndenge ya kosalela",
+    "profile_hint": "Ezali ya kopona — okoki kobongola yango na profil na nsima.",
+    "name_label": "Tobenga yo nani?",
+    "interest_label": "Olingi koyekola nini?",
+    "not_sure": "Nayebi naino te",
+    "start": "Banda koyekola",
+    "skip": "Leka mpo na sikoyo",
+    "specialist": "Monganga ya spécialité to moteyi",
+    "role_detail": "Mosala na yo ezali nini?",
+    "role_label": "Páka mosala na yo",
+    "other": "Bíɛlɛ́"
   }
 }

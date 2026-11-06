@@ -29,6 +29,11 @@
   padding: 35px 32px;
 }
 
+#eyePadShield .eye-care-procedure-lessons {
+  display: grid;
+  gap: 24px;
+}
+
 .eye-care-procedure-video-rows {
   display: grid;
   gap: 16px;
@@ -82,19 +87,22 @@
   height: 100%;
   background: #15e115;
 }
-#makeEyePadShieldScrollPage .childhood-fundal-segment-text {
+:is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage)
+  .childhood-fundal-segment-text {
   box-sizing: border-box;
   margin-inline: auto;
   max-width: 680px;
   text-wrap: pretty;
 }
-#makeEyePadShieldScrollPage .eyes-topbar__title {
+:is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage)
+  .eyes-topbar__title {
   max-width: min(52vw, 360px);
   white-space: normal;
   line-height: 1.2;
 }
 @media (min-width: 1024px) {
-  #makeEyePadShieldScrollPage .childhood-fundal-segment-text {
+  :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage)
+    .childhood-fundal-segment-text {
     width: min(66.6667%, calc(68vh * (1169 / 1280)));
   }
 }

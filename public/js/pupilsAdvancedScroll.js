@@ -56,7 +56,7 @@ const OWN_STAGES = [
         id: "efferent-definition",
         offset: 0,
         end: 8,
-        en: "The efferent pathway is the opposite of the afferent pathway: it carries signals from the brain to the eye.",
+        en: "The efferent pathway carries signals from the brain to the eye.",
         ko: "원심성 경로는 구심성 경로와 반대로, 뇌에서 눈으로 신호를 전달합니다.",
       },
       {
@@ -70,14 +70,14 @@ const OWN_STAGES = [
         id: "constrictor",
         offset: 18,
         end: 25,
-        en: "It supplies the pupil constrictor and the ciliary muscle.",
+        en: "It supplies the iris sphincter to constrict the pupil and the ciliary muscle for focusing.",
         ko: "이 경로는 동공괄약근과 섬모체근에 연결됩니다.",
       },
       {
         id: "third-nerve",
         offset: 25,
         end: 32,
-        en: "The third cranial nerve also supplies eye movements and the main eyelid muscle.",
+        en: "The third nerve controls most eye movements and lifts the lid. The facial nerve controls blinking.",
         ko: "제3뇌신경은 안구운동과 눈꺼풀을 올리는 주된 근육에도 연결됩니다.",
       },
     ],
@@ -97,7 +97,7 @@ const OWN_STAGES = [
         id: "dilator",
         offset: 10,
         end: 20,
-        en: "It supplies the pupil dilator and a minor eyelid muscle, as shown in the diagram.",
+        en: "It supplies the iris dilator and Müller's muscle, which helps raise the upper eyelid.",
         ko: "그림처럼 이 경로는 동공산대근과 눈꺼풀의 보조 근육에 연결됩니다.",
       },
     ],
@@ -117,7 +117,7 @@ const OWN_STAGES = [
         id: "reflex-output",
         offset: 8,
         end: 16,
-        en: "Efferent signals then travel to both pupils, causing them to constrict in response to light.",
+        en: "Signals from the midbrain reach both eyes, so both pupils constrict in response to light.",
         ko: "이어서 원심성 신호가 양쪽 동공으로 전달되어, 빛에 반응해 동공이 수축합니다.",
       },
       {
@@ -151,7 +151,7 @@ const OWN_STAGES = [
         id: "consensual-other",
         offset: 8,
         end: 22,
-        en: "Repeat from the other side, watching the pupil that is not being directly illuminated.",
+        en: "Repeat on the other side and watch the pupil in the eye without the light.",
         ko: "반대쪽에서도 반복하며 빛을 직접 비추지 않은 눈의 동공을 관찰합니다.",
       },
     ],
@@ -164,14 +164,14 @@ const OWN_STAGES = [
         id: "swing-method",
         offset: 0,
         end: 10,
-        en: "Move the light from one eye to the other, comparing the pupil responses.",
+        en: "Move the light between the eyes, pausing for two to three seconds on each side. Compare both pupils.",
         ko: "빛을 한쪽 눈에서 반대쪽 눈으로 옮기며 동공 반응을 비교합니다.",
       },
       {
         id: "swing-return",
         offset: 10,
         end: 20,
-        en: "Swing the light back and observe both pupils each time the illuminated eye changes.",
+        en: "Swing the light back and watch both pupils as you change sides.",
         ko: "빛을 다시 옮기고, 빛을 비추는 눈이 바뀔 때마다 양쪽 동공을 관찰합니다.",
       },
     ],
@@ -184,16 +184,16 @@ const OWN_STAGES = [
         id: "swing-normal",
         offset: 0,
         end: 10,
-        en: "In the normal example, the pupil remains constricted when the light returns to this eye.",
+        en: "Normally, both pupils constrict equally when either eye is illuminated.",
         ko: "정상 예시에서는 빛이 이 눈으로 돌아와도 동공이 수축된 상태를 유지합니다.",
       },
       {
         id: "swing-rapd",
         offset: 10,
         end: 24,
-        en: "A relative afferent pupillary defect, or RAPD, means a weaker light signal from one eye. Here, the pupils paradoxically dilate when light moves to the affected right eye.",
+        en: "A relative afferent pupillary defect, or RAPD, means one eye sends a weaker light signal than the other. Here, both pupils dilate when the light moves to the affected right eye.",
         caption: {
-          en: "A relative afferent pupillary defect, or RAPD, means a weaker light signal from one\u00a0eye.\nHere, the pupils paradoxically dilate when light moves to the affected right eye.",
+          en: "A relative afferent pupillary defect, or RAPD, means one eye sends a weaker light signal than the other.\nHere, both pupils dilate when the light moves to the affected right eye.",
         },
         ko: "상대구심동공운동장애, 즉 RAPD는 한쪽 눈의 빛 신호가 약해진 상태입니다. 빛을 이상이 있는 오른쪽 눈으로 옮기면 동공이 역설적으로 커집니다.",
       },
@@ -214,7 +214,7 @@ const OWN_STAGES = [
         id: "near-target",
         offset: 161.25 / 30,
         end: 21,
-        en: "Then ask them to look at a near target, as shown here with the Arclight.",
+        en: "Then ask them to look at a near target on the Arclight.",
         ko: "그다음 그림의 아크라이트처럼 가까이 있는 목표물을 보게 합니다.",
       },
     ],
@@ -227,24 +227,42 @@ const OWN_STAGES = [
         id: "near-normal",
         offset: 0,
         end: 10,
-        en: "When looking at a near target, both eyes normally turn inward together. This is called convergence.",
+        en: "The eyes turn inwards to fix on the near target. This convergence accompanies pupil constriction and lens accommodation.",
         ko: "가까운 목표물을 볼 때 두 눈이 함께 안쪽으로 향하는 반응을 눈모음, 또는 폭주라고 합니다.",
       },
       {
         id: "near-abnormal",
         offset: 10,
         end: 20,
-        en: "If the eyes do not turn inward together for a near target, further examination is needed.",
+        en: "If the eyes do not turn inwards together for a near target, further examination is needed.",
         ko: "가까운 목표물을 볼 때 두 눈이 함께 안쪽으로 향하지 않으면 추가 검사가 필요합니다.",
       },
     ],
   },
 ];
+// Advanced-specific English review; the shared PEC lesson keeps its own wording.
+export const PUPILS_ADVANCED_ENGLISH_OVERRIDES = {
+  "compare-observation":
+    "Check for changes in pupil colour or shape, unequal pupil size and drooping eyelids.",
+  "corresponding-examples":
+    "These are possible associations. The pupil response alone does not identify the underlying eye condition.",
+  "pupil-colour":
+    "A grey or white appearance does not by itself mean the pupil cannot constrict.",
+};
 export const PUPILS_ADVANCED_STAGES = [
   ...OWN_STAGES.slice(0, 4),
   ...PUPILS_PEC_STAGES.map((stage, pecStageIndex) => ({
     ...stage,
     pecStageIndex,
+    cues: stage.cues.map((cue) =>
+      PUPILS_ADVANCED_ENGLISH_OVERRIDES[cue.id]
+        ? {
+            ...cue,
+            en: PUPILS_ADVANCED_ENGLISH_OVERRIDES[cue.id],
+            narrationOverrideLanguages: ["en"],
+          }
+        : cue,
+    ),
   })),
   ...OWN_STAGES.slice(4),
 ];
@@ -291,7 +309,7 @@ const clips = PUPILS_ADVANCED_STAGES.map((stage, i) => {
   if (i === 9)
     clip.endByLanguage = { en: clip.start + 17.76, ko: clip.start + 19.32 };
   if (i === 10)
-    clip.endByLanguage = { en: clip.start + 15.43, ko: clip.start + 16.12 };
+    clip.endByLanguage = { en: clip.start + 14.5, ko: clip.start + 16.12 };
   if (i === 13)
     clip.endByLanguage = {
       en: clip.start + 341.25 / 30 + 1.5,

@@ -50,6 +50,19 @@ function loadServiceWorker(fetchImpl) {
     path.join(__dirname, "..", "public", "sw.js"),
     "utf8",
   );
+  vm.runInContext(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        "..",
+        "public",
+        "video-localization",
+        "video-quality.js",
+      ),
+      "utf8",
+    ),
+    context,
+  );
   vm.runInContext(source, context, { filename: "sw.js" });
   // sw.js is the single source of truth; version bumps need no test edits.
   const { cacheName, packCacheName } = vm.runInContext(
@@ -409,6 +422,48 @@ describe("service worker sensitive-cache policy", () => {
     expect(await response.text()).toBe("2345");
     expect(fetchImpl).not.toHaveBeenCalled();
   });
+
+  test.each([
+    [
+      "/videos/Arclight/PhoneAttach.mp4",
+      "/videos/Tools/MobilePhoneAttachment_720p.mp4",
+    ],
+    [
+      "/videos/Core/Intro/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+      "/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+    ],
+    [
+      "/videos/Workshop/Diabetic/2.DODRMaculopathy_240p.mp4",
+      "/videos/Workshop/Diabetic/2.DODRMaculopathy.mp4",
+    ],
+  ])(
+    "serves legacy quality aliases from a retained low download: %s",
+    async (low, high) => {
+      const fetchImpl = jest.fn().mockRejectedValue(new Error("offline"));
+      const { cache, handlers } = loadServiceWorker(fetchImpl);
+      cache.match.mockImplementation(async (request) => {
+        const url = typeof request === "string" ? request : request.url;
+        return url === new URL(low, "https://app.example.com").href
+          ? new Response("0123456789", {
+              headers: { "Content-Type": "video/mp4" },
+            })
+          : undefined;
+      });
+      let response;
+      handlers.fetch({
+        request: new Request(new URL(high, "https://app.example.com"), {
+          headers: { Range: "bytes=2-5" },
+        }),
+        respondWith: (promise) => {
+          response = promise;
+        },
+      });
+      const result = await response;
+      expect(result.status).toBe(206);
+      expect(await result.text()).toBe("2345");
+      expect(fetchImpl).not.toHaveBeenCalled();
+    },
+  );
 
   test.each(["220", "240"])(
     "serves a cached %sp MP4 when the saved quality requests 720p",

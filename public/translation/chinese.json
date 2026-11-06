@@ -6148,5 +6148,18 @@
       "scoreTemplate": "你答对了 {{correct}} 道题，共 {{total}} 道。",
       "incomplete": "请在提交前回答所有 {{count}} 道题。"
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "个性化设置",
+    "profile_hint": "此步骤可跳过，稍后可在个人资料中修改。",
+    "name_label": "我们该怎么称呼您？",
+    "interest_label": "您想学习哪些内容？",
+    "not_sure": "还不确定",
+    "start": "开始学习",
+    "skip": "暂时跳过",
+    "specialist": "专科人员或教育工作者",
+    "role_detail": "具体是什么角色？",
+    "role_label": "请选择您的职位",
+    "other": "其他"
   }
 }

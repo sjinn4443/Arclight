@@ -1,3 +1,5 @@
+import "../video-localization/video-quality.js";
+
 // Shared across separately bundled entry points.
 const state = (window.__arclightConnectivity ||= {
   offline: navigator.onLine === false,
@@ -134,6 +136,11 @@ export async function hasDownloadedVideo(source) {
 }
 
 export async function updateOfflineVideoControls(page, sources) {
+  sources = {
+    ...sources,
+    low: globalThis.ArclightVideoQuality.resolve(sources.low, "low"),
+    high: globalThis.ArclightVideoQuality.resolve(sources.high, "high"),
+  };
   const toggle = page.querySelector(".tri-toggle");
   if (!toggle) return null;
   let note = page.querySelector(".video-offline-note");

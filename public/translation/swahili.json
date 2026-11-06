@@ -6163,5 +6163,18 @@
       "scoreTemplate": "Ulipata {{correct}} kati ya {{total}} sahihi.",
       "incomplete": "Tafadhali jibu maswali yote {{count}} kabla ya kuwasilisha."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Binafsisha matumizi yako",
+    "profile_hint": "Si lazima — unaweza kubadilisha baadaye kwenye wasifu.",
+    "name_label": "Tukuite nani?",
+    "interest_label": "Ungependa kujifunza nini?",
+    "not_sure": "Bado sina uhakika",
+    "start": "Anza kujifunza",
+    "skip": "Ruka kwa sasa",
+    "specialist": "Mtaalamu au mwalimu",
+    "role_detail": "Jukumu lako ni lipi?",
+    "role_label": "Chagua jukumu lako",
+    "other": "Nyingine"
   }
 }

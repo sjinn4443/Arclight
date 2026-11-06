@@ -3783,6 +3783,10 @@ select.onb-input.has-value + .onb-select-caret {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_pdf.webp");
 }
 
+#diabeticRetinopathyPage .lesson-row--pdf .thumb {
+  background-image: url("/images/icon/eyes/moduleicons/advanced_pdf.webp");
+}
+
 #diabeticRetinopathyWorkshopPage .diabetic-nested-folder-row .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_folder.webp");
 }
@@ -7433,7 +7437,8 @@ select.onb-input.has-value + .onb-select-caret {
     #frontOfEyeExaminationScrollPage,
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
-    #makeEyePadShieldScrollPage,
+    :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+    #cataractScrollPage,
     #pupilsPecScrollPage,
     #pupilsAdvancedScrollPage,
     #directOphthalmoscopyScrollPage,
@@ -7698,7 +7703,8 @@ select.onb-input.has-value + .onb-select-caret {
     #frontOfEyeExaminationScrollPage,
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
-    #makeEyePadShieldScrollPage,
+    :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+    #cataractScrollPage,
     #pupilsPecScrollPage,
     #pupilsAdvancedScrollPage,
     #directOphthalmoscopyScrollPage,
@@ -7714,7 +7720,8 @@ select.onb-input.has-value + .onb-select-caret {
     #frontOfEyeExaminationScrollPage,
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
-    #makeEyePadShieldScrollPage,
+    :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+    #cataractScrollPage,
     #pupilsPecScrollPage,
     #pupilsAdvancedScrollPage,
     #directOphthalmoscopyScrollPage,
@@ -7730,7 +7737,8 @@ select.onb-input.has-value + .onb-select-caret {
     #frontOfEyeExaminationScrollPage,
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
-    #makeEyePadShieldScrollPage,
+    :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+    #cataractScrollPage,
     #pupilsPecScrollPage,
     #pupilsAdvancedScrollPage,
     #directOphthalmoscopyScrollPage,
@@ -7753,7 +7761,8 @@ select.onb-input.has-value + .onb-select-caret {
     #frontOfEyeExaminationScrollPage,
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
-    #makeEyePadShieldScrollPage,
+    :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+    #cataractScrollPage,
     #pupilsPecScrollPage,
     #pupilsAdvancedScrollPage,
     #directOphthalmoscopyScrollPage,
@@ -7768,7 +7777,8 @@ select.onb-input.has-value + .onb-select-caret {
     #frontOfEyeExaminationScrollPage,
     #visualAcuityExaminationScrollPage,
     #fundalReflexExaminationScrollPage,
-    #makeEyePadShieldScrollPage,
+    :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+    #cataractScrollPage,
     #pupilsPecScrollPage,
     #pupilsAdvancedScrollPage,
     #directOphthalmoscopyScrollPage,
@@ -8667,7 +8677,8 @@ select.onb-input.has-value + .onb-select-caret {
       #frontOfEyeExaminationScrollPage,
       #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
-      #makeEyePadShieldScrollPage,
+      :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+      #cataractScrollPage,
       #pupilsPecScrollPage,
       #pupilsAdvancedScrollPage,
       #directOphthalmoscopyScrollPage,
@@ -8682,7 +8693,8 @@ select.onb-input.has-value + .onb-select-caret {
       #frontOfEyeExaminationScrollPage,
       #visualAcuityExaminationScrollPage,
       #fundalReflexExaminationScrollPage,
-      #makeEyePadShieldScrollPage,
+      :is(#makeEyePadShieldScrollPage, #applyEyePadShieldScrollPage),
+      #cataractScrollPage,
       #pupilsPecScrollPage,
       #pupilsAdvancedScrollPage,
       #directOphthalmoscopyScrollPage,
@@ -32133,4 +32145,22 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 #earsCatalogPage .ears-card--empty {
   background: #000;
   cursor: default;
+}
+
+/* Cataract uses the Eye Pad/Shield caption and header geometry. */
+#cataractScrollPage .childhood-fundal-segment-text {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 680px;
+  text-wrap: pretty;
+}
+#cataractScrollPage .eyes-topbar__title {
+  max-width: min(52vw, 360px);
+  white-space: normal;
+  line-height: 1.2;
+}
+@media (min-width: 1024px) {
+  #cataractScrollPage .childhood-fundal-segment-text {
+    width: min(66.6667%, calc(68vh * (1169 / 1280)));
+  }
 }

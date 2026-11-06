@@ -2,6 +2,37 @@
 
 # Active Context
 
+## Optional two-step onboarding — 6 November 2026
+
+- Account-only registration leads to optional display name, interest chips and
+  role on the existing interest route, then the introduction before Home or the
+  saved lesson. Saving and skipping both open the introduction. Guests enter
+  learning directly; Home has no separate introduction link.
+- Both signup pages use their earlier centred vertical offset. Guidance uses
+  focused speech bubbles with live password checks; role choices use the chips'
+  14px size. The English question is “What is your role?”.
+- Unicode names and password Show/Hide are retained. Credential drafts survive Back and clear on
+  successful authentication, logout or guest entry. Recovery Back stays in login.
+- Account-scoped optional drafts survive Back; returning to an already completed
+  registration cannot create the same account twice. Experience stays in Profile.
+  Optional device-use and study/teaching answers live in the profile editor and
+  sync as `arclightExperience`; cancelling the editor discards pending answers.
+- Download invitations exclude onboarding/auth routes, including pending timers.
+  All 20 new labels are present in 26 locales. Account work remains local only.
+
+## Download discovery and inventory — 5 November 2026
+
+- Browser users receive a one-time invitation after 15 clicks following dashboard
+  entry. Standalone users and users with previous downloads are excluded.
+- Options and Downloaded Contents share a cache-key inventory. Background warming,
+  download/foreground updates and a visible-page minute timer replace per-file
+  lookups on every open. Cached manifest metadata supports offline inspection.
+- Ratios count content bundles, with green/orange/red status, progress bars and
+  expandable details. Options respect chosen quality; summaries accept either
+  video variant. These are bundle counts, not an exact internal-page index.
+- Source SW fallback is v139. Chrome desktop/mobile checks pass; full release
+  build verification was blocked by insufficient disk space.
+
 ## Cataract case quiz — 4 November 2026
 
 - New history bubbles scroll into view on mobile screens up to 767px, matching
@@ -45,9 +76,22 @@
 - Dashboard now opens `ears`, using the shared Eyes catalog styles at desktop
   and phone sizes. Four rows cover Exam: Extent Ear & Otoscopy, Hearing
   Assessment, Primary Ear Care Procedures, and Workshops.
-- The first three rows contain blank non-interactive slots. PEC workshop in
-  Workshops opens the existing `primaryEarCareWorkshop`; structural Back returns
-  to Ears and then Dashboard. New catalog labels are available in all locales.
+- The supplied Ears archive now populates 15 topics and 51 learning entries,
+  with 18 original PDFs / 228 page previews, three unique otoscopy recordings,
+  source landmark diagrams and original teaching downloads. See
+  `docs/ears-content-source-map.md` for assignments and complete WHO practicals.
+- PEC workshop retains `primaryEarCareWorkshop`. New topic and lesson routes
+  share `earsContent.html`; `earsRoutes.js` is a generated small route index.
+  Reader page restore, image zoom, video quality/time, My Learning and Ears
+  offline downloads are wired. Original documents are optional content assets.
+- All 15 Ears topic lists match Eyes row geometry, title/icon/progress alignment
+  and grey Start links. Shared two-dot separators leave 62px between levels;
+  format subtitles are removed and video durations remain inline.
+- Internal scroll/diagram guides now reuse the Eyes Medical Students card,
+  hero, badge, typography and image styles. Videos follow the Eyes PEC player
+  geometry and header quality toggle. White PDF readers retain page restore
+  and zoom; two wide level-coloured Previous/Next buttons replace the three
+  small lesson buttons. At either end, navigation returns to the owning topic.
 
 ## Eye pad and shield revision — 30 October 2026
 

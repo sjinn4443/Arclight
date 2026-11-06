@@ -6175,5 +6175,18 @@
       "scoreTemplate": "Você acertou {{correct}} de {{total}}.",
       "incomplete": "Por favor, responda todas as {{count}} perguntas antes de enviar."
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "Personalize a sua experiência",
+    "profile_hint": "Opcional: pode alterar estas informações depois no perfil.",
+    "name_label": "Como devemos chamar-lhe?",
+    "interest_label": "O que gostaria de aprender?",
+    "not_sure": "Ainda não sei",
+    "start": "Começar a aprender",
+    "skip": "Ignorar por agora",
+    "specialist": "Especialista ou educador",
+    "role_detail": "Qual é a função?",
+    "role_label": "Selecione sua função",
+    "other": "Outro"
   }
 }

@@ -1,8 +1,11 @@
 /* sw.js — Arclight PWA service worker */
-/* global __BUILD_CACHE_NAME__ */
+/* global __BUILD_CACHE_NAME__, importScripts */
+if (typeof importScripts === "function") {
+  importScripts("/video-localization/video-quality.js");
+}
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v133"
+    ? "arclight-static-v154"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -176,6 +179,14 @@ async function createRangeResponse(request, cachedResponse) {
 function getAlternateMp4Urls(requestUrl) {
   const url = new URL(requestUrl);
   const alternates = [];
+  const pair = globalThis.ArclightVideoQuality?.pair(requestUrl);
+  if (pair) {
+    for (const variant of [pair.low, pair.high, ...(pair.aliases || [])]) {
+      const alternate = new URL(variant, url.origin);
+      alternate.search = url.search;
+      if (alternate.pathname !== url.pathname) alternates.push(alternate.href);
+    }
+  }
   const replacements = [
     [/_720p(?=\.mp4$)/i, "_220p"],
     [/_720p(?=\.mp4$)/i, "_240p"],
@@ -486,6 +497,12 @@ async function handleMessage(event) {
     const port = ports?.[0];
     try {
       const result = await cacheUrls(urls, port);
+      const clients =
+        (await self.clients?.matchAll?.({ type: "window" }).catch(() => [])) ||
+        [];
+      clients.forEach((client) =>
+        client.postMessage({ type: "CACHE_CONTENTS_CHANGED" }),
+      );
       postCacheProgress(port, {
         type: result.paused ? "CACHE_PAUSED" : "CACHE_DONE",
         ...result,

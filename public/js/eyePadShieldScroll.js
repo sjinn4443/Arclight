@@ -206,7 +206,7 @@ export const EYE_PAD_SHIELD_SCROLL_TIMING = {
 
 export const EYE_PAD_SHIELD_SCROLL_CONFIG = {
   pageId: EYE_PAD_SHIELD_SCROLL_PAGE,
-  label: "Make an eye pad and eye shield",
+  label: "Make an Eye Pad and Eye Shield",
   playMode: "stageAutoplay",
   enableReplay: true,
   segmentTextToggleOnTitle: true,

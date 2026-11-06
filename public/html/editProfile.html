@@ -1,18 +1,17 @@
 <div class="profile-page profile-edit-page page active" id="editProfilePage">
-  <div class="profile-topbar">
-    <div class="profile-topbar__title" data-i18n="myprofile.edit_profile">
+  <div class="profile-edit-heading">
+    <h2 id="editProfileTitle" data-i18n="myprofile.edit_profile">
       Edit Profile
-    </div>
-
-    <div class="profile-topbar__icons">
-      <button
-        class="icon-btn menuBtn"
-        aria-label="Menu"
-        data-i18n="i18nExtra.menu_aria_label:aria-label"
-      >
-        &#9776;
-      </button>
-    </div>
+    </h2>
+    <button
+      type="button"
+      class="profile-edit-close"
+      id="editProfileClose"
+      aria-label="Close"
+      data-i18n="profileLayout.close:aria-label"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
   </div>
 
   <form class="profile-edit-form" id="editProfileForm">
@@ -49,6 +48,7 @@
         type="text"
         id="editProfileName"
         autocomplete="name"
+        autofocus
         placeholder="Enter"
         data-i18n="onboarding.username_placeholder:placeholder"
       />
@@ -59,22 +59,18 @@
       <div class="profile-edit-chip-grid" id="editProfileInterests"></div>
     </fieldset>
 
-    <label class="profile-edit-field">
-      <span data-i18n="onboarding.job_label">Role(s)</span>
-      <select id="editProfileRoles" multiple size="8"></select>
-    </label>
+    <fieldset class="profile-edit-fieldset">
+      <legend data-i18n="onboarding.job_label">Role(s)</legend>
+      <details class="profile-edit-role-picker">
+        <summary id="editProfileRolesSummary">Select</summary>
+        <div id="editProfileRoles" class="profile-edit-role-options"></div>
+      </details>
+    </fieldset>
 
     <div class="profile-edit-experience" id="editProfileExperience"></div>
+    <p class="profile-edit-error" id="editProfileError" role="alert" hidden></p>
 
     <div class="profile-edit-actions">
-      <button
-        type="submit"
-        class="onb-cta profile-edit-save"
-        id="editProfileSaveBtn"
-        data-i18n="i18nExtra.save_changes"
-      >
-        Save changes
-      </button>
       <button
         type="button"
         class="profile-edit-cancel"
@@ -82,6 +78,14 @@
         data-i18n="i18nExtra.cancel"
       >
         Cancel
+      </button>
+      <button
+        type="submit"
+        class="onb-cta profile-edit-save"
+        id="editProfileSaveBtn"
+        data-i18n="i18nExtra.save_changes"
+      >
+        Save changes
       </button>
     </div>
   </form>

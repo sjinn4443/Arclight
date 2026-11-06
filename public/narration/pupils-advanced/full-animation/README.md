@@ -16,7 +16,11 @@ artwork. Nine scenes are authored
 from Advanced source components. Observation and all five Direct Light Response
 scenes (including cataract) reference the six original PEC JSON paths verbatim.
 Both languages reuse the shipped PEC audio from seconds 1–102 at seconds 107–208
-of the Advanced track; the narration manifest records the original track hashes.
+of the Advanced track. The reviewed English recording replaces three explicit
+Advanced-only cue slots; `overriddenPecCueIds` records these exceptions. The
+remaining shared speech and the Korean recording are preserved. See the
+[English clinical review](../../../../docs/pupils-advanced-english-clinical-review.md)
+for the clinical sources and wording decisions.
 
 Use proportional cover for the two near-technique panels, with the fixation
 target and device inset so neither is cropped. Use contain for the full reflex

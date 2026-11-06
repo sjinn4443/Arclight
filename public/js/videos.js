@@ -3,6 +3,8 @@
  */
 
 import { setLessonProgress } from "./lessonProgress.js";
+import "../video-localization/video-quality.js";
+import { rememberDiabeticConditionLesson } from "./diabeticConditionContext.js";
 import {
   checkConnectivity,
   isOffline,
@@ -51,6 +53,7 @@ const FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID =
   "frontOfEyeExaminationScrollPage";
 const PUPILS_PEC_SCROLL_PAGE_ID = "pupilsPecScrollPage";
 const PUPILS_ADVANCED_SCROLL_PAGE_ID = "pupilsAdvancedScrollPage";
+const CATARACT_SCROLL_PAGE_ID = "cataractScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_PAGE_ID =
   "fundalReflexExaminationScrollPage";
 const FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE = "fundalReflexExaminationScroll";
@@ -424,6 +427,36 @@ function syncPupilsAdvancedScrollProgress() {
     PUPILS_ADVANCED_SCROLL_PAGE_ID,
     setLessonProgress,
   );
+}
+
+function syncCataractScrollProgress() {
+  syncScrollProgressForTarget(CATARACT_SCROLL_PAGE_ID, setLessonProgress);
+}
+
+const pendingCataractPages = new WeakMap();
+let cataractInitialization = Promise.resolve();
+function initializeCataractScrollGuide() {
+  const page = document.getElementById(CATARACT_SCROLL_PAGE_ID);
+  if (!page) return;
+  if (pendingCataractPages.has(page)) return pendingCataractPages.get(page);
+  const task = cataractInitialization
+    .catch(() => {})
+    .then(async () => {
+      const { initializeChildhoodFundalReflexScrollPage } =
+        await import("./childhoodFundalPreparation.js");
+      if (
+        document.body.dataset.currentRoute !== "videos" ||
+        document.getElementById(CATARACT_SCROLL_PAGE_ID) !== page ||
+        page.style.display === "none"
+      )
+        return;
+      await initializeChildhoodFundalReflexScrollPage("cataractScroll");
+      requestAnimationFrame(syncCataractScrollProgress);
+    })
+    .catch((error) => console.error("[videos] Cataract guide failed", error));
+  cataractInitialization = task;
+  pendingCataractPages.set(page, task);
+  return task.finally(() => pendingCataractPages.delete(page));
 }
 
 const pendingPupilsAdvancedPages = new WeakMap();
@@ -1179,6 +1212,10 @@ function showPageFallback(id) {
 
   if (id === PUPILS_ADVANCED_SCROLL_PAGE_ID) {
     void initializePupilsAdvancedScrollGuide();
+  }
+
+  if (id === CATARACT_SCROLL_PAGE_ID) {
+    void initializeCataractScrollGuide();
   }
 
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
@@ -2057,6 +2094,20 @@ const VIDEO_PAGE_SOURCES = {
     },
   },
 };
+
+// Resolve legacy names and single-source pages through the download quality map.
+for (const config of Object.values(VIDEO_PAGE_SOURCES)) {
+  for (const quality of ["low", "high"]) {
+    const wasRelative = !config.sources[quality]?.startsWith("/");
+    const resolved = globalThis.ArclightVideoQuality.resolve(
+      config.sources[quality],
+      quality,
+    );
+    config.sources[quality] = wasRelative
+      ? resolved?.replace(/^\//, "")
+      : resolved;
+  }
+}
 
 const CHILDHOOD_EYE_SCREENING_SUBTITLE_CATALOG_URL =
   "/video-localization/childhood-eye-screening.json";
@@ -4924,6 +4975,10 @@ function show(id) {
     void initializePupilsAdvancedScrollGuide();
   }
 
+  if (id === CATARACT_SCROLL_PAGE_ID) {
+    void initializeCataractScrollGuide();
+  }
+
   if (id === FRONT_OF_EYE_EXAMINATION_SCROLL_PAGE_ID) {
     void initializeFrontOfEyeExaminationScrollGuide();
   }
@@ -4995,6 +5050,7 @@ function show(id) {
 // ----- Public initializer: called by router when 'videos' is loaded -----
 // videos.js
 export async function initializeVideos() {
+  document.getElementById("diabeticRetinopathyPage")?.removeAttribute("inert");
   const advancedLesson = document.getElementById(
     PUPILS_ADVANCED_SCROLL_PAGE_ID,
   );
@@ -5233,6 +5289,13 @@ if (!window[__videosGlobalBoundKey]) {
       } catch {}
     }
 
+    if (row.closest("#diabeticRetinopathyPage")) {
+      // This handler supplies the lesson ID. The window-level data-route
+      // handler would otherwise open the route again without its subpage.
+      e.stopPropagation();
+      rememberDiabeticConditionLesson(row);
+    }
+
     primeExaminationNarration(
       target,
       window.I18N?.getLanguage?.() || localStorage.getItem("prefLang") || "en",
@@ -5245,7 +5308,9 @@ if (!window[__videosGlobalBoundKey]) {
       } catch {}
     }
 
-    rememberInteractiveLearningReturnTarget(row);
+    if (!row.closest("#diabeticRetinopathyPage")) {
+      rememberInteractiveLearningReturnTarget(row);
+    }
 
     const routeName = row.getAttribute("data-route");
     if (routeName && routeName !== "videos") {
@@ -5301,7 +5366,8 @@ if (!window[__videosGlobalBoundKey]) {
     }
     if (
       target === PUPILS_PEC_SCROLL_PAGE_ID ||
-      target === PUPILS_ADVANCED_SCROLL_PAGE_ID
+      target === PUPILS_ADVANCED_SCROLL_PAGE_ID ||
+      target === CATARACT_SCROLL_PAGE_ID
     ) {
       setLessonProgress(target, 100);
       return;
@@ -5337,6 +5403,7 @@ if (!window[__videosGlobalBoundKey]) {
       syncFrontOfEyeExaminationScrollProgress();
       syncPupilsPecScrollProgress();
       syncPupilsAdvancedScrollProgress();
+      syncCataractScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();
@@ -5351,6 +5418,7 @@ if (!window[__videosGlobalBoundKey]) {
       requestAnimationFrame(syncFrontOfEyeExaminationScrollProgress);
       requestAnimationFrame(syncPupilsPecScrollProgress);
       requestAnimationFrame(syncPupilsAdvancedScrollProgress);
+      requestAnimationFrame(syncCataractScrollProgress);
       scheduleFundalReflexExaminationScrollProgressSync();
       scheduleDirectOphthalmoscopyScrollProgressSync();
       scheduleBinocularIndirectOphthalmoscopyScrollProgressSync();
@@ -5383,6 +5451,7 @@ if (!window[__videosGlobalBoundKey]) {
       syncFrontOfEyeExaminationScrollProgress();
       syncPupilsPecScrollProgress();
       syncPupilsAdvancedScrollProgress();
+      syncCataractScrollProgress();
       syncFundalReflexExaminationScrollProgress();
       syncDirectOphthalmoscopyScrollProgress();
       syncBinocularIndirectOphthalmoscopyScrollProgress();

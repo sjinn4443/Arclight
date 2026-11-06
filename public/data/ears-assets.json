@@ -1,0 +1,473 @@
+{
+  "documents": {
+    "ear-health": {
+      "pdf": "/documents/ears/ear-health.pdf",
+      "pages": ["/images/learning/Ears/documents/ear-health/page-001.webp"],
+      "source": "1. Ear Health and Deafness 2024.pdf"
+    },
+    "otoscope-handout": {
+      "pdf": "/documents/ears/otoscope-handout.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/otoscope-handout/page-001.webp",
+        "/images/learning/Ears/documents/otoscope-handout/page-002.webp"
+      ],
+      "source": "3. Otoscope Handout 2026.pdf"
+    },
+    "otoscopy-poster": {
+      "pdf": "/documents/ears/otoscopy-poster.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/otoscopy-poster/page-001.webp"
+      ],
+      "source": "4.Otoscopy ENT Poster.pdf"
+    },
+    "external-ear-poster": {
+      "pdf": "/documents/ears/external-ear-poster.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/external-ear-poster/page-001.webp"
+      ],
+      "source": "5. External Ears Teaching Poster 2024.pdf"
+    },
+    "who-trainer": {
+      "pdf": "/documents/ears/who-trainer.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/who-trainer/page-001.webp",
+        "/images/learning/Ears/documents/who-trainer/page-002.webp",
+        "/images/learning/Ears/documents/who-trainer/page-003.webp",
+        "/images/learning/Ears/documents/who-trainer/page-004.webp",
+        "/images/learning/Ears/documents/who-trainer/page-005.webp",
+        "/images/learning/Ears/documents/who-trainer/page-006.webp",
+        "/images/learning/Ears/documents/who-trainer/page-007.webp",
+        "/images/learning/Ears/documents/who-trainer/page-008.webp",
+        "/images/learning/Ears/documents/who-trainer/page-009.webp",
+        "/images/learning/Ears/documents/who-trainer/page-010.webp",
+        "/images/learning/Ears/documents/who-trainer/page-011.webp",
+        "/images/learning/Ears/documents/who-trainer/page-012.webp",
+        "/images/learning/Ears/documents/who-trainer/page-013.webp",
+        "/images/learning/Ears/documents/who-trainer/page-014.webp",
+        "/images/learning/Ears/documents/who-trainer/page-015.webp",
+        "/images/learning/Ears/documents/who-trainer/page-016.webp",
+        "/images/learning/Ears/documents/who-trainer/page-017.webp",
+        "/images/learning/Ears/documents/who-trainer/page-018.webp",
+        "/images/learning/Ears/documents/who-trainer/page-019.webp",
+        "/images/learning/Ears/documents/who-trainer/page-020.webp"
+      ],
+      "source": "1. WHO PRIMARY EAR AND HEARING CARE TRAINER’S HANDBOOK.pdf"
+    },
+    "who-manual": {
+      "pdf": "/documents/ears/who-manual.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/who-manual/page-001.webp",
+        "/images/learning/Ears/documents/who-manual/page-002.webp",
+        "/images/learning/Ears/documents/who-manual/page-003.webp",
+        "/images/learning/Ears/documents/who-manual/page-004.webp",
+        "/images/learning/Ears/documents/who-manual/page-005.webp",
+        "/images/learning/Ears/documents/who-manual/page-006.webp",
+        "/images/learning/Ears/documents/who-manual/page-007.webp",
+        "/images/learning/Ears/documents/who-manual/page-008.webp",
+        "/images/learning/Ears/documents/who-manual/page-009.webp",
+        "/images/learning/Ears/documents/who-manual/page-010.webp",
+        "/images/learning/Ears/documents/who-manual/page-011.webp",
+        "/images/learning/Ears/documents/who-manual/page-012.webp",
+        "/images/learning/Ears/documents/who-manual/page-013.webp",
+        "/images/learning/Ears/documents/who-manual/page-014.webp",
+        "/images/learning/Ears/documents/who-manual/page-015.webp",
+        "/images/learning/Ears/documents/who-manual/page-016.webp",
+        "/images/learning/Ears/documents/who-manual/page-017.webp",
+        "/images/learning/Ears/documents/who-manual/page-018.webp",
+        "/images/learning/Ears/documents/who-manual/page-019.webp",
+        "/images/learning/Ears/documents/who-manual/page-020.webp",
+        "/images/learning/Ears/documents/who-manual/page-021.webp",
+        "/images/learning/Ears/documents/who-manual/page-022.webp",
+        "/images/learning/Ears/documents/who-manual/page-023.webp",
+        "/images/learning/Ears/documents/who-manual/page-024.webp",
+        "/images/learning/Ears/documents/who-manual/page-025.webp",
+        "/images/learning/Ears/documents/who-manual/page-026.webp",
+        "/images/learning/Ears/documents/who-manual/page-027.webp",
+        "/images/learning/Ears/documents/who-manual/page-028.webp",
+        "/images/learning/Ears/documents/who-manual/page-029.webp",
+        "/images/learning/Ears/documents/who-manual/page-030.webp",
+        "/images/learning/Ears/documents/who-manual/page-031.webp",
+        "/images/learning/Ears/documents/who-manual/page-032.webp",
+        "/images/learning/Ears/documents/who-manual/page-033.webp",
+        "/images/learning/Ears/documents/who-manual/page-034.webp",
+        "/images/learning/Ears/documents/who-manual/page-035.webp",
+        "/images/learning/Ears/documents/who-manual/page-036.webp",
+        "/images/learning/Ears/documents/who-manual/page-037.webp",
+        "/images/learning/Ears/documents/who-manual/page-038.webp",
+        "/images/learning/Ears/documents/who-manual/page-039.webp",
+        "/images/learning/Ears/documents/who-manual/page-040.webp",
+        "/images/learning/Ears/documents/who-manual/page-041.webp",
+        "/images/learning/Ears/documents/who-manual/page-042.webp",
+        "/images/learning/Ears/documents/who-manual/page-043.webp",
+        "/images/learning/Ears/documents/who-manual/page-044.webp",
+        "/images/learning/Ears/documents/who-manual/page-045.webp",
+        "/images/learning/Ears/documents/who-manual/page-046.webp",
+        "/images/learning/Ears/documents/who-manual/page-047.webp",
+        "/images/learning/Ears/documents/who-manual/page-048.webp",
+        "/images/learning/Ears/documents/who-manual/page-049.webp",
+        "/images/learning/Ears/documents/who-manual/page-050.webp",
+        "/images/learning/Ears/documents/who-manual/page-051.webp",
+        "/images/learning/Ears/documents/who-manual/page-052.webp",
+        "/images/learning/Ears/documents/who-manual/page-053.webp",
+        "/images/learning/Ears/documents/who-manual/page-054.webp",
+        "/images/learning/Ears/documents/who-manual/page-055.webp",
+        "/images/learning/Ears/documents/who-manual/page-056.webp",
+        "/images/learning/Ears/documents/who-manual/page-057.webp",
+        "/images/learning/Ears/documents/who-manual/page-058.webp",
+        "/images/learning/Ears/documents/who-manual/page-059.webp",
+        "/images/learning/Ears/documents/who-manual/page-060.webp",
+        "/images/learning/Ears/documents/who-manual/page-061.webp",
+        "/images/learning/Ears/documents/who-manual/page-062.webp",
+        "/images/learning/Ears/documents/who-manual/page-063.webp",
+        "/images/learning/Ears/documents/who-manual/page-064.webp",
+        "/images/learning/Ears/documents/who-manual/page-065.webp",
+        "/images/learning/Ears/documents/who-manual/page-066.webp",
+        "/images/learning/Ears/documents/who-manual/page-067.webp",
+        "/images/learning/Ears/documents/who-manual/page-068.webp",
+        "/images/learning/Ears/documents/who-manual/page-069.webp",
+        "/images/learning/Ears/documents/who-manual/page-070.webp",
+        "/images/learning/Ears/documents/who-manual/page-071.webp",
+        "/images/learning/Ears/documents/who-manual/page-072.webp",
+        "/images/learning/Ears/documents/who-manual/page-073.webp",
+        "/images/learning/Ears/documents/who-manual/page-074.webp",
+        "/images/learning/Ears/documents/who-manual/page-075.webp",
+        "/images/learning/Ears/documents/who-manual/page-076.webp",
+        "/images/learning/Ears/documents/who-manual/page-077.webp",
+        "/images/learning/Ears/documents/who-manual/page-078.webp",
+        "/images/learning/Ears/documents/who-manual/page-079.webp",
+        "/images/learning/Ears/documents/who-manual/page-080.webp",
+        "/images/learning/Ears/documents/who-manual/page-081.webp",
+        "/images/learning/Ears/documents/who-manual/page-082.webp",
+        "/images/learning/Ears/documents/who-manual/page-083.webp",
+        "/images/learning/Ears/documents/who-manual/page-084.webp",
+        "/images/learning/Ears/documents/who-manual/page-085.webp",
+        "/images/learning/Ears/documents/who-manual/page-086.webp",
+        "/images/learning/Ears/documents/who-manual/page-087.webp",
+        "/images/learning/Ears/documents/who-manual/page-088.webp",
+        "/images/learning/Ears/documents/who-manual/page-089.webp",
+        "/images/learning/Ears/documents/who-manual/page-090.webp",
+        "/images/learning/Ears/documents/who-manual/page-091.webp",
+        "/images/learning/Ears/documents/who-manual/page-092.webp",
+        "/images/learning/Ears/documents/who-manual/page-093.webp",
+        "/images/learning/Ears/documents/who-manual/page-094.webp",
+        "/images/learning/Ears/documents/who-manual/page-095.webp",
+        "/images/learning/Ears/documents/who-manual/page-096.webp",
+        "/images/learning/Ears/documents/who-manual/page-097.webp",
+        "/images/learning/Ears/documents/who-manual/page-098.webp",
+        "/images/learning/Ears/documents/who-manual/page-099.webp",
+        "/images/learning/Ears/documents/who-manual/page-100.webp",
+        "/images/learning/Ears/documents/who-manual/page-101.webp",
+        "/images/learning/Ears/documents/who-manual/page-102.webp",
+        "/images/learning/Ears/documents/who-manual/page-103.webp",
+        "/images/learning/Ears/documents/who-manual/page-104.webp",
+        "/images/learning/Ears/documents/who-manual/page-105.webp",
+        "/images/learning/Ears/documents/who-manual/page-106.webp",
+        "/images/learning/Ears/documents/who-manual/page-107.webp",
+        "/images/learning/Ears/documents/who-manual/page-108.webp",
+        "/images/learning/Ears/documents/who-manual/page-109.webp",
+        "/images/learning/Ears/documents/who-manual/page-110.webp",
+        "/images/learning/Ears/documents/who-manual/page-111.webp",
+        "/images/learning/Ears/documents/who-manual/page-112.webp",
+        "/images/learning/Ears/documents/who-manual/page-113.webp",
+        "/images/learning/Ears/documents/who-manual/page-114.webp",
+        "/images/learning/Ears/documents/who-manual/page-115.webp",
+        "/images/learning/Ears/documents/who-manual/page-116.webp",
+        "/images/learning/Ears/documents/who-manual/page-117.webp",
+        "/images/learning/Ears/documents/who-manual/page-118.webp",
+        "/images/learning/Ears/documents/who-manual/page-119.webp",
+        "/images/learning/Ears/documents/who-manual/page-120.webp",
+        "/images/learning/Ears/documents/who-manual/page-121.webp",
+        "/images/learning/Ears/documents/who-manual/page-122.webp",
+        "/images/learning/Ears/documents/who-manual/page-123.webp",
+        "/images/learning/Ears/documents/who-manual/page-124.webp",
+        "/images/learning/Ears/documents/who-manual/page-125.webp",
+        "/images/learning/Ears/documents/who-manual/page-126.webp",
+        "/images/learning/Ears/documents/who-manual/page-127.webp",
+        "/images/learning/Ears/documents/who-manual/page-128.webp",
+        "/images/learning/Ears/documents/who-manual/page-129.webp",
+        "/images/learning/Ears/documents/who-manual/page-130.webp",
+        "/images/learning/Ears/documents/who-manual/page-131.webp",
+        "/images/learning/Ears/documents/who-manual/page-132.webp",
+        "/images/learning/Ears/documents/who-manual/page-133.webp",
+        "/images/learning/Ears/documents/who-manual/page-134.webp",
+        "/images/learning/Ears/documents/who-manual/page-135.webp",
+        "/images/learning/Ears/documents/who-manual/page-136.webp",
+        "/images/learning/Ears/documents/who-manual/page-137.webp",
+        "/images/learning/Ears/documents/who-manual/page-138.webp",
+        "/images/learning/Ears/documents/who-manual/page-139.webp",
+        "/images/learning/Ears/documents/who-manual/page-140.webp",
+        "/images/learning/Ears/documents/who-manual/page-141.webp",
+        "/images/learning/Ears/documents/who-manual/page-142.webp",
+        "/images/learning/Ears/documents/who-manual/page-143.webp",
+        "/images/learning/Ears/documents/who-manual/page-144.webp",
+        "/images/learning/Ears/documents/who-manual/page-145.webp",
+        "/images/learning/Ears/documents/who-manual/page-146.webp",
+        "/images/learning/Ears/documents/who-manual/page-147.webp"
+      ],
+      "source": "2. WHO Training Manual.pdf"
+    },
+    "who-resources": {
+      "pdf": "/documents/ears/who-resources.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/who-resources/page-001.webp",
+        "/images/learning/Ears/documents/who-resources/page-002.webp",
+        "/images/learning/Ears/documents/who-resources/page-003.webp",
+        "/images/learning/Ears/documents/who-resources/page-004.webp",
+        "/images/learning/Ears/documents/who-resources/page-005.webp",
+        "/images/learning/Ears/documents/who-resources/page-006.webp",
+        "/images/learning/Ears/documents/who-resources/page-007.webp",
+        "/images/learning/Ears/documents/who-resources/page-008.webp",
+        "/images/learning/Ears/documents/who-resources/page-009.webp",
+        "/images/learning/Ears/documents/who-resources/page-010.webp",
+        "/images/learning/Ears/documents/who-resources/page-011.webp",
+        "/images/learning/Ears/documents/who-resources/page-012.webp",
+        "/images/learning/Ears/documents/who-resources/page-013.webp",
+        "/images/learning/Ears/documents/who-resources/page-014.webp",
+        "/images/learning/Ears/documents/who-resources/page-015.webp",
+        "/images/learning/Ears/documents/who-resources/page-016.webp",
+        "/images/learning/Ears/documents/who-resources/page-017.webp",
+        "/images/learning/Ears/documents/who-resources/page-018.webp",
+        "/images/learning/Ears/documents/who-resources/page-019.webp",
+        "/images/learning/Ears/documents/who-resources/page-020.webp",
+        "/images/learning/Ears/documents/who-resources/page-021.webp",
+        "/images/learning/Ears/documents/who-resources/page-022.webp",
+        "/images/learning/Ears/documents/who-resources/page-023.webp",
+        "/images/learning/Ears/documents/who-resources/page-024.webp",
+        "/images/learning/Ears/documents/who-resources/page-025.webp",
+        "/images/learning/Ears/documents/who-resources/page-026.webp"
+      ],
+      "source": "3. WHO-ENT Manual Resources.pdf"
+    },
+    "who-annex": {
+      "pdf": "/documents/ears/who-annex.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/who-annex/page-001.webp",
+        "/images/learning/Ears/documents/who-annex/page-002.webp",
+        "/images/learning/Ears/documents/who-annex/page-003.webp",
+        "/images/learning/Ears/documents/who-annex/page-004.webp",
+        "/images/learning/Ears/documents/who-annex/page-005.webp",
+        "/images/learning/Ears/documents/who-annex/page-006.webp",
+        "/images/learning/Ears/documents/who-annex/page-007.webp",
+        "/images/learning/Ears/documents/who-annex/page-008.webp",
+        "/images/learning/Ears/documents/who-annex/page-009.webp"
+      ],
+      "source": "4. WHO-ENT Manual ANNEX.pdf"
+    },
+    "health-workers": {
+      "pdf": "/documents/ears/health-workers.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/health-workers/page-001.webp",
+        "/images/learning/Ears/documents/health-workers/page-002.webp"
+      ],
+      "source": "A.factsheet-health-professional-ear-care.pdf"
+    },
+    "hearing-adults": {
+      "pdf": "/documents/ears/hearing-adults.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/hearing-adults/page-001.webp",
+        "/images/learning/Ears/documents/hearing-adults/page-002.webp"
+      ],
+      "source": "B-hearing-loss-adults-flyer.pdf"
+    },
+    "hearing-children": {
+      "pdf": "/documents/ears/hearing-children.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/hearing-children/page-001.webp",
+        "/images/learning/Ears/documents/hearing-children/page-002.webp"
+      ],
+      "source": "C-hearing-loss-in-children-flyer.pdf"
+    },
+    "safe-listening": {
+      "pdf": "/documents/ears/safe-listening.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/safe-listening/page-001.webp",
+        "/images/learning/Ears/documents/safe-listening/page-002.webp",
+        "/images/learning/Ears/documents/safe-listening/page-003.webp",
+        "/images/learning/Ears/documents/safe-listening/page-004.webp"
+      ],
+      "source": "D.Unsafe noise-flyer.pdf"
+    },
+    "healthy-ears": {
+      "pdf": "/documents/ears/healthy-ears.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/healthy-ears/page-001.webp",
+        "/images/learning/Ears/documents/healthy-ears/page-002.webp"
+      ],
+      "source": "E.-tips-for-healthy-ears-flyer.pdf"
+    },
+    "hearing-aids": {
+      "pdf": "/documents/ears/hearing-aids.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/hearing-aids/page-001.webp",
+        "/images/learning/Ears/documents/hearing-aids/page-002.webp"
+      ],
+      "source": "F.-tips-for-hearing-aid-users-flyer.pdf"
+    },
+    "discharging-ears": {
+      "pdf": "/documents/ears/discharging-ears.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/discharging-ears/page-001.webp",
+        "/images/learning/Ears/documents/discharging-ears/page-002.webp"
+      ],
+      "source": "G.-care-of-discharging-ears.pdf"
+    },
+    "who-resolution": {
+      "pdf": "/documents/ears/who-resolution.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/who-resolution/page-001.webp",
+        "/images/learning/Ears/documents/who-resolution/page-002.webp",
+        "/images/learning/Ears/documents/who-resolution/page-003.webp"
+      ],
+      "source": "WHO Assembly on ENT Care.pdf"
+    },
+    "field-handout-front": {
+      "pdf": "/documents/ears/field-handout-front.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/field-handout-front/page-001.webp"
+      ],
+      "source": "1. Madagascar Arclight 2026 - FRONT.pdf"
+    },
+    "field-handout-back": {
+      "pdf": "/documents/ears/field-handout-back.pdf",
+      "pages": [
+        "/images/learning/Ears/documents/field-handout-back/page-001.webp"
+      ],
+      "source": "2. Madagascar handout 2026 - BACK.pdf"
+    }
+  },
+  "decks": {
+    "tm-detailed": [
+      "/images/learning/Ears/diagrams/tm-detailed-2.svg",
+      "/images/learning/Ears/diagrams/tm-detailed-3.svg",
+      "/images/learning/Ears/diagrams/tm-detailed-4.svg",
+      "/images/learning/Ears/diagrams/tm-detailed-5.svg",
+      "/images/learning/Ears/diagrams/tm-detailed-6.svg",
+      "/images/learning/Ears/diagrams/tm-detailed-8.svg"
+    ],
+    "tm-simple": [
+      "/images/learning/Ears/diagrams/tm-simple-1.svg",
+      "/images/learning/Ears/diagrams/tm-simple-2.svg"
+    ]
+  },
+  "videos": {
+    "otoscopy-arclight": {
+      "low": "/videos/Ears/otoscopy-arclight_220p.mp4",
+      "high": "/videos/Ears/otoscopy-arclight_720p.mp4"
+    },
+    "otoscopy-osce": {
+      "low": "/videos/Ears/otoscopy-osce_220p.mp4",
+      "high": "/videos/Ears/otoscopy-osce_540p.mp4"
+    },
+    "otoscopy-signs": {
+      "low": "/videos/Ears/otoscopy-signs_220p.mp4",
+      "high": "/videos/Ears/otoscopy-signs_540p.mp4"
+    }
+  },
+  "sources": [
+    {
+      "file": "1. Ear Health and Deafness 2024.pdf",
+      "sha256": "7fe3d20787365b762961b40a95300a9d5586e369d202bc5023aff9a386a2638d"
+    },
+    {
+      "file": "2. Otoscopy Video - Arclight 2026 App.mp4",
+      "sha256": "8226dff2dce3035bafa7858ca160cc4b7b7848091e5d8e630d8238202f740dfd"
+    },
+    {
+      "file": "3. Otoscope Handout 2026.pdf",
+      "sha256": "6b9419cee08bedf61c6a8695e8ffa83ffa98b1b32aa6b8e11cfc081f8b47188f"
+    },
+    {
+      "file": "4.Otoscopy ENT Poster.pdf",
+      "sha256": "25d3a2470bf9e2ab126507a994cd2f07553b5cac632f7fb39d409b8bea08cb94"
+    },
+    {
+      "file": "5. External Ears Teaching Poster 2024.pdf",
+      "sha256": "0f1ea2949b92bbdb63500b3eac11be915134213adc75b29627fd63ffd5293777"
+    },
+    {
+      "file": "1. WHO PRIMARY EAR AND HEARING CARE TRAINER’S HANDBOOK.pdf",
+      "sha256": "5a26d92cc8b8ea1b3cacd6d783a2ebc781acca12fb4fa5977c7a256f1ad71f45"
+    },
+    {
+      "file": "2. WHO Training Manual.pdf",
+      "sha256": "913a7ccf287943688ad510fbd4956448afd536ba0bc147a88cd18e20e6c3bb79"
+    },
+    {
+      "file": "3. WHO-ENT Manual Resources.pdf",
+      "sha256": "affed34deebb7c12b0d63257224107d91a969327edf61bda4711482370e3d52b"
+    },
+    {
+      "file": "4. WHO-ENT Manual ANNEX.pdf",
+      "sha256": "d31c97270fb33099ac5f26472b4d6f2d93d49b8b9fc13f15c0b4fa1212a3aea0"
+    },
+    {
+      "file": "A.factsheet-health-professional-ear-care.pdf",
+      "sha256": "257119613c0dc050322bce802352b6cd451174b7cbe1ccd84a4ae43c0822a95c"
+    },
+    {
+      "file": "B-hearing-loss-adults-flyer.pdf",
+      "sha256": "198a8de2e5b5b4acccd7d7cec5ecd173443d40e1bd817c1a847e7b0595ce7845"
+    },
+    {
+      "file": "C-hearing-loss-in-children-flyer.pdf",
+      "sha256": "584ba9828e6be80def2690238e462d6f45bc3b82b357dd7b52b30e78a19e03e0"
+    },
+    {
+      "file": "D.Unsafe noise-flyer.pdf",
+      "sha256": "ddd0ef38edef86a5f581333a06f5695bccc50a05804cf2b5e35194a517760b15"
+    },
+    {
+      "file": "E.-tips-for-healthy-ears-flyer.pdf",
+      "sha256": "f22fc288579cdda62f51a5f57b48e46bb28b758800113779358a90f7a54bdddc"
+    },
+    {
+      "file": "F.-tips-for-hearing-aid-users-flyer.pdf",
+      "sha256": "c95a5dcbbd89fb80f785a4cbc80983863ecd1d06774ee1c47d67a5e83722a9ea"
+    },
+    {
+      "file": "G.-care-of-discharging-ears.pdf",
+      "sha256": "e93c648672f6ef26406f26431b6b318e8b2a467663d5a6152b2eb07ce9ef0a9c"
+    },
+    {
+      "file": "WHO Assembly on ENT Care.pdf",
+      "sha256": "902bc3542c6689281f6a3a2908f26bdafccf32f0879c5874acac570dd1a8b67f"
+    },
+    {
+      "file": "1. Madagascar Arclight 2026 - FRONT.pdf",
+      "sha256": "334b27d801286061d0a58485506a6af1daed58c40a8ecf7e746a31406ef6f616"
+    },
+    {
+      "file": "2. Madagascar handout 2026 - BACK.pdf",
+      "sha256": "0964cef9100e85811a154e493068e4e37d9023982db83f2502862ff594d3119e"
+    },
+    {
+      "file": "Website ENT.docx",
+      "sha256": "f9e5a4d561cb522c1c04c8e87b59a17b5486b6e1b1a6be8ba7848cafceed03ba"
+    },
+    {
+      "file": "Ears Only.pptx",
+      "sha256": "7a161cb45c182b974b548b32d1f4f0da73deac14987a37a253edac3ad1037518"
+    },
+    {
+      "file": "Otoscopy Instructional Video OSCE - Arclight and Traditional FULL.mp4",
+      "sha256": "168a82932f2e9993d420aa1598095061fda25954e8d7a7336b7747da2b24f248"
+    },
+    {
+      "file": "Otoscopy_Arclight_Short + Clinical Signs.mp4",
+      "sha256": "2d7c73336a6ec11e335178b34679fcec7c9899b8dc4007a4aa20bdbfa9b46fad"
+    },
+    {
+      "file": "Otoscopy_OSCE_Traditional + Arclight.mp4",
+      "sha256": "168a82932f2e9993d420aa1598095061fda25954e8d7a7336b7747da2b24f248",
+      "duplicateOf": "Otoscopy Instructional Video OSCE - Arclight and Traditional FULL.mp4"
+    },
+    {
+      "file": "Tympanic Membrane normal video with movementv2 .pptx",
+      "sha256": "b3eff09a7d02300748fba2490a6480b07a6c32d09aedbbda077fb231e5cfba0d"
+    },
+    {
+      "file": "Tympanic Membrane Simplified.pptx",
+      "sha256": "00cb9cc5e88e34072896ca83a30a7242c40fd1cab1151894f151b916c5165330"
+    }
+  ]
+}

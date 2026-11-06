@@ -13,6 +13,8 @@ import {
   normalizeSearchText,
 } from "./localized-search.js";
 import { getPrimaryInterest } from "./profileData.js";
+import { EAR_TOPICS } from "./earsContentData.js";
+import { initializeDownloadSuggestion } from "./downloadSuggestion.js";
 
 const wired = new WeakSet();
 let dashboardI18nDict = {};
@@ -95,6 +97,7 @@ export function initializeDashboard() {
   const root = document.getElementById("unifiedDashboard");
   if (!root || wired.has(root)) return;
   wired.add(root);
+  initializeDownloadSuggestion(openDashboardDownloadModal);
   orderDashboardCategories(root);
 
   // On touch devices, block long-press context menus on clickable dashboard cards.
@@ -118,6 +121,9 @@ export function initializeDashboard() {
   localStorage.setItem(KEY, String(count));
 
   if (helloEl) {
+    // This is dynamic profile text; do not replace it with the generic literal.
+    helloEl.removeAttribute("data-i18n");
+    helloEl.setAttribute("data-i18n-skip", "");
     // reset content (in case we previously inserted an image)
     helloEl.textContent = "";
     helloEl.innerHTML = "";
@@ -425,6 +431,16 @@ function openVideosSubpage(pageId) {
 
 function getDashboardContentItems() {
   return [
+    ...Object.entries(EAR_TOPICS).map(([route, entry]) => ({
+      title: entry.title,
+      titleI18n: `ears.content.${route}`,
+      route,
+      img: entry.image,
+      subtitle: "Ears",
+      subtitleParts: [{ path: "ears.earsCatalogTitle", fallback: "Ears" }],
+      keywords: ["ears", "ear", entry.category, entry.title],
+      progress: 0,
+    })),
     {
       title: "Ophthalmoscopy",
       titleI18n: "eyes.card_label.ophthalmoscopy",

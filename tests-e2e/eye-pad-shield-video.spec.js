@@ -31,6 +31,7 @@ test("Full animation uses the procedure route and synchronised full-animation co
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/#/eyePadShield");
+  await page.locator('#eyePadShield [data-nested-folder="make"]').click();
   const row = page.locator(`#eyePadShield [data-target="${id}"]`);
   await expect(row.locator(".lesson-type")).toHaveText("Full animation");
   await expect(row.getByRole("progressbar")).toHaveAccessibleName(

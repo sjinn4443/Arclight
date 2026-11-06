@@ -10809,5 +10809,18 @@
   "splashscreenMid": {
     "ariaLabel": "Tsakiyar Fuskar Fara",
     "logoOneAlt": "Logo na Farko"
+  },
+  "onboardingFlow": {
+    "profile_title": "Daidaita abin da kake so",
+    "profile_hint": "Na zaɓi ne — za ka iya canzawa daga baya a bayanan martaba.",
+    "name_label": "Wane suna za mu kira ka?",
+    "interest_label": "Me kake son koya?",
+    "not_sure": "Ban tabbatar ba tukuna",
+    "start": "Fara koyo",
+    "skip": "Tsallake yanzu",
+    "specialist": "Ƙwararre ko malami",
+    "role_detail": "Mene ne aikinka?",
+    "role_label": "Zaɓi matsayinka",
+    "other": "Sauran"
   }
 }

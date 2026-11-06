@@ -24,6 +24,7 @@ function isSensitiveManifestUrl(rawUrl) {
     url === "/healthz" ||
     url.startsWith("/healthz?") ||
     url.startsWith("/html/demo/") ||
+    /^\/videos\/workshop\/pec\/new(?:%20| )folder(?:\/|$)/.test(url) ||
     isSubappDevelopmentAsset(rawUrl) ||
     isLocalOnlyLessonAsset(rawUrl) ||
     url.includes("reports")

@@ -1,4 +1,5 @@
 import { loadPage } from "./navigation.js";
+import { isDiabeticConditionLesson } from "./diabeticConditionContext.js";
 
 const WORKSHOP_HOME = "__diabeticWorkshopHome__";
 const WORKSHOP_PAGE_ID = "diabeticRetinopathyWorkshopPage";
@@ -382,6 +383,7 @@ async function navigateToTarget(target) {
 function shouldUseDiabeticStructuralBack() {
   if (isMedicalStudentsFlowEnabled()) return false;
   const visibleId = getVisiblePageId();
+  if (isDiabeticConditionLesson(visibleId)) return false;
   // The case quiz is launched from more than one workshop. Let the shared
   // navigation history return to the page that actually opened it.
   if (visibleId === "diabeticCaseQuizPage") return false;
@@ -428,7 +430,7 @@ async function navigateByConfig(step) {
 }
 
 function renderNextButtonForTarget(targetId) {
-  if (isMedicalStudentsFlowEnabled()) {
+  if (isMedicalStudentsFlowEnabled() || isDiabeticConditionLesson(targetId)) {
     removeNextButtons();
     return;
   }

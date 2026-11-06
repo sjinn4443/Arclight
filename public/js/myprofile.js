@@ -1,17 +1,16 @@
 import { fetchDictionary, get, getLanguage } from "./i18n.js";
 import {
   PROFILE_UPDATED_EVENT,
-  createProfileAvatarDataUrl,
   getAchievementBadges,
+  getCompletedModuleRecords,
   getProfileInterests,
   getProfileName,
   getProfileRoles,
   humanizeStoredValue,
   readPracticeByRole,
   renderProfileAvatar,
-  setProfileAvatarDataUrl,
-  setProfileInterests,
 } from "./profileData.js";
+import { openProfileEditor } from "./editProfile.js";
 
 const INTEREST_LABEL_KEYS = Object.freeze({
   eyes: "onboarding.field_eyes",
@@ -53,6 +52,7 @@ const ROLE_LABEL_KEYS = Object.freeze({
   audiologist: "onboarding.job_audiologist",
   ear_care_practitioner: "onboarding.job_ear_care_practitioner",
   dermatologist: "onboarding.job_dermatologist",
+  other: "onboardingFlow.other",
 });
 
 const ROLE_FALLBACKS = Object.freeze({
@@ -80,38 +80,9 @@ const ROLE_FALLBACKS = Object.freeze({
   audiologist: "Audiologist",
   ear_care_practitioner: "Ear Care Practitioner",
   dermatologist: "Dermatologist",
+  other: "Other",
 });
 
-const STUDENT_EXPERIENCE_LABEL_KEYS = Object.freeze({
-  lt1: "onboarding.experience_lt1",
-  1: "onboarding.experience_1",
-  2: "onboarding.experience_2",
-  3: "onboarding.experience_3",
-  4: "onboarding.experience_4",
-  5: "onboarding.experience_5",
-  6: "onboarding.experience_6",
-  7: "onboarding.experience_7",
-});
-
-const STUDENT_EXPERIENCE_FALLBACKS = Object.freeze({
-  lt1: "Pre-clinical",
-  1: "Early Clinical",
-  2: "Final Year / Senior Medical Student",
-  3: "Observation",
-  4: "Supervised Participation",
-  5: "Elective / Internship",
-  6: "Simulation Training",
-  7: "Other",
-});
-
-const PRACTICE_RANGE_FALLBACKS = Object.freeze({
-  "0-2": "0-2 years",
-  "2-5": "2-5 years",
-  "5-10": "5-10 years",
-  "10+": "10+ years",
-});
-
-const NOT_SET_LABEL = "Not set";
 const DEFAULT_NAME_LABEL = "Your name";
 
 let renderSequence = 0;
@@ -142,27 +113,90 @@ function setText(selector, value) {
   el.textContent = value;
 }
 
-function updateInterestSelect(interests, translate) {
-  const select = document.querySelector("[data-profile-interest]");
-  if (!select) return;
+function renderProfileCardDetails(interests, roles, roleLabels, translate) {
+  const notAdded = translate("profileLayout.not_added", "Not added yet");
+  const setDetail = (selector, value) => {
+    setText(selector, value || notAdded);
+    document.querySelector(selector)?.toggleAttribute("data-empty", !value);
+  };
+  setDetail("#profileInterests", interests.join(" · "));
 
-  const current = interests[0] || "eyes";
-  select.innerHTML = "";
-  Object.keys(INTEREST_FALLBACKS).forEach((interest) => {
-    const option = document.createElement("option");
-    option.value = interest;
-    option.selected = interest === current;
-    option.textContent = getMappedLabel(
-      interest,
-      INTEREST_LABEL_KEYS,
-      INTEREST_FALLBACKS,
-      translate,
+  let experience = {};
+  try {
+    const stored = JSON.parse(
+      localStorage.getItem("arclightExperience") || "{}",
     );
-    select.appendChild(option);
-  });
-  select.disabled = false;
-  select.removeAttribute("aria-readonly");
-  select.setAttribute("data-i18n-skip", "");
+    if (stored && typeof stored === "object" && !Array.isArray(stored))
+      experience = stored;
+  } catch {
+    // Older profiles may have no Arclight experience answers.
+  }
+  const frequencies = {
+    occasionally: ["interest.chip_learning_to_use", "Occasionally"],
+    regularly: ["interest.chip_use_regularly", "Regularly"],
+    rarely: ["interest.chip_teaching_others2", "Rarely"],
+    no_device: ["interest.chip_no_device", "No device"],
+  };
+  const frequency = Object.hasOwn(frequencies, experience.frequency)
+    ? frequencies[experience.frequency]
+    : null;
+  setDetail("#profileDeviceUse", frequency ? translate(...frequency) : "");
+  const purposes = new Set(
+    Array.isArray(experience.purposes) ? experience.purposes : [],
+  );
+  setDetail(
+    "#profilePurposes",
+    [
+      purposes.has("studying")
+        ? translate("interest.chip_for_my_studies", "Studying")
+        : "",
+      purposes.has("teaching")
+        ? translate("interest.chip_teaching_others", "Teaching")
+        : "",
+    ]
+      .filter(Boolean)
+      .join(" · "),
+  );
+
+  const practice = readPracticeByRole();
+  const studentYears = localStorage.getItem("studentYears") || "";
+  const studentLabels = {
+    lt1: "Pre-clinical",
+    1: "Early Clinical",
+    2: "Final Year / Senior Medical Student",
+    3: "Observation",
+    4: "Supervised Participation",
+    5: "Elective / Internship",
+    6: "Simulation Training",
+    7: "Other",
+  };
+  const clinicalExperience = roles
+    .map((role, index) => {
+      let label = "";
+      if (
+        role === "medical_student" &&
+        Object.hasOwn(studentLabels, studentYears)
+      ) {
+        label = translate(
+          `onboarding.experience_${studentYears}`,
+          studentLabels[studentYears],
+        );
+      } else if (role !== "medical_student" && practice[role]?.range) {
+        label = translate("profileLayout.years", "{range} years").replace(
+          "{range}",
+          practice[role].range,
+        );
+      }
+      return (
+        label && (roles.length > 1 ? `${roleLabels[index]}: ${label}` : label)
+      );
+    })
+    .filter(Boolean)
+    .join("\n");
+  setText("#profileClinicalExperience", clinicalExperience);
+  document
+    .getElementById("profileClinicalExperienceRow")
+    ?.toggleAttribute("hidden", !clinicalExperience);
 }
 
 function buildScallopPoints(cx, cy, outerRadius, innerRadius, steps) {
@@ -263,16 +297,52 @@ function createAchievementBadgeSvg(badge, index) {
   return svg;
 }
 
-function renderAchievements() {
+function renderAchievements(translate) {
   const host = document.querySelector("#profileAchievements");
   if (!host) return;
 
   host.innerHTML = "";
   const badges = getAchievementBadges();
+  setText("#profileCompletedCount", getCompletedModuleRecords().length);
+  setText("#profileStampCount", badges.length);
   if (!badges.length) {
+    [10, 20, 30].forEach((milestone, index) => {
+      const item = document.createElement("div");
+      item.className =
+        "achievement-tile achievement-badge achievement-badge--locked";
+      const label = translate(
+        "myprofile.badge_locked",
+        "Not yet earned: complete {count} modules",
+      ).replace("{count}", milestone);
+      item.appendChild(
+        createAchievementBadgeSvg(
+          {
+            id: `preview-${milestone}`,
+            title: String(milestone),
+            label,
+            ringText: translate(
+              "myprofile.modules_complete",
+              "MODULES COMPLETE",
+            ),
+          },
+          index,
+        ),
+      );
+      const caption = document.createElement("span");
+      caption.className = "achievement-badge__caption";
+      caption.textContent = translate(
+        "myprofile.badge_goal",
+        "Complete {count} modules",
+      ).replace("{count}", milestone);
+      item.appendChild(caption);
+      host.appendChild(item);
+    });
     const empty = document.createElement("p");
     empty.className = "achievements-empty";
-    empty.textContent = "Complete 10 modules to earn your first badge.";
+    empty.textContent = translate(
+      "myprofile.badge_progress",
+      "{count} of 10 modules complete. Earn your first stamp at 10!",
+    ).replace("{count}", getCompletedModuleRecords().length);
     host.appendChild(empty);
     return;
   }
@@ -286,35 +356,6 @@ function renderAchievements() {
   });
 }
 
-function formatExperience(roles, roleLabels, translate) {
-  const studentYears = localStorage.getItem("studentYears") || "";
-  const practiceByRole = readPracticeByRole();
-  const lines = [];
-
-  roles.forEach((role, index) => {
-    if (role === "medical_student") {
-      if (!studentYears) return;
-      lines.push(
-        `${roleLabels[index]}: ${getMappedLabel(
-          studentYears,
-          STUDENT_EXPERIENCE_LABEL_KEYS,
-          STUDENT_EXPERIENCE_FALLBACKS,
-          translate,
-        )}`,
-      );
-      return;
-    }
-
-    const range = practiceByRole[role]?.range || "";
-    if (!range) return;
-    lines.push(
-      `${roleLabels[index]}: ${PRACTICE_RANGE_FALLBACKS[range] || range}`,
-    );
-  });
-
-  return lines;
-}
-
 async function renderMyProfile() {
   const currentRender = ++renderSequence;
   const translate = await createProfileTranslator();
@@ -326,57 +367,54 @@ async function renderMyProfile() {
   const roleLabels = roles.map((role) =>
     getMappedLabel(role, ROLE_LABEL_KEYS, ROLE_FALLBACKS, translate),
   );
-  const notSet = NOT_SET_LABEL;
-
   setText("#profileName", name || DEFAULT_NAME_LABEL);
-  setText("#profileRole", roleLabels.length ? roleLabels.join(", ") : notSet);
-  setText("#profileRoles", roleLabels.length ? roleLabels.join(", ") : notSet);
   setText(
-    "#profileExperience",
-    formatExperience(roles, roleLabels, translate).join("\n") || notSet,
+    "#profileRole",
+    roleLabels.join(", ") ||
+      translate("profileLayout.role_not_added", "Role not added"),
   );
-
-  updateInterestSelect(interests, translate);
+  document.querySelector("#profileRole")?.removeAttribute("hidden");
+  const interestLabels = interests.map((interest) =>
+    getMappedLabel(
+      interest,
+      INTEREST_LABEL_KEYS,
+      INTEREST_FALLBACKS,
+      translate,
+    ),
+  );
+  renderProfileCardDetails(interestLabels, roles, roleLabels, translate);
   renderProfileAvatar(document.querySelector("#profileAvatar"));
-  renderAchievements();
-}
-
-function wireAvatarEditor() {
-  const input = document.querySelector("#profileAvatarInput");
-  const button = document.querySelector("#profileAvatarEditBtn");
-  if (!input || !button || button.dataset.profileAvatarWired === "1") return;
-
-  button.dataset.profileAvatarWired = "1";
-  button.addEventListener("click", () => input.click());
-  input.addEventListener("change", async () => {
-    const file = input.files?.[0];
-    input.value = "";
-    if (!file) return;
-
-    try {
-      const dataUrl = await createProfileAvatarDataUrl(file);
-      setProfileAvatarDataUrl(dataUrl);
-      renderProfileAvatar(document.querySelector("#profileAvatar"));
-    } catch (error) {
-      console.warn("[myprofile] avatar update failed", error);
-    }
-  });
-}
-
-function wireInterestSelect() {
-  const select = document.querySelector("[data-profile-interest]");
-  if (!select || select.dataset.profileInterestWired === "1") return;
-  select.dataset.profileInterestWired = "1";
-  select.addEventListener("change", () => {
-    setProfileInterests([select.value]);
-    void renderMyProfile();
-  });
+  renderAchievements(translate);
+  document.dispatchEvent(new CustomEvent("arclight:account-ui-ready"));
 }
 
 export function initializeMyProfile() {
   void renderMyProfile();
-  wireAvatarEditor();
-  wireInterestSelect();
+  const button = document.getElementById("profileEditBtn");
+  if (button && !button.dataset.bound) {
+    button.dataset.bound = "true";
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      const error = document.getElementById("profileEditError");
+      if (error) error.hidden = true;
+      try {
+        await openProfileEditor(button);
+      } catch (failure) {
+        console.warn("[myprofile] could not open editor", failure);
+        const translate = await createProfileTranslator();
+        if (error?.isConnected) {
+          error.textContent = translate(
+            "profileLayout.editor_error",
+            "Could not open profile editing. Please try again.",
+          );
+          error.hidden = false;
+        }
+      } finally {
+        button.disabled = false;
+      }
+    });
+    button.disabled = false;
+  }
 
   if (window.__myProfileLanguageListenerBound) return;
   window.__myProfileLanguageListenerBound = true;

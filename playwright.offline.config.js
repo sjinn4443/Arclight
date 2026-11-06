@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import process from "node:process";
 import base from "./playwright.config.js";
 
 export default defineConfig({
@@ -7,7 +8,16 @@ export default defineConfig({
   testIgnore: [],
   timeout: 240_000,
   workers: 1,
-  use: { ...base.use, serviceWorkers: "allow", trace: "off" },
+  // A pre-existing development server can expose different files/manifests.
+  webServer: { ...base.webServer, reuseExistingServer: false },
+  use: {
+    ...base.use,
+    serviceWorkers: "allow",
+    trace: "off",
+    ...(process.env.CHROME_CHANNEL
+      ? { channel: process.env.CHROME_CHANNEL }
+      : {}),
+  },
   projects: [
     { name: "desktop-chromium", use: { browserName: "chromium" } },
     {

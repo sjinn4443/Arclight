@@ -6158,5 +6158,18 @@
       "scoreTemplate": "{{correct}} ከትክክል {{total}} አግኝተሃል።",
       "incomplete": "እባክዎ ከማስገባትዎ በፊት ሁሉንም {{count}} ጥያቄዎች ይመልሱ።"
     }
+  },
+  "onboardingFlow": {
+    "profile_title": "ልምድዎን ያበጁ",
+    "profile_hint": "አማራጭ ነው፤ በኋላ በመገለጫዎ ውስጥ መቀየር ይችላሉ።",
+    "name_label": "በምን ስም እንጥራዎት?",
+    "interest_label": "ምን መማር ይፈልጋሉ?",
+    "not_sure": "ገና እርግጠኛ አይደለሁም",
+    "start": "መማር ይጀምሩ",
+    "skip": "ለአሁኑ ይዝለሉ",
+    "specialist": "ስፔሻሊስት ወይም አስተማሪ",
+    "role_detail": "ሚናዎ ምንድን ነው?",
+    "role_label": "የስራ ሚናዎን ይምረጡ",
+    "other": "ሌላ"
   }
 }

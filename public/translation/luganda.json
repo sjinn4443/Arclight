@@ -10758,5 +10758,18 @@
   "splashscreenMid": {
     "ariaLabel": "Olubalaza lwa Mid Splash",
     "logoOneAlt": "Logo Ekimu"
+  },
+  "onboardingFlow": {
+    "profile_title": "Tegeka engeri gy’okozesaamu",
+    "profile_hint": "Si kya buwaze — osobola okukikyusa oluvannyuma ku pulofayiro.",
+    "name_label": "Tukuyite linnya ki?",
+    "interest_label": "Oyagala kuyiga ki?",
+    "not_sure": "Sinnakakasa",
+    "start": "Tandika okuyiga",
+    "skip": "Buuka kati",
+    "specialist": "Mukugu oba musomesa",
+    "role_detail": "Okola mulimu ki?",
+    "role_label": "Omulimu (emirimu) .",
+    "other": "Ebirala"
   }
 }

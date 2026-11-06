@@ -353,6 +353,9 @@ async function navigateToTarget(target) {
 }
 
 function removeNextButtons() {
+  document.querySelectorAll(".glaucoma-workshop-video").forEach((page) => {
+    page.classList.remove("glaucoma-workshop-video");
+  });
   document.querySelectorAll(".glaucoma-next-wrap").forEach((el) => {
     try {
       el.parentElement?.classList.remove(NEXT_HOST_CLASS);
@@ -380,6 +383,11 @@ function renderNextButtonForTarget(target) {
   const current = FLOW[idx];
 
   removeNextButtons();
+
+  pageEl.classList.toggle(
+    "glaucoma-workshop-video",
+    VIDEO_TARGETS.has(targetId),
+  );
 
   const host =
     pageEl.querySelector(".container.pupils-container") ||
