@@ -7490,23 +7490,42 @@ body[data-experimental-miniapp-notice-open="true"] {
   margin: 0;
 }
 
+#settingsPage.profile-page.settings-page {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  /* Override the shared .page white-background reset in pages.css. */
+  background-color: #f2f2f7 !important;
+}
+
+#settingsPage .profile-topbar {
+  background: #fff;
+}
+
 #settingsPage .settings-page__content {
   display: grid;
-  gap: 20px;
-  padding-top: 12px;
+  gap: 18px;
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  padding-top: 14px;
 }
 
 #settingsPage .settings-section {
-  display: grid;
-  gap: 8px;
+  min-width: 0;
+  padding: 20px 24px 8px;
+  border: 1px solid #e7e7ee;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(25 30 50 / 3%);
 }
 
 #settingsPage .settings-section-title {
-  margin: 0 0 5px;
+  margin: 0 0 8px;
   color: #111;
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1.2;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.4;
 }
 
 #settingsPage .settings-row {
@@ -7514,19 +7533,20 @@ body[data-experimental-miniapp-notice-open="true"] {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  min-height: 48px;
+  min-height: 56px;
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
+  padding: 12px 0;
   border: 0;
   border-bottom: 1px solid #f0f0f3;
   border-radius: 0;
   background: transparent;
   color: #111;
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1.25;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
   text-align: start;
   text-decoration: none;
 }
@@ -7535,26 +7555,80 @@ body[data-experimental-miniapp-notice-open="true"] {
   cursor: pointer;
 }
 
+#settingsPage .settings-row:not(:has(~ .settings-row:not([hidden]))),
+#settingsPage .settings-row:has(+ .practice-reminder-description) {
+  border-bottom: 0;
+}
+
+#settingsPage .settings-row > :first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#settingsPage .settings-row__value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-shrink: 0;
+  max-width: 50%;
+}
+
+#settingsPage .settings-chevron {
+  display: block;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  margin-inline-end: 3px;
+  border-top: 1.5px solid currentColor;
+  border-inline-end: 1.5px solid currentColor;
+  color: #8b8b98;
+  transform: rotate(45deg);
+}
+
+[dir="rtl"] #settingsPage .settings-chevron {
+  transform: rotate(-45deg);
+}
+
 #settingsPage .settings-row strong {
-  flex: 0 0 auto;
-  color: #555;
-  font-size: 12px;
-  font-weight: 750;
+  min-width: 0;
+  color: #666674;
+  font-size: 13px;
+  font-weight: 400;
+  overflow-wrap: anywhere;
   text-align: end;
 }
 
-#settingsPage .settings-inline-action {
-  width: auto;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: #555;
+#settingsPage .settings-account-summary {
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+#settingsPage .settings-account-summary [data-account-identity] {
+  font-weight: 650;
+}
+
+#settingsPage .settings-account-summary .account-status {
+  max-width: 100%;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #f3f5f5;
+  color: #526260;
   font-size: 12px;
-  font-weight: 750;
-  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+#settingsPage .settings-row--link:hover,
+#settingsPage .settings-action:hover {
+  background: #f7f7fa;
+}
+
+#settingsPage .settings-row--link:focus-visible,
+#settingsPage .settings-action:focus-visible,
+#settingsPage .settings-toggle:focus-visible {
+  outline: 3px solid #245fc2;
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 #settingsPage .settings-toggle {
@@ -7592,28 +7666,63 @@ body[data-experimental-miniapp-notice-open="true"] {
 }
 
 #settingsPage .settings-action {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   width: 100%;
-  min-height: 44px;
+  min-height: 58px;
   margin: 0;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 800;
+  padding: 14px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: start;
+  cursor: pointer;
 }
 
 #settingsPage .settings-section--actions {
-  margin-top: -4px;
+  padding-block: 4px;
+}
+
+#settingsPage .settings-action:not([hidden]) + .settings-action {
+  border-top: 1px solid #f0f0f3;
+}
+
+#settingsPage .settings-action__icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+
+#settingsPage .settings-action .settings-chevron {
+  margin-inline-start: auto;
 }
 
 #settingsPage .settings-action--secondary {
-  border: 1px solid #d9d9df;
-  background: #fff;
-  color: #111;
+  color: #333;
 }
 
 #settingsPage .settings-action--danger {
-  border: 1px solid #e41e26;
-  background: #e41e26;
-  color: #fff;
+  color: #b4232c;
+}
+
+#settingsPage .settings-action--danger:hover {
+  background: #fff5f5;
+}
+
+#settingsPage .settings-version {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  color: #71717e;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 #settingsPage .settings-status {
@@ -7622,6 +7731,25 @@ body[data-experimental-miniapp-notice-open="true"] {
   color: #555;
   font-size: 12px;
   font-weight: 650;
+}
+
+#settingsPage .settings-status:empty {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  #settingsPage.profile-page.settings-page {
+    padding-inline: 16px;
+  }
+
+  #settingsPage .settings-page__content {
+    gap: 14px;
+  }
+
+  #settingsPage .settings-section {
+    padding-inline: 18px;
+    border-radius: 16px;
+  }
 }
 
 /* Background rows */
