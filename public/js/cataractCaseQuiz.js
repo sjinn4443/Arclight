@@ -836,10 +836,10 @@ function createQuiz(page, config, showPage) {
       element("p", "cataract-quiz-intro-hint", hint),
     );
     const actions = element("div", "cataract-quiz-intro-actions");
-    const back = button("Back", "cataract-quiz-intro-back", () =>
-      intro(step - 1),
-    );
-    back.disabled = step === 0;
+    const back = button("Back", "cataract-quiz-intro-back", () => {
+      if (step === 0) returnToFolder();
+      else intro(step - 1);
+    });
     const next = button(
       step === 2 ? "Start" : "Next",
       "casechat-confirm__btn is-ok",

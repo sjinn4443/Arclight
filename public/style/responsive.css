@@ -6861,15 +6861,21 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 }
 #interactiveLearningPage
   #interactiveCataractInline
+  [data-quiz-level="primary"]
+  .lesson-progress__fill {
+  background: #15e115 !important;
+}
+#interactiveLearningPage
+  #interactiveCataractInline
   [data-quiz-level="intermediate"]
   .lesson-progress__fill {
-  background: #ff7a00;
+  background: #ff7a00 !important;
 }
 #interactiveLearningPage
   #interactiveCataractInline
   [data-quiz-level="advanced"]
   .lesson-progress__fill {
-  background: #e41e26;
+  background: #e41e26 !important;
 }
 
 /* Short visual walkthrough, matching the app's step-by-step onboarding. */
