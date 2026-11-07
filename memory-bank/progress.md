@@ -1,5 +1,16 @@
 # Progress
 
+## Downloaded Contents hierarchy — 7 November 2026
+
+- Replaced the initial flat section list with Eyes / Ears / Skin → topic → content
+  states, rendering each deeper level only when expanded. Empty categories remain
+  visible; background refresh and reopen retain expanded branches.
+- Reused Eyes download section labels, Ears curriculum/asset mappings and Skin's
+  Allan mini-app. Kept shared background inventory and no-scan repeated opens.
+- 65 focused unit tests and nine Chrome checks across desktop, tablet and phone
+  passed, covering category/topic expansion, Ears lesson titles, Skin placement,
+  empty states, preserved branches and no repeat fetch/scan on reopening.
+
 ## Optional two-step onboarding — 6 November 2026
 
 - Applied account details → optional personalisation → introduction → learning,

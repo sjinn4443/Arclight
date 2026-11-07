@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { isSubappDevelopmentAsset } = require("./subapp-assets.cjs");
 const { isLocalOnlyLessonAsset } = require("./local-only-lessons.cjs");
+const { isOfflineAuthoringAsset } = require("./offline-content-policy.cjs");
 
 const OFFLINE_MANIFEST_FILENAME = "offline-assets.json";
 const EXCLUDED_FILENAMES = new Set([
@@ -27,6 +28,7 @@ function isSensitiveManifestUrl(rawUrl) {
     /^\/videos\/workshop\/pec\/new(?:%20| )folder(?:\/|$)/.test(url) ||
     isSubappDevelopmentAsset(rawUrl) ||
     isLocalOnlyLessonAsset(rawUrl) ||
+    isOfflineAuthoringAsset(rawUrl) ||
     url.includes("reports")
   );
 }

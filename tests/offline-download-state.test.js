@@ -79,7 +79,8 @@ it("opens downloaded contents from a warmed snapshot with no repeat scan or fetc
       assets: urls.map((url) => ({ url, bytes: 100 })),
     }),
   }));
-  const keys = jest.fn(async () => [{ url: `http://localhost${urls[1]}` }]);
+  const cachedRequests = [{ url: `http://localhost${urls[1]}` }];
+  const keys = jest.fn(async () => cachedRequests);
   window.caches = {
     keys: async () => ["arclight-packs-v1"],
     open: async () => ({ keys, put: async () => {} }),
@@ -89,18 +90,59 @@ it("opens downloaded contents from a warmed snapshot with no repeat scan or fetc
   const requests = fetch.mock.calls.length;
   await app.showDownloadedContents();
   expect(
+    [
+      ...document.querySelectorAll(
+        ".downloaded-content-list > .downloaded-content-item > details > summary .downloaded-content-item__title",
+      ),
+    ].map((el) => el.textContent),
+  ).toEqual(["Eyes", "Ears", "Skin"]);
+  expect(
     document.querySelector(".downloaded-content-item .content-download-count")
       .textContent,
   ).toBe("1/1");
-  const details = document.querySelector("details");
-  expect(details.querySelectorAll("li")).toHaveLength(0);
-  details.open = true;
-  details.dispatchEvent(new Event("toggle"));
-  expect(details.textContent).toContain("Downloaded");
-  expect(details.querySelectorAll("li")).toHaveLength(1);
+  const eyes = document.querySelector('[data-content-group="eyes"]');
+  expect(eyes.querySelectorAll("li")).toHaveLength(0);
+  eyes.open = true;
+  eyes.dispatchEvent(new Event("toggle"));
+  const pupils = document.querySelector(
+    '[data-content-group="eyes/core-pupils"]',
+  );
+  expect(pupils.textContent).toContain("Pupils");
+  expect(
+    pupils.querySelectorAll(".downloaded-content-details li"),
+  ).toHaveLength(0);
+  pupils.open = true;
+  pupils.dispatchEvent(new Event("toggle"));
+  expect(pupils.textContent).toContain("Downloaded");
+  expect(
+    pupils.querySelectorAll(".downloaded-content-details li"),
+  ).toHaveLength(1);
+  const skin = document.querySelector('[data-content-group="skin"]');
+  skin.open = true;
+  skin.dispatchEvent(new Event("toggle"));
+  expect(skin.textContent).toContain("No downloaded contents found.");
   document.querySelector("#downloadedContentsCloseBtn").click();
   await app.showDownloadedContents();
+  expect(
+    document.querySelector('[data-content-group="eyes/core-pupils"]').open,
+  ).toBe(true);
   expect(keys).toHaveBeenCalledTimes(1);
+  expect(fetch).toHaveBeenCalledTimes(requests);
+  cachedRequests.push({ url: `http://localhost${urls[2]}` });
+  (
+    await import("../public/js/offlineDownloadState.js")
+  ).invalidateOfflineInventory();
+  await app.refreshDownloadedContents();
+  expect(document.querySelector('[data-content-group="eyes"]').open).toBe(true);
+  expect(
+    document.querySelector('[data-content-group="eyes/core-pupils"]').open,
+  ).toBe(true);
+  expect(
+    document.querySelectorAll(
+      '[data-content-group="eyes/core-pupils"] .downloaded-content-details li',
+    ),
+  ).toHaveLength(1);
+  expect(keys).toHaveBeenCalledTimes(2);
   expect(fetch).toHaveBeenCalledTimes(requests);
 });
 

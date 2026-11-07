@@ -1,0 +1,142 @@
+[
+  {
+    "high": "/images/pdf/Workshop/Childhood/CausesVIppts/03.mp4",
+    "low": "/images/pdf/Workshop/Childhood/CausesVIppts/03_240p.mp4",
+    "highBytes": 18270140,
+    "lowBytes": 380180,
+    "metadata": [
+      {
+        "seconds": 21.09,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 21.09,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  },
+  {
+    "high": "/images/pdf/Workshop/Childhood/CausesVIppts/05.mp4",
+    "low": "/images/pdf/Workshop/Childhood/CausesVIppts/05_240p.mp4",
+    "highBytes": 3735274,
+    "lowBytes": 564124,
+    "metadata": [
+      {
+        "seconds": 25.63,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 25.63,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  },
+  {
+    "high": "/images/pdf/Workshop/Childhood/CausesVIppts/07.mp4",
+    "low": "/images/pdf/Workshop/Childhood/CausesVIppts/07_240p.mp4",
+    "highBytes": 6463046,
+    "lowBytes": 970825,
+    "metadata": [
+      {
+        "seconds": 43.58,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 43.58,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  },
+  {
+    "high": "/images/pdf/Workshop/Childhood/SignsVIppts/04.mp4",
+    "low": "/images/pdf/Workshop/Childhood/SignsVIppts/04_240p.mp4",
+    "highBytes": 2052647,
+    "lowBytes": 355956,
+    "metadata": [
+      {
+        "seconds": 13.45,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 13.45,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  },
+  {
+    "high": "/images/pdf/Workshop/Childhood/SignsVIppts/05.mp4",
+    "low": "/images/pdf/Workshop/Childhood/SignsVIppts/05_240p.mp4",
+    "highBytes": 12815146,
+    "lowBytes": 2393047,
+    "metadata": [
+      {
+        "seconds": 87.02,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 87.02,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  },
+  {
+    "high": "/images/pdf/Workshop/Childhood/SignsVIppts/08.mp4",
+    "low": "/images/pdf/Workshop/Childhood/SignsVIppts/08_240p.mp4",
+    "highBytes": 2308739,
+    "lowBytes": 310287,
+    "metadata": [
+      {
+        "seconds": 15.45,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 15.45,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  },
+  {
+    "high": "/images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
+    "low": "/images/pdf/Workshop/Childhood/VisualDevelopment/01_240p.mp4",
+    "highBytes": 13779297,
+    "lowBytes": 264542,
+    "metadata": [
+      {
+        "seconds": 25.48,
+        "width": 960,
+        "height": 540
+      },
+      {
+        "seconds": 25.48,
+        "width": 426,
+        "height": 240
+      }
+    ],
+    "decode": "passed",
+    "fastStart": true
+  }
+]

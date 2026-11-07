@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-07",
+  "basis": "Current public source files; no production manifest available in dist",
+  "sourceMastersInManifest": 0,
+  "totals": {
+    "low": 1067184144,
+    "high": 1707936917,
+    "common": 815395921,
+    "lowVariable": 251788223,
+    "highVariable": 892540996
+  },
+  "remainingCommonPolicies": {
+    "allQuiz": 6115649,
+    "caseImages": 3121320,
+    "fundalAnimationExamples": 11451686,
+    "allTranslationBytes": 18454306
+  },
+  "embeddedVideo": {
+    "count": 12,
+    "bytes": 103765902,
+    "identicalDuplicateBytes": 28468460,
+    "sampleOriginalBytes": 18270140,
+    "sampleLowBytes": 380180
+  },
+  "demoCandidates": {
+    "toolsCount": 213,
+    "toolsBytes": 24427822,
+    "caveat": "Not all demo files are removable: diabeticRetinopathyWorkshop.html explicitly embeds DO/03HowtoExamine/1/demo/data.html. Lottie files use sibling images, not demo/images."
+  },
+  "preservedDocuments": {
+    "earsPptxBytes": 12677815,
+    "earsDocxBytes": 28920505,
+    "reason": "Explicit downloadable lessons in earsContentData.js; optional-policy change required to omit them"
+  },
+  "scope": "Audit only; no production source or media changed."
+}

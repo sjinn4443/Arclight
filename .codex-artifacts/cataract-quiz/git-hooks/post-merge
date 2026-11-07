@@ -1,0 +1,3 @@
+#!/bin/sh
+export PATH='C:/Program Files/WindowsApps/OpenAI.CodexPrimaryRuntime.v26-1104-2876-0_26.1104.2876.0_x64__3k8sg7r9htsxt/dependencies/node/bin':"$PATH"
+exec 'C:/Program Files/WindowsApps/OpenAI.CodexPrimaryRuntime.v26-1104-2876-0_26.1104.2876.0_x64__3k8sg7r9htsxt/dependencies/node/bin/node.exe' 'D:/Arclight/Arclight_App_NewApp_ChatRefact/Arclight_App/.git/local-account-overlay/hooks.cjs' 'post-merge' "$@"

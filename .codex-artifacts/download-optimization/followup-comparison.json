@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-07",
+  "basis": "Same source-tree download selection, English narration",
+  "rows": {
+    "full": {
+      "lowBefore": 1067184144,
+      "lowAfter": 896261496,
+      "highBefore": 1707936917,
+      "highAfter": 1591199597,
+      "lowSaved": 170922648
+    },
+    "core-front-of-eye": {
+      "lowBefore": 86481600,
+      "lowAfter": 64649760,
+      "highBefore": 115510336,
+      "highAfter": 93678496,
+      "lowSaved": 21831840
+    },
+    "tools": {
+      "lowBefore": 122607782,
+      "lowAfter": 78287586,
+      "highBefore": 162504346,
+      "highAfter": 118184150,
+      "lowSaved": 44320196
+    },
+    "ears-materials": {
+      "lowBefore": 226467538,
+      "lowAfter": 205658732,
+      "highBefore": 279508148,
+      "highAfter": 258699342,
+      "lowSaved": 20808806
+    }
+  }
+}

@@ -28,7 +28,7 @@ test("experimental PDF reader opens beneath the original and keeps all six pages
   await expect(reader).toBeVisible();
   await expect(reader.locator(".menuBtn")).toBeInViewport();
   const labelTop = await reader
-    .locator(".foe-book__section-label")
+    .locator(".foe-book__section")
     .evaluate((el) => el.getBoundingClientRect().top);
   const headerBottom = await reader
     .locator(".eyes-topbar")
@@ -37,6 +37,8 @@ test("experimental PDF reader opens beneath the original and keeps all six pages
   const previous = reader.locator("[data-book-previous]");
   const next = reader.locator("[data-book-next]");
   await expect(previous).toBeDisabled();
+  const sectionButtons = reader.locator(".foe-book__sections button");
+  await expect(sectionButtons).toHaveCount(3);
   const counts = [3, 2, 12, 2, 3, 4];
   for (let i = 0; i < counts.length; i++) {
     await expect(reader.locator(".foe-book__page-number")).toHaveText(
@@ -61,6 +63,22 @@ test("experimental PDF reader opens beneath the original and keeps all six pages
         ),
       ),
     ).toBe(true);
+    const layout = await reader.evaluate((el) => {
+      const images = el.querySelectorAll(".foe-book__panels img");
+      const lastImage = images[images.length - 1].getBoundingClientRect();
+      const nav = el
+        .querySelector(".foe-book__navigation")
+        .getBoundingClientRect();
+      const container = el.querySelector(".container").getBoundingClientRect();
+      return {
+        imageBottom: lastImage.bottom,
+        navTop: nav.top,
+        navBottom: nav.bottom,
+        containerBottom: container.bottom,
+      };
+    });
+    expect(layout.navTop).toBeGreaterThanOrEqual(layout.imageBottom);
+    expect(layout.navBottom).toBeLessThanOrEqual(layout.containerBottom);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -98,7 +116,19 @@ test("experimental PDF reader opens beneath the original and keeps all six pages
   await expect(reader.locator(".foe-book__page-number")).toHaveText("5 / 6");
   await page.reload();
   await expect(page.locator(".foe-book__page-number")).toHaveText("5 / 6");
-  await page.locator("#foeBookSection").selectOption("3");
+  await page.getByRole("button", { name: "Section 1:", exact: false }).click();
+  await expect(page.locator(".foe-book__page-number")).toHaveText("1 / 6");
+  await page.getByRole("button", { name: "Section 2:", exact: false }).click();
+  await expect(page.locator(".foe-book__page-number")).toHaveText("4 / 6");
+  await expect(page.locator("#foeBookSection")).toHaveText(
+    "Anterior Chamber Depth",
+  );
+  await expect(
+    page.locator('.foe-book__sections button[aria-current="true"]'),
+  ).toHaveText("2");
+  await page.getByRole("button", { name: "Section 3:", exact: false }).click();
+  await expect(page.locator(".foe-book__page-number")).toHaveText("5 / 6");
+  await page.locator("[data-book-previous]").click();
   await expect(page.locator(".foe-book__page-number")).toHaveText("4 / 6");
   await page.locator("#foeBookHeading").press("ArrowLeft");
   await expect(page.locator(".foe-book__page-number")).toHaveText("3 / 6");
@@ -121,6 +151,7 @@ test("reader fits a narrow mobile viewport and Back works on a direct link", asy
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(320);
   const next = page.locator("[data-book-next]");
+  await next.scrollIntoViewIfNeeded();
   await expect(next).toBeInViewport();
   await next.click();
   await expect(page.locator(".foe-book__page-number")).toHaveText("2 / 6");

@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-07",
+  "build": "tmp-download-followup-dist",
+  "unitTests": {
+    "distinct": 217,
+    "passed": 217
+  },
+  "buildBudget": {
+    "shellBytes": 14370373,
+    "mediaBytes": 1955302592,
+    "shellLimitBytes": 20000000,
+    "mediaLimitBytes": 2000000000,
+    "shellGzipBytes": 4492814,
+    "shellGzipLimitBytes": 12000000
+  },
+  "productionDownloadSizes": {
+    "full": {
+      "low": {
+        "bytes": 895213732,
+        "count": 5768
+      },
+      "high": {
+        "bytes": 1590151833,
+        "count": 5768
+      },
+      "both": {
+        "bytes": 1862261363,
+        "count": 5876
+      }
+    },
+    "core-front-of-eye": {
+      "low": {
+        "bytes": 64403730,
+        "count": 589
+      },
+      "high": {
+        "bytes": 93432466,
+        "count": 589
+      },
+      "both": {
+        "bytes": 105036658,
+        "count": 593
+      }
+    },
+    "tools": {
+      "low": {
+        "bytes": 77683007,
+        "count": 866
+      },
+      "high": {
+        "bytes": 117579571,
+        "count": 866
+      },
+      "both": {
+        "bytes": 144848895,
+        "count": 871
+      }
+    },
+    "ears-materials": {
+      "low": {
+        "bytes": 205429902,
+        "count": 686
+      },
+      "high": {
+        "bytes": 258470512,
+        "count": 686
+      },
+      "both": {
+        "bytes": 277228647,
+        "count": 694
+      }
+    }
+  },
+  "mediaValidation": 7,
+  "browserChecks": {
+    "childhoodLow": "passed",
+    "childhoodHighAndBothStored": "passed",
+    "frontOfEyeOfflineQuizAndNextCase": "passed",
+    "highOnlyAlias": "passed",
+    "toolsDownloadProcessRestartsVideoSeekPdfExport": "passed",
+    "failureResumeRanges": "passed"
+  },
+  "notes": [
+    "Chrome checks passed across final full-run and isolated rerun. The full run had one unsuccessful failure/resume attempt; isolated rerun passed in 7.5 seconds.",
+    "Original source files, existing URLs and previously stored caches retained; new download selections are deduplicated.",
+    "No deployment; physical iOS verification remains separate."
+  ]
+}

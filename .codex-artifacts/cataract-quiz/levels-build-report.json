@@ -1,0 +1,8 @@
+{
+  "shellBytes": 19945432,
+  "mediaBytes": 1947103709,
+  "shellLimitBytes": 20000000,
+  "mediaLimitBytes": 2000000000,
+  "shellGzipBytes": 10047958,
+  "shellGzipLimitBytes": 12000000
+}

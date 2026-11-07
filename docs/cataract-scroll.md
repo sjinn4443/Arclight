@@ -21,12 +21,12 @@ exclude cataract; an obscured fundus does not establish a healthy retina.
 
 | Divider        | Stages | Source components and motion                                                                                       |
 | -------------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
-| history taking | 1–3    | Clinician/patient with separately revealed original speech bubbles                                                 |
-| visual acuity  | 4–6    | Original distance/near charts, occlusion and pinhole panels; results appear with their cues                        |
-| front of eye   | 7–9    | Original clinician and device with independently illuminated light pool; quiet versus abnormal eye panels          |
-| pupils         | 10–12  | Original light-response panels, source aperture circles contracting, and before/after reveal for referral examples |
-| fundal reflex  | 13–15  | Original examination, four cataract examples in reading order, then abnormal reflex referral examples              |
-| fundoscopy     | 16–18  | Original closer examination, obscured views and source fundus abnormalities                                        |
+| History Taking | 1–3    | Clinician/patient with separately revealed original speech bubbles                                                 |
+| Visual Acuity  | 4–6    | Original distance/near charts, occlusion and pinhole panels; results appear with their cues                        |
+| Front of Eye   | 7–9    | Original clinician and device with independently illuminated light pool; quiet versus abnormal eye panels          |
+| Pupils         | 10–12  | Original light-response panels, source aperture circles contracting, and before/after reveal for referral examples |
+| Fundal Reflex  | 13–15  | Original examination, four cataract examples in reading order, then abnormal reflex referral examples              |
+| Fundoscopy     | 16–18  | Original closer examination, obscured views and source fundus abnormalities                                        |
 
 All compositions are 1169 × 1280 at 30 fps. Source components retain equal X/Y
 scales. Scrolling selects an eligible scene; it does not scrub frames. Do not
@@ -55,6 +55,37 @@ Runtime assets are under `/scrolly/conditions/cataract/` and
 `/narration/cataract/full-animation/`. No new top-level app route is needed.
 
 ## Regeneration
+
+The 7 November revision adds a guide shortcut below each Title Case divider.
+History Taking opens `medicalStudentsWorkshop/medicalHistoryTakingPage`; the
+remaining sections open Videos' Visual Acuity, Front of Eye, Pupils PEC, combined
+Fundal Reflex and Direct Ophthalmoscopy scrolly pages respectively. The optional
+section-link rendering does not alter other routes' playback or settling.
+
+History Taking scenes 1 and 2 now share the original examiner, patient/chair and
+four source speech bubbles on one continuous background. Scene 3 retains only
+the patient; widened speech-bubble crops include the complete front/back-eye
+symbols, and the source column border is removed. Its revised speech distinguishes
+a possible front or back of eye problem from a front of eye problem. The opening
+question is "Ask if the vision has changed…" in both narration and captions.
+
+Set `CATARACT_ART_PREFIX=history-` to regenerate just those original-art layers
+when the existing extraction manifest is available. Set
+`CATARACT_CUE_IDS=history-onset,history-sudden,history-pain` for the narration
+revision: the generator preserves the delivered audio outside those slots,
+retains a revision-specific source recording, and regenerates both language
+tracks and all caption cues. All six replacement utterances fit at 1.0× speed.
+
+Revision verification: 27 focused unit checks pass; all 18 scene playback,
+caption and completion-restore checks pass in phone Chrome and WebKit iPhone.
+The six language/fallback/shortcut browser checks pass with the repository's
+15-second initialization expectation (the temporary harness's original 5-second
+default expired before lazy initialization on this host). The six shortcut
+destinations were exercised, including the cross-route History Taking page.
+Accessibility passes for 181 HTML files. New JavaScript lints cleanly; the shared
+engine retains its existing 64 baseline lint findings. Initial/final original-art
+renders confirm both actors, chair and four bubbles in scenes 1–2 and complete
+eye symbols without the source red column border in scene 3.
 
 1. Run `scripts/extract-cataract-art.py [path/to/Cataract_Edit5.pdf]` with the
    existing PyMuPDF authoring environment.

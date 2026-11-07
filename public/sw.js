@@ -5,7 +5,7 @@ if (typeof importScripts === "function") {
 }
 const CACHE_NAME =
   typeof __BUILD_CACHE_NAME__ === "undefined"
-    ? "arclight-static-v155"
+    ? "arclight-static-v161"
     : __BUILD_CACHE_NAME__;
 const MAX_MESSAGE_CACHE_URLS = 10000;
 const SHELL_MANIFEST = "/shell-assets.json";
@@ -181,7 +181,14 @@ function getAlternateMp4Urls(requestUrl) {
   const alternates = [];
   const pair = globalThis.ArclightVideoQuality?.pair(requestUrl);
   if (pair) {
-    for (const variant of [pair.low, pair.high, ...(pair.aliases || [])]) {
+    // Legacy slide URLs describe the original high source. If both versions
+    // are stored, preserve that quality; a low-only pack still falls back.
+    const lowRequest =
+      decodeURIComponent(url.pathname).toLowerCase() === pair.low.toLowerCase();
+    const preferred = lowRequest
+      ? [pair.low, pair.high]
+      : [pair.high, pair.low];
+    for (const variant of [...preferred, ...(pair.aliases || [])]) {
       const alternate = new URL(variant, url.origin);
       alternate.search = url.search;
       if (alternate.pathname !== url.pathname) alternates.push(alternate.href);

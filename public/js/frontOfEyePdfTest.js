@@ -78,10 +78,22 @@ export function initializeFrontOfEyePdfTest() {
 
   const heading = page.querySelector("#foeBookHeading");
   const panels = page.querySelector(".foe-book__panels");
-  const sectionSelect = page.querySelector("#foeBookSection");
+  const sectionHeading = page.querySelector("#foeBookSection");
   const previous = page.querySelector("[data-book-previous]");
   const next = page.querySelector("[data-book-next]");
   const zoom = page.querySelector("dialog");
+  const sectionButtons = SECTIONS.map((title, section) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = String(section + 1);
+    button.setAttribute("aria-label", `Section ${section + 1}: ${title}`);
+    button.addEventListener("click", () => {
+      index = PAGES.findIndex((item) => item.section === section);
+      render(true);
+    });
+    return button;
+  });
+  page.querySelector(".foe-book__sections").replaceChildren(...sectionButtons);
   let index = 0;
   try {
     const saved = Number(sessionStorage.getItem(BOOKMARK_KEY));
@@ -98,9 +110,12 @@ export function initializeFrontOfEyePdfTest() {
     );
     const sectionIndex = sectionPages.indexOf(current);
     heading.textContent = current.title;
-    sectionSelect.value = String(
-      PAGES.findIndex((item) => item.section === current.section),
-    );
+    sectionHeading.textContent = SECTIONS[current.section];
+    sectionButtons.forEach((button, section) => {
+      if (section === current.section)
+        button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    });
     page.querySelector(".foe-book__position").textContent =
       `Section ${current.section + 1} of ${SECTIONS.length} · ${sectionIndex + 1} of ${sectionPages.length} · Page ${index + 1} of ${PAGES.length}`;
     page.querySelector(".foe-book__page-number").textContent =
@@ -155,19 +170,8 @@ export function initializeFrontOfEyePdfTest() {
 
   previous.addEventListener("click", () => turnPage(-1));
   next.addEventListener("click", () => turnPage(1));
-  sectionSelect.addEventListener("change", () => {
-    index = Number(sectionSelect.value);
-    render(true);
-  });
   page.addEventListener("keydown", (event) => {
-    if (
-      zoom.open ||
-      event.target.closest("select") ||
-      event.altKey ||
-      event.ctrlKey ||
-      event.metaKey
-    )
-      return;
+    if (zoom.open || event.altKey || event.ctrlKey || event.metaKey) return;
     if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
     event.preventDefault();
     turnPage(event.key === "ArrowRight" ? 1 : -1);

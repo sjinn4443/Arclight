@@ -1,0 +1,18 @@
+{
+  "browser": "Installed Chrome",
+  "build": "tmp-download-optimized-dist",
+  "checks": {
+    "highOnlyAliasPlayback": "passed",
+    "new240pFailureResumeOfflineRanges": "passed",
+    "toolsFullLowDownload": "passed",
+    "toolsFileCount": 1104,
+    "toolsProcessRestarts": 2,
+    "toolsVideos": 5,
+    "toolsSeeking": "passed",
+    "toolsPdfExport": "passed",
+    "toolsFinalDurationSeconds": 43.8
+  },
+  "notes": [
+    "Checks passed across bounded runs; earlier reused-development-server and stalled-restart attempts excluded."
+  ]
+}

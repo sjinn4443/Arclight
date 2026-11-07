@@ -1,7 +1,11 @@
+#frontOfEyePdfTestPage {
+  background: #f2f2f7 !important;
+}
+
 #frontOfEyePdfTestPage > .container {
   max-width: 640px;
   margin: 0 auto;
-  padding: 18px 16px calc(110px + env(safe-area-inset-bottom, 0px));
+  padding: 18px 16px calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 #frontOfEyePdfTestPage .eyes-topbar {
@@ -29,25 +33,52 @@
   color: var(--font-color);
   font-family: var(--font-family);
 }
-.foe-book__section-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
+.foe-book__sections {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
 }
-.foe-book__section {
-  display: block;
-  width: 100%;
-  min-height: 48px;
-  padding: 10px 30px 10px 12px;
+.foe-book__sections button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 50%;
   background: #fff;
-  color: inherit;
+  color: #333;
   font: inherit;
   font-size: 14px;
-  text-overflow: ellipsis;
+  font-weight: 600;
+}
+.foe-book__sections button[aria-current="true"] {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+.foe-book__section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 0 24px;
+  background: #000;
+}
+.foe-book__section h2 {
+  margin: 0;
+  padding: 12px 0;
+  color: #fff;
+  font-size: clamp(1.05rem, 0.95rem + 0.7vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .foe-book__section h2 {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+  }
 }
 .foe-book__position {
   margin: 18px 0 8px;
@@ -89,39 +120,32 @@
   border-radius: inherit;
 }
 .foe-book__navigation {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   box-sizing: border-box;
-  width: min(100%, 472px);
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid #e5e7eb;
-  background: #fff;
+  width: 100%;
+  margin-top: 24px;
 }
 .foe-book__navigation button {
-  flex: 1;
-  height: 48px;
-  min-width: 0;
-  padding: 8px;
+  margin-top: 0;
   font-family: inherit;
   cursor: pointer;
 }
 .foe-book__navigation button:disabled {
-  opacity: 0.35;
+  opacity: 1;
   cursor: default;
+}
+.foe-book__navigation [data-book-previous]:disabled {
+  background: #9ca3af;
 }
 .foe-book__page-number {
   flex: 0 0 auto;
   font-size: 12px;
   color: #666;
 }
-.foe-book button:focus-visible,
-.foe-book select:focus-visible {
+.foe-book button:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 3px;
 }

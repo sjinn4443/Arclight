@@ -15,16 +15,13 @@
     </div>
 
     <div class="foe-book">
-      <label class="foe-book__section-label" for="foeBookSection"
-        >Section</label
-      >
-      <select id="foeBookSection" class="foe-book__section">
-        <option value="0">1. Observation and Magnified Examination</option>
-        <option value="3">2. Anterior Chamber Depth</option>
-        <option value="4">
-          3. Fluorescein Corneal Staining and Upper Eyelid Eversion
-        </option>
-      </select>
+      <nav class="foe-book__sections" aria-label="Sections"></nav>
+      <div class="foe-book__section fundal-reflex-section-divider">
+        <h2
+          id="foeBookSection"
+          class="fundal-reflex-section-divider__title"
+        ></h2>
+      </div>
       <div
         class="foe-book__position"
         aria-live="polite"
@@ -37,7 +34,7 @@
       </article>
       <nav class="foe-book__navigation" aria-label="PDF pages">
         <button type="button" class="childhood-prev-btn" data-book-previous>
-          ← Previous page
+          &lt; Previous
         </button>
         <span class="foe-book__page-number" aria-hidden="true"></span>
         <button
@@ -45,7 +42,7 @@
           class="childhood-next-btn is-ready"
           data-book-next
         >
-          Next page →
+          Next &gt;
         </button>
       </nav>
     </div>

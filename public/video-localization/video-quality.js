@@ -379,6 +379,7 @@
     {
       low: "/videos/Workshop/PEC/Realcase2_240p.mp4",
       high: "/videos/Workshop/PEC/Realcase2.mp4",
+      aliases: ["/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4"],
     },
     {
       low: "/videos/Workshop/PEC/Realcase3_240p.mp4",
@@ -399,6 +400,37 @@
     {
       low: "/videos/Workshop/Shared/SimulationStations_220p.mp4",
       high: "/videos/Workshop/Shared/SimulationStations_720p.mp4",
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/CausesVIppts/03_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/CausesVIppts/03.mp4",
+      aliases: ["/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4"],
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/CausesVIppts/05_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/CausesVIppts/05.mp4",
+      aliases: ["/images/pdf/Workshop/Childhood/SignsVIppts/06.mp4"],
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/CausesVIppts/07_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/CausesVIppts/07.mp4",
+      aliases: ["/images/pdf/Workshop/Childhood/SignsVIppts/07.mp4"],
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/SignsVIppts/04_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/SignsVIppts/04.mp4",
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/SignsVIppts/05_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/SignsVIppts/05.mp4",
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/SignsVIppts/08_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/SignsVIppts/08.mp4",
+    },
+    {
+      low: "/images/pdf/Workshop/Childhood/VisualDevelopment/01_240p.mp4",
+      high: "/images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4",
     },
     {
       low: "/videos/Arclight/PhoneAttach.mp4",

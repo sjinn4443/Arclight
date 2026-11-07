@@ -72,3 +72,70 @@ Local measurement and media-validation records are in
 formatting are checked separately. Physical iOS storage retention and native
 playback still require device verification after deployment. This work does not
 deploy the app or reclaim old downloaded files automatically.
+
+## Follow-up — 7 November 2026
+
+The second audit found MP4s embedded under `images/pdf/Workshop/Childhood/`,
+duplicated clips under different lesson URLs, preview exports, and lesson-specific
+quiz/case/animation assets still classified as common app files.
+
+- Extend the video builder to embedded MP4s. Seven new 240p H.264/AAC exports
+  reuse the source duration and frame rate. Other clips reuse existing low files;
+  the small iOS compatibility file remains available.
+- Identify identical high sources by SHA-256 and register their original paths
+  as aliases of one quality pair. All quality selections, including Both, share
+  the canonical files. Section matching follows aliases so a Childhood lesson
+  can download its reused PEC counterpart. Keep original files and URLs for
+  existing links and online playback; deduplicate the download, not the user's
+  original source tree or previously stored caches.
+- Exclude unused scrolly preview folders, mock JS and four unreferenced legacy
+  Fundal JSON exports from both build copying and offline manifests. Retain the
+  `DO/03HowtoExamine/1/demo/` subtree embedded by the diabetic workshop, active
+  Lottie images, final-frame fallbacks, and Ears source-document downloads.
+- Include Anterior Segment Quiz assets with Front of Eye/interactive packs,
+  case-study images with their owners, and active Fundal JSON with Fundal Reflex.
+  Full and non-video packs still contain their non-video learning materials.
+  Partial-download messaging no longer promises that every app quiz is stored.
+
+Same source-tree basis, decimal MB, English narration:
+
+| Selection      | Low before | Low after | High before | High after |
+| -------------- | ---------: | --------: | ----------: | ---------: |
+| Full           |    1,067.2 |     896.3 |     1,707.9 |    1,591.2 |
+| Front of Eye   |       86.5 |      64.6 |       115.5 |       93.7 |
+| Tools and Kits |      122.6 |      78.3 |       162.5 |      118.2 |
+| Ears           |      226.5 |     205.7 |       279.5 |      258.7 |
+
+Full Low saves about 170.9 MB (16%); its Low/High difference grows from
+640.8 MB to 694.9 MB. These are selection totals, not reclaimed cache space.
+
+Final deployment build (`tmp-download-followup-dist`) reports Full Low
+895.2 MB / High 1,590.2 MB; Front of Eye 64.4 / 93.4 MB; Tools 77.7 / 117.6 MB.
+Build budgets passed: shell 14,370,373 bytes, media 1,955,302,592 bytes,
+gzip shell 4,492,814 bytes. Build/source totals differ due to bundling and
+minification.
+
+Verification: 217 distinct focused unit tests passed across the download,
+worker, subtitle, offline, workshop and Ears suites. The dependency test checks
+external images referenced by real DO/BIO/Front of Eye Lottie JSONs and the
+retained demo. Registry aliases are checked byte-for-byte against their canonical
+high source. Original slide URLs prefer the high file when both versions are
+stored, and still fall back to a low-only download. All seven new exports passed full decode, codec, duration and
+fast-start checks, with a representative decoded frame inspected visually.
+
+Real-worker desktop Chrome checks passed for Childhood Low and High downloads,
+absence of duplicate MP4 cache entries, original slide-URL playback, seeking and
+range responses, including high playback with both qualities stored. The Front
+of Eye pack retained its quiz offline, including answers, next-case navigation
+and the next case image. Tools Low also passed complete download, browser-process
+restarts, all five video lessons, seeking and cached PDF export. Failure/resume
+and high-only alias playback checks passed. Physical iOS testing and deployment
+remain separate. Evidence is under `.codex-artifacts/download-optimization/`
+with the `followup-` prefix.
+
+The final Chrome run passed the first five checks. Its failure/resume check had
+one unsuccessful attempt (31.2 seconds); a standalone rerun of the identical
+final build passed all its assertions in 7.5 seconds. That successful rerun and
+its step results are saved in `followup-live-resume.json`. Do not describe this
+as a clean six-test first-attempt run. Browser results were collected across
+these runs; the earlier failure is retained in this record.

@@ -429,6 +429,14 @@ describe("service worker sensitive-cache policy", () => {
       "/videos/Tools/MobilePhoneAttachment_720p.mp4",
     ],
     [
+      "/images/pdf/Workshop/Childhood/CausesVIppts/03_240p.mp4",
+      "/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4",
+    ],
+    [
+      "/videos/Workshop/PEC/Realcase2_240p.mp4",
+      "/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+    ],
+    [
       "/videos/Core/Intro/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
       "/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
     ],
@@ -464,6 +472,34 @@ describe("service worker sensitive-cache policy", () => {
       expect(fetchImpl).not.toHaveBeenCalled();
     },
   );
+
+  test("preserves high quality for an original slide alias when both variants are cached", async () => {
+    const fetchImpl = jest.fn().mockRejectedValue(new Error("offline"));
+    const { cache, handlers } = loadServiceWorker(fetchImpl);
+    cache.match.mockImplementation(async (request) => {
+      const url = typeof request === "string" ? request : request.url;
+      if (url.endsWith("/CausesVIppts/03.mp4"))
+        return new Response("HIGH", {
+          headers: { "Content-Type": "video/mp4" },
+        });
+      if (url.endsWith("/CausesVIppts/03_240p.mp4"))
+        return new Response("low", {
+          headers: { "Content-Type": "video/mp4" },
+        });
+      return undefined;
+    });
+    let response;
+    handlers.fetch({
+      request: new Request(
+        "https://app.example.com/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4",
+      ),
+      respondWith: (promise) => {
+        response = promise;
+      },
+    });
+    expect(await (await response).text()).toBe("HIGH");
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
 
   test.each(["220", "240"])(
     "serves a cached %sp MP4 when the saved quality requests 720p",

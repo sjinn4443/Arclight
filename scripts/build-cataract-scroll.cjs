@@ -141,6 +141,27 @@ function background(color) {
   });
 }
 function history(mode, secondAt) {
+  if (mode !== "refer") {
+    // One shared background, two original actors, with both sets of speech
+    // bubbles. Keep a single PDF-to-stage scale for each actor's proportions.
+    sourceInBox("history-examiner", [130, 610, 600, 590]);
+    sourceInBox("history-patient", [735, 650, 395, 550]);
+    for (let i = 1; i <= 2; i++) {
+      const at = i === 1 ? 30 : secondAt;
+      const top = i === 1 ? 165 : 405;
+      sourceInBox(
+        `history-method-bubble-${i}`,
+        [30, top, 520, 220],
+        mode === "method" ? at : 15,
+      );
+      sourceInBox(
+        `history-cataract-bubble-${i}`,
+        [665, top, 470, 220],
+        mode === "cataract" ? at : at + 45,
+      );
+    }
+    return;
+  }
   const base = `history-${mode}-base`,
     source = assets.get(base),
     box = source.sourceBox;

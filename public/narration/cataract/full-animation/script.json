@@ -17,8 +17,8 @@
   "cues": [
     {
       "id": "history-onset",
-      "en": "Ask when the vision changed and whether it has worsened gradually or suddenly.",
-      "ko": "시력이 언제부터 변했는지, 서서히 나빠졌는지 갑자기 나빠졌는지 묻습니다.",
+      "en": "Ask if the vision has changed and whether it has worsened gradually or suddenly.",
+      "ko": "시력이 변했는지, 서서히 나빠졌는지 갑자기 나빠졌는지 묻습니다.",
       "start": 1,
       "end": 10
     },
@@ -45,15 +45,15 @@
     },
     {
       "id": "history-sudden",
-      "en": "Sudden loss of vision is not the usual cataract history and needs urgent assessment.",
-      "ko": "갑작스러운 시력 소실은 일반적인 백내장 경과가 아니며 긴급한 평가가 필요합니다.",
+      "en": "Sudden loss of vision may indicate a problem at the front or back of the eye and needs urgent assessment.",
+      "ko": "갑작스러운 시력 소실은 눈 앞부분이나 뒷부분의 문제일 수 있으며 긴급한 평가가 필요합니다.",
       "start": 37,
       "end": 46
     },
     {
       "id": "history-pain",
-      "en": "Pain or a red eye also suggests another cause. Arrange referral rather than assuming cataract.",
-      "ko": "통증이나 충혈도 다른 원인을 시사합니다. 백내장으로 단정하지 말고 의뢰합니다.",
+      "en": "Pain or a red eye suggests a problem at the front of the eye. Arrange referral rather than assuming cataract.",
+      "ko": "통증이나 충혈은 눈 앞부분의 문제를 시사합니다. 백내장으로 단정하지 말고 의뢰합니다.",
       "start": 46,
       "end": 55
     },
@@ -270,37 +270,37 @@
   ],
   "videoTitleCues": [
     {
-      "sourceText": "history taking",
+      "sourceText": "History Taking",
       "translations": {
         "ko": "병력 청취"
       }
     },
     {
-      "sourceText": "visual acuity",
+      "sourceText": "Visual Acuity",
       "translations": {
         "ko": "시력"
       }
     },
     {
-      "sourceText": "front of eye",
+      "sourceText": "Front of Eye",
       "translations": {
         "ko": "눈 앞부분"
       }
     },
     {
-      "sourceText": "pupils",
+      "sourceText": "Pupils",
       "translations": {
         "ko": "동공"
       }
     },
     {
-      "sourceText": "fundal reflex",
+      "sourceText": "Fundal Reflex",
       "translations": {
         "ko": "안저반사"
       }
     },
     {
-      "sourceText": "fundoscopy",
+      "sourceText": "Fundoscopy",
       "translations": {
         "ko": "안저검사"
       }

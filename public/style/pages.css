@@ -32148,6 +32148,30 @@ img[src*="/images/learning/Diabetic/Diabetes/ProliferativeAndOtherDisease/"] {
 }
 
 /* Cataract uses the Eye Pad/Shield caption and header geometry. */
+#cataractScrollPage .fundal-reflex-section-divider {
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 12px;
+}
+#cataractScrollPage .fundal-reflex-section-shortcut {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 5px 18px;
+  border: 1px solid #b8b8b8;
+  border-radius: 18px;
+  background: #fff;
+  color: #202020;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+}
+#cataractScrollPage .fundal-reflex-section-shortcut:focus-visible {
+  outline: 3px solid #80ef64;
+  outline-offset: 3px;
+}
 #cataractScrollPage .childhood-fundal-segment-text {
   box-sizing: border-box;
   margin-inline: auto;

@@ -1576,6 +1576,20 @@ input:checked + .slider:before {
   padding: 4px 0;
 }
 
+.downloaded-content-list--nested {
+  margin: 10px 0 0;
+}
+
+.downloaded-content-list--nested > .downloaded-content-item {
+  padding: 8px;
+  background: #fff;
+}
+
+.downloaded-content-empty {
+  padding-top: 12px;
+  font-size: 13px;
+}
+
 .content-download-count {
   display: inline-block;
   margin: 0 6px;

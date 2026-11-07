@@ -7,12 +7,32 @@ export const CATARACT_LANGUAGES = {
   ko: { label: "한국어", voice: "ko-KR-SunHiNeural" },
 };
 export const CATARACT_SECTIONS = [
-  { startIndex: 0, title: "history taking" },
-  { startIndex: 3, title: "visual acuity" },
-  { startIndex: 6, title: "front of eye" },
-  { startIndex: 9, title: "pupils" },
-  { startIndex: 12, title: "fundal reflex" },
-  { startIndex: 15, title: "fundoscopy" },
+  {
+    startIndex: 0,
+    title: "History Taking",
+    shortcut: "#/medicalStudentsWorkshop/medicalHistoryTakingPage",
+  },
+  {
+    startIndex: 3,
+    title: "Visual Acuity",
+    shortcut: "#/videos/visualAcuityExaminationScrollPage",
+  },
+  {
+    startIndex: 6,
+    title: "Front of Eye",
+    shortcut: "#/videos/frontOfEyeExaminationScrollPage",
+  },
+  { startIndex: 9, title: "Pupils", shortcut: "#/videos/pupilsPecScrollPage" },
+  {
+    startIndex: 12,
+    title: "Fundal Reflex",
+    shortcut: "#/videos/fundalReflexExaminationScrollPage",
+  },
+  {
+    startIndex: 15,
+    title: "Fundoscopy",
+    shortcut: "#/videos/directOphthalmoscopyScrollPage",
+  },
 ];
 export const CATARACT_SECTION_KOREAN = [
   "병력 청취",
@@ -32,8 +52,8 @@ export const CATARACT_STAGES = [
         id: "history-onset",
         offset: 0,
         end: 9,
-        en: "Ask when the vision changed and whether it has worsened gradually or suddenly.",
-        ko: "시력이 언제부터 변했는지, 서서히 나빠졌는지 갑자기 나빠졌는지 묻습니다.",
+        en: "Ask if the vision has changed and whether it has worsened gradually or suddenly.",
+        ko: "시력이 변했는지, 서서히 나빠졌는지 갑자기 나빠졌는지 묻습니다.",
       },
       {
         id: "history-symptoms",
@@ -72,15 +92,15 @@ export const CATARACT_STAGES = [
         id: "history-sudden",
         offset: 0,
         end: 9,
-        en: "Sudden loss of vision is not the usual cataract history and needs urgent assessment.",
-        ko: "갑작스러운 시력 소실은 일반적인 백내장 경과가 아니며 긴급한 평가가 필요합니다.",
+        en: "Sudden loss of vision may indicate a problem at the front or back of the eye and needs urgent assessment.",
+        ko: "갑작스러운 시력 소실은 눈 앞부분이나 뒷부분의 문제일 수 있으며 긴급한 평가가 필요합니다.",
       },
       {
         id: "history-pain",
         offset: 9,
         end: 18,
-        en: "Pain or a red eye also suggests another cause. Arrange referral rather than assuming cataract.",
-        ko: "통증이나 충혈도 다른 원인을 시사합니다. 백내장으로 단정하지 말고 의뢰합니다.",
+        en: "Pain or a red eye suggests a problem at the front of the eye. Arrange referral rather than assuming cataract.",
+        ko: "통증이나 충혈은 눈 앞부분의 문제를 시사합니다. 백내장으로 단정하지 말고 의뢰합니다.",
       },
     ],
   },
@@ -424,6 +444,8 @@ export const CATARACT_SCROLL_CONFIG = {
   ),
   stageAspectRatioByFile: CATARACT_STAGES.map(() => "1169 / 1280"),
   sections: CATARACT_SECTIONS,
+  getSectionShortcutLabel: (language) =>
+    language === "ko" ? "바로가기" : "Open guide",
   segmentRanges: CATARACT_STAGES.map((s) => [
     { from: 0, to: s.seconds * 30 - 1 },
   ]),

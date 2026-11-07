@@ -30,12 +30,12 @@ test("Primary Cataract scrolly is immediately above Simulator and has a named pr
 test("all original-art scenes have valid local dependencies and exact narration endpoints", () => {
   expect(cfg.paths).toHaveLength(18);
   expect(cfg.sections.map((s) => s.title)).toEqual([
-    "history taking",
-    "visual acuity",
-    "front of eye",
-    "pupils",
-    "fundal reflex",
-    "fundoscopy",
+    "History Taking",
+    "Visual Acuity",
+    "Front of Eye",
+    "Pupils",
+    "Fundal Reflex",
+    "Fundoscopy",
   ]);
   expect(cfg.sections.map((s) => s.startIndex)).toEqual([0, 3, 6, 9, 12, 15]);
   cfg.paths.forEach((file, i) => {
@@ -109,5 +109,27 @@ test("packaged narration matches the manifest and lesson clock", () => {
     expect(
       Math.abs(track.durationSeconds - manifest.durationSeconds),
     ).toBeLessThan(0.25);
+  }
+});
+
+test("History Taking keeps both original actors and the revised spoken meaning", () => {
+  for (const i of [0, 1]) {
+    const data = JSON.parse(fs.readFileSync(`public${cfg.paths[i]}`));
+    const ids = data.layers.map((l) => l.refId);
+    expect(ids).toContain("history-examiner");
+    expect(ids).toContain("history-patient");
+    expect(ids.filter((id) => id?.includes("bubble"))).toHaveLength(4);
+  }
+  const third = JSON.parse(fs.readFileSync(`public${cfg.paths[2]}`));
+  expect(third.layers.some((l) => l.refId === "history-examiner")).toBe(false);
+  expect(stages[0].cues[0].en).toMatch(/^Ask if the vision/);
+  expect(stages[2].cues[0].en).toMatch(/front or back of the eye/);
+  expect(stages[2].cues[1].en).toMatch(/front of the eye/);
+  const source = JSON.parse(
+    fs.readFileSync("public/scrolly/conditions/cataract/provenance.json"),
+  );
+  for (const i of [1, 2]) {
+    const box = source.assets[`history-refer-bubble-${i}`].box;
+    expect(box[0] + box[2]).toBeGreaterThanOrEqual(552);
   }
 });

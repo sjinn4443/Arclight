@@ -47,6 +47,12 @@ test("opens a warmed inventory immediately and expands downloaded content detail
     "/videos/Core/Pupils/pupil_720p.mp4",
     "/subapp/Mires/index.html",
     "/subapp/Mires/main.js",
+    "/images/learning/Ears/ears/image20.webp",
+    "/images/learning/Ears/ears/image8.webp",
+    "/images/learning/Ears/ears/image25.webp",
+    "/videos/Ears/otoscopy-arclight_220p.mp4",
+    "/subapp/Allan/index.html",
+    "/subapp/Allan/main.js",
   ];
   let manifestRequests = 0;
   await page.route("**/api/app/offline-assets", (route) => {
@@ -64,6 +70,14 @@ test("opens a warmed inventory immediately and expands downloaded content detail
       new Response("video"),
     );
     await cache.put("/subapp/Mires/index.html", new Response("app"));
+    await cache.put("/subapp/Allan/index.html", new Response("skin app"));
+    for (const url of [
+      "/images/learning/Ears/ears/image20.webp",
+      "/images/learning/Ears/ears/image8.webp",
+      "/images/learning/Ears/ears/image25.webp",
+      "/videos/Ears/otoscopy-arclight_220p.mp4",
+    ])
+      await cache.put(url, new Response("ear content"));
     (await import("/js/offlineDownloadState.js")).invalidateOfflineInventory();
     await (
       await import("/js/downloadedContents.js")
@@ -76,20 +90,68 @@ test("opens a warmed inventory immediately and expands downloaded content detail
   const modal = page.locator("#downloadedContentsModal");
   await expect(modal).toBeVisible();
   await expect(modal.locator(".downloaded-content-loading")).toHaveCount(0);
-  const group = modal.locator('[data-content-group="core"]');
-  await expect(group.locator("summary .content-download-count")).toHaveText(
-    "1/2",
+  const roots = modal.locator(
+    ".modal-content > .downloaded-content-list > li > details",
   );
-  await expect(group.locator("summary progress")).toHaveAttribute("value", "1");
-  await expect(group.locator(".downloaded-content-details li")).toHaveCount(0);
-  await group.locator("summary").click();
-  await expect(group.locator(".downloaded-content-details li")).toHaveCount(2);
-  await expect(group.locator(".downloaded-content-details")).toContainText(
+  await expect(
+    roots.locator(":scope > summary .downloaded-content-item__title"),
+  ).toHaveText(["Eyes", "Ears", "Skin"]);
+  await expect(modal.locator("details")).toHaveCount(3);
+  await modal.screenshot({
+    path: testInfo.outputPath("downloaded-categories.png"),
+  });
+  const eyes = modal.locator('[data-content-group="eyes"]');
+  await expect(
+    eyes.locator(":scope > summary .content-download-count"),
+  ).toHaveText("1/2");
+  await eyes.locator(":scope > summary").click();
+  const pupils = modal.locator('[data-content-group="eyes/core-pupils"]');
+  await expect(pupils).toBeVisible();
+  await expect(pupils.locator(".downloaded-content-details li")).toHaveCount(0);
+  await pupils.locator("summary").click();
+  await expect(pupils.locator(".downloaded-content-details li")).toHaveCount(1);
+  await expect(pupils.locator(".downloaded-content-details")).toContainText(
     "Downloaded",
   );
-  await expect(group.locator(".downloaded-content-details")).toContainText(
+  const interactive = modal.locator(
+    '[data-content-group="eyes/core-interactive-learning"]',
+  );
+  await interactive.locator("summary").click();
+  await expect(
+    interactive.locator(".downloaded-content-details"),
+  ).toContainText("Download incomplete");
+  await eyes.locator(":scope > summary").click();
+  const ears = modal.locator('[data-content-group="ears"]');
+  await ears.locator(":scope > summary").click();
+  const anatomy = modal.locator('[data-content-group="ears/earsAnatomy"]');
+  await expect(anatomy.locator("summary")).toContainText(
+    "Ear Health & Anatomy",
+  );
+  await anatomy.locator("summary").click();
+  await expect(anatomy.locator(".downloaded-content-details")).toContainText(
+    "How We Hear",
+  );
+  await expect(
+    anatomy.locator(".downloaded-content-details .content-download-count"),
+  ).toContainText(["Downloaded"]);
+  await modal.screenshot({
+    path: testInfo.outputPath("downloaded-ears-details.png"),
+  });
+  await ears.locator(":scope > summary").click();
+  const skin = modal.locator('[data-content-group="skin"]');
+  await skin.locator("summary").click();
+  const skinApp = modal.locator(
+    '[data-content-group="skin/interactive-learning"]',
+  );
+  await skinApp.locator("summary").click();
+  await expect(skinApp.locator(".downloaded-content-details")).toContainText(
+    "Allan",
+  );
+  await expect(skinApp.locator(".downloaded-content-details")).toContainText(
     "Download incomplete",
   );
+  await skin.locator(":scope > summary").click();
+  await eyes.locator(":scope > summary").click();
   const box = await modal.locator(".download-modal").boundingBox();
   expect(box.x).toBeGreaterThanOrEqual(0);
   expect(box.x + box.width).toBeLessThanOrEqual(page.viewportSize().width);
@@ -102,4 +164,35 @@ test("opens a warmed inventory immediately and expands downloaded content detail
   );
   await expect(modal.locator(".downloaded-content-loading")).toHaveCount(0);
   expect(manifestRequests).toBe(requests);
+});
+
+test("shows Eyes, Ears and Skin when there are no downloads", async ({
+  page,
+}) => {
+  await page.route("**/api/app/offline-assets", (route) =>
+    route.fulfill({
+      json: {
+        urls: ["/js/main.js"],
+        assets: [{ url: "/js/main.js", bytes: 100 }],
+      },
+    }),
+  );
+  await page.goto("/#/dashboard");
+  await expect(page.locator("#unifiedDashboard")).toBeVisible();
+  await page.evaluate(async () =>
+    (await import("/js/menu.js")).openDownloadedContentsModal(),
+  );
+  const modal = page.locator("#downloadedContentsModal");
+  await expect(
+    modal.locator("summary .downloaded-content-item__title"),
+  ).toHaveText(["Eyes", "Ears", "Skin"]);
+  await expect(modal.locator("summary .content-download-count")).toHaveText([
+    "0/0",
+    "0/0",
+    "0/0",
+  ]);
+  await modal.locator('[data-content-group="eyes"] > summary').click();
+  await expect(modal.locator(".downloaded-content-empty")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(modal).toBeHidden();
 });

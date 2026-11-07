@@ -7,6 +7,9 @@ const htmlMinifierTerser = require("html-minifier-terser");
 const { execSync } = require("child_process");
 const { isSubappDevelopmentAsset } = require("../utils/subapp-assets.cjs");
 const { isLocalOnlyLessonAsset } = require("../utils/local-only-lessons.cjs");
+const {
+  isOfflineAuthoringAsset,
+} = require("../utils/offline-content-policy.cjs");
 
 function toIsoDateString(value) {
   const trimmed = String(value ?? "").trim();
@@ -445,6 +448,7 @@ const build = async () => {
     );
     await fs.copy(publicPath, distPath, {
       filter: (src) =>
+        !isOfflineAuthoringAsset(path.relative(publicPath, src)) &&
         !isSubappDevelopmentAsset(path.relative(publicPath, src)) &&
         !isLocalOnlyLessonAsset(path.relative(publicPath, src)) &&
         !isPathWithinOrEqual(publicJsPath, src) &&

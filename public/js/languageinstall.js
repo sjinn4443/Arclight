@@ -471,6 +471,8 @@ const VIDEO_ASSET_EXTENSIONS = new Set([
   ".webm",
 ]);
 const CONTENT_ASSET_PREFIXES = [
+  "/anteriorsegmentquiz/",
+  "/images/casestudy/",
   "/images/ears/",
   "/images/atoms/",
   "/documents/ears/",
@@ -559,7 +561,7 @@ export const OFFLINE_CATALOG_OPTIONS = [
     description: "Includes Arclight Overview and Holo Overview.",
   },
 ];
-const OFFLINE_DOWNLOAD_OPTIONS = [
+export const OFFLINE_DOWNLOAD_OPTIONS = [
   ...OFFLINE_CATALOG_OPTIONS,
   ...[
     ["ears-materials", "Ear learning materials"],
@@ -888,13 +890,25 @@ function shouldIncludeVideoQuality(url, videoQuality, availableUrls) {
 
 export function isAppShellAsset(url) {
   const assetPath = getAssetPath(url);
+  if (/^\/html\/.*\.json$/.test(assetPath)) return false;
   // The player needs these small catalogues before it can resolve local media.
   if (assetPath.startsWith("/video-localization/")) return true;
   if (isVideoAssetUrl(assetPath)) return false;
   return !CONTENT_ASSET_PREFIXES.some((prefix) => assetPath.startsWith(prefix));
 }
 
-export function matchesOfflineCatalog(url, catalogId) {
+export function matchesOfflineCatalog(url, catalogId, includeAliases = true) {
+  const pair = globalThis.ArclightVideoQuality?.pair(url);
+  if (
+    includeAliases &&
+    pair &&
+    [pair.low, pair.high, ...(pair.aliases || [])].some(
+      (alias) =>
+        getAssetPath(alias) !== getAssetPath(url) &&
+        matchesOfflineCatalog(alias, catalogId, false),
+    )
+  )
+    return true;
   const assetPath = getAssetPath(url);
   if (catalogId === "ears-materials") {
     return (
@@ -1016,6 +1030,7 @@ export function matchesOfflineCatalog(url, catalogId) {
 
   if (catalogId === "core-front-of-eye") {
     return (
+      assetPath.startsWith("/anteriorsegmentquiz/") ||
       assetPath.includes("frontofeye") ||
       assetPath.includes("front-of-eye") ||
       assetPath.includes("front_of_eye") ||
@@ -1026,6 +1041,7 @@ export function matchesOfflineCatalog(url, catalogId) {
 
   if (catalogId === "core-fundal-reflex") {
     return (
+      /^\/html\/fundal.*\.json$/.test(assetPath) ||
       assetPath.includes("fundalreflex") ||
       assetPath.includes("fundal-reflex") ||
       assetPath.includes("fundal_reflex") ||
@@ -1044,6 +1060,7 @@ export function matchesOfflineCatalog(url, catalogId) {
 
   if (catalogId === "core-interactive-learning") {
     return (
+      assetPath.startsWith("/anteriorsegmentquiz/") ||
       assetPath.startsWith("/images/atoms/") ||
       assetPath.startsWith("/subapp/") ||
       assetPath.startsWith("/images/quiz/connect/") ||
@@ -1250,7 +1267,7 @@ function getSelectedContentSummary(downloadSelection) {
 }
 
 function getNormallyAvailableItems(downloadSelection) {
-  const items = [t("App quizzes")];
+  const items = downloadSelection?.mode === "select" ? [] : [t("App quizzes")];
   const selectedContentSummary = getSelectedContentSummary(downloadSelection);
   if (selectedContentSummary) items.push(selectedContentSummary);
   return items;
@@ -1295,14 +1312,20 @@ export function resolveOfflineDownloadSelection(manifest, choice = {}) {
   if (mode !== "app-only") {
     // An existing counterpart can belong to another directory/catalogue.
     // Substitute before filtering so it follows the selected lesson dependency.
-    if (videoQuality !== "both") {
+    {
       const byPath = new Map(
         allAssets.map((asset) => [getAssetPath(asset.url), asset]),
       );
       assets = assets.map((asset) => {
-        const preferred = globalThis.ArclightVideoQuality?.pair(asset.url)?.[
-          videoQuality
-        ];
+        const pair = globalThis.ArclightVideoQuality?.pair(asset.url);
+        const preferred =
+          videoQuality === "both"
+            ? pair?.aliases?.some(
+                (alias) => getAssetPath(alias) === getAssetPath(asset.url),
+              )
+              ? pair.high
+              : null
+            : pair?.[videoQuality];
         return (preferred && byPath.get(getAssetPath(preferred))) || asset;
       });
     }

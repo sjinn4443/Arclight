@@ -1,0 +1,123 @@
+{
+  "root": "dist",
+  "manifestBytes": 0,
+  "shellBytes": 0,
+  "shellGroups": [],
+  "topShell": [],
+  "shellMedia": [],
+  "sourceMasters": [],
+  "rows": {
+    "full": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "ears": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-history": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-visual-acuity": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-pupils": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-front-of-eye": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-fundal-reflex": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-ophthalmoscopy": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "core-interactive-learning": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "conditions": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "workshops": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "extended": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    },
+    "tools": {
+      "lowBytes": 0,
+      "highBytes": 0,
+      "commonBytes": 0,
+      "commonGroups": [],
+      "topCommon": [],
+      "urls": []
+    }
+  }
+}

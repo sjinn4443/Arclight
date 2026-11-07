@@ -15,7 +15,9 @@ parser.add_argument('--ffmpeg', required=True)
 args = parser.parse_args()
 videos = ROOT / 'public/videos'
 files = sorted(p for p in videos.rglob('*.mp4') if 'New folder' not in p.parts)
+files += sorted((ROOT / 'public/images/pdf').rglob('*.mp4'))
 pairs = []
+by_digest = {}
 intro_aliases = []
 report = []
 url = lambda p: '/' + p.relative_to(ROOT / 'public').as_posix()
@@ -30,6 +32,10 @@ for source in files:
             intro_aliases.append(url(source))
             continue
     if re.search(r'_(220|240)p$', source.stem, re.I):
+        continue
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    if digest in by_digest:
+        by_digest[digest].setdefault('aliases', []).append(url(source))
         continue
     stem = re.sub(r'_(540|720|1080)p$', '', source.stem, flags=re.I)
     low = next((source.with_name(stem + suffix) for suffix in ('_220p.mp4', '_240p.mp4')
@@ -54,7 +60,9 @@ for source in files:
         report.append({'high': url(source), 'low': url(low),
                        'highBytes': source.stat().st_size, 'lowBytes': low.stat().st_size})
         print('Created ' + url(low), flush=True)
-    pairs.append({'low': url(low), 'high': url(source)})
+    pair = {'low': url(low), 'high': url(source)}
+    pairs.append(pair)
+    by_digest[digest] = pair
 
 # These legacy player URLs describe the same lessons under different names.
 phone = {'low': '/videos/Arclight/PhoneAttach.mp4',
@@ -63,7 +71,7 @@ pairs = [p for p in pairs if p['high'] != phone['high']]
 pairs.append(phone)
 for pair in pairs:
     if pair['high'].startswith('/videos/USAID Childhood eye screening/1. How to use the Arclight'):
-        pair['aliases'] = intro_aliases
+        pair.setdefault('aliases', []).extend(intro_aliases)
 data = json.dumps(pairs, ensure_ascii=True, indent=2)
 runtime = '''
   const path = (url) => {

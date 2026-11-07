@@ -2,7 +2,6 @@ import {
   getOfflineInventory,
   invalidateOfflineInventory,
   offlineAssetPath,
-  summarizeOfflineContent,
   offlineContentState,
 } from "./offlineDownloadState.js";
 
@@ -15,6 +14,8 @@ let returnFocus;
 let previousInventory;
 let previousManifest;
 let previousLanguage;
+let earAssets;
+let earAssetsRequest;
 
 const t = (text) => window.I18N?.translateLiteral?.(text, text) || text;
 const escape = (text) =>
@@ -85,51 +86,58 @@ function displaySnapshot() {
       (el) => el.dataset.contentGroup,
     ),
   );
-  const visible = snapshot.groups.filter((group) => group.started);
   content.innerHTML = `<p>${escape(t("Downloaded contents"))}</p>
     ${progress(snapshot.overall)}
-    ${
-      visible.length
-        ? `<ul class="downloaded-content-list">${visible
-            .map(
-              (group) => `
-      <li class="downloaded-content-item"><details data-content-group="${escape(group.id)}">
-        <summary><span class="downloaded-content-item__title">${escape(t(group.label))}</span>${progress(group)}</summary>
-        <ul class="downloaded-content-details"></ul></details></li>`,
-            )
-            .join("")}</ul>`
-        : `<p>${escape(t("No downloaded contents found."))}</p>`
-    }
+    <ul class="downloaded-content-list"></ul>
     <p class="downloaded-content-size">${escape(t("Approx. cached size: {{size}}.").replace("{{size}}", snapshot.size))}</p>`;
-  content.querySelectorAll("details").forEach((details) => {
+  const renderBranch = (node, parent) => {
+    const row = document.createElement("li");
+    row.className = "downloaded-content-item";
+    row.innerHTML = `<details data-content-group="${escape(node.id)}">
+      <summary><span class="downloaded-content-item__title">${escape(t(node.label))}</span>${progress(node)}</summary>
+      <div class="downloaded-content-children"></div></details>`;
+    parent.append(row);
+    const details = row.querySelector("details");
     const populate = () => {
       if (!details.open || details.dataset.loaded) return;
-      const group = snapshot.groups.find(
-        (item) => item.id === details.dataset.contentGroup,
-      );
-      details.querySelector("ul").innerHTML = group.items
-        .map((item) => {
-          const state = item.complete
-            ? "complete"
-            : item.started
-              ? "partial"
-              : "empty";
-          const label = item.complete
-            ? "Downloaded"
-            : item.started
-              ? "Download incomplete"
-              : "Not downloaded";
-          return `<li><span>${escape(item.label)}</span><span class="content-download-count content-download-count--${state}">${escape(t(label))}</span></li>`;
-        })
-        .join("");
       details.dataset.loaded = "1";
+      const target = row.querySelector(".downloaded-content-children");
+      if (node.children?.length) {
+        const list = document.createElement("ul");
+        list.className =
+          "downloaded-content-list downloaded-content-list--nested";
+        target.append(list);
+        node.children.forEach((child) => renderBranch(child, list));
+      } else if (node.items.length) {
+        target.innerHTML = `<ul class="downloaded-content-details">${node.items
+          .map((item) => {
+            const state = item.complete
+              ? "complete"
+              : item.started
+                ? "partial"
+                : "empty";
+            const label = item.complete
+              ? "Downloaded"
+              : item.started
+                ? "Download incomplete"
+                : "Not downloaded";
+            return `<li><span>${escape(t(item.label))}</span><span class="content-download-count content-download-count--${state}">${escape(t(label))}</span></li>`;
+          })
+          .join("")}</ul>`;
+      } else {
+        target.innerHTML = `<p class="downloaded-content-empty">${escape(t("No downloaded contents found."))}</p>`;
+      }
+      window.I18N?.applyTranslations?.(target);
     };
     details.addEventListener("toggle", populate);
-    if (expanded.has(details.dataset.contentGroup)) {
+    if (expanded.has(node.id)) {
       details.open = true;
       populate();
     }
-  });
+  };
+  snapshot.groups.forEach((group) =>
+    renderBranch(group, content.querySelector(".downloaded-content-list")),
+  );
   window.I18N?.applyTranslations?.(content);
 }
 
@@ -162,34 +170,47 @@ export async function refreshDownloadedContents() {
       mode: "full",
     });
     const urls = selection.urls.filter((url) => !app.isAppShellAsset(url));
-    const summarize = (list) =>
-      summarizeOfflineContent(list, inventory, { anyVideoQuality: true });
-    const groups = app.OFFLINE_CATALOG_GROUPS.map((group) => ({
-      ...summarize(
-        urls.filter((url) => app.matchesOfflineCatalog(url, group.id)),
-      ),
-      id: group.id,
-      label: group.label,
-    }));
-    const ungrouped = urls.filter(
-      (url) =>
-        !app.OFFLINE_CATALOG_GROUPS.some((group) =>
-          app.matchesOfflineCatalog(url, group.id),
-        ),
+    const { buildDownloadedContentsCatalog } =
+      await import("./downloadedContentsCatalog.js");
+    if (
+      urls.some((url) => app.matchesOfflineCatalog(url, "ears")) &&
+      !earAssets
+    ) {
+      if (!earAssetsRequest)
+        earAssetsRequest = (async () => {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 5000);
+          try {
+            const response = await fetch("/data/ears-assets.json", {
+              signal: controller.signal,
+            });
+            if (response.ok) earAssets = await response.json();
+          } catch {
+            /* Unmapped assets remain visible under Ear learning materials. */
+          } finally {
+            clearTimeout(timeout);
+            earAssetsRequest = null;
+          }
+        })();
+      await earAssetsRequest;
+    }
+    const groups = buildDownloadedContentsCatalog(
+      app,
+      urls,
+      inventory,
+      earAssets,
     );
-    if (ungrouped.length)
-      groups.push({
-        ...summarize(ungrouped),
-        id: "other",
-        label: "Other content",
-      });
     const cachedBytes = app
       .getOfflineManifestAssets(manifest)
       .filter((asset) => inventory.has(offlineAssetPath(asset.url)))
       .reduce((sum, asset) => sum + (Number(asset.bytes) || 0), 0);
     snapshot = {
       groups,
-      overall: summarize(urls),
+      overall: {
+        completed: groups.reduce((sum, group) => sum + group.completed, 0),
+        total: groups.reduce((sum, group) => sum + group.total, 0),
+        started: groups.some((group) => group.started),
+      },
       size: app.formatDownloadSize(cachedBytes),
     };
     previousInventory = inventory;

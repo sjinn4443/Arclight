@@ -125,19 +125,29 @@
       "height": 672
     },
     "history-refer-bubble-1": {
-      "box": [462, 137, 80, 35],
-      "width": 560,
-      "height": 245
+      "box": [462, 135, 90, 37],
+      "width": 630,
+      "height": 259
     },
     "history-refer-bubble-2": {
-      "box": [462, 174, 68, 32],
-      "width": 476,
-      "height": 224
+      "box": [462, 173, 90, 34],
+      "width": 630,
+      "height": 238
     },
     "history-refer-base": {
-      "box": [413, 129, 131, 96],
-      "width": 917,
+      "box": [413, 129, 141, 96],
+      "width": 987,
       "height": 672
+    },
+    "history-examiner": {
+      "box": [155, 139, 80, 86],
+      "width": 560,
+      "height": 602
+    },
+    "history-patient": {
+      "box": [283, 162, 61, 63],
+      "width": 427,
+      "height": 441
     },
     "front-cataract-1": {
       "box": [286, 363, 109, 46],

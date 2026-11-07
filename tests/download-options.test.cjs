@@ -35,6 +35,52 @@ describe("download options", () => {
     delete global.MessageChannel;
   });
 
+  it("restricts lesson quizzes, case images and Fundal JSON to their owners", () => {
+    const assets = [
+      { url: "/js/main.js", bytes: 10 },
+      { url: "/AnteriorSegmentQuiz/html/images/case1_eye.png", bytes: 100 },
+      { url: "/images/casestudy/case1_eyes.webp", bytes: 200 },
+      { url: "/html/Fundal_prep.json", bytes: 300 },
+    ];
+    const choose = (catalogIds) =>
+      app.resolveOfflineDownloadSelection(
+        { assets },
+        { mode: "select", catalogIds },
+      );
+    expect(choose(["tools"]).urls).toEqual([assets[0].url]);
+    expect(choose(["core-front-of-eye"]).urls).toContain(assets[1].url);
+    expect(choose(["core-history"]).urls).toContain(assets[2].url);
+    expect(choose(["core-fundal-reflex"]).urls).toContain(assets[3].url);
+    expect(choose(["core-history", "core-front-of-eye"]).bytes).toBe(310);
+    expect(
+      app.resolveOfflineDownloadSelection({ assets }, { mode: "app-only" })
+        .urls,
+    ).toHaveLength(4);
+  });
+
+  it.each(["low", "high", "both"])(
+    "shares identical slide videos at %s quality across section boundaries",
+    (videoQuality) => {
+      const assets = [
+        {
+          url: "/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+          bytes: 100,
+        },
+        { url: "/videos/Workshop/PEC/Realcase2.mp4", bytes: 100 },
+        { url: "/videos/Workshop/PEC/Realcase2_240p.mp4", bytes: 20 },
+      ];
+      const result = app.resolveOfflineDownloadSelection(
+        { assets },
+        { mode: "select", catalogId: "condition-childhood", videoQuality },
+      );
+      expect(result.urls).not.toContain(assets[0].url);
+      expect(result.bytes).toBe(
+        videoQuality === "low" ? 20 : videoQuality === "high" ? 100 : 120,
+      );
+      expect(new Set(result.urls).size).toBe(result.urls.length);
+    },
+  );
+
   it("keeps Ears posters out of unrelated packs but includes their owners", () => {
     const assets = [
       { url: "/js/main.js", bytes: 10 },

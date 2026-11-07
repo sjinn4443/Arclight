@@ -80,7 +80,8 @@ def paint(root):
 
 
 nodes = paint(source)
-manifest = {}
+EXPORT_PREFIX = os.environ.get("CATARACT_ART_PREFIX", "")
+manifest = json.loads((OUT / "manifest.json").read_text(encoding="utf-8")) if EXPORT_PREFIX and (OUT / "manifest.json").exists() else {}
 
 
 def inside(bounds, box):
@@ -89,6 +90,8 @@ def inside(bounds, box):
 
 
 def export(name, box, only=None, remove=()):
+    if EXPORT_PREFIX and not name.startswith(EXPORT_PREFIX):
+        return
     root = copy.deepcopy(source)
     parents = {child:parent for parent in root.iter() for child in parent}
     for i,(node,_) in enumerate(paint(root)):
@@ -112,15 +115,30 @@ for section,(top,height) in enumerate(rows,1):
 for mode, boxes in {
     "method":[[79,139,73,31],[79,174,73,32]],
     "cataract":[[345,139,53,32],[345,174,53,32]],
-    "refer":[[462,137,80,35],[462,174,68,32]],
+    "refer":[[462,135,90,37],[462,173,90,34]],
 }.items():
     removed = set()
     for i,box in enumerate(boxes):
         selected = {n for n,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<100 and b[3]-b[1]<50}
         removed |= selected
         export(f"history-{mode}-bubble-{i+1}",box,only=selected)
-    left,width = (69,170) if mode == "method" else (273,131) if mode == "cataract" else (413,131)
+    left,width = (69,170) if mode == "method" else (273,131) if mode == "cataract" else (413,141)
+    if mode == "refer":
+        # Widen the view for the eye symbols without bringing the original red
+        # column frame into the animation. Large source backgrounds/frames are
+        # replaced by the shared stage background; keep the patient and chair.
+        removed |= {i for i,(_,b) in enumerate(nodes) if b[2]-b[0]>100 or b[3]-b[1]>120}
     export(f"history-{mode}-base",[left,129,width,96],remove=removed)
+
+# Put the original examiner and patient in one room. Extract actors separately
+# from the source backgrounds so there is no column border or white gutter.
+for name,box in {"history-examiner":[155,139,80,86], "history-patient":[283,162,61,63]}.items():
+    selected = {i for i,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<90 and b[3]-b[1]<100}
+    if name == "history-patient":
+        # The chair extends below the PDF row and is clipped by that row.
+        # Keep its original path even though its centre lies outside the crop.
+        selected.add(2608)
+    export(name,box,only=selected)
 
 # Each eye-response panel is kept whole so its original curved mask, iris,
 # device, arrows and referral symbols remain registered. Recompose vertically.

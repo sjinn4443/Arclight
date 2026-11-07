@@ -55,6 +55,184 @@ const toolVideos = [
   ],
 ];
 
+for (const quality of ["low", "high"]) {
+  test(`Childhood ${quality} pack deduplicates slide videos and plays the lesson offline`, async ({
+    page,
+    context,
+    browserName,
+  }) => {
+    test.skip(
+      browserName === "webkit" && process.platform === "win32",
+      "Physical iOS/macOS WebKit verification required.",
+    );
+    test.setTimeout(240000);
+    await page.addInitScript(() => {
+      localStorage.setItem("arclight:onboarded", "1");
+      localStorage.setItem("prefLang", "en");
+      sessionStorage.setItem("arclight:account:nudge-dismissed", "1");
+    });
+    await page.goto("/#/eyes");
+    await expect
+      .poll(
+        () => page.evaluate(() => Boolean(navigator.serviceWorker?.controller)),
+        { timeout: 120000 },
+      )
+      .toBe(true);
+    await page.locator("#eyesCatalogPage .menuBtn").click();
+    await page.locator("#startDownloadBtn").click();
+    const modal = page.locator("#downloadAppModal");
+    await modal.locator('input[value="select"]').check();
+    await modal.locator('[data-download-group="conditions"] summary').click();
+    await modal.locator('input[value="condition-childhood"]').check();
+    await modal.locator("#offlineVideoQualitySelect").selectOption(quality);
+    await modal.locator("#downloadAllBtn").click();
+    await expect(modal.locator("#downloadAppTitle")).toHaveText(
+      /Download (complete\. Content is ready offline\.|incomplete)/,
+      { timeout: 180000 },
+    );
+    expect(
+      await modal.locator("#downloadAppTitle").innerText(),
+      await modal.innerText(),
+    ).toBe("Download complete. Content is ready offline.");
+    const stored = await page.evaluate(async () =>
+      (await (await caches.open("arclight-packs-v1")).keys()).map((r) =>
+        decodeURIComponent(new URL(r.url).pathname),
+      ),
+    );
+    const stem = "/images/pdf/Workshop/Childhood/CausesVIppts/03";
+    const expected = stem + (quality === "low" ? "_240p.mp4" : ".mp4");
+    expect(stored).toContain(expected);
+    expect(stored).not.toContain(
+      stem + (quality === "low" ? ".mp4" : "_240p.mp4"),
+    );
+    expect(stored).not.toContain(
+      "/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4",
+    );
+    expect(stored).not.toContain(
+      "/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+    );
+    expect(stored).toContain(
+      "/videos/Workshop/PEC/Realcase2" +
+        (quality === "low" ? "_240p.mp4" : ".mp4"),
+    );
+    expect(stored).not.toContain("/AnteriorSegmentQuiz/html/index.html");
+    if (quality === "high") {
+      // Also retain the low counterpart, as after a later Low download. The
+      // original slide alias must continue to prefer the stored high source.
+      const cached = await page.evaluate(
+        (url) =>
+          new Promise((resolve) => {
+            const channel = new MessageChannel();
+            channel.port1.onmessage = ({ data }) => {
+              if (["CACHE_DONE", "CACHE_ERROR"].includes(data.type)) {
+                channel.port1.close();
+                resolve(data);
+              }
+            };
+            navigator.serviceWorker.controller.postMessage(
+              { type: "CACHE_URLS", payload: [url] },
+              [channel.port2],
+            );
+          }),
+        stem + "_240p.mp4",
+      );
+      expect(cached).toMatchObject({
+        type: "CACHE_DONE",
+        cached: 1,
+        failed: [],
+      });
+    }
+    await test.info().attach(`childhood-${quality}-cached-files`, {
+      body: JSON.stringify(stored, null, 2),
+      contentType: "application/json",
+    });
+    await context.setOffline(true);
+    await page.goto("/#/signsVICases");
+    if (await page.locator("#offlineAccessNotice").isVisible())
+      await page.locator("#offlineAccessNotice button").click();
+    const video = page.locator("#signsVICasesPage video").first();
+    await expect(video).toBeVisible();
+    await video.evaluate((v) => v.play());
+    await expect
+      .poll(() => video.evaluate((v) => v.currentTime))
+      .toBeGreaterThan(0.2);
+    const height = await video.evaluate((v) => v.videoHeight);
+    if (quality === "low") expect(height).toBe(240);
+    else expect(height).toBeGreaterThan(360);
+    await video.evaluate((v) => {
+      v.pause();
+      v.currentTime = Math.min(2, v.duration / 2);
+    });
+    await expect
+      .poll(() => video.evaluate((v) => !v.seeking && v.readyState >= 2))
+      .toBe(true);
+    const range = await page.evaluate(async () => {
+      const r = await fetch(
+        "/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+        { headers: { Range: "bytes=0-63" } },
+      );
+      return { status: r.status, bytes: (await r.arrayBuffer()).byteLength };
+    });
+    expect(range).toEqual({ status: 206, bytes: 64 });
+  });
+}
+
+test("Front of Eye pack retains its quiz and images offline", async ({
+  page,
+  context,
+  browserName,
+}) => {
+  test.skip(
+    browserName === "webkit" && process.platform === "win32",
+    "Physical iOS/macOS WebKit verification required.",
+  );
+  await page.addInitScript(() => {
+    localStorage.setItem("arclight:onboarded", "1");
+    localStorage.setItem("prefLang", "en");
+    sessionStorage.setItem("arclight:account:nudge-dismissed", "1");
+  });
+  await page.goto("/#/eyes");
+  await expect
+    .poll(
+      () => page.evaluate(() => Boolean(navigator.serviceWorker?.controller)),
+      { timeout: 120000 },
+    )
+    .toBe(true);
+  await page.locator("#eyesCatalogPage .menuBtn").click();
+  await page.locator("#startDownloadBtn").click();
+  const modal = page.locator("#downloadAppModal");
+  await modal.locator('input[value="select"]').check();
+  await modal.locator('[data-download-group="core"] summary').click();
+  await modal.locator('input[value="core-front-of-eye"]').check();
+  await modal.locator("#offlineVideoQualitySelect").selectOption("low");
+  await modal.locator("#downloadAllBtn").click();
+  await expect(modal.locator("#downloadAppTitle")).toHaveText(
+    /Download (complete\. Content is ready offline\.|incomplete)/,
+    { timeout: 180000 },
+  );
+  expect(
+    await modal.locator("#downloadAppTitle").innerText(),
+    await modal.innerText(),
+  ).toBe("Download complete. Content is ready offline.");
+  await context.setOffline(true);
+  await page.goto("/AnteriorSegmentQuiz/html/index.html");
+  const image = page.locator("img.case-image").first();
+  await expect(image).toBeVisible();
+  await expect
+    .poll(() => image.evaluate((img) => img.complete && img.naturalWidth > 0))
+    .toBe(true);
+  for (let question = 0; question < 10; question += 1) {
+    await page.locator("#quizForm label").first().click();
+    if (await page.locator("#nextQuestionBtn").isDisabled()) break;
+    await page.locator("#nextQuestionBtn").click();
+  }
+  await page.locator("#nextCaseBtn").first().click();
+  await expect(page.locator("#caseTitle")).toHaveText("Case 2");
+  await expect
+    .poll(() => image.evaluate((img) => img.complete && img.naturalWidth > 0))
+    .toBe(true);
+});
+
 test("high-only legacy video remains playable through its low alias offline", async ({
   page,
   context,
@@ -219,10 +397,10 @@ test("Tools and Kits low download stores every lesson for offline playback and s
         { timeout: 120_000 },
       );
     }
-    await expect(modal.locator("#downloadAppTitle")).toHaveText(
-      "Download complete. Content is ready offline.",
-      { timeout: 480_000 },
-    );
+    expect(
+      await modal.locator("#downloadAppTitle").innerText(),
+      await modal.innerText(),
+    ).toBe("Download complete. Content is ready offline.");
     const stored = await page.evaluate(async () => {
       const cache = await caches.open("arclight-packs-v1");
       return (await cache.keys()).map((r) =>

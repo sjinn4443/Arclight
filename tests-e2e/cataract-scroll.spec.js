@@ -149,7 +149,7 @@ test("deep links use Korean captions, real narration, language fallback and My L
   ).toBeVisible({ timeout: 30000 });
   await expect(
     guide.locator(".childhood-fundal-segment-text__line").first(),
-  ).toContainText("시력이 언제부터");
+  ).toContainText("시력이 변했는지");
   await expect(guide.locator("audio")).toHaveAttribute(
     "src",
     /cataract\/full-animation\/ko\.m4a/,
@@ -161,7 +161,7 @@ test("deep links use Korean captions, real narration, language fallback and My L
     .selectOption("en");
   await expect(
     guide.locator(".fundal-reflex-section-divider__title").first(),
-  ).toHaveText("history taking");
+  ).toHaveText("History Taking");
   await guide.locator("[data-fundal-scroll-narration-toggle]").click();
   await page.reload();
   await expect(
@@ -189,4 +189,33 @@ test("unsupported narration languages fall back to English", async ({
     "src",
     /\/en\.m4a$/,
   );
+});
+
+test("each section shortcut opens the corresponding detailed guide", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "lessonProgress:cataractScrollPage",
+      JSON.stringify({ percent: 100, updatedAt: Date.now() }),
+    );
+  });
+  for (const [index, section] of cfg.sections.entries()) {
+    await page.goto(`/#/videos/${id}`);
+    const shortcut = page
+      .locator(`#${id} .fundal-reflex-section-shortcut`)
+      .nth(index);
+    await expect(shortcut).toHaveAttribute("href", section.shortcut);
+    await expect(shortcut).toHaveText("Open guide");
+    await shortcut.click();
+    await expect(page).toHaveURL(
+      new RegExp(section.shortcut.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"),
+    );
+    await expect(
+      page.locator(`#${section.shortcut.split("/")[2]}`),
+    ).toBeVisible();
+    await expect(
+      page.locator(`#${id} [data-fundal-scroll-narration-audio]`),
+    ).toHaveCount(0);
+  }
 });

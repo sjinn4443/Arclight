@@ -3729,6 +3729,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
         startIndex,
         title,
         titleKey: String(section?.titleKey || "").trim(),
+        shortcut: String(section?.shortcut || "").trim(),
       };
     })
     .filter((section) => !!section)
@@ -3762,6 +3763,21 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
       }
 
       dividerEl.appendChild(titleEl);
+
+      if (/^#\/[A-Za-z0-9]+\/[A-Za-z0-9]+$/.test(sectionMeta.shortcut)) {
+        const shortcut = document.createElement("a");
+        shortcut.className = "fundal-reflex-section-shortcut";
+        shortcut.href = sectionMeta.shortcut;
+        shortcut.textContent =
+          cfg?.getSectionShortcutLabel?.(getFundalTextLanguage(cfg)) ||
+          "Open guide";
+        shortcut.dataset.sectionShortcut = "true";
+        shortcut.dataset.i18nSkip = "true";
+        if (sectionMeta.shortcut.startsWith("#/videos/")) {
+          shortcut.dataset.page = sectionMeta.shortcut.split("/")[2];
+        }
+        dividerEl.appendChild(shortcut);
+      }
 
       const itemsEl = document.createElement("div");
       itemsEl.className = "fundal-reflex-examination-section-items";
@@ -10726,6 +10742,10 @@ function initializeStageAutoplayMode(
           title.dataset.sectionTitle,
           language,
         );
+      });
+      page.querySelectorAll("[data-section-shortcut]").forEach((shortcut) => {
+        shortcut.textContent =
+          cfg.getSectionShortcutLabel?.(language) || "Open guide";
       });
     }
     states.forEach((state) => {

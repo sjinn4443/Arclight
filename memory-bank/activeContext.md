@@ -2,6 +2,18 @@
 
 # Active Context
 
+## Downloaded Contents hierarchy — 7 November 2026
+
+- Initial categories are always Eyes / Ears / Skin, including empty categories.
+  Expanding a category lazily renders topics; expanding a topic renders individual
+  download states. Expanded branches survive inventory refreshes and reopening.
+- Eyes topics reuse offline download sections. Ears use the actual topic/lesson
+  definitions and asset map; Allan belongs under Skin. Unmapped saved resources
+  remain discoverable. Counts and colours still show completion at every level.
+- Shared cache-key inventory, background snapshots, saved manifest metadata and
+  refresh intervals remain in place. The worker cache revision advances with the
+  current runtime changes.
+
 ## Optional two-step onboarding — 6 November 2026
 
 - Account-only registration leads to optional display name, interest chips and

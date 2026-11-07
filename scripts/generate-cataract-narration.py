@@ -25,16 +25,38 @@ async def main():
     ffmpeg = pipeline.find_ffmpeg(None, ROOT / "tmp/fundal-narration-tools")
     work_root = Path(os.environ.get("CATARACT_WORK_DIR", ROOT / "tmp/cataract"))
     tracks = {}
+    selected_ids = {s for s in os.environ.get("CATARACT_CUE_IDS", "").split(",") if s}
     for language, voice in script["languages"].items():
         cues = pipeline.resolve_language_cues(script, language, "timedAudioCues")
+        if selected_ids:
+            cues = [cue for cue in cues if cue["id"] in selected_ids]
+            if {c["id"] for c in cues} != selected_ids:
+                raise ValueError("Unknown requested cue IDs")
         work = work_root / "narration" / language
         work.mkdir(parents=True, exist_ok=True)
         await pipeline.generate_tts_cues(script, language, cues, work)
         master = work / "master.wav"
         qa = pipeline.mix_language(ffmpeg, script, language, cues, work, master)
         track = folder / f"{language}.m4a"
-        pipeline.encode_m4a(ffmpeg, master, track)
-        pipeline.write_vtt(cues, folder / f"{language}.vtt")
+        if selected_ids:
+            # Preserve the delivered recording outside the requested cue slots.
+            # Always rebuild from the same retained source, never a prior mix.
+            revision = hashlib.sha256(json.dumps(cues, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()[:12]
+            original = work / f"delivered-before-{revision}.m4a"
+            if not original.exists():
+                import shutil
+                shutil.copyfile(track, original)
+            muted = "+".join(f"between(t,{c['start']},{c['end']})" for c in cues)
+            revised = work / "revised.wav"
+            pipeline.run([str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning",
+                "-i", str(original), "-i", str(master), "-filter_complex",
+                f"[0:a]volume=0:enable='{muted}'[base];[base][1:a]amix=inputs=2:duration=first:normalize=0[out]",
+                "-map", "[out]", "-ar", "48000", "-ac", "1", "-c:a", "pcm_s16le", str(revised)])
+            pipeline.encode_m4a(ffmpeg, revised, track)
+        else:
+            pipeline.encode_m4a(ffmpeg, master, track)
+        all_cues = pipeline.resolve_language_cues(script, language, "timedAudioCues")
+        pipeline.write_vtt(all_cues, folder / f"{language}.vtt")
         duration = pipeline.probe_duration(ffmpeg, track)
         if abs(duration - script["durationSeconds"]) > 0.25:
             raise RuntimeError(f"{language}: duration mismatch")

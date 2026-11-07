@@ -1,0 +1,58 @@
+{
+  "full": {
+    "low": {
+      "bytes": 2419223212,
+      "count": 6523
+    },
+    "high": {
+      "bytes": 2778923706,
+      "count": 6523
+    },
+    "both": {
+      "bytes": 2987934310,
+      "count": 6589
+    }
+  },
+  "core-front-of-eye": {
+    "low": {
+      "bytes": 107314575,
+      "count": 787
+    },
+    "high": {
+      "bytes": 136343311,
+      "count": 787
+    },
+    "both": {
+      "bytes": 147947503,
+      "count": 791
+    }
+  },
+  "tools": {
+    "low": {
+      "bytes": 163849319,
+      "count": 1231
+    },
+    "high": {
+      "bytes": 191263884,
+      "count": 1231
+    },
+    "both": {
+      "bytes": 213582123,
+      "count": 1235
+    }
+  },
+  "ears-materials": {
+    "low": {
+      "bytes": 239033217,
+      "count": 805
+    },
+    "high": {
+      "bytes": 279478210,
+      "count": 805
+    },
+    "both": {
+      "bytes": 294912651,
+      "count": 811
+    }
+  }
+}

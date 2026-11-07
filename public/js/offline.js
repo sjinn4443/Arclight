@@ -5,6 +5,7 @@
 import {
   fetchAllOfflineAssetUrls,
   cacheOfflineUrls,
+  resolveOfflineDownloadSelection,
 } from "./languageinstall.js";
 
 function announce(message, failed = false) {
@@ -82,9 +83,13 @@ export async function downloadSelectedAssets() {
           patterns[key]?.test(decodeURIComponent(asset.url)),
         ),
     );
+    const normalized = resolveOfflineDownloadSelection(
+      { assets },
+      { mode: "full", videoQuality: "both" },
+    );
     const completed = await cacheOfflineUrls({
-      urls: assets.map((asset) => asset.url),
-      bytes: assets.reduce((n, asset) => n + asset.bytes, 0),
+      urls: normalized.urls,
+      bytes: normalized.bytes,
       label: "Selected content",
     });
     if (completed === false) {

@@ -1,0 +1,75 @@
+{
+  "selectedLowDuplicateBytes": 28468460,
+  "groups": [
+    [
+      {
+        "url": "/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/SignsVIppts/01.mp4",
+        "bytes": 18270140,
+        "selected": true
+      },
+      {
+        "url": "/images/pdf/Workshop/Childhood/CausesVIppts/03.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/CausesVIppts/03.mp4",
+        "bytes": 18270140,
+        "selected": true
+      }
+    ],
+    [
+      {
+        "url": "/images/pdf/Workshop/Childhood/SignsVIppts/06.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/SignsVIppts/06.mp4",
+        "bytes": 3735274,
+        "selected": true
+      },
+      {
+        "url": "/images/pdf/Workshop/Childhood/CausesVIppts/05.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/CausesVIppts/05.mp4",
+        "bytes": 3735274,
+        "selected": true
+      }
+    ],
+    [
+      {
+        "url": "/images/pdf/Workshop/Childhood/SignsVIppts/07.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/SignsVIppts/07.mp4",
+        "bytes": 6463046,
+        "selected": true
+      },
+      {
+        "url": "/images/pdf/Workshop/Childhood/CausesVIppts/07.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/CausesVIppts/07.mp4",
+        "bytes": 6463046,
+        "selected": true
+      }
+    ],
+    [
+      {
+        "url": "/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+        "path": "public/images/pdf/Workshop/Childhood/CausesVIppts/09.mp4",
+        "bytes": 14842961,
+        "selected": true
+      },
+      {
+        "url": "/videos/Workshop/PEC/Realcase2.mp4",
+        "path": "public/videos/Workshop/PEC/Realcase2.mp4",
+        "bytes": 14842961,
+        "selected": false
+      }
+    ],
+    [
+      {
+        "url": "/videos/Core/Intro/1.%20How%20to%20use%20the%20Arclight%20-%20ENGLISH%20-%20HD_720p.mp4",
+        "path": "public/videos/Core/Intro/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+        "bytes": 13797005,
+        "selected": false
+      },
+      {
+        "url": "/videos/USAID%20Childhood%20eye%20screening/1.%20How%20to%20use%20the%20Arclight%20-%20ENGLISH%20-%20HD_720p.mp4",
+        "path": "public/videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4",
+        "bytes": 13797005,
+        "selected": false
+      }
+    ]
+  ]
+}
