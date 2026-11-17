@@ -1,5 +1,28 @@
 # Progress
 
+## Eyes catalogue hover illustrations — 17 November 2026
+
+- Twenty-two illustrated cards have hover-only motion. Device bodies extend
+  below the crop; History writes the existing three lines; Interactive Learning
+  spreads red ripples. Cataract blurs, Glaucoma grows only its optic nerve tissue,
+  Conditions Childhood moves the glass and Workshops Childhood moves the people.
+- Removed patched bitmap boundaries and high-gain colour filters from the five
+  affected illustrations. History, Glaucoma, both Childhood cards and Paediatric
+  now share one opaque SVG drawing between idle and hover. Lines keep the same
+  geometry; heart and people contours come from the existing source artwork in
+  public/js/eyesCardArtwork.js. No old source fragments remain underneath.
+- Paediatric uses one outer contour clip with overlapping centre clips. Its
+  hands extend into the same embrace, while its inset box matches every viewport.
+- Chrome checked nine subjects at five phases, at device pixel ratios 1 and 2,
+  plus heart geometry at four widths, likes, route navigation, hover exit,
+  dragging, touch and reduced motion. Five targeted pixel checks confirmed
+  fully empty erased regions and uniform paper, retina and heart interiors.
+  All five had zero colour error at both pixel ratios. JS lint/bundling, CSS
+  minification and the 181-file HTML accessibility audit passed.
+- Service-worker cache: v166. QA records: tmp/eyes-hover-clean. The earlier
+  layout suite's edge-dot and missing final-divider failures were reproduced
+  without hover code and remain separate from the artwork changes.
+
 ## Downloaded Contents hierarchy — 7 November 2026
 
 - Replaced the initial flat section list with Eyes / Ears / Skin → topic → content

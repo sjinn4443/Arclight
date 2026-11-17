@@ -7,6 +7,7 @@ import { openMenu } from "./menu.js";
 import { readLikes as getLikes, toggleLike } from "./likes.js";
 import { EYES_INDEX } from "./catalog-index.js";
 import { ROUTES } from "./config.js";
+import { addEyesCardMotion } from "./eyesCardMotion.js";
 import {
   PAEDIATRIC_COPY_PREFIX,
   PAEDIATRIC_COPY,
@@ -761,6 +762,7 @@ export function initializeEyesCatalog() {
       if (img && imgSrc) {
         img.src = imgSrc;
         img.alt = i.label;
+        addEyesCardMotion(card, img, imgSrc);
         if (labelI18nKey) {
           img.setAttribute("data-i18n", `${labelI18nKey}:alt`);
         }

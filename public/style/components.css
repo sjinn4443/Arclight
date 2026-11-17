@@ -2805,6 +2805,326 @@ input:checked + .slider:before {
   stroke: #e41e26;
 }
 
+/* A complete hover composition uses the same box and fit as the source image. */
+#eyesCatalogPage .eyes-card__motion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  visibility: hidden;
+}
+/* A single clean drawing stays in place when hover begins or ends. */
+#eyesCatalogPage .eyes-card--clean-art > .eyes-card__bg {
+  visibility: hidden;
+}
+#eyesCatalogPage .eyes-card--clean-art > .eyes-card__motion {
+  visibility: visible;
+}
+#eyesCatalogPage .eyes-card__motion[data-motion="write"] {
+  --eyes-card-duration: 4.8s;
+  --eyes-card-timing: linear;
+}
+/* Mouse leave cancels every part. Touch, reduced motion and dragging stay still. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  #eyesCatalogPage
+    .eyes-carousel:not(.is-pointer-dragging):not(.is-demo-scrolling)
+    .eyes-card--motion:hover
+    .eyes-card__bg {
+    visibility: hidden;
+  }
+  #eyesCatalogPage
+    .eyes-carousel:not(.is-pointer-dragging):not(.is-demo-scrolling)
+    .eyes-card--motion:hover
+    .eyes-card__motion {
+    visibility: visible;
+  }
+  #eyesCatalogPage
+    .eyes-carousel:not(.is-pointer-dragging):not(.is-demo-scrolling)
+    .eyes-card--motion:hover
+    .eyes-card__animate {
+    animation: var(--eyes-card-animation) var(--eyes-card-duration, 3.2s)
+      var(--eyes-card-timing, ease-in-out) infinite;
+  }
+}
+@keyframes eyes-card-look {
+  0%,
+  12%,
+  100% {
+    transform: translateX(0);
+  }
+  28%,
+  42% {
+    transform: translateX(-25px);
+  }
+  66%,
+  80% {
+    transform: translateX(25px);
+  }
+}
+@keyframes eyes-card-sway {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  22%,
+  68% {
+    transform: rotate(-5deg);
+  }
+  44%,
+  84% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes eyes-card-write {
+  0%,
+  4%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  12% {
+    transform: translate(-57px, -167px) scale(0.64);
+  }
+  33%,
+  36% {
+    transform: translate(41px, -167px) scale(0.64);
+  }
+  43% {
+    transform: translate(-57px, -140px) scale(0.64);
+  }
+  63%,
+  66% {
+    transform: translate(41px, -140px) scale(0.64);
+  }
+  73% {
+    transform: translate(-28px, -113px) scale(0.64);
+  }
+  87%,
+  91% {
+    transform: translate(41px, -113px) scale(0.64);
+  }
+}
+@keyframes eyes-card-line-1 {
+  0%,
+  12% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  33%,
+  94% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+@keyframes eyes-card-line-2 {
+  0%,
+  43% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  63%,
+  94% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+@keyframes eyes-card-line-3 {
+  0%,
+  73% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  87%,
+  94% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+@keyframes eyes-card-tap {
+  0%,
+  6%,
+  30%,
+  100% {
+    transform: translateY(0);
+  }
+  17% {
+    transform: translateY(8px);
+  }
+}
+@keyframes eyes-card-ripple-outer {
+  0%,
+  16% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70%,
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+@keyframes eyes-card-ripple-inner {
+  0%,
+  25% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  82%,
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+@keyframes eyes-card-cloud {
+  0%,
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+  68%,
+  86% {
+    filter: blur(9px);
+    opacity: 0.72;
+  }
+}
+@keyframes eyes-card-nerve {
+  0%,
+  8%,
+  100% {
+    transform: scale(0.55);
+  }
+  65%,
+  88% {
+    transform: scale(1);
+  }
+}
+@keyframes eyes-card-glass {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+  25% {
+    transform: translate(-25px, -16px) rotate(-5deg);
+  }
+  55% {
+    transform: translate(14px, -29px) rotate(4deg);
+  }
+  78% {
+    transform: translate(-12px, 8px) rotate(-2deg);
+  }
+}
+@keyframes eyes-card-people {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-14px);
+  }
+  65% {
+    transform: translateY(5px);
+  }
+}
+@keyframes eyes-card-hug-left {
+  0%,
+  8%,
+  100% {
+    transform: scaleX(0);
+  }
+  48%,
+  86% {
+    transform: scaleX(1);
+  }
+}
+@keyframes eyes-card-hug-right {
+  0%,
+  16%,
+  100% {
+    transform: scaleX(0);
+  }
+  58%,
+  86% {
+    transform: scaleX(1);
+  }
+}
+@keyframes eyes-card-focus {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  35%,
+  60% {
+    transform: scale(1.045);
+  }
+}
+@keyframes eyes-card-blink {
+  0%,
+  36%,
+  48%,
+  100% {
+    transform: scaleY(1);
+  }
+  42% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes eyes-card-turn {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  35% {
+    transform: rotate(-7deg);
+  }
+  70% {
+    transform: rotate(7deg);
+  }
+}
+@keyframes eyes-card-pulse {
+  0%,
+  50%,
+  100% {
+    transform: scale(1);
+  }
+  25%,
+  70% {
+    transform: scale(1.035);
+  }
+}
+@keyframes eyes-card-scan {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-10px);
+  }
+  70% {
+    transform: translateX(8px);
+  }
+}
+
 /* ============================================= My Learning (Liked) components ============================================= */
 .ml-header {
   background: #fff;

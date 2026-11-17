@@ -313,7 +313,7 @@
 }
 #eyesCatalogPage
   .eyes-card[data-target="paediatricSurgicalEyeEarWorkshop"]
-  .eyes-card__bg {
+  :is(.eyes-card__bg, .eyes-card__motion) {
   inset: auto 0 4% auto;
   width: 64%;
   height: 78%;

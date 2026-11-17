@@ -235,6 +235,28 @@ row, including repeated launchers. This lets the translated title name the
 progress bar without a separate English-only label. Run `npm run test:a11y` to
 check progress-bar names alongside button and media names.
 
+## Eyes catalogue hover illustrations
+
+Illustrated Eyes cards animate only while hovered with a fine mouse pointer.
+Tools sway with their white bodies extended below the crop. History Taking's
+existing three lines reveal in sequence under the pencil. Interactive Learning's
+red marks spread as ripples after a finger tap. Cataract progressively blurs,
+while Glaucoma grows only the central optic nerve tissue, keeping the vessels
+fixed. Conditions Childhood moves the glass; Workshops Childhood moves the
+people. The paediatric heart extends its hands into the existing embrace.
+
+History, Glaucoma, both Childhood illustrations and the paediatric heart use the
+same opaque SVG drawing at rest and during hover. Their bitmap layers remain
+hidden, so switching states cannot leave erased edges, faint source lines or
+changes in stroke width. Heart and people contours are traced from the existing
+artwork in `public/js/eyesCardArtwork.js`. Other cards retain their image layers.
+
+`public/js/eyesCardMotion.js` owns the decorative layers and
+`public/style/components.css` owns motion. Paediatric image and SVG placement
+share `public/style/paediatricWorkshop.css`. Labels, hearts and navigation stay
+still. Touch, reduced motion and carousel dragging disable animation. Leaving a
+card restores its static drawing.
+
 ## Eyes lesson row spacing
 
 In `arclightPage`, the Primary and Intermediate lesson cards are direct children
