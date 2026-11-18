@@ -438,7 +438,16 @@
     },
   ];
 
+  const pathCache = new Map();
   const path = (url) => {
+    if (typeof url !== "string") return normalizePath(url);
+    if (pathCache.has(url)) return pathCache.get(url);
+    const value = normalizePath(url);
+    if (pathCache.size >= 16384) pathCache.clear();
+    pathCache.set(url, value);
+    return value;
+  };
+  const normalizePath = (url) => {
     try {
       return decodeURIComponent(
         new URL(url, "https://arclight.invalid").pathname,

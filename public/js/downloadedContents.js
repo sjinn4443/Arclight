@@ -10,6 +10,7 @@ let request;
 let manifest;
 let manifestTime = 0;
 let backgroundStarted = false;
+let catalogRequested = false;
 let returnFocus;
 let previousInventory;
 let previousManifest;
@@ -142,6 +143,7 @@ function displaySnapshot() {
 }
 
 export async function refreshDownloadedContents() {
+  catalogRequested = true;
   if (request) return request;
   request = (async () => {
     const app = await import("./languageinstall.js");
@@ -234,8 +236,11 @@ export function initializeOfflineContentsBackground() {
   const schedule = () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (document.visibilityState !== "hidden")
-        void refreshDownloadedContents().catch(() => {});
+      if (document.visibilityState === "hidden") return;
+      // Build the detailed catalogue only after the dialog has been requested.
+      // Startup and background refreshes still keep the shared inventory warm.
+      if (catalogRequested) void refreshDownloadedContents().catch(() => {});
+      else void getOfflineInventory().catch(() => {});
     }, 1000);
   };
   schedule();

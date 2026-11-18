@@ -762,7 +762,24 @@ export async function fetchAllOfflineAssetUrls({ preferCached = false } = {}) {
   return normalized;
 }
 
+const assetPathCache = new Map();
+let assetPathCacheOrigin;
+
 function getAssetPath(url) {
+  if (typeof url !== "string") return normalizeAssetPath(url);
+  const origin = window.location.origin;
+  if (assetPathCacheOrigin !== origin) {
+    assetPathCache.clear();
+    assetPathCacheOrigin = origin;
+  }
+  if (assetPathCache.has(url)) return assetPathCache.get(url);
+  const value = normalizeAssetPath(url);
+  if (assetPathCache.size >= 16384) assetPathCache.clear();
+  assetPathCache.set(url, value);
+  return value;
+}
+
+function normalizeAssetPath(url) {
   try {
     return decodeURI(new URL(url, window.location.origin).pathname)
       .split(/[?#]/)[0]
