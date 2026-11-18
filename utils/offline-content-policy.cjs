@@ -1,5 +1,6 @@
 // These files are authoring/preview outputs, not lesson dependencies.
 // The diabetic workshop deliberately embeds the one retained Lottie demo.
+/** @param {unknown} rawPath @returns {boolean} */
 function isOfflineAuthoringAsset(rawPath) {
   let asset;
   try {
