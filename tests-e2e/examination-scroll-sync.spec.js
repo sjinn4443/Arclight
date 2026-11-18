@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import fs from "node:fs";
+import { EYE_PAD_SHIELD_SCROLL_CLIPS } from "../public/js/eyePadShieldScroll.js";
 import { useWebKitNarrationClock } from "./helpers/webkit-narration-clock.js";
 import {
   EXAMINATION_SCROLL_TIMING,
@@ -23,13 +24,15 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
   }, testInfo) => {
     test.setTimeout(240_000);
     const route = pageId.replace(/Page$/, "");
-    const hub = pageId.startsWith("pupils")
-      ? "pupilsPage"
-      : pageId.startsWith("visualAcuity")
-        ? "visualAcuityPage"
-        : pageId.startsWith("front")
-          ? "frontOfEyePage"
-          : "directOphthalmoscopy";
+    const hub = pageId.startsWith("cataract")
+      ? "cataractPage"
+      : pageId.startsWith("pupils")
+        ? "pupilsPage"
+        : pageId.startsWith("visualAcuity")
+          ? "visualAcuityPage"
+          : pageId.startsWith("front")
+            ? "frontOfEyePage"
+            : "directOphthalmoscopy";
     const script = JSON.parse(
       fs.readFileSync(
         `public/narration/${timing.folder}/full-animation/script.json`,
@@ -55,7 +58,22 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       await page.waitForFunction(
         () => document.getElementById("videos")?.style.visibility === "visible",
       );
-    await page.locator(`#${launcherPage} [data-target="${pageId}"]`).click();
+    const folder =
+      pageId === "makeEyePadShieldScrollPage"
+        ? "make"
+        : pageId === "applyEyePadShieldScrollPage"
+          ? "apply"
+          : null;
+    if (folder) {
+      const folderLauncher = page.locator(
+        `#${launcherPage} [data-nested-folder="${folder}"]`,
+      );
+      await expect(folderLauncher).toBeVisible();
+      await folderLauncher.click();
+    }
+    const launcher = page.locator(`#${launcherPage} [data-target="${pageId}"]`);
+    await expect(launcher).toBeVisible();
+    await launcher.click();
     const guide = page.locator(`#${pageId}`);
     const audio = guide.locator("audio");
     const toggle = guide.locator("[data-fundal-scroll-narration-toggle]");
@@ -89,7 +107,9 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
           ? 94.4
           : pageId === "visualAcuityExaminationScrollPage" && index === 1
             ? 18.6
-            : end;
+            : pageId === "makeEyePadShieldScrollPage"
+              ? EYE_PAD_SHIELD_SCROLL_CLIPS[index].endByLanguage.en
+              : end;
       const stage = guide.locator(".childhood-fundal-prep-stage").nth(index);
       const slot = stage.locator("..");
       const replay = stage.locator(".childhood-fundal-stage-replay-btn");
@@ -158,10 +178,13 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       await page.screenshot({
         path: testInfo.outputPath(`scene-${index + 1}.png`),
       });
-      await audio.evaluate((el, time) => {
-        el.currentTime = time;
-        el.dispatchEvent(new Event("timeupdate"));
-      }, speechEnd);
+      await audio.evaluate(
+        (el, time) => {
+          el.currentTime = time;
+          el.dispatchEvent(new Event("timeupdate"));
+        },
+        pageId === "makeEyePadShieldScrollPage" ? speechEnd + 0.05 : speechEnd,
+      );
       if (end > speechEnd) {
         await expect(audio).toHaveJSProperty("paused", true);
         await expect(replay).toBeHidden();
