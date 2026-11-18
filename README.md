@@ -919,3 +919,18 @@ Offline video guidance sits below the quality controls and uses a short download
 ### Published Pupils Advanced lesson
 
 videos/pupilsAdvancedScrollPage is published. Track its dedicated configuration, artwork, narration, authoring scripts and tests. Production builds and offline manifests include its runtime assets. See docs/local-only-lessons.md.
+
+## Desktop dashboard workspace — 18 November 2026
+
+At widths of 1024px and above, Dashboard uses the approved bento design: a dark
+sidebar with the saved profile at the top, a shared search and language topbar,
+Eyes/Ears/Skin specialty tiles, quick tools, four recommended lessons and an
+offline-learning panel. Smaller screens retain the original category carousel
+and two recommendations. The same search control moves between layouts.
+
+Profile, Settings, My Learning, Notes, specialty and lesson links use existing
+routes. Download opens the existing offline selection dialog; Alan stays
+disabled until an app route is available. New dashboard copy is included in all
+26 locale dictionaries. Desktop styles are scoped in
+`public/style/dashboard-workspace.css`; browser regressions are in
+`tests-e2e/dashboard-workspace.spec.js`.

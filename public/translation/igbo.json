@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Gaa n'ihu dị ka ọbịa"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Nchịkọta",
+      "eyebrow": "Ebe mmụta gị",
+      "intro": "Chọpụta ngalaba, mepee nkuzi ma ọ bụ chọta ngwa ị chọrọ.",
+      "explore": "Chọpụta ngalaba",
+      "eyesNote": "Hụkwuo. Ghọtakwuo nke ọma.",
+      "earsNote": "Mụta nlekọta ntị",
+      "toolsEyebrow": "Ngwa gị kwa ụbọchị",
+      "quickAccess": "Nnweta ngwa ngwa",
+      "recommendedNote": "Ebe dị mma ịmalite.",
+      "newTo": "Ị bụ onye ọhụrụ na Arclight?",
+      "tourNote": "Mara ebe mmụta gị.",
+      "tour": "Mee njem dị mkpirikpi",
+      "offlineEyebrow": "Mụta ebe ọ bụla ị nọ",
+      "offlineTitle": "Were Arclight soro gị.",
+      "offlineCopy": "Budata ihe mmụta gị ma jiri ha na-enweghị ịntanetị.",
+      "footer": "Mmụta bara uru maka anya, ntị na akpụkpọ ahụ."
+    },
     "greeting": "Ndewo onye ọrụ!",
     "search_placeholder": "Chọọ ọdịnaya",
     "category_eyes": "Anya",

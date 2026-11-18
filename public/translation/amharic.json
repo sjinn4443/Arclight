@@ -60,6 +60,24 @@
     "continue_as_guest_button": "እንደ እንግዳ ይቀጥሉ"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "አጠቃላይ እይታ",
+      "eyebrow": "የመማሪያ ቦታዎ",
+      "intro": "የሙያ ዘርፍ ያስሱ፣ ትምህርት ይክፈቱ ወይም የሚፈልጉትን መሣሪያ ያግኙ።",
+      "explore": "የሙያ ዘርፍ ያስሱ",
+      "eyesNote": "የበለጠ ይመልከቱ። በተሻለ ይረዱ።",
+      "earsNote": "የጆሮ እንክብካቤን ያስሱ",
+      "toolsEyebrow": "የዕለት ተዕለት መሣሪያዎችዎ",
+      "quickAccess": "ፈጣን መዳረሻ",
+      "recommendedNote": "ለመጀመር ጥሩ ቦታ።",
+      "newTo": "ለ Arclight አዲስ ነዎት?",
+      "tourNote": "የመማሪያ ቦታዎን ይወቁ።",
+      "tour": "አጭር ጉብኝት ያድርጉ",
+      "offlineEyebrow": "በማንኛውም ቦታ ይማሩ",
+      "offlineTitle": "Arclightን ይዘው ይሂዱ።",
+      "offlineCopy": "የመማሪያ ይዘትዎን ያውርዱ እና ከመስመር ውጭ ይጠቀሙ።",
+      "footer": "ስለ ዓይን፣ ጆሮ እና ቆዳ ተግባራዊ ትምህርት።"
+    },
     "greeting": "ሰላም ተጠቃሚ!",
     "search_placeholder": "ይዘት ፈልግ",
     "category_eyes": "አይኖች",

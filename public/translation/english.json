@@ -110,6 +110,24 @@
     "job_group_skin": "Skin"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Overview",
+      "eyebrow": "Your learning space",
+      "intro": "Explore a specialty, open a lesson, or find the tool you need.",
+      "explore": "Explore a specialty",
+      "eyesNote": "See more. Understand better.",
+      "earsNote": "Explore ear care",
+      "toolsEyebrow": "Your everyday tools",
+      "quickAccess": "Quick access",
+      "recommendedNote": "A good place to begin.",
+      "newTo": "New to Arclight?",
+      "tourNote": "Find your way around your learning space.",
+      "tour": "Take a quick tour",
+      "offlineEyebrow": "Learning, wherever you are",
+      "offlineTitle": "Take Arclight with you.",
+      "offlineCopy": "Download your learning content and use it offline.",
+      "footer": "Practical learning for eyes, ears and skin."
+    },
     "greeting": "Hello User!",
     "greeting_hello_name": "Hello {{name}}!",
     "greeting_welcome_back_name": "Welcome back {{name}}!",

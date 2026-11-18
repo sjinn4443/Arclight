@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Koba lokola Invité"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Bokuse",
+      "eyebrow": "Esika na yo ya koyekola",
+      "intro": "Talá eteni moko, fungolá liteya to luká esaleli oyo osengeli na yango.",
+      "explore": "Talá eteni moko",
+      "eyesNote": "Talá mingi. Sosolá malamu.",
+      "earsNote": "Yekolá kobatela matoi",
+      "toolsEyebrow": "Bisaleli na yo ya mokolo na mokolo",
+      "quickAccess": "Bokɔti ya mbangu",
+      "recommendedNote": "Esika malamu ya kobanda.",
+      "newTo": "Ozali sika na Arclight?",
+      "tourNote": "Yebá esika na yo ya koyekola.",
+      "tour": "Talá na mokuse",
+      "offlineEyebrow": "Yekolá bisika nyonso ozali",
+      "offlineTitle": "Kende na Arclight.",
+      "offlineCopy": "Zwá mateya na yo mpo na kosalela yango kozanga internet.",
+      "footer": "Mateya ya misala mpo na miso, matoi mpe loposo."
+    },
     "greeting": "Mbote mobúka!",
     "search_placeholder": "Kɛ́ɛla biláko",
     "category_eyes": "Maso",

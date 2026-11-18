@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Continuer en tant qu'invité"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Vue d’ensemble",
+      "eyebrow": "Votre espace d’apprentissage",
+      "intro": "Explorez une spécialité, ouvrez une leçon ou trouvez l’outil dont vous avez besoin.",
+      "explore": "Explorer une spécialité",
+      "eyesNote": "Voir plus. Mieux comprendre.",
+      "earsNote": "Explorer les soins de l’oreille",
+      "toolsEyebrow": "Vos outils du quotidien",
+      "quickAccess": "Accès rapide",
+      "recommendedNote": "Un bon point de départ.",
+      "newTo": "Vous découvrez Arclight ?",
+      "tourNote": "Repérez-vous dans votre espace d’apprentissage.",
+      "tour": "Faire une visite rapide",
+      "offlineEyebrow": "Apprendre où que vous soyez",
+      "offlineTitle": "Emportez Arclight avec vous.",
+      "offlineCopy": "Téléchargez vos contenus pour les utiliser hors ligne.",
+      "footer": "Un apprentissage pratique pour les yeux, les oreilles et la peau."
+    },
     "greeting": "Bonjour utilisateur !",
     "search_placeholder": "Rechercher du contenu",
     "category_eyes": "Yeux",

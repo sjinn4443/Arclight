@@ -1,5 +1,23 @@
 {
   "dashboard": {
+    "workspace": {
+      "overview": "Okulaba okutwaliza awamu",
+      "eyebrow": "Ekifo kyo eky’okuyigiramu",
+      "intro": "Noonya ekitundu, ggulawo essomo oba funa ekikozesebwa ky’oweetaaga.",
+      "explore": "Noonya ekitundu",
+      "eyesNote": "Laba ebisingawo. Tegeera bulungi.",
+      "earsNote": "Yiga okulabirira amatu",
+      "toolsEyebrow": "Ebikozesebwa byo ebya buli lunaku",
+      "quickAccess": "Okufuna amangu",
+      "recommendedNote": "Ekifo ekirungi okutandikirako.",
+      "newTo": "Oli mupya ku Arclight?",
+      "tourNote": "Manya ekifo kyo eky’okuyigiramu.",
+      "tour": "Lambula mu bufunze",
+      "offlineEyebrow": "Yiga wonna w’oli",
+      "offlineTitle": "Twala Arclight naawe.",
+      "offlineCopy": "Wanula amasomo go ogakozese nga tewali yintaneeti.",
+      "footer": "Okuyiga okw’omugaso ku maaso, amatu n’olususu."
+    },
     "menu_button": "☰",
     "greeting": "Mwasuze mutya Omukozesa!",
     "search_placeholder": "Noonya Ebirimu",

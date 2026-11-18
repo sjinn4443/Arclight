@@ -1,5 +1,19 @@
 # Progress
 
+## Desktop dashboard workspace — 18 November 2026
+
+- Applied the selected bento design to the real Dashboard for widths >=1024px.
+  The dark sidebar contains the user's saved profile; the main grid has Eyes,
+  Ears and disabled Skin, quick tools, four lesson rows and offline copy.
+- Preserved the original mobile/tablet carousel and moved the existing search
+  control between layouts. Existing lesson, Notes, profile, settings, language,
+  tour and download flows remain connected. Alan is visibly unavailable.
+- New copy covers 26 locales; source service-worker cache is v167. Six focused
+  browser tests, static accessibility and targeted JS lint passed. Global
+  translation audit remains limited by existing dictionary gaps.
+- Isolated production build, the built desktop layout check at four widths and
+  21 focused unit tests passed. Dashboard HTML/CSS are in the offline shell.
+
 ## Eyes catalogue hover illustrations — 17 November 2026
 
 - Twenty-two illustrated cards have hover-only motion. Device bodies extend

@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Endelea kama Mgeni"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Muhtasari",
+      "eyebrow": "Nafasi yako ya kujifunza",
+      "intro": "Chunguza taaluma, fungua somo au tafuta zana unayohitaji.",
+      "explore": "Chunguza taaluma",
+      "eyesNote": "Ona zaidi. Elewa vizuri zaidi.",
+      "earsNote": "Jifunze kuhusu huduma ya masikio",
+      "toolsEyebrow": "Zana zako za kila siku",
+      "quickAccess": "Ufikiaji wa haraka",
+      "recommendedNote": "Mahali pazuri pa kuanza.",
+      "newTo": "Je, wewe ni mgeni kwenye Arclight?",
+      "tourNote": "Fahamu nafasi yako ya kujifunza.",
+      "tour": "Tembelea kwa ufupi",
+      "offlineEyebrow": "Jifunze popote ulipo",
+      "offlineTitle": "Beba Arclight pamoja nawe.",
+      "offlineCopy": "Pakua maudhui ya kujifunza na uyatumie bila intaneti.",
+      "footer": "Mafunzo ya vitendo kuhusu macho, masikio na ngozi."
+    },
     "greeting": "Habari Mtumiaji!",
     "search_placeholder": "Tafuta Maudhui",
     "category_eyes": "Macho",

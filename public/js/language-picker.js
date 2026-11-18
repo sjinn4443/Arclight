@@ -347,6 +347,7 @@
       if (btn === document.body || btn === document.documentElement) return;
       const opensLanguagePicker =
         btn.id === "openLanguageModal" ||
+        btn.matches("[data-dashboard-language]") ||
         btn.closest("#menuOverlay, #myProfilePage");
       if (!opensLanguagePicker) return;
       if (!overlay) return;

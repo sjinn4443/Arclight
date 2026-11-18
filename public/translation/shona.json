@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Enderera mberi seMuenzi"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Pfupiso",
+      "eyebrow": "Nzvimbo yako yekudzidza",
+      "intro": "Ongorora chikamu, vhura chidzidzo kana kutsvaga chishandiso chaunoda.",
+      "explore": "Ongorora chikamu",
+      "eyesNote": "Ona zvakawanda. Nzwisisa zviri nani.",
+      "earsNote": "Dzidza nezvekuchengetwa kwenzeve",
+      "toolsEyebrow": "Zvishandiso zvako zvezuva nezuva",
+      "quickAccess": "Kuwana nekukurumidza",
+      "recommendedNote": "Nzvimbo yakanaka yekutanga.",
+      "newTo": "Uri mutsva paArclight?",
+      "tourNote": "Ziva nzvimbo yako yekudzidza.",
+      "tour": "Tarisa muchidimbu",
+      "offlineEyebrow": "Dzidza chero kwauri",
+      "offlineTitle": "Tora Arclight uende nayo.",
+      "offlineCopy": "Dhawunirodha zvidzidzo zvako uzvishandise pasina internet.",
+      "footer": "Kudzidza kunobatsira kwemaziso, nzeve neganda."
+    },
     "greeting": "Mhoro Mushandisi!",
     "search_placeholder": "Tsvaga zvirimo",
     "category_eyes": "Meso",

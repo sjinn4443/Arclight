@@ -15,6 +15,7 @@ import {
 import { getPrimaryInterest } from "./profileData.js";
 import { EAR_TOPICS } from "./earsContentData.js";
 import { initializeDownloadSuggestion } from "./downloadSuggestion.js";
+import { initializeDashboardWorkspace } from "./dashboardWorkspace.js";
 
 const wired = new WeakSet();
 let dashboardI18nDict = {};
@@ -97,6 +98,7 @@ export function initializeDashboard() {
   const root = document.getElementById("unifiedDashboard");
   if (!root || wired.has(root)) return;
   wired.add(root);
+  initializeDashboardWorkspace(root, openDashboardDownloadModal);
   initializeDownloadSuggestion(openDashboardDownloadModal);
   orderDashboardCategories(root);
 
@@ -201,6 +203,10 @@ export function initializeDashboard() {
 
   if (searchWrap && toggleBtn) {
     toggleBtn.addEventListener("click", () => {
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        searchInput?.focus();
+        return;
+      }
       if (searchWrap.classList.contains("search-collapsed")) {
         searchWrap.classList.remove("search-collapsed");
         searchWrap.classList.add("search-expanded");
@@ -357,6 +363,15 @@ export function initializeDashboard() {
     void renderRecommendations(host);
     window.addEventListener("i18n:languageChanged", () => {
       void renderRecommendations(host);
+    });
+  }
+  const workspaceHost = root.querySelector(
+    "#dashboardWorkspaceRecommendations",
+  );
+  if (workspaceHost) {
+    void renderRecommendations(workspaceHost, true);
+    window.addEventListener("i18n:languageChanged", () => {
+      void renderRecommendations(workspaceHost, true);
     });
   }
 }
@@ -814,19 +829,33 @@ async function renderDashboardSearch(input, panel) {
   panel.hidden = false;
 }
 
-async function renderRecommendations(host) {
-  const picks = shuffle(getDashboardContentItems()).slice(0, 2);
+const recommendationRenders = new WeakMap();
+async function renderRecommendations(host, workspace = false) {
+  const token = (recommendationRenders.get(host) || 0) + 1;
+  recommendationRenders.set(host, token);
+  const items = getDashboardContentItems();
+  const picks = workspace
+    ? [
+        "visualAcuityPage",
+        "directOphthalmoscopy",
+        "pupilsPage",
+        "anteriorSegmentVideoPage",
+      ].map((page) => items.find((item) => item.page === page))
+    : shuffle(items).slice(0, 2);
 
   const cardTemplate = document.getElementById(
     "dashboardRecommendedCardTemplate",
   );
   if (!cardTemplate) return;
 
-  host.textContent = "";
+  const cards = [];
   for (const m of picks) {
     const card = await createDashboardModuleCard(cardTemplate, m);
-    host.appendChild(card);
+    if (workspace) card.classList.add("dw-module");
+    cards.push(card);
   }
+  if (recommendationRenders.get(host) !== token) return;
+  host.replaceChildren(...cards);
 
   try {
     window.I18N?.applyTranslations?.(host);

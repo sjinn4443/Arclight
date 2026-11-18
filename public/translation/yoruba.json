@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Tesiwaju bi Alejo"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Àkópọ̀",
+      "eyebrow": "Ààyè ẹ̀kọ́ rẹ",
+      "intro": "Ṣàwárí ẹ̀ka kan, ṣí ẹ̀kọ́ tàbí wá irinṣẹ́ tí o nílò.",
+      "explore": "Ṣàwárí ẹ̀ka kan",
+      "eyesNote": "Rí púpọ̀ sí i. Lóye dáadáa.",
+      "earsNote": "Kọ́ nípa ìtọ́jú etí",
+      "toolsEyebrow": "Àwọn irinṣẹ́ ojoojúmọ́ rẹ",
+      "quickAccess": "Ìwọlé kíákíá",
+      "recommendedNote": "Ibi tó dára láti bẹ̀rẹ̀.",
+      "newTo": "Ṣé o ṣẹ̀ṣẹ̀ dé sí Arclight?",
+      "tourNote": "Mọ ààyè ẹ̀kọ́ rẹ.",
+      "tour": "Ṣe ìrìnàjò ṣókí",
+      "offlineEyebrow": "Kẹ́kọ̀ọ́ níbikíbi tí o bá wà",
+      "offlineTitle": "Mú Arclight lọ pẹ̀lú rẹ.",
+      "offlineCopy": "Ṣe ìgbàsílẹ̀ àkóónú ẹ̀kọ́ rẹ kí o sì lò ó láìsí ayélujára.",
+      "footer": "Ẹ̀kọ́ tó wúlò fún ojú, etí àti awọ ara."
+    },
     "greeting": "Ẹ kaabo olumulo!",
     "search_placeholder": "Wa ohun ti o wa ninu",
     "category_eyes": "Oju",

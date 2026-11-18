@@ -2,6 +2,24 @@
 
 # Active Context
 
+## Desktop dashboard workspace — 18 November 2026
+
+- Implemented the approved bento dashboard at 1024px and above, including the
+  charcoal sidebar, saved profile at the top, search/language bar, specialty
+  tiles, quick tools, four real lesson recommendations and red offline panel.
+- Phone/tablet carousel and two recommendations are retained. One search input
+  moves between layouts; profile changes refresh the desktop name and avatar.
+- Reuses existing navigation, Notes tab, introduction tour, language picker and
+  download dialog. Alan is disabled because no main-app route is registered.
+- Added 16 workspace strings to all 26 locales and bumped the source worker to
+  v167. Six browser regressions passed, including four desktop widths, mobile
+  resizing, Korean/Arabic, routing, profile updates and download selection.
+- Static HTML accessibility and targeted JS lint pass. Global translation QA
+  still reports pre-existing missing keys; all new workspace keys are supplied.
+- The isolated production build and its four-width browser check passed. All
+  21 focused My Learning/download/i18n unit tests passed; the build's offline
+  shell includes the dashboard stylesheet and HTML.
+
 ## Eyes catalogue hover illustrations — 17 November 2026
 
 - Twenty-two illustrated cards have hover-only motion. Device bodies extend

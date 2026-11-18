@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Lanjutkan sebagai Tamu"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Ringkasan",
+      "eyebrow": "Ruang belajar Anda",
+      "intro": "Jelajahi bidang, buka pelajaran, atau temukan alat yang Anda perlukan.",
+      "explore": "Jelajahi bidang",
+      "eyesNote": "Lihat lebih banyak. Pahami lebih baik.",
+      "earsNote": "Jelajahi perawatan telinga",
+      "toolsEyebrow": "Alat harian Anda",
+      "quickAccess": "Akses cepat",
+      "recommendedNote": "Tempat yang baik untuk memulai.",
+      "newTo": "Baru menggunakan Arclight?",
+      "tourNote": "Kenali ruang belajar Anda.",
+      "tour": "Ikuti tur singkat",
+      "offlineEyebrow": "Belajar di mana pun Anda berada",
+      "offlineTitle": "Bawa Arclight bersama Anda.",
+      "offlineCopy": "Unduh materi pembelajaran dan gunakan secara luring.",
+      "footer": "Pembelajaran praktis tentang mata, telinga, dan kulit."
+    },
     "greeting": "Halo Pengguna!",
     "search_placeholder": "Cari konten",
     "category_eyes": "Mata",

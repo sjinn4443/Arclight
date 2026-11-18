@@ -1,0 +1,752 @@
+/* Desktop dashboard workspace; the original phone/tablet dashboard is retained. */
+.dashboard-desktop {
+  display: none;
+}
+
+/* Semantic buttons retain the existing mobile recommendation presentation. */
+#unifiedDashboard button.module-card {
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  #unifiedDashboard .dashboard-desktop :where(button) {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  #unifiedDashboard {
+    --dw-ink: #171b1a;
+    --dw-muted: #69716f;
+    --dw-line: #dedfda;
+    --dw-red: #b4342a;
+    background: #f4f5f1;
+    color: var(--dw-ink);
+  }
+  #unifiedDashboard > .unified-container {
+    display: none;
+  }
+  #unifiedDashboard .dashboard-desktop {
+    display: grid;
+    grid-template-columns: 202px minmax(0, 1fr);
+    min-height: 100vh;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  #unifiedDashboard .dashboard-desktop *,
+  #unifiedDashboard .dashboard-desktop *::before,
+  #unifiedDashboard .dashboard-desktop *::after {
+    box-sizing: border-box;
+  }
+  #unifiedDashboard .dashboard-desktop button,
+  #unifiedDashboard .dashboard-desktop input {
+    font: inherit;
+  }
+  #unifiedDashboard .dashboard-desktop button {
+    cursor: pointer;
+  }
+  #unifiedDashboard .dashboard-desktop button:disabled {
+    cursor: not-allowed;
+  }
+  #unifiedDashboard .dashboard-desktop button:focus-visible,
+  #unifiedDashboard .dashboard-desktop a:focus-visible {
+    outline: 2px solid #b4342a;
+    outline-offset: 4px;
+  }
+  #unifiedDashboard .dashboard-desktop h1,
+  #unifiedDashboard .dashboard-desktop h2,
+  #unifiedDashboard .dashboard-desktop p {
+    margin: 0;
+  }
+  #unifiedDashboard .dw-symbols {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  #unifiedDashboard .dw-sidebar {
+    background: #20231f;
+    color: #e1e3db;
+    padding: 26px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 0;
+  }
+  #unifiedDashboard .dw-brand {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 650;
+    letter-spacing: -1.2px;
+    padding: 0 10px;
+  }
+  #unifiedDashboard .dw-brand > span {
+    color: #cd4138;
+  }
+  #unifiedDashboard .dw-brand small {
+    display: block;
+    color: #b1b5a9;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.6px;
+    margin-top: 4px;
+  }
+  #unifiedDashboard .dw-profile {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #3e4339;
+    padding: 0 8px 21px;
+    color: inherit;
+    background: none;
+    text-align: start;
+  }
+  #unifiedDashboard .dw-profile > span:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+  }
+  #unifiedDashboard .dw-profile strong {
+    display: block;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  #unifiedDashboard .dw-profile small {
+    display: block;
+    font-size: 11px;
+    color: #bcc1b3;
+    margin-top: 3px;
+  }
+  #unifiedDashboard .dw-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f4e8e3;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  #unifiedDashboard .dw-avatar.profile-avatar--initial,
+  #unifiedDashboard .dw-account .profile-avatar--initial {
+    background-color: #f4e8e3 !important;
+    color: #b4342a;
+  }
+  #unifiedDashboard .dw-nav {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    border: 0;
+    border-radius: 7px;
+    background: none;
+    color: #e1e3db;
+    text-align: start;
+    padding: 11px 12px;
+    font-size: 12px;
+    min-height: 40px;
+  }
+  #unifiedDashboard .dw-nav:hover:not(:disabled) {
+    background: #30342d;
+  }
+  #unifiedDashboard .dw-nav.active {
+    background: #363a32;
+    box-shadow: inset 2px 0 #c8453a;
+    color: white;
+  }
+  #unifiedDashboard .dw-nav svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    fill: none;
+    stroke: #bcc1b3;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  #unifiedDashboard .dw-nav:disabled {
+    color: #9a9f91;
+  }
+  #unifiedDashboard .dw-nav small {
+    font-size: 9px;
+    margin-inline-start: auto;
+    max-width: 55px;
+  }
+  #unifiedDashboard .dw-nav-label {
+    color: #b2b8a9;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 26px 12px 12px;
+  }
+  #unifiedDashboard .dw-tour {
+    margin-top: auto;
+    border-top: 1px solid #3e4339;
+    padding: 20px 10px 6px;
+  }
+  #unifiedDashboard .dw-tour strong {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  #unifiedDashboard .dw-tour p {
+    color: #bcc1b3;
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 7px;
+  }
+  #unifiedDashboard .dw-tour button {
+    border: 0;
+    background: none;
+    padding: 12px 0 0;
+    color: #efb1a0;
+    font-size: 12px;
+    text-align: start;
+  }
+  #unifiedDashboard .dw-work {
+    background: #f4f5f1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  #unifiedDashboard .dw-topbar {
+    min-height: 66px;
+    padding: 13px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background: white;
+    border-bottom: 1px solid #e9eae5;
+  }
+  #unifiedDashboard .dw-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-size: 11px;
+    color: var(--dw-muted);
+    white-space: nowrap;
+  }
+  #unifiedDashboard .dw-breadcrumb strong {
+    color: var(--dw-ink);
+    font-weight: 500;
+  }
+  #unifiedDashboard .dw-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    min-width: 0;
+  }
+  #unifiedDashboard .dw-language {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border: 0;
+    background: none;
+    color: var(--dw-ink);
+    font-size: 12px;
+  }
+  #unifiedDashboard .dw-account {
+    border: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+  }
+  #unifiedDashboard .dw-account > span {
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+  }
+  #unifiedDashboard .dw-topbar .search-wrap--compact {
+    position: relative;
+    width: clamp(230px, 24vw, 340px);
+    height: 38px;
+    margin: 0 !important;
+    display: block;
+  }
+  #unifiedDashboard .dw-topbar .search-wrap--compact input[type="search"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    width: 100%;
+    height: 38px;
+    padding: 0 33px 0 36px;
+    border: 1px solid var(--dw-line);
+    border-radius: 8px;
+    background: #fafbf8;
+    font-size: 12px;
+    color: var(--dw-ink);
+  }
+  #unifiedDashboard .dw-topbar .search-wrap--compact input:focus-visible {
+    outline: 2px solid var(--dw-red);
+    outline-offset: 2px;
+  }
+  #unifiedDashboard .dw-topbar .search-wrap--compact .search-icon {
+    left: 12px;
+    right: auto;
+    color: var(--dw-muted);
+  }
+  #unifiedDashboard .dw-topbar .dashboard-search-panel {
+    top: 46px;
+    right: 0;
+    left: auto;
+    width: min(440px, calc(100vw - 260px));
+    max-height: 65vh;
+    overflow: auto;
+    z-index: 50;
+    padding: 14px;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px #20231f20;
+    background: white;
+  }
+  #unifiedDashboard .dw-main {
+    padding: 28px 30px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  #unifiedDashboard .dw-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+  #unifiedDashboard .dw-eyebrow {
+    font-size: 10px;
+    line-height: 1.5;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    color: var(--dw-red);
+  }
+  #unifiedDashboard .dw-heading h1 {
+    font-size: clamp(26px, 2.2vw, 36px);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -1.1px;
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+  }
+  #unifiedDashboard .dw-intro {
+    color: var(--dw-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  #unifiedDashboard .dw-learning-link {
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    padding: 10px 14px;
+    color: var(--dw-ink);
+    border: 1px solid var(--dw-line);
+    border-radius: 8px;
+    background: white;
+    font-size: 11px;
+  }
+  #unifiedDashboard .dw-bento {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(238px, 0.41fr);
+    grid-template-areas: "specialties tools" "recommended offline";
+    gap: 18px;
+    align-items: stretch;
+  }
+  #unifiedDashboard .dw-specialties {
+    grid-area: specialties;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+    min-height: 370px;
+    min-width: 0;
+  }
+  #unifiedDashboard .dw-specialty.category-card {
+    height: auto;
+    min-height: 0;
+    width: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 15px;
+    background: #000;
+    color: white;
+    text-align: start;
+    padding: 0;
+    position: relative;
+    isolation: isolate;
+  }
+  #unifiedDashboard .dw-specialty img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: -1;
+  }
+  #unifiedDashboard .dw-eyes {
+    grid-row: 1 / 3;
+  }
+  #unifiedDashboard .dw-eyes img {
+    width: 100%;
+    height: 90%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    object-position: 80% center;
+  }
+  #unifiedDashboard .dw-specialty-copy {
+    position: absolute;
+    top: 18px;
+    left: 19px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  #unifiedDashboard .dw-specialty-copy strong {
+    font-size: 24px;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.7px;
+  }
+  #unifiedDashboard .dw-specialty-copy small {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 85%;
+  }
+  #unifiedDashboard .dw-eyes .dw-specialty-copy {
+    top: auto;
+    bottom: 21px;
+  }
+  #unifiedDashboard .dw-specialty-kicker {
+    position: absolute;
+    top: 19px;
+    left: 20px;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    max-width: 90%;
+  }
+  #unifiedDashboard .dw-circle-arrow {
+    position: absolute;
+    bottom: 20px;
+    left: 18px;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #71766b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+  }
+  #unifiedDashboard .dw-eyes .dw-circle-arrow {
+    left: auto;
+    right: 18px;
+  }
+  #unifiedDashboard .dw-skin.category-card--disabled {
+    opacity: 1;
+    background: #252822;
+  }
+  #unifiedDashboard .dw-skin img {
+    opacity: 0.42;
+  }
+  #unifiedDashboard .dw-skin .dw-circle-arrow {
+    border: 0;
+  }
+  #unifiedDashboard .dw-panel {
+    background: white;
+    border: 1px solid var(--dw-line);
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 0;
+  }
+  #unifiedDashboard .dw-panel h2 {
+    font-size: 18px;
+    font-weight: 550;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+  }
+  #unifiedDashboard .dw-tools {
+    grid-area: tools;
+    display: flex;
+    flex-direction: column;
+  }
+  #unifiedDashboard .dw-tools h2 {
+    margin: 8px 0 14px;
+  }
+  #unifiedDashboard .dw-tool {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 13px 0;
+    border: 0;
+    border-bottom: 1px solid var(--dw-line);
+    background: none;
+    color: var(--dw-ink);
+    text-align: start;
+  }
+  #unifiedDashboard .dw-tool > svg {
+    width: 28px;
+    height: 28px;
+    padding: 5px;
+    border: 1px solid var(--dw-line);
+    border-radius: 8px;
+    fill: none;
+    stroke: #626c66;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex: none;
+  }
+  #unifiedDashboard .dw-tool > span:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+  }
+  #unifiedDashboard .dw-tool strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  #unifiedDashboard .dw-tool small {
+    display: block;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--dw-muted);
+    margin-top: 3px;
+  }
+  #unifiedDashboard .dw-tool > span:last-child {
+    color: var(--dw-muted);
+    font-size: 13px;
+  }
+  #unifiedDashboard .dw-tool:disabled strong {
+    color: #7b817c;
+  }
+  #unifiedDashboard .dw-tool:not(:disabled):hover strong {
+    color: var(--dw-red);
+  }
+  #unifiedDashboard .dw-text-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--dw-red);
+    font-size: 12px;
+    text-align: start;
+  }
+  #unifiedDashboard .dw-tools > .dw-text-link {
+    margin-top: auto;
+    padding-top: 15px;
+  }
+  #unifiedDashboard .dw-recommended {
+    grid-area: recommended;
+  }
+  #unifiedDashboard .dw-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 16px;
+  }
+  #unifiedDashboard .dw-section-heading p {
+    font-size: 11px;
+    color: var(--dw-muted);
+    margin-top: 5px;
+  }
+  #unifiedDashboard #dashboardWorkspaceRecommendations {
+    display: grid;
+    gap: 9px;
+  }
+  #unifiedDashboard .dw-module.module-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: #f4f5f2;
+    box-shadow: none;
+    margin: 0;
+  }
+  #unifiedDashboard .dw-module:hover {
+    border-color: #c8ccc4;
+  }
+  #unifiedDashboard .dw-module > img {
+    width: 47px;
+    height: 47px;
+    object-fit: contain;
+    border-radius: 7px;
+    flex: none;
+    background: #000;
+    margin: 0;
+  }
+  #unifiedDashboard .dw-module:first-child > img {
+    background: #eee;
+  }
+  #unifiedDashboard .dw-module .module-info {
+    min-width: 0;
+    flex: 1;
+  }
+  #unifiedDashboard .dw-module .module-title {
+    margin: 0 0 4px;
+    color: var(--dw-ink);
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 1.4;
+  }
+  #unifiedDashboard .dw-module .module-subtitle {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--dw-muted);
+  }
+  #unifiedDashboard .dw-module::after {
+    content: "↗";
+    color: var(--dw-muted);
+    margin-inline-start: auto;
+  }
+  #unifiedDashboard .dw-module .progress-bar {
+    display: none;
+  }
+  #unifiedDashboard .dw-offline {
+    grid-area: offline;
+    padding: 24px 22px;
+    border-radius: 15px;
+    background: var(--dw-red);
+    color: white;
+  }
+  #unifiedDashboard .dw-offline .dw-eyebrow {
+    color: #ffe3dc;
+    font-size: 10px;
+  }
+  #unifiedDashboard .dw-offline h2 {
+    font-size: clamp(26px, 2.5vw, 36px);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.7px;
+    margin: 18px 0 16px;
+  }
+  #unifiedDashboard .dw-offline > p:last-child {
+    color: #fff3ec;
+    font-size: 12px;
+    line-height: 1.8;
+    max-width: 26ch;
+  }
+  #unifiedDashboard .dw-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 17px;
+    margin-top: 30px;
+    border-top: 1px solid var(--dw-line);
+    color: var(--dw-muted);
+    font-size: 10px;
+  }
+  #unifiedDashboard .dw-footer > span:first-child {
+    color: var(--dw-ink);
+  }
+  #unifiedDashboard .dw-footer > span:first-child::before {
+    content: "•";
+    color: var(--dw-red);
+    margin-inline-end: 7px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  #unifiedDashboard .dashboard-desktop {
+    grid-template-columns: 178px minmax(0, 1fr);
+  }
+  #unifiedDashboard .dw-sidebar {
+    padding-inline: 12px;
+  }
+  #unifiedDashboard .dw-main {
+    padding: 24px 22px 20px;
+  }
+  #unifiedDashboard .dw-topbar {
+    padding-inline: 22px;
+  }
+  #unifiedDashboard .dw-top-actions {
+    gap: 14px;
+  }
+  #unifiedDashboard .dw-bento {
+    grid-template-columns: minmax(0, 1fr) 228px;
+    gap: 14px;
+  }
+  #unifiedDashboard .dw-specialties {
+    gap: 12px;
+  }
+  #unifiedDashboard .dw-panel {
+    padding: 17px;
+  }
+  #unifiedDashboard .dw-specialty-copy {
+    left: 15px;
+    right: 12px;
+  }
+  #unifiedDashboard .dw-specialty-copy strong {
+    font-size: 22px;
+  }
+  #unifiedDashboard .dw-specialty-kicker {
+    left: 15px;
+  }
+  #unifiedDashboard .dw-eyes .dw-specialty-copy small {
+    max-width: 75%;
+  }
+}
+
+@media (min-width: 1600px) {
+  #unifiedDashboard .dw-main {
+    padding: 38px 44px 24px;
+  }
+  #unifiedDashboard .dw-topbar {
+    padding-inline: 44px;
+  }
+  #unifiedDashboard .dw-bento {
+    gap: 24px;
+  }
+  #unifiedDashboard .dw-specialties {
+    min-height: 430px;
+    gap: 20px;
+  }
+  #unifiedDashboard .dw-panel {
+    padding: 26px;
+  }
+  #unifiedDashboard .dw-tool {
+    padding-block: 16px;
+  }
+  #unifiedDashboard .dw-module.module-card {
+    padding: 14px 16px;
+  }
+  #unifiedDashboard .dw-module > img {
+    width: 52px;
+    height: 52px;
+  }
+  #unifiedDashboard .dw-offline {
+    padding: 30px;
+  }
+}

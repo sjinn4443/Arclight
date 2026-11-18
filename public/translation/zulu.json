@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Qhubeka njengesivakashi"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Ukubuka konke",
+      "eyebrow": "Indawo yakho yokufunda",
+      "intro": "Hlola umkhakha, vula isifundo noma uthole ithuluzi olidingayo.",
+      "explore": "Hlola umkhakha",
+      "eyesNote": "Bona okwengeziwe. Qonda kangcono.",
+      "earsNote": "Funda ngokunakekelwa kwezindlebe",
+      "toolsEyebrow": "Amathuluzi akho ansuku zonke",
+      "quickAccess": "Ukufinyelela okusheshayo",
+      "recommendedNote": "Indawo enhle yokuqala.",
+      "newTo": "Umusha ku-Arclight?",
+      "tourNote": "Yazi indawo yakho yokufunda.",
+      "tour": "Thatha uhambo olufushane",
+      "offlineEyebrow": "Funda noma ngabe ukuphi",
+      "offlineTitle": "Hamba ne-Arclight.",
+      "offlineCopy": "Landa okuqukethwe kwakho kokufunda ukusebenzise ngaphandle kwe-inthanethi.",
+      "footer": "Ukufunda okusebenzayo ngamehlo, izindlebe nesikhumba."
+    },
     "greeting": "Sawubona Msebenzisi!",
     "search_placeholder": "Sesha okuqukethwe",
     "category_eyes": "Amehlo",

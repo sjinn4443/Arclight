@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Ci gaba a matsayin Baƙo"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Bayani a taƙaice",
+      "eyebrow": "Wurin koyonku",
+      "intro": "Bincika fanni, buɗe darasi ko nemo kayan aikin da kuke buƙata.",
+      "explore": "Bincika fanni",
+      "eyesNote": "Duba ƙari. Fahimta sosai.",
+      "earsNote": "Koyi kula da kunne",
+      "toolsEyebrow": "Kayan aikinku na yau da kullum",
+      "quickAccess": "Samun dama cikin sauri",
+      "recommendedNote": "Wuri mai kyau don farawa.",
+      "newTo": "Sabon amfani da Arclight?",
+      "tourNote": "Ku san wurin koyonku.",
+      "tour": "Yi ɗan zagaye",
+      "offlineEyebrow": "Koyo a duk inda kuke",
+      "offlineTitle": "Ku tafi da Arclight.",
+      "offlineCopy": "Sauke darussanku ku yi amfani da su ba tare da intanet ba.",
+      "footer": "Koyon aiki game da idanu, kunnuwa da fata."
+    },
     "greeting": "Barka da zuwa mai amfani!",
     "search_placeholder": "Nemo abun ciki",
     "category_eyes": "Idanu",

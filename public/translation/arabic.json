@@ -60,6 +60,24 @@
     "continue_as_guest_button": "الاستمرار كضيف"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "نظرة عامة",
+      "eyebrow": "مساحة التعلم الخاصة بك",
+      "intro": "استكشف تخصصًا أو افتح درسًا أو ابحث عن الأداة التي تحتاجها.",
+      "explore": "استكشف تخصصًا",
+      "eyesNote": "شاهد أكثر. افهم أفضل.",
+      "earsNote": "استكشف العناية بالأذن",
+      "toolsEyebrow": "أدواتك اليومية",
+      "quickAccess": "وصول سريع",
+      "recommendedNote": "مكان جيد للبدء.",
+      "newTo": "هل أنت جديد في Arclight؟",
+      "tourNote": "تعرّف على مساحة التعلم الخاصة بك.",
+      "tour": "جولة سريعة",
+      "offlineEyebrow": "التعلم أينما كنت",
+      "offlineTitle": "اصطحب Arclight معك.",
+      "offlineCopy": "نزّل المحتوى التعليمي واستخدمه دون اتصال بالإنترنت.",
+      "footer": "تعلم عملي للعيون والأذن والجلد."
+    },
     "greeting": "مرحباً أيها المستخدم!",
     "search_placeholder": "ابحث في المحتوى",
     "category_eyes": "عيون",

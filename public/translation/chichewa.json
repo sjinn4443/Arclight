@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Pitirizani ngati Mlendo"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Chidule",
+      "eyebrow": "Malo anu ophunzirira",
+      "intro": "Onani gawo, tsegulani phunziro kapena pezani chida chimene mukufuna.",
+      "explore": "Onani gawo",
+      "eyesNote": "Onani zambiri. Mvetsetsani bwino.",
+      "earsNote": "Phunzirani kusamalira makutu",
+      "toolsEyebrow": "Zida zanu za tsiku ndi tsiku",
+      "quickAccess": "Kufikira mwachangu",
+      "recommendedNote": "Malo abwino oyambira.",
+      "newTo": "Ndinu watsopano pa Arclight?",
+      "tourNote": "Dziwani malo anu ophunzirira.",
+      "tour": "Yendani mwachidule",
+      "offlineEyebrow": "Phunzirani kulikonse komwe muli",
+      "offlineTitle": "Tengani Arclight nanu.",
+      "offlineCopy": "Tsitsani maphunziro anu kuti mugwiritse ntchito popanda intaneti.",
+      "footer": "Maphunziro othandiza a maso, makutu ndi khungu."
+    },
     "greeting": "Muli nawo!",
     "search_placeholder": "Sakani zomwe muli nazo",
     "category_eyes": "Masuliro",

@@ -60,6 +60,24 @@
     "continue_as_guest_button": "به عنوان مهمان ادامه دهید"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "نمای کلی",
+      "eyebrow": "فضای یادگیری شما",
+      "intro": "یک تخصص را بررسی کنید، درسی را باز کنید یا ابزار مورد نیازتان را بیابید.",
+      "explore": "بررسی یک تخصص",
+      "eyesNote": "بیشتر ببینید. بهتر درک کنید.",
+      "earsNote": "بررسی مراقبت از گوش",
+      "toolsEyebrow": "ابزارهای روزمره شما",
+      "quickAccess": "دسترسی سریع",
+      "recommendedNote": "جای خوبی برای شروع.",
+      "newTo": "تازه با Arclight آشنا شده‌اید؟",
+      "tourNote": "با فضای یادگیری خود آشنا شوید.",
+      "tour": "آشنایی سریع",
+      "offlineEyebrow": "یادگیری در هر کجا",
+      "offlineTitle": "Arclight را همراه ببرید.",
+      "offlineCopy": "محتوای آموزشی را دانلود و به‌صورت آفلاین استفاده کنید.",
+      "footer": "یادگیری عملی درباره چشم، گوش و پوست."
+    },
     "greeting": "سلام کاربر!",
     "search_placeholder": "جستجوی محتوا",
     "category_eyes": "چشم",

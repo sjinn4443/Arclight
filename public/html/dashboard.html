@@ -1,5 +1,350 @@
 <!-- Dashboard Page — Provides a personalized user dashboard with greetings, search functionality, category navigation, quick actions, and recommended content. -->
 <div id="unifiedDashboard" class="page">
+  <template id="dashboardWorkspaceTemplate">
+    <div class="dashboard-desktop">
+      <svg
+        class="dw-symbols"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <symbol id="dw-grid" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="6" height="6" rx="1" />
+          <rect x="15" y="3" width="6" height="6" rx="1" />
+          <rect x="3" y="15" width="6" height="6" rx="1" />
+          <rect x="15" y="15" width="6" height="6" rx="1" />
+        </symbol>
+        <symbol id="dw-book" viewBox="0 0 24 24">
+          <path
+            d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"
+          />
+        </symbol>
+        <symbol id="dw-layers" viewBox="0 0 24 24">
+          <path d="m12 3 10 5-10 5L2 8Zm-10 9 10 5 10-5M2 16l10 5 10-5" />
+        </symbol>
+        <symbol id="dw-eye" viewBox="0 0 24 24">
+          <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z" />
+          <circle cx="12" cy="12" r="3" />
+        </symbol>
+        <symbol id="dw-ear" viewBox="0 0 24 24">
+          <path
+            d="M6 9a6 6 0 0 1 12 0c0 5-5 5-5 9a3 3 0 0 1-6 0M9 9a3 3 0 0 1 6 0c0 3-4 2-4 5"
+          />
+        </symbol>
+        <symbol id="dw-skin" viewBox="0 0 24 24">
+          <path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5M7 12h10" />
+        </symbol>
+        <symbol id="dw-user" viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="4" />
+          <path d="M4 22v-3a8 8 0 0 1 16 0v3" />
+        </symbol>
+        <symbol id="dw-settings" viewBox="0 0 24 24">
+          <path d="M3 6h7m6 0h5M3 18h13m5 0h-1" />
+          <circle cx="13" cy="6" r="3" />
+          <circle cx="17" cy="18" r="3" />
+        </symbol>
+        <symbol id="dw-note" viewBox="0 0 24 24">
+          <path
+            d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M7 9h4m-4 5h3m3-4 6-7 3 3-6 7-4 1Z"
+          />
+        </symbol>
+        <symbol id="dw-chat" viewBox="0 0 24 24">
+          <path
+            d="M21 11a9 9 0 0 1-9 9 11 11 0 0 1-4-1l-6 2 2-6a9 9 0 1 1 17-4Z"
+          />
+        </symbol>
+        <symbol id="dw-download" viewBox="0 0 24 24">
+          <path d="M12 2v13m-5-5 5 5 5-5M3 16v5h18v-5" />
+        </symbol>
+      </svg>
+      <aside class="dw-sidebar">
+        <a class="dw-brand" href="#/dashboard"
+          >Arclight<span>.</span><small>EYES · EARS · SKIN</small></a
+        >
+        <button class="dw-profile" data-dashboard-route="myprofile">
+          <span
+            class="dw-avatar"
+            data-dashboard-avatar
+            aria-hidden="true"
+          ></span>
+          <span
+            ><strong data-dashboard-name data-i18n-skip></strong
+            ><small data-i18n="myprofile.my_profile">My Profile</small></span
+          ><span aria-hidden="true">⌄</span>
+        </button>
+        <nav
+          aria-label="Learning"
+          data-i18n="menu.learning_tab_title:aria-label"
+        >
+          <button
+            class="dw-nav active"
+            aria-current="page"
+            data-dashboard-route="dashboard"
+          >
+            <svg aria-hidden="true"><use href="#dw-grid" /></svg
+            ><span data-i18n="dashboard.workspace.overview">Overview</span>
+          </button>
+          <button class="dw-nav" data-dashboard-route="mylearning">
+            <svg aria-hidden="true"><use href="#dw-book" /></svg
+            ><span data-i18n="menu.my_learning_section_title">My Learning</span>
+          </button>
+          <button class="dw-nav" data-dashboard-route="atomscard">
+            <svg aria-hidden="true"><use href="#dw-layers" /></svg
+            ><span data-i18n="dashboard.quick_action_atoms_card"
+              >Atoms Card</span
+            >
+          </button>
+          <p class="dw-nav-label" data-i18n="dashboard.workspace.explore">
+            Explore a specialty
+          </p>
+          <button class="dw-nav" data-dashboard-route="eyes">
+            <svg aria-hidden="true"><use href="#dw-eye" /></svg
+            ><span data-i18n="dashboard.category_eyes">Eyes</span>
+          </button>
+          <button class="dw-nav" data-dashboard-route="ears">
+            <svg aria-hidden="true"><use href="#dw-ear" /></svg
+            ><span data-i18n="dashboard.category_ears">Ears</span>
+          </button>
+          <button class="dw-nav" disabled>
+            <svg aria-hidden="true"><use href="#dw-skin" /></svg
+            ><span data-i18n="dashboard.category_skin">Skin</span
+            ><small data-i18n="dashboard.coming_soon">Coming soon</small>
+          </button>
+          <p class="dw-nav-label" data-i18n="myprofile.my_profile">
+            My Profile
+          </p>
+          <button class="dw-nav" data-dashboard-route="myprofile">
+            <svg aria-hidden="true"><use href="#dw-user" /></svg
+            ><span data-i18n="myprofile.my_profile">My Profile</span>
+          </button>
+          <button class="dw-nav" data-dashboard-route="settings">
+            <svg aria-hidden="true"><use href="#dw-settings" /></svg
+            ><span data-i18n="myprofile.settings">Settings</span>
+          </button>
+        </nav>
+        <div class="dw-tour">
+          <strong data-i18n="dashboard.workspace.newTo"
+            >New to Arclight?</strong
+          >
+          <p data-i18n="dashboard.workspace.tourNote">
+            Find your way around your learning space.
+          </p>
+          <button data-dashboard-route="intro">
+            <span data-i18n="dashboard.workspace.tour">Take a quick tour</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </aside>
+      <div class="dw-work">
+        <header class="dw-topbar">
+          <div class="dw-breadcrumb">
+            <span data-i18n="menu.learning_tab_title">Learning</span
+            ><span aria-hidden="true">/</span
+            ><strong data-i18n="dashboard.workspace.overview">Overview</strong>
+          </div>
+          <div class="dw-top-actions">
+            <div class="dw-search-slot"></div>
+            <button
+              class="dw-language"
+              data-dashboard-language
+              data-route="languageinstall"
+            >
+              <span data-dashboard-language-name></span
+              ><span aria-hidden="true">⌄</span></button
+            ><button
+              class="dw-avatar dw-account"
+              data-dashboard-route="myprofile"
+              data-i18n="myprofile.my_profile:aria-label"
+              aria-label="My Profile"
+            >
+              <span data-dashboard-avatar aria-hidden="true"></span>
+            </button>
+          </div>
+        </header>
+        <div class="dw-main">
+          <div class="dw-heading">
+            <div>
+              <p class="dw-eyebrow" data-i18n="dashboard.workspace.eyebrow">
+                Your learning space
+              </p>
+              <h1 data-dashboard-greeting data-i18n-skip></h1>
+              <p class="dw-intro" data-i18n="dashboard.workspace.intro">
+                Explore a specialty, open a lesson, or find the tool you need.
+              </p>
+            </div>
+            <button class="dw-learning-link" data-dashboard-route="mylearning">
+              <span data-i18n="menu.my_learning_section_title">My Learning</span
+              ><span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <div class="dw-bento">
+            <section
+              class="dw-specialties"
+              aria-label="Explore a specialty"
+              data-i18n="dashboard.workspace.explore:aria-label"
+            >
+              <button
+                class="category-card dw-specialty dw-eyes"
+                data-category="eyes"
+                data-target="eyesCatalogPage"
+                aria-label="Eyes"
+                data-i18n="dashboard.category_eyes:aria-label"
+              >
+                <span
+                  class="dw-specialty-kicker"
+                  data-i18n="dashboard.workspace.explore"
+                  >Explore a specialty</span
+                ><img
+                  src="images/icon/dashboard/eyes-520.webp"
+                  alt=""
+                  draggable="false"
+                  width="520"
+                  height="358"
+                /><span class="dw-specialty-copy"
+                  ><strong data-i18n="dashboard.category_eyes">Eyes</strong
+                  ><small data-i18n="dashboard.workspace.eyesNote"
+                    >See more. Understand better.</small
+                  ></span
+                ><span class="dw-circle-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button
+                class="category-card dw-specialty dw-ears"
+                data-category="ears"
+                data-target="earsCatalogPage"
+                aria-label="Ears"
+                data-i18n="dashboard.category_ears:aria-label"
+              >
+                <img
+                  src="images/icon/dashboard/ears-520.webp"
+                  alt=""
+                  draggable="false"
+                  width="520"
+                  height="358"
+                /><span class="dw-specialty-copy"
+                  ><strong data-i18n="dashboard.category_ears">Ears</strong
+                  ><small data-i18n="dashboard.workspace.earsNote"
+                    >Explore ear care</small
+                  ></span
+                ><span class="dw-circle-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button
+                class="category-card dw-specialty dw-skin"
+                data-category="skin"
+                data-target="skinModules"
+                disabled
+                aria-label="Skin"
+                data-i18n="dashboard.category_skin:aria-label"
+              >
+                <img
+                  src="images/icon/dashboard/skin-520.webp"
+                  alt=""
+                  draggable="false"
+                  width="520"
+                  height="358"
+                /><span class="dw-specialty-copy"
+                  ><strong data-i18n="dashboard.category_skin">Skin</strong
+                  ><small data-i18n="dashboard.coming_soon"
+                    >Coming soon</small
+                  ></span
+                ><span class="dw-circle-arrow" aria-hidden="true">—</span>
+              </button>
+            </section>
+            <section class="dw-tools dw-panel">
+              <p
+                class="dw-eyebrow"
+                data-i18n="dashboard.workspace.toolsEyebrow"
+              >
+                Your everyday tools
+              </p>
+              <h2 data-i18n="dashboard.workspace.quickAccess">Quick access</h2>
+              <div class="dw-tool-list">
+                <button class="dw-tool" data-dashboard-route="atomscard">
+                  <svg aria-hidden="true"><use href="#dw-layers" /></svg
+                  ><span
+                    ><strong data-i18n="dashboard.quick_action_atoms_card"
+                      >Atoms Card</strong
+                    ><small data-i18n="eyes.tools_title"
+                      >Tools and Kits</small
+                    ></span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+                <button class="dw-tool" data-dashboard-notes>
+                  <svg aria-hidden="true"><use href="#dw-note" /></svg
+                  ><span
+                    ><strong data-i18n="dashboard.quick_action_my_notes"
+                      >My Notes</strong
+                    ><small data-i18n="menu.notes_item">Notes</small></span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+                <button class="dw-tool" disabled>
+                  <svg aria-hidden="true"><use href="#dw-chat" /></svg
+                  ><span
+                    ><strong data-i18n="dashboard.quick_action_alan"
+                      >Alan</strong
+                    ><small data-i18n="dashboard.coming_soon"
+                      >Coming soon</small
+                    ></span
+                  ><span aria-hidden="true">—</span>
+                </button>
+                <button class="dw-tool" data-dashboard-download>
+                  <svg aria-hidden="true"><use href="#dw-download" /></svg
+                  ><span
+                    ><strong
+                      data-i18n="dashboard.quick_action_download_contents"
+                      >Download</strong
+                    ><small data-i18n="languageInstall.install_hint"
+                      >No internet needed after install</small
+                    ></span
+                  ><span aria-hidden="true">↗</span>
+                </button>
+              </div>
+              <button class="dw-text-link" data-dashboard-route="intro">
+                <span data-i18n="dashboard.workspace.tour"
+                  >Take a quick tour</span
+                >
+                <span aria-hidden="true">↗</span>
+              </button>
+            </section>
+            <section class="dw-recommended dw-panel">
+              <div class="dw-section-heading">
+                <div>
+                  <h2 data-i18n="dashboard.recommended_title">
+                    Recommended for you
+                  </h2>
+                  <p data-i18n="dashboard.workspace.recommendedNote">
+                    A good place to begin.
+                  </p>
+                </div>
+                <button class="dw-text-link" data-dashboard-route="eyes">
+                  <span data-i18n="dashboard.see_all">See all</span>
+                </button>
+              </div>
+              <div id="dashboardWorkspaceRecommendations"></div>
+            </section>
+            <section class="dw-offline">
+              <p
+                class="dw-eyebrow"
+                data-i18n="dashboard.workspace.offlineEyebrow"
+              >
+                Learning, wherever you are
+              </p>
+              <h2 data-i18n="dashboard.workspace.offlineTitle">
+                Take Arclight with you.
+              </h2>
+              <p data-i18n="dashboard.workspace.offlineCopy">
+                Download your learning content and use it offline.
+              </p>
+            </section>
+          </div>
+          <footer class="dw-footer">
+            <span data-i18n="menu.arclight_project_link">Arclight Project</span
+            ><span data-i18n="dashboard.workspace.footer"
+              >Practical learning for eyes, ears and skin.</span
+            >
+          </footer>
+        </div>
+      </div>
+    </div>
+  </template>
   <div class="container unified-container">
     <!-- Greeting + search -->
     <div class="unified-top">
@@ -191,14 +536,14 @@
     <div class="learning-placeholder" id="recommendedPlaceholder"></div>
 
     <template id="dashboardRecommendedCardTemplate">
-      <div class="module-card">
+      <button type="button" class="module-card">
         <img src="" alt="" draggable="false" />
         <div class="module-info">
           <h3 class="module-title"></h3>
           <p class="module-subtitle"></p>
           <div class="progress-bar"><div class="progress"></div></div>
         </div>
-      </div>
+      </button>
     </template>
   </div>
 </div>

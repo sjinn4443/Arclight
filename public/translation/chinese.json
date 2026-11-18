@@ -60,6 +60,24 @@
     "continue_as_guest_button": "继续以访客身份"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "概览",
+      "eyebrow": "您的学习空间",
+      "intro": "探索专业领域、打开课程或查找所需工具。",
+      "explore": "探索专业领域",
+      "eyesNote": "看得更多，理解更深。",
+      "earsNote": "探索耳部护理",
+      "toolsEyebrow": "您的日常工具",
+      "quickAccess": "快捷访问",
+      "recommendedNote": "从这里开始学习。",
+      "newTo": "初次使用 Arclight？",
+      "tourNote": "了解您的学习空间。",
+      "tour": "快速导览",
+      "offlineEyebrow": "随时随地学习",
+      "offlineTitle": "随身携带 Arclight。",
+      "offlineCopy": "下载学习内容，即可离线使用。",
+      "footer": "眼、耳和皮肤的实用学习。"
+    },
     "greeting": "您好，用户！",
     "search_placeholder": "搜索内容",
     "category_eyes": "眼睛",

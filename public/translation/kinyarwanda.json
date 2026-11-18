@@ -60,6 +60,24 @@
     "continue_as_guest_button": "Komeza nk'umushyitsi"
   },
   "dashboard": {
+    "workspace": {
+      "overview": "Incamake",
+      "eyebrow": "Aho wigira",
+      "intro": "Shakisha icyiciro, fungura isomo cyangwa ubone igikoresho ukeneye.",
+      "explore": "Shakisha icyiciro",
+      "eyesNote": "Reba byinshi. Sobanukirwa neza.",
+      "earsNote": "Iga kwita ku matwi",
+      "toolsEyebrow": "Ibikoresho byawe bya buri munsi",
+      "quickAccess": "Kubona vuba",
+      "recommendedNote": "Ahantu heza ho gutangirira.",
+      "newTo": "Uri mushya kuri Arclight?",
+      "tourNote": "Menya aho wigira.",
+      "tour": "Fata urugendo rugufi",
+      "offlineEyebrow": "Iga aho uri hose",
+      "offlineTitle": "Jyana Arclight.",
+      "offlineCopy": "Kurura amasomo yawe uyakoreshe utari kuri interineti.",
+      "footer": "Amasomo ngiro yerekeye amaso, amatwi n’uruhu."
+    },
     "greeting": "Muraho Mukoresha!",
     "search_placeholder": "Shakisha ibirimo",
     "category_eyes": "Amaso",
