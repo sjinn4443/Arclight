@@ -11,6 +11,7 @@ const TARGET_EXTENSIONS = new Set([
   ".ts",
   ".tsx",
   ".cjs",
+  ".mjs",
   ".css",
   ".html",
   ".json",

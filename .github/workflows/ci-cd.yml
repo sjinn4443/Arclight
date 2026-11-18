@@ -119,7 +119,7 @@ jobs:
           TELEMETRY_TOKEN_SECRET: ci-fundal-telemetry-secret-2026-value
 
       - name: Upload Playwright artifacts
-        if: always()
+        if: ${{ always() && hashFiles('playwright-report/**', 'test-results/**') != '' }}
         uses: actions/upload-artifact@v6
         with:
           name: playwright-report
@@ -131,7 +131,7 @@ jobs:
         run: npm run test:quality
 
       - name: Upload responsive and offline evidence
-        if: always()
+        if: ${{ always() && hashFiles('playwright-report/**', 'test-results/**') != '' }}
         uses: actions/upload-artifact@v6
         with:
           name: quality-browser-matrix
@@ -143,7 +143,7 @@ jobs:
         run: npm run test:animations
 
       - name: Upload examination animation evidence
-        if: always()
+        if: ${{ always() && hashFiles('playwright-report/**', 'test-results/**') != '' }}
         uses: actions/upload-artifact@v6
         with:
           name: examination-animation-report
@@ -155,7 +155,7 @@ jobs:
         run: npm run test:lighthouse
 
       - name: Upload quality reports
-        if: always()
+        if: ${{ always() && hashFiles('quality-reports/**', 'dist-size-report.json') != '' }}
         uses: actions/upload-artifact@v6
         with:
           name: quality-reports
