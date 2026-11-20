@@ -1,6 +1,7 @@
 import { translateLiteral } from "./i18n.js";
 
-const BELL = "#myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn)";
+const BELL =
+  "[data-notification-inbox], #myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn)";
 const CACHE = "arclight:notification-history:v1";
 const SEEN = "arclight:notification-history-seen:v1";
 const text = (value) => translateLiteral(value, value);
@@ -14,6 +15,7 @@ export function initializeNotificationInbox({ readState, request }) {
   let refreshing = false;
   let dialog;
   let opener;
+  let openedRoute;
 
   function cached() {
     const token = readState().token || "";
@@ -37,11 +39,12 @@ export function initializeNotificationInbox({ readState, request }) {
     }
   }
   function badge() {
-    const bell = document.querySelector(BELL);
-    const dot = bell?.querySelector(".notif-dot");
     const unread = items.some((item) => item.sentAt > seen());
-    if (dot) dot.hidden = !unread;
-    if (bell) bell.setAttribute("aria-haspopup", "dialog");
+    document.querySelectorAll(BELL).forEach((bell) => {
+      const dot = bell.querySelector(".notif-dot");
+      if (dot) dot.hidden = !unread;
+      bell.setAttribute("aria-haspopup", "dialog");
+    });
   }
   function markSeen() {
     try {
@@ -138,6 +141,7 @@ export function initializeNotificationInbox({ readState, request }) {
   }
   function open(bell) {
     opener = bell;
+    openedRoute = document.body.dataset.currentRoute;
     if (!dialog?.isConnected) {
       dialog = document.createElement("dialog");
       dialog.className = "notification-inbox";
@@ -177,8 +181,13 @@ export function initializeNotificationInbox({ readState, request }) {
     }
   });
   window.addEventListener("page:loaded", (event) => {
-    if (event.detail?.routeName === "myprofile") void refresh();
-    else if (dialog?.open) dialog.close();
+    if (dialog?.open && openedRoute !== document.body.dataset.currentRoute)
+      dialog.close();
+    if (
+      event.detail?.routeName === "myprofile" ||
+      document.querySelector("[data-notification-inbox]")
+    )
+      void refresh();
   });
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible" && document.querySelector(BELL))

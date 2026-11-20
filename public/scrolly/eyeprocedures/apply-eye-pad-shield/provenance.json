@@ -1,0 +1,24 @@
+{
+  "sourceDocument": "images/pdf/Workshop/CoreExamination/FrontofEye.pdf",
+  "sourcePdfNodes": [
+    809, 811, 813, 819, 820, 833, 834, 836, 837, 838, 839, 840, 841, 842, 843,
+    844, 845, 846, 864, 865
+  ],
+  "sourceHashes": {
+    "images/pdf/Workshop/CoreExamination/FrontofEye.pdf": "098acc58b90a131fadf11edf1253c23672e442b05968f4c2008cf5073128bef2",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/01background.webp": "dd9f30e73f36a23325507ca78018408ce52fda9198efbec02af787f65ef05093",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/02cotton.webp": "ee25d83712697b6cc92b635d1972f8b4cc575adbfcf58cac0473b0cecb2e4898",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/11cone.webp": "aa7aed156649915e9a20a2ad52bd9430ef9eb1c596da6f3aedfd692c806be787",
+    "scrolly/conditions/cataract/images/history-patient.webp": "9635548e232934bf48c9de623a005c34614d76137bbcf9bbcffd55fd29234bb7",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/scissorupperhand.webp": "dc814d9d8fc45b744cf25f86232df90d3c65c7ec7da91bc262ce2b7a8e09bed3",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/scissorlowerhand.webp": "f6efdf03f6424c36070417be6fb5f5309d0a4da6d9036ce317f6281598b2b428",
+    "videos/Workshop/PEC/8.Applypadandshield_720p.mp4": "a44d57eae001b953efbff367a2e50edc009285c3e4989d77c0a679f405f580de",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/03and04foldedgauze.webp": "fcb3ac645e187e31f1d8a3b4d7133c41fc88cd8624b52e1e6cddd9d34614f7c4",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/03tape.webp": "89cd98b91d78e467649a7b17f2d4a0c81be5f8bcb88413bbc6ea113bdd643a7d",
+    "scrolly/eyeprocedures/make-eye-pad-shield/images/12cone.webp": "a670e54d212b0914e7991e6e9a3e0e9332650c85ddee5de899edc4566ddc2a28"
+  },
+  "patient": "Original PDF face, hair and shirt paths; eyes/lid/nose separated, seated body, arms, lap and chair adapted from the existing Cataract history patient.",
+  "materials": "Round source-weave pad; original equipment and shallow formed cone; source paper wrapped to gauze, face and cone surfaces, with pinked ends and contact shadows.",
+  "anatomy": "No hand in skin cleaning: only the original cotton follows the periocular skin. Seated arms and fingers retain the source resting pose.",
+  "teaching": "Treated eye closes before pad contact. Tools share material contact points; the other eye stays uncovered at completion."
+}

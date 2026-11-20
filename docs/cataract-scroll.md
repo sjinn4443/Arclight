@@ -35,7 +35,7 @@ arrows, device settings and referral symbols remain part of the artwork.
 
 ## Runtime and delivery
 
-`public/js/cataractScroll.js` owns 18 stages, six dividers and 36 bilingual cues.
+`public/js/cataractScroll.js` owns 18 stages, six dividers and 38 bilingual cues.
 The track clock is 331 seconds, including a one-second silent lead-in. English
 uses Sonia and Korean uses SunHi through the existing bounded-speed narration
 pipeline. Source utterances and QA stay in the authoring work directory.
@@ -141,3 +141,32 @@ verification distribution are on C:. The old generated directory
 `relocated-build-artifacts` folder on C:, with its original inventory verified
 as 5,700 files / 1,704,127,633 bytes. No source master or runtime asset was
 removed to make space.
+
+### 8 November artwork revision
+
+History actors are extracted by original paint ranges with clipping removed,
+including the patient's complete arms, chair and lower body. They extend to the
+bottom of the stage instead of ending as floating torso crops. Scene 1 has only
+the examiner's bubbles and a shoulder-anchored speaking gesture; scenes 2 and 3
+have only patient bubbles. Bubble bodies stay fixed and downward tails point to
+the speaker. Question marks, eyes, direction arrows and status discs are separate
+trimmed source components fitted to the shared 110-unit teaching-symbol size.
+
+The Visual Acuity method stage embeds the existing detailed-guide distance,
+pinhole and near compositions at 0–8, 8–14 and 14–20 seconds. The next stage
+reveals reduced distance, no pinhole gain and reduced near vision in order,
+with a cautious cataract conclusion. Six changed English/Korean utterances
+replace only their own slots in the delivered recording. Front of Eye, Pupils,
+Fundal Reflex and Fundoscopy method stages embed the corresponding detailed
+guide compositions, including their original masks and source layers. All copied
+raster dependencies live in the Cataract folder for selective offline delivery.
+
+Revision verification: the two focused Jest suites pass all eight checks. The
+18-stage playback, caption, exact-terminal-frame, replay and completion-restore
+flow passes in desktop Chrome and Playwright's WebKit iPhone environment. The
+HTML accessibility audit passes for 181 pages. Physical iOS devices were not
+tested. The final Fundoscopy comparison crop was separately inspected after
+removing the source artwork's duplicate badge shadows.
+The final distribution passes its size budgets; all 143 Cataract artwork files
+match the source hashes. A transient Windows `EBUSY` during packaging was
+recovered by restoring the split build outputs and retrying file moves.

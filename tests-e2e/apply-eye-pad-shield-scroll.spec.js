@@ -3,6 +3,24 @@ import sharp from "sharp";
 import { APPLY_EYE_PAD_SHIELD_SCROLL_CONFIG as cfg } from "../public/js/applyEyePadShieldScroll.js";
 import { useWebKitNarrationClock } from "./helpers/webkit-narration-clock.js";
 const route = "applyEyePadShieldScroll";
+async function colourRatio(buffer, region, match) {
+  const meta = await sharp(buffer).metadata();
+  const crop = {
+    left: Math.round((region[0] * meta.width) / 1169),
+    top: Math.round((region[1] * meta.height) / 1280),
+    width: Math.max(1, Math.round((region[2] * meta.width) / 1169)),
+    height: Math.max(1, Math.round((region[3] * meta.height) / 1280)),
+  };
+  const { data, info } = await sharp(buffer)
+    .extract(crop)
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let n = 0;
+  for (let p = 0; p < data.length; p += info.channels)
+    if (match(data[p], data[p + 1], data[p + 2])) n++;
+  return n / (info.width * info.height);
+}
 
 test.beforeEach(async ({ page, browserName }) => {
   await useWebKitNarrationClock(page, browserName);
@@ -34,16 +52,59 @@ test("launch, all scenes, replay, progress and Back", async ({
   await row.click();
   const guide = page.locator(`#${cfg.pageId}`),
     stages = guide.locator(".childhood-fundal-prep-stage");
-  await expect(stages).toHaveCount(8);
+  await expect(stages).toHaveCount(cfg.paths.length);
   await expect(
     guide.locator("[data-fundal-scroll-narration-language] option"),
   ).toHaveCount(3);
   const shots = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < cfg.paths.length; i++) {
     const stage = stages.nth(i);
+    // Observe both the final visual frame and the stopped narration clock.
+    // Controls must stay hidden for the following 0.7 real seconds, including
+    // in the merged two-cue scene and with accelerated test audio.
+    const finishedAt = await page.waitForFunction(
+      ({ route, i, last, end }) => {
+        const state = window.__ARCLIGHT_E2E__?.fundal?.getStageState(route, i);
+        const audio = document.querySelector(
+          "[data-fundal-scroll-narration-audio]",
+        );
+        return state?.playing &&
+          state.currentFrame === last &&
+          audio?.paused &&
+          audio.currentTime >= end - 0.1
+          ? performance.now()
+          : false;
+      },
+      {
+        route,
+        i,
+        last: cfg.completionHoldFrameByFile[i],
+        end: cfg.narrationClipsByFile[i].endByLanguage.en,
+      },
+      { timeout: 30000 },
+    );
+    const ended = await finishedAt.jsonValue();
+    const replay = stage.locator(".childhood-fundal-stage-replay-btn");
+    const next = stage
+      .locator("..")
+      .locator(".childhood-fundal-scroll-down-arrow");
+    await expect(replay).toBeHidden();
+    if (i < cfg.paths.length - 1) {
+      await expect(next).toBeDisabled();
+      await expect(next).toHaveCSS("opacity", "0");
+    }
+    await page.waitForTimeout(350);
+    await expect(replay).toBeHidden();
+    if (i < cfg.paths.length - 1) {
+      await expect(next).toBeDisabled();
+      await expect(next).toHaveCSS("opacity", "0");
+    }
     await expect(
       stage.locator(".childhood-fundal-stage-replay-btn"),
     ).toBeVisible({ timeout: 30000 });
+    expect(
+      (await page.evaluate(() => performance.now())) - ended,
+    ).toBeGreaterThanOrEqual(580);
     const state = await page.evaluate(
       ({ route, i }) => window.__ARCLIGHT_E2E__.fundal.getStageState(route, i),
       { route, i },
@@ -59,6 +120,25 @@ test("launch, all scenes, replay, progress and Back", async ({
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
+
+    if (i >= 5) {
+      const ratio = colourRatio;
+      const green = (r, g, b) => g > 65 && g > r * 1.4 && g > b * 1.4;
+      const endShot = await stage.screenshot();
+      expect(await ratio(endShot, [715, 622, 74, 98], green)).toBeGreaterThan(
+        0.02,
+      );
+      if (i === 5) {
+        const paper = (r, g, b) =>
+          r > 180 &&
+          g > 170 &&
+          b > 140 &&
+          Math.max(r, g, b) - Math.min(r, g, b) < 48;
+        expect(
+          await ratio(endShot, [453, 524, 190, 80], paper),
+        ).toBeGreaterThan(0.12);
+      }
+    }
     shots.push({
       input: await sharp(await stage.screenshot())
         .resize(292, 320)
@@ -67,7 +147,7 @@ test("launch, all scenes, replay, progress and Back", async ({
       left: (i % 4) * 292,
       top: Math.floor(i / 4) * 320,
     });
-    if (i < 8 - 1) {
+    if (i < cfg.paths.length - 1) {
       await stage
         .locator("..")
         .locator(".childhood-fundal-scroll-down-arrow")
@@ -80,7 +160,7 @@ test("launch, all scenes, replay, progress and Back", async ({
   })
     .composite(shots)
     .png()
-    .toFile(testInfo.outputPath("eight-scenes.png"));
+    .toFile(testInfo.outputPath("seven-scenes.png"));
   await expect
     .poll(() =>
       page.evaluate(
@@ -95,7 +175,7 @@ test("launch, all scenes, replay, progress and Back", async ({
     .poll(() =>
       page.evaluate(
         (route) =>
-          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 7)?.playing,
+          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 6)?.playing,
         route,
       ),
     )
@@ -103,10 +183,44 @@ test("launch, all scenes, replay, progress and Back", async ({
   await expect(
     stages.last().locator(".childhood-fundal-stage-replay-btn"),
   ).toBeVisible({ timeout: 30000 });
+
+  // Seeking deliberately hides stage controls. Inspect after the complete
+  // navigation/replay flow, so visual QA cannot disable the next-stage button.
+  const contactFrames = {
+    1: [50, 100, 130],
+    2: [60, 130, 205],
+    3: [53, 75, 76, 175, 275],
+    4: [60, 120, 180],
+    5: [64, 135, 180, 260, 350],
+    6: [120, 165, 280],
+  };
+  for (let i = 1; i < cfg.paths.length; i++) {
+    const stage = stages.nth(i);
+    await stage.evaluate((el) => el.scrollIntoView({ block: "center" }));
+    for (const frame of contactFrames[i]) {
+      await page.evaluate(
+        ({ route, i, frame }) =>
+          window.__ARCLIGHT_E2E__.fundal.seekStage(route, i, frame),
+        { route, i, frame },
+      );
+      const buffer = await stage.screenshot({
+        path: testInfo.outputPath("contact-" + (i + 1) + "-" + frame + ".png"),
+      });
+      if (i === 5 && frame === 64)
+        expect(
+          await colourRatio(
+            buffer,
+            [454, 617, 82, 99],
+            (r, g, b) => g > 65 && g > r * 1.4 && g > b * 1.4,
+          ),
+        ).toBe(0);
+    }
+  }
+  await stages.last().evaluate((el) => el.scrollIntoView({ block: "center" }));
   for (const frame of [0, 100, 180, 260]) {
     await page.evaluate(
       ({ route, frame }) =>
-        window.__ARCLIGHT_E2E__.fundal.seekStage(route, 7, frame),
+        window.__ARCLIGHT_E2E__.fundal.seekStage(route, 6, frame),
       { route, frame },
     );
     await stages
@@ -138,7 +252,9 @@ test("direct entry, Korean captions, mute and tablet layout", async ({
   await page.goto(`/#/eyePadShield/${cfg.pageId}`);
   const guide = page.locator(`#${cfg.pageId}`);
   await expect(guide).toBeVisible();
-  await expect(guide.locator(".childhood-fundal-prep-stage")).toHaveCount(8);
+  await expect(guide.locator(".childhood-fundal-prep-stage")).toHaveCount(
+    cfg.paths.length,
+  );
   await expect(
     guide.locator("[data-fundal-scroll-narration-language]"),
   ).toHaveValue("ko");

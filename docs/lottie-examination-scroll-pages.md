@@ -58,6 +58,22 @@ same engine config and combined-page CSS still apply. Its timing entry specifies
 
 ### Preparing artwork from PDF / AI
 
+Read the [graphics reuse and style reference](../memory-bank/graphics-and-illustration-style.md)
+before preparing artwork. Search existing app graphics and component layers
+first. Reuse suitable artwork or adapt its angle, pose or composition; only
+create missing graphics when no suitable source exists, matching the existing
+scrolly/PDF illustration style as closely as possible.
+
+Reuse the actual source pixels, vector paths or extracted component layers.
+An existing illustration used only as a generation reference is not reuse.
+Inspect user-named scenes and their PDF/AI originals first; combine existing
+people and tools across scenes before creating any replacement artwork.
+
+Complete missing anatomy when adapting original components. Check interacting
+people and hand/face/body proportions, use natural shoulder/elbow/wrist joins
+and extend cropped wrists offscreen. Register hands with their held object
+through approach, contact and withdrawal; inspect the intermediate frames.
+
 - Compose the extracted artwork to match the actual animation stage `rect`, as on
   the existing examination scroll pages. Start with the standard `1169 / 1280`
   canvas and keep the Lottie dimensions, poster and `stageAspectRatioByFile` in

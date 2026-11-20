@@ -2,9 +2,88 @@
  * @fileoverview This file contains atomscard related functions and logic, handling image display based on selected tabs (Eyes/Ears) and Table of Contents (TOC) interactions.
  */
 //
+import { ATOMS_CARD_OUTLINES } from "./atomsCardOutlines.js";
+
 let currentTOCType = "eyes";
 let currentAtomsZoom = 1;
 let currentAtomsTopic = "";
+let tocCloseTimer;
+let layoutObserver;
+let observedRoot;
+
+function isDesktopWorkspace() {
+  return (
+    innerWidth >= 1024 &&
+    Boolean(
+      document.getElementById("atomsCardPage")?.closest("#unifiedDashboard"),
+    )
+  );
+}
+
+function positionAtomsNavigation() {
+  const root = document.getElementById("atomsCardPage");
+  const image = root?.querySelector("#atomsImageContainer img");
+  if (!image || !image.complete || !image.naturalWidth || !isDesktopWorkspace())
+    return;
+  const page = root.getBoundingClientRect();
+  const art = image.getBoundingClientRect();
+  const viewport = root
+    .querySelector("#atomsImageContainer")
+    .getBoundingClientRect();
+  const left = Math.max(art.left, viewport.left);
+  const right = Math.min(art.right, viewport.right);
+  const width =
+    root.querySelector("#atomsNextCardBtn").getBoundingClientRect().width || 56;
+  root.style.setProperty(
+    "--atoms-prev-x",
+    `${Math.max(viewport.left - page.left, left - page.left - width - 12)}px`,
+  );
+  root.style.setProperty(
+    "--atoms-next-x",
+    `${Math.min(viewport.right - page.left - width, right - page.left + 12)}px`,
+  );
+  root.style.setProperty(
+    "--atoms-nav-y",
+    `${art.top - page.top + art.height / 2}px`,
+  );
+}
+
+function observeAtomsImage(image) {
+  const root = document.getElementById("atomsCardPage");
+  layoutObserver?.disconnect();
+  observedRoot = root;
+  if (typeof ResizeObserver !== "undefined") {
+    layoutObserver ||= new ResizeObserver(positionAtomsNavigation);
+    layoutObserver.observe(image);
+    layoutObserver.observe(root.querySelector("#atomsImageContainer"));
+  }
+  const reveal = () =>
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        if (
+          !root.isConnected ||
+          root.querySelector("#atomsImageContainer img") !== image ||
+          !image.naturalWidth
+        )
+          return;
+        positionAtomsNavigation();
+        root.classList.add("atoms-layout-ready");
+      }),
+    );
+  if (image.decode)
+    void image
+      .decode()
+      .then(reveal)
+      .catch(() => {});
+  image.addEventListener("load", reveal, { once: true });
+}
+
+window.addEventListener("page:loaded", () => {
+  if (observedRoot && !observedRoot.isConnected) {
+    layoutObserver?.disconnect();
+    observedRoot = null;
+  }
+});
 
 // Items derived from the legacy handler mapping.
 const ATOMS_TOC_ITEMS = {
@@ -95,6 +174,7 @@ function applyAtomsZoom() {
     frame.style.width = `${(currentAtomsZoom * 100).toFixed(0)}%`;
     frame.style.maxWidth = `${maxWidth}px`;
   });
+  requestAnimationFrame(positionAtomsNavigation);
 }
 
 function resetAtomsZoom() {
@@ -117,7 +197,7 @@ function setActiveTab(type) {
 }
 
 function updateAtomsTitle(topic = currentAtomsTopic) {
-  const title = document.querySelector("#atomsCardPage .atoms-title-bar");
+  const title = document.querySelector(".atoms-title-bar");
   if (!title) return;
 
   if (topic) {
@@ -152,6 +232,9 @@ function updateTOCSelection() {
 
   tocList.querySelectorAll("li").forEach((li) => {
     li.classList.toggle("is-selected", li.dataset.topic === currentAtomsTopic);
+    if (li.dataset.topic === currentAtomsTopic)
+      li.setAttribute("aria-current", "page");
+    else li.removeAttribute("aria-current");
   });
 }
 
@@ -199,22 +282,40 @@ function setCurrentAtomsTopic(topic = "") {
 function openTOC() {
   const dropdown = document.getElementById("tocDropdown");
   if (!dropdown) return;
+  clearTimeout(tocCloseTimer);
   dropdown.classList.remove("hidden", "slide-up");
   dropdown.classList.add("active");
+  dropdown.setAttribute("aria-hidden", "false");
+  dropdown.inert = false;
 
   const closeBtn = document.getElementById("closeTOCBtn");
   const toggleBtn = document.getElementById("tocToggleBtn");
   if (closeBtn) closeBtn.style.display = "block";
-  if (toggleBtn) toggleBtn.style.display = "none";
+  if (toggleBtn) {
+    toggleBtn.style.display = "none";
+    toggleBtn.setAttribute("aria-expanded", "true");
+  }
+  dropdown
+    .querySelector(
+      isDesktopWorkspace()
+        ? "#eyesTab.active, #earsTab.active"
+        : "#tocInlineCloseBtn",
+    )
+    ?.focus({ preventScroll: true });
 }
 
 function closeTOC() {
+  // Desktop keeps its contents rail open; mobile retains its overlay controls.
+  if (isDesktopWorkspace()) return;
   const dropdown = document.getElementById("tocDropdown");
   if (!dropdown) return;
+  clearTimeout(tocCloseTimer);
   dropdown.classList.add("slide-up");
   dropdown.classList.remove("active");
+  dropdown.setAttribute("aria-hidden", "true");
+  dropdown.inert = true;
 
-  setTimeout(() => {
+  tocCloseTimer = setTimeout(() => {
     dropdown.classList.add("hidden");
     dropdown.classList.remove("slide-up");
   }, 300);
@@ -222,7 +323,12 @@ function closeTOC() {
   const closeBtn = document.getElementById("closeTOCBtn");
   const toggleBtn = document.getElementById("tocToggleBtn");
   if (closeBtn) closeBtn.style.display = "none";
-  if (toggleBtn) toggleBtn.style.display = "block";
+  if (toggleBtn) {
+    toggleBtn.style.display = "block";
+    toggleBtn.setAttribute("aria-expanded", "false");
+    if (dropdown.contains(document.activeElement))
+      toggleBtn.focus({ preventScroll: true });
+  }
 }
 
 function displayImage(src, alt, container) {
@@ -231,6 +337,8 @@ function displayImage(src, alt, container) {
 
   const img = document.createElement("img");
   img.src = src;
+  const outline = ATOMS_CARD_OUTLINES[src.split("/").pop()];
+  if (outline) img.style.setProperty("--atoms-art-outline", outline);
   img.alt = alt;
   img.style.width = "100%";
   img.style.maxWidth = "100%";
@@ -240,6 +348,7 @@ function displayImage(src, alt, container) {
   img.style.marginBottom = "10px";
   frame.appendChild(img);
   container.appendChild(frame);
+  observeAtomsImage(img);
   applyAtomsZoom();
   return img;
 }
@@ -258,6 +367,8 @@ function showTOC(type = "eyes") {
     const li = document.createElement("li");
     li.dataset.topic = item;
     li.textContent = translateAtomsLabel(item);
+    li.tabIndex = 0;
+    li.setAttribute("role", "button");
     tocList.appendChild(li);
   });
 
@@ -271,9 +382,13 @@ function showTOC(type = "eyes") {
   if (imgBox) imgBox.innerHTML = "";
   setCurrentAtomsTopic("");
   resetAtomsZoom();
+  if (isDesktopWorkspace()) showAtomsTopic(items[0]);
 }
 
 function showAtomsTopic(topic) {
+  document
+    .getElementById("atomsCardPage")
+    ?.classList.remove("atoms-layout-ready");
   setCurrentAtomsTopic(topic);
   const container = document.getElementById("atomsImageContainer");
   if (!container) return;
@@ -322,14 +437,14 @@ function handleTOCItemClick(e) {
 
   const topic = itemEl.dataset.topic || itemEl.textContent.trim();
   showAtomsTopic(topic);
-  closeTOC();
+  if (!isDesktopWorkspace()) closeTOC();
 }
 
 function navigateAtomsCard(direction) {
   const topic = getAdjacentAtomsTopic(direction);
   if (!topic) return;
   showAtomsTopic(topic);
-  closeTOC();
+  if (!isDesktopWorkspace()) closeTOC();
 }
 
 function initializeAtomsZoomControls() {
@@ -367,10 +482,25 @@ function initializeAtomsNavigationControls() {
   updateAtomsNavigation();
 }
 
+function syncAtomsViewport() {
+  const root = document.getElementById("atomsCardPage");
+  if (!root) return;
+  if (isDesktopWorkspace() && !root.querySelector("#tocDropdown.active"))
+    openTOC();
+  applyAtomsZoom();
+}
+
 function initializeTOC() {
   const tocToggleBtn = document.getElementById("tocToggleBtn");
   if (tocToggleBtn) {
-    tocToggleBtn.addEventListener("click", openTOC);
+    tocToggleBtn.addEventListener("click", () => {
+      if (
+        isDesktopWorkspace() &&
+        document.getElementById("tocDropdown")?.classList.contains("active")
+      )
+        closeTOC();
+      else openTOC();
+    });
   }
 
   const closeTOCBtn = document.getElementById("closeTOCBtn");
@@ -396,6 +526,12 @@ function initializeTOC() {
   const tocList = document.getElementById("tocList");
   if (tocList) {
     tocList.addEventListener("click", handleTOCItemClick);
+    tocList.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        handleTOCItemClick(event);
+      }
+    });
   }
 }
 
@@ -406,17 +542,29 @@ export function initializeAtomsCard() {
   const root = document.getElementById("atomsCardPage");
   if (!root || root.dataset.init === "1") return;
   root.dataset.init = "1";
+  root.addEventListener("dw:mounted", () => {
+    if (isDesktopWorkspace()) openTOC();
+  });
+  root.addEventListener("keydown", (event) => {
+    if (
+      !isDesktopWorkspace() &&
+      event.key === "Escape" &&
+      root.querySelector("#tocDropdown.active")
+    ) {
+      event.preventDefault();
+      closeTOC();
+    }
+  });
 
   initializeTOC();
   initializeAtomsZoomControls();
   initializeAtomsNavigationControls();
-  window.addEventListener("resize", applyAtomsZoom, { passive: true });
+  window.addEventListener("resize", syncAtomsViewport, { passive: true });
 
-  // Start with eyes tab and TOC visible, clear image area
+  // Desktop shows the first real card beside its persistent topic panel.
+  // Mobile retains the original empty image area until a topic is chosen.
   openTOC();
   showTOC("eyes");
-  const box = document.getElementById("atomsImageContainer");
-  if (box) box.innerHTML = "";
 }
 
 // Support direct navigation

@@ -25,5 +25,7 @@ foreach ($taskLanguage in @('en', 'ko')) {
   }
 }
 $taskScript | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $taskScriptPath -Encoding utf8NoBOM
+& $Python (Join-Path $PSScriptRoot 'trim-apply-eye-pad-narration.py')
+if ($LASTEXITCODE -ne 0) { throw 'Speech trimming failed' }
 & $Python (Join-Path $PSScriptRoot 'generate-fundal-narration.py') --script $taskScriptPath --work-dir (Join-Path $taskRoot 'tmp/apply-eye-pad-narration') --artifacts-dir (Join-Path $taskRoot '.codex-artifacts/apply-eye-pad/narration') --public-dir (Join-Path $taskRoot 'public/narration/apply-eye-pad-shield/full-animation') --asset-stem apply-eye-pad-shield --skip-review-video --skip-tts
 if ($LASTEXITCODE -ne 0) { throw 'Narration mixing failed' }

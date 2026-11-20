@@ -1,6 +1,55 @@
 # Agent Notes
 
-Last refreshed: 2026-10-09
+Last refreshed: 2026-11-20
+
+## Graphics and illustration: read before artwork work
+
+Standing user instruction, 19 November 2026:
+
+1. Search and visually inspect existing app graphics first, especially
+   `public/scrolly/`, `public/pdfbasedanims/`, `public/images/` and relevant
+   SVG/JS artwork, including reusable layers and components.
+2. If a suitable graphic exists, prioritise reusing it or adapting its angle,
+   pose or composition while preserving its proportions and clinical meaning.
+3. Only if no suitable artwork exists, create the missing graphic and match the
+   existing scrolly/PDF illustration style as closely as possible.
+
+Actual reuse is required: keep existing source pixels, vector paths or component
+layers through extraction, cropping, compositing or limited pose/angle changes.
+Using an existing image only as a style reference for a newly generated lookalike
+does not satisfy reuse. Inspect user-named pages and their source PDF/AI before
+choosing another character or declaring an asset missing. If a matching person
+and tool exist in different scenes, combine those originals first. Recolouring
+an unrelated character is not the first choice when the requested character
+already exists. The graphics reference records the Front of Eye man and Eye
+Pad/Shield scissors as a concrete example.
+
+Practical adaptation is part of reuse. Complete a missing upper arm, elbow,
+forearm or wrist when a pose needs it; do not leave a cropped stump or a hand
+attached directly to a sleeve. Check head/body, hand/face and upper-arm/forearm
+proportions. Preserve useful source features while adapting the missing parts.
+For motion, register the hand, held object and contact point together, then
+inspect approach, contact, withdrawal and the final hold at actual display size.
+
+Scene revisions from 19 November: keep tabletop objects on one viewing plane
+with contact shadows; compare the head sizes of interacting adults. Speech
+bubbles should contain the actual procedure scene. A cleaning grip needs a
+complete index finger/thumb pinch and a tapered wrist, not an enlarged cropped
+hand. For eye dressings, draw the pad before its tape and restore the original
+nose in front, leaving the other eye visible. Omit hands when staged material
+placement explains the action clearly. Show tape unwinding from its roll before
+the snip and separation. Apply Eye Pad / Shield has seven scenes with eight
+original narration cues; Replay/Next wait 0.7 seconds after speech and motion.
+
+Latest Apply refinements use the linked Apply video for every step: broad round
+gauze, curved/shaded tape with pinked ends, and a complete shield rim covering
+the pad. Show the seated patient's arms/lap/chair; fill the darker procedure
+bubble with an exact rounded crop. Skin cleaning uses cotton alone.
+
+Read [the graphics and illustration reference](./memory-bank/graphics-and-illustration-style.md)
+before creating or revising artwork. It records the source locations, palette,
+people, shading, comparison layouts, teaching symbols and motion conventions.
+This applies to app graphics generally, as well as scrolly pages.
 
 ## Current repo orientation
 
@@ -28,6 +77,34 @@ Last refreshed: 2026-10-09
 - The Case Study route (`public/html/casestudy.html`) owns primary/intermediate/advanced case-study pages. Primary chat and flashcard behavior live in `public/js/casestudy_primary.js`; intermediate chat behavior lives in `public/js/casestudy.js`. The Glaucoma history case-study route lives in `public/html/glaucomaHistoryCaseStudy.html` and `public/js/glaucomaHistoryCaseStudy.js`.
 - Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
 - `scripts/build.cjs` cleans build outputs by renaming old output directories to `.build-cleanup-*`, recreating the target output directory, and falling back to retrying removal when Windows file locks block the rename.
+
+## Desktop workspace and lesson maintenance
+
+- At 1024px and above, `public/js/desktopWorkspaceRoutes.js` mounts Eyes, Ears,
+  My Learning, Atoms Card, My Profile, Edit Profile and Settings inside the
+  Dashboard workspace. `public/js/desktopWorkspaceHeader.js` moves the live
+  page titlebars between the desktop topbar and their mobile positions.
+  Preserve shell identity, existing route initializers, active control state,
+  direct links and Back/Forward when changing either path.
+- The desktop notification bell and mobile Profile bell share
+  `public/js/notificationInbox.js` and unread state. Keep the inbox open when the
+  current route finishes initializing. Atoms keeps its desktop contents rail
+  visible and restores mobile overlay behavior across the breakpoint. Rebuild
+  its 33 source-derived image masks with `node scripts/build-atoms-card-outlines.cjs`
+  when card sources change. Use `tests-e2e/dashboard-workspace.spec.js` and
+  `tests-e2e/practice-reminders.spec.js` for these interactions.
+- The experimental `frontOfEyePdfTest` route sits beneath the original PDF in
+  the Front of Eye lesson list. Keep its bookmark and lesson progress keyed to
+  the test reader, its original illustration order and its Back target.
+  Regenerate lossless WebPs with `scripts/build-front-of-eye-book.cjs`; the
+  Python helper squares the eversion panel borders in a temporary PDF copy.
+  Use `tests-e2e/front-of-eye-pdf-test.spec.js` for reader changes.
+- For Cataract, keep the 18-stage order, six detailed-guide shortcuts, bilingual
+  cues and `condition-cataract` offline dependencies aligned. For Apply Eye
+  Pad / Shield, keep both captions in the merged placement/securing scene and
+  retain the 0.7-second completion delay. See the
+  [Cataract authoring guide](./docs/cataract-scroll.md) and the
+  [Apply authoring guide](./docs/apply-eye-pad-shield-scroll.md).
 
 ## VS Code localhost launcher
 
@@ -97,8 +174,8 @@ Last refreshed: 2026-10-09
   CSP handling and relative CSS imports. Keep developer fixtures excluded from
   deployment/offline manifests. Rebuild changed bundles with each app's
   canonical builder; keep clinical review and physical-device limits explicit.
-- Current source service-worker fallback: `arclight-static-v95`. Production
-  can inject `__BUILD_CACHE_NAME__`; read `public/sw.js` before assuming a value.
+- Read `public/sw.js` for the current source service-worker cache name.
+  Production can inject `__BUILD_CACHE_NAME__`.
 
 ## Scrolly-based Full Animation video authoring
 
@@ -623,3 +700,11 @@ Historical record: these three embeds now load local content under
 ## Pupils Advanced publication policy
 
 videos/pupilsAdvancedScrollPage is published. Track its dedicated configuration, artwork, narration, authoring scripts and tests. Production builds and offline manifests include its runtime assets. See docs/local-only-lessons.md.
+
+Apply composition clarification (19 November): single-patient scenes use a
+registered rightward camera crop; pad/shield and nose contacts move together.
+A reel rotates within its fixed projected axle, without rotating its camera
+plane. Complete equipment-scissor halves share a screw, enter once for three
+cuts and put the lower blade behind the tape. Seated hands rest separately on
+the thighs. Prepared tape varies its curvature across the pad. The cone reuses
+the equipment cone's original shading, with outer and nasal securing tape.

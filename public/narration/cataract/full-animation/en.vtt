@@ -25,20 +25,28 @@ history-pain
 Pain or a red eye suggests a problem at the front of the eye. Arrange referral rather than assuming cataract.
 
 acuity-distance
-00:00:55.000 --> 00:01:05.000
+00:00:55.000 --> 00:01:03.000
 Measure distance vision in each eye separately, using the patient's usual distance glasses.
 
+acuity-method-pinhole
+00:01:03.000 --> 00:01:09.000
+If distance vision is reduced, repeat the test with a pinhole.
+
 acuity-near
-00:01:05.000 --> 00:01:15.000
-Check near vision and repeat reduced distance vision with a pinhole.
+00:01:09.000 --> 00:01:15.000
+Then check near vision using a reading chart.
 
 acuity-reduced
-00:01:15.000 --> 00:01:25.000
-Cataract can reduce distance and near vision, as shown by the downward arrows.
+00:01:15.000 --> 00:01:22.000
+Distance vision is reduced.
 
 acuity-pinhole
-00:01:25.000 --> 00:01:35.000
-Vision may remain reduced through a pinhole. This supports further examination, but does not diagnose cataract by itself.
+00:01:22.000 --> 00:01:28.000
+A pinhole does not improve the vision.
+
+acuity-cataract-near
+00:01:28.000 --> 00:01:35.000
+Near vision is also reduced. Together, these findings may suggest cataract.
 
 acuity-improves
 00:01:35.000 --> 00:01:44.000

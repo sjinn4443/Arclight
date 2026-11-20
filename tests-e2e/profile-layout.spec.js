@@ -123,7 +123,10 @@ test("Escape closes editing, Settings owns language, and the direct edit route s
     .press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.locator("#profileEditBtn")).toBeFocused();
-  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page
+    .locator("#myProfilePage")
+    .getByRole("button", { name: "Settings", exact: true })
+    .click();
   await expect(page).toHaveURL(/#\/settings$/);
   await expect(
     page.getByRole("button", { name: "Language English", exact: true }),

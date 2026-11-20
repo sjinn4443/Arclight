@@ -35,11 +35,7 @@ export function initializeDashboardWorkspace(root, openDownload) {
     const language = getLanguage();
     const dict = await fetchDictionary(language);
     if (token !== profileToken || !root.isConnected) return;
-    workspace.querySelector("[data-dashboard-name]").textContent =
-      name || get(dict, "myprofile.my_profile") || "My Profile";
-    workspace
-      .querySelectorAll("[data-dashboard-avatar]")
-      .forEach((avatar) => renderProfileAvatar(avatar));
+    renderProfileAvatar(workspace.querySelector("[data-dashboard-avatar]"));
     const greeting =
       get(
         dict,
@@ -47,8 +43,14 @@ export function initializeDashboardWorkspace(root, openDownload) {
           ? "dashboard.greeting_welcome_back_name"
           : "dashboard.greeting_welcome_back_generic",
       ) || (name ? "Welcome back {{name}}!" : "Welcome back!");
-    workspace.querySelector("[data-dashboard-greeting]").textContent =
-      greeting.replace(/\{\{\s*name\s*\}\}/g, () => name);
+    const greetingElement = workspace.querySelector(
+      "[data-dashboard-greeting]",
+    );
+    if (greetingElement)
+      greetingElement.textContent = greeting.replace(
+        /\{\{\s*name\s*\}\}/g,
+        () => name,
+      );
     const languageOption = document.querySelector(
       `#languagePickerSelect option[value="${language}"]`,
     );
@@ -61,7 +63,7 @@ export function initializeDashboardWorkspace(root, openDownload) {
   workspace.querySelectorAll("[data-dashboard-route]").forEach((button) => {
     button.addEventListener("click", () => {
       const route = button.dataset.dashboardRoute;
-      if (route !== "dashboard") void loadPage(route);
+      if (route !== document.body.dataset.currentRoute) void loadPage(route);
     });
   });
   workspace
@@ -88,6 +90,8 @@ export function initializeDashboardWorkspace(root, openDownload) {
       )
         return;
       event.preventDefault();
+      if (search?.classList.contains("search-collapsed"))
+        search.querySelector("#dashboardSearchToggle").click();
       search?.querySelector("input").focus();
     },
     { signal },
@@ -108,6 +112,7 @@ export function initializeDashboardWorkspace(root, openDownload) {
     },
     { signal },
   );
+  root.addEventListener("dw:dispose", () => controller.abort(), { once: true });
   syncLayout();
   void refreshProfile();
 }

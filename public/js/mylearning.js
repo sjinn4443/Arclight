@@ -128,7 +128,9 @@ const MY_LEARNING_PROGRESS_SOURCES = Object.freeze([
     route: "eyePadShield",
     title: "Eye Pad / Shield",
     titleI18n: "eyes.card_label.eye_pad_shield",
-    image: "images/icon/eyes/moduleicons/primary_scrollytell.webp",
+    // The Eyes procedure card is intentionally plain; a tiny lesson-type icon
+    // is not a full-width cover image.
+    image: "",
   },
   {
     route: "childhoodEyeScreeningWorkshop",

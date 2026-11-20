@@ -6,16 +6,16 @@
       "src": "en.m4a",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 1458772,
-      "sha256": "365874b21ec6f112491d7393b5f97c776f831f2f9eb4af776a129f41fdbb7ba0",
+      "bytes": 1458488,
+      "sha256": "6ecee51ba93204b944ea37359b09c728a7724ef37aed5f57b6a7243fa19e30dc",
       "durationSeconds": 331.01
     },
     "ko": {
       "src": "ko.m4a",
       "label": "한국어",
       "voice": "ko-KR-SunHiNeural",
-      "bytes": 1527242,
-      "sha256": "72e6f71d030b9bcf58a229360a9dc065750f3991213a100f4380615ab853da4e",
+      "bytes": 1519858,
+      "sha256": "43c5e678a4850aa6e61a1122ad2b827fadc005c61ecf7e2e9958c959deec8bf1",
       "durationSeconds": 331.01
     }
   }

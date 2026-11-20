@@ -62,27 +62,41 @@
       "en": "Measure distance vision in each eye separately, using the patient's usual distance glasses.",
       "ko": "평소 원거리 안경을 착용한 상태에서 한쪽 눈씩 가리고 원거리 시력을 측정합니다.",
       "start": 55,
-      "end": 65
+      "end": 63
+    },
+    {
+      "id": "acuity-method-pinhole",
+      "en": "If distance vision is reduced, repeat the test with a pinhole.",
+      "ko": "원거리 시력이 낮으면 핀홀을 통해 다시 측정합니다.",
+      "start": 63,
+      "end": 69
     },
     {
       "id": "acuity-near",
-      "en": "Check near vision and repeat reduced distance vision with a pinhole.",
-      "ko": "근거리 시력을 확인하고, 원거리 시력이 낮으면 핀홀을 통해 다시 측정합니다.",
-      "start": 65,
+      "en": "Then check near vision using a reading chart.",
+      "ko": "그다음 읽기 시력표로 근거리 시력을 확인합니다.",
+      "start": 69,
       "end": 75
     },
     {
       "id": "acuity-reduced",
-      "en": "Cataract can reduce distance and near vision, as shown by the downward arrows.",
-      "ko": "아래 화살표처럼 백내장은 원거리와 근거리 시력을 모두 낮출 수 있습니다.",
+      "en": "Distance vision is reduced.",
+      "ko": "원거리 시력이 떨어져 있습니다.",
       "start": 75,
-      "end": 85
+      "end": 82
     },
     {
       "id": "acuity-pinhole",
-      "en": "Vision may remain reduced through a pinhole. This supports further examination, but does not diagnose cataract by itself.",
-      "ko": "핀홀을 사용해도 시력이 낮을 수 있습니다. 추가 검사가 필요하지만, 이것만으로 백내장을 진단하지는 않습니다.",
-      "start": 85,
+      "en": "A pinhole does not improve the vision.",
+      "ko": "핀홀을 사용해도 시력이 좋아지지 않습니다.",
+      "start": 82,
+      "end": 88
+    },
+    {
+      "id": "acuity-cataract-near",
+      "en": "Near vision is also reduced. Together, these findings may suggest cataract.",
+      "ko": "근거리 시력도 떨어져 있다면, 이 소견들을 종합해 백내장을 의심할 수 있습니다.",
+      "start": 88,
       "end": 95
     },
     {

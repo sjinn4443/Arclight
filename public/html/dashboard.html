@@ -58,19 +58,11 @@
       </svg>
       <aside class="dw-sidebar">
         <a class="dw-brand" href="#/dashboard"
-          >Arclight<span>.</span><small>EYES · EARS · SKIN</small></a
-        >
-        <button class="dw-profile" data-dashboard-route="myprofile">
-          <span
-            class="dw-avatar"
-            data-dashboard-avatar
-            aria-hidden="true"
-          ></span>
-          <span
-            ><strong data-dashboard-name data-i18n-skip></strong
-            ><small data-i18n="myprofile.my_profile">My Profile</small></span
-          ><span aria-hidden="true">⌄</span>
-        </button>
+          ><img class="dw-brand-mark" src="/images/logo/1.webp" alt="" /><img
+            class="topbar-home-logo__image"
+            src="/images/logo/2.webp"
+            alt="Arclight Project"
+        /></a>
         <nav
           aria-label="Learning"
           data-i18n="menu.learning_tab_title:aria-label"
@@ -136,6 +128,7 @@
       </aside>
       <div class="dw-work">
         <header class="dw-topbar">
+          <div class="dw-route-title" hidden></div>
           <div class="dw-breadcrumb">
             <span data-i18n="menu.learning_tab_title">Learning</span
             ><span aria-hidden="true">/</span
@@ -148,8 +141,11 @@
               data-dashboard-language
               data-route="languageinstall"
             >
-              <span data-dashboard-language-name></span
-              ><span aria-hidden="true">⌄</span></button
+              <img src="/images/icon/base/language_b.webp" alt="" />
+              <span data-dashboard-language-name></span>
+              <svg viewBox="0 0 12 12" aria-hidden="true">
+                <path d="m2 4 4 4 4-4" />
+              </svg></button
             ><button
               class="dw-avatar dw-account"
               data-dashboard-route="myprofile"
@@ -157,6 +153,21 @@
               aria-label="My Profile"
             >
               <span data-dashboard-avatar aria-hidden="true"></span>
+            </button>
+            <button
+              class="dw-notifications"
+              type="button"
+              data-notification-inbox
+              aria-label="Notifications"
+              aria-haspopup="dialog"
+              data-i18n="i18nExtra.notifications:aria-label"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                <path
+                  d="M12 2a1 1 0 0 1 1 1v1.08A6 6 0 0 1 18 10v4l2 3v1H4v-1l2-3v-4a6 6 0 0 1 5-5.92V3a1 1 0 0 1 1-1Zm-2 18h4a2 2 0 0 1-4 0Z"
+                />
+              </svg>
+              <span class="notif-dot" aria-hidden="true" hidden></span>
             </button>
           </div>
         </header>
@@ -193,13 +204,59 @@
                   class="dw-specialty-kicker"
                   data-i18n="dashboard.workspace.explore"
                   >Explore a specialty</span
-                ><img
-                  src="images/icon/dashboard/eyes-520.webp"
-                  alt=""
-                  draggable="false"
-                  width="520"
-                  height="358"
-                /><span class="dw-specialty-copy"
+                ><svg
+                  class="dw-specialty-art"
+                  viewBox="0 0 574 393"
+                  preserveAspectRatio="xMaxYMid meet"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <defs>
+                    <clipPath id="dw-original-eyes">
+                      <rect x="232" y="126" width="342" height="215" />
+                    </clipPath>
+                    <clipPath id="dw-eye-iris">
+                      <!-- Enclose the original iris, including its antialiased edge. -->
+                      <circle cx="440.5" cy="235" r="94" />
+                    </clipPath>
+                    <clipPath id="dw-eye-opening">
+                      <path d="M262 235Q440 67 618 235Q440 403 262 235Z" />
+                    </clipPath>
+                  </defs>
+                  <g
+                    class="dw-eye-shape"
+                    clip-path="url(#dw-original-eyes)"
+                    data-source-art="eyes.webp"
+                  >
+                    <image
+                      class="dw-eye-rest"
+                      href="images/icon/dashboard/eyes.webp"
+                      width="574"
+                      height="393"
+                    />
+                    <g class="dw-eye-animated">
+                      <path
+                        d="M263 235Q440 69 617 235Q440 401 263 235Z"
+                        fill="black"
+                      />
+                      <g clip-path="url(#dw-eye-opening)">
+                        <g class="dw-eye-gaze" clip-path="url(#dw-eye-iris)">
+                          <image
+                            href="images/icon/dashboard/eyes.webp"
+                            width="574"
+                            height="393"
+                          />
+                        </g>
+                      </g>
+                      <path
+                        d="M262 235Q440 67 618 235Q440 403 262 235Z"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="1"
+                      />
+                    </g>
+                  </g></svg
+                ><span class="dw-specialty-copy"
                   ><strong data-i18n="dashboard.category_eyes">Eyes</strong
                   ><small data-i18n="dashboard.workspace.eyesNote"
                     >See more. Understand better.</small
@@ -213,13 +270,120 @@
                 aria-label="Ears"
                 data-i18n="dashboard.category_ears:aria-label"
               >
-                <img
-                  src="images/icon/dashboard/ears-520.webp"
-                  alt=""
-                  draggable="false"
-                  width="520"
-                  height="358"
-                /><span class="dw-specialty-copy"
+                <svg
+                  class="dw-specialty-art"
+                  viewBox="0 58 578 333"
+                  preserveAspectRatio="xMaxYMax meet"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <defs>
+                    <clipPath id="dw-original-ears">
+                      <rect x="316" y="75" width="236" height="316" />
+                    </clipPath>
+                    <filter
+                      id="dw-ear-original-red"
+                      x="0%"
+                      y="0%"
+                      width="100%"
+                      height="100%"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feColorMatrix
+                        type="matrix"
+                        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  2 -2 0 0 0"
+                      />
+                      <feMorphology operator="dilate" radius="3" />
+                    </filter>
+                    <clipPath id="dw-ear-inner-ring">
+                      <ellipse cx="470" cy="187" rx="64" ry="65" />
+                    </clipPath>
+                    <clipPath id="dw-ear-wave-arcs">
+                      <rect x="380" y="90" width="180" height="76" />
+                    </clipPath>
+                    <!-- One mask trims the three sizes of source artwork to a common line weight. -->
+                    <mask
+                      id="dw-ear-wave-weight"
+                      maskUnits="userSpaceOnUse"
+                      x="325"
+                      y="50"
+                      width="290"
+                      height="280"
+                    >
+                      <g
+                        fill="none"
+                        stroke="white"
+                        stroke-width="10"
+                        stroke-linecap="round"
+                      >
+                        <path
+                          d="M431.99 162.91 A45 45 0 0 1 435.34 158.30 M458.63 143.46 A45 45 0 0 1 475.20 142.30 M502.02 155.38 A45 45 0 0 1 508.01 162.91"
+                        />
+                        <path
+                          d="M398.63 146.63 A82 82 0 0 1 409.55 131.59 M445.33 108.80 A82 82 0 0 1 483.54 106.13 M525.39 126.54 A82 82 0 0 1 541.37 146.63"
+                        />
+                        <path
+                          d="M365.33 130.39 A119 119 0 0 1 383.81 104.95 M432.06 74.21 A119 119 0 0 1 491.88 70.03 M548.71 97.75 A119 119 0 0 1 574.67 130.39"
+                        />
+                      </g>
+                    </mask>
+                    <g
+                      id="dw-ear-source-arc"
+                      clip-path="url(#dw-ear-wave-arcs)"
+                    >
+                      <image
+                        href="images/icon/eyes/core/car_miniapp.webp"
+                        width="601"
+                        height="396"
+                        filter="url(#dw-ear-original-red)"
+                        clip-path="url(#dw-ear-inner-ring)"
+                      />
+                    </g>
+                  </defs>
+                  <g
+                    class="dw-ear-waves"
+                    transform="translate(-170 38) rotate(-90 470 187)"
+                  >
+                    <g
+                      class="dw-ear-ripple-outer"
+                      mask="url(#dw-ear-wave-weight)"
+                    >
+                      <use
+                        href="#dw-ear-source-arc"
+                        transform="translate(470 187) scale(2.25) translate(-470 -187)"
+                      />
+                    </g>
+                    <g
+                      class="dw-ear-ripple-middle"
+                      mask="url(#dw-ear-wave-weight)"
+                    >
+                      <use
+                        href="#dw-ear-source-arc"
+                        transform="translate(470 187) scale(1.55) translate(-470 -187)"
+                      />
+                    </g>
+                    <g
+                      class="dw-ear-ripple-inner"
+                      mask="url(#dw-ear-wave-weight)"
+                    >
+                      <use
+                        href="#dw-ear-source-arc"
+                        transform="translate(470 187) scale(0.85) translate(-470 -187)"
+                      />
+                    </g>
+                  </g>
+                  <g
+                    class="dw-ear-shape"
+                    clip-path="url(#dw-original-ears)"
+                    data-source-art="ears.webp"
+                  >
+                    <image
+                      href="images/icon/dashboard/ears.webp"
+                      width="578"
+                      height="397"
+                    />
+                  </g></svg
+                ><span class="dw-specialty-copy"
                   ><strong data-i18n="dashboard.category_ears">Ears</strong
                   ><small data-i18n="dashboard.workspace.earsNote"
                     >Explore ear care</small
@@ -234,13 +398,50 @@
                 aria-label="Skin"
                 data-i18n="dashboard.category_skin:aria-label"
               >
-                <img
-                  src="images/icon/dashboard/skin-520.webp"
-                  alt=""
-                  draggable="false"
-                  width="520"
-                  height="358"
-                /><span class="dw-specialty-copy"
+                <svg
+                  class="dw-specialty-art"
+                  viewBox="0 56 570 337"
+                  preserveAspectRatio="xMaxYMax meet"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <defs>
+                    <clipPath id="dw-original-skin">
+                      <rect x="232" y="190" width="180" height="33" />
+                      <rect x="488" y="198" width="82" height="16" rx="8" />
+                      <rect x="232" y="250" width="346" height="147" />
+                    </clipPath>
+                    <clipPath id="dw-original-skin-hair">
+                      <path
+                        d="M481 64C470 113 411 206 422 251C433 297 483 294 474 240C466 175 464 127 481 64Z"
+                      />
+                    </clipPath>
+                  </defs>
+                  <g class="dw-skin-shape" data-source-art="skin.webp">
+                    <g clip-path="url(#dw-original-skin)">
+                      <image
+                        href="images/icon/dashboard/skin.webp"
+                        width="578"
+                        height="397"
+                      />
+                    </g>
+                    <path
+                      class="dw-skin-corner"
+                      d="M526 315H578V397H482V382H526Z"
+                      fill="white"
+                    />
+                    <g
+                      class="dw-skin-hair"
+                      clip-path="url(#dw-original-skin-hair)"
+                    >
+                      <image
+                        href="images/icon/dashboard/skin.webp"
+                        width="578"
+                        height="397"
+                      />
+                    </g>
+                  </g></svg
+                ><span class="dw-specialty-copy"
                   ><strong data-i18n="dashboard.category_skin">Skin</strong
                   ><small data-i18n="dashboard.coming_soon"
                     >Coming soon</small
@@ -361,13 +562,18 @@
             aria-label="Search contents"
             aria-controls="dashboardSearchPanel"
             autocomplete="off"
+            tabindex="-1"
             placeholder="Search for contents"
             data-i18n="dashboard.search_placeholder:placeholder"
           />
-          <span
+          <button
+            type="button"
             class="search-icon"
             id="dashboardSearchToggle"
-            aria-hidden="true"
+            aria-label="Search contents"
+            data-i18n="dashboard.search_placeholder:aria-label"
+            aria-controls="dashboardSearchInput dashboardSearchPanel"
+            aria-expanded="false"
           >
             <svg
               viewBox="0 0 24 24"
@@ -382,7 +588,7 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-          </span>
+          </button>
           <div id="dashboardSearchPanel" class="dashboard-search-panel" hidden>
             <div class="dashboard-search-suggestions"></div>
             <div class="dashboard-search-results"></div>

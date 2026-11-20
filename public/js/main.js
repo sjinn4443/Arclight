@@ -713,7 +713,7 @@ window.addEventListener("page:loaded", async (e) => {
     return;
   }
 
-  if (routeName === "mylearning") {
+  if (page === "mylearning") {
     const { initializeMyLearning } = await import("./mylearning.js");
     initializeMyLearning?.();
     return;

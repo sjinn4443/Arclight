@@ -44,7 +44,7 @@ test.each([
     for (const file of cfg.paths) {
       expect(selection.urls).toContain(file);
       const scene = JSON.parse(fs.readFileSync(`public${file}`));
-      for (const a of scene.assets)
+      for (const a of scene.assets.filter((a) => a.p))
         expect(selection.urls).toContain(
           path.posix.normalize(`${path.posix.dirname(file)}/${a.u}${a.p}`),
         );

@@ -114,6 +114,9 @@
   height: auto;
   border-radius: inherit;
 }
+.foe-book__panels--square .foe-book__image {
+  border-radius: 0;
+}
 .foe-book__navigation {
   display: flex;
   align-items: center;
@@ -151,9 +154,9 @@
   width: min(90vw, 800px);
   max-height: 90dvh;
   box-sizing: border-box;
-  padding: 12px;
+  padding: 0;
   border: 0;
-  border-radius: 16px;
+  border-radius: 0;
 }
 .foe-book__zoom::backdrop {
   background: #000000bf;
@@ -161,19 +164,24 @@
 .foe-book__zoom form {
   position: sticky;
   top: 0;
-  display: flex;
-  justify-content: flex-end;
-  padding-bottom: 12px;
-  background: #fff;
+  height: 0;
+  z-index: 1;
 }
 .foe-book__zoom button {
-  min-height: 44px;
-  padding: 8px 16px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
   border: 0;
-  border-radius: 15px;
-  background: #9ca3af;
+  border-radius: 50%;
+  background: #000000b3;
   color: #fff;
   font: inherit;
+  font-size: 28px;
+  line-height: 1;
   cursor: pointer;
 }
 .foe-book__zoom img {

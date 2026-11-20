@@ -227,9 +227,7 @@ test("notification history opens from the profile bell and closes with focus res
     return route.fulfill({ status: 204 });
   });
   await page.goto("/#/myprofile");
-  const bell = page.locator(
-    "#myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn)",
-  );
+  const bell = page.getByRole("button", { name: "Notifications", exact: true });
   await bell.click();
   const dialog = page.getByRole("dialog", {
     name: "Notifications",
@@ -264,7 +262,7 @@ test("notification inbox shows a helpful empty state before enabling notificatio
   );
   await page.goto("/#/myprofile");
   await page
-    .locator("#myProfilePage .profile-topbar__icons .icon-btn:not(.menuBtn)")
+    .getByRole("button", { name: "Notifications", exact: true })
     .click();
   const dialog = page.getByRole("dialog", {
     name: "Notifications",

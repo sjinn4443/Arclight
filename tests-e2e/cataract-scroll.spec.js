@@ -43,6 +43,7 @@ test("Primary launcher plays all 18 original scenes, preserves captions and rest
   await page.goto("/#/videos/cataractPage");
   const row = page.locator(`#cataractPage [data-target="${id}"]`);
   await expect(row).toBeVisible();
+  await page.waitForFunction(() => window.__videosGlobalBound === true);
   await expect(row.getByRole("progressbar")).toHaveAccessibleName("Cataract");
   expect(await row.evaluate((el) => el.nextElementSibling.dataset.target)).toBe(
     "cataractSimulatorPage",

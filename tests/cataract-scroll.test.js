@@ -40,6 +40,21 @@ test("all original-art scenes have valid local dependencies and exact narration 
   expect(cfg.sections.map((s) => s.startIndex)).toEqual([0, 3, 6, 9, 12, 15]);
   cfg.paths.forEach((file, i) => {
     const data = JSON.parse(fs.readFileSync(`public${file}`));
+    const ids = new Set(data.assets.map((a) => a.id));
+    for (const layer of [
+      ...data.layers,
+      ...data.assets.flatMap((a) => a.layers || []),
+    ]) {
+      if (layer.refId) expect(ids.has(layer.refId)).toBe(true);
+    }
+    for (const layer of data.layers.filter((l) =>
+      l.refId?.startsWith("symbol-"),
+    )) {
+      const asset = data.assets.find((a) => a.id === layer.refId);
+      expect(
+        Math.max(asset.w * layer.ks.s.k[0], asset.h * layer.ks.s.k[1]) / 100,
+      ).toBeCloseTo(110, 5);
+    }
     expect([data.w, data.h, data.fr, data.op]).toEqual([
       1169,
       1280,
@@ -50,16 +65,21 @@ test("all original-art scenes have valid local dependencies and exact narration 
     expect(
       frameAtNarrationTime(timing.stages[i], cfg.narrationClipsByFile[i].end),
     ).toBe(data.op - 1);
-    expect(data.layers.some((l) => l.ks.o.a || l.masksProperties?.length)).toBe(
-      true,
-    );
-    data.assets.forEach((a) => {
-      expect(a.u.startsWith("/")).toBe(false);
-      expect(
-        fs.statSync(path.join("public", path.dirname(file), a.u, a.p)).size,
-      ).toBeGreaterThan(0);
-      expect(Math.max(a.w, a.h)).toBeLessThanOrEqual(1600);
-    });
+    expect(
+      data.layers.some(
+        (l) => l.ty === 0 || l.ks.o.a || l.masksProperties?.length,
+      ),
+    ).toBe(true);
+    data.assets
+      .filter((a) => a.p)
+      .forEach((a) => {
+        expect(a.u.startsWith("/")).toBe(false);
+        expect(
+          fs.statSync(path.join("public", path.dirname(file), a.u, a.p)).size,
+        ).toBeGreaterThan(0);
+        if (!a.id.startsWith("reuse-"))
+          expect(Math.max(a.w, a.h)).toBeLessThanOrEqual(1600);
+      });
     for (const layer of data.layers.filter((l) => l.masksProperties)) {
       // Lottie skips tangent conversion without this flag, bending rectangles
       // into diagonal wedges although its numeric completion state still passes.
@@ -75,7 +95,7 @@ test("the cataract reflex exception is explicit in both languages and every cue 
   const script = JSON.parse(
     fs.readFileSync("public/narration/cataract/full-animation/script.json"),
   );
-  expect(script.cues).toHaveLength(36);
+  expect(script.cues).toHaveLength(38);
   expect(script.durationSeconds).toBe(cfg.narrationClipsByFile.at(-1).end);
   expect(script.cues.find((c) => c.id === "reflex-opacity").en).toMatch(
     /not normal/,
@@ -92,7 +112,7 @@ test("the cataract reflex exception is explicit in both languages and every cue 
           "utf8",
         )
         .match(/-->/g),
-    ).toHaveLength(36);
+    ).toHaveLength(38);
   }
 });
 
@@ -118,7 +138,7 @@ test("History Taking keeps both original actors and the revised spoken meaning",
     const ids = data.layers.map((l) => l.refId);
     expect(ids).toContain("history-examiner");
     expect(ids).toContain("history-patient");
-    expect(ids.filter((id) => id?.includes("bubble"))).toHaveLength(4);
+    expect(ids.filter((id) => id?.startsWith("bubble-"))).toHaveLength(2);
   }
   const third = JSON.parse(fs.readFileSync(`public${cfg.paths[2]}`));
   expect(third.layers.some((l) => l.refId === "history-examiner")).toBe(false);

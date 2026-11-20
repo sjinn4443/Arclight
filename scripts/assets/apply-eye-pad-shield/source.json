@@ -1,0 +1,10 @@
+{
+  "source": "public/images/pdf/Workshop/CoreExamination/FrontofEye.pdf",
+  "page": 1,
+  "sha256": "098acc58b90a131fadf11edf1253c23672e442b05968f4c2008cf5073128bef2",
+  "paintNodes": [
+    809, 811, 813, 819, 820, 833, 834, 836, 837, 838, 839, 840, 841, 842, 843,
+    844, 845, 846, 864, 865
+  ],
+  "artwork": "Original PDF path data with inherited transforms flattened; head, eyes, neck and shirt are retained. No image-generation output is used in this lesson."
+}

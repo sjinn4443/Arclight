@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "title": "Apply an Eye Pad and Eye Shield",
   "sourceVideo": "/videos/Workshop/PEC/8.Applypadandshield_720p.mp4",
-  "durationSeconds": 103,
+  "durationSeconds": 62.449999999999996,
   "defaultLanguage": "en",
   "languages": {
     "en": {
@@ -20,58 +20,58 @@
     {
       "id": "apply-1",
       "start": 1,
-      "end": 13,
+      "end": 6.54,
       "en": "Prepare an eye pad, an eye shield, adhesive tape and scissors.",
       "ko": "안대 패드, 눈 보호대, 반창고와 가위를 준비합니다."
     },
     {
       "id": "apply-2",
-      "start": 13,
-      "end": 25,
+      "start": 6.54,
+      "end": 10.98,
       "en": "Explain the procedure to the patient and help them sit comfortably.",
       "ko": "환자에게 절차를 설명하고 편안하게 앉도록 돕습니다."
     },
     {
       "id": "apply-3",
-      "start": 25,
-      "end": 39,
+      "start": 10.98,
+      "end": 20.3,
       "en": "Gently clean the skin around the eye, then dry it so the tape will stick.",
       "ko": "눈 주위 피부를 부드럽게 닦고 반창고가 잘 붙도록 말립니다."
     },
     {
       "id": "apply-4",
-      "start": 39,
-      "end": 51,
+      "start": 20.3,
+      "end": 31.42,
       "en": "Measure and cut strips of adhesive tape before applying the pad.",
       "ko": "패드를 붙이기 전에 반창고의 길이를 재고 잘라 준비합니다."
     },
     {
       "id": "apply-5",
-      "start": 51,
-      "end": 63,
+      "start": 31.42,
+      "end": 37.94,
       "en": "Prepare the eye pad and attach the strips of tape, as shown.",
       "ko": "그림과 같이 안대 패드에 반창고를 붙여 준비합니다."
     },
     {
       "id": "apply-6",
-      "start": 63,
-      "end": 75,
+      "start": 37.94,
+      "end": 44.16,
       "en": "Ask the patient to gently close the eye. Place the pad over the closed eyelid.",
       "ko": "환자에게 눈을 부드럽게 감도록 한 뒤 감긴 눈꺼풀 위에 패드를 놓습니다."
     },
     {
       "id": "apply-7",
-      "start": 75,
-      "end": 89,
+      "start": 44.16,
+      "end": 52.83,
       "en": "Secure the tape diagonally from the forehead to the cheek. Keep the other eye uncovered.",
       "ko": "이마에서 볼 방향으로 반창고를 비스듬히 붙여 패드를 고정합니다. 반대쪽 눈은 가리지 않습니다."
     },
     {
       "id": "apply-8",
-      "start": 89,
-      "end": 103,
-      "en": "Place the eye shield over the pad and secure it with tape, as demonstrated in the video.",
-      "ko": "영상에서 보여 주는 것처럼 패드 위에 눈 보호대를 놓고 반창고로 고정합니다."
+      "start": 52.83,
+      "end": 62.449999999999996,
+      "en": "Place the eye shield over the pad and secure it with tape. This is how you apply an eye shield.",
+      "ko": "패드 위에 눈 보호대를 놓고 반창고로 고정합니다. 이렇게 눈 보호대 부착을 마칩니다."
     }
   ],
   "videoTitleCues": [
@@ -99,100 +99,100 @@
       {
         "id": "apply-1",
         "start": 1,
-        "end": 13,
+        "end": 6.54,
         "text": "Prepare an eye pad, an eye shield, adhesive tape and scissors."
       },
       {
         "id": "apply-2",
-        "start": 13,
-        "end": 25,
+        "start": 6.54,
+        "end": 10.98,
         "text": "Explain the procedure to the patient and help them sit comfortably."
       },
       {
         "id": "apply-3",
-        "start": 25,
-        "end": 39,
+        "start": 10.98,
+        "end": 20.3,
         "text": "Gently clean the skin around the eye, then dry it so the tape will stick."
       },
       {
         "id": "apply-4",
-        "start": 39,
-        "end": 51,
+        "start": 20.3,
+        "end": 31.42,
         "text": "Measure and cut strips of adhesive tape before applying the pad."
       },
       {
         "id": "apply-5",
-        "start": 51,
-        "end": 63,
+        "start": 31.42,
+        "end": 37.94,
         "text": "Prepare the eye pad and attach the strips of tape, as shown."
       },
       {
         "id": "apply-6",
-        "start": 63,
-        "end": 75,
+        "start": 37.94,
+        "end": 44.16,
         "text": "Ask the patient to gently close the eye. Place the pad over the closed eyelid."
       },
       {
         "id": "apply-7",
-        "start": 75,
-        "end": 89,
+        "start": 44.16,
+        "end": 52.83,
         "text": "Secure the tape diagonally from the forehead to the cheek. Keep the other eye uncovered."
       },
       {
         "id": "apply-8",
-        "start": 89,
-        "end": 103,
-        "text": "Place the eye shield over the pad and secure it with tape, as demonstrated in the video."
+        "start": 52.83,
+        "end": 62.449999999999996,
+        "text": "Place the eye shield over the pad and secure it with tape. This is how you apply an eye shield."
       }
     ],
     "ko": [
       {
         "id": "apply-1",
         "start": 1,
-        "end": 13,
+        "end": 6.54,
         "text": "안대 패드, 눈 보호대, 반창고와 가위를 준비합니다."
       },
       {
         "id": "apply-2",
-        "start": 13,
-        "end": 25,
+        "start": 6.54,
+        "end": 10.98,
         "text": "환자에게 절차를 설명하고 편안하게 앉도록 돕습니다."
       },
       {
         "id": "apply-3",
-        "start": 25,
-        "end": 39,
+        "start": 10.98,
+        "end": 20.3,
         "text": "눈 주위 피부를 부드럽게 닦고 반창고가 잘 붙도록 말립니다."
       },
       {
         "id": "apply-4",
-        "start": 39,
-        "end": 51,
+        "start": 20.3,
+        "end": 31.42,
         "text": "패드를 붙이기 전에 반창고의 길이를 재고 잘라 준비합니다."
       },
       {
         "id": "apply-5",
-        "start": 51,
-        "end": 63,
+        "start": 31.42,
+        "end": 37.94,
         "text": "그림과 같이 안대 패드에 반창고를 붙여 준비합니다."
       },
       {
         "id": "apply-6",
-        "start": 63,
-        "end": 75,
+        "start": 37.94,
+        "end": 44.16,
         "text": "환자에게 눈을 부드럽게 감도록 한 뒤 감긴 눈꺼풀 위에 패드를 놓습니다."
       },
       {
         "id": "apply-7",
-        "start": 75,
-        "end": 89,
+        "start": 44.16,
+        "end": 52.83,
         "text": "이마에서 볼 방향으로 반창고를 비스듬히 붙여 패드를 고정합니다. 반대쪽 눈은 가리지 않습니다."
       },
       {
         "id": "apply-8",
-        "start": 89,
-        "end": 103,
-        "text": "영상에서 보여 주는 것처럼 패드 위에 눈 보호대를 놓고 반창고로 고정합니다."
+        "start": 52.83,
+        "end": 62.449999999999996,
+        "text": "패드 위에 눈 보호대를 놓고 반창고로 고정합니다. 이렇게 눈 보호대 부착을 마칩니다."
       }
     ]
   }

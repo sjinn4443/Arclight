@@ -6,14 +6,17 @@
       class="atoms-card-zoom-controls diabetic-protocol-algorithm-controls"
       aria-label="Atoms card zoom controls"
     >
-      <span aria-hidden="true"></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m16.65 16.65 4.35 4.35" />
+      </svg>
       <button
         id="atomsZoomOutBtn"
         type="button"
         aria-label="Zoom out"
         title="Zoom out"
       >
-        -
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" /></svg>
       </button>
       <button
         id="atomsZoomInBtn"
@@ -21,11 +24,15 @@
         aria-label="Zoom in"
         title="Zoom in"
       >
-        +
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14m-7-7v14" />
+        </svg>
       </button>
     </div>
     <button
       id="tocToggleBtn"
+      aria-controls="tocDropdown"
+      aria-expanded="true"
       aria-label="Open table of contents"
       title="Table of Contents"
       data-i18n="tocToggleBtnTitle:aria-label;tocToggleBtnTitle:title"

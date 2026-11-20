@@ -98,12 +98,31 @@ test("experimental PDF reader opens beneath the original and keeps all six pages
       });
       await images.first().click();
       await expect(reader.locator("dialog")).toBeVisible();
-      await reader.getByRole("button", { name: "Close ×" }).click();
+      const closePosition = await reader
+        .locator("dialog")
+        .evaluate((dialog) => {
+          const box = dialog.getBoundingClientRect();
+          const close = dialog.querySelector("button").getBoundingClientRect();
+          return { top: close.top - box.top, right: box.right - close.right };
+        });
+      expect(closePosition.top).toBeGreaterThanOrEqual(0);
+      expect(closePosition.top).toBeLessThanOrEqual(12);
+      expect(closePosition.right).toBeGreaterThanOrEqual(0);
+      expect(closePosition.right).toBeLessThanOrEqual(12);
+      await page.screenshot({
+        path: `.codex-artifacts/front-of-eye-book/${test.info().project.name}-zoom.png`,
+      });
+      await reader.getByRole("button", { name: "Close", exact: true }).click();
       await expect(reader.locator("dialog")).toBeHidden();
     }
     if (i === 2)
       await page.screenshot({
         path: `.codex-artifacts/front-of-eye-book/${test.info().project.name}-gallery.png`,
+        fullPage: true,
+      });
+    if (i === 5)
+      await page.screenshot({
+        path: `.codex-artifacts/front-of-eye-book/${test.info().project.name}-eversion.png`,
         fullPage: true,
       });
     if (i < 5) {

@@ -4,6 +4,7 @@
 
 import { ROUTES } from "./config.js";
 import { closeMenu } from "./menu.js";
+import { mountDesktopWorkspaceRoute } from "./desktopWorkspaceRoutes.js";
 import { EYE_CARE_PROCEDURES } from "./eyeCareProcedureData.js";
 import { EAR_ROUTE_PARENTS } from "./earsRoutes.js";
 import {
@@ -1493,7 +1494,9 @@ export async function loadPage(routeName, options = {}) {
   }
 
   // Inject the fetched HTML
-  container.innerHTML = html;
+  if (currentRoute !== routeName) return;
+  await mountDesktopWorkspaceRoute(container, routeName, html);
+  if (currentRoute !== routeName) return;
 
   // ✅ Always reset scroll position on route change
   try {

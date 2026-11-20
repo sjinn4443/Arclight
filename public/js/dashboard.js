@@ -201,25 +201,24 @@ export function initializeDashboard() {
   const searchInput = root.querySelector("#dashboardSearchInput");
   const searchPanel = root.querySelector("#dashboardSearchPanel");
 
-  if (searchWrap && toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      if (window.matchMedia("(min-width: 1024px)").matches) {
-        searchInput?.focus();
-        return;
-      }
-      if (searchWrap.classList.contains("search-collapsed")) {
-        searchWrap.classList.remove("search-collapsed");
-        searchWrap.classList.add("search-expanded");
-        searchInput?.focus();
-        void renderDashboardSearch(searchInput, searchPanel);
-      } else {
-        searchWrap.classList.remove("search-expanded");
-        searchWrap.classList.add("search-collapsed");
-        if (searchPanel) searchPanel.hidden = true;
-        searchInput?.blur();
-      }
-    });
+  function setSearchExpanded(expanded) {
+    if (!searchWrap || !toggleBtn || !searchInput) return;
+    searchWrap.classList.toggle("search-expanded", expanded);
+    searchWrap.classList.toggle("search-collapsed", !expanded);
+    toggleBtn.setAttribute("aria-expanded", String(expanded));
+    searchInput.tabIndex = expanded ? 0 : -1;
+    if (expanded) {
+      searchInput.focus();
+      void renderDashboardSearch(searchInput, searchPanel);
+    } else {
+      ++dashboardSearchRenderToken;
+      if (searchPanel) searchPanel.hidden = true;
+      searchInput.blur();
+    }
   }
+  toggleBtn?.addEventListener("click", () =>
+    setSearchExpanded(searchWrap.classList.contains("search-collapsed")),
+  );
 
   if (searchInput && searchPanel) {
     searchInput.addEventListener("input", () => {
@@ -230,13 +229,14 @@ export function initializeDashboard() {
     });
     searchInput.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
-        searchPanel.hidden = true;
-        searchInput.blur();
+        event.preventDefault();
+        setSearchExpanded(false);
+        toggleBtn?.focus();
       }
     });
     root.addEventListener("click", (event) => {
       if (!event.target.closest?.(".search-wrap--compact")) {
-        searchPanel.hidden = true;
+        setSearchExpanded(false);
       }
     });
     window.addEventListener("i18n:languageChanged", () => {

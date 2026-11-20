@@ -1,89 +1,64 @@
-# Apply an Eye Pad and Eye Shield
+# Apply an Eye Pad and Eye Shield — latest revision
 
-The `lesson-row--scrollytelling` launcher immediately follows the `apply_eye_pad`
-video in Eye Pad / Shield. Route:
-`#/eyePadShield/applyEyePadShieldScrollPage`.
+Route: `#/eyePadShield/applyEyePadShieldScrollPage`. Every step follows the
+linked `#/eyePadShield/eyeCareVideo-apply_eye_pad` video and the user's pose,
+reel and forehead-contact references.
 
-As of 6 November 2026, the procedure catalogue groups the three Make lessons
-(video, scrolly, Full animation) in **Make**, followed by the two Apply lessons
-(video, scrolly) in **Apply**. Both use the shared procedure folder builder:
-in-place expansion, heading-level Close control and launcher focus restoration.
-Their open state survives lesson return and refresh in session storage. Deep
-links open the corresponding folder for Back navigation. English video and
-scrolly titles use “Make an Eye Pad and Eye Shield” and
-“Apply an Eye Pad and Eye Shield”. Folder regressions cover the five deep-link
-destinations plus keyboard expansion, counts, titles, close and refresh on
-desktop Chrome and iPhone WebKit.
+Seven visual scenes retain eight speech cues, now mixed on a 62.45s clock.
+Cached speech is trimmed by `scripts/trim-apply-eye-pad-narration.py`; clip ends
+are localized to the later of speech and movement. Replay/Next wait 0.7s.
+The shared player is unchanged. The merged placement/securing scene retains an
+explicit timing point at the second cue boundary.
 
-## Source and scenes
+- Equipment has larger scissors and smaller, separated pad/shield pieces.
+- The original patient uses a supported chair back and resting forearms/lap.
+  The smaller rounded explanation bubble stops after bringing the pad up.
+- Larger cotton approaches from the left, follows the periocular surface and
+  passes behind the original nose.
+- Pale source-paper tape leaves a rotating roll. Enlarged original scissor
+  layers retain their screw anchors; operator skin is removed from those layers.
+- Prepared tape is spread across the pad. Long strips arrive with the pad;
+  securing adds separate diagonal strips anchored on forehead and cheek,
+  rather than extending the original strips.
+- The shield retains full pad coverage with a left-facing apex and an oblique
+  rim. New tape follows the shield and forehead contours, with contact shadows.
+- The final bilingual cue ends with completing eye-shield application. It no
+  longer refers the learner to the video.
 
-The source is `/videos/Workshop/PEC/8.Applypadandshield_720p.mp4` (77.4s).
-The new lesson uses an expanded 103s teaching clock: equipment, explanation,
-skin preparation, tape preparation, pad preparation, closing the eye and placing
-the pad, securing the pad, and securing the shield. Text is an authored summary
-of the demonstration, rather than a transcript. No new treatment indications
-are introduced.
+Rebuild artwork with `node scripts/build-apply-eye-pad-shield-scroll.cjs`.
+Regenerate speech with `scripts/generate-apply-eye-pad-shield-narration.ps1` and
+its Python argument. This trims cached utterances before the existing mixer.
+Original PDF paths and Make lesson materials remain the artwork sources;
+`provenance.json` records the source hashes.
 
-`applyEyePadShieldScroll.js` owns stages, cues, sections, tracks and timing.
-`build-apply-eye-pad-shield-scroll.cjs` builds eight native Lottie scenes at
-1169 × 1280, 30fps. Gauze, cotton, holding/cleaning hands and the equipment
-shield reuse the existing Make Eye Pad / Shield artwork with relative URLs;
-face, pad, tape and applied shield are vector layers in the same warm palette.
-The treated eye closes before the pad arrives. The other eye stays visible;
-tape runs from the forehead towards the cheek, clear of that eye.
+Validation: 19 unit checks and four production Chromium/iPhone WebKit cases
+pass, including the localized audio clock, 0.7s controls, merged captions,
+replay/progress/Back and revised illustration contact frames. Build budgets,
+ESLint and offline delivery pass: seven scenes, 65 image references and both
+new narration tracks. Windows WebKit uses the existing simulated media clock;
+Chromium plays the actual AAC. Physical iOS is not tested.
 
-## Reused behavior and compatibility
+Latest composition revision: equipment is lifted 105px; the seated pose uses
+separate resting hands with the full arm outlines retained. The two adults move
+closer together. The procedure bubble zooms out and centres on the treated eye.
+Single-patient scenes share a rightward, enlarged camera parent. Their pad is
+projected to the temple rather than hanging beyond the face edge. The foreground uses the original nose line and its interior, leaving both
+brows intact. The gauze weave compresses around the temple and its shadow
+follows the projected silhouette. The seated pose reuses the Cataract history
+patient from the collar down.
 
-The shell is cloned from `eyePadShieldScrollTemplate`, preserving the existing
-topbar, narration controls, `.childhood-fundal-prep-list`, and engine-generated
-`.childhood-fundal-segment-text__line` captions. The page joins every existing
-Make Eye Pad / Shield CSS group, including desktop stage/caption width,
-combined sections, divider spacing and mobile overrides.
+The reel keeps its barrel, axle and elliptical projection stationary while its
+source-paper face rotates inside a precomposition. Tape leaves the rim tangentially.
+Both complete scissor halves are cut from the equipment asset, with identical
+full-length blades and one shared screw; they remain in place for all three
+cuts. The lower half renders behind the tape and the upper half in front.
+Prepared tapes have left, gentle-centre and opposing-right curvature. Shield
+placement begins immediately with the secured pad already present, reuses the
+native equipment cone pixels/shading, and includes an outer-side securing strip.
 
-Like Make Eye Pad / Shield and Advanced Pupils, this uses the shared
-`stageAutoplay` engine, replay/advance controls, caption fitting, text toggling,
-lazy stage loading, strict frame lock, blank-frame remount and persistent settle
-snapshot overlay. Narration primes synchronously in the launcher interaction to
-retain iOS audio authorization. Initialization is serialized and coalesced per
-live page so hash navigation cannot initialize a detached WebKit fragment.
-The shared engine retains Safari/iOS Canvas selection, viewport handling,
-visibility behavior and route cleanup. Completion controls use its existing
-1.5-second pause. Progress uses `lessonProgress:applyEyePadShieldScrollPage`;
-My Learning and structural Back point to Eye Pad / Shield.
-
-## Narration and regeneration
-
-English and Korean audio, VTT, script and checksummed manifest live under
-`public/narration/apply-eye-pad-shield/full-animation/`. Delivered voices are
-Microsoft Zira Desktop and Microsoft Heami Desktop. The existing online voice
-service timed out; local Windows voices produced the shipped AAC tracks.
-
-1. `node scripts/build-apply-eye-pad-shield-scroll.cjs`
-2. Run `scripts/generate-apply-eye-pad-shield-narration.ps1 -Python <python.exe>`
-   on Windows with the named speech voices installed. This uses the existing
-   bounded-speed narration mixer and bundled ffmpeg in
-   `tmp/fundal-narration-tools/`.
-
-Changing audio requires regenerating captions and manifest together. Both
-delivered tracks are 103s with no cue overruns. Offline discovery includes the
-new paths automatically; `apply-eye-pad-shield` matches the existing Eye Pad /
-Shield selective-download group. Shared artwork stays in its existing group.
-
-## Validation
-
-`tests/apply-eye-pad-shield-scroll.test.js` checks relative texture resolution,
-scene geometry, timing endpoints, delivered audio checksums and all eight
-English/Korean caption cues. The original Make Eye Pad / Shield asset suite is
-also run. `tests-e2e/apply-eye-pad-shield-scroll.spec.js` checks row position,
-all eight final frames, caption text, replay, completion, Back/audio cleanup,
-direct links, Korean selection, mute and viewport overflow. Browser coverage
-includes Chrome desktop/mobile and Playwright WebKit. Windows WebKit uses the
-repository's existing mocked narration clock because this host lacks its AAC
-decoder; Chrome plays the delivered AAC. Physical iOS hardware is not tested.
-
-Validation on 5 November 2026: 11 unit checks passed across the new and original
-Eye Pad / Shield suites; six development browser checks passed on Chrome
-desktop/phone and WebKit phone, followed by four production-build checks on
-Chrome desktop and WebKit iPad. Focused ESLint passed. The production build
-passed all distribution budgets, and its offline manifest includes all fourteen
-new narration/scene files.
+Current verification: 22 focused Apply/Make unit checks, four production
+Chromium/iPhone WebKit cases, ESLint, formatting and the production build pass.
+All seven scenes and 69 texture references match offline delivery, and the
+current bilingual narration bytes are unchanged. The fixed-axis projection,
+three-cut single scissor visit, lower-blade ordering and full pad coverage have
+explicit regressions. Windows WebKit uses the existing simulated audio clock.

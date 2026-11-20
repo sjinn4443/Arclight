@@ -2,6 +2,17 @@
 .dashboard-desktop {
   display: none;
 }
+#unifiedDashboard #dashboardSearchToggle {
+  width: 30px;
+  height: 30px;
+  min-height: 0;
+  margin: 0;
+  padding: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: none;
+}
 
 /* Semantic buttons retain the existing mobile recommendation presentation. */
 #unifiedDashboard button.module-card {
@@ -12,7 +23,9 @@
 }
 
 @media (min-width: 1024px) {
-  #unifiedDashboard .dashboard-desktop :where(button) {
+  #unifiedDashboard
+    .dashboard-desktop
+    :where(button):not(:where(.dw-route-main *, .dw-route-title *)) {
     width: auto;
     min-height: 0;
     margin: 0;
@@ -21,10 +34,13 @@
   }
   #unifiedDashboard {
     --dw-ink: #171b1a;
-    --dw-muted: #69716f;
-    --dw-line: #dedfda;
+    --dw-muted: #555d69;
+    --dw-soft: #f5f5f8;
+    --dw-selected: #faecea;
+    --dw-line: #dbdce3;
     --dw-red: #b4342a;
-    background: #f4f5f1;
+    --dw-bg: #f2f2f7;
+    background: var(--dw-bg);
     color: var(--dw-ink);
   }
   #unifiedDashboard > .unified-container {
@@ -37,6 +53,7 @@
     width: 100%;
     font-size: 14px;
     line-height: 1.45;
+    background: var(--dw-bg);
   }
   #unifiedDashboard .dashboard-desktop *,
   #unifiedDashboard .dashboard-desktop *::before,
@@ -55,8 +72,18 @@
   }
   #unifiedDashboard .dashboard-desktop button:focus-visible,
   #unifiedDashboard .dashboard-desktop a:focus-visible {
-    outline: 2px solid #b4342a;
+    outline: 2px solid var(--dw-red);
     outline-offset: 4px;
+  }
+  #unifiedDashboard
+    :is(.dw-sidebar, .dw-topbar)
+    :is(button, a, input):focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+  #unifiedDashboard .dw-top-actions > button:hover {
+    background-color: rgb(0 0 0 / 12%);
+    border-radius: 6px;
   }
   #unifiedDashboard .dashboard-desktop h1,
   #unifiedDashboard .dashboard-desktop h2,
@@ -79,68 +106,21 @@
     min-width: 0;
   }
   #unifiedDashboard .dw-brand {
-    color: white;
     text-decoration: none;
-    font-size: 25px;
-    font-weight: 650;
-    letter-spacing: -1.2px;
-    padding: 0 10px;
-  }
-  #unifiedDashboard .dw-brand > span {
-    color: #cd4138;
-  }
-  #unifiedDashboard .dw-brand small {
-    display: block;
-    color: #b1b5a9;
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.6px;
-    margin-top: 4px;
-  }
-  #unifiedDashboard .dw-profile {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid #3e4339;
-    padding: 0 8px 21px;
-    color: inherit;
-    background: none;
-    text-align: start;
-  }
-  #unifiedDashboard .dw-profile > span:nth-child(2) {
-    flex: 1;
-    min-width: 0;
-  }
-  #unifiedDashboard .dw-profile strong {
-    display: block;
-    overflow-wrap: anywhere;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  #unifiedDashboard .dw-profile small {
-    display: block;
-    font-size: 11px;
-    color: #bcc1b3;
-    margin-top: 3px;
-  }
-  #unifiedDashboard .dw-avatar {
     display: inline-flex;
+    align-self: flex-start;
+    padding: 0;
+    background: transparent;
     align-items: center;
-    justify-content: center;
-    flex: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #f4e8e3;
-    background-position: center;
-    background-size: cover;
-    color: white;
-    font-weight: 600;
-    font-size: 13px;
+    gap: 9px;
+    margin-inline-start: 12px;
   }
-  #unifiedDashboard .dw-avatar.profile-avatar--initial,
+  #unifiedDashboard .dw-brand img {
+    height: 67px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
   #unifiedDashboard .dw-account .profile-avatar--initial {
     background-color: #f4e8e3 !important;
     color: #b4342a;
@@ -216,26 +196,100 @@
     text-align: start;
   }
   #unifiedDashboard .dw-work {
-    background: #f4f5f1;
+    background: var(--dw-bg);
     min-width: 0;
     display: flex;
     flex-direction: column;
   }
   #unifiedDashboard .dw-topbar {
-    min-height: 66px;
-    padding: 13px 30px;
+    min-height: 52px;
+    padding: 7px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    background: white;
-    border-bottom: 1px solid #e9eae5;
+    background: var(--dw-red);
+    color: white;
+    border-bottom: 1px solid var(--dw-red);
+  }
+  #unifiedDashboard
+    .dw-topbar
+    :is(
+      .dw-breadcrumb,
+      .dw-breadcrumb strong,
+      .dw-breadcrumb > span,
+      .dw-language
+    ) {
+    color: white;
+  }
+  #unifiedDashboard .dw-route-title {
+    flex: 1;
+    min-width: 0;
+  }
+  #unifiedDashboard.dw-shell .dw-route-title:not([hidden]) + .dw-breadcrumb {
+    display: none;
+  }
+  #unifiedDashboard
+    .dw-route-title
+    :is(.atoms-title-bar, .ml-topbar, .profile-topbar, .eyes-top) {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: white !important;
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px !important;
+  }
+  #unifiedDashboard
+    .dw-route-title
+    :is(.ml-topbar, .profile-topbar, .eyes-top)::after {
+    content: none !important;
+  }
+  #unifiedDashboard
+    .dw-route-title
+    :is(.ml-title, .profile-topbar__title, .eyes-title) {
+    margin: 0 !important;
+    height: auto !important;
+    font-size: 20px !important;
+    font-weight: 600;
+    color: white !important;
+  }
+  #unifiedDashboard .dw-route-title .atoms-title-bar {
+    font-size: 20px;
+    gap: 0 !important;
+  }
+  #unifiedDashboard .dw-route-title .atoms-title-bar__selected {
+    margin-inline-start: 0.25em;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  #unifiedDashboard .dw-route-title :is(.ml-icons, .menuBtn) {
+    display: none !important;
+  }
+  #unifiedDashboard .dw-route-title .profile-topbar__icons {
+    position: static !important;
+    transform: none !important;
+    display: none;
+  }
+  #unifiedDashboard .dw-route-title .topbar-home-logo__image {
+    filter: brightness(0) invert(1);
   }
   #unifiedDashboard .dw-breadcrumb {
     display: flex;
     align-items: center;
     gap: 13px;
-    font-size: 11px;
+    font-size: 16px;
     color: var(--dw-muted);
     white-space: nowrap;
   }
@@ -246,62 +300,139 @@
   #unifiedDashboard .dw-top-actions {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 12px;
     min-width: 0;
+    height: 36px;
+    flex: none;
+  }
+  #unifiedDashboard .dw-top-actions > * {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    flex: none;
   }
   #unifiedDashboard .dw-language {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 0;
+    gap: 6px;
+    padding: 0;
+    line-height: 1;
     border: 0;
     background: none;
     color: var(--dw-ink);
     font-size: 12px;
   }
+  #unifiedDashboard .dw-language img {
+    width: 21px;
+    height: auto;
+    filter: brightness(0) invert(1);
+  }
+  #unifiedDashboard .dw-language svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
   #unifiedDashboard .dw-account {
     border: 0;
     padding: 0;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    justify-content: center;
+    background: transparent;
   }
   #unifiedDashboard .dw-account > span {
-    border-radius: inherit;
-    width: 100%;
-    height: 100%;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     background-size: cover;
     background-position: center;
   }
+  #unifiedDashboard .dw-notifications {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    position: relative;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    background: var(--dw-red);
+    color: white;
+  }
+  #unifiedDashboard .dw-notifications svg {
+    width: 30px;
+    height: 30px;
+  }
+  #unifiedDashboard .dw-notifications .notif-dot:not([hidden]) {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
   #unifiedDashboard .dw-topbar .search-wrap--compact {
     position: relative;
-    width: clamp(230px, 24vw, 340px);
-    height: 38px;
+    width: 36px;
+    height: 36px;
     margin: 0 !important;
     display: block;
+    transition: width 180ms ease;
+  }
+  #unifiedDashboard .dw-topbar .search-wrap--compact.search-expanded {
+    width: clamp(200px, 24vw, 340px);
   }
   #unifiedDashboard .dw-topbar .search-wrap--compact input[type="search"] {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     width: 100%;
-    height: 38px;
-    padding: 0 33px 0 36px;
+    height: 36px;
+    padding: 0 42px 0 12px;
     border: 1px solid var(--dw-line);
     border-radius: 8px;
-    background: #fafbf8;
+    background: #fff;
     font-size: 12px;
     color: var(--dw-ink);
   }
+  #unifiedDashboard .dw-topbar .search-expanded input[type="search"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
   #unifiedDashboard .dw-topbar .search-wrap--compact input:focus-visible {
-    outline: 2px solid var(--dw-red);
+    outline: 2px solid white;
     outline-offset: 2px;
   }
-  #unifiedDashboard .dw-topbar .search-wrap--compact .search-icon {
-    left: 12px;
-    right: auto;
+  #unifiedDashboard .dw-topbar .search-wrap--compact #dashboardSearchToggle {
+    left: auto;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: white;
+  }
+  #unifiedDashboard #dashboardSearchToggle svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.6;
+  }
+  #unifiedDashboard
+    .dw-topbar
+    .search-wrap--compact.search-expanded
+    #dashboardSearchToggle {
     color: var(--dw-muted);
   }
   #unifiedDashboard .dw-topbar .dashboard-search-panel {
@@ -322,6 +453,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: var(--dw-bg);
   }
   #unifiedDashboard .dw-heading {
     display: flex;
@@ -342,13 +474,13 @@
     font-size: clamp(26px, 2.2vw, 36px);
     line-height: 1.2;
     font-weight: 600;
-    letter-spacing: -1.1px;
+    letter-spacing: -0.025em;
     margin: 8px 0;
     overflow-wrap: anywhere;
   }
   #unifiedDashboard .dw-intro {
     color: var(--dw-muted);
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.6;
   }
   #unifiedDashboard .dw-learning-link {
@@ -362,7 +494,7 @@
     border: 1px solid var(--dw-line);
     border-radius: 8px;
     background: white;
-    font-size: 11px;
+    font-size: 13px;
   }
   #unifiedDashboard .dw-bento {
     display: grid;
@@ -394,26 +526,67 @@
     position: relative;
     isolation: isolate;
   }
-  #unifiedDashboard .dw-specialty img {
+  /* Original source artwork, with only small positional insets. */
+  #unifiedDashboard .dw-specialty-art {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    object-fit: cover;
+    display: block;
+    inset-inline-end: 8px;
+    top: 2px;
+    width: 87%;
+    height: calc(100% - 8px);
+    overflow: visible;
     pointer-events: none;
-    z-index: -1;
   }
   #unifiedDashboard .dw-eyes {
     grid-row: 1 / 3;
   }
-  #unifiedDashboard .dw-eyes img {
-    width: 100%;
-    height: 90%;
-    top: 0;
-    left: 0;
-    object-fit: cover;
-    object-position: 80% center;
+  #unifiedDashboard .dw-eyes .dw-specialty-art {
+    width: 105%;
+    height: 84%;
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    top: 7%;
+  }
+  #unifiedDashboard :is(.dw-ears, .dw-skin) .dw-specialty-copy {
+    width: 40%;
+    max-width: 40%;
+    right: auto;
+  }
+  #unifiedDashboard :is(.dw-ears, .dw-skin) .dw-specialty-copy small {
+    max-width: 100%;
+  }
+  #unifiedDashboard .dw-eye-shape {
+    transform-origin: 440px 235px;
+  }
+  #unifiedDashboard .dw-eye-animated {
+    visibility: hidden;
+  }
+  #unifiedDashboard .dw-ear-shape {
+    transform-origin: 430px 240px;
+  }
+  #unifiedDashboard .dw-ear-waves {
+    opacity: 0;
+  }
+  #unifiedDashboard .dw-skin-shape {
+    transform-origin: 430px 280px;
+  }
+  #unifiedDashboard .dw-skin-hair {
+    transform-origin: 450px 282px;
+  }
+  #unifiedDashboard :is(.dw-ears, .dw-skin) .dw-specialty-art {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+  }
+  #unifiedDashboard .dw-skin .dw-specialty-art {
+    inset-inline-end: 0;
+  }
+  #unifiedDashboard .dw-skin-shape {
+    opacity: 0.58;
+  }
+  /* Source black blends into the disabled card without recolouring its pixels. */
+  #unifiedDashboard .dw-skin .dw-specialty-art {
+    mix-blend-mode: screen;
   }
   #unifiedDashboard .dw-specialty-copy {
     position: absolute;
@@ -432,14 +605,14 @@
     letter-spacing: -0.7px;
   }
   #unifiedDashboard .dw-specialty-copy small {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
     max-width: 85%;
   }
   #unifiedDashboard .dw-eyes .dw-specialty-copy {
-    top: auto;
-    bottom: 21px;
+    top: 45px;
+    bottom: auto;
   }
   #unifiedDashboard .dw-specialty-kicker {
     position: absolute;
@@ -472,9 +645,6 @@
     opacity: 1;
     background: #252822;
   }
-  #unifiedDashboard .dw-skin img {
-    opacity: 0.42;
-  }
   #unifiedDashboard .dw-skin .dw-circle-arrow {
     border: 0;
   }
@@ -487,7 +657,7 @@
   }
   #unifiedDashboard .dw-panel h2 {
     font-size: 18px;
-    font-weight: 550;
+    font-weight: 650;
     line-height: 1.3;
     letter-spacing: -0.5px;
   }
@@ -530,12 +700,12 @@
   }
   #unifiedDashboard .dw-tool strong {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
   }
   #unifiedDashboard .dw-tool small {
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.5;
     color: var(--dw-muted);
     margin-top: 3px;
@@ -573,7 +743,7 @@
     margin-bottom: 16px;
   }
   #unifiedDashboard .dw-section-heading p {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--dw-muted);
     margin-top: 5px;
   }
@@ -590,12 +760,13 @@
     padding: 11px 12px;
     border: 1px solid transparent;
     border-radius: 10px;
-    background: #f4f5f2;
+    background: var(--dw-soft);
     box-shadow: none;
     margin: 0;
   }
   #unifiedDashboard .dw-module:hover {
-    border-color: #c8ccc4;
+    border-color: #b6b9c4;
+    background: #ededf3;
   }
   #unifiedDashboard .dw-module > img {
     width: 47px;
@@ -616,13 +787,13 @@
   #unifiedDashboard .dw-module .module-title {
     margin: 0 0 4px;
     color: var(--dw-ink);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 550;
     line-height: 1.4;
   }
   #unifiedDashboard .dw-module .module-subtitle {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
     color: var(--dw-muted);
   }
@@ -654,7 +825,7 @@
   }
   #unifiedDashboard .dw-offline > p:last-child {
     color: #fff3ec;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.8;
     max-width: 26ch;
   }
@@ -666,7 +837,7 @@
     margin-top: 30px;
     border-top: 1px solid var(--dw-line);
     color: var(--dw-muted);
-    font-size: 10px;
+    font-size: 11px;
   }
   #unifiedDashboard .dw-footer > span:first-child {
     color: var(--dw-ink);
@@ -678,7 +849,587 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #unifiedDashboard .dw-topbar .search-wrap--compact {
+    transition: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  #unifiedDashboard.dw-shell .dw-sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  #unifiedDashboard .dw-route-main {
+    min-height: calc(100vh - 52px);
+  }
+  #unifiedDashboard[data-workspace-route="settings"] {
+    --dw-bg: #f2f2f7;
+  }
+  #unifiedDashboard.dw-shell .dw-main {
+    background: var(--dw-bg);
+  }
+  #unifiedDashboard .dw-route-main > .page {
+    width: 100%;
+    min-width: 0;
+    background: var(--dw-bg) !important;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(
+      .ml-header,
+      .ml-container,
+      .ml-topbar,
+      .eyes-container,
+      .profile-workspace,
+      .profile-topbar
+    ) {
+    background: var(--dw-bg) !important;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    #myProfilePage
+    :is(
+      .profile-header,
+      .profile-card__identity,
+      .profile-achievements-panel,
+      .settings-list,
+      .achievements-empty
+    ) {
+    background: white !important;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(#myProfilePage, #editProfilePage, #settingsPage) {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 0 24px !important;
+    background: var(--dw-bg) !important;
+  }
+  #unifiedDashboard .dw-route-main :is(.eyes-container, .profile-workspace) {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 0 24px !important;
+  }
+  #unifiedDashboard .dw-route-main :is(.eyes-top, .profile-topbar) {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 48px;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+    transform: none !important;
+    background: var(--dw-bg) !important;
+  }
+  #unifiedDashboard .dw-route-main :is(.eyes-title, .profile-topbar__title) {
+    margin: 0 !important;
+    font-size: 28px;
+  }
+  #unifiedDashboard .dw-route-main .menuBtn {
+    display: none !important;
+  }
+  #unifiedDashboard .dw-route-main .profile-topbar__icons {
+    position: static !important;
+    transform: none !important;
+  }
+  #unifiedDashboard .dw-route-main #myProfilePage .profile-overview-heading h1 {
+    display: none;
+  }
+  #unifiedDashboard .dw-route-main #myProfilePage .profile-workspace {
+    width: min(100%, 680px) !important;
+    max-width: 680px !important;
+    margin-inline: auto !important;
+  }
+  #unifiedDashboard .dw-route-main #myProfilePage .profile-main-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  #unifiedDashboard .dw-route-main > #editProfilePage {
+    max-width: 680px !important;
+    margin-inline: auto !important;
+    align-self: center;
+    padding: 20px 24px 24px !important;
+    border: 1px solid var(--dw-line);
+    border-radius: 18px;
+    background: white !important;
+    min-height: 0;
+  }
+  body:has(#unifiedDashboard .dashboard-desktop)
+    #editProfilePage
+    .profile-edit-field
+    select:not([multiple]):not([size]) {
+    min-height: 44px;
+  }
+  #unifiedDashboard .dw-route-main #myProfilePage .profile-overview-heading {
+    margin-bottom: 16px;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    #myProfilePage
+    :is(.profile-header, .profile-achievements-panel, .settings-list),
+  #unifiedDashboard .dw-route-main #settingsPage .settings-section {
+    border: 1px solid var(--dw-line);
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgb(25 30 50 / 4%);
+  }
+  #unifiedDashboard
+    .dw-route-main
+    #myProfilePage
+    :is(.profile-card__row dt, .profile-overview-heading p),
+  #unifiedDashboard
+    .dw-route-main
+    #settingsPage
+    :is(.settings-row__value, .settings-version) {
+    color: var(--dw-muted);
+  }
+  #unifiedDashboard .dw-route-main #settingsPage .settings-row--link:hover,
+  #unifiedDashboard .dw-route-main #myProfilePage .settings-item:hover {
+    background: var(--dw-soft);
+  }
+  #unifiedDashboard .dw-route-main .settings-page__content {
+    margin-inline: auto;
+  }
+  #unifiedDashboard .dw-route-main #settingsPage .settings-section {
+    background: white !important;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(#likedPage, #eyesCatalogPage, #earsCatalogPage) {
+    max-width: 1384px;
+    margin-inline: auto;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(#eyesCatalogPage, #earsCatalogPage)
+    .eyes-carousel {
+    grid-auto-columns: 224px;
+    gap: 96px;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(#eyesCatalogPage, #earsCatalogPage)
+    .eyes-card {
+    width: 224px;
+    height: 148px !important;
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(#eyesCatalogPage, #earsCatalogPage)
+    .catalog-h2 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+  #unifiedDashboard .dw-route-main .catalog-h2 .see-all {
+    display: none;
+  }
+  #unifiedDashboard .dw-route-main .catalog-h2 .carousel-dots {
+    position: static;
+    flex-wrap: wrap;
+    margin-inline-start: auto;
+  }
+  #unifiedDashboard .dw-route-main .catalog-h2 .carousel-dots .dot {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+    border-radius: 50%;
+  }
+  #unifiedDashboard .dw-route-main .catalog-h2 .dot.active::before {
+    width: 8px;
+    height: 8px;
+    flex-basis: 8px;
+    background: var(--dw-red);
+  }
+  #unifiedDashboard
+    .dw-route-main
+    :is(#eyesCatalogPage, #earsCatalogPage)
+    .catalog-h2:first-of-type {
+    margin-top: 24px;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-tab {
+    min-height: 40px;
+    color: var(--dw-muted);
+    font-size: 14px;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-tab.active {
+    color: var(--dw-red);
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-tab.active::after,
+  #unifiedDashboard .dw-route-main #likedPage .ml-chip.active {
+    background: var(--dw-red);
+    border-color: var(--dw-red);
+  }
+  #unifiedDashboard .dw-route-main #likedMasonry {
+    column-count: 3;
+    column-gap: 12px;
+  }
+  #unifiedDashboard .dw-route-main #likedMasonry > .note:only-child {
+    column-span: all;
+    margin: 0;
+    padding: 20px 24px;
+    border: 1px solid var(--dw-line);
+    border-radius: 12px;
+    background: white;
+    color: var(--dw-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: start;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-card {
+    width: 100%;
+    min-height: 192px;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-progress-card__meta {
+    color: #ddd;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-header,
+  #unifiedDashboard .dw-route-main #likedPage .ml-container {
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-container {
+    padding-top: 24px !important;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-topbar {
+    position: static !important;
+    width: 100% !important;
+    margin: 0 0 20px;
+    padding: 0 !important;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-title {
+    margin: 0 !important;
+    font-size: 28px;
+    height: auto;
+  }
+  #unifiedDashboard .dw-route-main #likedPage .ml-icons {
+    display: none;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage {
+    position: relative;
+    flex: 1;
+  }
+  #unifiedDashboard[data-workspace-route="atomscard"] .dw-main {
+    padding: 0;
+    min-height: 0;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage.active {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "toolbar toc" "card toc";
+    align-items: stretch;
+    gap: 18px 0;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage:has(#tocDropdown.hidden) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "toolbar" "card";
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage .atoms-title-bar {
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto;
+    min-height: 48px;
+    padding: 12px 16px !important;
+    border-radius: 0;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage .top-right-icons {
+    grid-area: toolbar;
+    position: static !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: none;
+    margin: 0 !important;
+    padding: 28px 24px 0;
+    gap: 12px;
+    transform: none !important;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage #tocToggleBtn {
+    display: none !important;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage .atoms-card-zoom-controls {
+    position: static !important;
+    transform: none;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage #tocDropdown {
+    grid-area: toc;
+    position: relative !important;
+    top: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    margin: 0;
+    padding: 20px !important;
+    border: 0 !important;
+    border-inline-start: 1px solid var(--dw-line) !important;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none !important;
+    background: white;
+    z-index: 4500;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage #tocDropdown.slide-up {
+    transform: none !important;
+  }
+  #unifiedDashboard #tocDropdown .toc-tab {
+    padding: 0 0 12px;
+    border: 0;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage #tocDropdown.hidden {
+    display: none !important;
+  }
+  #unifiedDashboard .dw-route-main #tocList {
+    display: block;
+    overflow-y: auto !important;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: calc(100dvh - 150px);
+    padding: 0;
+  }
+  #unifiedDashboard .dw-route-main #tocList li {
+    cursor: pointer;
+    padding: 9px 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    border-color: var(--dw-line);
+  }
+  #unifiedDashboard #atomsCardPage .toc-tab button:not(.active) {
+    background: var(--dw-soft);
+    color: var(--dw-ink);
+  }
+  #unifiedDashboard #atomsCardPage .toc-tab button.active {
+    background: var(--dw-red) !important;
+  }
+  #unifiedDashboard #atomsCardPage #tocList li:hover {
+    background: var(--dw-soft);
+  }
+  #unifiedDashboard #atomsCardPage #tocList li.is-selected {
+    background: var(--dw-selected) !important;
+    border-color: #e6c8c4 !important;
+    color: var(--dw-red) !important;
+    font-weight: 600 !important;
+    border-inline-start: 3px solid var(--dw-red) !important;
+    padding-inline-start: 7px;
+  }
+  #unifiedDashboard #atomsCardPage #tocList li:focus-visible {
+    outline: 2px solid var(--dw-red);
+    outline-offset: -2px;
+  }
+  #unifiedDashboard .dw-route-main #tocInlineCloseBtn {
+    display: none !important;
+  }
+  #unifiedDashboard .dw-route-main #tocInlineCloseBtn::before,
+  #unifiedDashboard .dw-route-main #tocInlineCloseBtn::after {
+    content: none !important;
+  }
+  #unifiedDashboard .dw-route-main #atomsImageContainer {
+    grid-area: card;
+    width: 100% !important;
+    min-height: 55vh !important;
+    padding: 10px 24px 28px;
+    box-sizing: border-box;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+  #unifiedDashboard .dw-route-main #atomsImageContainer img {
+    clip-path: var(--atoms-art-outline, none);
+    border-radius: 0 !important;
+  }
+  #unifiedDashboard .dw-route-main .atoms-card-nav {
+    display: none !important;
+  }
+  body:has(#unifiedDashboard.dw-shell) #backBtnGlobal {
+    display: none !important;
+  }
+}
+
+/* Match the Eyes catalogue: subject-only motion, cancelled on hover exit. */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  #unifiedDashboard .dw-eyes:hover .dw-eye-shape {
+    animation: dw-specialty-blink 4s ease-in-out infinite;
+  }
+  #unifiedDashboard .dw-eyes:hover .dw-eye-animated {
+    visibility: visible;
+  }
+  #unifiedDashboard .dw-eyes:hover .dw-eye-gaze {
+    animation: dw-specialty-look 4s ease-in-out infinite;
+  }
+  #unifiedDashboard .dw-ears:hover .dw-ear-shape {
+    animation: dw-specialty-listen 3.2s ease-in-out infinite;
+  }
+  #unifiedDashboard .dw-ears:hover .dw-ear-waves {
+    opacity: 1;
+  }
+  #unifiedDashboard .dw-ears:hover .dw-ear-ripple-outer {
+    animation: dw-ear-ripple-outer 3.2s ease-in-out infinite;
+  }
+  #unifiedDashboard .dw-ears:hover .dw-ear-ripple-inner {
+    animation: dw-ear-ripple-inner 3.2s ease-in-out infinite;
+  }
+  #unifiedDashboard .dw-ears:hover .dw-ear-ripple-middle {
+    animation: dw-ear-ripple-middle 3.2s ease-in-out infinite;
+  }
+  #unifiedDashboard .dw-skin:hover .dw-skin-hair {
+    animation: dw-specialty-hair 3.2s ease-in-out infinite;
+  }
+}
+@keyframes dw-specialty-blink {
+  0%,
+  70%,
+  86%,
+  100% {
+    transform: scaleY(1);
+  }
+  78% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes dw-specialty-look {
+  0%,
+  58%,
+  100% {
+    transform: translateX(0);
+  }
+  16%,
+  24% {
+    transform: translateX(-17px);
+  }
+  40%,
+  46% {
+    transform: translateX(17px);
+  }
+}
+@keyframes dw-specialty-listen {
+  0%,
+  15%,
+  75%,
+  100% {
+    transform: translateX(0);
+  }
+  34% {
+    transform: translateX(-3px);
+  }
+  55% {
+    transform: translateX(-1px);
+  }
+}
+@keyframes dw-ear-ripple-inner {
+  0%,
+  8%,
+  68%,
+  100% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  14%,
+  44% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  64% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes dw-ear-ripple-middle {
+  0%,
+  22%,
+  78%,
+  100% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  28%,
+  52% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  74% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes dw-ear-ripple-outer {
+  0%,
+  36%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  42%,
+  58% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  84% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes dw-specialty-sound {
+  0%,
+  15%,
+  75%,
+  100% {
+    opacity: 0;
+  }
+  32%,
+  55% {
+    opacity: 0.7;
+  }
+  43% {
+    opacity: 0.3;
+  }
+}
+@keyframes dw-specialty-hair {
+  0%,
+  15%,
+  80%,
+  100% {
+    transform: scaleY(1);
+  }
+  36% {
+    transform: scaleY(0.7);
+  }
+  58% {
+    transform: scaleY(1.02);
+  }
+}
+
 @media (min-width: 1024px) and (max-width: 1199px) {
+  #unifiedDashboard .dw-route-main #atomsCardPage.active {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    column-gap: 0;
+  }
+  #unifiedDashboard .dw-route-main #atomsCardPage:has(#tocDropdown.hidden) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #unifiedDashboard .dw-route-main #likedMasonry {
+    column-count: 2;
+  }
   #unifiedDashboard .dashboard-desktop {
     grid-template-columns: 178px minmax(0, 1fr);
   }
@@ -692,7 +1443,7 @@
     padding-inline: 22px;
   }
   #unifiedDashboard .dw-top-actions {
-    gap: 14px;
+    gap: 12px;
   }
   #unifiedDashboard .dw-bento {
     grid-template-columns: minmax(0, 1fr) 228px;

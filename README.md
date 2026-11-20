@@ -1,5 +1,7 @@
 # Arclight App
 
+The desktop dashboard opens the introduction through **Take a quick tour**.
+
 Arclight is a media-rich, offline-capable (PWA) educational web application for clinical learning (ophthalmology + otoscopy).
 
 The app is primarily static (served from `public/` in dev, and `dist/` plus `dist-media/` in production builds). A lightweight Express server (`server.cjs`) handles:
@@ -62,8 +64,55 @@ Lessons use the shared wide Previous/Next controls and their level colour.
 - VS Code launcher extension: [`vscode-alanui-launcher/README.md`](./vscode-alanui-launcher/README.md)
 - Memory bank: [`memory-bank/`](./memory-bank/)
 - Agent notes: [`agent.md`](./agent.md)
+- Desktop dashboard and embedded routes: [Workspace layout](#desktop-dashboard-workspace)
+- Experimental Front of Eye PDF reader: [Reader and source assets](#experimental-front-of-eye-pdf-reader)
 - Lottie examination scroll pages: [implementation guide](./docs/lottie-examination-scroll-pages.md)
 - Narration and captions: [overview](#narration-and-captions-for-examination-lessons) and [production record](./memory-bank/narration-and-subtitles.md)
+
+## Graphics and illustration reuse
+
+Before creating any app graphic, search and visually inspect existing artwork in
+`public/scrolly/`, `public/pdfbasedanims/`, `public/images/` and relevant
+SVG/JS sources, including the component layers used by existing lessons.
+
+1. If suitable artwork exists, prioritise reusing it, adapting its viewing angle,
+   pose or composition when needed while retaining its proportions and meaning.
+2. If no suitable artwork exists, create only the missing graphic and match the
+   existing scrolly/PDF illustration style as closely as possible.
+
+Reuse means retaining the actual source pixels, vector paths or extracted
+layers. A newly generated lookalike based on a reference image does not count.
+Check any pages named by the user first, following their Lottie assets and
+PDF/AI originals. Combine an existing person and an existing tool even when
+they come from different scenes; create only components that are truly missing.
+For example, use the man from `#/videos/frontOfEyeExaminationScrollPage` and
+the scissors from `#/eyePadShield/makeEyePadShieldScrollPage` for a man holding
+scissors, rather than generating replacements.
+
+Reusing artwork still requires a complete, proportionate composition. Adapt or
+add missing limb segments in the same style, connect shoulder/elbow/wrist
+naturally and check the hand against the face and torso. Keep hands and held
+objects registered during motion, with clear contact and withdrawal phases.
+
+Keep tabletop items on a common viewing plane with contact shadows. Match adult
+head proportions and put the demonstrated scene inside a speech bubble. Check
+complete fingers/thumbs and wrist taper when adapting a cleaning hand. For eye
+dressings, keep tape above the pad/shield and the nose in front; leave the other
+eye visible. Hands are optional when staged placement is clearer. Show tape
+unrolling before cutting. The Apply lesson now combines placement and securing
+into one scene (seven scenes, eight narration cues) and delays Replay/Next until
+0.7 seconds after narration and animation finish.
+
+Latest Apply refinements use the linked Apply video for every step: broad round
+gauze, curved/shaded tape with pinked ends, and a complete shield rim covering
+the pad. Show the seated patient's arms/lap/chair; fill the darker procedure
+bubble with an exact rounded crop. Skin cleaning uses cotton alone.
+
+Read the [graphics and illustration reference](./memory-bank/graphics-and-illustration-style.md)
+for the standing user instruction, source map and visual/motion conventions.
+The app uses clear, flat silhouettes, warm skin tones, teal medical clothing,
+quiet grey/beige backgrounds and purposeful teaching colours, with selective
+shading, light effects and clinical textures where the source requires them.
 
 ## Building another JSON animation scroll lesson
 
@@ -100,6 +149,31 @@ with a wider upper edge, returning to the original final camera pose. Scrolly
 controls appear about 1.5s after both motion and speech finish. Existing progress,
 My Learning, narration menus, section titles and downloads retain their routes.
 See [authoring and checks](./docs/make-eye-pad-shield-scroll.md).
+
+**Apply an eye pad and eye shield** opens at
+`#/eyePadShield/applyEyePadShieldScrollPage`. The lesson uses seven scenes and
+eight English/Korean narration cues on a 62.45-second timeline. Placement and
+securing share a scene, with a caption change at the second cue. Replay and Next
+appear 0.7 seconds after speech and motion finish. The illustrations reuse the
+original patient, equipment and tape artwork. The tape unwinds from a fixed-axis
+reel before three cuts, and the shield rim covers the fitted pad.
+See [Apply authoring, sources and checks](./docs/apply-eye-pad-shield-scroll.md).
+
+## Experimental Front of Eye PDF reader
+
+Eyes → Front of Eye lists **Front of Eye PDF(test)** directly below the original
+PDF. The test reader opens at `#/frontOfEyePdfTest` and presents the original
+handout's illustrations across six pages in three sections. Section buttons,
+Previous/Next and arrow keys navigate the reader. Each illustration opens in a
+zoom dialog, and the current page is saved for the browser session. Back returns
+to the Front of Eye lesson list.
+
+The clinical gallery and eyelid eversion grid use square corners. The image
+builder extracts lossless WebPs from the source PDF and squares the eversion
+panel borders in a temporary copy while preserving the internal artwork. Use
+`node scripts/build-front-of-eye-book.cjs` with Python/pypdf and Poppler's
+`pdftoppm` to regenerate the images. See the
+[reader regression spec](./tests-e2e/front-of-eye-pdf-test.spec.js).
 
 ## Advanced Pupils scroll lesson
 
@@ -920,13 +994,24 @@ Offline video guidance sits below the quality controls and uses a short download
 
 videos/pupilsAdvancedScrollPage is published. Track its dedicated configuration, artwork, narration, authoring scripts and tests. Production builds and offline manifests include its runtime assets. See docs/local-only-lessons.md.
 
-## Desktop dashboard workspace — 18 November 2026
+### Cataract examination scroll lesson
 
-At widths of 1024px and above, Dashboard uses the approved bento design: a dark
-sidebar with the saved profile at the top, a shared search and language topbar,
-Eyes/Ears/Skin specialty tiles, quick tools, four recommended lessons and an
-offline-learning panel. Smaller screens retain the original category carousel
-and two recommendations. The same search control moves between layouts.
+The Primary **Cataract** lesson sits above **Simulator** and opens at
+`#/videos/cataractScrollPage`. Its 18 scenes cover six examination sections,
+each with a shortcut to the detailed guide. Examination method scenes reuse
+artwork from those guides. Visual Acuity presents distance, pinhole and near
+vision in that order, with separate English and Korean cues. The Cataract
+download includes the lesson and its narration. See
+[Cataract authoring and verification](./docs/cataract-scroll.md).
+
+## Desktop dashboard workspace
+
+At widths of 1024px and above, Dashboard uses a dark branded sidebar and a
+shared topbar for search, language, the profile avatar and notifications.
+Overview contains Eyes/Ears/Skin specialty tiles, quick tools, four recommended
+lessons and an offline-learning panel. Smaller screens show the original
+category carousel and two recommendations. The same search control moves
+between layouts.
 
 Profile, Settings, My Learning, Notes, specialty and lesson links use existing
 routes. Download opens the existing offline selection dialog; Alan stays
@@ -934,3 +1019,64 @@ disabled until an app route is available. New dashboard copy is included in all
 26 locale dictionaries. Desktop styles are scoped in
 `public/style/dashboard-workspace.css`; browser regressions are in
 `tests-e2e/dashboard-workspace.spec.js`.
+
+The desktop specialty tiles reuse the original full-resolution `eyes.webp`,
+`ears.webp` and `skin.webp` pixels inside SVG wrappers. Eyes' title and subtitle
+sit below the specialty label; its slightly larger graphic meets the right edge.
+Ears' source frame is cropped away at the bottom. Its red dotted hover ripples
+reuse the Interactive Learning (`car_miniapp.webp`) pixels, masks and filter,
+rotated toward the ear and timed from the small ring to the large one.
+Three source ripples form open `(((` arcs with wider spacing, sequenced from
+small to large. The source mask expands its dashes into three equal 10-unit strokes with rounded dash ends.
+Skin's lower plate fills the card corner and uses screen
+blending to match the surface; only its original hair layer grows on hover.
+Eyes moves the source iris, pupil and highlight together inside the eye opening
+before the whole eye blinks. The source iris keeps its original width and size
+throughout the gaze; the original outline retains its full thickness.
+Touch/reduced-motion artwork stays static, Skin remains unavailable, and the
+mobile carousel keeps its original assets.
+
+Desktop Eyes, Ears, My Learning, Atoms Card, My Profile/Edit Profile and Settings
+load their existing route fragments and controls inside `.dw-main`, retaining
+the same sidebar, search and language bar. The sidebar combines the first splash
+screen's original `images/logo/1.webp` mark and `2.webp` lettering at 67px high,
+aligned with the navigation icons, without a badge or image filter. The desktop topbar uses
+`var(--dw-red)` and 16px breadcrumbs. `desktopWorkspaceHeader.js` moves each real
+page titlebar into it, preserving live Atoms topic titles and translations, and restores the same
+nodes inside the original page when returning to mobile.
+The compact search starts collapsed and toggles by click/keyboard; `/` opens it,
+Escape closes it with focus restored, and the query survives layout changes.
+A compact filled white bell sits after the account avatar on every desktop route
+and opens the existing notification inbox, including unread state. Search,
+language, avatar and notification controls share a 36px hit area height and centerline.
+The search glyph is 24px, the avatar and bell are 30px, and a white translation
+icon and centered chevron flank the language name. Navigation follows the sidebar
+logo directly. Atoms zoom uses three aligned SVG icons with matching strokes.
+Desktop catalog headings place the dot controls in the text flow. My Learning tabs and the Atoms topic list use the workspace red for selection. Profile, Edit Profile and Settings share centered white surfaces.
+The sidebar selection, route title, browser history and direct route reloads
+stay aligned. All workspace backgrounds use the cool `#f2f2f7` surface. Settings
+retains its centered 680px white sections, and My Profile stacks its white panels
+in the same centered 680px column.
+My Learning's existing tabs, filters and collapsible progress
+rows remain, with its content capped at 1384px and the original compact card
+sizes. Tiny lesson-type icons are not enlarged into procedure card covers.
+Eyes/Ears retain 224×148px cards with 96px spacing inside a bounded catalog.
+Atoms' zoom controls, contents and card navigation stay within the main area.
+Its contents list occupies a persistent white tools panel on the right
+(280px, or 240px on smaller desktops), keeping the card unobstructed. It stays
+open during topic/tab selection and fills the right edge from directly below the
+topbar to the bottom of the workspace. There is no duplicate heading, close X or
+desktop previous/next arrow. The desktop TOC toggle is hidden, and Escape keeps
+the contents open. Returning from a closed mobile TOC restores the desktop rail.
+The first actual card opens on desktop entry/tab changes; mobile retains its
+original overlay, close button, arrows and selection behavior.
+Exterior white mattes are clipped using contours derived from the 33 original
+images; internal white clinical panels and source pixels remain unchanged.
+Regenerate `public/js/atomsCardOutlines.js` with
+`node scripts/build-atoms-card-outlines.cjs` after changing the source images.
+Reopening cancels a
+pending close timer; topic/tab selection, previous/next, close and Escape retain
+consistent state. Crossing the 1024px breakpoint moves live route nodes
+between the workspace and the original mobile layout, preserving their current
+tab, search and zoom controls. `public/js/desktopWorkspaceRoutes.js` owns this
+mounting behavior. Read `public/sw.js` for the current source cache version.

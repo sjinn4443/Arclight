@@ -62,6 +62,7 @@ const PAGES = [
   {
     section: 2,
     title: "Upper Eyelid Eversion",
+    square: true,
     images: [
       ["eversion-1", "Upper eyelid eversion: first illustration"],
       ["eversion-2", "Upper eyelid eversion: second illustration"],
@@ -123,6 +124,10 @@ export function initializeFrontOfEyePdfTest() {
     panels.classList.toggle(
       "foe-book__panels--gallery",
       Boolean(current.gallery),
+    );
+    panels.classList.toggle(
+      "foe-book__panels--square",
+      Boolean(current.square || current.gallery),
     );
     panels.replaceChildren(
       ...current.images.map(([name, alt]) => {

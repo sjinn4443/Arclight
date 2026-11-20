@@ -1,5 +1,36 @@
 # System Patterns
 
+## Graphics reuse and illustration style
+
+Before artwork work, read [the graphics reference](./graphics-and-illustration-style.md).
+Search and inspect existing app graphics and their component layers first.
+Prioritise reusing suitable artwork or adapting its angle/pose/composition.
+Create missing artwork only when no suitable source exists, matching the
+existing scrolly/PDF style as closely as possible. Preserve source proportions,
+clinical meaning and teaching-symbol conventions.
+
+Actual reuse retains source pixels, vector paths or component layers through
+extraction and compositing; using source images only as generation references
+does not qualify. Inspect user-named pages and their PDF/AI layers first, then
+combine matching components from different scenes before creating replacements.
+See the [Front of Eye man and scissors example](./graphics-and-illustration-style.md#concrete-reuse-example-a-white-man-holding-scissors).
+
+Reuse must also produce complete anatomy: adapt missing upper arms, elbows,
+forearms and wrists, check body/hand proportions and continue cropped wrists
+offscreen naturally. Hands and held tools share contact coordinates through
+approach, placement and withdrawal; inspect intermediate frames, not only holds.
+
+Check common perspective/contact shadows for tabletop scenes, comparable adult
+head sizes and actual procedure inserts inside speech bubbles. Dressing layers
+must keep tape above gauze/shield and the original nose in front, with the other
+eye visible. Hands can be omitted from clear staged placement. Apply's seven
+visual scenes retain eight source narration cues (placement/securing merged),
+using the existing 0.7-second completion pause after speech and motion.
+Its round-pad revision wraps source-paper tapes around the gauze, face and cone
+with shadows and pinked ends; the full cone rim must cover the pad. Skin cleaning
+uses cotton alone, and the original seated patient needs arms, lap and a chair.
+Procedure close-ups use proportional cover inside the exact rounded bubble mask.
+
 PDF/AI scrolly artwork must match the displayed stage rectangle, using the
 standard `1169 / 1280` canvas unless an established page requires another size.
 Keep the animation, poster and configured aspect ratio aligned; arrange extracted
@@ -46,6 +77,22 @@ Arclight is primarily a static, client-side PWA served from `public/` (or `dist/
 - a small set of app/telemetry APIs
 - generating the offline asset manifest used by install/download flows
 - protecting and serving the reports/admin pages
+
+## Desktop workspace routing
+
+At widths of 1024px and above, `public/js/desktopWorkspaceRoutes.js` mounts
+the existing Eyes, Ears, My Learning, Atoms Card, My Profile, Edit Profile and
+Settings fragments inside `.dw-main`. Route initializers still own page
+behavior. `public/js/desktopWorkspaceHeader.js` moves the live titlebar into
+the shell and restores it when returning to the mobile layout. The route and
+shell changes preserve active controls, translated titles, direct reloads and
+browser history. `public/js/notificationInbox.js` shares the inbox and unread
+state between the desktop bell and the native Profile bell.
+
+Atoms uses a persistent desktop topic rail and its original mobile overlay.
+The `dw:mounted` event restores the rail when moving from a closed mobile
+overlay. See the [workspace layout](../README.md#desktop-dashboard-workspace)
+and [browser regressions](../tests-e2e/dashboard-workspace.spec.js).
 
 ## Primary workshop and mini-app contracts
 
@@ -203,3 +250,11 @@ contract for the four full animations and the combined Fundal scroll page.
 - Case-study chat: keep page IDs, launcher `data-target` values, owner JS modules, progress targets, `casechat-*` CSS, and My Learning mappings synchronized.
 - Responsive layout: keep iPad/tablet overrides in `public/style/responsive.css` targeted to specific pages/classes and verify phone/desktop after broad selector changes.
 - Build output: keep generated `dist/`, `tmp-fundal-dist/`, `tmp-codex-build*/`, and `.build-cleanup-*` directories out of source changes.
+
+Apply composition clarification (19 November): single-patient scenes use a
+registered rightward camera crop; pad/shield and nose contacts move together.
+A reel rotates within its fixed projected axle, without rotating its camera
+plane. Complete equipment-scissor halves share a screw, enter once for three
+cuts and put the lower blade behind the tape. Seated hands rest separately on
+the thighs. Prepared tape varies its curvature across the pad. The cone reuses
+the equipment cone's original shading, with outer and nasal securing tape.

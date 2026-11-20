@@ -1,5 +1,143 @@
 # Progress
 
+## Dashboard and lesson documentation — 20 November 2026
+
+- Recorded the shared desktop shell, live titlebars and notification inbox,
+  including the persistent desktop Atoms contents rail and mobile overlay.
+- Documented the experimental Front of Eye PDF reader, original handout
+  extraction, square eversion panels and six-page navigation. Its Playwright
+  spec covers desktop page turns, zoom, mobile layout and direct-link Back.
+- Updated the Cataract summary to describe the separate distance, pinhole and
+  near cues and links to the detailed guides. The focused unit and browser
+  specs cover narration, offline assets and return navigation.
+
+## Apply camera, reel axis and seated pose — 19 November 2026
+
+Single-patient scenes now share a rightward camera crop and a temple-fitting
+pad. The smaller explanation inset centres on the pad; the adults sit closer.
+The seated patient's separate hands rest on supported thighs. Cotton is behind
+the full nose patch. Equipment moves upward. The reel has a fixed axis and
+projected barrel with a rotating paper face. Complete equipment scissors enter
+once, cut three times and withdraw; the lower blade is behind the feed.
+Prepared tapes have varied/opposing curvature. The shield reuses equipment
+cone shading without stretching and includes an outer-side securing strip.
+The latest authoring record reports 22 focused Apply/Make checks, four
+production Chromium/WebKit cases, lint, formatting, build budgets and all seven
+offline scenes with 69 texture references. See
+[the Apply authoring record](../docs/apply-eye-pad-shield-scroll.md).
+
+## Apply timing and contact update — 19 November 2026
+
+Speech silence is trimmed; eight cues now use 62.45s, with localized ends and
+0.7s completion controls. The merged scene adds separate diagonal securing tape.
+Cotton enters from the left behind the nose; enlarged scissors have no hands;
+the roll rotates during unwinding. The smaller procedure bubble stops at pad
+placement. The shield apex faces left and its rim covers the pad. The final
+English/Korean cue now concludes application instead of referring to the video.
+See [the current authoring record](../docs/apply-eye-pad-shield-scroll.md).
+
+## Apply Eye Pad / Shield round-pad and contour revision — 19 November 2026
+
+- Reviewed the linked Apply video for every step and the user's pad/cutting
+  references. Equipment is larger, with a broad round pad and larger scissors.
+- Extended the original patient into a seated body with arms/lap/chair; the dark
+  procedure close-up fills an exactly rounded speech bubble. Cleaning uses cotton
+  alone. Cutting now shows a diagonal tensioned feed, an actual blade contact
+  and separation only after each snip.
+- Source-paper tapes wrap around gauze, face and cone, with contact shadows and
+  pinked ends. The complete shallow cone rim covers the pad; nose and other-eye
+  visibility are preserved. Seven scenes retain eight cues and the 103s audio.
+- The 1.5-second completion pause and shared playback engine are unchanged.
+  Rebuild/source/validation: [authoring record](../docs/apply-eye-pad-shield-scroll.md).
+- Verified 19 unit checks, four Chromium/iPhone WebKit production cases, lint,
+  formatting, build budgets and all offline scene/texture dependencies. Original
+  audio hashes are unchanged; verification build source cache is v175.
+
+## Dashboard specialty graphics — 19 November 2026
+
+- Preserved actual full-resolution source WebPs after the user's correction;
+  replacement drawings/traces and independent iris motion are removed.
+- Moved Eyes copy below its kicker and enlarged the complete eye slightly.
+  Cropped the old ear card frame/bottom gap and restored listening-wave motion.
+  Skin is flush right/bottom, matches the card surface and animates only the
+  original masked hair layer. Touch/reduced-motion and disabled Skin are retained.
+- Eyes, Ears, My Learning, Atoms Card, My Profile/Edit Profile and Settings now
+  render their real pages inside `.dw-main` with
+  the same desktop sidebar, active selection and shared topbar. Atoms controls
+  stay inside the main area. Back/forward, direct reloads, rapid tab changes and
+  resizing between desktop/mobile preserve the expected route/control behavior.
+- Added regressions for persistent sidebar identity, embedded page controls,
+  responsive state, delayed navigation and the requested artwork/hover changes.
+  This revision bumped the source worker cache to v182; other work may advance
+  the shared version. Mobile carousel assets are unchanged.
+- Verified 24 workspace browser cases against source/production output, three profile
+  editing/settings cases, four desktop/mobile inbox cases and 23 focused unit
+  tests, the 181-file accessibility audit and an isolated production build.
+  Production fixtures use the profile event and public i18n API rather than
+  importing source-only modules that are folded into build bundles.
+- Follow-up: reused Interactive Learning's original red dotted ripples for Ears;
+  Eyes now looks both ways within a fixed opening before blinking. Filled Skin's
+  remaining lower-right gap and unified embedded page/container backgrounds.
+- Restored Atoms contents behavior within the main area. Opening cancels
+  stale close timers; selection, eye/ear tabs, previous/next, close, focus return
+  and Escape are covered on desktop/mobile. Browser coverage expanded to 17 cases.
+- Original-UI correction: retained the complete eye outline during gaze to avoid
+  thinning/seams; rotated ear ripples toward the ear and sequenced small first.
+  My Learning restores bounded compact cards and its original progress-row flow;
+  Eyes/Ears keep fixed card proportions and gaps. Atoms retains its original
+  single-column contents and side navigation. Settings restores centered
+  white sections on its original cool surface. Added outline-area, ripple order,
+  seeded progress navigation and original-layout regressions (20 workspace cases).
+- Follow-up: iris/pupil now move together, with the original outline retained;
+  red ear ripples sit farther from the ear. All workspace backgrounds use the
+  cool Settings surface and Profile panels are white.
+- The shared red topbar hosts the real page titlebars and live Atoms
+  topic title. Mobile restores the same nodes to their native position.
+  Source-derived contours remove Atoms' exterior matte without changing clinical
+  content, and arrows follow the image through resize/zoom. Added regression
+  coverage for clipping pixels, shared headers and card-relative navigation.
+- Latest refinement: native sidebar logo, 16px breadcrumbs and a slimmer
+  `var(--dw-red)` topbar. The original iris retains its full width/size during
+  gaze; separated dotted ear waves keep a narrower shape. Profile white panels
+  stack in a centered 680px column like Settings.
+- Atoms now uses a persistent right tools panel (280px/240px), flush with the
+  topbar/right edge/workspace bottom, with no duplicate heading or X. Desktop
+  card arrows are hidden; selection stays in the panel, with the first real card
+  selected on entry/tab changes. The desktop toggle is hidden and Escape keeps
+  the rail open; mobile retains its original overlay, close button and arrows.
+- Removed the logo's white badge and rendered the native dark artwork white
+  while retaining the red accent. Ear ripples now use open source `((` arcs
+  without oval scaling. Shared search collapses/expands by click or keyboard,
+  preserves the query, and cancels stale results on close. A white bell after
+  the topbar avatar opens the existing notification inbox from all desktop routes.
+  Same-route initialization no longer dismisses an inbox opened during navigation.
+- Latest header refinement uses the first splash screen's actual `1.webp` mark
+  and `2.webp` lettering at 67px, aligned with sidebar navigation icons. All top
+  actions share a 36px height/centerline. The header uses 30px bell and avatar artwork,
+  a 24px search icon, and a white language icon with a centered chevron. The sidebar
+  opens directly onto navigation. Atoms zoom icons share their size and weight. Three
+  source ear arcs have wider gaps, a rounded, uniform 10-unit stroke and small-to-large timing. A closed mobile TOC
+  restores as an open desktop rail on workspace mounting.
+- Desktop shell polish increases reading sizes and contrast, aligns catalog headings with the carousel controls, and gives Atoms and My Learning a consistent selection color. Profile and Settings use the same surface borders and depth.
+
+## Actual artwork reuse clarification - 19 November 2026
+
+- Clarified that using existing images only as generation references is not
+  actual reuse. Existing source pixels, vector paths and component layers take
+  priority over newly generated lookalikes.
+- Recorded the user-named Front of Eye man and Eye Pad/Shield scissors in
+  [the source map](./graphics-and-illustration-style.md#concrete-reuse-example-a-white-man-holding-scissors).
+  This update changes documentation only; the image preview is outside the app.
+
+## Graphics reuse and illustration style - 19 November 2026
+
+- Recorded the user's required order: search existing artwork, prioritise reuse
+  and angle/composition adaptation, then create only missing graphics in the
+  existing scrolly/PDF style.
+- Added [the graphics reference](./graphics-and-illustration-style.md) and linked
+  it from the README, agent notes, active context, system patterns and Lottie
+  authoring guide. This update changes documentation only.
+
 ## Desktop dashboard workspace — 18 November 2026
 
 - Applied the selected bento design to the real Dashboard for widths >=1024px.
@@ -817,3 +955,7 @@ Adjusted the offline notice colour and shortened/repositioned quality guidance. 
 ### Local-only Pupils Advanced preview — 29 October 2026
 
 Separated pupilsAdvancedScrollPage from published HTML, bundles and offline manifests. Kept the lesson and all dedicated files locally while removing Git tracking. Verified local rendering, production asset rejection and preserved Advanced PDF access. Publication requires a deliberate policy change and restoring the ignored files to Git.
+
+### Cataract scrolly artwork revision — 8 November 2026
+
+Cataract now uses complete History Taking actors, speaker-specific bubbles and a speaking-arm gesture; teaching glyphs share a 110-unit size. Examination method scenes reuse the linked detailed scrolly compositions. Visual Acuity has sequential distance/pinhole/near scenes and revised bilingual narration. Authoring and verification details: `docs/cataract-scroll.md`.

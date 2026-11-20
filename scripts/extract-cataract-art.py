@@ -89,10 +89,12 @@ def inside(bounds, box):
     return x <= (bounds[0]+bounds[2])/2 <= x+w and y <= (bounds[1]+bounds[3])/2 <= y+h
 
 
-def export(name, box, only=None, remove=()):
-    if EXPORT_PREFIX and not name.startswith(EXPORT_PREFIX):
+def export(name, box, only=None, remove=(), unclip=False):
+    if EXPORT_PREFIX and not any(name.startswith(p) for p in EXPORT_PREFIX.split(",")):
         return
     root = copy.deepcopy(source)
+    if unclip:
+        for node in root.iter(): node.attrib.pop("clip-path", None)
     parents = {child:parent for parent in root.iter() for child in parent}
     for i,(node,_) in enumerate(paint(root)):
         if (only is not None and i not in only) or i in remove: parents[node].remove(node)
@@ -132,13 +134,23 @@ for mode, boxes in {
 
 # Put the original examiner and patient in one room. Extract actors separately
 # from the source backgrounds so there is no column border or white gutter.
-for name,box in {"history-examiner":[155,139,80,86], "history-patient":[283,162,61,63]}.items():
-    selected = {i for i,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<90 and b[3]-b[1]<100}
-    if name == "history-patient":
-        # The chair extends below the PDF row and is clipped by that row.
-        # Keep its original path even though its centre lies outside the crop.
-        selected.add(2608)
-    export(name,box,only=selected)
+arm = {64,65,66,67,79,81,89}
+export("history-examiner",[155,139,80,150],only=set(range(60,92))-arm,unclip=True)
+export("history-examiner-arm",[155,139,80,150],only=arm,unclip=True)
+export("history-patient",[268,162,78,120],only=set(range(2604,2641)),unclip=True)
+
+# One visual size for every teaching glyph, independent of its PDF crop.
+glyphs = {
+ "calendar":[83,146,15,16], "question":[100,146,8,16],
+ "clock":[114,146,15,16], "pain-eye":[82,182,17,17],
+ "eyes":[362,185,27,11], "sudden":[474,144,30,18],
+ "front-eye":[518,174,20,22], "back-eye":[531,134,18,21],
+ "down":[360,252,24,24], "no-gain":[360,295,24,22],
+ "up":[498,280,24,24], "glasses":[523,284,19,19],
+}
+for name,box in glyphs.items():
+    selected={i for i,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<35 and b[3]-b[1]<35}
+    export("symbol-"+name,box,only=selected)
 
 # Each eye-response panel is kept whole so its original curved mask, iris,
 # device, arrows and referral symbols remain registered. Recompose vertically.
@@ -153,14 +165,48 @@ panel_boxes = {
     "fundus-cataract-1":[286,727,109,41],"fundus-cataract-2":[286,774,109,41],
     "fundus-refer-1":[420,720,124,98],
 }
-for name,box in panel_boxes.items(): export(name,box)
+panel_removed = {}
+for name,box in panel_boxes.items():
+    removed=set(); symbols=[]
+    arrow_index={"pupil-cataract-1":2996,"pupil-cataract-2":3039,"pupil-refer-1":5368,"pupil-refer-2":5409}.get(name)
+    arrows=[]
+    if arrow_index is not None:
+        b=nodes[arrow_index][1];label="symbol-"+name+"-arrow"
+        export(label,[b[0],b[1],b[2]-b[0],b[3]-b[1]],only={arrow_index})
+        removed.add(arrow_index);arrows.append(label)
+    for index,(node,b) in enumerate(nodes):
+        w,h=b[2]-b[0],b[3]-b[1]
+        if not inside(b,box) or not 14.5<w<16 or abs(w-h)>.3 or node.get("fill") not in {"#c3c3c3","#d7654a","#606060"}: continue
+        start=index-1
+        # Each supplied badge starts with its own 21-point raster shadow.
+        stop=index+1
+        while stop<len(nodes) and stop<index+35:
+            n,q=nodes[stop]
+            if n.tag.endswith("}image") and 20<q[2]-q[0]<22 and 20<q[3]-q[1]<22: break
+            stop+=1
+        selected=set(range(start,stop))
+        label=f"symbol-{name}-{len(symbols)}"
+        export(label,[b[0]-2,b[1]-2,w+4,h+4],only=selected)
+        removed |= selected;symbols.append(label)
+        # Illustrator also retains duplicate shadow/rim paint below some
+        # badges. Remove that whole small footprint, not just the top group.
+        footprint=[b[0]-2,b[1]-2,w+4,h+4]
+        removed |= {i for i,(_,q) in enumerate(nodes) if inside(q,footprint) and q[2]-q[0]<30 and q[3]-q[1]<30}
+    export(name,box,remove=removed)
+    manifest[name]["symbols"]=symbols
+    manifest[name]["arrows"]=arrows
+    panel_removed[name]=removed
 
 # Separate the two original aperture circles for actual constriction motion.
 for name,index in [("pupil-cataract-1",2886),("pupil-cataract-2",3013)]:
     b = nodes[index][1]
     assert nodes[index][0].tag.endswith("}path") and b[2]-b[0] < 2
     export(name + "-pupil",[b[0],b[1],b[2]-b[0],b[3]-b[1]],only={index})
-    export(name,panel_boxes[name],remove={index})
+    symbols=manifest[name].get("symbols",[])
+    arrows=manifest[name].get("arrows",[])
+    export(name,panel_boxes[name],remove={index}|panel_removed.get(name,set()))
+    manifest[name]["symbols"]=symbols
+    manifest[name]["arrows"]=arrows
 
 # Identify white translucent illumination paths in the technique panels. These
 # source polygons fade in synchrony with the narrated examination, not the face.
@@ -178,9 +224,9 @@ for name,box in {
     "acuity-method-cover":[134,267,57,78],
     "acuity-method-pinhole":[137,237,42,21],
     "acuity-method-near":[180,232,57,114],
-    "acuity-cataract-distance":[288,239,36,50],
-    "acuity-cataract-pinhole":[290,295,35,19],
-    "acuity-cataract-near":[288,319,40,24],
+    "acuity-cataract-distance":[287,238,47,53],
+    "acuity-cataract-pinhole":[288,294,48,20],
+    "acuity-cataract-near":[288,319,48,25],
     "acuity-cataract-down-1":[359,251,27,29],
     "acuity-cataract-no-gain":[359,294,27,23],
     "acuity-cataract-down-2":[359,318,27,29],

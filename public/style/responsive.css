@@ -5291,7 +5291,20 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   }
 }
 
-#atomsCardPage .atoms-card-zoom-controls span,
+#atomsCardPage .atoms-card-zoom-controls svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#atomsCardPage .atoms-card-zoom-controls > svg {
+  margin-inline: 6px;
+  color: white;
+}
 #atomsCardPage .atoms-card-zoom-controls button,
 .workshop-atoms-zoom-controls span,
 .workshop-atoms-zoom-controls button {
@@ -5313,13 +5326,11 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   box-sizing: border-box !important;
 }
 
-#atomsCardPage .atoms-card-zoom-controls span,
 .workshop-atoms-zoom-controls span {
   position: relative !important;
   font-size: 0 !important;
 }
 
-#atomsCardPage .atoms-card-zoom-controls span::before,
 .workshop-atoms-zoom-controls span::before {
   content: "" !important;
   width: 13px !important;
@@ -5329,7 +5340,6 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   transform: translate(-2px, -2px) !important;
 }
 
-#atomsCardPage .atoms-card-zoom-controls span::after,
 .workshop-atoms-zoom-controls span::after {
   content: "" !important;
   position: absolute !important;
@@ -5509,7 +5519,6 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   box-shadow: none !important;
 }
 
-#atomsCardPage .atoms-card-zoom-controls span,
 .workshop-atoms-zoom-controls span {
   width: 24px !important;
   min-width: 24px !important;
@@ -5518,23 +5527,19 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   color: #ffffff !important;
 }
 
-#atomsCardPage .atoms-card-zoom-controls span::before,
 .workshop-atoms-zoom-controls span::before {
   border-color: #ffffff !important;
 }
 
-#atomsCardPage .atoms-card-zoom-controls span::after,
 .workshop-atoms-zoom-controls span::after {
   background: #ffffff !important;
 }
 
-#atomsCardPage #atomsZoomOutBtn,
 .workshop-atoms-zoom-controls [data-atoms-zoom-out] {
   position: relative !important;
   font-size: 0 !important;
 }
 
-#atomsCardPage #atomsZoomOutBtn::before,
 .workshop-atoms-zoom-controls [data-atoms-zoom-out]::before {
   content: "" !important;
   display: block !important;
@@ -5722,7 +5727,6 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   transform-origin: center center !important;
 }
 
-#atomsCardPage #atomsZoomOutBtn::before,
 .workshop-atoms-zoom-controls [data-atoms-zoom-out]::before {
   position: absolute !important;
   left: 50% !important;
