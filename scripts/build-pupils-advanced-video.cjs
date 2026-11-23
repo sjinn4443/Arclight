@@ -20,7 +20,7 @@ const stem = "PupilsAdvancedFullAnim";
 const titleSeconds = 3;
 let titleTranslations;
 
-function prepareNarration(config, ffmpeg) {
+function prepareNarration(config, ffmpeg, onlyLanguage) {
   const folder = path.join(
     publicDir,
     "narration/pupils-advanced/full-animation",
@@ -70,11 +70,16 @@ function prepareNarration(config, ffmpeg) {
   const manifest = {
     schemaVersion: 1,
     durationSeconds: script.durationSeconds,
-    tracks: {},
+    tracks: onlyLanguage
+      ? JSON.parse(
+          fs.readFileSync(path.join(destination, "manifest.json"), "utf8"),
+        ).tracks
+      : {},
   };
   const timestamp = (seconds) =>
     new Date(Math.round(seconds * 1000)).toISOString().slice(11, 23);
   for (const [language, voice] of Object.entries(source.languages)) {
+    if (onlyLanguage && language !== onlyLanguage) continue;
     const sourceAudio = path.join(folder, `${language}.m4a`);
     const filters = [
       `[0:a]asplit=${scenes.length}${scenes.map((_, i) => `[in${i}]`).join("")}`,
@@ -158,20 +163,24 @@ function prepareNarration(config, ffmpeg) {
     path.join(destination, "manifest.json"),
     JSON.stringify(manifest, null, 2) + "\n",
   );
-  writeCaptions(script, destination);
+  writeCaptions(script, destination, onlyLanguage ? [onlyLanguage] : undefined);
 }
 
 async function main() {
   const {
     PUPILS_ADVANCED_SCROLL_CONFIG: config,
     PUPILS_ADVANCED_TITLE_TRANSLATIONS,
+    PUPILS_ADVANCED_URDU_TITLES,
   } = await import(
     pathToFileURL(path.join(publicDir, "js/pupilsAdvancedScroll.js"))
   );
   titleTranslations = Object.fromEntries(
     config.sections.map((section, i) => [
       section.title,
-      { ko: PUPILS_ADVANCED_TITLE_TRANSLATIONS[i] },
+      {
+        ko: PUPILS_ADVANCED_TITLE_TRANSLATIONS[i],
+        ur: PUPILS_ADVANCED_URDU_TITLES[i],
+      },
     ]),
   );
   const clips = config.narrationClipsByFile;
@@ -184,7 +193,10 @@ async function main() {
     );
   fs.mkdirSync(output, { recursive: true });
   if (process.argv.includes("--narration-only")) {
-    prepareNarration(config, ffmpeg);
+    const language = process.argv.find((value) =>
+      value.startsWith("--language="),
+    );
+    prepareNarration(config, ffmpeg, language?.split("=")[1]);
     return;
   }
   const server = http.createServer((req, res) => {

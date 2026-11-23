@@ -116,8 +116,14 @@ export function get(obj, path) {
 function normalizeLanguage(lang) {
   const normalized = String(lang || "")
     .trim()
-    .toLowerCase();
-  return LANG_ALIAS[normalized] ? normalized : "en";
+    .toLowerCase()
+    .replaceAll("_", "-");
+  const base = normalized.split("-")[0];
+  if (Object.hasOwn(LANG_ALIAS, base)) return base;
+  return (
+    Object.keys(LANG_ALIAS).find((code) => LANG_ALIAS[code] === normalized) ||
+    "en"
+  );
 }
 
 function langToPath(lang) {
@@ -300,6 +306,9 @@ function parseI18nSpecs(rawSpec) {
     .filter((entry) => entry.path);
 }
 
+const translatedLiteralText = new WeakMap();
+const translatedLiteralAttributes = new WeakMap();
+
 function applyLiteralTranslations(root = document) {
   if (!root || !CACHE.literalIndex?.size) return;
 
@@ -325,8 +334,17 @@ function applyLiteralTranslations(root = document) {
       !parent.closest("[data-i18n-skip]") &&
       !/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/i.test(parent.tagName || "")
     ) {
-      const translated = literalTranslate(textNode.textContent);
-      if (translated != null && textNode.textContent !== translated) {
+      const current = textNode.textContent;
+      const previous = translatedLiteralText.get(textNode);
+      const source =
+        previous?.translated === current ? previous.source : current;
+      const translated = literalTranslate(source) ?? source;
+      if (translated !== source) {
+        translatedLiteralText.set(textNode, { source, translated });
+      } else {
+        translatedLiteralText.delete(textNode);
+      }
+      if (current !== translated) {
         textNode.textContent = translated;
       }
     }
@@ -345,8 +363,21 @@ function applyLiteralTranslations(root = document) {
       if (explicitTargets.has(attr.toLowerCase())) return;
       const current = el.getAttribute(attr);
       if (!current) return;
-      const translated = literalTranslate(current);
-      if (translated != null && current !== translated) {
+      let previousAttributes = translatedLiteralAttributes.get(el);
+      const previous = previousAttributes?.get(attr);
+      const source =
+        previous?.translated === current ? previous.source : current;
+      const translated = literalTranslate(source) ?? source;
+      if (translated !== source) {
+        if (!previousAttributes) {
+          previousAttributes = new Map();
+          translatedLiteralAttributes.set(el, previousAttributes);
+        }
+        previousAttributes.set(attr, { source, translated });
+      } else {
+        previousAttributes?.delete(attr);
+      }
+      if (current !== translated) {
         el.setAttribute(attr, translated);
       }
     });
@@ -575,7 +606,7 @@ function bindMutationTranslationPasses() {
 /** Change language and re-translate the live DOM */
 export async function setLanguage(lang) {
   const next = normalizeLanguage(lang || getLanguage());
-  const previous = CACHE.lang;
+  const previous = getLanguage();
   localStorage.setItem("prefLang", next);
   await loadTranslations(next);
   applyTranslations(document);

@@ -354,7 +354,7 @@ export function primeExaminationNarration(pageId, language = "en") {
   selection = String(selection).toLowerCase().split(/[-_]/)[0];
   if (selection === "es") selection = "es-419";
   if (
-    !["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"].includes(
+    !["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur"].includes(
       selection,
     )
   )

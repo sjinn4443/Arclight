@@ -1594,6 +1594,7 @@ async function main() {
     PUPILS_ADVANCED_SECTIONS: sections,
     PUPILS_ADVANCED_LANGUAGES: languages,
     PUPILS_ADVANCED_TITLE_TRANSLATIONS: titles,
+    PUPILS_ADVANCED_URDU_TITLES: urduTitles,
   } = config;
   afferentWords = config.PUPILS_ADVANCED_AFFERENT_WORD_FRAMES;
   // Keep the reviewed speech and its eye/lid and warning cues on the same clock.
@@ -1989,7 +1990,7 @@ async function main() {
         },
         videoTitleCues: sections.map((s, i) => ({
           sourceText: s.title,
-          translations: { ko: titles[i] },
+          translations: { ko: titles[i], ur: urduTitles[i] },
         })),
       },
       null,

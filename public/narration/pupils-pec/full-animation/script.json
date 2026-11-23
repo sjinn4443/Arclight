@@ -67,6 +67,12 @@
       "modelLicense": "CC-BY-NC-4.0",
       "style": "Calm medical educator",
       "trimEdgeSilenceDb": -50
+    },
+    "ur": {
+      "label": "اردو",
+      "locale": "ur-PK",
+      "voice": "ur-PK-UzmaNeural",
+      "style": "Calm medical educator"
     }
   },
   "cues": [
@@ -82,7 +88,8 @@
       "lg": "Tunula ku bunene, enkula n’okufaanagana kw’obutuli bw’amaaso gombi.",
       "ha": "Duba girma, siffa da daidaiton ƙwayoyin idanu biyu.",
       "yo": "Wo ìwọ̀n, ìrísí àti bí àwọn ọmọ ojú méjèèjì ṣe dọ́gba.",
-      "ig": "Lelee nha, ọdịdị na nhata ụmụ anya abụọ."
+      "ig": "Lelee nha, ọdịdị na nhata ụmụ anya abụọ.",
+      "ur": "دونوں پتلیوں کے سائز، شکل اور ہم آہنگی کا مشاہدہ کریں۔"
     },
     {
       "id": "compare-observation",
@@ -96,7 +103,8 @@
       "lg": "Geraageranya obutuli obwa bulijjo n’enkyukakyuka mu langi oba enkula, obunene obutafaanagana n’ebikowe.",
       "ha": "Kwatanta ƙwayoyin idanu na al’ada da sauyin launi ko siffa, bambancin girma da fatar ido.",
       "yo": "Fi ọmọ ojú tó dára wé ìyípadà àwọ̀ tàbí ìrísí, ìwọ̀n tí kò dọ́gba àti ìpéǹpéjú.",
-      "ig": "Tụnyere ụmụ anya dị mma na mgbanwe agba ma ọ bụ ọdịdị, nha na-ahaghị nhata na mkpuchi anya."
+      "ig": "Tụnyere ụmụ anya dị mma na mgbanwe agba ma ọ bụ ọdịdị, nha na-ahaghị nhata na mkpuchi anya.",
+      "ur": "رنگ یا شکل میں تبدیلی، غیر مساوی پتلی کے سائز اور پلکوں کے ساتھ عام پتلیوں کا موازنہ کریں۔"
     },
     {
       "id": "light",
@@ -110,7 +118,8 @@
       "lg": "Koleeza Arclight olonde ekitangaala ekisinga. Kozesa ekisenge ekisirifu ekirimu ekitangaala ekitono.",
       "ha": "Kunna Arclight ka zaɓi haske mafi ƙarfi. Yi amfani da ɗaki mai natsuwa da ƙarancin haske.",
       "yo": "Tan Arclight kí o yan ìmọ́lẹ̀ tó lágbára jù. Lo yàrá tó dákẹ́ tí ìmọ́lẹ̀ rẹ̀ kéré.",
-      "ig": "Gbanye Arclight họrọ ìhè kacha enwu. Jiri ụlọ dị jụụ nke ìhè ya pere mpe."
+      "ig": "Gbanye Arclight họrọ ìhè kacha enwu. Jiri ụlọ dị jụụ nke ìhè ya pere mpe.",
+      "ur": "Arclight کو آن کریں اور روشن ترین لائٹ سیٹنگ منتخب کریں۔ ایک پرسکون، مدھم کمرے کا استعمال کریں۔"
     },
     {
       "id": "distance",
@@ -124,7 +133,8 @@
       "lg": "Gamba omulwadde atunuulire ekintu ekiri ewala.",
       "ha": "Ka ce majiyyaci ya kalli wani abu mai nisa.",
       "yo": "Sọ fún aláìsàn kí ó wo ohun kan tó jìnnà.",
-      "ig": "Gwa onye ọrịa ka o lee ihe dị anya."
+      "ig": "Gwa onye ọrịa ka o lee ihe dị anya.",
+      "ur": "مریض سے کہیں کہ وہ دور کے ہدف کو دیکھے۔"
     },
     {
       "id": "clear-view",
@@ -141,7 +151,8 @@
         "lg": "Kakasa nti tatunuulira mukebera wadde ekitangaala kyennyini.",
         "ha": "Tabbatar bai kalli mai bincike ba ko hasken kansa.",
         "yo": "Rí i pé kò wo olùṣàyẹ̀wò tàbí ìmọ́lẹ̀ náà.",
-        "ig": "Hụ na ọ naghị ele onye na-enyocha anya ma ọ bụ ìhè ahụ n’onwe ya."
+        "ig": "Hụ na ọ naghị ele onye na-enyocha anya ma ọ bụ ìhè ahụ n’onwe ya.",
+        "ur": "مریض معائنہ کرنے والے یا خود روشنی کو نہ دیکھے۔"
       },
       "captionUntil": "avoid-light",
       "es-419": "Asegúrese de que no mire al examinador",
@@ -152,8 +163,10 @@
       "yo": "Rí i pé kò wo olùṣàyẹ̀wò",
       "ig": "Hụ na ọ naghị ele onye na-enyocha anya",
       "ttsText": {
-        "ig": "Ọ ghara ile onye nyocha."
-      }
+        "ig": "Ọ ghara ile onye nyocha.",
+        "ur": "معائنہ کار کو نہ دیکھیں"
+      },
+      "ur": "یقین کریں کہ مریض معائنہ کرنے والے کو نہ دیکھے"
     },
     {
       "id": "avoid-light",
@@ -170,7 +183,8 @@
         "lg": "",
         "ha": "",
         "yo": "",
-        "ig": ""
+        "ig": "",
+        "ur": ""
       },
       "es-419": "ni a la luz.",
       "ne": "वा बत्तीलाई पनि।",
@@ -178,7 +192,8 @@
       "lg": "wadde ekitangaala kyennyini.",
       "ha": "ko hasken kansa.",
       "yo": "tàbí ìmọ́lẹ̀ náà.",
-      "ig": "ma ọ bụ ìhè ahụ n’onwe ya."
+      "ig": "ma ọ bụ ìhè ahụ n’onwe ya.",
+      "ur": "یا روشنی خود؟"
     },
     {
       "id": "move-light",
@@ -192,7 +207,8 @@
       "lg": "Sembereza ekitangaala eri akatuli k’eriiso okuva ku bbali.",
       "ha": "Matsar da haske daga gefe zuwa ƙwayar ido.",
       "yo": "Gbé ìmọ́lẹ̀ láti ẹ̀gbẹ́ sí ọmọ ojú.",
-      "ig": "Bugharịa ìhè site n’akụkụ gaa n’ebe nwa anya dị."
+      "ig": "Bugharịa ìhè site n’akụkụ gaa n’ebe nwa anya dị.",
+      "ur": "روشنی کو ایک طرف سے پتلی کی طرف بڑھائیں۔"
     },
     {
       "id": "watch",
@@ -206,7 +222,8 @@
       "lg": "Tunula ku katuli akataddeko ekitangaala olabe bwe kaddaamu butereevu.",
       "ha": "Duba ƙwayar idon da aka haskaka don amsarta kai tsaye.",
       "yo": "Wo ọmọ ojú tí ìmọ́lẹ̀ ń tàn sí fún ìdáhùn tààrà sí ìmọ́lẹ̀.",
-      "ig": "Lelee nwa anya ìhè na-enwu na ya maka nzaghachi kpọmkwem nye ìhè."
+      "ig": "Lelee nwa anya ìhè na-enwu na ya maka nzaghachi kpọmkwem nye ìhè.",
+      "ur": "براہ راست روشنی کے ردعمل کے لیے روشن پتلی کو دیکھیں۔"
     },
     {
       "id": "shine-constrict",
@@ -220,7 +237,8 @@
       "lg": "Yaka ekitangaala mu liiso olabe akatuli bwe kakendeera.",
       "ha": "Haskaka idon ka lura da ƙanƙancewar ƙwayar ido.",
       "yo": "Tan ìmọ́lẹ̀ sínú ojú kí o wo bí ọmọ ojú ṣe ń kéré.",
-      "ig": "Mee ka ìhè banye n’anya ma lelee nwa anya ka ọ na-ebelata."
+      "ig": "Mee ka ìhè banye n’anya ma lelee nwa anya ka ọ na-ebelata.",
+      "ur": "آنکھ میں روشنی ڈالیں اور پُتلی کو تنگ ہوتے دیکھیں۔"
     },
     {
       "id": "compare-responses",
@@ -234,7 +252,8 @@
       "lg": "Noonya okukendeera okutono oba obutakendeera.",
       "ha": "Duba ko ƙanƙancewar ta ragu ko babu ita.",
       "yo": "Ṣàyẹ̀wò bóyá kíkéré náà dín kù tàbí kò sí.",
-      "ig": "Lelee ma mbelata ahụ adịghị ike ma ọ bụ na ọ dịghị."
+      "ig": "Lelee ma mbelata ahụ adịghị ike ma ọ bụ na ọ dịghị.",
+      "ur": "کم یا غیر حاضر کنسٹرکشن کی تلاش کریں۔"
     },
     {
       "id": "corresponding-examples",
@@ -251,7 +270,8 @@
       "ig": "Nzaghachi ụmụ anya dị n’aka ekpe nwere ike ijikọ na ọnọdụ azụ anya ndị e gosiri n’aka nri.",
       "ttsText": {
         "lg": "Obutuli ku kkono buyinza okulaga embeera z’emabega w’eriiso eziri ku ddyo."
-      }
+      },
+      "ur": "بائیں طرف پتلیوں کے ردعمل دائیں طرف دکھائے گئے آنکھ کے پچھلے حصے کی حالتوں سے وابستہ ہو سکتے ہیں۔"
     },
     {
       "id": "pupil-colour",
@@ -265,7 +285,8 @@
       "lg": "Langi y’akatuli tesalawo bwe kaddaamu ekitangaala.",
       "ha": "Launin ƙwayar ido ba ya ƙayyade amsarta ga haske.",
       "yo": "Àwọ̀ ọmọ ojú kò pinnu ìdáhùn rẹ̀ sí ìmọ́lẹ̀.",
-      "ig": "Agba nwa anya anaghị ekpebi nzaghachi ya nye ìhè."
+      "ig": "Agba nwa anya anaghị ekpebi nzaghachi ya nye ìhè.",
+      "ur": "پتلی کا رنگ روشنی کے ردعمل کا تعین نہیں کرتا ہے۔"
     },
     {
       "id": "cataract-constriction",
@@ -279,7 +300,8 @@
       "lg": "Ekire kiyinza okufuula akatuli okulabika nga ka kivu oba keeru, naye kasaanidde okukendeera singa ekkubo ly’okuddamu ekitangaala teririna buzibu.",
       "ha": "Cataract na iya sa ƙwayar ido ta yi toka ko fari, amma ya kamata ta ƙanƙance idan hanyar amsa ga haske tana aiki.",
       "yo": "Cataract lè mú ọmọ ojú dà bí eérú tàbí funfun, ṣùgbọ́n ó yẹ kí ó kéré bí ọ̀nà ìdáhùn sí ìmọ́lẹ̀ bá ń ṣiṣẹ́ dáadáa.",
-      "ig": "Cataract nwere ike ime ka nwa anya yie ntụ ntụ ma ọ bụ ọcha, mana ọ kwesịrị ibelata ma ọ bụrụ na ụzọ nzaghachi nye ìhè na-arụ ọrụ nke ọma."
+      "ig": "Cataract nwere ike ime ka nwa anya yie ntụ ntụ ma ọ bụ ọcha, mana ọ kwesịrị ibelata ma ọ bụrụ na ụzọ nzaghachi nye ìhè na-arụ ọrụ nke ọma.",
+      "ur": "موتیابند کی وجہ سے پتلی سرمئی یا سفید نظر آ سکتا ہے، لیکن اگر روشنی کا اضطراری راستہ برقرار ہے تو پتلی کو پھر بھی تنگ ہونا چاہیے۔"
     }
   ],
   "videoTitleCues": [
@@ -293,7 +315,8 @@
         "lg": "Okutunuulira",
         "ha": "Dubawa",
         "yo": "Àkíyèsí",
-        "ig": "Nlele"
+        "ig": "Nlele",
+        "ur": "مشاہدہ"
       }
     },
     {
@@ -306,7 +329,8 @@
         "lg": "Akatuli k’eriiso okuddamu ekitangaala butereevu",
         "ha": "Amsar ƙwayar ido ga haske kai tsaye",
         "yo": "Ìdáhùn tààrà sí ìmọ́lẹ̀",
-        "ig": "Nzaghachi kpọmkwem nye ìhè"
+        "ig": "Nzaghachi kpọmkwem nye ìhè",
+        "ur": "روشنی پر پتلی کا براہِ راست ردِعمل"
       }
     }
   ]

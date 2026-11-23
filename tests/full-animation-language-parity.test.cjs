@@ -3,7 +3,18 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 import { describe, expect, it } from "@jest/globals";
 
-const languages = ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"];
+const languages = [
+  "en",
+  "es-419",
+  "ko",
+  "ne",
+  "fr",
+  "lg",
+  "ha",
+  "yo",
+  "ig",
+  "ur",
+];
 const lessons = [
   ["front-of-eye", "frontOfEyeFullAnimationVideoPage", 22, 171.46],
   [
@@ -27,7 +38,7 @@ describe.each(lessons)(
     const manifest = read(`public${base}manifest.json`);
     const entry = catalog[pageId];
 
-    it("preserves scene timing and offers the same nine languages as Fundal Reflex", () => {
+    it("preserves scene timing and offers the same languages as Fundal Reflex", () => {
       expect(script.cues).toHaveLength(count);
       expect(script.durationSeconds).toBe(duration);
       expect(Object.keys(script.languages).sort()).toEqual(

@@ -7,7 +7,7 @@ import { PUPILS_PEC_OBSERVATION_LABELS } from "../public/js/pupilsPecArtworkLabe
 const id = cfg.pageId;
 const route = "pupilsPecScroll";
 
-test("all nine languages switch narration, headings and accumulated scroll captions", async ({
+test("all supported languages switch narration, headings and accumulated scroll captions", async ({
   page,
 }, testInfo) => {
   const script = JSON.parse(

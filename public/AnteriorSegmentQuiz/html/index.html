@@ -403,6 +403,7 @@
           next === "en" ? i18nState.fallback : await fetchDictionary(next);
         i18nState.lang = next;
         document.documentElement.setAttribute("lang", next);
+        document.documentElement.dir = next === "ur" ? "rtl" : "ltr";
         rebuildLiteralIndex();
       }
 

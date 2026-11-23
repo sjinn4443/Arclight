@@ -70,6 +70,7 @@ export const PUPILS_PEC_LANGUAGES = {
     style: "Calm medical educator",
     trimEdgeSilenceDb: -50,
   },
+  ur: { label: "اردو", locale: "ur-PK", voice: "ur-PK-UzmaNeural" },
 };
 export const PUPILS_PEC_SECTIONS = [
   { startIndex: 0, title: "Observation" },
@@ -228,6 +229,7 @@ allCues.find((cue) => cue.id === "corresponding-examples").ttsText = {
 };
 allCues.find((cue) => cue.id === "clear-view").ttsText = {
   ig: "Ọ ghara ile onye nyocha.",
+  ur: "معائنہ کار کو نہ دیکھیں",
 };
 export const PUPILS_PEC_TITLE_TRANSLATIONS = {
   Observation: { ko: "관찰" },

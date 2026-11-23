@@ -24,7 +24,7 @@ const APP_VIDEO_SUBTITLE_LANGUAGES = {
   es: { label: "Spanish" },
   sw: { label: "Swahili" },
   te: { label: "Telugu" },
-  ur: { label: "Urdu" },
+  ur: { label: "اردو" },
   yo: { label: "Yoruba" },
   zu: { label: "Zulu" },
   lo: { label: "Lao" },

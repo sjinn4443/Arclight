@@ -1,4 +1,10 @@
 export const PUPILS_PEC_OBSERVATION_LABELS = {
+  ur: [
+    "معمول کے مطابق",
+    "غیر معمولی رنگ یا شکل",
+    "بائیں جانب تیسرے دماغی عصب کا فالج",
+    "دائیں جانب سمپیتھیٹک عصب کا فالج",
+  ],
   en: [
     "Normal",
     "Abnormal colour / shape",
@@ -62,6 +68,7 @@ export function renderPupilsPecArtworkLabels(state, frame, language) {
   if (!overlay) {
     overlay = document.createElement("div");
     overlay.className = "pupils-pec-artwork-labels";
+    overlay.dataset.i18nSkip = "true";
     for (let i = 0; i < 4; i++) {
       const band = document.createElement("div");
       band.className = "pupils-pec-artwork-label";
@@ -74,6 +81,7 @@ export function renderPupilsPecArtworkLabels(state, frame, language) {
   const selected = PUPILS_PEC_OBSERVATION_LABELS[language] ? language : "en";
   if (overlay.lang !== selected) {
     overlay.lang = selected;
+    overlay.dir = selected === "ur" ? "rtl" : "ltr";
     PUPILS_PEC_OBSERVATION_LABELS[selected].forEach((text, i) => {
       overlay.children[i].firstChild.textContent = text;
     });

@@ -27,6 +27,16 @@ export const CATARACT_CASE_QUIZ_LEVELS = {
 };
 const controllers = new Map();
 
+function quizText(key, fallback, variables) {
+  return (
+    window.I18N?.t?.(`cataractQuiz.${key}`, fallback, variables) ?? fallback
+  );
+}
+
+function literal(text, fallback = text) {
+  return window.I18N?.translateLiteral?.(text, fallback) ?? fallback;
+}
+
 function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -46,7 +56,7 @@ function feedbackParagraph(text, summary = false) {
   if (summary) paragraph.classList.add("cataract-quiz-feedback-summary");
   const content = summary ? element("strong") : paragraph;
   const urgentTerms =
-    /\burgent review\b|\burgent\b|\breferrals?\b|\brefer(?:red|ring)?\b|\bsame-day\b/gi;
+    /\burgent review\b|\burgent\b|\breferrals?\b|\brefer(?:red|ring)?\b|\bsame-day\b|اسی دن|فوری|فوراً/gi;
   let offset = 0;
   for (const match of text.matchAll(urgentTerms)) {
     content.append(document.createTextNode(text.slice(offset, match.index)));
@@ -125,11 +135,14 @@ function createQuiz(page, config, showPage) {
   const completed = () => sessions.filter((s) => s.outcome);
   const score = () => completed().filter((s) => s.outcome.ok).length;
   const eyeCopy = (text) =>
-    primary
-      ? text
-      : text
-          .replace(/\bright[ -]eye\b/gi, "R.E.")
-          .replace(/\bleft[ -]eye\b/gi, "L.E.");
+    literal(
+      text,
+      primary
+        ? text
+        : text
+            .replace(/\bright[ -]eye\b/gi, "R.E.")
+            .replace(/\bleft[ -]eye\b/gi, "L.E."),
+    );
 
   function translate(node) {
     window.I18N?.applyTranslations?.(node);
@@ -161,7 +174,12 @@ function createQuiz(page, config, showPage) {
       config.seconds - Math.floor((current()?.elapsed || 0) / 1000),
     );
     timerText.textContent = String(left);
-    timer.setAttribute("aria-label", `Case timer: ${left} seconds remaining`);
+    timer.setAttribute(
+      "aria-label",
+      quizText("timer", `Case timer: ${left} seconds remaining`, {
+        seconds: left,
+      }),
+    );
     timerRing.style.strokeDasharray = "100 100";
     timerRing.style.strokeDashoffset = String(
       (1 - left / config.seconds) * 100,
@@ -231,7 +249,10 @@ function createQuiz(page, config, showPage) {
         );
         const image = element("img");
         image.src = CATARACT_QUIZ_IMAGES[kind][selection];
-        image.alt = `${label}: ${title} examination image`;
+        image.alt = quizText("image", `${label}: ${title} examination image`, {
+          eye: literal(label),
+          examination: literal(title),
+        });
         image.width = kind === "fundal" ? 344 : 300;
         image.height = kind === "fundal" ? 125 : 300;
         // Fundal Reflex's teaching previews contain both eyes. Show the
@@ -251,7 +272,9 @@ function createQuiz(page, config, showPage) {
             view.setAttribute("role", "img");
             view.setAttribute(
               "aria-label",
-              `${label}: retinal view is obscured`,
+              quizText("obscured", `${label}: retinal view is obscured`, {
+                eye: literal(label),
+              }),
             );
           }
         }
@@ -277,7 +300,11 @@ function createQuiz(page, config, showPage) {
     mask.setAttribute("role", "group");
     mask.setAttribute(
       "aria-label",
-      `${label}: drag to explore the retina, or use the arrow keys`,
+      quizText(
+        "viewingWindow",
+        `${label}: drag to explore the retina, or use the arrow keys`,
+        { eye: literal(label) },
+      ),
     );
     let x = 50,
       y = 50,
@@ -521,16 +548,25 @@ function createQuiz(page, config, showPage) {
     const feedback = element("div", "cataract-quiz-answer-feedback");
     feedback.setAttribute("aria-live", "polite");
     if (state.outcome) {
+      const answer = literal(state.item.answer);
       feedback.append(
-        feedbackParagraph(`Correct answer: ${state.item.answer}.`, true),
+        feedbackParagraph(
+          quizText("correctAnswer", `Correct answer: ${state.item.answer}.`, {
+            answer,
+          }),
+          true,
+        ),
         feedbackParagraph(eyeCopy(state.item.explanation)),
       );
       if (state.outcome.message)
         feedback.prepend(
           element("p", "casechat-resultWhy", state.outcome.message),
         );
+      const action = state.item.nextStep || state.item.result.actionText;
       const nextStep = feedbackParagraph(
-        `Next step: ${state.item.nextStep || state.item.result.actionText}`,
+        quizText("nextStep", `Next step: ${action}`, {
+          action: literal(action),
+        }),
         true,
       );
       nextStep.classList.add("cataract-quiz-next-step");
@@ -608,7 +644,13 @@ function createQuiz(page, config, showPage) {
     const state = current();
     if (advanced) state.revealed = state.item.lines.length;
     page.dataset.caseId = state.item.id;
-    const header = bubble(`Case ${index + 1} (${index + 1}/${pool.length})`);
+    const number = index + 1;
+    const header = bubble(
+      quizText("caseHeading", `Case ${number} (${number}/${pool.length})`, {
+        number,
+        total: pool.length,
+      }),
+    );
     header.classList.add("cataract-quiz-case-heading");
     bubble("Look at both eyes and read the patient's history.");
     log.append(images(state.item));
@@ -644,6 +686,7 @@ function createQuiz(page, config, showPage) {
     footer.replaceChildren(submit);
     renderTimer();
     translate(log);
+    translate(footer);
     resume();
     page.scrollIntoView({ block: "start" });
     if (state.outcome) {
@@ -674,7 +717,14 @@ function createQuiz(page, config, showPage) {
         element(
           "h3",
           "",
-          `Case ${i + 1} · ${outcome?.ok ? "Correct" : "Incorrect"}`,
+          quizText(
+            "reviewHeading",
+            `Case ${i + 1} · ${outcome?.ok ? "Correct" : "Incorrect"}`,
+            {
+              number: i + 1,
+              result: literal(outcome?.ok ? "Correct" : "Incorrect"),
+            },
+          ),
         ),
         images(item),
       );
@@ -709,7 +759,10 @@ function createQuiz(page, config, showPage) {
       element(
         "strong",
         "cataract-quiz-score-correct",
-        `${score()} out of ${pool.length} correct.`,
+        quizText("score", `${score()} out of ${pool.length} correct.`, {
+          score: score(),
+          total: pool.length,
+        }),
       ),
     );
     return summary;
@@ -763,7 +816,13 @@ function createQuiz(page, config, showPage) {
     const card = openModal(`Cataract Quiz · ${config.name}`, "intro");
     card.dataset.step = String(step + 1);
     const dots = element("div", "cataract-quiz-intro-dots");
-    dots.setAttribute("aria-label", `Step ${step + 1} of ${steps.length}`);
+    dots.setAttribute(
+      "aria-label",
+      quizText("stepOf", `Step ${step + 1} of ${steps.length}`, {
+        step: step + 1,
+        total: steps.length,
+      }),
+    );
     steps.forEach((_, i) =>
       dots.append(element("span", i === step ? "is-current" : "")),
     );
@@ -831,7 +890,11 @@ function createQuiz(page, config, showPage) {
     card.append(
       dots,
       preview,
-      element("span", "cataract-quiz-intro-step", `STEP ${step + 1}`),
+      element(
+        "span",
+        "cataract-quiz-intro-step",
+        quizText("step", `STEP ${step + 1}`, { step: step + 1 }),
+      ),
       element("h3", "cataract-quiz-intro-title", title),
       element("p", "cataract-quiz-intro-hint", hint),
     );

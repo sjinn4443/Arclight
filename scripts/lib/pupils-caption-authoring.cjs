@@ -3,8 +3,12 @@ const fs = require("node:fs");
 const path = require("node:path");
 const stamp = (seconds) =>
   new Date(Math.round(seconds * 1000)).toISOString().slice(11, 23);
-function writeCaptions(script, folder) {
-  for (const language of Object.keys(script.languages)) {
+function writeCaptions(
+  script,
+  folder,
+  languages = Object.keys(script.languages),
+) {
+  for (const language of languages) {
     const cues = script.cues.flatMap((cue) => {
       const text = cue.caption?.[language] ?? cue[language];
       if (!text) return [];

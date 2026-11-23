@@ -78,7 +78,7 @@ describe("language-specific offline narration", () => {
   );
 
   it.each(
-    ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"].flatMap(
+    ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur"].flatMap(
       (language) => ["low", "high"].map((quality) => [language, quality]),
     ),
   )(
@@ -95,6 +95,7 @@ describe("language-specific offline narration", () => {
         "ha",
         "yo",
         "ig",
+        "ur",
       ].flatMap((code) =>
         ["", "video/"].flatMap((folder) =>
           ["m4a", "vtt"].map((ext) => `${base}${folder}${code}.${ext}`),
@@ -171,7 +172,7 @@ describe("language-specific offline narration", () => {
       "front-of-eye",
       "binocular-indirect-ophthalmoscopy",
     ].flatMap((lesson) =>
-      ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"].map(
+      ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur"].map(
         (language) => [lesson, language],
       ),
     ),

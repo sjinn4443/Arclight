@@ -13,7 +13,8 @@
         "lg": "Okutunuulira n'okukebera nga kizimbulukuse",
         "ha": "Dubawa da bincike da ƙarin girma",
         "yo": "Wíwo àti àyẹ̀wò ní títóbi",
-        "ig": "Nlele na nyocha na-ebuwanye ihe"
+        "ig": "Nlele na nyocha na-ebuwanye ihe",
+        "ur": "مشاہدہ اور بڑا امتحان"
       }
     },
     {
@@ -29,7 +30,8 @@
         "lg": "Obuziba bw'ekisenge eky'omu maaso",
         "ha": "Zurfin ɗakin gaba na ido",
         "yo": "Ìjìnlẹ̀ iyẹ̀wù iwájú ojú",
-        "ig": "Omimi ime ụlọ ihu anya"
+        "ig": "Omimi ime ụlọ ihu anya",
+        "ur": "پچھلے چیمبر کی گہرائی"
       }
     },
     {
@@ -45,7 +47,8 @@
         "lg": "Okusiiga cornea ne fluorescein",
         "ha": "Rina cornea da fluorescein",
         "yo": "Fífi fluorescein kun cornea",
-        "ig": "Iji fluorescein tee cornea agba"
+        "ig": "Iji fluorescein tee cornea agba",
+        "ur": "فلوروسین کورنیل سٹیننگ"
       }
     },
     {
@@ -61,7 +64,8 @@
         "lg": "Okukyusa ekikowe ekya waggulu",
         "ha": "Juya fatar ido ta sama",
         "yo": "Yíyí ìpéǹpéjú òkè padà",
-        "ig": "Ịtụgharị mkpuchi anya elu"
+        "ig": "Ịtụgharị mkpuchi anya elu",
+        "ur": "اوپری پپوٹا Eversion"
       }
     }
   ],
@@ -79,7 +83,8 @@
         "lg": "Okutunuulira n'ekitangaala ekidda mu liiso",
         "ha": "Dubawa da hasken da ke dawowa daga cikin ido",
         "yo": "Wíwo àti ìmọ́lẹ̀ tó ń padà láti inú ojú",
-        "ig": "Nlele na ìhè na-alọghachi site n'ime anya"
+        "ig": "Nlele na ìhè na-alọghachi site n'ime anya",
+        "ur": "مشاہدہ اور فنڈل اضطراری"
       }
     },
     {
@@ -95,7 +100,8 @@
         "lg": "Enteekateeka y'omubiri n'ekkubo ly'okusembereramu",
         "ha": "Matsayi da hanyar kusantar ido",
         "yo": "Ipò àti ọ̀nà sísún mọ́ ojú",
-        "ig": "Ọnọdụ na ụzọ ịbịaru nso anya"
+        "ig": "Ọnọdụ na ụzọ ịbịaru nso anya",
+        "ur": "پوزیشننگ اور فلائٹ پاتھ"
       }
     },
     {
@@ -111,7 +117,8 @@
         "lg": "Ebintu eby'okukebera",
         "ha": "Abubuwan da za a tantance",
         "yo": "Àwọn ohun tí a ó ṣe àyẹ̀wò",
-        "ig": "Ihe ndị a ga-enyocha"
+        "ig": "Ihe ndị a ga-enyocha",
+        "ur": "تشخیص کرنے کی خصوصیات"
       }
     },
     {
@@ -127,7 +134,8 @@
         "lg": "Engeri y'okukebera",
         "ha": "Yadda ake binciken ido",
         "yo": "Bí a ṣe ń ṣe àyẹ̀wò",
-        "ig": "Otu e si enyocha"
+        "ig": "Otu e si enyocha",
+        "ur": "جانچنے کا طریقہ"
       }
     }
   ],
@@ -145,7 +153,8 @@
         "lg": "Okwetegeka",
         "ha": "Shiri",
         "yo": "Ìmúrasílẹ̀",
-        "ig": "Nkwadebe"
+        "ig": "Nkwadebe",
+        "ur": "تیاری"
       }
     },
     {
@@ -161,7 +170,8 @@
         "lg": "Okukebera munda w'eriiso ng'omulwadde atudde",
         "ha": "Binciken cikin ido a zaune",
         "yo": "Àyẹ̀wò inú ẹ̀yìn ojú ní ìjókòó",
-        "ig": "Nnyocha ime azụ anya mgbe onye ọrịa nọ ọdụ"
+        "ig": "Nnyocha ime azụ anya mgbe onye ọrịa nọ ọdụ",
+        "ur": "فنڈوسکوپی سیٹنگ"
       }
     },
     {
@@ -177,7 +187,8 @@
         "lg": "Okukebera munda w'eriiso nga onyiga",
         "ha": "Binciken cikin ido tare da dannawa",
         "yo": "Àyẹ̀wò inú ẹ̀yìn ojú pẹ̀lú títẹ̀",
-        "ig": "Nnyocha ime azụ anya site na ịpị"
+        "ig": "Nnyocha ime azụ anya site na ịpị",
+        "ur": "انڈینٹیشن کے ساتھ فنڈوسکوپی"
       }
     }
   ]

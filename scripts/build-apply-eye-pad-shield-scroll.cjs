@@ -1314,6 +1314,12 @@ async function main() {
         locale: "ko-KR",
         voice: "Microsoft Heami Desktop",
       },
+      ur: {
+        label: "اردو",
+        locale: "ur-PK",
+        voice: "ur-PK-UzmaNeural",
+        style: "Calm medical educator",
+      },
     },
     cues: cues.map((s, i) => ({
       id: sourceClips[i].cueIds[0],
@@ -1321,21 +1327,22 @@ async function main() {
       end: sourceClips[i].end,
       en: s.en,
       ko: s.ko,
+      ur: s.ur,
     })),
     videoTitleCues: [
-      { sourceText: "Preparation", translations: { ko: "준비" } },
+      { sourceText: "Preparation", translations: { ko: "준비", ur: "تیاری" } },
       {
         sourceText: "Apply the eye pad",
-        translations: { ko: "안대 패드 부착" },
+        translations: { ko: "안대 패드 부착", ur: "آئی پیڈ لگائیں۔" },
       },
       {
         sourceText: "Apply the eye shield",
-        translations: { ko: "눈 보호대 부착" },
+        translations: { ko: "눈 보호대 부착", ur: "آئی شیلڈ لگائیں۔" },
       },
     ],
   };
   script.timedCues = Object.fromEntries(
-    ["en", "ko"].map((language) => [
+    Object.keys(script.languages).map((language) => [
       language,
       script.cues.map((cue) => ({
         id: cue.id,

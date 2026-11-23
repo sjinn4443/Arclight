@@ -31,12 +31,12 @@ test("all Lottie textures resolve and motion and narration end at the same frame
   }
 });
 
-test("delivered bilingual audio hashes, scripts and VTT retain the eight teaching cues", () => {
+test("delivered audio hashes, scripts and VTT retain the eight teaching cues", () => {
   const dir = "public/narration/apply-eye-pad-shield/full-animation";
   const script = JSON.parse(fs.readFileSync(`${dir}/script.json`));
   const manifest = JSON.parse(fs.readFileSync(`${dir}/manifest.json`));
   expect(script.durationSeconds).toBe(cfg.narrationClipsByFile.at(-1).end);
-  for (const lang of ["en", "ko"]) {
+  for (const lang of Object.keys(cfg.narrationTracks)) {
     const bytes = fs.readFileSync(`${dir}/${lang}.m4a`);
     expect(crypto.createHash("sha256").update(bytes).digest("hex")).toBe(
       manifest.tracks[lang].sha256,

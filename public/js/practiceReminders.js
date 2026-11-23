@@ -1,4 +1,4 @@
-import { translateLiteral } from "./i18n.js";
+import { getLanguage, translateLiteral } from "./i18n.js";
 import { initializeNotificationInbox } from "./notificationInbox.js";
 
 const KEY = "arclight:practice-reminders:v1";
@@ -298,6 +298,22 @@ function setStatus(message) {
   const status = document.getElementById("practiceReminderStatus");
   if (status) status.textContent = copy(message);
 }
+
+function syncReminderTimeParts(time) {
+  const parts = document.getElementById("practiceReminderTimeParts");
+  if (!parts) return;
+  const useParts = getLanguage() === "ur";
+  time.hidden = useParts;
+  parts.hidden = !useParts;
+  const label = document.getElementById("practiceReminderTimeLabel");
+  const [hours, minutes] = parts.querySelectorAll("select");
+  label.htmlFor = useParts ? hours.id : time.id;
+  if (!useParts) return;
+  [hours.value, minutes.value] = (time.value || DEFAULTS.reminderTime).split(
+    ":",
+  );
+}
+
 export function renderReminderSettings() {
   const toggle = document.getElementById("settingsNotificationsToggle");
   if (!toggle) return;
@@ -309,7 +325,10 @@ export function renderReminderSettings() {
   toggle.classList.toggle("is-on", on);
   toggle.setAttribute("aria-pressed", String(Boolean(on)));
   const time = document.getElementById("practiceReminderTime");
-  if (time && document.activeElement !== time) time.value = state.reminderTime;
+  if (time) {
+    if (document.activeElement !== time) time.value = state.reminderTime;
+    syncReminderTimeParts(time);
+  }
   setStatus(
     state.pendingDisable
       ? "Reminders are off on this device. Reconnect to finish turning them off on the server."
@@ -343,13 +362,22 @@ export function initializeReminderSettings() {
       toggle.disabled = false;
     }
   });
-  document
-    .getElementById("practiceReminderTime")
-    ?.addEventListener("change", async (event) => {
-      const time = event.target;
-      if (!time.validity.valid || !time.value) return;
+  const time = document.getElementById("practiceReminderTime");
+  const parts = document.getElementById("practiceReminderTimeParts");
+  const selects = [...(parts?.querySelectorAll("select") || [])];
+  for (const [index, limit] of [24, 60].entries()) {
+    const select = selects[index];
+    if (!select) continue;
+    for (let value = 0; value < limit; value++) {
+      select.add(new Option(String(value).padStart(2, "0")));
+    }
+  }
+  if (time) {
+    const saveTime = async () => {
+      if (time.disabled || !time.validity.valid || !time.value) return;
       const old = readReminderState();
       time.disabled = true;
+      selects.forEach((select) => (select.disabled = true));
       try {
         const next = { ...old, reminderTime: time.value };
         if (next.enabled)
@@ -364,8 +392,16 @@ export function initializeReminderSettings() {
         setStatus(error.message);
       } finally {
         time.disabled = false;
+        selects.forEach((select) => (select.disabled = false));
+        syncReminderTimeParts(time);
       }
+    };
+    time.addEventListener("change", saveTime);
+    parts?.addEventListener("change", () => {
+      time.value = selects.map((select) => select.value).join(":");
+      void saveTime();
     });
+  }
   renderReminderSettings();
   void loadConfig();
 }
@@ -488,6 +524,7 @@ export function initializePracticeReminders() {
       })
       .catch(() => {});
   window.addEventListener("arclight:reminders-changed", renderReminderSettings);
+  window.addEventListener("i18n:languageChanged", renderReminderSettings);
   window.addEventListener("page:loaded", () => {
     activeSeconds = 0;
     mediaSeconds = 0;

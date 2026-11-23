@@ -11,6 +11,7 @@ export const EYE_PAD_SHIELD_LANGUAGES = {
   ha: "Hausa",
   yo: "Yorùbá",
   ig: "Igbo",
+  ur: "اردو",
 };
 export const EYE_PAD_SHIELD_SECTIONS = [
   { startIndex: 0, title: "Preparation" },
@@ -148,7 +149,7 @@ export const EYE_PAD_SHIELD_STAGES = [
 export const EYE_PAD_SHIELD_MOTION_END_FRAMES = [
   0, 350, 395, 276, 0, 385, 510, 435,
 ];
-// Actual spoken ends from the nine delivered tracks' narration QA report.
+// Actual spoken ends from the delivered tracks' narration QA reports.
 // Keep source audio/caption slots intact; skip only their trailing silence.
 export const EYE_PAD_SHIELD_SPEECH_ENDS = {
   en: [8.39, 17.91, 34.99, 52.47, 59.48, 70.07, 94.19, 111.14],
@@ -160,6 +161,7 @@ export const EYE_PAD_SHIELD_SPEECH_ENDS = {
   ha: [7.45, 21.18, 36.22, 52.44, 60.26, 71.62, 95.27, 111.51],
   yo: [5.1, 16.82, 34.79, 51.99, 57.8, 68.91, 93.67, 110.41],
   ig: [7.02, 20.14, 35.78, 51.7, 59.76, 72.1, 95.96, 111.8],
+  ur: [6.66, 17.98, 35.28, 52.97, 61.09, 71.61, 94.41, 111.76],
 };
 
 let clock = 1;

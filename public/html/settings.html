@@ -58,10 +58,26 @@
         </button>
       </div>
 
-      <label class="settings-row" for="practiceReminderTime">
-        <span data-i18n="reminders.reminder_time">Reminder time</span>
+      <div class="settings-row">
+        <label
+          id="practiceReminderTimeLabel"
+          for="practiceReminderTime"
+          data-i18n="reminders.reminder_time"
+          >Reminder time</label
+        >
         <input type="time" id="practiceReminderTime" value="18:00" />
-      </label>
+        <span
+          id="practiceReminderTimeParts"
+          role="group"
+          aria-labelledby="practiceReminderTimeLabel"
+          dir="ltr"
+          hidden
+        >
+          <select id="practiceReminderHour" aria-label="گھنٹے"></select>
+          <span aria-hidden="true">:</span>
+          <select id="practiceReminderMinute" aria-label="منٹ"></select>
+        </span>
+      </div>
       <p
         class="practice-reminder-description"
         id="practiceReminderStatus"

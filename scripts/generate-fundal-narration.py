@@ -26,7 +26,7 @@ DEFAULT_ARTIFACTS = ROOT / ".codex-artifacts/fundal-reflex-narration"
 DEFAULT_PUBLIC = ROOT / "public/narration/fundal-reflex/full-animation"
 MAX_PLAYBACK_SPEED = 1.08
 SYNC_TOLERANCE_SECONDS = 0.25
-NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig")
+NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur")
 
 
 def parse_args() -> argparse.Namespace:
@@ -132,6 +132,14 @@ def resolve_language_cues(
         for cue in script["cues"]
     ]
     if timed_cue_key == "timedCues":
+        by_id = {cue["id"]: cue for cue in script["cues"]}
+        for cue in cues:
+            source = by_id[cue["id"]]
+            cue["text"] = source.get("caption", {}).get(language, cue["text"])
+            last = by_id.get(source.get("captionUntil"))
+            if last:
+                cue["end"] = last["end"]
+        cues = [cue for cue in cues if cue["text"]]
         # Video-clock title cards are caption-only and deliberately omit English.
         cues.extend(
             {
@@ -141,7 +149,7 @@ def resolve_language_cues(
                 "text": cue["translations"][language],
             }
             for cue in script.get("videoTitleCues", [])
-            if language in cue["translations"]
+            if language in cue["translations"] and "start" in cue and "end" in cue
         )
         cues.sort(key=lambda cue: cue["start"])
     return cues
@@ -454,14 +462,20 @@ def main() -> None:
     artifacts_dir.mkdir(parents=True, exist_ok=True)
     public_dir.mkdir(parents=True, exist_ok=True)
 
-    video_path = (ROOT / "public" / script["sourceVideo"].lstrip("/")).resolve()
-    if not video_path.exists():
+    source_video = script.get("sourceVideo")
+    video_path = (
+        (ROOT / "public" / source_video.lstrip("/")).resolve()
+        if source_video else None
+    )
+    if video_path is not None and not video_path.exists():
         raise FileNotFoundError(video_path)
+    if video_path is None and not (args.skip_review_video or args.tts_only):
+        raise ValueError("Pass --skip-review-video for a scrolly without a source video.")
 
     qa: dict = {
         "schemaVersion": 1,
-        "sourceVideo": str(video_path.relative_to(ROOT)).replace("\\", "/"),
-        "sourceVideoDuration": round(probe_duration(ffmpeg, video_path), 6),
+        "sourceVideo": video_path.relative_to(ROOT).as_posix() if video_path else None,
+        "sourceVideoDuration": round(probe_duration(ffmpeg, video_path), 6) if video_path else None,
         "targetDuration": script["durationSeconds"],
         "syncToleranceSeconds": SYNC_TOLERANCE_SECONDS,
         "maxPlaybackSpeed": MAX_PLAYBACK_SPEED,

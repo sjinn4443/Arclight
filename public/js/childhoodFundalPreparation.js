@@ -61,6 +61,10 @@ export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS = Object.freeze({
     label: "한국어",
     src: "/narration/fundal-reflex/full-animation/ko.m4a",
   }),
+  ur: Object.freeze({
+    label: "اردو",
+    src: "/narration/fundal-reflex/full-animation/ur.m4a",
+  }),
 });
 
 // Each entry reuses the matching spoken interval from the full-animation
@@ -1540,7 +1544,8 @@ function normalizeFundalNarrationLanguage(language) {
   if (normalized === "ko" || normalized.startsWith("ko-")) return "ko";
   if (normalized === "es" || normalized.startsWith("es-")) return "es-419";
   const base = normalized.split("-")[0];
-  if (["ne", "fr", "lg", "ha", "yo", "ig"].includes(base)) return base;
+  if (base === "urdu") return "ur";
+  if (["ne", "fr", "lg", "ha", "yo", "ig", "ur"].includes(base)) return base;
   return "en";
 }
 
@@ -1568,6 +1573,7 @@ function readFundalNarrationPreference(pageId) {
       "ha",
       "yo",
       "ig",
+      "ur",
     ].includes(storedLanguage)
       ? storedLanguage
       : "auto";
@@ -1604,6 +1610,13 @@ function writeFundalNarrationPreference(pageId, { enabled, language }) {
 function getFundalNarrationControlCopy(language = getLanguage()) {
   const normalized = normalizeFundalNarrationLanguage(language);
   const addedCopy = {
+    ur: {
+      auto: "خودکار",
+      language: "صوتی بیان کی زبان",
+      on: "صوتی بیان چالو کریں",
+      off: "صوتی بیان بند کریں",
+      blocked: "صوتی بیان سننے کے لیے ٹیپ کریں",
+    },
     ha: {
       auto: "Ta atomatik",
       language: "Harshen bayani",
@@ -1757,12 +1770,14 @@ export function initializeFundalStageNarration(
     };
   };
 
-  const resolveSelectedLanguage = () => {
-    const requested = normalizeFundalNarrationLanguage(
-      selectedLanguage === "auto" ? getLanguage() : selectedLanguage,
-    );
+  const resolveTrackLanguage = (language) => {
+    const requested = normalizeFundalNarrationLanguage(language);
     return tracks[requested] ? requested : "en";
   };
+  const resolveSelectedLanguage = () =>
+    resolveTrackLanguage(
+      selectedLanguage === "auto" ? getLanguage() : selectedLanguage,
+    );
 
   const clearStopTimer = () => {
     if (stopTimerId == null) return;
@@ -1810,8 +1825,8 @@ export function initializeFundalStageNarration(
     const copy = getFundalNarrationControlCopy();
     const resolvedLanguage = resolveSelectedLanguage();
     const resolvedLabel = tracks[resolvedLanguage]?.label || resolvedLanguage;
-    const resolvedCode =
-      resolvedLanguage === "es-419" ? "ES" : resolvedLanguage.toUpperCase();
+    const appLanguage = getLanguage();
+    const autoLabel = appLanguage === "ur" ? "اردو" : appLanguage.toUpperCase();
     const toggleLabel = !enabled
       ? copy.on
       : playbackBlocked && !synchronized
@@ -1832,7 +1847,7 @@ export function initializeFundalStageNarration(
     languageSelect.replaceChildren();
     const autoOption = document.createElement("option");
     autoOption.value = "auto";
-    autoOption.textContent = `${copy.auto} · ${resolvedCode}`;
+    autoOption.textContent = `${copy.auto} · ${autoLabel}`;
     languageSelect.appendChild(autoOption);
     Object.entries(tracks).forEach(([language, track]) => {
       const option = document.createElement("option");
@@ -2038,12 +2053,41 @@ export function initializeFundalStageNarration(
     beginPlayback(audio.currentTime || activeClip?.start);
   };
 
+  const refreshLanguage = () => {
+    const appLanguage = getLanguage();
+    if (appLanguage !== lastAppLanguage) {
+      lastAppLanguage = appLanguage;
+      selectedLanguage = "auto";
+      writeFundalNarrationPreference(cfg.pageId, {
+        enabled,
+        language: "auto",
+      });
+    }
+    const nextLanguage = resolveSelectedLanguage();
+    if (selectedLanguage === "auto" && nextLanguage !== activeLanguage) {
+      const resumeTime = clipActive
+        ? synchronized
+          ? getPosition().time
+          : Number(audio.currentTime)
+        : null;
+      setTrackSource(nextLanguage, resumeTime);
+      if (enabled && clipActive && audio.readyState >= 1) {
+        beginPlayback(resumeTime);
+      }
+    }
+    updateControls();
+  };
+  const onAppLanguageChange = () => {
+    if (getLanguage() !== lastAppLanguage) refreshLanguage();
+  };
+
   toggleButton.addEventListener("click", onToggle);
   languageSelect.addEventListener("change", onLanguageChange);
   audio.addEventListener("loadedmetadata", onLoadedMetadata);
   audio.addEventListener("timeupdate", onTimeUpdate);
   audio.addEventListener("ended", stopAtClipEnd);
   page.addEventListener("pointerdown", onPageInteraction, true);
+  window.addEventListener("i18n:languageChanged", onAppLanguageChange);
 
   setTrackSource(resolveSelectedLanguage());
   updateControls();
@@ -2052,30 +2096,7 @@ export function initializeFundalStageNarration(
     playForStage,
     getPosition,
     getLanguage: resolveSelectedLanguage,
-    refreshLanguage: () => {
-      const appLanguage = getLanguage();
-      if (appLanguage !== lastAppLanguage) {
-        lastAppLanguage = appLanguage;
-        selectedLanguage = "auto";
-        writeFundalNarrationPreference(cfg.pageId, {
-          enabled,
-          language: "auto",
-        });
-      }
-      const nextLanguage = resolveSelectedLanguage();
-      if (selectedLanguage === "auto" && nextLanguage !== activeLanguage) {
-        const resumeTime = clipActive
-          ? synchronized
-            ? getPosition().time
-            : Number(audio.currentTime)
-          : null;
-        setTrackSource(nextLanguage, resumeTime);
-        if (enabled && clipActive && audio.readyState >= 1) {
-          beginPlayback(resumeTime);
-        }
-      }
-      updateControls();
-    },
+    refreshLanguage,
     destroy: () => {
       disposed = true;
       playAttempt += 1;
@@ -2092,6 +2113,7 @@ export function initializeFundalStageNarration(
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("ended", stopAtClipEnd);
       page.removeEventListener("pointerdown", onPageInteraction, true);
+      window.removeEventListener("i18n:languageChanged", onAppLanguageChange);
       audio.remove();
     },
   };
@@ -3273,6 +3295,7 @@ function renderFundalTextLines(container, lines, options = {}) {
     safeLines.forEach((line) => {
       const itemEl = document.createElement("li");
       itemEl.className = "childhood-fundal-segment-text__bullet-item";
+      itemEl.dir = "auto";
       if (shouldUseTightSegmentTextLineHeight(line)) {
         itemEl.classList.add("childhood-fundal-segment-text__line--tight");
       }
@@ -3286,6 +3309,7 @@ function renderFundalTextLines(container, lines, options = {}) {
   safeLines.forEach((line) => {
     const lineEl = document.createElement("div");
     lineEl.className = "childhood-fundal-segment-text__line";
+    lineEl.dir = "auto";
     if (shouldUseTightSegmentTextLineHeight(line)) {
       lineEl.classList.add("childhood-fundal-segment-text__line--tight");
     }
@@ -3843,6 +3867,7 @@ function buildAnimationSlots(listEl, label, count, cfg = null) {
     const segmentText = document.createElement("div");
     segmentText.className = "childhood-fundal-segment-text";
     segmentText.setAttribute("aria-live", "polite");
+    if (cfg.narrationTracks) segmentText.dataset.i18nSkip = "true";
 
     item.appendChild(stage);
     item.appendChild(segmentText);

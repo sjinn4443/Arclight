@@ -37,4 +37,8 @@ export const VISUAL_ACUITY_NARRATION_TRACKS = {
     label: "Igbo",
     src: "/narration/visual-acuity/full-animation/ig.m4a",
   },
+  ur: {
+    label: "اردو",
+    src: "/narration/visual-acuity/full-animation/ur.m4a",
+  },
 };

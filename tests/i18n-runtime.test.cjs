@@ -41,6 +41,10 @@ const KOREAN_DICT = {
   },
 };
 
+const URDU_DICT = {
+  i18nLiteral: { "Close ^": "بند کریں ^" },
+};
+
 describe("i18n runtime regressions", () => {
   let fetchSpy;
 
@@ -82,6 +86,10 @@ describe("i18n runtime regressions", () => {
         };
       }
 
+      if (href.endsWith("/translation/urdu.json")) {
+        return { ok: true, json: async () => URDU_DICT };
+      }
+
       throw new Error(`Unexpected fetch in test: ${href}`);
     });
   });
@@ -118,6 +126,22 @@ describe("i18n runtime regressions", () => {
     i18n.applyTranslations(document);
 
     expect(document.getElementById("closeToggle").textContent).toBe("닫기 ^");
+  });
+
+  it("updates literal text and titles when switching into and out of Urdu", async () => {
+    const i18n = await import("../public/js/i18n.js");
+    const button = document.getElementById("closeToggle");
+    button.title = "Close ^";
+
+    await i18n.setLanguage("ur");
+    expect(document.documentElement.dir).toBe("rtl");
+    expect(button.textContent).toBe("بند کریں ^");
+    expect(button.title).toBe("بند کریں ^");
+
+    await i18n.setLanguage("en");
+    expect(document.documentElement.dir).toBe("ltr");
+    expect(button.textContent).toBe("Close ^");
+    expect(button.title).toBe("Close ^");
   });
 
   it("applies common fallback translations for legacy aria labels", async () => {

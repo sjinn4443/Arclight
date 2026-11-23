@@ -1,7 +1,9 @@
 (function initializeSubappLocale() {
   const language = String(localStorage.getItem("prefLang") || "")
     .trim()
-    .toLowerCase();
+    .toLowerCase()
+    .replaceAll("_", "-")
+    .split("-")[0];
   const isLao = language === "lo" || language === "lao";
   const isSpanish = language === "es" || language === "spanish";
   const additionalLocales = {
@@ -11,6 +13,7 @@
     ha: "hausa",
     yo: "yoruba",
     ig: "igbo",
+    ur: "urdu",
   };
   const additionalCode = Object.keys(additionalLocales).find(
     (code) => language === code || language === additionalLocales[code],
@@ -27,6 +30,7 @@
     : isSpanish
       ? "es"
       : additionalCode;
+  if (additionalCode === "ur") document.documentElement.dir = "rtl";
 
   const laoFallbackTranslations = {
     Menu: "ເມນູ",
@@ -191,15 +195,17 @@
             ? `${score[1]} preguntas. Nota mínima ${score[2]}.`
             : additionalCode === "fr"
               ? `${score[1]} questions. Seuil de réussite ${score[2]}.`
-              : additionalCode === "ne"
-                ? `${score[1]} प्रश्नहरू। उत्तीर्णाङ्क ${score[2]}।`
-                : additionalCode === "ha"
-                  ? `Tambayoyi ${score[1]}. Makin cin jarrabawa ${score[2]}.`
-                  : additionalCode === "yo"
-                    ? `Ìbéèrè ${score[1]}. Àmì ìkọjá ${score[2]}.`
-                    : additionalCode === "ig"
-                      ? `Ajụjụ ${score[1]}. Akara ngafe ${score[2]}.`
-                      : `${score[1]} ebibuuzo. Obubonero obw'okuyita ${score[2]}.`;
+              : additionalCode === "ur"
+                ? `${score[1]} سوالات۔ کامیابی کے لیے ${score[2]} نمبر۔`
+                : additionalCode === "ne"
+                  ? `${score[1]} प्रश्नहरू। उत्तीर्णाङ्क ${score[2]}।`
+                  : additionalCode === "ha"
+                    ? `Tambayoyi ${score[1]}. Makin cin jarrabawa ${score[2]}.`
+                    : additionalCode === "yo"
+                      ? `Ìbéèrè ${score[1]}. Àmì ìkọjá ${score[2]}.`
+                      : additionalCode === "ig"
+                        ? `Ajụjụ ${score[1]}. Akara ngafe ${score[2]}.`
+                        : `${score[1]} ebibuuzo. Obubonero obw'okuyita ${score[2]}.`;
       }
     }
     if (!translated) {
@@ -225,7 +231,8 @@
 
   function translateTree(root) {
     if (root.nodeType === Node.TEXT_NODE) {
-      if (root.parentElement?.closest("[data-i18n-skip]")) return;
+      if (root.parentElement?.closest("script, style, [data-i18n-skip]"))
+        return;
       const translated = translateValue(root.textContent);
       if (translated !== root.textContent) root.textContent = translated;
       return;
@@ -239,7 +246,7 @@
     let node = walker.nextNode();
     while (node) {
       if (node.nodeType === Node.TEXT_NODE) {
-        if (node.parentElement?.closest("[data-i18n-skip]")) {
+        if (node.parentElement?.closest("script, style, [data-i18n-skip]")) {
           node = walker.nextNode();
           continue;
         }

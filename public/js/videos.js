@@ -2157,7 +2157,7 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
   es: { label: "Spanish" },
   sw: { label: "Swahili" },
   te: { label: "Telugu" },
-  ur: { label: "Urdu" },
+  ur: { label: "اردو" },
   yo: { label: "Yoruba" },
   zu: { label: "Zulu" },
   lo: { label: "Lao" },
@@ -2683,6 +2683,18 @@ function isDedicatedVideoContainerFullscreen(video) {
 
 function getDedicatedVideoFullscreenCopy(language = getCurrentUiLanguage()) {
   const base = normalizeVideoNarrationLanguageTag(language).split("-")[0];
+  if (base === "ur") {
+    return {
+      controls: "ویڈیو کنٹرولز",
+      enter: "پوری اسکرین",
+      exit: "پوری اسکرین سے باہر نکلیں",
+      mute: "آواز بند کریں",
+      pause: "روکیں",
+      play: "چلائیں",
+      seek: "ویڈیو میں موجودہ مقام",
+      unmute: "آواز بحال کریں",
+    };
+  }
   if (base === "es") {
     return {
       controls: "Controles de vídeo",
@@ -3520,6 +3532,9 @@ function renderChildhoodPilotSubtitleOverlay(video) {
       overlay.textContent = "";
       const cueNode = document.createElement("span");
       cueNode.className = "childhood-pilot-subtitle-overlay__cue";
+      cueNode.dataset.i18nSkip = "true";
+      cueNode.lang = state.lang;
+      cueNode.dir = "auto";
       cueNode.textContent = activeText;
       overlay.appendChild(cueNode);
       overlay.hidden = false;
@@ -3539,6 +3554,9 @@ function renderChildhoodPilotSubtitleOverlay(video) {
     if (activeText) {
       const cueNode = document.createElement("span");
       cueNode.className = "childhood-pilot-subtitle-panel__cue";
+      cueNode.dataset.i18nSkip = "true";
+      cueNode.lang = state.lang;
+      cueNode.dir = "auto";
       cueNode.textContent = activeText;
       panel.appendChild(cueNode);
     }
@@ -3836,6 +3854,11 @@ function updateVideoNarrationButton(
   if (!button) return;
   const uiBase = normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0];
   const localizedCopy = {
+    ur: {
+      active: "صوتی بیان",
+      auto: "ایپ کی زبان استعمال کریں",
+      off: "صوتی بیان بند ہے",
+    },
     ha: {
       active: "Bayani",
       auto: "Yi amfani da harshen manhaja",
@@ -3893,16 +3916,12 @@ function updateVideoNarrationButton(
   menu.setAttribute("aria-label", copy.active);
   menu.replaceChildren();
 
-  const appLanguageVariant = getVideoNarrationVariant(
-    state.entry.audioVariants,
-    {
-      prefLang: uiLanguage,
-      defaultLang: state.entry.defaultAudioLang || "en",
-    },
-  );
+  const appLanguageLabel =
+    state.entry.audioVariants?.[uiBase === "es" ? "es-419" : uiBase]?.label ||
+    getChildhoodPilotSubtitleLabel(uiLanguage);
   const options = [
     {
-      label: `${copy.auto} · ${appLanguageVariant?.label || "English"}`,
+      label: `${copy.auto} · ${appLanguageLabel}`,
       value: "auto",
     },
     ...Object.entries(state.entry.audioVariants || {}).map(

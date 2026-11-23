@@ -68,6 +68,12 @@
       "modelLicense": "CC-BY-NC-4.0",
       "style": "Calm medical educator",
       "trimEdgeSilenceDb": -50
+    },
+    "ur": {
+      "label": "اردو",
+      "locale": "ur-PK",
+      "voice": "ur-PK-UzmaNeural",
+      "style": "Calm medical educator"
     }
   },
   "pronunciationGuide": [
@@ -2012,6 +2018,182 @@
         "end": 274.27,
         "text": "Saa aka ọzọ. Nyocha ìhè uhie anya agwụla."
       }
+    ],
+    "ur": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "ہاتھ دھوئیں اور حفاظتی سامان پہنیں۔"
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Arclight تیار کریں: روشن ترین لائٹ سیٹنگ کا انتخاب کریں، دونوں لینز ریک کو پوری طرح اوپر رکھیں، اور ایک پرسکون، مدھم کمرے کا استعمال کریں۔"
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "بصری سوراخ کو اپنی آنکھ کے قریب لائیں۔"
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "روشنی کو اپنی آنکھوں میں مت چمکائیں، یا اسے ایک طرف رکھیں۔"
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "ایک نوزائیدہ کو محفوظ طریقے سے لپیٹنا چاہئے۔"
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "والدین سے کہیں کہ وہ بڑے بچے کو پکڑے،"
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "جو بچہ سنبھل کر بیٹھ سکے، خود بیٹھ سکتا ہے۔"
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "بازو کی لمبائی سے شروع کریں۔"
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "تھوڑا سا ایک طرف سے دوسری طرف بڑھیں، اور اگر آپ کو مزید تفصیلی نظارے کی ضرورت ہو تو قریب جائیں۔"
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "ہاتھ کی لمبائی پر، بچے سے کہیں کہ وہ آپ کو دیکھے۔ ایک ہی وقت میں دونوں آنکھوں کا معائنہ کریں۔ ظاہری شکل اس بات پر منحصر ہوگی کہ آپ کتنے دور ہیں اور بچہ کہاں دیکھ رہا ہے۔"
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "دونوں انعکاس رنگ اور چمک میں یکساں ہوں۔ رنگ یا چمک کا فرق یا انعکاس کا نہ دکھنا غیر معمولی ہے۔ ایسے مریض ریفر کریں۔"
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "شبکیے کی رنگت کے مطابق معمول کا انعکاس زردی مائل سفید، نیلا، نارنجی سرخ یا نارنجی زرد ہو سکتا ہے۔"
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "یہ سب ان بچوں کے لیے صحت مند اور نارمل صورتیں ہیں۔"
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "والدین سے کہو کہ وہ نوزائیدہ کو محفوظ طریقے سے پکڑے، بازوؤں میں لپٹے۔"
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "آنکھیں کھلی ہوں تو بچے کو چھوئے بغیر دونوں آنکھوں کا انعکاس ساتھ دیکھیں۔"
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "اگر بچہ سو رہا ہے تو اسے جگانے کی کوشش نہ کریں۔"
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "بازوؤں کے ساتھ جھپٹنا۔"
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "پلک نرمی سے کھولیں اور ایک وقت میں ایک آنکھ دیکھیں۔ سکون، نرمی اور صبر سے کام لیں۔"
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "اسی طرح کا رنگ اور چمک یقین دلا رہی ہے۔"
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "مختصر، کبھی کبھار squints پہلے مہینے میں عام ہیں اور عام طور پر تین مہینے تک غائب ہو جاتے ہیں. اگر وہ تین ماہ کے بعد بھی برقرار رہیں تو بچے کو ریفر کریں۔"
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "رنگ کا فرق یا انعکاس کا کچھ حصہ یا پورا انعکاس غائب ہونا غیر معمولی ہے۔ مزید معائنہ ضروری ہے۔"
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "اگر تلاش غیر واضح ہے، تو اگلے تین مراحل پر عمل کریں۔"
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "پہلے بچے اور اس کے والد یا والدہ کے انعکاس کا موازنہ کریں۔ دونوں ایک جیسے دکھنے چاہییں۔"
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "دوسرا، اگر آپ کو اب بھی یقین نہیں ہے، تو کسی ساتھی سے دوسری رائے طلب کریں۔"
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "تیسرا، اگر کوئی ساتھی دستیاب نہ ہو تو رضامندی حاصل کریں،"
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Arclight کو فون کیمرہ سے منسلک کریں اور ریفلیکس کو ریکارڈ کریں۔"
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "اور دوسری رائے کے لیے ویڈیو کو محفوظ طریقے سے شیئر کریں۔"
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "والدین کا شکریہ ادا کریں۔ نتیجہ اور اگلا قدم بتائیں۔"
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.27,
+        "text": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔"
+      }
     ]
   },
   "timedAudioCues": {
@@ -3688,6 +3870,226 @@
         "end": 274.27,
         "text": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme. Saa aka ọzọ. Nyocha ìhè uhie anya agwụla."
       }
+    ],
+    "ur": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "ہاتھ دھوئیں اور حفاظتی سامان پہنیں۔"
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Arclight تیار کریں: روشن ترین لائٹ سیٹنگ کا انتخاب کریں، دونوں لینز ریک کو پوری طرح اوپر رکھیں، اور ایک پرسکون، مدھم کمرے کا استعمال کریں۔"
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "بصری سوراخ کو اپنی آنکھ کے قریب لائیں۔"
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "روشنی کو اپنی آنکھوں میں مت چمکائیں، یا اسے ایک طرف رکھیں۔"
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "ایک نوزائیدہ کو محفوظ طریقے سے لپیٹنا چاہئے۔"
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "والدین سے کہیں کہ وہ بڑے بچے کو پکڑے،"
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "جو بچہ سنبھل کر بیٹھ سکے، خود بیٹھ سکتا ہے۔"
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "بازو کی لمبائی سے شروع کریں۔"
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "تھوڑا سا ایک طرف سے دوسری طرف بڑھیں، اور اگر آپ کو مزید تفصیلی نظارے کی ضرورت ہو تو قریب جائیں۔"
+      },
+      {
+        "id": "examination-03a1",
+        "start": 71.4,
+        "end": 75.4,
+        "text": "ہاتھ کی لمبائی پر، بچے سے کہیں کہ وہ آپ کو دیکھے۔"
+      },
+      {
+        "id": "examination-03a2",
+        "start": 75.4,
+        "end": 78.4,
+        "text": "دونوں آنکھیں ایک ساتھ دیکھیں۔"
+      },
+      {
+        "id": "examination-03b",
+        "start": 78.4,
+        "end": 87.4,
+        "text": "ظاہری شکل اس بات پر منحصر ہوگی کہ آپ کتنے دور ہیں اور بچہ کہاں دیکھ رہا ہے۔"
+      },
+      {
+        "id": "examination-04a",
+        "start": 87.4,
+        "end": 91.9,
+        "text": "دونوں انعکاس کی چمک اور رنگ یکساں ہوں۔"
+      },
+      {
+        "id": "examination-04b",
+        "start": 91.9,
+        "end": 96.9,
+        "text": "رنگ یا چمک کا فرق، یا غائب انعکاس غیر معمولی ہے۔"
+      },
+      {
+        "id": "examination-04c",
+        "start": 96.9,
+        "end": 99.4,
+        "text": "ایسے مریض ریفر کریں۔"
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "شبکیے کی رنگت کے مطابق معمول کا انعکاس زردی مائل سفید، نیلا، نارنجی سرخ یا نارنجی زرد ہو سکتا ہے۔"
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "یہ سب ان بچوں کے لیے صحت مند اور نارمل صورتیں ہیں۔"
+      },
+      {
+        "id": "eyes-open-01a",
+        "start": 118.4,
+        "end": 125.4,
+        "text": "والدین سے نومولود کو محفوظ طریقے سے پکڑنے کو کہیں،"
+      },
+      {
+        "id": "eyes-open-01b",
+        "start": 125.4,
+        "end": 129.4,
+        "text": "بازوؤں سے لپٹ گیا"
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 135.4,
+        "text": "آنکھیں کھلی ہوں تو دونوں کا انعکاس ساتھ دیکھیں۔"
+      },
+      {
+        "id": "eyes-open-03",
+        "start": 136.4,
+        "end": 144.4,
+        "text": "، بچے کو چھوئے بغیر۔"
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "اگر بچہ سو رہا ہے تو اسے جگانے کی کوشش نہ کریں۔"
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "بازوؤں کے ساتھ جھپٹنا۔"
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "پلک نرمی سے کھولیں اور ایک وقت میں ایک آنکھ دیکھیں۔ سکون، نرمی اور صبر سے کام لیں۔"
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 178.95,
+        "text": "اسی طرح کا رنگ اور چمک یقین دلا رہی ہے۔"
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "مختصر، کبھی کبھار squints پہلے مہینے میں عام ہیں اور عام طور پر تین مہینے تک غائب ہو جاتے ہیں. اگر وہ تین ماہ کے بعد بھی برقرار رہیں تو بچے کو ریفر کریں۔"
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "رنگ کا فرق یا انعکاس کا کچھ حصہ یا پورا انعکاس غائب ہونا غیر معمولی ہے۔ مزید معائنہ ضروری ہے۔"
+      },
+      {
+        "id": "unclear-findings-01a",
+        "start": 211.35,
+        "end": 216.35,
+        "text": "اگر تلاش غیر واضح ہے،"
+      },
+      {
+        "id": "unclear-findings-01b",
+        "start": 216.35,
+        "end": 220.35,
+        "text": "اگلے تین مراحل پر عمل کریں."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "پہلے بچے اور اس کے والد یا والدہ کے انعکاس کا موازنہ کریں۔ دونوں ایک جیسے دکھنے چاہییں۔"
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "دوسرا، اگر آپ کو اب بھی یقین نہیں ہے، تو کسی ساتھی سے دوسری رائے طلب کریں۔"
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "تیسرا، اگر کوئی ساتھی دستیاب نہ ہو تو رضامندی حاصل کریں،"
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Arclight کو فون کیمرہ سے منسلک کریں اور ریفلیکس کو ریکارڈ کریں۔"
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "اور دوسری رائے کے لیے ویڈیو کو محفوظ طریقے سے شیئر کریں۔"
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "والدین کا شکریہ ادا کریں۔ نتیجہ اور اگلا قدم بتائیں۔",
+        "ttsText": "شکریہ، نتیجہ اور اگلا قدم بتائیں۔"
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.2,
+        "text": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔",
+        "ttsText": "دوبارہ ہاتھ دھوئیں۔ قعرِ چشم کے انعکاس کا معائنہ مکمل ہے۔"
+      }
     ]
   },
   "cues": [
@@ -3706,7 +4108,8 @@
       "lg": "Naaba mu ngalo, oyambale eby’okwekuuma.",
       "ha": "Wanke hannuwanka, ka sa kayan kariya.",
       "yo": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
-      "ig": "Saa aka gị, yirikwa ngwa nchebe."
+      "ig": "Saa aka gị, yirikwa ngwa nchebe.",
+      "ur": "ہاتھ دھوئیں اور حفاظتی سامان پہنیں۔"
     },
     {
       "id": "preparation-02",
@@ -3728,7 +4131,8 @@
       "lg": "Mu kisenge ekisirifu ekirimu ekitangaala ekitono, tegeka Arclight. Teeka ettaala ku maanyi agasinga, osindike lenzi zombi waggulu.",
       "ha": "A ɗaki mai shiru da duhu, zaɓi haske mafi ƙarfi na Arclight. Tura maƙallan ruwan tabarau biyu sama gaba ɗaya.",
       "yo": "Mú Arclight sílẹ̀ ní yàrá tó dákẹ́, tí ìmọ́lẹ̀ rẹ̀ kéré. Yan ìmọ́lẹ̀ tó lágbára jù, kí o sì gbé àwọn àgbékalẹ̀ lẹ́ńsì méjèèjì sókè pátápátá.",
-      "ig": "Kwadebe Arclight n’ụlọ dị jụụ, ìhè ya pere mpe. Họrọ ìhè kacha ike, bugokwa ihe njide lens abụọ elu kpamkpam."
+      "ig": "Kwadebe Arclight n’ụlọ dị jụụ, ìhè ya pere mpe. Họrọ ìhè kacha ike, bugokwa ihe njide lens abụọ elu kpamkpam.",
+      "ur": "Arclight تیار کریں: روشن ترین لائٹ سیٹنگ کا انتخاب کریں، دونوں لینز ریک کو پوری طرح اوپر رکھیں، اور ایک پرسکون، مدھم کمرے کا استعمال کریں۔"
     },
     {
       "id": "preparation-03",
@@ -3750,7 +4154,8 @@
       "lg": "Leeta akatuli k’okutunuliramu okumpi n’eriiso lyo. Totunuza ttaala mu liiso lyo. Tokwata Arclight nga yeesulise ku bbali.",
       "ha": "Kawo ramin dubawa kusa da idonka. Kada ka haska idonka, ko ka riƙe na’urar a kwance.",
       "yo": "Mú ihò ìwòran sún mọ́ ojú rẹ. Má tan ìmọ́lẹ̀ sí ojú ara rẹ. Má sì di ẹ̀rọ náà ní ẹ̀gbẹ́.",
-      "ig": "Weta oghere nlele nso anya gị. Atụnyela ìhè n’anya gị. Ejikwala ngwaọrụ ahụ n’akụkụ."
+      "ig": "Weta oghere nlele nso anya gị. Atụnyela ìhè n’anya gị. Ejikwala ngwaọrụ ahụ n’akụkụ.",
+      "ur": "بصری سوراخ کو اپنی آنکھ کے قریب لائیں۔ روشنی کو اپنی آنکھوں میں مت چمکائیں، یا اسے ایک طرف رکھیں۔"
     },
     {
       "id": "preparation-04",
@@ -3767,7 +4172,8 @@
       "lg": "Zinga omwana omuwere mu lugoye mu ngeri ey’obukuumi. Saba omuzadde akwatirire omwana akuzeeko. Omwana atuula obulungi ayinza okutuula yekka.",
       "ha": "A naɗe jariri cikin zane lafiya. Iyaye su riƙe jariri mai ɗan girma. Yaron da ke iya zama da kyau zai iya zama shi kaɗai.",
       "yo": "Fi aṣọ di ọmọ tuntun ní àìléwu. Jẹ́ kí òbí gbé ọmọ tó ti dàgbà díẹ̀. Ọmọ tó lè jókòó dáadáa lè jókòó fúnra rẹ̀.",
-      "ig": "Kechie nwa amụrụ ọhụrụ n’ákwà n’enweghị nsogbu. Gwa nne ma ọ bụ nna ka o jide nwa toro ntakịrị. Nwa nwere ike ịnọdụ nke ọma nwere ike ịnọdụ naanị ya."
+      "ig": "Kechie nwa amụrụ ọhụrụ n’ákwà n’enweghị nsogbu. Gwa nne ma ọ bụ nna ka o jide nwa toro ntakịrị. Nwa nwere ike ịnọdụ nke ọma nwere ike ịnọdụ naanị ya.",
+      "ur": "ایک نوزائیدہ کو محفوظ طریقے سے لپیٹنا چاہئے۔ والدین سے ایک بڑے بچے کو پکڑنے کو کہیں، اور جو بچہ مستقل طور پر بیٹھ سکتا ہے وہ خود ہی بیٹھ سکتا ہے۔"
     },
     {
       "id": "examination-01",
@@ -3784,7 +4190,8 @@
       "lg": "Tandikira ku bbanga ly’omukono ogugoloddwa.",
       "ha": "Fara daga nisan tsawon hannu.",
       "yo": "Bẹ̀rẹ̀ láti ìjìnnà gígùn apá.",
-      "ig": "Malite n’ebe dị ka ogologo aka."
+      "ig": "Malite n’ebe dị ka ogologo aka.",
+      "ur": "بازو کی لمبائی سے شروع کریں۔"
     },
     {
       "id": "examination-02",
@@ -3801,7 +4208,8 @@
       "lg": "Senguka katono ku ludda n’olulala. Semberera bw’oba weetaaga okulaba obulungi.",
       "ha": "Matsa kaɗan daga gefe zuwa gefe. Matso kusa idan kana buƙatar gani dalla-dalla.",
       "yo": "Rìn díẹ̀ sí ẹ̀gbẹ́ méjèèjì. Sún mọ́ ọn bí o bá nílò láti rí dáadáa sí i.",
-      "ig": "Gaa ntakịrị n’akụkụ abụọ. Bịaruo nso ma ọ bụrụ na ị chọrọ ịhụ nke ọma."
+      "ig": "Gaa ntakịrị n’akụkụ abụọ. Bịaruo nso ma ọ bụrụ na ị chọrọ ịhụ nke ọma.",
+      "ur": "تھوڑا سا ایک طرف سے دوسری طرف بڑھیں، اور اگر آپ کو مزید تفصیلی نظارے کی ضرورت ہو تو قریب جائیں۔"
     },
     {
       "id": "examination-03",
@@ -3818,7 +4226,8 @@
       "lg": "Ku bbanga ly’omukono, saba omwana akutunuulire. Kebera amaaso gombi wamu. Endabika ekyuka okusinziira ku bbanga n’omwana gy’atunudde.",
       "ha": "Daga nisan hannu, ka sa yaron ya dube ka. Duba idanu biyu tare. Yanayin hasken zai bambanta da nisa da kuma inda yaron yake kallo.",
       "yo": "Ní ìjìnnà gígùn apá, sọ fún ọmọ láti wò ọ́. Ṣàyẹ̀wò ojú méjèèjì lẹ́ẹ̀kan náà. Ìrísí yóò yàtọ̀ gẹ́gẹ́ bí ìjìnnà àti ibi tí ọmọ ń wò.",
-      "ig": "N’ebe dị ka ogologo aka, gwa nwa ka o lee gị anya. Nyochaa anya abụọ ọnụ. Ihe ị na-ahụ na-agbanwe dabere n’ebe ị nọ na ebe nwa na-ele."
+      "ig": "N’ebe dị ka ogologo aka, gwa nwa ka o lee gị anya. Nyochaa anya abụọ ọnụ. Ihe ị na-ahụ na-agbanwe dabere n’ebe ị nọ na ebe nwa na-ele.",
+      "ur": "تقریباً بازو کی لمبائی پر، بچے کو اپنی طرف دیکھنے کی ترغیب دیں۔ ایک ہی وقت میں دونوں آنکھوں کا معائنہ کریں۔ ظاہری شکل اس بات پر منحصر ہوگی کہ آپ کتنے دور ہیں اور بچہ کہاں دیکھ رہا ہے۔"
     },
     {
       "id": "examination-04",
@@ -3835,7 +4244,8 @@
       "lg": "Langi n’amaanyi g’ekitangaala ekidda mu maaso gombi birina okufaanagana. Bwe byawukana oba nga tekirabika, sindika omwana eri omukugu.",
       "ha": "Launi da ƙarfin hasken da ke dawowa daga idanu biyu su zama iri ɗaya. Bambanci ko rashin hasken ba al’ada ba ne. Tura yaron don ƙarin bincike.",
       "yo": "Àwọ̀ àti ìmọ́lẹ̀ ìtànṣán láti ojú méjèèjì gbọ́dọ̀ jọra. Ìyàtọ̀ tàbí àìsí ìtànṣán kò bójú mu. Rán ọmọ lọ fún àyẹ̀wò síwájú.",
-      "ig": "Agba na ike ìhè na-alọghachi n’anya abụọ kwesịrị ịdị otu. Ọdịiche ma ọ bụ enweghị ìhè abụghị ihe nkịtị. Ziga nwa maka nyocha ọzọ."
+      "ig": "Agba na ike ìhè na-alọghachi n’anya abụọ kwesịrị ịdị otu. Ọdịiche ma ọ bụ enweghị ìhè abụghị ihe nkịtị. Ziga nwa maka nyocha ọzọ.",
+      "ur": "دونوں انعکاس رنگ اور چمک میں یکساں ہوں۔ رنگ یا چمک کا فرق یا انعکاس کا نہ دکھنا غیر معمولی ہے۔ ایسے مریض ریفر کریں۔"
     },
     {
       "id": "examination-05",
@@ -3852,7 +4262,8 @@
       "lg": "Okusinziira ku langi ya retina, ekitangaala kiyinza okuba ekyenvu-ekyeru, bbululu, kakyungwa-akamyufu, oba kakyungwa-akyenvu. Endabika zino zonna za bulijjo.",
       "ha": "Launin haske ya danganta da launin retina. Yana iya zama fari-rawaya, shuɗi, ja-lemo, ko rawaya-lemo. Waɗannan duk yanayi ne na lafiya ga yaran nan.",
       "yo": "Àwọ̀ ìtànṣán déédéé sinmi lórí àwọ̀ retina. Ó lè jẹ́ ofeefee-funfun, búlúù, ọsàn-pupa, tàbí ọsàn-ofeefee. Gbogbo ìrísí wọ̀nyí dára fún àwọn ọmọ wọ̀nyí.",
-      "ig": "Agba ìhè nkịtị dabere n’agba retina. Ọ nwere ike ịbụ odo-ọcha, anụnụ anụnụ, oroma-uhie, ma ọ bụ oroma-odo. Ihe ndị a niile bụ ihe nkịtị n’ụmụaka ndị a."
+      "ig": "Agba ìhè nkịtị dabere n’agba retina. Ọ nwere ike ịbụ odo-ọcha, anụnụ anụnụ, oroma-uhie, ma ọ bụ oroma-odo. Ihe ndị a niile bụ ihe nkịtị n’ụmụaka ndị a.",
+      "ur": "ریٹینل پگمنٹیشن کے ساتھ عام اضطراری رنگ مختلف ہوتا ہے۔ یہ پیلا سفید یا نیلا، نارنجی سرخ یا نارنجی پیلا ظاہر ہو سکتا ہے۔ یہ سب ان بچوں کے لیے صحت مند اور نارمل صورتیں ہیں۔"
     },
     {
       "id": "eyes-open-01",
@@ -3869,7 +4280,8 @@
       "lg": "Saba omuzadde akwatirire omuwere azingiddwa mu lugoye, ng’emikono giri munda.",
       "ha": "Iyaye su riƙe jaririn da aka naɗe lafiya, hannuwansa suna cikin zane.",
       "yo": "Sọ fún òbí kí ó gbé ọmọ tuntun dáadáa, pẹ̀lú aṣọ yí i ká àti apá méjèèjì nínú rẹ̀.",
-      "ig": "Gwa nne ma ọ bụ nna ka o jide nwa ọhụrụ nke ọma, kechie ya n’ákwà ka aka ya dị n’ime."
+      "ig": "Gwa nne ma ọ bụ nna ka o jide nwa ọhụrụ nke ọma, kechie ya n’ákwà ka aka ya dị n’ime.",
+      "ur": "والدین سے کہو کہ وہ نوزائیدہ کو محفوظ طریقے سے پکڑے، بازوؤں میں لپٹے۔"
     },
     {
       "id": "eyes-open-02",
@@ -3886,7 +4298,8 @@
       "lg": "Amaaso bwe gaba maggule, tunuulira ekitangaala ekidda mu maaso gombi wamu nga tokwata ku mwana.",
       "ha": "Idan idanu suna buɗe, duba hasken da ke dawowa daga idanu biyu tare, ba tare da taɓa jaririn ba.",
       "yo": "Bí ojú bá ṣí, wo ìtànṣán láti ojú méjèèjì lẹ́ẹ̀kan náà láìfọwọ́ kan ọmọ.",
-      "ig": "Ọ bụrụ na anya mepere emepe, lee ìhè na-alọghachi n’anya abụọ ọnụ, emetụghị nwa ahụ aka."
+      "ig": "Ọ bụrụ na anya mepere emepe, lee ìhè na-alọghachi n’anya abụọ ọnụ, emetụghị nwa ahụ aka.",
+      "ur": "آنکھیں کھلی ہوں تو بچے کو چھوئے بغیر دونوں آنکھوں کا انعکاس ساتھ دیکھیں۔"
     },
     {
       "id": "eyes-open-03",
@@ -3903,7 +4316,8 @@
       "lg": "nga takwata ku mwana.",
       "ha": "ba tare da taba jaririn ba.\nSaukewa:",
       "yo": "lai kan omo.",
-      "ig": "na-emetụghị nwa ọhụrụ aka."
+      "ig": "na-emetụghị nwa ọhụrụ aka.",
+      "ur": "بچے کو چھونے کے بغیر."
     },
     {
       "id": "eyes-closed-01",
@@ -3920,7 +4334,8 @@
       "lg": "Omwana bw’aba yeebase, tosomooza tulo twe.",
       "ha": "Idan jariri yana barci, kada ka tashe shi.",
       "yo": "Bí ọmọ bá ń sùn, má jí i.",
-      "ig": "Ọ bụrụ na nwa na-ehi ụra, akpọtela ya."
+      "ig": "Ọ bụrụ na nwa na-ehi ụra, akpọtela ya.",
+      "ur": "اگر بچہ سو رہا ہے تو اسے جگانے کی کوشش نہ کریں۔"
     },
     {
       "id": "eyes-closed-02",
@@ -3937,7 +4352,8 @@
       "lg": "Muzinge, emikono ng’eri munda.",
       "ha": "Naɗe shi, hannuwansa a ciki.",
       "yo": "Fi aṣọ yí i ká, kí apá wà nínú rẹ̀.",
-      "ig": "Kechie ya, ka aka ya dị n’ime."
+      "ig": "Kechie ya, ka aka ya dị n’ime.",
+      "ur": "بازوؤں کے ساتھ لپٹیں۔ آہستہ سے کھولیں اور ایک وقت میں ایک آنکھ کا معائنہ کریں۔ ایک پرسکون، نرم، اور مریض نقطہ نظر اہم ہے."
     },
     {
       "id": "possible-findings-02",
@@ -3954,7 +4370,8 @@
       "lg": "Langi n’amaanyi ebifaanagana bigumya.",
       "ha": "Launi da haske iri ɗaya alama ce mai kyau.",
       "yo": "Àwọ̀ àti ìmọ́lẹ̀ tó jọra ń fúnni ní ìdánilójú.",
-      "ig": "Agba na ike ìhè yiri ibe ha bụ ihe na-enye obi ike."
+      "ig": "Agba na ike ìhè yiri ibe ha bụ ihe na-enye obi ike.",
+      "ur": "دونوں آنکھوں میں یکساں رنگ اور چمک اطمینان بخش ہے۔"
     },
     {
       "id": "possible-findings-01",
@@ -3971,7 +4388,8 @@
       "lg": "Mu mwezi ogusooka, amaaso gayinza okukyama akaseera katono. Kino kitera okuggwaawo mu myezi esatu. Bwe kisigala, sindika omwana eri omukugu.",
       "ha": "Ɗan karkacewar ido na lokaci-lokaci yakan faru a watan farko, ya daina kafin wata uku. Idan ya ci gaba bayan wata uku, tura yaron ga ƙwararre.",
       "yo": "Ojú lè yí padà fún ìgbà díẹ̀ ní oṣù àkọ́kọ́. Ó sábà máa ń dáwọ́ dúró kí oṣù mẹ́ta tó pé. Bí ó bá tẹ̀síwájú, rán ọmọ lọ sí ọ̀dọ̀ onímọ̀.",
-      "ig": "Anya nwere ike ịgbagọ obere oge n’ọnwa mbụ. Nke a na-akwụsịkarị tupu ọnwa atọ. Ọ bụrụ na ọ gara n’ihu mgbe ọnwa atọ gasịrị, ziga nwa n’aka ọkachamara."
+      "ig": "Anya nwere ike ịgbagọ obere oge n’ọnwa mbụ. Nke a na-akwụsịkarị tupu ọnwa atọ. Ọ bụrụ na ọ gara n’ihu mgbe ọnwa atọ gasịrị, ziga nwa n’aka ọkachamara.",
+      "ur": "مختصر، کبھی کبھار squints پہلے مہینے میں عام ہیں اور عام طور پر تین مہینے تک غائب ہو جاتے ہیں. اگر وہ تین ماہ کے بعد بھی برقرار رہیں تو بچے کو ریفر کریں۔"
     },
     {
       "id": "possible-findings-03",
@@ -3988,7 +4406,8 @@
       "lg": "Enjawulo mu langi, oba ekitangaala ekibulawo ekitundu oba kyonna, si kya bulijjo. Kyetaaga okwongera okwekebejjebwa.",
       "ha": "Bambancin launi ko rashin wani ɓangare na hasken, ko dukansa, ba al’ada ba ne. Ana buƙatar ƙarin bincike.",
       "yo": "Ìyàtọ̀ àwọ̀, tàbí àìsí apá kan tàbí gbogbo ìtànṣán, kò bójú mu. Ó nílò àyẹ̀wò síwájú.",
-      "ig": "Ọdịiche agba ma ọ bụ enweghị akụkụ ìhè, ma ọ bụ ìhè niile, abụghị ihe nkịtị. Ọ chọrọ nyocha ọzọ."
+      "ig": "Ọdịiche agba ma ọ bụ enweghị akụkụ ìhè, ma ọ bụ ìhè niile, abụghị ihe nkịtị. Ọ chọrọ nyocha ọzọ.",
+      "ur": "رنگ کا فرق یا انعکاس کا کچھ حصہ یا پورا انعکاس غائب ہونا غیر معمولی ہے۔ مزید معائنہ ضروری ہے۔"
     },
     {
       "id": "unclear-findings-01",
@@ -4005,7 +4424,8 @@
       "lg": "Bw’oba totegedde bulungi, goberera emitendera gino esatu.",
       "ha": "Idan sakamakon bai bayyana ba, bi matakai uku nan.",
       "yo": "Bí àbájáde kò bá ṣe kedere, tẹ̀lé ìgbésẹ̀ mẹ́ta yìí.",
-      "ig": "Ọ bụrụ na ihe ị hụrụ edoghị anya, soro usoro atọ ndị a."
+      "ig": "Ọ bụrụ na ihe ị hụrụ edoghị anya, soro usoro atọ ndị a.",
+      "ur": "اگر تلاش غیر واضح ہے، تو اگلے تین مراحل پر عمل کریں۔"
     },
     {
       "id": "unclear-findings-02",
@@ -4022,7 +4442,8 @@
       "lg": "Sooka ogeraageranye ekitangaala ekidda mu liiso ly’omwana n’ery’omuzadde. Birina okufaanagana.",
       "ha": "Da farko, kwatanta hasken jariri da na iyayensa. Ya kamata su yi kama.",
       "yo": "Àkọ́kọ́, fi ìtànṣán ọmọ wé ti òbí. Wọ́n gbọ́dọ̀ jọra.",
-      "ig": "Mbụ, tụnyere ìhè anya nwa na nke nne ma ọ bụ nna. Ha kwesịrị ịdị ka ibe ha."
+      "ig": "Mbụ, tụnyere ìhè anya nwa na nke nne ma ọ bụ nna. Ha kwesịrị ịdị ka ibe ha.",
+      "ur": "پہلے بچے اور اس کے والد یا والدہ کے انعکاس کا موازنہ کریں۔ دونوں ایک جیسے دکھنے چاہییں۔"
     },
     {
       "id": "unclear-findings-03",
@@ -4039,7 +4460,8 @@
       "lg": "Bw’oba okyabuusabuusa, saba munno endowooza.",
       "ha": "Idan kana shakka, nemi ra’ayin abokin aiki.",
       "yo": "Bí o bá ṣì ń ṣiyèméjì, béèrè èrò ẹlẹgbẹ́ rẹ.",
-      "ig": "Ọ bụrụ na ị ka na-enwe obi abụọ, jụọ onye ọrụ ibe gị."
+      "ig": "Ọ bụrụ na ị ka na-enwe obi abụọ, jụọ onye ọrụ ibe gị.",
+      "ur": "دوسرا، اگر آپ کو اب بھی یقین نہیں ہے، تو کسی ساتھی سے دوسری رائے طلب کریں۔"
     },
     {
       "id": "unclear-findings-04",
@@ -4056,7 +4478,8 @@
       "lg": "Munno bw’aba taliiwo, saba omuzadde akukkirize.",
       "ha": "Idan babu abokin aiki, nemi yardar iyaye.",
       "yo": "Bí ẹlẹgbẹ́ kò bá sí, gba ìyọ̀ǹda òbí.",
-      "ig": "Ọ bụrụ na onye ọrụ ibe gị anọghị, nweta nkwenye nne ma ọ bụ nna."
+      "ig": "Ọ bụrụ na onye ọrụ ibe gị anọghị, nweta nkwenye nne ma ọ bụ nna.",
+      "ur": "تیسرا، اگر کوئی ساتھی دستیاب نہ ہو تو رضامندی حاصل کریں،"
     },
     {
       "id": "unclear-findings-05",
@@ -4078,7 +4501,8 @@
       "lg": "Teeka Arclight ku kkamera y’essimu, okwate ekitangaala ekidda mu liiso ku katambi. Weereza akatambi mu bukuumi okufuna endowooza endala.",
       "ha": "Haɗa Arclight da kyamarar waya, ka ɗauki bidiyon hasken ido. Aika bidiyon cikin tsaro don neman wani ra’ayi.",
       "yo": "So Arclight mọ́ kámẹ́rà fóònù, kí o ya fídíò ìtànṣán ojú. Fi fídíò ránṣẹ́ ní ààbò láti gba èrò kejì.",
-      "ig": "Tinye Arclight na igwefoto ekwentị, dekọọ ìhè anya na vidio. Ziga vidio ahụ n’enweghị nsogbu ka ị nweta echiche ọzọ."
+      "ig": "Tinye Arclight na igwefoto ekwentị, dekọọ ìhè anya na vidio. Ziga vidio ahụ n’enweghị nsogbu ka ị nweta echiche ọzọ.",
+      "ur": "Arclight کو فون کے کیمرے سے منسلک کریں، اضطراری ریکارڈ کریں، اور دوسری رائے کے لیے محفوظ طریقے سے ویڈیو کا اشتراک کریں۔"
     },
     {
       "id": "after-examination-01",
@@ -4095,7 +4519,8 @@
       "lg": "Weebaze omuzadde. Nnyonnyola ebizuuliddwa n’ekiddako.",
       "ha": "Gode wa iyaye. Bayyana sakamako da mataki na gaba.",
       "yo": "Dúpẹ́ lọ́wọ́ òbí. Ṣàlàyé àbájáde àti ìgbésẹ̀ tó kàn.",
-      "ig": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme."
+      "ig": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme.",
+      "ur": "والدین کا شکریہ ادا کریں۔ نتیجہ اور اگلا قدم بتائیں۔"
     },
     {
       "id": "after-examination-02",
@@ -4112,7 +4537,8 @@
       "lg": "Ddamu okunaaba mu ngalo. Okukebera ekitangaala ekidda mu liiso kuwedde.",
       "ha": "Sake wanke hannu. An gama gwajin jan hasken ido.",
       "yo": "Fọ ọwọ́ lẹ́ẹ̀kan sí i. Àyẹ̀wò ìtànṣán pupa ti parí.",
-      "ig": "Saa aka ọzọ. Nyocha ìhè uhie anya agwụla."
+      "ig": "Saa aka ọzọ. Nyocha ìhè uhie anya agwụla.",
+      "ur": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔"
     }
   ]
 }

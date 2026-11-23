@@ -11,6 +11,7 @@ import {
 
 jest.unstable_mockModule("../public/js/i18n.js", () => ({
   translateLiteral: (text) => text,
+  getLanguage: () => "en",
 }));
 const reminders = await import("../public/js/practiceReminders.js");
 const KEY = "arclight:practice-reminders:v1";

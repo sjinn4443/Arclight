@@ -48,6 +48,7 @@
   }
   #unifiedDashboard .dashboard-desktop {
     display: grid;
+    direction: ltr;
     grid-template-columns: 202px minmax(0, 1fr);
     min-height: 100vh;
     width: 100%;
@@ -89,6 +90,22 @@
   #unifiedDashboard .dashboard-desktop h2,
   #unifiedDashboard .dashboard-desktop p {
     margin: 0;
+  }
+  html[dir="rtl"]
+    #unifiedDashboard
+    .dashboard-desktop
+    :is(h1, h2, p, [data-i18n], .dw-breadcrumb) {
+    unicode-bidi: plaintext;
+  }
+  html[dir="rtl"]
+    #unifiedDashboard
+    .dashboard-desktop
+    :is(.dw-tool, .dw-module, .dw-nav)
+    :is(strong, small, span, p) {
+    text-align: left;
+  }
+  html[dir="rtl"] #unifiedDashboard .dw-route-main {
+    direction: rtl;
   }
   #unifiedDashboard .dw-symbols {
     position: absolute;

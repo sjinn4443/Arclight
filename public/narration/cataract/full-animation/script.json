@@ -12,6 +12,12 @@
     "ko": {
       "label": "한국어",
       "voice": "ko-KR-SunHiNeural"
+    },
+    "ur": {
+      "label": "اردو",
+      "locale": "ur-PK",
+      "voice": "ur-PK-UzmaNeural",
+      "style": "Calm medical educator"
     }
   },
   "cues": [
@@ -20,303 +26,347 @@
       "en": "Ask if the vision has changed and whether it has worsened gradually or suddenly.",
       "ko": "시력이 변했는지, 서서히 나빠졌는지 갑자기 나빠졌는지 묻습니다.",
       "start": 1,
-      "end": 10
+      "end": 10,
+      "ur": "پوچھیں کہ کیا نقطہ نظر بدل گیا ہے اور آیا یہ آہستہ آہستہ خراب ہوا ہے یا اچانک۔"
     },
     {
       "id": "history-symptoms",
       "en": "Ask about pain, redness, one or both eyes, and difficulty with everyday activities.",
       "ko": "통증과 충혈, 한쪽 눈인지 양쪽 눈인지, 일상생활에서 겪는 불편을 확인합니다.",
       "start": 10,
-      "end": 19
+      "end": 19,
+      "ur": "درد، لالی، ایک یا دونوں آنکھوں، اور روزمرہ کی سرگرمیوں میں دشواری کے بارے میں پوچھیں۔"
     },
     {
       "id": "history-gradual",
       "en": "Cataract usually causes gradual, painless blurring of vision.",
       "ko": "백내장은 대개 통증 없이 서서히 시야가 흐려지는 증상을 일으킵니다.",
       "start": 19,
-      "end": 28
+      "end": 28,
+      "ur": "موتیا بند عام طور پر بتدریج، بے درد بینائی کے دھندلا پن کا سبب بنتا ہے۔"
     },
     {
       "id": "history-both",
       "en": "It may affect both eyes, but the symptoms can be different in each eye.",
       "ko": "양쪽 눈에 생길 수 있지만 눈마다 증상은 다를 수 있습니다.",
       "start": 28,
-      "end": 37
+      "end": 37,
+      "ur": "یہ دونوں آنکھوں کو متاثر کر سکتا ہے، لیکن ہر آنکھ میں علامات مختلف ہو سکتی ہیں۔"
     },
     {
       "id": "history-sudden",
       "en": "Sudden loss of vision may indicate a problem at the front or back of the eye and needs urgent assessment.",
       "ko": "갑작스러운 시력 소실은 눈 앞부분이나 뒷부분의 문제일 수 있으며 긴급한 평가가 필요합니다.",
       "start": 37,
-      "end": 46
+      "end": 46,
+      "ur": "بصارت کا اچانک ضائع ہونا آنکھ کے سامنے یا پچھلے حصے میں کسی مسئلے کی نشاندہی کر سکتا ہے اور اسے فوری تشخیص کی ضرورت ہے۔"
     },
     {
       "id": "history-pain",
       "en": "Pain or a red eye suggests a problem at the front of the eye. Arrange referral rather than assuming cataract.",
       "ko": "통증이나 충혈은 눈 앞부분의 문제를 시사합니다. 백내장으로 단정하지 말고 의뢰합니다.",
       "start": 46,
-      "end": 55
+      "end": 55,
+      "ur": "درد یا سرخ آنکھ آنکھ کے سامنے ایک مسئلہ بتاتی ہے۔ موتیابند ماننے کے بجائے حوالہ کا بندوبست کریں۔"
     },
     {
       "id": "acuity-distance",
       "en": "Measure distance vision in each eye separately, using the patient's usual distance glasses.",
       "ko": "평소 원거리 안경을 착용한 상태에서 한쪽 눈씩 가리고 원거리 시력을 측정합니다.",
       "start": 55,
-      "end": 63
+      "end": 63,
+      "ur": "مریض کے معمول کے فاصلے کے شیشے کا استعمال کرتے ہوئے، ہر آنکھ میں الگ الگ فاصلے کی بینائی کی پیمائش کریں۔"
     },
     {
       "id": "acuity-method-pinhole",
       "en": "If distance vision is reduced, repeat the test with a pinhole.",
       "ko": "원거리 시력이 낮으면 핀홀을 통해 다시 측정합니다.",
       "start": 63,
-      "end": 69
+      "end": 69,
+      "ur": "اگر فاصلاتی بصارت کم ہو جائے تو پن ہول کے ساتھ ٹیسٹ کو دہرائیں۔"
     },
     {
       "id": "acuity-near",
       "en": "Then check near vision using a reading chart.",
       "ko": "그다음 읽기 시력표로 근거리 시력을 확인합니다.",
       "start": 69,
-      "end": 75
+      "end": 75,
+      "ur": "پھر پڑھنے کے چارٹ کا استعمال کرتے ہوئے قریب کی بصارت کی جانچ کریں۔"
     },
     {
       "id": "acuity-reduced",
       "en": "Distance vision is reduced.",
       "ko": "원거리 시력이 떨어져 있습니다.",
       "start": 75,
-      "end": 82
+      "end": 82,
+      "ur": "دور بینائی کم ہو جاتی ہے۔"
     },
     {
       "id": "acuity-pinhole",
       "en": "A pinhole does not improve the vision.",
       "ko": "핀홀을 사용해도 시력이 좋아지지 않습니다.",
       "start": 82,
-      "end": 88
+      "end": 88,
+      "ur": "پن ہول بینائی کو بہتر نہیں کرتا ہے۔"
     },
     {
       "id": "acuity-cataract-near",
       "en": "Near vision is also reduced. Together, these findings may suggest cataract.",
       "ko": "근거리 시력도 떨어져 있다면, 이 소견들을 종합해 백내장을 의심할 수 있습니다.",
       "start": 88,
-      "end": 95
+      "end": 95,
+      "ur": "قریب کی بینائی بھی کم ہو جاتی ہے۔ ایک ساتھ، یہ نتائج موتیابند کا مشورہ دے سکتے ہیں۔"
     },
     {
       "id": "acuity-improves",
       "en": "Improvement with a pinhole suggests that a refractive error contributes to the reduced vision.",
       "ko": "핀홀을 통해 시력이 좋아지면 굴절이상이 시력 저하의 원인일 수 있습니다.",
       "start": 95,
-      "end": 104
+      "end": 104,
+      "ur": "پن ہول کے ساتھ بہتری سے پتہ چلتا ہے کہ ایک اضطراری خرابی بینائی کو کم کرنے میں معاون ہے۔"
     },
     {
       "id": "acuity-refraction",
       "en": "Arrange refraction and assess the remaining findings. Cataract and refractive error can occur together.",
       "ko": "굴절검사를 안내하고 나머지 소견도 평가합니다. 백내장과 굴절이상은 함께 있을 수 있습니다.",
       "start": 104,
-      "end": 113
+      "end": 113,
+      "ur": "ریفریکشن کا بندوبست کریں اور بقیہ نتائج کا اندازہ لگائیں۔ موتیا بند اور اضطراری خرابی ایک ساتھ ہوسکتی ہے۔"
     },
     {
       "id": "front-examine",
       "en": "Use the Arclight to inspect the front of each eye with its examination light.",
       "ko": "아크라이트의 검사 조명을 사용해 양쪽 눈의 앞부분을 살펴봅니다.",
       "start": 113,
-      "end": 121
+      "end": 121,
+      "ur": "Arclight استعمال کریں تاکہ ہر آنکھ کے سامنے کی روشنی کا معائنہ کریں۔"
     },
     {
       "id": "front-compare",
       "en": "Compare the eyes and look for redness, corneal clouding and other visible abnormalities.",
       "ko": "양쪽 눈을 비교하며 충혈, 각막 혼탁과 그 밖의 눈에 보이는 이상을 확인합니다.",
       "start": 121,
-      "end": 129
+      "end": 129,
+      "ur": "آنکھوں کا موازنہ کریں اور لالی، قرنیہ کے بادل اور دیگر نظر آنے والی اسامانیتاوں کو تلاش کریں۔"
     },
     {
       "id": "front-quiet",
       "en": "The front of the eye may look quiet, without redness or an obvious surface abnormality.",
       "ko": "눈 앞부분은 충혈이나 뚜렷한 표면 이상 없이 정상처럼 보일 수 있습니다.",
       "start": 129,
-      "end": 137
+      "end": 137,
+      "ur": "آنکھ کا اگلا حصہ خاموش نظر آسکتا ہے، بغیر لالی یا سطح کی واضح غیر معمولی۔"
     },
     {
       "id": "front-not-excluded",
       "en": "A normal-looking front of eye does not exclude a cataract behind the pupil.",
       "ko": "눈 앞부분이 정상처럼 보여도 동공 뒤 수정체의 백내장을 배제할 수는 없습니다.",
       "start": 137,
-      "end": 145
+      "end": 145,
+      "ur": "ایک عام نظر آنے والی آنکھ کے سامنے کی پتلی کے پیچھے موتیابند کو خارج نہیں کرتا ہے۔"
     },
     {
       "id": "front-opacity",
       "en": "A visible opacity or another abnormal appearance needs further eye assessment.",
       "ko": "눈에 보이는 혼탁이나 다른 비정상 소견이 있으면 추가 안과 평가가 필요합니다.",
       "start": 145,
-      "end": 154
+      "end": 154,
+      "ur": "نظر آنے والی دھندلاپن یا کسی اور غیر معمولی ظاہری شکل کو مزید آنکھوں کی جانچ کی ضرورت ہے۔"
     },
     {
       "id": "front-red",
       "en": "A red or painful eye is not explained by an uncomplicated cataract. Assess and refer appropriately.",
       "ko": "단순 백내장으로 충혈이나 통증을 설명해서는 안 됩니다. 상태를 평가하고 적절히 의뢰합니다.",
       "start": 154,
-      "end": 163
+      "end": 163,
+      "ur": "سرخ یا تکلیف دہ آنکھ کی وضاحت غیر پیچیدہ موتیابند سے نہیں ہوتی۔ مناسب طریقے سے جائزہ لیں اور حوالہ دیں۔"
     },
     {
       "id": "pupil-direct",
       "en": "Shine the light into each eye in turn and observe the direct and consensual pupil responses.",
       "ko": "한쪽 눈씩 번갈아 빛을 비추며 직접 대광반사와 간접 대광반사를 관찰합니다.",
       "start": 163,
-      "end": 172
+      "end": 172,
+      "ur": "باری باری ہر آنکھ میں روشنی ڈالیں اور پتلی کے براہ راست اور متفقہ ردعمل کا مشاہدہ کریں۔"
     },
     {
       "id": "pupil-swing",
       "en": "Compare the responses as the light moves between the eyes.",
       "ko": "빛을 양쪽 눈 사이로 옮기면서 동공 반응을 비교합니다.",
       "start": 172,
-      "end": 181
+      "end": 181,
+      "ur": "آنکھوں کے درمیان روشنی کی حرکت کے ساتھ جوابات کا موازنہ کریں۔"
     },
     {
       "id": "pupil-constrict",
       "en": "In the illustrated normal responses, the pupils become smaller when light is shone into the eyes.",
       "ko": "그림의 정상 반응에서는 눈에 빛을 비추면 동공이 작아집니다.",
       "start": 181,
-      "end": 189
+      "end": 189,
+      "ur": "مثالی عام ردعمل میں، آنکھوں میں روشنی آنے پر پتلی چھوٹے ہو جاتے ہیں۔"
     },
     {
       "id": "pupil-cataract",
       "en": "Normal pupil reactions can be present in a patient with cataract.",
       "ko": "백내장이 있는 환자에서도 정상 동공 반응을 보일 수 있습니다.",
       "start": 189,
-      "end": 197
+      "end": 197,
+      "ur": "موتیابند کے مریض میں عام پتلیوں کا رد عمل ہو سکتا ہے۔"
     },
     {
       "id": "pupil-abnormal",
       "en": "A weak, absent or unequal pupil response needs further assessment.",
       "ko": "동공 반응이 약하거나 없거나 양쪽이 다르면 추가 평가가 필요합니다.",
       "start": 197,
-      "end": 206
+      "end": 206,
+      "ur": "ایک کمزور، غیر حاضر یا غیر مساوی پتلی کے ردعمل کو مزید تشخیص کی ضرورت ہے۔"
     },
     {
       "id": "pupil-rapd",
       "en": "An afferent pupil defect suggests disease beyond a simple cataract. Arrange referral.",
       "ko": "구심성 동공운동장애는 단순 백내장 이외의 질환을 시사하므로 의뢰합니다.",
       "start": 206,
-      "end": 215
+      "end": 215,
+      "ur": "ایک متوازی پتلی کی خرابی ایک سادہ موتیابند سے باہر بیماری کی نشاندہی کرتی ہے۔ حوالہ ترتیب دیں۔"
     },
     {
       "id": "reflex-position",
       "en": "In a dim room, look through the Arclight from a distance and compare the fundal reflexes.",
       "ko": "어두운 방에서 거리를 두고 아크라이트를 통해 양쪽 안저반사를 비교합니다.",
       "start": 215,
-      "end": 224
+      "end": 224,
+      "ur": "ایک مدھم کمرے میں، دور سے Arclight کو دیکھیں اور قعرِ چشم کا انعکاس کا موازنہ کریں۔"
     },
     {
       "id": "reflex-observe",
       "en": "Look for the brightness, colour and any shadows within each pupil.",
       "ko": "동공 안의 반사 밝기와 색, 그림자가 있는지 관찰합니다.",
       "start": 224,
-      "end": 233
+      "end": 233,
+      "ur": "ہر پتلی کے اندر چمک، رنگ اور کسی بھی سائے کو تلاش کریں۔"
     },
     {
       "id": "reflex-opacity",
       "en": "This green-column example is an exception: it shows lens opacity and dark interruptions consistent with cataract, not normal findings.",
       "ko": "초록 열의 이 예시는 예외입니다. 정상 소견이 아니라 백내장에 부합하는 수정체 혼탁과 검은 그림자를 보여 줍니다.",
       "start": 233,
-      "end": 244
+      "end": 244,
+      "ur": "یہ سبز کالم کی مثال ایک استثناء ہے: یہ عینک کی دھندلاپن اور تاریک رکاوٹوں کو موتیابند کے مطابق دکھاتا ہے، عام نتائج سے نہیں۔"
     },
     {
       "id": "reflex-patterns",
       "en": "The appearance varies with the position and density of the opacity. Assess it together with the history and vision.",
       "ko": "혼탁의 위치와 정도에 따라 모습이 달라집니다. 병력 및 시력과 함께 평가합니다.",
       "start": 244,
-      "end": 255
+      "end": 255,
+      "ur": "ظاہری شکل دھندلاپن کی پوزیشن اور کثافت کے ساتھ مختلف ہوتی ہے۔ تاریخ اور وژن کے ساتھ مل کر اس کا اندازہ لگائیں۔"
     },
     {
       "id": "reflex-white",
       "en": "A white, unusually pale, absent or asymmetric reflex must not automatically be labelled cataract.",
       "ko": "흰색이거나 유난히 창백하거나 없거나 비대칭인 반사를 백내장으로 단정해서는 안 됩니다.",
       "start": 255,
-      "end": 265
+      "end": 265,
+      "ur": "ایک سفید، غیر معمولی طور پر پیلا، غیر حاضر یا غیر متناسب اضطراب کو خود بخود موتیابند کا لیبل نہیں لگانا چاہیے۔"
     },
     {
       "id": "reflex-referral",
       "en": "Other eye disease may cause an abnormal reflex. Arrange eye assessment; a white pupil in a child needs urgent referral.",
       "ko": "다른 안질환도 반사 이상을 일으킬 수 있습니다. 안과 평가를 의뢰하며, 소아의 흰 동공은 긴급 의뢰가 필요합니다.",
       "start": 265,
-      "end": 275
+      "end": 275,
+      "ur": "آنکھ کی دوسری بیماری بھی انعکاس بدل سکتی ہے۔ معائنہ کروائیں۔ بچے کی پتلی سفید ہو تو فوراً ریفر کریں۔"
     },
     {
       "id": "fundus-close",
       "en": "Move closer for fundoscopy, keeping the Arclight aligned with the pupil.",
       "ko": "아크라이트를 동공에 맞춘 상태에서 가까이 다가가 안저를 검사합니다.",
       "start": 275,
-      "end": 284
+      "end": 284,
+      "ur": "Arclight کو پتلی کے ساتھ منسلک رکھتے ہوئے فنڈوسکوپی کے لیے قریب جائیں۔"
     },
     {
       "id": "fundus-view",
       "en": "Assess the view through the lens and inspect the optic disc and retina when visible.",
       "ko": "수정체를 통한 시야를 평가하고, 보이는 경우 시신경유두와 망막을 살펴봅니다.",
       "start": 284,
-      "end": 293
+      "end": 293,
+      "ur": "عینک کے ذریعے منظر کا جائزہ لیں اور نظر آنے پر آپٹک ڈسک اور شبکیہ کا معائنہ کریں۔"
     },
     {
       "id": "fundus-hazy",
       "en": "Lens opacity can make the fundus look hazy or prevent a clear view.",
       "ko": "수정체 혼탁으로 안저가 흐리게 보이거나 선명하게 관찰되지 않을 수 있습니다.",
       "start": 293,
-      "end": 302
+      "end": 302,
+      "ur": "لینس کی دھندلاپن فنڈس کو دھندلا بنا سکتی ہے یا واضح نظارے کو روک سکتی ہے۔"
     },
     {
       "id": "fundus-limits",
       "en": "An obscured fundus does not prove that the retina is healthy. Consider specialist assessment.",
       "ko": "안저가 가려져 보이지 않는다고 망막이 정상이라는 뜻은 아닙니다. 전문 평가를 고려합니다.",
       "start": 302,
-      "end": 311
+      "end": 311,
+      "ur": "ایک غیر واضح فنڈس ثابت نہیں کرتا کہ شبکیہ صحت مند ہے۔ ماہر تشخیص پر غور کریں۔"
     },
     {
       "id": "fundus-abnormal",
       "en": "Visible abnormalities of the optic disc or retina may explain vision loss and require referral.",
       "ko": "시신경유두나 망막의 이상은 시력 저하의 원인일 수 있으며 의뢰가 필요합니다.",
       "start": 311,
-      "end": 321
+      "end": 321,
+      "ur": "آپٹک ڈسک یا شبکیہ کی نظر آنے والی غیر معمولیات بینائی کے نقصان کی وضاحت کر سکتی ہیں اور حوالہ کی ضرورت ہوتی ہے۔"
     },
     {
       "id": "fundus-combine",
       "en": "Combine all six parts of the examination. Cataract can coexist with other disease, so refer according to the complete findings.",
       "ko": "여섯 단계의 검사 결과를 종합합니다. 백내장은 다른 질환과 함께 있을 수 있으므로 전체 소견에 따라 의뢰합니다.",
       "start": 321,
-      "end": 331
+      "end": 331,
+      "ur": "امتحان کے تمام چھ حصوں کو یکجا کریں۔ موتیا بند دوسری بیماری کے ساتھ رہ سکتا ہے، اس لیے مکمل نتائج کے مطابق رجوع کریں۔"
     }
   ],
   "videoTitleCues": [
     {
       "sourceText": "History Taking",
       "translations": {
-        "ko": "병력 청취"
+        "ko": "병력 청취",
+        "ur": "تاریخ لینا"
       }
     },
     {
       "sourceText": "Visual Acuity",
       "translations": {
-        "ko": "시력"
+        "ko": "시력",
+        "ur": "حدّتِ بصارت"
       }
     },
     {
       "sourceText": "Front of Eye",
       "translations": {
-        "ko": "눈 앞부분"
+        "ko": "눈 앞부분",
+        "ur": "آنکھ کا اگلا حصہ"
       }
     },
     {
       "sourceText": "Pupils",
       "translations": {
-        "ko": "동공"
+        "ko": "동공",
+        "ur": "آنکھوں کی پتلیاں"
       }
     },
     {
       "sourceText": "Fundal Reflex",
       "translations": {
-        "ko": "안저반사"
+        "ko": "안저반사",
+        "ur": "قعرِ چشم کا انعکاس"
       }
     },
     {
       "sourceText": "Fundoscopy",
       "translations": {
-        "ko": "안저검사"
+        "ko": "안저검사",
+        "ur": "فنڈوسکوپی"
       }
     }
   ]

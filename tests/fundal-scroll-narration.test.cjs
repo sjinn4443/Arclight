@@ -287,10 +287,10 @@ describe("Fundal Reflex examination scroll narration", () => {
     },
   );
 
-  it.each(["ha", "yo", "ig"])(
+  it.each(["ha", "yo", "ig", "ur"])(
     "uses %s app language for scrolly narration",
     (language) => {
-      localStorage.setItem("prefLang", language);
+      localStorage.setItem("prefLang", language === "ur" ? "ur-PK" : language);
       const page = document.getElementById("fundalReflexExaminationScrollPage");
       const controller = initializeFundalStageNarration(
         "fundalReflexExaminationScroll",
@@ -306,9 +306,18 @@ describe("Fundal Reflex examination scroll narration", () => {
       expect(audio.getAttribute("src")).toBe(
         `/narration/fundal-reflex/full-animation/${language}.m4a`,
       );
-      expect(
-        page.querySelector("[data-fundal-scroll-narration-language]").value,
-      ).toBe("auto");
+      const select = page.querySelector(
+        "[data-fundal-scroll-narration-language]",
+      );
+      expect(select.value).toBe("auto");
+      if (language === "ur") {
+        select.value = "ko";
+        select.dispatchEvent(new Event("change"));
+        expect(select.value).toBe("ko");
+        expect(select.options[0].textContent).toContain("اردو");
+        select.value = "auto";
+        select.dispatchEvent(new Event("change"));
+      }
       localStorage.setItem("prefLang", "ne");
       controller.refreshLanguage();
       expect(audio.getAttribute("src")).toBe(

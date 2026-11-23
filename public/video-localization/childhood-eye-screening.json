@@ -2319,7 +2319,8 @@
       "lg": "/narration/fundal-reflex/full-animation/lg.vtt",
       "ha": "/narration/fundal-reflex/full-animation/ha.vtt",
       "yo": "/narration/fundal-reflex/full-animation/yo.vtt",
-      "ig": "/narration/fundal-reflex/full-animation/ig.vtt"
+      "ig": "/narration/fundal-reflex/full-animation/ig.vtt",
+      "ur": "/narration/fundal-reflex/full-animation/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2357,6 +2358,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/fundal-reflex/full-animation/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/fundal-reflex/full-animation/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2374,7 +2379,8 @@
         "lg",
         "ha",
         "yo",
-        "ig"
+        "ig",
+        "ur"
       ]
     },
     "localSources": {
@@ -2392,7 +2398,8 @@
       "lg": "/narration/direct-ophthalmoscopy/full-animation/lg.vtt",
       "ha": "/narration/direct-ophthalmoscopy/full-animation/ha.vtt",
       "yo": "/narration/direct-ophthalmoscopy/full-animation/yo.vtt",
-      "ig": "/narration/direct-ophthalmoscopy/full-animation/ig.vtt"
+      "ig": "/narration/direct-ophthalmoscopy/full-animation/ig.vtt",
+      "ur": "/narration/direct-ophthalmoscopy/full-animation/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2430,6 +2437,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/direct-ophthalmoscopy/full-animation/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/direct-ophthalmoscopy/full-animation/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2447,7 +2458,8 @@
         "lg",
         "ha",
         "yo",
-        "ig"
+        "ig",
+        "ur"
       ]
     },
     "localSources": {
@@ -2465,7 +2477,8 @@
       "lg": "/narration/binocular-indirect-ophthalmoscopy/full-animation/lg.vtt",
       "ha": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ha.vtt",
       "yo": "/narration/binocular-indirect-ophthalmoscopy/full-animation/yo.vtt",
-      "ig": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ig.vtt"
+      "ig": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ig.vtt",
+      "ur": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2503,6 +2516,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/binocular-indirect-ophthalmoscopy/full-animation/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2520,7 +2537,8 @@
         "lg",
         "ha",
         "yo",
-        "ig"
+        "ig",
+        "ur"
       ]
     },
     "localSources": {
@@ -2538,7 +2556,8 @@
       "lg": "/narration/front-of-eye/full-animation/lg.vtt",
       "ha": "/narration/front-of-eye/full-animation/ha.vtt",
       "yo": "/narration/front-of-eye/full-animation/yo.vtt",
-      "ig": "/narration/front-of-eye/full-animation/ig.vtt"
+      "ig": "/narration/front-of-eye/full-animation/ig.vtt",
+      "ur": "/narration/front-of-eye/full-animation/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2576,6 +2595,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/front-of-eye/full-animation/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/front-of-eye/full-animation/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2593,7 +2616,8 @@
         "lg",
         "ha",
         "yo",
-        "ig"
+        "ig",
+        "ur"
       ]
     },
     "localSources": {
@@ -2611,7 +2635,8 @@
       "lg": "/narration/visual-acuity/full-animation/lg.vtt",
       "ha": "/narration/visual-acuity/full-animation/ha.vtt",
       "yo": "/narration/visual-acuity/full-animation/yo.vtt",
-      "ig": "/narration/visual-acuity/full-animation/ig.vtt"
+      "ig": "/narration/visual-acuity/full-animation/ig.vtt",
+      "ur": "/narration/visual-acuity/full-animation/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2649,6 +2674,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/visual-acuity/full-animation/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/visual-acuity/full-animation/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2666,7 +2695,8 @@
         "lg",
         "ha",
         "yo",
-        "ig"
+        "ig",
+        "ur"
       ]
     },
     "localSources": {
@@ -2684,7 +2714,8 @@
       "lg": "/narration/make-eye-pad-shield/full-animation/video/lg.vtt",
       "ha": "/narration/make-eye-pad-shield/full-animation/video/ha.vtt",
       "yo": "/narration/make-eye-pad-shield/full-animation/video/yo.vtt",
-      "ig": "/narration/make-eye-pad-shield/full-animation/video/ig.vtt"
+      "ig": "/narration/make-eye-pad-shield/full-animation/video/ig.vtt",
+      "ur": "/narration/make-eye-pad-shield/full-animation/video/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2722,6 +2753,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/make-eye-pad-shield/full-animation/video/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/make-eye-pad-shield/full-animation/video/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2741,7 +2776,8 @@
       "lg": "/narration/pupils-pec/full-animation/video/lg.vtt",
       "ha": "/narration/pupils-pec/full-animation/video/ha.vtt",
       "yo": "/narration/pupils-pec/full-animation/video/yo.vtt",
-      "ig": "/narration/pupils-pec/full-animation/video/ig.vtt"
+      "ig": "/narration/pupils-pec/full-animation/video/ig.vtt",
+      "ur": "/narration/pupils-pec/full-animation/video/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2779,6 +2815,10 @@
       "ig": {
         "label": "Igbo",
         "src": "/narration/pupils-pec/full-animation/video/ig.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/pupils-pec/full-animation/video/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",
@@ -2791,7 +2831,8 @@
   "pupilsAdvancedFullAnimationVideoPage": {
     "subtitles": {
       "en": "/narration/pupils-advanced/full-animation/video/en.vtt",
-      "ko": "/narration/pupils-advanced/full-animation/video/ko.vtt"
+      "ko": "/narration/pupils-advanced/full-animation/video/ko.vtt",
+      "ur": "/narration/pupils-advanced/full-animation/video/ur.vtt"
     },
     "audioVariants": {
       "en": {
@@ -2801,6 +2842,10 @@
       "ko": {
         "label": "한국어",
         "src": "/narration/pupils-advanced/full-animation/video/ko.m4a"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/narration/pupils-advanced/full-animation/video/ur.m4a"
       }
     },
     "defaultSubtitleLang": "en",

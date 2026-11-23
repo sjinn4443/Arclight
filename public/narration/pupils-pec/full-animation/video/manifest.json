@@ -91,6 +91,16 @@
       "sha256": "c2a89c09a962299af9fe71ce9650e044c51b7eb4bc3fe65404ec02d0745618fb",
       "durationSeconds": 108,
       "sourceSha256": "1a08470147a770af55bec73d20141d01592af14f97019bde973e1fe9996d4305"
+    },
+    "ur": {
+      "src": "ur.m4a",
+      "captions": "ur.vtt",
+      "label": "اردو",
+      "voice": "ur-PK-UzmaNeural",
+      "bytes": 383107,
+      "sha256": "c250feb1515a6fd7d8779c51823cc012cf6d36b7956c66f9fc02cf5edf97a1b5",
+      "durationSeconds": 108,
+      "sourceSha256": "564fa8242ddd303ad5872a9f8ef7beed8c4dfdfe7ce46fb6dbf28b4c790a1035"
     }
   }
 }

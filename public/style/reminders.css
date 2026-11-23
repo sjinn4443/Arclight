@@ -41,7 +41,8 @@
   border-color: #ccc;
 }
 #practiceReminderOffer button:focus-visible,
-#practiceReminderTime:focus-visible {
+#practiceReminderTime:focus-visible,
+#practiceReminderTimeParts select:focus-visible {
   outline: 3px solid #245fc2;
   outline-offset: 3px;
 }
@@ -74,6 +75,22 @@
   background: #fafafd;
   color: #333;
   font-size: 14px;
+}
+
+#practiceReminderTimeParts:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+#practiceReminderTimeParts select {
+  min-height: 44px;
+  padding: 4px;
+  border: 1px solid #e2e2e9;
+  border-radius: 9px;
+  background: #fafafd;
+  color: #333;
+  font: inherit;
 }
 
 #settingsPage #settingsNotificationsToggle[aria-pressed="true"] {

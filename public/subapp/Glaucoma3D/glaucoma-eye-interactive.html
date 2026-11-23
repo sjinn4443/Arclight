@@ -3415,5 +3415,13 @@ gl_FragColor.rgb=mix(gl_FragColor.rgb,nerveLight,nerveRegion);
         }
       })();
     </script>
+    <script type="module">
+      if (
+        location.protocol !== "file:" &&
+        ["ur", "urdu"].includes(localStorage.getItem("prefLang"))
+      ) {
+        import("../i18n-lo.js");
+      }
+    </script>
   </body>
 </html>

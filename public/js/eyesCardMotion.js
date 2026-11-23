@@ -10,7 +10,7 @@ const ARTWORK = {
   "car_visualacuity.webp": [604, 400, 338, 120, 239, 259, "focus"],
   "car_pupils.webp": [600, 397, 340, 100, 234, 235, "look"],
   "car_frontofeye.webp": [598, 393, 255, 125, 343, 220, "blink"],
-  "car_fundalreflex.webp": [599, 397, 211, 160, 388, 130, "blink"],
+  "car_fundalreflex.webp": [599, 397, 220, 168, 370, 120, "fundal-blink"],
   "car_ophth.webp": [600, 397, 393, 135, 145, 262, "sway"],
   "car_miniapp.webp": [601, 396, 371, 99, 230, 297, "tap"],
   "car_uncor.webp": [600, 397, 287, 160, 296, 136, "sway"],
@@ -108,7 +108,32 @@ export function addEyesCardMotion(card, image, source) {
   const plainPart = (name = motion) =>
     animate(name, x + artWidth / 2 + "px " + (y + artHeight / 2) + "px", true);
 
-  if (motion === "hug") {
+  if (motion === "fundal-blink") {
+    // The source artwork runs off the right edge. Reuse its complete eye
+    // for both positions so the composition fits in either direction.
+    const eyeClip = clip(
+      "complete-eye",
+      rect({
+        x: 214,
+        y: 164,
+        width: 234,
+        height: 126,
+      }),
+    );
+    svg.append(rect({ width, height, fill: "#000" }));
+    const part = plainPart("blink");
+    part.append(
+      picture({
+        "clip-path": eyeClip,
+        transform: "translate(52 46) scale(.78)",
+      }),
+      picture({
+        "clip-path": eyeClip,
+        transform: "translate(238 46) scale(.78)",
+      }),
+    );
+    svg.append(part);
+  } else if (motion === "hug") {
     // Clip one opaque composition once; overlap the centre clips by four units.
     const outline = clip("heart", path(HEART_OUTLINE));
     const composition = element("g", { "clip-path": outline });
@@ -400,7 +425,11 @@ export function addEyesCardMotion(card, image, source) {
     svg.append(part);
   }
   card.classList.add("eyes-card--motion");
-  if (["hug", "write", "nerve", "glass", "people"].includes(motion)) {
+  if (
+    ["hug", "write", "nerve", "glass", "people", "fundal-blink"].includes(
+      motion,
+    )
+  ) {
     card.classList.add("eyes-card--clean-art");
     svg.dataset.cleanArt = "true";
   }

@@ -45,7 +45,7 @@ describe("Front of Eye scroll media contract", () => {
     }
   });
 
-  test("maps each spoken cue once within its audio interval and reuses all nine translations", async () => {
+  test("maps each spoken cue once within its audio interval and reuses all translations", async () => {
     const originalFetch = global.fetch;
     global.fetch = jest.fn(async () => ({
       ok: true,
@@ -72,6 +72,7 @@ describe("Front of Eye scroll media contract", () => {
           "ha",
           "yo",
           "ig",
+          "ur",
         ]) {
           expect(cfg.getSegmentStartTexts(index, language)).toEqual(
             cues.map((cue) => cue[language]),

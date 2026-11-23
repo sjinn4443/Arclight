@@ -68,6 +68,12 @@
       "modelLicense": "CC-BY-NC-4.0",
       "style": "Calm medical educator",
       "trimEdgeSilenceDb": -50
+    },
+    "ur": {
+      "label": "اردو",
+      "locale": "ur-PK",
+      "voice": "ur-PK-UzmaNeural",
+      "style": "Calm medical educator"
     }
   },
   "pronunciationGuide": {
@@ -93,7 +99,8 @@
       "lg": "Tandika n’okunaaba engalo.",
       "ha": "Fara da wanke hannu.",
       "yo": "Bẹ̀rẹ̀ pẹ̀lú fífọ ọwọ́.",
-      "ig": "Malite site n’ịsa aka."
+      "ig": "Malite site n’ịsa aka.",
+      "ur": "ہاتھ کی صفائی سے شروع کریں۔"
     },
     {
       "id": "observation-02",
@@ -110,7 +117,8 @@
       "lg": "Kebera okwetooloola amaaso, ebikowe n’amaaso, olabe oba waliwo ekitali kya bulijjo.",
       "ha": "Duba kewayen idanu, fatar ido da idanu. Lura da duk abin da ba na al’ada ba.",
       "yo": "Ṣàyẹ̀wò àyíká ojú, ìpéǹpéjú àti ojú. Kíyè sí ohun tí kò bójú mu.",
-      "ig": "Lelee gburugburu anya, mkpuchi anya na anya. Chọpụta ihe ọ bụla na-adịghị mma."
+      "ig": "Lelee gburugburu anya, mkpuchi anya na anya. Chọpụta ihe ọ bụla na-adịghị mma.",
+      "ur": "periorbital علاقے، پلکوں اور آنکھوں کا مشاہدہ کریں، کسی بھی غیر معمولی چیزوں کو نوٹ کریں."
     },
     {
       "id": "observation-03",
@@ -130,7 +138,8 @@
       "lg": "Arclight eteeke ku kitangaala ekisinga; ebikwata endabirwamu byombi waggulu ddala. Ekisenge kibe kisirifu, ekitangaala kitono.",
       "ha": "Haske mafi ƙarfi na Arclight; maƙallan ruwan tabarau biyu sama gaba ɗaya. Ɗakin ya yi shiru da duhu.",
       "yo": "Yan ìmọ́lẹ̀ Arclight tó lágbára jù. Gbé àwọn ohun tó di lẹ́ńsì méjèèjì sókè pátápátá. Lo yàrá tó dákẹ́, tí ìmọ́lẹ̀ rẹ̀ kéré.",
-      "ig": "Họrọ ìhè Arclight kacha ike. Bulie ihe abụọ na-ejide lens ruo n’elu. Jiri ụlọ dị jụụ nke ìhè ya dị ntakịrị."
+      "ig": "Họrọ ìhè Arclight kacha ike. Bulie ihe abụọ na-ejide lens ruo n’elu. Jiri ụlọ dị jụụ nke ìhè ya dị ntakịrị.",
+      "ur": "پرسکون، کم روشنی والے کمرے میں آرک لائٹ کی سب سے تیز روشنی منتخب کریں۔ دونوں عدسوں کی ریلیں پوری اوپر کریں۔"
     },
     {
       "id": "observation-04a",
@@ -147,7 +156,8 @@
       "lg": "Teeka ekituli eky’okulabiramu kumpi n’eriiso lyo.",
       "ha": "Sanya ramin dubawa kusa da idonka.",
       "yo": "Fi ihò ìwò sún mọ́ ojú rẹ.",
-      "ig": "Debe oghere nlele nso anya gị."
+      "ig": "Debe oghere nlele nso anya gị.",
+      "ur": "بصری سوراخ کو اپنی آنکھ کے قریب رکھیں۔"
     },
     {
       "id": "observation-04b",
@@ -164,7 +174,8 @@
       "lg": "Towakira kitangaala mu liiso lyo.",
       "ha": "Kada ka haska idonka.",
       "yo": "Má tan ìmọ́lẹ̀ sínú ojú ara rẹ.",
-      "ig": "Atụnyela ìhè n’anya nke gị."
+      "ig": "Atụnyela ìhè n’anya nke gị.",
+      "ur": "اپنی آنکھوں میں روشنی نہ ڈالو۔"
     },
     {
       "id": "observation-04c",
@@ -184,7 +195,8 @@
       "lg": "Tokwata Arclight ng’egalamidde ku ludda.",
       "ha": "Kada ka riƙe Arclight a kaikaice.",
       "yo": "Má di Arclight ní ẹ̀gbẹ́.",
-      "ig": "Ejidela Arclight n’akụkụ."
+      "ig": "Ejidela Arclight n’akụkụ.",
+      "ur": "Arclight کو ساتھ نہ رکھیں۔"
     },
     {
       "id": "observation-05",
@@ -201,7 +213,11 @@
       "lg": "Ku bbanga ly’omukono, alabe ekitangaala; laba amaaso gombi.",
       "ha": "Nisan hannu: ya kalli haske, ka duba idanu biyu.",
       "yo": "Ní gígùn apá, kí aláìsàn wo ìmọ́lẹ̀. Wo ojú méjèèjì pọ̀.",
-      "ig": "N’ogologo aka, ọ lee ìhè; lelee anya abụọ ọnụ."
+      "ig": "N’ogologo aka, ọ lee ìhè; lelee anya abụọ ọnụ.",
+      "ur": "بازو بھر دور سے مریض کو روشنی دیکھنے کو کہیں۔ دونوں آنکھیں ایک ساتھ دیکھیں۔",
+      "ttsText": {
+        "ur": "مریض روشنی دیکھے۔ بازو بھر دور سے دونوں آنکھیں دیکھیں۔"
+      }
     },
     {
       "id": "observation-06",
@@ -218,7 +234,8 @@
       "lg": "Ebitangaala byenkane amaanyi ne langi. Enjawulo si ya bulijjo.",
       "ha": "Hasken ya daidaita a ƙarfi da launi. Bambanci ba na al’ada ba ne.",
       "yo": "Ìtànṣán méjèèjì gbọ́dọ̀ dọ́gba ní ìmọ́lẹ̀ àti àwọ̀. Ìyàtọ̀ kò bójú mu.",
-      "ig": "Ìhè na-alọghachi kwesịrị ịdị otu n’ike na agba. Ọdịiche adịghị mma."
+      "ig": "Ìhè na-alọghachi kwesịrị ịdị otu n’ike na agba. Ọdịiche adịghị mma.",
+      "ur": "دونوں انعکاس رنگ اور چمک میں یکساں ہوں۔ فرق غیر معمولی ہے۔"
     },
     {
       "id": "positioning-01",
@@ -235,7 +252,8 @@
       "lg": "Gamba omulwadde atunuulire ekintu eky’ewala. Takutunuuliranga era tatunuuliranga kitangaala.",
       "ha": "Mara lafiya ya kalli abu mai nisa. Kada ya kalle ka ko hasken da kansa.",
       "yo": "Kí aláìsàn tẹjú mọ́ ohun tó jìnnà. Kò gbọdọ̀ wo ìwọ tàbí ìmọ́lẹ̀ náà.",
-      "ig": "Gwa onye ọrịa ka ọ lee ihe dị anya. Ọ gaghị ele gị ma ọ bụ ìhè ahụ."
+      "ig": "Gwa onye ọrịa ka ọ lee ihe dị anya. Ọ gaghị ele gị ma ọ bụ ìhè ahụ.",
+      "ur": "مریض سے کہیں کہ وہ کسی دور دراز کے ہدف کو ٹھیک کرے۔ اس بات کو یقینی بنائیں کہ وہ آپ کی طرف یا روشنی کی طرف نہیں دیکھ رہے ہیں۔"
     },
     {
       "id": "positioning-02",
@@ -252,7 +270,8 @@
       "lg": "Kozesa omukono n’eriiso erya ddyo ku liiso lye erya ddyo; ebya kkono ku lya kkono.",
       "ha": "Yi amfani da hannunka da idonka na dama ga idonsa na dama; na hagu ga idonsa na hagu.",
       "yo": "Lo ọwọ́ ọ̀tún àti ojú ọ̀tún fún ojú ọ̀tún aláìsàn; lo ọwọ́ àti ojú òsì fún ojú òsì.",
-      "ig": "Jiri aka nri na anya nri maka anya nri onye ọrịa; jiri aka ekpe na anya ekpe maka anya ekpe ya."
+      "ig": "Jiri aka nri na anya nri maka anya nri onye ọrịa; jiri aka ekpe na anya ekpe maka anya ekpe ya.",
+      "ur": "مریض کی دائیں آنکھ کے لیے اپنا دایاں ہاتھ اور دائیں آنکھ اور بائیں آنکھ کے لیے اپنا بائیں ہاتھ اور بائیں آنکھ کا استعمال کریں۔"
     },
     {
       "id": "positioning-03",
@@ -269,7 +288,8 @@
       "lg": "Ebigere kumpi n’omulwadde, weesigame emabega. Sembera ng’ogoberera ekitangaala ekimyufu mu bugalamivu, diguli kkumi ku kkumi na ttaano ku ludda lw’okutu.",
       "ha": "Sanya ƙafafunka kusa da mara lafiya, ka jingina baya. Bi jan hasken cikin ido a kwance, digiri goma zuwa goma sha biyar wajen kunne daga ƙwayar baƙin ido.",
       "yo": "Fi ẹsẹ̀ sún mọ́ aláìsàn, tẹ ara sẹ́yìn. Tẹ̀lé ìtànṣán pupa ní pẹ̀tẹ́lẹ̀, ní ìwọ̀n mẹ́wàá sí mẹ́ẹ̀ẹ́dógún dígírì sí ẹ̀gbẹ́ etí láti ihò dúdú ojú.",
-      "ig": "Debe ụkwụ nso onye ọrịa, dabere azụ. Soro ìhè uhie banye n’ahịrị larịị, ogo iri ruo iri na ise n’akụkụ ntị site n’oghere ojii anya."
+      "ig": "Debe ụkwụ nso onye ọrịa, dabere azụ. Soro ìhè uhie banye n’ahịrị larịị, ogo iri ruo iri na ise n’akụkụ ntị site n’oghere ojii anya.",
+      "ur": "مریض کے قریب اپنے پیروں سے شروع کریں اور پیچھے جھک جائیں۔ قعرِ چشم کا انعکاس کی شناخت کریں، پھر اسے پتلی کی طرف 10 سے 15 ڈگری تک افقی راستے پر چلائیں۔"
     },
     {
       "id": "positioning-04",
@@ -286,7 +306,8 @@
       "lg": "Bw’osembera, omutwe gw’omusuwa gw’eriiso gulabika. Sembera okufuna ekifaananyi ekigazi era ekitebenkevu.",
       "ha": "Da ka matsa kusa, kan jijiyar gani zai bayyana. Ƙara matsowa domin gani mai faɗi da kwanciyar hankali.",
       "yo": "Bí o ṣe sún mọ́ ọn, orí iṣan ìríran yóò hàn. Sún mọ́ ọn sí i kí ìwò gbòòrò, kí ó sì dúró ṣinṣin.",
-      "ig": "Mgbe ị bịaruru nso, isi akwara ịhụ ụzọ ga-apụta. Bịakwuo nso ka ihe ị na-ahụ gbasaa ma kwụsie ike."
+      "ig": "Mgbe ị bịaruru nso, isi akwara ịhụ ụzọ ga-apụta. Bịakwuo nso ka ihe ị na-ahụ gbasaa ma kwụsie ike.",
+      "ur": "جیسے جیسے آپ قریب آتے ہیں، آپٹک ڈسک نظر میں آنی چاہیے۔ ایک وسیع تر، مستحکم منظر کے لیے قریب جائیں۔"
     },
     {
       "id": "positioning-05",
@@ -306,7 +327,8 @@
       "lg": "Arclight ku layini y’eriiso, si waggulu na wansi. Disiki bw’ebula, goberera ettabi ly’omusaayi eddene oddeyo.",
       "ha": "Arclight daidai da ido, ba sama ko ƙasa ba. Idan kan ya ɓace, bi babban reshen jini ka koma.",
       "yo": "Mú Arclight dúró ní ìlà ojú; má gbé e sókè tàbí sísàlẹ̀. Bí orí iṣan ìríran bá sọnù, tẹ̀lé ẹ̀ka iṣan ẹ̀jẹ̀ ńlá padà sí i.",
-      "ig": "Debe Arclight n’ahịrị anya, ọ bụghị elu ma ọ bụ ala. Ọ bụrụ na isi efuo, soro alaka ọbara ukwu laghachi."
+      "ig": "Debe Arclight n’ahịrị anya, ọ bụghị elu ma ọ bụ ala. Ọ bụrụ na isi efuo, soro alaka ọbara ukwu laghachi.",
+      "ur": "آرک لائٹ آنکھ کی سیدھ میں رکھیں، اوپر نیچے نہ کریں۔ بصری قرص اوجھل ہو تو کسی بڑی رگ کی شاخ کے ساتھ واپس جائیں۔"
     },
     {
       "id": "features-01",
@@ -323,7 +345,8 @@
       "lg": "Kebera oba ensalo z’omutwe gw’omusuwa gw’eriiso zirabika bulungi.",
       "ha": "Duba yadda iyakar kan jijiyar gani take bayyana.",
       "yo": "Ṣàyẹ̀wò bí ààlà orí iṣan ìríran ṣe hàn kedere.",
-      "ig": "Lelee otú oke isi akwara ịhụ ụzọ si doo anya."
+      "ig": "Lelee otú oke isi akwara ịhụ ụzọ si doo anya.",
+      "ur": "آپٹک ڈسک پر تبصرہ کریں کہ اس کا مارجن کتنا الگ ہے۔"
     },
     {
       "id": "features-02",
@@ -340,7 +363,8 @@
       "lg": "Kebera langi y’olukugiro, n’obunene bw’ekinnya bw’ogeraageranya ne disiki yonna.",
       "ha": "Duba launin gefen kan jijiyar gani da girman ramin tsakiya idan aka kwatanta da dukkan kan.",
       "yo": "Ṣàyẹ̀wò àwọ̀ etí orí iṣan ìríran àti ìpín ihò àárín sí gbogbo orí náà.",
-      "ig": "Lelee agba mgbanaka isi akwara na nha olulu etiti ma e jiri ya tụnyere isi ahụ dum."
+      "ig": "Lelee agba mgbanaka isi akwara na nha olulu etiti ma e jiri ya tụnyere isi ahụ dum.",
+      "ur": "نیوروریٹینل رم کے رنگ اور کپ سے ڈسک کے تناسب پر تبصرہ کریں۔"
     },
     {
       "id": "features-03",
@@ -357,7 +381,8 @@
       "lg": "Ensalo n’olukugiro birabike. Enzimbu, enseeguufu, ekinnya ekigazi: sindika eri omukugu.",
       "ha": "Kan lafiya: iyaka da gefe a bayyane. Kumburi, kodadde, ko rami ya ƙaru: tura mara lafiya.",
       "yo": "Orí iṣan tó dára ní ààlà tó mọ́ àti etí. Tọ́ aláìsàn sí amọ̀ja fún wíwú, àwọ̀ fífẹ́ tàbí ihò àárín tó pọ̀ sí i.",
-      "ig": "Isi dị mma: oke doro anya na mgbanaka. Ọzịza, agba chachara, olulu toro: zigara ọkachamara."
+      "ig": "Isi dị mma: oke doro anya na mgbanaka. Ọzịza, agba chachara, olulu toro: zigara ọkachamara.",
+      "ur": "صحت مند بصری قرص کی حد اور کنارہ واضح ہوتے ہیں۔ سوجن، پھیکا رنگ یا زیادہ گہرا گڑھا ہو تو مریض کو ریفر کریں۔"
     },
     {
       "id": "examine-01",
@@ -374,7 +399,8 @@
       "lg": "Gaziya akatuli nga tonnakebera fovea. Okutunuulira ekitangaala kukafunza ne kuziyiza okulaba.",
       "ha": "Faɗaɗa ƙwayar baƙin ido kafin fovea. In ba haka ba, haske ya ƙuntata ta ya hana gani.",
       "yo": "Mú ihò dúdú ojú gbòòrò kí o tó wo fovea. Bí bẹ́ẹ̀ kọ́, wíwo ìmọ́lẹ̀ á mú un kéré, á sì dí ìwò lọ́wọ́.",
-      "ig": "Meghee oghere ojii anya tupu ị lelee fovea. Ma ọ bụghị ya, ile ìhè ga-eme ka ọ dị ntakịrị ma gbochie nlele."
+      "ig": "Meghee oghere ojii anya tupu ị lelee fovea. Ma ọ bụghị ya, ile ìhè ga-eme ka ọ dị ntakịrị ma gbochie nlele.",
+      "ur": "فوویہ دیکھنے سے پہلے پتلی پھیلائیں۔ روشنی دیکھنے سے پتلی سکڑتی ہے اور منظر چھپ جاتا ہے۔"
     },
     {
       "id": "examine-02",
@@ -391,7 +417,8 @@
       "lg": "Tandikira ku mutwe gw’omusuwa gw’eriiso.",
       "ha": "Fara daga kan jijiyar gani.",
       "yo": "Bẹ̀rẹ̀ ní orí iṣan ìríran.",
-      "ig": "Malite n’isi akwara ịhụ ụzọ."
+      "ig": "Malite n’isi akwara ịhụ ụzọ.",
+      "ur": "آپٹک ڈسک سے شروع کریں۔"
     },
     {
       "id": "examine-03",
@@ -408,7 +435,8 @@
       "lg": "Goberera amatabi ana amakulu ag’emisuwa gy’omusaayi ku retina. Tandika ku mutwe gw’omusuwa, ogoberere ettabi limu, oddeyo ku mutwe, olyoke ogoberere eddala. Kola bw’otyo ku gonna ana.",
       "ha": "Bi manyan rassan jijiyoyin jini huɗu na retina. Fara daga kan jijiyar gani, bi reshe ɗaya, koma kan, sannan bi na gaba. Maimaita ga rassan huɗu.",
       "yo": "Tẹ̀lé ẹ̀ka iṣan ẹ̀jẹ̀ ńlá mẹ́rin lórí retina. Láti orí iṣan ìríran, tẹ̀lé ẹ̀ka kan, padà sí orí náà, kí o sì tẹ̀lé èkejì. Ṣe bẹ́ẹ̀ fún mẹ́rẹ̀ẹ̀rin.",
-      "ig": "Soro alaka anọ bụ isi nke akwara ọbara retina. Malite n’isi akwara ịhụ ụzọ, soro otu alaka, laghachi n’isi ahụ, soro alaka ọzọ. Mee nke a n’alaka anọ niile."
+      "ig": "Soro alaka anọ bụ isi nke akwara ọbara retina. Malite n’isi akwara ịhụ ụzọ, soro otu alaka, laghachi n’isi ahụ, soro alaka ọzọ. Mee nke a n’alaka anọ niile.",
+      "ur": "شبکیہ برتن کی چار اہم شاخوں میں سے ہر ایک کی پیروی کریں۔ آپٹک ڈسک سے شروع کریں، ایک شاخ کی پیروی کریں، آپٹک ڈسک پر واپس جائیں اور پھر اگلی شاخ کی پیروی کریں۔ اسے چاروں شاخوں کے لیے دہرائیں۔"
     },
     {
       "id": "examine-04",
@@ -425,7 +453,8 @@
       "lg": "Maliriza ku macula ne fovea, oluvannyuma oddemu okukebera eriiso eddala.",
       "ha": "Ƙare da macula da fovea. Sannan maimaita gwajin a ɗayan idon.",
       "yo": "Parí ní macula àti fovea, kí o sì tún àyẹ̀wò ṣe ní ojú kejì.",
-      "ig": "Mechie na macula na fovea. Tinyegharịa nyocha n’anya nke ọzọ."
+      "ig": "Mechie na macula na fovea. Tinyegharịa nyocha n’anya nke ọzọ.",
+      "ur": "میکولا اور فووا پر ختم کریں، پھر دوسری آنکھ میں امتحان کو دہرائیں۔"
     }
   ],
   "videoTitleCues": [
@@ -442,7 +471,8 @@
         "lg": "Okutunuulira n'ekitangaala ekidda mu liiso",
         "ha": "Dubawa da hasken da ke dawowa daga cikin ido",
         "yo": "Wíwo àti ìmọ́lẹ̀ tó ń padà láti inú ojú",
-        "ig": "Nlele na ìhè na-alọghachi site n'ime anya"
+        "ig": "Nlele na ìhè na-alọghachi site n'ime anya",
+        "ur": "مشاہدہ اور فنڈل اضطراری"
       }
     },
     {
@@ -458,7 +488,8 @@
         "lg": "Enteekateeka y'omubiri n'ekkubo ly'okusembereramu",
         "ha": "Matsayi da hanyar kusantar ido",
         "yo": "Ipò àti ọ̀nà sísún mọ́ ojú",
-        "ig": "Ọnọdụ na ụzọ ịbịaru nso anya"
+        "ig": "Ọnọdụ na ụzọ ịbịaru nso anya",
+        "ur": "پوزیشننگ اور فلائٹ پاتھ"
       }
     },
     {
@@ -474,7 +505,8 @@
         "lg": "Ebintu eby'okukebera",
         "ha": "Abubuwan da za a tantance",
         "yo": "Àwọn ohun tí a ó ṣe àyẹ̀wò",
-        "ig": "Ihe ndị a ga-enyocha"
+        "ig": "Ihe ndị a ga-enyocha",
+        "ur": "تشخیص کرنے کی خصوصیات"
       }
     },
     {
@@ -490,7 +522,8 @@
         "lg": "Engeri y'okukebera",
         "ha": "Yadda ake binciken ido",
         "yo": "Bí a ṣe ń ṣe àyẹ̀wò",
-        "ig": "Otu e si enyocha"
+        "ig": "Otu e si enyocha",
+        "ur": "جانچنے کا طریقہ"
       }
     }
   ]

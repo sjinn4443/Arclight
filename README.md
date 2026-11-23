@@ -731,17 +731,18 @@ accessible names aligned with translated titles. Narration controls retain
 their language label and on/off pressed state. Static cache v70 delivers the
 updated launcher markup to installed clients.
 
-The nine-language set is English (`en`), Latin American Spanish (`es-419`),
+The ten-language set is English (`en`), Latin American Spanish (`es-419`),
 Korean (`ko`), Nepali (`ne`), French (`fr`), Luganda (`lg`), Hausa (`ha`),
-Yoruba (`yo`) and Igbo (`ig`). English speech uses a British voice.
+Yoruba (`yo`), Igbo (`ig`) and Urdu (`ur`). Urdu uses the Pakistani
+`ur-PK-UzmaNeural` voice.
 
-| Page ID                                                 | Narration                                   | Captions or stage text                                     | Media folder under `public/narration/`              |
-| ------------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------------- | --------------------------------------------------- |
-| `frontOfEyeFullAnimationVideoPage`                      | Nine languages                              | Matching WebVTT in all nine                                | `front-of-eye/full-animation/`                      |
-| `directOphthalmoscopyFullAnimationVideoPage`            | Nine languages                              | Matching WebVTT in all nine                                | `direct-ophthalmoscopy/full-animation/`             |
-| `binocularIndirectOphthalmoscopyFullAnimationVideoPage` | Nine languages                              | Matching WebVTT in all nine                                | `binocular-indirect-ophthalmoscopy/full-animation/` |
-| `fundalReflexExaminationScrollPage`                     | Nine languages, reusing Fundal Reflex audio | Short stage guidance translated through the app dictionary | Reuses `fundal-reflex/full-animation/`              |
-| `fundalReflexFullAnimationVideoPage`                    | Nine languages                              | Matching WebVTT in all nine                                | `fundal-reflex/full-animation/`                     |
+| Page ID                                                 | Narration                                  | Captions or stage text                                     | Media folder under `public/narration/`              |
+| ------------------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------- | --------------------------------------------------- |
+| `frontOfEyeFullAnimationVideoPage`                      | Ten languages                              | Matching WebVTT in all ten                                 | `front-of-eye/full-animation/`                      |
+| `directOphthalmoscopyFullAnimationVideoPage`            | Ten languages                              | Matching WebVTT in all ten                                 | `direct-ophthalmoscopy/full-animation/`             |
+| `binocularIndirectOphthalmoscopyFullAnimationVideoPage` | Ten languages                              | Matching WebVTT in all ten                                 | `binocular-indirect-ophthalmoscopy/full-animation/` |
+| `fundalReflexExaminationScrollPage`                     | Ten languages, reusing Fundal Reflex audio | Short stage guidance translated through the app dictionary | Reuses `fundal-reflex/full-animation/`              |
+| `fundalReflexFullAnimationVideoPage`                    | Ten languages                              | Matching WebVTT in all ten                                 | `fundal-reflex/full-animation/`                     |
 
 The scroll page plays 22 selected intervals from the Fundal Reflex tracks.
 Its on-screen guidance remains separate from the full spoken transcript and
@@ -904,7 +905,7 @@ See [`security/EMERGENCY_PLAN.md`](./security/EMERGENCY_PLAN.md) for the operato
 - Childhood Fundal Reflex scrollytelling pages use a shared Lottie stage-autoplay pattern:
   - page shells live in `public/html/childhoodFundal*.html` with `.childhood-fundal-scroll-page` and an empty `.childhood-fundal-prep-list`
   - `public/js/config.js` maps the route, `public/js/main.js` lazy-loads `public/js/childhoodFundalPreparation.js`, and that module owns `ROUTE_CONFIG`, `FUNDAL_PAGE_ROUTE_SEQUENCE`, stage creation, replay/down-arrow behavior, scroll locks, settle frames, and cross-page navigation
-  - the combined `fundalReflexExaminationScrollPage` reuses all nine Fundal Reflex narration tracks as 22 stage clips; its Eyes topbar provides a language selector and narration on/off control while the short stage guidance follows the app dictionary. See [the production record](./memory-bank/narration-and-subtitles.md).
+  - the combined `fundalReflexExaminationScrollPage` reuses all ten Fundal Reflex narration tracks as 22 stage clips; its Eyes topbar provides a language selector and narration on/off control while the short stage guidance follows the app dictionary. See [the production record](./memory-bank/narration-and-subtitles.md).
   - styling lives in `public/style/pages.css` under `.childhood-fundal-scroll-page`
   - the Diabetic Retinopathy workshop can also launch Fundal-style scrollytelling routes, including Direct Ophthalmoscopy routes (`diabeticObservationFundalReflex`, `diabeticPositioningFlightPath`, `diabeticHowToExamine`) and Binocular Indirect Ophthalmoscopy routes (`diabeticBioPreparation`, `diabeticBioFundoscopySitting`, `diabeticBioFundoscopyIndentation`), while reusing the same engine and layout contract
   - pause-before-frame behavior must use explicit `segmentRanges`, `segmentPauseAfterMsByFile`, and stable `settleFrameOverrides`; verify that pause holds the intended frame, does not flash white/final frames, and keeps accumulated text visible after completion

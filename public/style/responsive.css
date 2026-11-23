@@ -472,7 +472,10 @@ input {
 
   body[data-rapd-mobile-layout="true"] #backBtnGlobal.top-back {
     top: 13px !important;
-    left: max(18px, env(safe-area-inset-left)) !important;
+    inset-inline-start: max(
+      18px,
+      var(--back-safe-area, env(safe-area-inset-left))
+    ) !important;
     z-index: 12000 !important;
     background: transparent !important;
     color: #fff !important;
@@ -686,7 +689,7 @@ input {
   }
 
   #backBtnGlobal.top-back {
-    left: calc(7vw - 4px + 10px);
+    inset-inline-start: calc(7vw - 4px + 10px);
     margin-left: 0;
     padding-left: 0;
   }
@@ -1163,7 +1166,7 @@ input {
 
   #backBtnGlobal.top-back {
     top: 10px !important;
-    left: calc(22vw - 4px + 10px) !important;
+    inset-inline-start: calc(22vw - 4px + 10px) !important;
     padding-left: 0 !important;
     margin-left: 0 !important;
   }
@@ -1921,7 +1924,7 @@ input {
   }
 
   #backBtnGlobal.top-back {
-    left: calc(var(--desktop-topbar-inset) + 10px) !important;
+    inset-inline-start: calc(var(--desktop-topbar-inset) + 10px) !important;
   }
 
   #unifiedDashboard .unified-top .icons {
@@ -3573,7 +3576,7 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
 
   #backBtnGlobal.top-back {
     top: 9px !important;
-    left: calc(20px + 50% - 50vw) !important;
+    inset-inline-start: calc(20px + 50% - 50vw) !important;
     margin-left: 0 !important;
     padding-left: 0 !important;
   }
@@ -6339,6 +6342,272 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
 #interactiveLearningPage #interactiveCataractInline .lesson-cta {
   margin-left: 0;
 }
+
+/* Keep legacy row offsets out of the RTL grid and preserve the fill direction. */
+:dir(rtl)
+  :is(#pupilsPage, .pupils-like)
+  :is(
+    .childhood-section-card,
+    .diabetic-section-card,
+    .diabetic-nested-section-card,
+    .glaucoma-section-card,
+    .glaucoma-subsection-card,
+    .interactive-section-card,
+    .medical-section-card
+  ).pupil-card.module-card {
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding-inline: 0;
+}
+
+:dir(rtl)
+  :is(#pupilsPage, .pupils-like)
+  :is(
+    .childhood-section-card,
+    .diabetic-section-card,
+    .diabetic-nested-section-card,
+    .glaucoma-section-card,
+    .glaucoma-subsection-card,
+    .interactive-section-card,
+    .medical-section-card
+  ).pupil-card.module-card
+  > h3 {
+  box-sizing: border-box;
+  padding-inline: 16px;
+}
+
+:dir(rtl) #diabeticRetinopathyWorkshopPage .diabetic-section-card .lesson-row {
+  inset-inline: auto;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta) {
+  grid-template-columns: max-content minmax(0, 1fr) max-content !important;
+  margin-inline: auto;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+  .lesson-main {
+  min-width: 0;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  align-self: center !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+  :is(.lesson-top, .lesson-progress) {
+  width: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+  .lesson-top {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+  .lesson-type {
+  min-width: 0;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+  :is(.lesson-type, .lesson-meta) {
+  margin-block-start: 0 !important;
+}
+
+html[dir="rtl"]
+  :is(#pupilsPage, .pupils-like)
+  .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+  .lesson-cta {
+  align-self: center !important;
+  margin: 0 !important;
+  transform: none !important;
+  white-space: nowrap;
+}
+
+html[dir="rtl"] #hintModalOverlay .guest-modal {
+  padding-inline-start: 54px !important;
+}
+
+html[dir="rtl"] #hintModalOverlay .guest-modal__close {
+  top: 10px !important;
+  right: 10px !important;
+  left: auto !important;
+  width: 34px;
+  height: 34px;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html[dir="rtl"] {
+  --back-safe-area: env(safe-area-inset-right);
+}
+
+/* Flex order follows the locale. Reset physical offsets left by older
+   breakpoint rules so the logo and the controls occupy opposite ends. */
+html[dir="rtl"] :is(#pupilsPage, .page) .eyes-topbar .eyes-topbar__icons {
+  margin-inline: auto 0 !important;
+  min-inline-size: 0;
+}
+
+html[dir="rtl"] .page .eyes-topbar .eyes-topbar__title {
+  text-align: start !important;
+}
+
+@media (min-width: 1024px) {
+  html[dir="rtl"] :is(#pupilsPage, .page) .eyes-topbar {
+    padding-inline: calc(var(--desktop-topbar-title-left) + 8px)
+      var(--desktop-topbar-icon-right) !important;
+  }
+}
+
+@media (min-width: 600.02px) and (max-width: 1023.98px) {
+  html[dir="rtl"] :is(#pupilsPage, .page) .eyes-topbar {
+    right: auto !important;
+    padding-inline: calc(var(--tablet-topbar-left) + 20px)
+      var(--tablet-topbar-right) !important;
+  }
+  html[dir="rtl"] .page .eyes-topbar .eyes-topbar__title {
+    margin-inline: 20px 0 !important;
+  }
+}
+
+@media (max-width: 360px) {
+  html[dir="rtl"]
+    :is(#pupilsPage, .pupils-like)
+    .lesson-row:has(> .thumb + .lesson-main + .lesson-cta) {
+    column-gap: 6px;
+  }
+  html[dir="rtl"] #pupilsPage .lesson-row {
+    min-height: 52px;
+  }
+  html[dir="rtl"]
+    :is(#pupilsPage, .pupils-like)
+    .lesson-row:has(> .thumb + .lesson-main + .lesson-cta)
+    > .thumb {
+    width: 46px;
+    height: 44px;
+    background-size: contain;
+  }
+}
+
+@media (max-width: 600px) {
+  html[dir="rtl"] .page .eyes-topbar {
+    box-sizing: border-box;
+    inset-inline: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    padding-inline: 62px 14px !important;
+    gap: 8px;
+  }
+  html[dir="rtl"] .page .eyes-topbar .eyes-topbar__title {
+    position: static !important;
+    margin-inline: 0 !important;
+    min-inline-size: 0;
+  }
+  html[dir="rtl"] .page .eyes-topbar .icon.menuBtn {
+    inset-inline: auto !important;
+    flex-shrink: 0;
+  }
+  html[dir="rtl"]
+    #caseStudyFlashcardPagePrimary
+    .eyes-topbar:has(#primaryFlashBackBtn:not([hidden])) {
+    padding-inline-start: 14px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  html[dir="rtl"] .childhood-fundal-scroll-page .eyes-topbar {
+    padding-inline-end: 8px !important;
+  }
+
+  html[dir="rtl"]
+    .page.childhood-fundal-scroll-page
+    .eyes-topbar
+    .eyes-topbar__icons,
+  html[dir="rtl"]
+    .childhood-fundal-scroll-page
+    .fundal-scroll-narration-controls {
+    gap: 4px !important;
+  }
+
+  html[dir="rtl"]
+    .childhood-fundal-scroll-page
+    .fundal-scroll-narration-controls__language {
+    width: 84px;
+    padding-inline: 5px 16px;
+  }
+}
+
+html[dir="rtl"]
+  :is(
+    #caseStudyChatPage,
+    #caseStudyChatPagePrimary,
+    #caseStudyChatPageAdvanced,
+    #glaucomaHistoryCaseStudy,
+    .cataract-case-quiz
+  )
+  :is(.casechat-bubble--bot, .casechat-bubble--user) {
+  transform: none !important;
+}
+
+html[dir="rtl"]
+  :is(
+    #caseStudyChatPage,
+    #caseStudyChatPagePrimary,
+    #caseStudyChatPageAdvanced,
+    #glaucomaHistoryCaseStudy
+  )
+  .casechat-modal__content {
+  max-height: calc(100dvh - 32px) !important;
+  overflow-y: auto !important;
+}
+
+html[dir="rtl"]
+  :is(
+    #caseStudyChatPage,
+    #caseStudyChatPagePrimary,
+    #caseStudyChatPageAdvanced,
+    #glaucomaHistoryCaseStudy,
+    .cataract-case-quiz
+  )
+  .casechat-modal__dxHint {
+  margin: 0 7px 10px !important;
+  text-align: start !important;
+  white-space: normal;
+}
+
+html[dir="rtl"]
+  :is(
+    #caseStudyChatPage,
+    #caseStudyChatPagePrimary,
+    #caseStudyChatPageAdvanced,
+    #glaucomaHistoryCaseStudy
+  )
+  .casechat-dxlist {
+  flex: 0 0 auto;
+  max-height: none;
+}
+
 #interactiveLearningPage #interactiveCataractInline .lesson-row--quiz .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
 }
@@ -6379,9 +6648,17 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   font-weight: 700;
 }
 :is(#cataractCaseQuizPage, .cataract-case-quiz) .cataract-quiz-eye-pair {
+  direction: ltr;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+}
+
+html[dir="rtl"]
+  :is(#cataractCaseQuizPage, .cataract-case-quiz)
+  .cataract-quiz-eye-label {
+  direction: rtl;
+  unicode-bidi: plaintext;
 }
 :is(#cataractCaseQuizPage, .cataract-case-quiz) .cataract-quiz-eye {
   min-width: 0;
@@ -7373,7 +7650,7 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
     margin: 0 !important;
   }
   body:has(#myProfilePage) #backBtnGlobal {
-    left: max(48px, calc((100vw - 1120px) / 2)) !important;
+    inset-inline-start: max(48px, calc((100vw - 1120px) / 2)) !important;
   }
   #myProfilePage .profile-overview-heading {
     display: block;

@@ -17,6 +17,15 @@
       "bytes": 1519858,
       "sha256": "43c5e678a4850aa6e61a1122ad2b827fadc005c61ecf7e2e9958c959deec8bf1",
       "durationSeconds": 331.01
+    },
+    "ur": {
+      "src": "ur.m4a",
+      "captions": "ur.vtt",
+      "bytes": 1505913,
+      "sha256": "259b1f455624bb042c644f3880c5734082f699b7add59a80e794b0543c2c6e86",
+      "label": "اردو",
+      "voice": "ur-PK-UzmaNeural",
+      "durationSeconds": 331
     }
   }
 }

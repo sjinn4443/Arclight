@@ -16,6 +16,7 @@ test.each([
   ["ha", "hausa", "Fara"],
   ["yo", "yoruba", "Bẹ̀rẹ̀"],
   ["ig", "igbo", "Malite"],
+  ["ur", "urdu", "شروع کریں"],
 ])(
   "the shared subapp runtime loads %s without Spanish fallbacks",
   async (code, name, translation) => {
@@ -39,6 +40,12 @@ test.each([
     expect(
       dom.window.document.getElementById("score").textContent,
     ).not.toContain("preguntas");
+    if (code === "ur") {
+      expect(dom.window.document.documentElement.dir).toBe("rtl");
+      expect(dom.window.document.getElementById("score").textContent).toBe(
+        "4 سوالات۔ کامیابی کے لیے 3 نمبر۔",
+      );
+    }
     dom.window.close();
   },
 );

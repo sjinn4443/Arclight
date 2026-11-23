@@ -50,6 +50,7 @@ for (const [pageId, timing] of Object.entries(EXAMINATION_SCROLL_TIMING)) {
       "ha",
       "yo",
       "ig",
+      "ur",
       "en",
     ];
     for (const language of languages) {

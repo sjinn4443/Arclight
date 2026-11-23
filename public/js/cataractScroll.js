@@ -5,6 +5,7 @@ export const CATARACT_SCROLL_ROUTE = "cataractScroll";
 export const CATARACT_LANGUAGES = {
   en: { label: "English", voice: "en-GB-SoniaNeural" },
   ko: { label: "한국어", voice: "ko-KR-SunHiNeural" },
+  ur: { label: "اردو", locale: "ur-PK", voice: "ur-PK-UzmaNeural" },
 };
 export const CATARACT_SECTIONS = [
   {
@@ -459,7 +460,7 @@ export const CATARACT_SCROLL_CONFIG = {
   stageAspectRatioByFile: CATARACT_STAGES.map(() => "1169 / 1280"),
   sections: CATARACT_SECTIONS,
   getSectionShortcutLabel: (language) =>
-    language === "ko" ? "바로가기" : "Open guide",
+    ({ ko: "바로가기", ur: "رہنما کھولیں" })[language] || "Open guide",
   segmentRanges: CATARACT_STAGES.map((s) => [
     { from: 0, to: s.seconds * 30 - 1 },
   ]),

@@ -22,6 +22,13 @@ for (const [language, lines] of Object.entries(translations)) {
   });
 }
 const titles = {
+  ur: [
+    "تیاری",
+    "فاصلاتی وژن",
+    "پنہول یا شیشے کے ساتھ ٹیسٹ کریں۔",
+    "کم وژن CF-HM-LP",
+    "وژن کے قریب",
+  ],
   "es-419": [
     "Preparación",
     "Visión de lejos",

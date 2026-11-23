@@ -20,7 +20,18 @@ const manifest = read(path.join(root, "manifest.json"));
 const page = read(
   "public/video-localization/childhood-eye-screening.json",
 ).visualAcuityFullAnimationVideoPage;
-const languages = ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"];
+const languages = [
+  "en",
+  "es-419",
+  "ko",
+  "ne",
+  "fr",
+  "lg",
+  "ha",
+  "yo",
+  "ig",
+  "ur",
+];
 
 describe("Visual Acuity localized narration", () => {
   it.each(languages)(

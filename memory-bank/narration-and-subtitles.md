@@ -136,18 +136,20 @@ existing playback holds were retained.
 
 ## Coverage
 
-| Page ID                                                 | Narration and subtitle coverage                                    | Source                                                                                    |
-| ------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| `frontOfEyeFullAnimationVideoPage`                      | Nine languages for audio and WebVTT                                | [Front of Eye assets](../public/narration/front-of-eye/full-animation/)                   |
-| `directOphthalmoscopyFullAnimationVideoPage`            | Nine languages for audio and WebVTT                                | [Direct Ophthalmoscopy assets](../public/narration/direct-ophthalmoscopy/full-animation/) |
-| `binocularIndirectOphthalmoscopyFullAnimationVideoPage` | Nine languages for audio and WebVTT                                | [BIO assets](../public/narration/binocular-indirect-ophthalmoscopy/full-animation/)       |
-| `fundalReflexExaminationScrollPage`                     | Nine narration languages; short stage text uses the app dictionary | Reuses the Fundal Reflex M4A files                                                        |
-| `fundalReflexFullAnimationVideoPage`                    | Nine languages for audio and WebVTT                                | [Fundal Reflex assets](../public/narration/fundal-reflex/full-animation/)                 |
+| Page ID                                                 | Narration and subtitle coverage                                   | Source                                                                                    |
+| ------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `frontOfEyeFullAnimationVideoPage`                      | Ten languages for audio and WebVTT                                | [Front of Eye assets](../public/narration/front-of-eye/full-animation/)                   |
+| `directOphthalmoscopyFullAnimationVideoPage`            | Ten languages for audio and WebVTT                                | [Direct Ophthalmoscopy assets](../public/narration/direct-ophthalmoscopy/full-animation/) |
+| `binocularIndirectOphthalmoscopyFullAnimationVideoPage` | Ten languages for audio and WebVTT                                | [BIO assets](../public/narration/binocular-indirect-ophthalmoscopy/full-animation/)       |
+| `fundalReflexExaminationScrollPage`                     | Ten narration languages; short stage text uses the app dictionary | Reuses the Fundal Reflex M4A files                                                        |
+| `fundalReflexFullAnimationVideoPage`                    | Ten languages for audio and WebVTT                                | [Fundal Reflex assets](../public/narration/fundal-reflex/full-animation/)                 |
 
-The nine tags are `en`, `es-419`, `ko`, `ne`, `fr`, `lg`, `ha`, `yo` and `ig`.
+The ten tags are `en`, `es-419`, `ko`, `ne`, `fr`, `lg`, `ha`, `yo`, `ig` and `ur`.
 These mean English, Latin American Spanish, Korean, Nepali, French, Luganda,
-Hausa, Yoruba and Igbo. Wider app translation coverage does not imply a
-narration track exists for every language on every page.
+Hausa, Yoruba, Igbo and Urdu. Urdu is also available in the Visual Acuity,
+Make and Apply Eye Pad / Shield, Cataract and both Pupils guides. The Urdu
+tracks use `ur-PK-UzmaNeural` and follow each lesson's existing picture and cue
+timings. The Urdu translation and pronunciation still need native clinical review.
 
 ## Source and file ownership
 
@@ -623,7 +625,7 @@ filters full or selected downloads using `choice.language` or the app language.
 It maps Spanish to `es-419`, checks available audio per narration folder and
 selects the matching audio and VTT pair. A lesson with no audio in that
 language falls back to English. All four full animations now have the same
-nine-language coverage. App-only downloads omit media.
+ten-language coverage. App-only downloads omit media.
 
 Downloading one language does not include every other track. A manual voice
 selection is a playback preference, so another language may need a fresh

@@ -67,6 +67,12 @@
       "modelLicense": "CC-BY-NC-4.0",
       "style": "Calm medical educator",
       "trimEdgeSilenceDb": -50
+    },
+    "ur": {
+      "label": "اردو",
+      "locale": "ur-PK",
+      "voice": "ur-PK-UzmaNeural",
+      "style": "Calm medical educator"
     }
   },
   "timingSource": "The 119s scrolly with three silent 3s section cards; video is 128s. Hand hygiene is omitted.",
@@ -83,7 +89,8 @@
       "lg": "Weetaaga gauze, ppamba, kaadi, ekkalaamu, ekikopo, teepu ne makansi.",
       "ha": "Kana buƙatar gauze, auduga, kwali, fensir, kofi, tef da almakashi.",
       "yo": "O nílò gáàsì, òwú, káàdì, pẹ́ńsù, ife, téèpù àti scissors.",
-      "ig": "Ị ga-achọ gauze, owu, kaadiboodu, pensụl, iko, teepu na mkpa."
+      "ig": "Ị ga-achọ gauze, owu, kaadiboodu, pensụl, iko, teepu na mkpa.",
+      "ur": "آپ کو گوج، روئی، گتے، پنسل، کپ، چپچپا کاغذ اور قینچی کی ضرورت ہوگی۔"
     },
     {
       "id": "cotton",
@@ -97,7 +104,8 @@
       "lg": "Okukola ppamba y'eriiso, yanjuza akapiira ka ppamba mu ngeri ey'ekigi, nga kagazi sentimita ttaano oba mukaaga.",
       "ha": "Don audugar rufe ido, shimfiɗa ƙwallon auduga ya zama mai siffar ƙwai, faɗinsa santimita biyar zuwa shida.",
       "yo": "Fún páàdì ojú, tẹ òwú kan sílẹ̀ ní ìrísí ẹyin, kí ìwọ̀n rẹ̀ jẹ́ sẹ̀ǹtímítà márùn-ún sí mẹ́fà.",
-      "ig": "Iji mee akwa mkpuchi anya, gbasaa bọọlụ owu ka ọ dị ka akwa, obosara ya dị sentimita ise ruo isii."
+      "ig": "Iji mee akwa mkpuchi anya, gbasaa bọọlụ owu ka ọ dị ka akwa, obosara ya dị sentimita ise ruo isii.",
+      "ur": "آئی پیڈ کے لیے، روئی کی ایک گیند کو بیضوی شکل میں تقریباً 5 سے 6 سینٹی میٹر چوڑا پھیلائیں۔"
     },
     {
       "id": "gauze",
@@ -111,7 +119,8 @@
       "lg": "Zinga gauze ku ppamba.",
       "ha": "Nannaɗe gauze a kan audugar.",
       "yo": "Pa gáàsì yí òwú náà ká.",
-      "ig": "Kechie gauze gburugburu owu ahụ."
+      "ig": "Kechie gauze gburugburu owu ahụ.",
+      "ur": "روئی کے گرد گوج کو جوڑ دیں۔"
     },
     {
       "id": "pad-tape",
@@ -125,7 +134,8 @@
       "lg": "Teeka teepu ku nkomerero enzigule.",
       "ha": "Liƙa tef a buɗaɗɗen ƙarshen.",
       "yo": "Fi téèpù sí ẹnu tí ó ṣí.",
-      "ig": "Tinye teepu n'ọnụ mepere emepe."
+      "ig": "Tinye teepu n'ọnụ mepere emepe.",
+      "ur": "کھلے سرے پر ٹیپ۔"
     },
     {
       "id": "trim",
@@ -139,7 +149,8 @@
       "lg": "Salako empenda za gauze nga ogoberera enkula ya ppamba.",
       "ha": "Yanke gefunan gauze su bi siffar audugar.",
       "yo": "Gé etí gáàsì náà ní ìrísí òwú náà.",
-      "ig": "Bee akụkụ gauze ahụ ka ọ soro ọdịdị owu ahụ."
+      "ig": "Bee akụkụ gauze ahụ ka ọ soro ọdịdị owu ahụ.",
+      "ur": "گوج کے کناروں کو روئی کی شکل تک کاٹ دیں۔"
     },
     {
       "id": "finished-pad",
@@ -153,7 +164,8 @@
       "lg": "Eno ye ppamba y'eriiso.",
       "ha": "Audugar ido kenan.",
       "yo": "Èyí ni páàdì ojú rẹ.",
-      "ig": "Akwa anya gị."
+      "ig": "Akwa anya gị.",
+      "ur": "یہ آپ کا آئی پیڈ ہے۔"
     },
     {
       "id": "cardboard",
@@ -167,7 +179,8 @@
       "lg": "Ku kikuumi, funa kaadi ennyonjo. Osobola okuddamu okukozesa ekipaketi ky'eddagala.",
       "ha": "Don garkuwar ido, samo kwali mai tsabta. Za a iya sake amfani da marufin kayan lafiya.",
       "yo": "Fún ààbò ojú, wá káàdì tó mọ́. O lè tún àpótí ohun èlò ìṣègùn lò.",
-      "ig": "Maka ọta anya, chọta kaadiboodu dị ọcha. I nwere ike iji ngwugwu ọgwụ ọzọ."
+      "ig": "Maka ọta anya, chọta kaadiboodu dị ọcha. I nwere ike iji ngwugwu ọgwụ ọzọ.",
+      "ur": "ڈھال کے لئے، کچھ صاف گتے تلاش کریں. طبی پیکیجنگ کو دوبارہ استعمال کرنا اچھا کام کرتا ہے۔"
     },
     {
       "id": "draw",
@@ -181,7 +194,8 @@
       "lg": "Kozesa ekikopo ng'ekyokulabirako, okube ekikulungo ekigazi nga sentimita munaana.",
       "ha": "Yi amfani da kofi a matsayin samfuri, ka zana da'ira mai faɗin santimita takwas.",
       "yo": "Lo ife gẹ́gẹ́ bí àwòṣe, kí o fa àyíká tó fẹ̀ tó sẹ̀ǹtímítà mẹ́jọ.",
-      "ig": "Jiri iko dị ka ihe atụ see okirikiri nke obosara ya dị ihe dị ka sentimita asatọ."
+      "ig": "Jiri iko dị ka ihe atụ see okirikiri nke obosara ya dị ihe dị ka sentimita asatọ.",
+      "ur": "ایک کپ کو ٹیمپلیٹ کے طور پر استعمال کرتے ہوئے، تقریباً 8 سینٹی میٹر قطر کے ساتھ ایک دائرہ کھینچیں۔"
     },
     {
       "id": "cut",
@@ -195,7 +209,8 @@
       "lg": "Salayo ekikulungo.",
       "ha": "Yanke da'irar.",
       "yo": "Gé àyíká náà jáde.",
-      "ig": "Bee okirikiri ahụ."
+      "ig": "Bee okirikiri ahụ.",
+      "ur": "دائرے کو کاٹ دیں۔"
     },
     {
       "id": "slit",
@@ -209,7 +224,8 @@
       "lg": "Oluvannyuma sala okuva ku ludda okutuuka wakati.",
       "ha": "Sannan ka yanka daga gefen zuwa tsakiyar.",
       "yo": "Lẹ́yìn náà, gé láti etí rẹ̀ dé àárín.",
-      "ig": "Mgbe ahụ, bee site n'akụkụ ya ruo n'etiti."
+      "ig": "Mgbe ahụ, bee site n'akụkụ ya ruo n'etiti.",
+      "ur": "پھر کنارے سے مرکز تک ایک کٹ بنائیں۔"
     },
     {
       "id": "cone",
@@ -223,7 +239,8 @@
       "lg": "Zinga kaadi ekole ekifunvu, oginyweze ne teepu.",
       "ha": "Lanƙwasa kwali ya zama mazubi, ka ɗaure shi da tef.",
       "yo": "Yí káàdì náà sí ìrísí kọ́ọ̀nù, kí o fi téèpù mú un dúró.",
-      "ig": "Gbagọọ kaadiboodu ahụ ka ọ dị ka kọnụ, jiri teepu jide ya."
+      "ig": "Gbagọọ kaadiboodu ahụ ka ọ dị ka kọnụ, jiri teepu jide ya.",
+      "ur": "کارڈ کو ایک مخروط میں گھمائیں اور چپچپا ٹیپ سے محفوظ کریں۔"
     },
     {
       "id": "finished-shield",
@@ -237,7 +254,8 @@
       "lg": "Kino kye kikuumi ky'eriiso.",
       "ha": "Wannan ita ce garkuwar ido.",
       "yo": "Èyí ni ààbò ojú rẹ.",
-      "ig": "Nke a bụ ọta anya gị."
+      "ig": "Nke a bụ ọta anya gị.",
+      "ur": "یہ آپ کی آنکھوں کی ڈھال ہے۔"
     }
   ],
   "videoTitleCues": [
@@ -254,7 +272,8 @@
         "lg": "Okweteekateeka",
         "ha": "Shiri",
         "yo": "Ìmúrasílẹ̀",
-        "ig": "Nkwadebe"
+        "ig": "Nkwadebe",
+        "ur": "تیاری"
       }
     },
     {
@@ -270,7 +289,8 @@
         "lg": "Okukola ppamba y'eriiso",
         "ha": "Yin audugar rufe ido",
         "yo": "Ṣíṣe páàdì ojú",
-        "ig": "Ime akwa mkpuchi anya"
+        "ig": "Ime akwa mkpuchi anya",
+        "ur": "آئی پیڈ بنائیں"
       }
     },
     {
@@ -286,7 +306,8 @@
         "lg": "Okukola ekikuumi ky'eriiso",
         "ha": "Yin garkuwar ido",
         "yo": "Ṣíṣe ààbò ojú",
-        "ig": "Ime ọta anya"
+        "ig": "Ime ọta anya",
+        "ur": "آئی شیلڈ بنائیں"
       }
     }
   ]

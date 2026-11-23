@@ -18,7 +18,18 @@ const catalog = JSON.parse(
     "utf8",
   ),
 );
-const languages = ["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"];
+const languages = [
+  "en",
+  "es-419",
+  "ko",
+  "ne",
+  "fr",
+  "lg",
+  "ha",
+  "yo",
+  "ig",
+  "ur",
+];
 const stamp = (time) =>
   new Date(Math.round(time * 1000)).toISOString().slice(11, 23);
 

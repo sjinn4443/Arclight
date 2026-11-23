@@ -2,11 +2,15 @@ import { setLessonProgress } from "./lessonProgress.js";
 import {
   PAEDIATRIC_EAR_IMAGES,
   PAEDIATRIC_COPY,
+  PAEDIATRIC_COPY_PREFIX,
 } from "./paediatricWorkshopData.js";
 
 const STORAGE_KEY = "paediatricSurgicalEyeEarWorkshop:earQuiz:v1";
 const ui = (key, fallback) =>
   window.I18N?.t?.(`medicalStudentsWorkshop.quizUi.${key}`, fallback) ||
+  fallback;
+const workshopCopy = (key, fallback = PAEDIATRIC_COPY[key], variables) =>
+  window.I18N?.t?.(`${PAEDIATRIC_COPY_PREFIX}.${key}`, fallback, variables) ||
   fallback;
 
 function shuffled(items) {
@@ -80,7 +84,7 @@ export function initializePaediatricEarQuiz(page) {
         index + 1,
       ).padStart(2, "0");
       card.querySelector("img").alt =
-        `${PAEDIATRIC_COPY.image_case} ${index + 1}`;
+        `${workshopCopy("image_case")} ${index + 1}`;
       const options = card.querySelector(".options");
       optionOrders[id].forEach((value, optionIndex) => {
         const label = card
@@ -147,7 +151,11 @@ export function initializePaediatricEarQuiz(page) {
         `[data-ear-question="${image.id}"] .quiz-explanation`,
       );
       explanation.hidden = !reviewing;
-      explanation.textContent = `Source label: ${PAEDIATRIC_COPY[image.label]}`;
+      explanation.textContent = workshopCopy(
+        "source_label",
+        `Source label: ${workshopCopy(image.label)}`,
+        { label: workshopCopy(image.label) },
+      );
     });
     persist();
   }

@@ -8,7 +8,7 @@
       "voice": "en-GB-SoniaNeural",
       "bytes": 1238921,
       "sha256": "30ff5dde5a82dd9fe2c581b5d557935588cd245c48206f317fa63b90def282bd",
-      "durationSeconds": 315.0,
+      "durationSeconds": 315,
       "reusedPecSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5",
       "overriddenPecCueIds": [
         "compare-observation",
@@ -22,8 +22,17 @@
       "voice": "ko-KR-SunHiNeural",
       "bytes": 1261267,
       "sha256": "b6cbddeeab725bdf57512050b9207a3d3f94d3820de7aef8017757bc1b51ccc4",
-      "durationSeconds": 315.0,
+      "durationSeconds": 315,
       "reusedPecSha256": "70c1eb4a982b6d18771ec7c4d913e5fcd12fdb3f135537ee57b96df7bb46a8c1"
+    },
+    "ur": {
+      "src": "ur.m4a",
+      "captions": "ur.vtt",
+      "bytes": 1186199,
+      "sha256": "2ace2bf6744639599b8e72adc8480de9b8164952166ac5525315bb3ad17dd9f1",
+      "label": "اردو",
+      "voice": "ur-PK-UzmaNeural",
+      "durationSeconds": 315
     }
   }
 }

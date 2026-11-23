@@ -64,6 +64,7 @@ test("captions and narration retain every supplied English instruction in order"
     "ha",
     "yo",
     "ig",
+    "ur",
   ]);
   expect(script.cues[0].id).toBe("equipment");
   expect(script.cues.some((c) => c.id === "hygiene")).toBe(false);

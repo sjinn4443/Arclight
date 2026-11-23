@@ -30,7 +30,7 @@ const LANGUAGE_LABELS = Object.freeze({
   pt: "Portuguese",
   rw: "Kinyarwanda",
   sw: "Swahili",
-  ur: "Urdu",
+  ur: "اردو",
   yo: "Yoruba",
   zh: "Chinese",
 });

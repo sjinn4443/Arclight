@@ -39,7 +39,7 @@ const languageLabels = {
   es: "Spanish",
   sw: "Swahili",
   te: "Telugu",
-  ur: "Urdu",
+  ur: "اردو",
   yo: "Yoruba",
   zu: "Zulu",
   lo: "Lao",
