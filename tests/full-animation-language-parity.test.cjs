@@ -14,6 +14,7 @@ const languages = [
   "yo",
   "ig",
   "ur",
+  "ny",
 ];
 const lessons = [
   ["front-of-eye", "frontOfEyeFullAnimationVideoPage", 22, 171.46],

@@ -53,6 +53,7 @@ export const ROUTES = {
   pupilsAdvancedPdf: "html/fundalReflexPdf.html",
   frontOfEyePdf: "html/fundalReflexPdf.html",
   frontOfEyePdfTest: "html/frontOfEyePdfTest.html",
+  directOphthalmoscopyMobile: "html/directOphthalmoscopyMobile.html",
   visualsystemeyesbrain: "html/visualsystemeyesbrain.html",
   childhoodAssessment: "html/childhoodAssessment.html",
   behavioursquiz: "html/behavioursquiz.html",

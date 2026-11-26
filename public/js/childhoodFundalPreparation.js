@@ -65,6 +65,10 @@ export const FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS = Object.freeze({
     label: "اردو",
     src: "/narration/fundal-reflex/full-animation/ur.m4a",
   }),
+  ny: Object.freeze({
+    label: "Chichewa",
+    src: "/narration/fundal-reflex/full-animation/ny.m4a",
+  }),
 });
 
 // Each entry reuses the matching spoken interval from the full-animation
@@ -1480,6 +1484,29 @@ ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE].narrationTracks =
   FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_TRACKS;
 ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE].narrationClipsByFile =
   FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS;
+let fundalChichewaScript;
+const combinedFundalConfig =
+  ROUTE_CONFIG[FUNDAL_REFLEX_EXAMINATION_SCROLL_ROUTE];
+combinedFundalConfig.loadText = async () => {
+  if (fundalChichewaScript) return;
+  try {
+    const response = await fetch(
+      "/narration/fundal-reflex/full-animation/script.json",
+    );
+    if (response.ok) fundalChichewaScript = await response.json();
+  } catch {
+    // The lesson retains its dictionary captions when the cue sheet is unavailable.
+  }
+};
+combinedFundalConfig.getSegmentStartTexts = (index, language) => {
+  const captions = fundalChichewaScript?.timedCues?.ny;
+  if (language !== "ny" || !captions) return;
+  const clip = FUNDAL_REFLEX_EXAMINATION_SCROLL_NARRATION_CLIPS[index];
+  if (!clip) return;
+  return clip.cueIds
+    .map((id) => captions.find((cue) => cue.id === id)?.text)
+    .filter(Boolean);
+};
 ROUTE_CONFIG[DIRECT_OPHTHALMOSCOPY_SCROLL_ROUTE] = {
   narrationTracks: DIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_TRACKS,
   narrationClipsByFile: DIRECT_OPHTHALMOSCOPY_SCROLL_NARRATION_CLIPS,
@@ -1545,7 +1572,9 @@ function normalizeFundalNarrationLanguage(language) {
   if (normalized === "es" || normalized.startsWith("es-")) return "es-419";
   const base = normalized.split("-")[0];
   if (base === "urdu") return "ur";
-  if (["ne", "fr", "lg", "ha", "yo", "ig", "ur"].includes(base)) return base;
+  if (base === "chichewa") return "ny";
+  if (["ne", "fr", "lg", "ha", "yo", "ig", "ur", "ny"].includes(base))
+    return base;
   return "en";
 }
 
@@ -1574,6 +1603,7 @@ function readFundalNarrationPreference(pageId) {
       "yo",
       "ig",
       "ur",
+      "ny",
     ].includes(storedLanguage)
       ? storedLanguage
       : "auto";
@@ -1610,6 +1640,13 @@ function writeFundalNarrationPreference(pageId, { enabled, language }) {
 function getFundalNarrationControlCopy(language = getLanguage()) {
   const normalized = normalizeFundalNarrationLanguage(language);
   const addedCopy = {
+    ny: {
+      auto: "Zokha",
+      language: "Chilankhulo cha mawu ofotokozera",
+      on: "Yatsani mawu ofotokozera",
+      off: "Zimitsani mawu ofotokozera",
+      blocked: "Dinani kuti mumve mawu ofotokozera",
+    },
     ur: {
       auto: "خودکار",
       language: "صوتی بیان کی زبان",
@@ -1808,16 +1845,17 @@ export function initializeFundalStageNarration(
 
   const scheduleStop = () => {
     clearStopTimer();
-    // Synchronized stages use the actual media clock, including buffering.
-    if (synchronized) return;
     if (!enabled || !clipActive || !activeClip || audio.paused) return;
     const remainingSeconds = Math.max(
       0,
       Number(activeClip.end) - Number(audio.currentTime || activeClip.start),
     );
     stopTimerId = setTimeout(
-      stopAtClipEnd,
-      Math.max(50, Math.ceil((remainingSeconds + 0.08) * 1000)),
+      () => {
+        if (synchronized && audio.currentTime < activeClip.end) scheduleStop();
+        else stopAtClipEnd();
+      },
+      Math.max(20, Math.ceil((remainingSeconds * 1000) / audio.playbackRate)),
     );
   };
 
@@ -3232,6 +3270,7 @@ function ensureStageDownArrowElement(stage, existingArrow = null) {
 
   const downArrow = existingArrow || createDownArrowElement();
   arrowContainer.appendChild(downArrow);
+  window.I18N?.applyTranslations?.(downArrow);
   return downArrow;
 }
 
@@ -3261,6 +3300,7 @@ function ensureStageReplayButtonElement(stage, existingBtn = null) {
 
   const replayBtn = existingBtn || createStageReplayButtonElement();
   stage.appendChild(replayBtn);
+  window.I18N?.applyTranslations?.(replayBtn);
   return replayBtn;
 }
 
@@ -8957,6 +8997,10 @@ function initializeStageAutoplayMode(
 
   function showStageCompletionText(state) {
     if (!state?.segmentTextEl) return;
+    if (cfg.showAllCaptionsOnCompletion && state.segmentStartTexts.length) {
+      renderFundalTextLines(state.segmentTextEl, state.segmentStartTexts);
+      return;
+    }
     if (state.finalSummaryBulletLines.length) {
       showStageFinalSummaryBullets(state);
       return;
@@ -8974,6 +9018,10 @@ function initializeStageAutoplayMode(
 
   function restoreTranslatedPlaybackText(state) {
     if (!state) return;
+    if (cfg.showAllCaptionsOnCompletion && state.completed) {
+      showStageCompletionText(state);
+      return;
+    }
     if (state.finalSummaryBulletLines.length && state.completed) {
       showStageFinalSummaryBullets(state);
       return;
@@ -10181,6 +10229,9 @@ function initializeStageAutoplayMode(
     if (!state.completed) {
       state.completed = true;
     }
+    if (cfg.requireStageAdvance) {
+      state.completedScrollTop = getScrollHostMetrics()?.scrollTop ?? 0;
+    }
     showStageCompletionText(state);
     showStageControls(state);
     updateAllTopStageNavigation();
@@ -10727,6 +10778,10 @@ function initializeStageAutoplayMode(
       return;
     }
     if (!isStateNearViewportCenter(nextState)) return;
+    if (cfg.requireStageAdvance && !nextState.requestedPlayback) {
+      const previousTop = states[nextState.fileIndex - 1].completedScrollTop;
+      if ((getScrollHostMetrics()?.scrollTop ?? 0) <= previousTop + 12) return;
+    }
     void playStage(nextState);
   }
 

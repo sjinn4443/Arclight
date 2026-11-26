@@ -1,6 +1,6 @@
 {
   "profileLayout": {
-    "overview_description": "내 정보와 학습 성취를 한눈에 확인하세요.",
+    "overview_description": "내 정보와 학습 성취를 확인하세요.",
     "modules_completed": "완료한 모듈",
     "stamps_earned": "획득한 스탬프",
     "learning_profile": "학습 프로필",
@@ -24,7 +24,7 @@
     "diabeticWhatIsRetinopathyPage": "당뇨망막병증이란?",
     "diabeticVisionLossInDiabetesPage": "당뇨병에서의 시력 저하",
     "diabeticCausesOfVisionLossVideoPage": "시력 저하의 원인",
-    "screen": "선별검사와 의뢰",
+    "screen": "선별검사와 진료 의뢰",
     "diabeticOtherEyeDiseasesScreeningPage": "당뇨망막병증 및 기타 안질환 선별검사",
     "diabeticProtocolOverviewPage": "프로토콜: 10단계, 3개 과정",
     "diabeticProtocolPhaseAPage": "A 과정: 1–3단계",
@@ -208,7 +208,8 @@
       "earsMopping": "마른 솜 청소",
       "earsDrops": "귀 점이법",
       "earsWhoTraining": "WHO 교육 자료",
-      "earsTeachingResources": "Arclight 교육 자료"
+      "earsTeachingResources": "Arclight 교육 자료",
+      "earsHearingOverview": "청력 손실과 예방"
     }
   },
   "eyes": {
@@ -224,7 +225,7 @@
     "eyesCatalogTitle": "눈",
     "coreExaminationTitle": "핵심 검사",
     "examinationTitle": "검사",
-    "eyeCareProcedureTitle": "눈 처치",
+    "eyeCareProcedureTitle": "눈 관리 처치",
     "seeAll": "전체 보기 >",
     "diseaseTitle": "질환",
     "primaryEyeCareProceduresTitle": "워크숍",
@@ -255,10 +256,10 @@
     "card_label.cranial_nerve_examination": "뇌신경 검사",
     "card_label.arclight_overview": "Arclight 개요",
     "card_label.holo_overview": "Holo 개요",
-    "card_label.tools_and_kits": "도구 및 키트",
+    "card_label.tools_and_kits": "도구",
     "card_label.extended": "확장 검사",
     "card_label.pec": "PEC",
-    "card_label.lid_hygiene": "눈꺼풀 위생 관리",
+    "card_label.lid_hygiene": "눈꺼풀 위생",
     "card_label.eye_irrigation": "눈 세척",
     "card_label.eyelash_removal": "속눈썹 제거",
     "card_label.foreign_body_removal": "이물질 제거",
@@ -375,7 +376,8 @@
     "closeButton": "닫기",
     "downloadStorageNotice": "이 앱에는 약 1GB의 저장 공간이 필요합니다.",
     "lao": "ລາວ",
-    "luganda": "Luganda"
+    "luganda": "Luganda",
+    "pause_download_confirmation": "이 다운로드를 일시 중지할까요? 이미 다운로드한 파일은 보관됩니다."
   },
   "menu": {
     "my_profile_link": "내 프로필 >",
@@ -1219,7 +1221,8 @@
       "tap_the_correct_structure": "올바른 구조를 탭하세요.",
       "tip": "팁",
       "trauma": "외상",
-      "video_review_finished": "영상리뷰 완료"
+      "video_review_finished": "영상리뷰 완료",
+      "discs": "광디스크"
     },
     "casestudy": {
       "eyes": "눈",
@@ -1587,11 +1590,11 @@
     }
   },
   "i18nLiteral": {
-    "Downloaded contents": "다운로드한 콘텐츠",
+    "Downloaded contents": "다운로드된 콘텐츠",
     "Other content": "기타 콘텐츠",
-    "Download content for offline use?": "오프라인에서도 사용할 수 있도록 다운로드할까요?",
+    "Download content for offline use?": "오프라인에서도 사용할 수 있도록 콘텐츠를 다운로드할까요?",
     "Keep learning without an internet connection. Choose the content you would like to download.": "인터넷 연결 없이도 학습할 수 있습니다. 다운로드할 콘텐츠를 선택하세요.",
-    "Choose downloads": "다운로드 선택",
+    "Choose downloads": "다운로드할 콘텐츠 선택",
     "Close ^": "닫기 ^",
     "Next >": "다음 >",
     "Skip and Start": "건너뛰고 시작하기",
@@ -1716,19 +1719,19 @@
     "Download all conditions": "질환 콘텐츠 전체 다운로드",
     "Download all workshops": "워크숍 전체 다운로드",
     "Pause download": "다운로드 일시 중지",
-    "Pausing...": "일시 중지 중...",
+    "Pausing...": "일시 중지 중…",
     "Paused": "일시 중지됨",
-    "Download paused": "다운로드 일시 중지됨",
+    "Download paused": "다운로드가 일시 중지되었습니다",
     "Resume download": "다운로드 재개",
-    "Already downloaded files have been kept. Resume to download the remaining content.": "이미 다운로드된 파일은 유지됩니다. 나머지 콘텐츠를 다운로드하려면 재개하세요.",
+    "Already downloaded files have been kept. Resume to download the remaining content.": "이미 다운로드한 파일은 보관됩니다. 나머지 콘텐츠를 받으려면 다운로드를 재개하세요.",
     "Select at least one section.": "섹션을 하나 이상 선택하세요.",
     "Completed": "완료",
-    "In progress": "진행 중",
-    "Not downloaded": "다운로드되지 않음",
-    "Checking downloaded content...": "다운로드 상태 확인 중...",
-    "Download status unavailable": "다운로드 상태를 확인할 수 없음",
+    "In progress": "진행중",
+    "Not downloaded": "다운로드하지 않음",
+    "Checking downloaded content...": "다운로드한 콘텐츠 확인 중…",
+    "Download status unavailable": "다운로드 상태를 확인할 수 없습니다",
     "Download progress": "다운로드 진행률",
-    "Download complete. Content is ready offline.": "다운로드가 완료되었습니다. 오프라인에서 사용할 수 있습니다.",
+    "Download complete. Content is ready offline.": "다운로드가 완료되었습니다. 오프라인에서 콘텐츠를 사용할 수 있습니다.",
     "Includes all app features, videos and images.": "앱의 모든 기능, 동영상, 이미지를 포함합니다.",
     "Select content": "콘텐츠 선택",
     "Choose which content to download for offline use.": "오프라인 사용을 위해 다운로드할 콘텐츠를 선택하세요.",
@@ -4026,7 +4029,7 @@
   "howToTeachFilter": "가르치는 방법",
   "coreExaminationTitle": "핵심 검사",
   "examinationTitle": "검사",
-  "eyeCareProcedureTitle": "눈 처치",
+  "eyeCareProcedureTitle": "눈 관리 처치",
   "diseaseTitle": "질환",
   "primaryEyeCareProceduresTitle": "워크숍",
   "extendedExaminationTitle": "확장 검사",
@@ -4161,7 +4164,7 @@
         "cue_050": "그들이 다음과 같은지 확인하세요.",
         "cue_051": "계속해서 질문에 답변해 드리겠습니다.",
         "cue_052": "환자의 동공을 다이얼링하여 활성화합니다.",
-        "cue_053": "전체 자금 제공자 보기.",
+        "cue_053": "안저 전체 시야.",
         "cue_054": "환자의 편안함을 보장하기 위해 국소 마취제를 사용할 수도 있습니다.",
         "cue_055": "시험 중.",
         "cue_056": "환자는 이상적으로 누워서 검사를 받아야 합니다.",
@@ -4406,7 +4409,7 @@
         "cue_023": "대부분의 아기",
         "cue_024": "자연스럽게 빛을 보게 될 것이다.",
         "cue_025": "시선 구멍을 눈 가까이 두고 팔 길이를 유지하여 관찰하십시오.",
-        "cue_026": "동시에 양쪽 눈의 곰팡이 반사.",
+        "cue_026": "양쪽 눈의 안저 적색 반사를 동시에 관찰합니다.",
         "cue_027": "밝기와 색상을 비교해 보세요.",
         "cue_028": "두 눈.",
         "cue_029": "반사 중에 어두운 반점이 있거나 반사가 전혀 없는지 확인하십시오.",
@@ -4429,7 +4432,7 @@
         "cue_046": "또는 양쪽 눈, 또는 전혀 반사가 없습니다.",
         "cue_047": "정리하자면, 전체적인 밝기의 차이가 없는 경우가 정상적인 검사입니다.",
         "cue_048": "중앙 각막 반사와 함께 두 눈 사이의 색상.",
-        "cue_049": "비정상적인 곰팡이 반사는 밝기와 색상에 차이가 있는 경우입니다.",
+        "cue_049": "밝기와 색에 차이가 있는 경우 안저 적색 반사가 비정상입니다",
         "cue_050": "두 눈 사이, 변위된 각막 반사, 눈 안에 어두운 반점이 있음",
         "cue_051": "한쪽 또는 양쪽 눈의 반사, 또는 전혀 반사가 없는 경우.",
         "cue_052": "비정상적인",
@@ -5700,7 +5703,7 @@
     "primary": "기본",
     "intermediate": "중급",
     "lesson_navigation": "PEC 레슨 이동",
-    "closeup_title": "각 구조를 순서대로 검사하기",
+    "closeup_title": "각 구조를 순서대로 검사하세요",
     "closeup_guide": "전안부 검사",
     "closeup_illustration": "확대 보기",
     "closeup_cases": "전안부 사례",
@@ -5816,7 +5819,10 @@
     "answer_all_images": "다섯 이미지 모두 정상 또는 비정상을 선택한 뒤 제출해주세요.",
     "animation_pause": "애니메이션 일시 정지",
     "animation_play": "애니메이션 재생",
-    "animation_error": "애니메이션을 불러올 수 없습니다. 이 레슨을 다시 열어주세요."
+    "animation_error": "애니메이션을 불러올 수 없습니다. 이 레슨을 다시 열어주세요.",
+    "reflex_normal_title": "정상",
+    "reflex_cataract_title": "백내장",
+    "reflex_retinoblastoma_title": "망막모세포종"
   },
   "medicalStudentsWorkshop": {
     "content": {
@@ -6454,7 +6460,7 @@
   "primaryEarCareWorkshop": {
     "otoscope_pdf": "How to Use the Arclight Otoscope",
     "ears": "귀",
-    "title": "Primary Ear Care Workshop",
+    "title": "일차 귀 관리 워크숍",
     "introduction": "1. 소개",
     "getting_started": "시작하기",
     "ear_examination_folder": "2. 귀 검사",
@@ -6517,7 +6523,7 @@
     "watch": "보기 >",
     "previous": "이전",
     "next": "다음",
-    "direct_to": "바로 이동",
+    "direct_to": "바로가기",
     "completed": "완료",
     "lesson_navigation": "귀 워크숍 레슨 탐색",
     "otoscopy_folder": "이경 검사"
@@ -6534,5 +6540,22 @@
     "role_detail": "어떤 역할인가요?",
     "role_label": "직무를 선택하세요",
     "other": "기타"
+  },
+  "reminders": {
+    "practice_reminders": "실습 알림",
+    "reminder_time": "알림 시간"
+  },
+  "videoControls": {
+    "controls": "동영상 재생 컨트롤",
+    "enter": "전체 화면",
+    "exit": "전체 화면 종료",
+    "mute": "음소거",
+    "pause": "일시 정지",
+    "play": "재생",
+    "seek": "동영상 재생 위치",
+    "unmute": "음소거 해제",
+    "narration": "내레이션",
+    "use_app_language": "앱 언어 사용",
+    "narration_off": "내레이션 끄기"
   }
 }

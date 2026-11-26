@@ -6,6 +6,7 @@
   "artwork": "Original PDF components with proportional cover crops, independent illumination, directional source arrows and stationary foreground flowchart boxes. Observation and all five Direct Light Response scenes reuse Pupils PEC verbatim.",
   "stages": [
     "/scrolly/coreexam/pupils-advanced/1/data.json",
+    "/scrolly/coreexam/pupils-advanced/16/data.json",
     "/scrolly/coreexam/pupils-advanced/2/data.json",
     "/scrolly/coreexam/pupils-advanced/3/data.json",
     "/scrolly/coreexam/pupils-advanced/4/data.json",

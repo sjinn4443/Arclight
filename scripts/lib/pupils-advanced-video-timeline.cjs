@@ -6,7 +6,7 @@ module.exports = function videoTimeline(config, titleSeconds = 3) {
     const titleStart = clock;
     if (title) clock += titleSeconds;
     const sourceStart = index === 0 ? 0 : clip.start;
-    const sourceEnd = [0, 13].includes(index)
+    const sourceEnd = [0, 14].includes(index)
       ? Math.round(Math.max(...Object.values(clip.endByLanguage)) * 30) / 30
       : clip.end;
     const scene = {

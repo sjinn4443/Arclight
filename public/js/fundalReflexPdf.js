@@ -178,10 +178,11 @@ function setupAtomsButtonZoom(viewerEl, stageEl) {
   controls.className = "workshop-atoms-zoom-controls";
   controls.innerHTML = `
     <span aria-hidden="true"></span>
-    <button type="button" data-atoms-zoom-out aria-label="Zoom out">-</button>
-    <button type="button" data-atoms-zoom-in aria-label="Zoom in">+</button>
+    <button type="button" data-atoms-zoom-out aria-label="Zoom out" data-i18n="ears.viewer.zoomOut:aria-label">-</button>
+    <button type="button" data-atoms-zoom-in aria-label="Zoom in" data-i18n="ears.viewer.zoomIn:aria-label">+</button>
   `;
   viewerEl.prepend(controls);
+  window.I18N?.applyTranslations?.(controls);
   positionWorkshopAtomsControlsBelowMenu(viewerEl, controls);
 
   const apply = () => {

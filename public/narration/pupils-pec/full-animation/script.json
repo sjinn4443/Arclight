@@ -73,12 +73,19 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "cues": [
     {
       "id": "observe",
-      "en": "Observe the size, shape and symmetry of both pupils.",
+      "en": "Observe the pupils. They should be black, round and equal in size.",
       "ko": "양쪽 동공의 크기, 모양, 대칭성을 관찰합니다.",
       "start": 1,
       "end": 7,
@@ -89,11 +96,12 @@
       "ha": "Duba girma, siffa da daidaiton ƙwayoyin idanu biyu.",
       "yo": "Wo ìwọ̀n, ìrísí àti bí àwọn ọmọ ojú méjèèjì ṣe dọ́gba.",
       "ig": "Lelee nha, ọdịdị na nhata ụmụ anya abụọ.",
-      "ur": "دونوں پتلیوں کے سائز، شکل اور ہم آہنگی کا مشاہدہ کریں۔"
+      "ur": "دونوں پتلیوں کے سائز، شکل اور ہم آہنگی کا مشاہدہ کریں۔",
+      "ny": "Yang'anani kukula ndi kaonekedwe ka ana a maso onse awiri, ndipo muone ngati akufanana."
     },
     {
       "id": "compare-observation",
-      "en": "Compare normal pupils with changes in colour or shape, unequal pupil size and eyelids.",
+      "en": "There should be no difference in pupil size, no squint and no drooping eyelid.",
       "ko": "정상 동공과 색이나 모양의 변화, 양쪽 동공 크기의 차이, 눈꺼풀을 비교합니다.",
       "start": 7,
       "end": 19,
@@ -104,7 +112,8 @@
       "ha": "Kwatanta ƙwayoyin idanu na al’ada da sauyin launi ko siffa, bambancin girma da fatar ido.",
       "yo": "Fi ọmọ ojú tó dára wé ìyípadà àwọ̀ tàbí ìrísí, ìwọ̀n tí kò dọ́gba àti ìpéǹpéjú.",
       "ig": "Tụnyere ụmụ anya dị mma na mgbanwe agba ma ọ bụ ọdịdị, nha na-ahaghị nhata na mkpuchi anya.",
-      "ur": "رنگ یا شکل میں تبدیلی، غیر مساوی پتلی کے سائز اور پلکوں کے ساتھ عام پتلیوں کا موازنہ کریں۔"
+      "ur": "رنگ یا شکل میں تبدیلی، غیر مساوی پتلی کے سائز اور پلکوں کے ساتھ عام پتلیوں کا موازنہ کریں۔",
+      "ny": "Yerekezani ana a maso abwinobwino ndi amene asintha mtundu kapena kaonekedwe. Onaninso ngati kukula kwake n'kosiyana, ndipo yang'anani zikope."
     },
     {
       "id": "light",
@@ -119,7 +128,8 @@
       "ha": "Kunna Arclight ka zaɓi haske mafi ƙarfi. Yi amfani da ɗaki mai natsuwa da ƙarancin haske.",
       "yo": "Tan Arclight kí o yan ìmọ́lẹ̀ tó lágbára jù. Lo yàrá tó dákẹ́ tí ìmọ́lẹ̀ rẹ̀ kéré.",
       "ig": "Gbanye Arclight họrọ ìhè kacha enwu. Jiri ụlọ dị jụụ nke ìhè ya pere mpe.",
-      "ur": "Arclight کو آن کریں اور روشن ترین لائٹ سیٹنگ منتخب کریں۔ ایک پرسکون، مدھم کمرے کا استعمال کریں۔"
+      "ur": "Arclight کو آن کریں اور روشن ترین لائٹ سیٹنگ منتخب کریں۔ ایک پرسکون، مدھم کمرے کا استعمال کریں۔",
+      "ny": "Yatsani Arclight ndi kusankha kuwala kwamphamvu kwambiri. Gwiritsani ntchito chipinda chabata chokhala ndi kuwala kochepa."
     },
     {
       "id": "distance",
@@ -134,7 +144,8 @@
       "ha": "Ka ce majiyyaci ya kalli wani abu mai nisa.",
       "yo": "Sọ fún aláìsàn kí ó wo ohun kan tó jìnnà.",
       "ig": "Gwa onye ọrịa ka o lee ihe dị anya.",
-      "ur": "مریض سے کہیں کہ وہ دور کے ہدف کو دیکھے۔"
+      "ur": "مریض سے کہیں کہ وہ دور کے ہدف کو دیکھے۔",
+      "ny": "Pemphani wodwala kuti ayang'ane chinthu chakutali."
     },
     {
       "id": "clear-view",
@@ -152,7 +163,8 @@
         "ha": "Tabbatar bai kalli mai bincike ba ko hasken kansa.",
         "yo": "Rí i pé kò wo olùṣàyẹ̀wò tàbí ìmọ́lẹ̀ náà.",
         "ig": "Hụ na ọ naghị ele onye na-enyocha anya ma ọ bụ ìhè ahụ n’onwe ya.",
-        "ur": "مریض معائنہ کرنے والے یا خود روشنی کو نہ دیکھے۔"
+        "ur": "مریض معائنہ کرنے والے یا خود روشنی کو نہ دیکھے۔",
+        "ny": "Onetsetsani kuti sakuyang'ana woyezayo"
       },
       "captionUntil": "avoid-light",
       "es-419": "Asegúrese de que no mire al examinador",
@@ -166,7 +178,8 @@
         "ig": "Ọ ghara ile onye nyocha.",
         "ur": "معائنہ کار کو نہ دیکھیں"
       },
-      "ur": "یقین کریں کہ مریض معائنہ کرنے والے کو نہ دیکھے"
+      "ur": "یقین کریں کہ مریض معائنہ کرنے والے کو نہ دیکھے",
+      "ny": "Onetsetsani kuti sakuyang'ana woyezayo"
     },
     {
       "id": "avoid-light",
@@ -184,7 +197,8 @@
         "ha": "",
         "yo": "",
         "ig": "",
-        "ur": ""
+        "ur": "",
+        "ny": ""
       },
       "es-419": "ni a la luz.",
       "ne": "वा बत्तीलाई पनि।",
@@ -193,7 +207,8 @@
       "ha": "ko hasken kansa.",
       "yo": "tàbí ìmọ́lẹ̀ náà.",
       "ig": "ma ọ bụ ìhè ahụ n’onwe ya.",
-      "ur": "یا روشنی خود؟"
+      "ur": "یا روشنی خود؟",
+      "ny": "kapena kuwala komweko."
     },
     {
       "id": "move-light",
@@ -208,7 +223,8 @@
       "ha": "Matsar da haske daga gefe zuwa ƙwayar ido.",
       "yo": "Gbé ìmọ́lẹ̀ láti ẹ̀gbẹ́ sí ọmọ ojú.",
       "ig": "Bugharịa ìhè site n’akụkụ gaa n’ebe nwa anya dị.",
-      "ur": "روشنی کو ایک طرف سے پتلی کی طرف بڑھائیں۔"
+      "ur": "روشنی کو ایک طرف سے پتلی کی طرف بڑھائیں۔",
+      "ny": "Sunthani kuwala kuchokera pambali kulunjika pa mwana wa diso."
     },
     {
       "id": "watch",
@@ -223,7 +239,8 @@
       "ha": "Duba ƙwayar idon da aka haskaka don amsarta kai tsaye.",
       "yo": "Wo ọmọ ojú tí ìmọ́lẹ̀ ń tàn sí fún ìdáhùn tààrà sí ìmọ́lẹ̀.",
       "ig": "Lelee nwa anya ìhè na-enwu na ya maka nzaghachi kpọmkwem nye ìhè.",
-      "ur": "براہ راست روشنی کے ردعمل کے لیے روشن پتلی کو دیکھیں۔"
+      "ur": "براہ راست روشنی کے ردعمل کے لیے روشن پتلی کو دیکھیں۔",
+      "ny": "Yang'anani mmene mwana wa diso amene waunikiridwa akuyankhira kuwalako."
     },
     {
       "id": "shine-constrict",
@@ -238,11 +255,12 @@
       "ha": "Haskaka idon ka lura da ƙanƙancewar ƙwayar ido.",
       "yo": "Tan ìmọ́lẹ̀ sínú ojú kí o wo bí ọmọ ojú ṣe ń kéré.",
       "ig": "Mee ka ìhè banye n’anya ma lelee nwa anya ka ọ na-ebelata.",
-      "ur": "آنکھ میں روشنی ڈالیں اور پُتلی کو تنگ ہوتے دیکھیں۔"
+      "ur": "آنکھ میں روشنی ڈالیں اور پُتلی کو تنگ ہوتے دیکھیں۔",
+      "ny": "Unikirani m'diso ndipo onani mwana wa diso akuchepa."
     },
     {
       "id": "compare-responses",
-      "en": "Look for reduced or absent constriction.",
+      "en": "In a healthy eye, the pupil constricts normally.",
       "ko": "동공 수축이 약하거나 없는지 확인합니다.",
       "start": 64,
       "end": 70,
@@ -253,11 +271,12 @@
       "ha": "Duba ko ƙanƙancewar ta ragu ko babu ita.",
       "yo": "Ṣàyẹ̀wò bóyá kíkéré náà dín kù tàbí kò sí.",
       "ig": "Lelee ma mbelata ahụ adịghị ike ma ọ bụ na ọ dịghị.",
-      "ur": "کم یا غیر حاضر کنسٹرکشن کی تلاش کریں۔"
+      "ur": "کم یا غیر حاضر کنسٹرکشن کی تلاش کریں۔",
+      "ny": "Onani ngati mwana wa diso akuchepa pang'ono kapena sakuchepa n'komwe."
     },
     {
       "id": "corresponding-examples",
-      "en": "The pupil responses on the left may be associated with the conditions at the back of the eye shown on the right.",
+      "en": "Reduced or absent pupil constriction may indicate disease of the retina, the optic nerve or both.",
       "ko": "왼쪽과 같은 동공 반응은 오른쪽 그림처럼 눈 뒤쪽의 상태와 관련이 있을 수 있습니다.",
       "start": 70,
       "end": 78,
@@ -271,11 +290,12 @@
       "ttsText": {
         "lg": "Obutuli ku kkono buyinza okulaga embeera z’emabega w’eriiso eziri ku ddyo."
       },
-      "ur": "بائیں طرف پتلیوں کے ردعمل دائیں طرف دکھائے گئے آنکھ کے پچھلے حصے کی حالتوں سے وابستہ ہو سکتے ہیں۔"
+      "ur": "بائیں طرف پتلیوں کے ردعمل دائیں طرف دکھائے گئے آنکھ کے پچھلے حصے کی حالتوں سے وابستہ ہو سکتے ہیں۔",
+      "ny": "Mayankho a ana a maso amene ali kumanzere angagwirizane ndi mavuto a kumbuyo kwa diso osonyezedwa kumanja."
     },
     {
       "id": "pupil-colour",
-      "en": "Pupil colour does not determine the light response.",
+      "en": "With a healthy retina and optic nerve, a cataract alone does not weaken the pupil’s response to light.",
       "ko": "동공의 색이 대광반사를 결정하는 것은 아닙니다.",
       "start": 78,
       "end": 86,
@@ -286,11 +306,12 @@
       "ha": "Launin ƙwayar ido ba ya ƙayyade amsarta ga haske.",
       "yo": "Àwọ̀ ọmọ ojú kò pinnu ìdáhùn rẹ̀ sí ìmọ́lẹ̀.",
       "ig": "Agba nwa anya anaghị ekpebi nzaghachi ya nye ìhè.",
-      "ur": "پتلی کا رنگ روشنی کے ردعمل کا تعین نہیں کرتا ہے۔"
+      "ur": "پتلی کا رنگ روشنی کے ردعمل کا تعین نہیں کرتا ہے۔",
+      "ny": "Mtundu wa mwana wa diso sulamulira mmene amayankhira kuwala."
     },
     {
       "id": "cataract-constriction",
-      "en": "A cataract may make the pupil look grey or white, but the pupil should still constrict if the light reflex pathway is intact.",
+      "en": "If the response is reduced in an eye with a cataract, consider coexisting disease of the retina, the optic nerve or both.",
       "ko": "백내장이 있으면 동공이 회색이나 흰색으로 보일 수 있지만, 대광반사 경로가 정상이라면 동공은 여전히 수축해야 합니다.",
       "start": 86,
       "end": 102,
@@ -301,7 +322,8 @@
       "ha": "Cataract na iya sa ƙwayar ido ta yi toka ko fari, amma ya kamata ta ƙanƙance idan hanyar amsa ga haske tana aiki.",
       "yo": "Cataract lè mú ọmọ ojú dà bí eérú tàbí funfun, ṣùgbọ́n ó yẹ kí ó kéré bí ọ̀nà ìdáhùn sí ìmọ́lẹ̀ bá ń ṣiṣẹ́ dáadáa.",
       "ig": "Cataract nwere ike ime ka nwa anya yie ntụ ntụ ma ọ bụ ọcha, mana ọ kwesịrị ibelata ma ọ bụrụ na ụzọ nzaghachi nye ìhè na-arụ ọrụ nke ọma.",
-      "ur": "موتیابند کی وجہ سے پتلی سرمئی یا سفید نظر آ سکتا ہے، لیکن اگر روشنی کا اضطراری راستہ برقرار ہے تو پتلی کو پھر بھی تنگ ہونا چاہیے۔"
+      "ur": "موتیابند کی وجہ سے پتلی سرمئی یا سفید نظر آ سکتا ہے، لیکن اگر روشنی کا اضطراری راستہ برقرار ہے تو پتلی کو پھر بھی تنگ ہونا چاہیے۔",
+      "ny": "Ng'ala ingapangitse mwana wa diso kuoneka waimvi kapena woyera. Koma mwana wa disoyo ayenera kuchepabe ngati njira yoyendetsera kuyankha kuwala ikugwira ntchito."
     }
   ],
   "videoTitleCues": [
@@ -316,7 +338,8 @@
         "ha": "Dubawa",
         "yo": "Àkíyèsí",
         "ig": "Nlele",
-        "ur": "مشاہدہ"
+        "ur": "مشاہدہ",
+        "ny": "Kuyang'ana"
       }
     },
     {
@@ -330,7 +353,8 @@
         "ha": "Amsar ƙwayar ido ga haske kai tsaye",
         "yo": "Ìdáhùn tààrà sí ìmọ́lẹ̀",
         "ig": "Nzaghachi kpọmkwem nye ìhè",
-        "ur": "روشنی پر پتلی کا براہِ راست ردِعمل"
+        "ur": "روشنی پر پتلی کا براہِ راست ردِعمل",
+        "ny": "Mmene mwana wa diso amayankhira kuwala kolunjika"
       }
     }
   ]

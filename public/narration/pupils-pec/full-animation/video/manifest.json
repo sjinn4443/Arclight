@@ -7,10 +7,10 @@
       "captions": "en.vtt",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 386668,
-      "sha256": "57cf65fcc6b85ac30f2f4104a4d20bfb0ade67b346161b3e1109e469c3906ed0",
+      "bytes": 411793,
+      "sha256": "2d6c6d81c1fa2cf9a500fec3c155f63e506398d994b515e009790dedd6f40b8b",
       "durationSeconds": 108,
-      "sourceSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5"
+      "sourceSha256": "8652900b76d86b3b20a7b960fe31c34879a559807cc944567ca02427e12a6df5"
     },
     "es-419": {
       "src": "es-419.m4a",
@@ -101,6 +101,18 @@
       "sha256": "c250feb1515a6fd7d8779c51823cc012cf6d36b7956c66f9fc02cf5edf97a1b5",
       "durationSeconds": 108,
       "sourceSha256": "564fa8242ddd303ad5872a9f8ef7beed8c4dfdfe7ce46fb6dbf28b4c790a1035"
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "label": "Chichewa",
+      "voice": "facebook/mms-tts-nya",
+      "durationSeconds": 108.03,
+      "bytes": 166626,
+      "sha256": "6a0daca42829fba8d206294380af74bccc9ea0395bf996e8f7d9d1b84764161d",
+      "modelLicense": "CC-BY-NC-4.0",
+      "sourceSha256": "cdd4b0fca67fc7ffcdd35cd4541c730c6d8c712a4279cd862f2d4d650d2de49f",
+      "sourceMasterSha256": "93c6e98d8527ad6738b881c35d54c3aa2c711f0f7f0624e0816cfa087e7faa0e"
     }
   }
 }

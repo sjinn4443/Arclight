@@ -55,7 +55,7 @@ test("launch, all scenes, replay, progress and Back", async ({
   await expect(stages).toHaveCount(cfg.paths.length);
   await expect(
     guide.locator("[data-fundal-scroll-narration-language] option"),
-  ).toHaveCount(3);
+  ).toHaveCount(Object.keys(cfg.narrationTracks).length + 1);
   const shots = [];
   for (let i = 0; i < cfg.paths.length; i++) {
     const stage = stages.nth(i);
@@ -79,7 +79,9 @@ test("launch, all scenes, replay, progress and Back", async ({
         route,
         i,
         last: cfg.completionHoldFrameByFile[i],
-        end: cfg.narrationClipsByFile[i].endByLanguage.en,
+        end:
+          cfg.narrationClipsByFile[i].endByLanguage?.en ??
+          cfg.narrationClipsByFile[i].end,
       },
       { timeout: 30000 },
     );
@@ -111,6 +113,23 @@ test("launch, all scenes, replay, progress and Back", async ({
     );
     expect(state.failed).toBe(false);
     expect(state.completed).toBe(true);
+    if (i === 0) {
+      await page.waitForTimeout(900);
+      const audioState = await page
+        .locator("audio")
+        .evaluateAll((elements) =>
+          elements
+            .filter((el) => el.currentSrc.includes("/apply-eye-pad-shield/"))
+            .map((el) => ({ paused: el.paused, time: el.currentTime })),
+        );
+      expect(audioState.length).toBeGreaterThan(0);
+      for (const audio of audioState) {
+        expect(audio.paused).toBe(true);
+        expect(audio.time).toBeLessThanOrEqual(
+          cfg.narrationClipsByFile[0].end + 0.02,
+        );
+      }
+    }
     expect(state.currentFrame).toBe(cfg.completionHoldFrameByFile[i]);
     await expect(
       stage.locator("..").locator(".childhood-fundal-segment-text__line"),
@@ -121,14 +140,14 @@ test("launch, all scenes, replay, progress and Back", async ({
       ),
     ).toBe(true);
 
-    if (i >= 5) {
+    if (i >= 4) {
       const ratio = colourRatio;
       const green = (r, g, b) => g > 65 && g > r * 1.4 && g > b * 1.4;
       const endShot = await stage.screenshot();
       expect(await ratio(endShot, [715, 622, 74, 98], green)).toBeGreaterThan(
         0.02,
       );
-      if (i === 5) {
+      if (i === 4) {
         const paper = (r, g, b) =>
           r > 180 &&
           g > 170 &&
@@ -160,7 +179,7 @@ test("launch, all scenes, replay, progress and Back", async ({
   })
     .composite(shots)
     .png()
-    .toFile(testInfo.outputPath("seven-scenes.png"));
+    .toFile(testInfo.outputPath("six-scenes.png"));
   await expect
     .poll(() =>
       page.evaluate(
@@ -175,7 +194,7 @@ test("launch, all scenes, replay, progress and Back", async ({
     .poll(() =>
       page.evaluate(
         (route) =>
-          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 6)?.playing,
+          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 5)?.playing,
         route,
       ),
     )
@@ -187,12 +206,11 @@ test("launch, all scenes, replay, progress and Back", async ({
   // Seeking deliberately hides stage controls. Inspect after the complete
   // navigation/replay flow, so visual QA cannot disable the next-stage button.
   const contactFrames = {
-    1: [50, 100, 130],
-    2: [60, 130, 205],
-    3: [53, 75, 76, 175, 275],
-    4: [60, 120, 180],
-    5: [64, 135, 180, 260, 350],
-    6: [120, 165, 280],
+    1: [35, 99, 145, 189, 279, 340],
+    2: [65, 140, 235, 335],
+    3: [40, 98, 150],
+    4: [64, 100, 170, 220],
+    5: [42, 95, 155, 207, 282, 312],
   };
   for (let i = 1; i < cfg.paths.length; i++) {
     const stage = stages.nth(i);
@@ -206,7 +224,7 @@ test("launch, all scenes, replay, progress and Back", async ({
       const buffer = await stage.screenshot({
         path: testInfo.outputPath("contact-" + (i + 1) + "-" + frame + ".png"),
       });
-      if (i === 5 && frame === 64)
+      if (i === 4 && frame === 64)
         expect(
           await colourRatio(
             buffer,
@@ -220,7 +238,7 @@ test("launch, all scenes, replay, progress and Back", async ({
   for (const frame of [0, 100, 180, 260]) {
     await page.evaluate(
       ({ route, frame }) =>
-        window.__ARCLIGHT_E2E__.fundal.seekStage(route, 6, frame),
+        window.__ARCLIGHT_E2E__.fundal.seekStage(route, 5, frame),
       { route, frame },
     );
     await stages

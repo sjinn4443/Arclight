@@ -411,35 +411,6 @@ const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = new Set([
   "zu",
   "lo",
 ]);
-const ENGLISH_LANGUAGE_LABELS = {
-  en: "English",
-  am: "Amharic",
-  ar: "Arabic",
-  bn: "Bangla",
-  ne: "Nepali",
-  ny: "Nyanja",
-  zh: "Chinese",
-  fr: "French",
-  ha: "Hausa",
-  hi: "Hindi",
-  ig: "Igbo",
-  id: "Indonesian",
-  rw: "Kinyarwanda",
-  ko: "Korean",
-  lo: "Lao",
-  te: "Telugu",
-  ln: "Lingala",
-  lg: "Luganda",
-  fa: "Persian",
-  pt: "Portuguese",
-  sn: "Shona",
-  es: "Spanish",
-  sw: "Swahili",
-  ur: "Urdu",
-  yo: "Yoruba",
-  zu: "Zulu",
-};
-
 function t(text, fallback = text) {
   return translateLiteral(text, fallback);
 }
@@ -835,11 +806,16 @@ function resolveNarrationDownloadLanguage(language) {
   const base = normalized.split("-")[0];
   if (base === "es") return "es-419";
   if (base === "ko") return "ko";
-  if (["ne", "fr", "lg", "ha", "yo", "ig", "ur"].includes(base)) return base;
+  if (["ne", "fr", "lg", "ha", "yo", "ig", "ur", "ny"].includes(base))
+    return base;
   return "en";
 }
 
 function shouldIncludeNarrationLanguage(url, narrationLanguage, availableUrls) {
+  const dub = getAssetPath(url).match(
+    /^\/video-subtitles\/.*\/(ny|ur)-[a-f0-9]+\.m4a$/i,
+  );
+  if (dub) return dub[1] === narrationLanguage;
   const assetLanguage = getNarrationAssetLanguage(url);
   if (!assetLanguage) return true;
   const directory = String(url).slice(0, String(url).lastIndexOf("/") + 1);
@@ -1786,7 +1762,11 @@ function setDownloadModalBusy({ title, message, detail, total, onPause }) {
     notNowBtn.onclick = () => {
       if (
         !window.confirm(
-          "Are you sure you want to pause this download? Already downloaded files will be kept.",
+          window.I18N?.t?.(
+            "languageInstall.pause_download_confirmation",
+            "Are you sure you want to pause this download? Already downloaded files will be kept.",
+          ) ||
+            "Are you sure you want to pause this download? Already downloaded files will be kept.",
         )
       )
         return;
@@ -2549,21 +2529,9 @@ function buildCustomLangSelect(selectEl) {
     li.setAttribute("data-i18n-skip", "true");
     li.dataset.value = opt.value;
 
-    const rawEnglish = (opt.textContent || "")
-      .replace(/\s*\(.*\)\s*/g, "")
-      .trim();
-    const english = ENGLISH_LANGUAGE_LABELS[opt.value] || rawEnglish;
-    const native = opt.getAttribute("data-native") || english;
-
-    const left = document.createElement("span");
-    left.className = "lang-install__item-en";
-    left.textContent = english;
-
-    const right = document.createElement("span");
-    right.className = "lang-install__item-native";
-    right.textContent = native;
-    li.appendChild(left);
-    li.appendChild(right);
+    li.lang = opt.value;
+    li.dir = "auto";
+    li.textContent = (opt.dataset.native || opt.textContent).trim();
 
     li.addEventListener("click", () => {
       selectEl.value = opt.value;
@@ -2577,28 +2545,11 @@ function buildCustomLangSelect(selectEl) {
     list.appendChild(li);
   });
 
-  /**
-   * Updates the displayed label of the custom language select control
-   * to reflect the currently selected language, showing both English and native names.
-   */
   function updateLabel() {
-    const current = selectEl.options[selectEl.selectedIndex];
-    const rawEnglish = (current.textContent || "")
-      .replace(/\s*\(.*\)\s*/g, "")
-      .trim();
-    const english = ENGLISH_LANGUAGE_LABELS[current.value] || rawEnglish;
-    const native = current.getAttribute("data-native") || english;
-
-    label.textContent = "";
-    const left = document.createElement("span");
-    left.className = "lang-install__item-en";
-    left.textContent = english;
-    label.appendChild(left);
-
-    const right = document.createElement("span");
-    right.className = "lang-install__item-native";
-    right.textContent = native;
-    label.appendChild(right);
+    const current = selectEl.selectedOptions[0];
+    label.lang = current.value;
+    label.dir = "auto";
+    label.textContent = (current.dataset.native || current.textContent).trim();
   }
 
   ctrl.addEventListener("click", () => {

@@ -31,18 +31,23 @@ test("all Lottie textures resolve and motion and narration end at the same frame
   }
 });
 
-test("delivered audio hashes, scripts and VTT retain the eight teaching cues", () => {
+test("delivered audio hashes, scripts and VTT match all real-life teaching cues", () => {
   const dir = "public/narration/apply-eye-pad-shield/full-animation";
   const script = JSON.parse(fs.readFileSync(`${dir}/script.json`));
   const manifest = JSON.parse(fs.readFileSync(`${dir}/manifest.json`));
+  const { languages: pupilsLanguages } = JSON.parse(
+    fs.readFileSync("public/narration/pupils-pec/full-animation/script.json"),
+  );
   expect(script.durationSeconds).toBe(cfg.narrationClipsByFile.at(-1).end);
   for (const lang of Object.keys(cfg.narrationTracks)) {
+    expect(manifest.tracks[lang].voice).toBe(script.languages[lang].voice);
+    expect(script.languages[lang].voice).toBe(pupilsLanguages[lang].voice);
     const bytes = fs.readFileSync(`${dir}/${lang}.m4a`);
     expect(crypto.createHash("sha256").update(bytes).digest("hex")).toBe(
       manifest.tracks[lang].sha256,
     );
     const vtt = fs.readFileSync(`${dir}/${lang}.vtt`, "utf8");
-    expect((vtt.match(/-->/g) || []).length).toBe(8);
+    expect((vtt.match(/-->/g) || []).length).toBe(cues.length);
     cues.forEach((stage, i) => {
       expect(vtt).toContain(stage[lang]);
       expect(script.cues[i][lang]).toBe(stage[lang]);
@@ -80,7 +85,7 @@ test("the patient and equipment retain their recorded original sources", () => {
         .update(fs.readFileSync(path.join("public", file)))
         .digest("hex"),
     ).toBe(hash);
-  for (const index of [1, 2, 5, 6]) {
+  for (const index of [1, 2, 4, 5]) {
     const data = JSON.parse(
       fs.readFileSync(path.join("public", cfg.paths[index])),
     );
@@ -116,139 +121,99 @@ test("image masks have a renderable shape and are completed by the Lottie data m
   }
 });
 
-test("placement and securing share one scene without changing the original audio cues", () => {
-  expect(cfg.paths).toHaveLength(7);
-  expect(cfg.narrationClipsByFile[5]).toMatchObject({
-    start: cfg.narrationClipsByFile[5].start,
-    end: cfg.narrationClipsByFile[5].end,
-    cueIds: ["apply-6", "apply-7"],
-  });
-  expect(stages[5].seconds).toBeCloseTo(14.89);
-  expect(cfg.sections.map((section) => section.startIndex)).toEqual([0, 4, 6]);
-  expect(cfg.narrationCompletionPauseSeconds).toBe(0.7);
-  expect(
-    fs.existsSync(
-      "public/scrolly/eyeprocedures/apply-eye-pad-shield/8/data.json",
-    ),
-  ).toBe(false);
-});
-
-test("tape sits above the dressing, nose remains in front, and placement needs no hands", () => {
-  const read = (i) =>
-    JSON.parse(fs.readFileSync(path.join("public", cfg.paths[i])));
-  expect(read(2).assets.some((asset) => /hand/i.test(asset.p || ""))).toBe(
-    false,
+const readScene = (i) =>
+  JSON.parse(fs.readFileSync(path.join("public", cfg.paths[i])));
+test("the six scenes follow the demonstration from equipment through the second shield tape", () => {
+  expect(stages.map((s) => s.name)).toEqual([
+    "Equipment",
+    "Explain the procedure",
+    "Tape the eyelid",
+    "Prepare the pad",
+    "Place and secure the pad",
+    "Apply the shield",
+  ]);
+  expect(cfg.sections.map((s) => s.startIndex)).toEqual([0, 3, 5]);
+  const prep = readScene(0),
+    bubble = readScene(1).assets.find((a) => a.id === "procedure-inset");
+  expect(prep.assets.filter((a) => a.p === "steri-strip.webp")).toHaveLength(5);
+  expect(prep.assets.some((a) => a.id === "hand-hygiene")).toBe(false);
+  expect(stages[0].cues).toHaveLength(1);
+  expect(stages[0].cues[0].start).toBe(0);
+  expect(stages[0].cues[0].en).toMatch(/^You will need/);
+  const lids = readScene(2).layers.filter((layer) =>
+    /^Closed .* eyelid$/.test(layer.nm),
   );
-  for (const index of [4, 5, 6]) {
-    const scene = read(index),
-      layers = scene.layers;
-    expect(scene.assets.some((a) => /hand/i.test(a.p || ""))).toBe(false);
-    const padIndex = layers.findIndex((l) =>
-      /gauze eye pad|pad approaches|pad, stationary/.test(l.nm),
-    );
-    const tapes = layers.filter((l) => /Tape fades|Tape on top/.test(l.nm));
-    expect(tapes).toHaveLength(3);
-    for (const tape of tapes)
-      expect(layers.indexOf(tape)).toBeLessThan(padIndex);
-    if (index >= 5) {
-      const noseIndex = layers.findIndex(
-        (l) => l.nm === "Original nose in front of the dressing",
-      );
-      for (const tape of tapes)
-        expect(noseIndex).toBeLessThan(layers.indexOf(tape));
-      expect(scene.assets.some((a) => a.p === "patient-nose.webp")).toBe(true);
+  expect(lids).toHaveLength(2);
+  expect(lids[0].ks.s.k[0]).toBe(-lids[1].ks.s.k[0]);
+  expect(lids[0].ks.s.k[1]).toBe(lids[1].ks.s.k[1]);
+  for (const lid of lids) {
+    const image = readScene(2).assets.find((a) => a.id === lid.refId);
+    expect(image.p).toBe("patient-closed-lid.webp");
+  }
+  expect(stages[0].cues.at(-1).en).toContain("Steri-Strips");
+  expect(stages[1].cues.map((c) => c.id)).toEqual(["apply-4"]);
+  for (const lid of lids) expect(lid.ks.o.k.at(-1).s).toEqual([100]);
+  for (const scene of [bubble, readScene(2)]) {
+    const strips = scene.layers
+      .filter((l) => l.nm.startsWith("Eyelid Steri-Strip"))
+      .reverse();
+    expect(strips).toHaveLength(3);
+    for (const [i, strip] of strips.entries()) {
+      const end = strip.masksProperties[0].pt.k.at(-1).t;
+      expect(end - strip.ip).toBeGreaterThanOrEqual(25);
+      if (i < 2) expect(end).toBeLessThanOrEqual(strips[i + 1].ip);
     }
   }
-  const scene = read(5),
-    eye = scene.layers.find((l) => l.nm === "Original left eye");
-  expect(
-    scene.layers.filter((l) =>
-      l.nm.startsWith("Additional diagonal securing tape"),
-    ),
-  ).toHaveLength(2);
-  for (const tape of scene.layers.filter((l) =>
-    l.nm.startsWith("Tape on top of pad"),
-  )) {
-    expect(tape.masksProperties).toBeUndefined();
-    expect(tape.ks.s.a).toBe(0);
-  }
-  const cotton = read(2).layers.find(
-    (l) => l.nm === "Original cotton gently cleans the eye area",
+  const pad = bubble.layers.find(
+    (l) => l.nm === "Pad placement demonstrated inside bubble",
   );
-  expect(cotton.ks.p.k[0].s[0]).toBeLessThan(0);
-  expect(
-    read(2).layers.findIndex(
-      (l) => l.nm === "Original nose in front of the dressing",
-    ),
-  ).toBeLessThan(read(2).layers.findIndex((l) => l.nm === cotton.nm));
-  expect(eye.ks.o.k.at(-1).t).toBeLessThan(90);
-  expect(eye.ks.o.k.at(-1).s).toEqual([0]);
-  const shieldLayers = read(6).layers;
-  const shieldIndex = shieldLayers.findIndex(
+  expect(pad.ks.p.k.at(-2).t).toBe(
+    bubble.layers
+      .find((l) => l.nm === "Eyelid Steri-Strip 3")
+      .masksProperties[0].pt.k.at(-1).t,
+  );
+  expect(pad.ks.p.k.at(-1).t - pad.ks.p.k.at(-2).t).toBe(90);
+  const insetShield = bubble.layers.find(
     (l) => l.nm === "Original finished cone shield",
   );
-  for (const tape of shieldLayers.filter((l) =>
-    l.nm.startsWith("Tape above the shield"),
-  ))
-    expect(shieldLayers.indexOf(tape)).toBeLessThan(shieldIndex);
-});
-
-test("each measured strip unwinds from the original roll before it is cut", () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[3])));
-  expect(scene.assets.some((a) => a.p === "roll-face.webp")).toBe(true);
-  const feed = scene.layers.find(
-    (l) => l.nm === "Continuous tape pulled from the round roll",
+  const insetRig = bubble.layers.find((l) => l.ind === insetShield.parent);
+  expect(insetRig.ks.p.k.at(-2).t).toBeGreaterThan(pad.ks.p.k.at(-1).t);
+  expect(
+    bubble.layers.some((l) => l.nm === "Near tape across the shield"),
+  ).toBe(true);
+  expect(bubble.layers.some((l) => l.nm === "Far tape behind the shield")).toBe(
+    false,
   );
-  expect(feed).toBeDefined();
-  for (let n = 1; n <= 3; n++) {
-    const cut = scene.layers.find(
-      (l) => l.nm === `Cut strip separates only after snip ${n}`,
+  expect(bubble.layers.some((l) => l.nm.startsWith("Folded pad"))).toBe(false);
+  const table = readScene(3);
+  expect(
+    table.layers.filter((l) => l.nm === "Tape across the gauze"),
+  ).toHaveLength(1);
+  for (const url of cfg.paths)
+    expect(fs.readFileSync(path.join("public", url), "utf8")).not.toContain(
+      "Cut strip separates",
     );
-    const marker = scene.markers.find(
-      (m) => m.cm === `Unroll then snip strip ${n}`,
+  for (const i of [4, 5]) {
+    const scene = readScene(i);
+    const position = (text) =>
+      scene.layers.findIndex((l) => l.nm.startsWith(text));
+    expect(position("Folded pad")).toBe(-1);
+    expect(position("Tape on top of pad")).toBeLessThan(
+      position("Eyelid Steri-Strip"),
     );
-    const snip = marker.tm + marker.dr;
-    const visibleAt = cut.ks.o.k.find((key) => key.s[0] === 100).t;
-    expect(visibleAt).toBe(snip + 1);
-    expect(cut.ks.p.k.at(-2).t).toBe(snip + 1);
-    const height = (t) => {
-      const v = feed.masksProperties[0].pt.k.find((key) => key.t === t).s[0].v;
-      return Math.max(...v.map((p) => p[1])) - Math.min(...v.map((p) => p[1]));
-    };
-    expect(height(snip) - height(snip + 1)).toBeGreaterThan(150);
+    expect(position("Original nose in front")).toBeLessThan(
+      position("Tape on top of pad"),
+    );
   }
 });
 
-test("roll axis stays fixed and scissors make one visit with the feed between their blades", () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[3])));
-  const projection = scene.layers.find(
-    (l) => l.nm === "Fixed-axis roll face projection",
-  );
-  expect(projection.ks.r).toEqual({ a: 0, k: 0 });
-  expect(projection.ks.s.a).toBe(0);
-  const disc = scene.assets.find((a) => a.id === projection.refId);
-  expect(disc.layers[0].ks.r.a).toBe(1);
-  const upper = scene.layers.find((l) => l.nm === "Complete scissors upper"),
-    lower = scene.layers.find((l) => l.nm === "Complete scissors lower");
-  const feed = scene.layers.find(
-    (l) => l.nm === "Continuous tape pulled from the round roll",
-  );
-  expect(scene.layers.indexOf(upper)).toBeLessThan(scene.layers.indexOf(feed));
-  expect(scene.layers.indexOf(lower)).toBeGreaterThan(
-    scene.layers.indexOf(feed),
-  );
-  expect(upper.ks.p.k.map((key) => key.t)).toEqual([0, 53, 290, 330]);
-  expect(upper.ks.p.k).toEqual(lower.ks.p.k);
-  expect(upper.ks.a.k).toEqual(lower.ks.a.k);
-});
-
-test("the round shield footprint fully covers the round gauze footprint", async () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[6])));
+test("the smaller shield covers the pad centre with only a narrow gauze edge exposed", async () => {
+  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[5])));
   const decode = async (name) => {
     const layer = scene.layers.find((l) => l.nm === name),
       asset = scene.assets.find((a) => a.id === layer.refId);
     const file = path.join(
-      path.dirname(path.join("public", cfg.paths[6])),
+      path.dirname(path.join("public", cfg.paths[5])),
       asset.u,
       asset.p,
     );
@@ -268,7 +233,7 @@ test("the round shield footprint fully covers the round gauze footprint", async 
   expect(trimmed.info.width / trimmed.info.height).toBeLessThan(1.12);
   const ps = pad.layer.ks.s.k[0] / 100,
     ss = shield.layer.ks.s.k[0] / 100;
-  const center = shield.layer.ks.p.k.at(-1).s,
+  const center = shield.layer.ks.p.k,
     angle = (-shield.layer.ks.r.k * Math.PI) / 180;
   let inside = 0,
     total = 0;
@@ -297,18 +262,14 @@ test("the round shield footprint fully covers the round gauze footprint", async 
       )
         inside++;
     }
-  expect(inside / total).toBeGreaterThan(0.995);
+  expect(inside / total).toBeGreaterThan(0.97);
 });
 
 test("delivered tape contours curve over the surfaces and both ends are pinked", async () => {
   const dir = "public/scrolly/eyeprocedures/apply-eye-pad-shield/images";
   for (const name of [
-    "prepared-tape-1",
     "prepared-tape-2",
-    "prepared-tape-3",
-    "face-tape-1",
     "face-tape-2",
-    "face-tape-3",
     "shield-tape-1",
     "shield-outer-tape",
   ]) {
@@ -360,64 +321,6 @@ test("delivered tape contours curve over the surfaces and both ends are pinked",
   }
 });
 
-test("both original metal blades cover the tape at the moment of each snip", async () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[3])));
-  for (const file of ["cutting-upper.webp", "cutting-lower.webp"]) {
-    const asset = scene.assets.find((a) => a.p === file),
-      layer = scene.layers.find((l) => l.refId === asset.id);
-    const { data, info } = await sharp(
-      path.join(
-        "public/scrolly/eyeprocedures/apply-eye-pad-shield/images",
-        file,
-      ),
-    )
-      .ensureAlpha()
-      .raw()
-      .toBuffer({ resolveWithObject: true });
-    for (const time of [75, 175, 275]) {
-      const pivot = layer.ks.p.k.filter((key) => key.t <= time).at(-1).s;
-      const value = (prop) =>
-        prop.a ? prop.k.find((k) => k.t === time).s : prop.k;
-      const angle =
-        (-(Array.isArray(value(layer.ks.r))
-          ? value(layer.ks.r)[0]
-          : value(layer.ks.r)) *
-          Math.PI) /
-        180;
-      // Locate the actual cut edge on the first frame after separation.
-      const feed = scene.layers.find(
-        (l) => l.nm === "Continuous tape pulled from the round roll",
-      );
-      const cap = feed.masksProperties[0].pt.k.find((k) => k.t === time + 1)
-        .s[0].v;
-      const coord = (axis) =>
-        (cap[64][axis] + cap[76][axis]) / 2 +
-        feed.ks.p.k[axis] -
-        feed.ks.a.k[axis];
-      const scale = layer.ks.s.k[0] / 100,
-        wx = coord(0) - pivot[0],
-        wy = coord(1) - pivot[1];
-      const x = Math.round(
-        (wx * Math.cos(angle) - wy * Math.sin(angle)) / scale + layer.ks.a.k[0],
-      );
-      const y = Math.round(
-        (wx * Math.sin(angle) + wy * Math.cos(angle)) / scale + layer.ks.a.k[1],
-      );
-      expect(x).toBeGreaterThanOrEqual(0);
-      expect(y).toBeGreaterThanOrEqual(0);
-      const rgba = data.subarray(
-        (y * info.width + x) * 4,
-        (y * info.width + x) * 4 + 4,
-      );
-      expect(rgba[3]).toBeGreaterThan(230);
-      expect(Math.min(...rgba.subarray(0, 3))).toBeGreaterThan(150);
-      expect(
-        Math.max(...rgba.subarray(0, 3)) - Math.min(...rgba.subarray(0, 3)),
-      ).toBeLessThan(35);
-    }
-  }
-});
-
 test("nose occlusion follows the original ink below the brows", async () => {
   const dir = "public/scrolly/eyeprocedures/apply-eye-pad-shield/images";
   const nose = await sharp(path.join(dir, "patient-nose.webp"))
@@ -441,105 +344,38 @@ test("nose occlusion follows the original ink below the brows", async () => {
   expect(nose[pixel(326, 184) + 3]).toBe(0);
 });
 
-test("shield approaches an already secured pad and receives tape on both sides", () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[6])));
-  const cone = scene.layers.find(
-    (l) => l.nm === "Original finished cone shield",
+test("the far tape travels behind the cone and the second tape crosses its visible face", () => {
+  const scene = readScene(5);
+  const named = (name) => scene.layers.find((l) => l.nm === name);
+  const cone = named("Original finished cone shield");
+  const first = named("Near tape across the shield");
+  const second = named("Far tape behind the shield");
+  const rig = named("Shield and first strip travel together");
+  for (const part of [
+    cone,
+    first,
+    named("Unpressed end of shield-tape-1"),
+    named("Lifted tape shadow shield-tape-1"),
+  ])
+    expect(part.parent).toBe(rig.ind);
+  expect(first.masksProperties[0].pt.k.at(-1).t).toBeLessThan(
+    rig.ks.p.k.at(-2).t,
   );
-  expect(cone.ks.p.k[0].t).toBe(0);
-  const arrival = cone.ks.p.k.at(-1).t;
-  const existing = scene.layers.filter((l) =>
-    /^(Additional diagonal securing tape|Tape on top of pad)/.test(l.nm),
-  );
-  expect(existing).toHaveLength(5);
-  for (const tape of existing) expect(tape.ks.o).toEqual({ a: 0, k: 100 });
-  const inner = scene.layers.find((l) => l.nm === "Tape above the shield 1");
-  const outer = scene.layers.find((l) => l.nm === "Far rim securing tape");
-  expect(outer.ks.p.k[0]).toBeGreaterThan(inner.ks.p.k[0]);
-  expect(scene.layers.indexOf(outer)).toBeGreaterThan(
+  expect(second.ip).toBeGreaterThan(rig.ks.p.k.at(-1).t);
+  expect(scene.layers.indexOf(first)).toBeLessThan(scene.layers.indexOf(cone));
+  expect(scene.layers.indexOf(second)).toBeGreaterThan(
     scene.layers.indexOf(cone),
   );
-  expect(scene.layers.indexOf(inner)).toBeLessThan(scene.layers.indexOf(cone));
-  for (const strip of [inner, outer])
-    expect(strip.ks.o.k[1].t).toBeGreaterThan(arrival);
 });
 
-test("the inset and the close-up bend the full strips as the pad touches the face", () => {
-  const read = (i) =>
-    JSON.parse(fs.readFileSync(path.join("public", cfg.paths[i])));
-  const bubble = read(1).assets.find((a) => a.id === "procedure-inset");
-  for (const [scene, arrival] of [
-    [bubble, 120],
-    [read(5), 180],
-  ]) {
-    for (let i = 1; i <= 3; i++) {
-      const travelling = scene.layers.find(
-        (l) => l.nm === "Straight tape settling onto the face " + i,
-      );
-      const landed = scene.layers.find(
-        (l) => l.nm === "Tape on top of pad " + i,
-      );
-      const [flat, draped] = travelling.shapes[0].it[0].ks.k;
-      expect(flat.t).toBeLessThan(arrival);
-      expect(draped.t).toBeGreaterThan(arrival);
-      expect(travelling.op).toBe(landed.ip);
-      expect(landed.ip).toBe(draped.t);
-      // The first 65 vertices trace the long edge from forehead to cheek.
-      const bow = (key) => {
-        const v = key.s[0].v;
-        return Math.abs(v[32][0] - (v[0][0] + v[64][0]) / 2);
-      };
-      expect(bow(flat)).toBeLessThan(0.01);
-      expect(bow(draped)).toBeGreaterThan(5);
-    }
-  }
-});
-
-test("opening the scissors separates the finger loops as well as the tips", () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[3])));
-  const halves = ["upper", "lower"].map((side) =>
-    scene.layers.find((l) => l.nm === "Complete scissors " + side),
-  );
-  const distanceAt = (frame, points) => {
-    const moved = halves.map((half, i) => {
-      const angle =
-        (half.ks.r.k.find((k) => k.t === frame).s[0] * Math.PI) / 180;
-      const x = points[i][0] - half.ks.a.k[0],
-        y = points[i][1] - half.ks.a.k[1];
-      return [
-        x * Math.cos(angle) - y * Math.sin(angle),
-        x * Math.sin(angle) + y * Math.cos(angle),
-      ];
-    });
-    return Math.hypot(moved[0][0] - moved[1][0], moved[0][1] - moved[1][1]);
-  };
-  for (const points of [
-    [
-      [224, 103],
-      [74, 103],
-    ],
-    [
-      [149, 494],
-      [149, 494],
-    ],
-  ])
-    for (const [open, cut] of [
-      [53, 75],
-      [153, 175],
-      [253, 275],
-    ])
-      expect(distanceAt(open, points)).toBeGreaterThan(
-        distanceAt(cut, points) + 45,
-      );
-});
-
-test("the seated shield itself covers the treated brow and lateral orbital outline", async () => {
-  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[6])));
-  const read = async (name) => {
+test("shield tape stays clear of the nose with a strip on each side of the cone tip", async () => {
+  const scene = readScene(5);
+  const alpha = async (name) => {
     const layer = scene.layers.find((l) => l.nm === name);
     const asset = scene.assets.find((a) => a.id === layer.refId);
     const file = path.join(
-      path.dirname(path.join("public", cfg.paths[6])),
+      "public",
+      path.dirname(cfg.paths[5]),
       asset.u,
       asset.p,
     );
@@ -547,35 +383,92 @@ test("the seated shield itself covers the treated brow and lateral orbital outli
       .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
-    const scale = layer.ks.s.k[0] / 100;
-    const pos = layer.ks.p.a ? layer.ks.p.k.at(-1).s : layer.ks.p.k;
     return (x, y) => {
-      const u = Math.round((x - pos[0]) / scale + layer.ks.a.k[0]),
-        v = Math.round((y - pos[1]) / scale + layer.ks.a.k[1]);
-      if (u < 0 || u >= info.width || v < 0 || v >= info.height)
-        return [0, 0, 0, 0];
-      const offset = 4 * (v * info.width + u);
-      return data.subarray(offset, offset + 4);
+      const u = Math.round(
+        ((x - layer.ks.p.k[0]) * 100) / layer.ks.s.k[0] + layer.ks.a.k[0],
+      );
+      const v = Math.round(
+        ((y - layer.ks.p.k[1]) * 100) / layer.ks.s.k[1] + layer.ks.a.k[1],
+      );
+      return u >= 0 && u < info.width && v >= 0 && v < info.height
+        ? data[(v * info.width + u) * 4 + 3]
+        : 0;
     };
   };
-  const face = await read("Original Front of Eye patient"),
-    cone = await read("Original finished cone shield");
-  let browSamples = 0;
-  for (let y = 440; y <= 692; y += 2) {
-    let outlineFound = false;
-    for (let x = 240; x <= 454; x += 2) {
-      const [r, g, b, a] = face(x, y);
-      if (a < 240) continue;
-      if (!outlineFound && y >= 470) {
-        expect(cone(x, y)[3]).toBeGreaterThan(240);
-        outlineFound = true;
-      }
-      if (r === 193 && g === 118 && b === 41) {
-        expect(cone(x, y)[3]).toBeGreaterThan(240);
-        browSamples++;
-      }
-    }
+  const [nose, cone, outer, inner] = await Promise.all(
+    [
+      "Original nose in front of the dressing",
+      "Original finished cone shield",
+      "Far tape behind the shield",
+      "Near tape across the shield",
+    ].map(alpha),
+  );
+  const xs = Array.from({ length: 245 }, (_, i) => i + 260);
+  const farCenter = xs.filter((x) => outer(x, 592) > 200);
+  expect(farCenter.length).toBeGreaterThan(0);
+  expect(farCenter.every((x) => cone(x, 592) > 200)).toBe(true);
+  expect(
+    xs.some(
+      (x) => x > farCenter.at(-1) && inner(x, 592) > 200 && cone(x, 592) > 200,
+    ),
+  ).toBe(true);
+  const rig = scene.layers.find(
+    (l) => l.nm === "Dressing aligned with the cheek",
+  );
+  const angle = (rig.ks.r.k * Math.PI) / 180;
+  const noseOnFace = (x, y) => {
+    const dx = x - rig.ks.a.k[0],
+      dy = y - rig.ks.a.k[1];
+    return nose(
+      rig.ks.p.k[0] + dx * Math.cos(angle) - dy * Math.sin(angle),
+      rig.ks.p.k[1] + dx * Math.sin(angle) + dy * Math.cos(angle),
+    );
+  };
+  let overlap = 0;
+  for (let y = 430; y <= 760; y++)
+    for (const x of xs)
+      if (
+        noseOnFace(x, y) > 128 &&
+        (cone(x, y) > 128 || inner(x, y) > 128 || outer(x, y) > 128)
+      )
+        overlap++;
+  expect(overlap).toBe(0);
+});
+
+test("the inset and the close-up bend the full strips as the pad touches the face", () => {
+  const read = (i) =>
+    JSON.parse(fs.readFileSync(path.join("public", cfg.paths[i])));
+  const bubble = read(1).assets.find((a) => a.id === "procedure-inset");
+  for (const [scene, arrival] of [
+    [bubble, 189],
+    [read(4), 100],
+  ]) {
+    const travelling = scene.layers.find(
+      (l) => l.nm === "Straight tape settling onto the face 2",
+    );
+    const landed = scene.layers.find((l) => l.nm === "Tape on top of pad 2");
+    const [flat, draped] = travelling.shapes[0].it[0].ks.k;
+    expect(flat.t).toBeLessThan(arrival);
+    expect(draped.t).toBeGreaterThan(arrival);
+    expect(travelling.op).toBe(landed.ip);
+    expect(landed.ip).toBe(draped.t);
+    // The first 65 vertices trace the long edge from forehead to cheek.
+    const bow = (key) => {
+      const v = key.s[0].v;
+      return Math.abs(v[32][0] - (v[0][0] + v[64][0]) / 2);
+    };
+    expect(bow(flat)).toBeLessThan(0.01);
+    expect(bow(draped)).toBeGreaterThan(5);
   }
-  expect(browSamples).toBeGreaterThan(300);
-  expect(cone(558, 580)[3]).toBe(0);
+});
+
+test("the final shield and its shadow are scaled together over the treated eye", () => {
+  const scene = JSON.parse(fs.readFileSync(path.join("public", cfg.paths[5])));
+  const cone = scene.layers.find(
+    (l) => l.nm === "Original finished cone shield",
+  );
+  const shadow = scene.layers.find((l) => l.nm === "Shield contact shadow");
+  expect(shadow.ks.s).toEqual(cone.ks.s);
+  const asset = scene.assets.find((a) => a.id === cone.refId);
+  expect((asset.w * cone.ks.s.k[0]) / 100).toBeCloseTo(262.2);
 });

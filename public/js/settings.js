@@ -1,6 +1,7 @@
 import { initializeReminderSettings } from "./practiceReminders.js";
 import { getLanguage, translateLiteral } from "./i18n.js";
 import { loadPage } from "./navigation.js";
+import { NATIVE_LANGUAGE_NAMES } from "./language-names.js";
 import { PROFILE_STORAGE_KEYS, dispatchProfileUpdated } from "./profileData.js";
 
 const SETTINGS_STORAGE_KEYS = Object.freeze({
@@ -15,26 +16,6 @@ const PROGRESS_PREFIXES = Object.freeze([
   "glaucomaWorkshop:progress:",
 ]);
 
-const LANGUAGE_LABELS = Object.freeze({
-  am: "Amharic",
-  ar: "Arabic",
-  bn: "Bangla",
-  en: "English",
-  fr: "French",
-  ha: "Hausa",
-  hi: "Hindi",
-  id: "Indonesian",
-  ig: "Igbo",
-  ne: "Nepali",
-  ny: "Chichewa",
-  pt: "Portuguese",
-  rw: "Kinyarwanda",
-  sw: "Swahili",
-  ur: "اردو",
-  yo: "Yoruba",
-  zh: "Chinese",
-});
-
 function setStatus(message) {
   const status = document.getElementById("settingsStatus");
   if (!status) return;
@@ -45,7 +26,9 @@ function renderLanguageLabel() {
   const el = document.getElementById("settingsLanguageLabel");
   if (!el) return;
   const lang = getLanguage();
-  el.textContent = LANGUAGE_LABELS[lang] || lang.toUpperCase();
+  el.lang = lang;
+  el.dir = "auto";
+  el.textContent = NATIVE_LANGUAGE_NAMES[lang] || lang.toUpperCase();
 }
 
 function parsePositiveInt(value) {
@@ -154,7 +137,7 @@ async function openPrivacyTermsModal() {
   } else {
     modal.innerHTML = `
       <div class="guest-modal">
-        <button class="guest-modal__close" aria-label="Close">&times;</button>
+        <button class="guest-modal__close" aria-label="Close" data-i18n="languageInstall.closeButton:aria-label">&times;</button>
         <div class="guest-modal__text privacyterms__text">
           <p>Only information needed to run and improve the service is collected.</p>
           <p>Personal data is never sold. You can ask to see, update or delete information held about you.</p>
@@ -234,12 +217,12 @@ function confirmSettingsAction(message, laoMessage) {
     overlay.querySelector(".settings-confirm-modal__message").textContent =
       settingsCopy(message, laoMessage);
     overlay.querySelector('[data-confirm="cancel"]').textContent = settingsCopy(
-      "Cancel",
-      "ຍົກເລີກ",
+      "No",
+      "ບໍ່",
     );
     overlay.querySelector('[data-confirm="ok"]').textContent = settingsCopy(
-      "OK",
-      "ຕົກລົງ",
+      "Yes",
+      "ແມ່ນ",
     );
     const finish = (answer) => {
       overlay.remove();
@@ -251,6 +234,7 @@ function confirmSettingsAction(message, laoMessage) {
       else if (event.target === overlay) finish(false);
     });
     document.body.appendChild(overlay);
+    window.I18N?.applyTranslations?.(overlay);
     overlay.querySelector('[data-confirm="cancel"]')?.focus();
   });
 }

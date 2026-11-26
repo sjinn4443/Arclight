@@ -317,16 +317,20 @@ function orbitScissors(
   cy,
   rx,
   ry,
-  start = 30,
-  finish = 240,
-  settle = false,
-  lowerScale = 1.28,
+  {
+    start = 30,
+    finish = 240,
+    settle = false,
+    lowerScale = 1.28,
+    progressAt = (t) =>
+      Math.max(0, Math.min(1, (t - start) / (finish - start))),
+  } = {},
 ) {
   const samples = [];
   const initialAngle = 0;
   const upperTipDirection = Math.atan2(-367, -135);
   for (let t = 0; t < endFrame; t += 6) {
-    const p = Math.max(0, Math.min(1, (t - start) / (finish - start)));
+    const p = progressAt(t);
     const theta = initialAngle - (p * Math.PI) / 2;
     const tangent = Math.atan2(-ry * Math.cos(theta), rx * Math.sin(theta));
     // Stop at the taped upper edge, then reveal the completed outline.
@@ -350,19 +354,6 @@ function orbitScissors(
     snipAt: settle ? 480 : null,
     lowerScale,
   });
-}
-function ovalMask(layer, { cx, cy, rx, ry }) {
-  layer.hasMask = true;
-  layer.masksProperties = [
-    {
-      inv: false,
-      mode: "a",
-      pt: constant(oval(cx, cy, rx, ry)),
-      o: constant(100),
-      x: constant(0),
-      nm: "Finished cut outline",
-    },
-  ];
 }
 async function coneSequence() {
   const checkpoints = [
@@ -796,57 +787,15 @@ async function assembleFoldingHand() {
     e: 0,
   });
 }
-function visitedCutMask(layer, left, top, width, cx, cy, rx, ry) {
-  const asset = [...A.values()].find((a) => a.id === layer.refId);
-  const scale = width / asset.w;
-  const outline = (frame) => {
-    const progress = Math.max(0, Math.min(1, (frame - 30) / 210));
-    return pointsShape(
-      Array.from({ length: 128 }, (_, i) => {
-        const theta = (-i * Math.PI * 2) / 128;
-        const dx = Math.cos(theta),
-          dy = Math.sin(theta);
-        const outside = Math.min(
-          Math.abs(dx) < 1e-8
-            ? Infinity
-            : (dx > 0 ? W - cx : cx) / Math.abs(dx),
-          Math.abs(dy) < 1e-8
-            ? Infinity
-            : (dy > 0 ? H - cy : cy) / Math.abs(dy),
-        );
-        const ellipse = 1 / Math.hypot(dx / rx, dy / ry);
-        const cut = progress > 0 && i <= progress * 32;
-        const radius = cut ? ellipse : outside;
-        return [
-          (cx + dx * radius - left) / scale,
-          (cy + dy * radius - top) / scale,
-        ];
-      }),
-    );
-  };
-  const frames = Array.from({ length: 41 }, (_, i) => i * 6);
+function setCutMask(layer, shape) {
   layer.hasMask = true;
   layer.masksProperties = [
     {
-      inv: false,
       mode: "a",
-      pt: {
-        a: 1,
-        k: frames.map((t, i) => ({
-          t,
-          s: [outline(t)],
-          ...(i < frames.length - 1
-            ? {
-                e: [outline(frames[i + 1])],
-                i: { x: 2 / 3, y: 2 / 3 },
-                o: { x: 1 / 3, y: 1 / 3 },
-              }
-            : {}),
-        })),
-      },
+      inv: false,
+      pt: constant(shape),
       o: constant(100),
       x: constant(0),
-      nm: "Only the visited cutting arc is removed",
     },
   ];
 }
@@ -866,6 +815,180 @@ function holdingHand(x, y) {
     width: top.w * scale,
   });
   return { rear, front };
+}
+const cutStart = 24,
+  cutFinish = 240;
+function cutProgress(t) {
+  const elapsed = Math.min(cutFinish - cutStart, Math.max(0, t - cutStart));
+  // Both materials advance fastest as the blades close.
+  return (
+    (elapsed + 2.5 * (1 - Math.cos((elapsed * Math.PI) / 12))) /
+    (cutFinish - cutStart)
+  );
+}
+function cuttingHand(x, y, gauze = false) {
+  const hand = holdingHand(x, y);
+  const thumb = hand.front;
+  const asset = A.get(thumb.nm);
+  const scale = thumb.ks.s.k[0] / 100;
+  // Split the same artwork across the thumb base. The straight hinge keeps
+  // the palm and wrist registered while the tip lifts and changes its grip.
+  const hinge = 190;
+  const [px, py] = thumb.ks.p.k;
+  const palm = image(thumb.nm, 0, 0, { p: thumb.ks.p, s: thumb.ks.s });
+  palm.nm = "Stationary thumb base and wrist";
+  behind(palm, thumb);
+  const band = (top, bottom) =>
+    pointsShape([
+      [-1, top],
+      [asset.w + 1, top],
+      [asset.w + 1, bottom],
+      [-1, bottom],
+    ]);
+  setCutMask(palm, band(hinge - 4, asset.h + 1));
+  // The supplied crop includes a grey contact shadow. Trace its boundary
+  // separately so it can lag behind the raised thumb and lighten with height.
+  const skinEdge = [
+    [278, -1],
+    [299, 12],
+    [310, 30],
+    [313, 45],
+    [311, 60],
+    [307, 80],
+    [300, 100],
+    [291, 120],
+    [281, 140],
+    [270, 160],
+    [264, 180],
+    [262, hinge],
+  ];
+  setCutMask(thumb, pointsShape([[-1, -1], ...skinEdge, [-1, hinge]]));
+  const shadow = shapeLayer(
+    "Thumb contact shadow",
+    constant(
+      pointsShape([
+        [278, 2],
+        [300, 13],
+        [313, 38],
+        [322, 60],
+        [325, 82],
+        [324, 101],
+        [321, 120],
+        [315, 140],
+        [309, 160],
+        [306, 180],
+        [306, hinge],
+        [247, hinge],
+        [255, 145],
+        [271, 95],
+        [291, 50],
+        [289, 20],
+      ]),
+    ),
+    [0.28, 0.28, 0.28, 1],
+  );
+  behind(shadow, thumb);
+  thumb.ks.a = constant([asset.w / 2, hinge, 0]);
+  thumb.ks.p = constant([px, py + (hinge - asset.h / 2) * scale, 0]);
+  const poses = [];
+  for (let t = cutStart; t < cutFinish; t += gauze ? 24 : 48) {
+    // Press and feed, lift back toward the palm during the slower stroke,
+    // then set the thumb down for the next pair of snips.
+    for (const [offset, height, skew] of [
+      ...(!gauze || t === cutStart ? [[0, 1, 0]] : []),
+      ...(gauze ? [[12, 1, 0]] : []),
+      [gauze ? 16 : 11, 1.055, 2],
+      [19, 0.88, -12],
+      [24, 1, 0],
+    ]) {
+      poses.push([t + offset, height, skew]);
+    }
+  }
+  thumb.ks.s = keys(
+    poses.map(([t, height]) => [t, [100 * scale, 100 * scale * height, 100]]),
+  );
+  thumb.ks.sk = keys(poses.map(([t, , skew]) => [t, skew]));
+  thumb.ks.sa = constant(0);
+  shadow.ks.a = thumb.ks.a;
+  shadow.ks.p = thumb.ks.p;
+  shadow.ks.s = thumb.ks.s;
+  shadow.ks.sa = constant(0);
+  shadow.ks.sk = keys(
+    poses.map(([t, , skew]) => [t, skew < 0 ? skew * 0.6 : skew]),
+  );
+  shadow.ks.o = keys(poses.map(([t, , skew]) => [t, skew < 0 ? 14 : 24]));
+  // The thumb crop relies on the lower artwork for the web and heel of
+  // the palm. Keep those pixels in front of the held sheet at every grip.
+  const rear = hand.rear;
+  const web = image(rear.nm, x, y, { width: 700 });
+  web.nm = "Palm beneath thumb";
+  setCutMask(
+    web,
+    pointsShape([
+      [-2, 220],
+      [175, 215],
+      [223, 204],
+      [264, 184],
+      [308, 159],
+      [349, 151],
+      [382, 235],
+      [411, 310],
+      [425, 365],
+      [421, 510],
+      [450, 1058],
+      [-2, 1058],
+    ]),
+  );
+  behind(web, palm);
+  // Flex the rear fingers about their base, leaving the supporting wrist fixed.
+  const fingers = image(rear.nm, x, y, { width: 700 });
+  fingers.nm = "Supporting fingers";
+  setCutMask(
+    fingers,
+    pointsShape([
+      [-1, -1],
+      [626, -1],
+      [626, 465],
+      [-1, 465],
+    ]),
+  );
+  setCutMask(
+    rear,
+    pointsShape([
+      [-1, 462],
+      [626, 462],
+      [626, 1058],
+      [-1, 1058],
+    ]),
+  );
+  fingers.ks.a = constant([310, 465, 0]);
+  fingers.ks.p = constant([x + 310 * scale, y + 465 * scale, 0]);
+  fingers.ks.sa = constant(0);
+  fingers.ks.sk = keys(poses.map(([t, , skew]) => [t, -skew * 0.43]));
+  fingers.ks.s = keys(
+    poses.map(([t, height]) => [
+      t,
+      [scale * 100, scale * 100 * (1 + (1 - height) * 0.42), 100],
+    ]),
+  );
+  hand.fingers = fingers;
+  return hand;
+}
+
+// A released edge leaves along the blade tangent and bends toward screen-down.
+// The bend length controls how much stiffness remains near the cutting point.
+function hangingEdge(length, tx, ty, bend) {
+  const weight = Math.exp(-length / bend);
+  const travel = bend * (1 - weight);
+  // Below the cut, let the tail lean toward the wrist, clear of the grip.
+  const tail = Math.max(0, length - bend);
+  const lean = Math.exp(-tail / 240);
+  const dx = tx * weight - 0.32 * (1 - lean);
+  return [
+    tx * travel - 0.32 * (tail - 240 * (1 - lean)),
+    length + (ty - 1) * travel,
+    Math.atan2(-dx, 1 + (ty - 1) * weight),
+  ];
 }
 function cottonScene() {
   // Each pull deforms the cotton and moves the four hand pieces together.
@@ -1083,53 +1206,181 @@ function foldScene() {
   ]);
 }
 function trimPadScene() {
-  const fadeOriginal = opacity([0, 100], [246, 100], [276, 0]);
-  const fadeCut = opacity([0, 0], [246, 0], [276, 100]);
-  const gauze = image("03and04foldedgauze.webp", 145, 190, {
-    width: 700,
-    o: fadeOriginal,
-  });
-  visitedCutMask(gauze, 145, 190, 700, 495, 561, 301, 224);
-  const asset = A.get("03and04foldedgauze.webp");
-  const final = image("03and04foldedgauze.webp", 145, 190, {
-    width: 700,
-    o: fadeCut,
-  });
-  ovalMask(final, {
-    cx: asset.w / 2,
-    cy: asset.h * 0.53,
-    rx: asset.w * 0.43,
-    ry: asset.h * 0.32,
-  });
-  const originalTape = image("03tape.webp", 405, 215, {
-    width: 165,
-    o: fadeOriginal,
-  });
-  visitedCutMask(originalTape, 405, 215, 165, 495, 561, 301, 224);
-  const tape = image("03tape.webp", 405, 215, { width: 165, o: fadeCut });
-  const tapeScale = 165 / A.get("03tape.webp").w;
-  ovalMask(tape, {
-    cx: (495 - 405) / tapeScale,
-    cy: (561 - 215) / tapeScale,
-    rx: 301 / tapeScale,
-    ry: 224 / tapeScale,
-  });
-  holdingHand(-230, 470);
-  const lowerBladeScale = 1.28;
-  const cut = orbitScissors(
-    495,
-    561,
-    301,
-    224,
-    30,
-    240,
-    false,
-    lowerBladeScale,
+  const cx = 495,
+    cy = 561,
+    rx = 301,
+    ry = 224;
+  const turn = 2 * Math.PI,
+    deg = 180 / Math.PI;
+  const frames = Array.from(
+    { length: (cutFinish - cutStart) / 6 + 1 },
+    (_, i) => cutStart + i * 6,
   );
-  behind(cut.rear, gauze);
-  // Stop at the tape, then dissolve to the trimmed gauze AND trimmed tape.
-  for (const layer of [cut.front, cut.rear])
-    layer.ks.o = opacity([0, 100], [246, 100], [276, 0]);
+  // In each snip the scissors travel sideways for twelve frames while the
+  // cloth is held. The fingers then feed 32 degrees of cloth into the blades.
+  function gauzePose(t) {
+    const elapsed = Math.max(0, Math.min(cutFinish - cutStart, t - cutStart));
+    const cycle = Math.floor(elapsed / 24),
+      phase = elapsed % 24;
+    const feed = Math.max(0, phase - 12) / 12;
+    const sweepDegrees = 40 * cycle + 26 * Math.min(1, phase / 12) + 14 * feed;
+    return {
+      t,
+      swept: sweepDegrees / deg,
+      rotation: (32 * (cycle + feed)) / deg,
+    };
+  }
+  const poses = frames.map(gauzePose);
+  const materials = [
+    { name: "03and04foldedgauze.webp", x: 145, y: 190, width: 700 },
+    { name: "03tape.webp", x: 405, y: 215, width: 165 },
+  ].map((m) => ({ ...m, scale: m.width / A.get(m.name).w }));
+  const ellipse = (a) => [rx * Math.cos(a), -ry * Math.sin(a)];
+  const anchor = (m) => [(cx - m.x) / m.scale, (cy - m.y) / m.scale, 0];
+  const center = constant([cx, cy, 0]);
+  const falling = linearKeys(
+    Array.from({ length: 7 }, (_, i) => {
+      const dt = i * 6;
+      return [cutFinish + dt, [cx, cy + dt * dt * 1.22, 0]];
+    }),
+  );
+  // Bend in screen coordinates so the hanging weave does not rotate back
+  // toward the thumb. Convert to the local basis used by the texture sectors.
+  function releasedPoint(a, swept, rotation) {
+    if (a >= swept) return ellipse(a);
+    const c = Math.cos(rotation),
+      s = Math.sin(rotation);
+    const tx = rx * Math.sin(swept) * c - ry * Math.cos(swept) * s;
+    const ty = rx * Math.sin(swept) * s + ry * Math.cos(swept) * c;
+    const speed = Math.hypot(tx, ty);
+    const [dx, dy] = hangingEdge(
+      ((swept - a) * (rx + ry)) / 2,
+      tx / speed,
+      ty / speed,
+      110 + 220 * Math.abs(tx / speed),
+    );
+    const [bx, by] = ellipse(swept);
+    return [bx + c * dx + s * dy, by - s * dx + c * dy];
+  }
+  const count = 24;
+  let backOfCloth;
+  for (let i = 0; i < count; i++) {
+    const a = (i * turn) / count,
+      b = ((i + 1) * turn) / count;
+    const [x0, y0] = ellipse(a),
+      [x1, y1] = ellipse(b);
+    const determinant = x0 * y1 - x1 * y0;
+    // Map this sector's two radial edges to their new positions. Adjacent
+    // sectors share both boundaries so the woven texture stays continuous.
+    const transforms = poses.map(({ t, swept, rotation }) => {
+      const [u0, v0] = releasedPoint(a, swept, rotation),
+        [u1, v1] = releasedPoint(b, swept, rotation);
+      const xx = (u0 * y1 - u1 * y0) / determinant,
+        yx = (v0 * y1 - v1 * y0) / determinant;
+      const xy = (x0 * u1 - x1 * u0) / determinant,
+        yy = (x0 * v1 - x1 * v0) / determinant;
+      const sx = Math.hypot(xx, yx),
+        sy = (xx * yy - yx * xy) / sx;
+      return {
+        t,
+        r: (rotation + Math.atan2(yx, xx)) * deg,
+        sx,
+        sy,
+        sk: -Math.atan((xx * xy + yx * yy) / (sx * sy)) * deg,
+      };
+    });
+    for (let j = 1; j < transforms.length; j++) {
+      const delta = transforms[j].r - transforms[j - 1].r;
+      transforms[j].r -= 360 * Math.round(delta / 360);
+    }
+    for (const m of materials) {
+      // Only the sectors at the taped end intersect the tape artwork.
+      if (
+        m.name === "03tape.webp" &&
+        (b < Math.PI / 4 || a > (3 * Math.PI) / 4)
+      )
+        continue;
+      const layer = image(m.name, 0, 0, {
+        a: constant(anchor(m)),
+        p: falling,
+        r: linearKeys(transforms.map((k) => [k.t, k.r])),
+        s: linearKeys(
+          transforms.map((k) => [
+            k.t,
+            [100 * m.scale * k.sx, 100 * m.scale * k.sy, 100],
+          ]),
+        ),
+      });
+      layer.nm = m.name + " offcut " + i;
+      layer.ks.sk = linearKeys(transforms.map((k) => [k.t, k.sk]));
+      layer.ks.sa = constant(0);
+      const vertices = [];
+      // A subpixel overlap covers the antialiased seams on both renderers.
+      const left = a - 0.002,
+        right = b + 0.002;
+      for (let j = 0; j <= 6; j++)
+        vertices.push(ellipse(left + ((right - left) * j) / 6));
+      for (const angle of [right, left])
+        vertices.push(ellipse(angle).map((v) => 3 * v));
+      setCutMask(
+        layer,
+        pointsShape(
+          vertices.map(([x, y]) => [
+            (cx + x - m.x) / m.scale,
+            (cy + y - m.y) / m.scale,
+          ]),
+        ),
+      );
+      backOfCloth ??= layer;
+    }
+  }
+  // Once the scissors withdraw, turn only the finished pad back to its
+  // original horizontal pose, with the tape at the top.
+  const cutAngles = poses.map(({ t, rotation }) => [t, rotation * deg]);
+  const lastAngle = cutAngles.at(-1)[1];
+  const displayTurn = keys([
+    [cutFinish + 6, lastAngle],
+    [cutFinish + 36, 360],
+  ]);
+  const padRotation = linearKeys([...cutAngles, [cutFinish + 6, lastAngle]]);
+  padRotation.k.splice(-1, 1, ...displayTurn.k);
+  for (const m of materials) {
+    const pivot = anchor(m);
+    const core = image(m.name, 0, 0, {
+      a: constant(pivot),
+      p: center,
+      width: m.width,
+      r: padRotation,
+    });
+    setCutMask(core, oval(pivot[0], pivot[1], rx / m.scale, ry / m.scale));
+  }
+  const hand = cuttingHand(-230, 470, true);
+  behind(hand.rear, backOfCloth);
+  behind(hand.fingers, backOfCloth);
+  const samples = [];
+  const upperTipDirection = Math.atan2(-367, -135);
+  for (let t = 0; t < endFrame; t += 6) {
+    const { swept, rotation } = gauzePose(t);
+    const c = Math.cos(rotation),
+      s = Math.sin(rotation);
+    const [x, y] = ellipse(swept);
+    const tangentX = -rx * Math.sin(swept) * c + ry * Math.cos(swept) * s;
+    const tangentY = -rx * Math.sin(swept) * s - ry * Math.cos(swept) * c;
+    let heading = (Math.atan2(tangentY, tangentX) - upperTipDirection) * deg;
+    if (samples.length)
+      heading -= 360 * Math.round((heading - samples.at(-1)[2]) / 360);
+    const withdraw = Math.min(1, Math.max(0, (t - cutFinish) / 36));
+    samples.push([
+      t,
+      [
+        cx + x * c - y * s + 600 * withdraw,
+        cy + x * s + y * c + 160 * withdraw,
+      ],
+      heading,
+    ]);
+  }
+  const cut = scissorsAlong(samples, { stopAt: cutFinish });
+  behind(cut.rear, backOfCloth);
 }
 function cardboardScene() {
   image("05cardboard.webp", 200, 230, { width: 770 });
@@ -1293,18 +1544,131 @@ function drawCircleScene() {
   });
 }
 function cutCircleScene() {
-  const paper = image("08paper.webp", 244, 7, {
-    width: 720,
-    o: opacity([0, 100], [246, 100], [276, 0]),
+  const cx = 604,
+    cy = 438,
+    radius = 226;
+  const turn = 2 * Math.PI;
+  const start = cutStart,
+    finish = cutFinish;
+  // The guide starts between the blades, with an entry slit to the right edge.
+  // Include the four exact corners so turning the sheet preserves its silhouette.
+  const entryAngle = Math.PI / 7;
+  const halfW = 360,
+    halfH = 431;
+  const angles = Array.from({ length: 49 }, (_, i) => (i * turn) / 48);
+  for (const x of [-halfW, halfW]) {
+    for (const y of [-halfH, halfH]) {
+      angles.push((entryAngle - Math.atan2(y, x) + turn) % turn);
+    }
+  }
+  angles.sort((a, b) => a - b);
+  const bladeAngle = (progress) => (-progress * Math.PI) / 2;
+  const rim = (angle, distance) => [
+    distance * Math.cos(angle),
+    distance * Math.sin(angle),
+  ];
+  const sections = angles.map((a) => {
+    const outerAngle = entryAngle - a;
+    const edge = Math.min(
+      halfW / Math.abs(Math.cos(outerAngle)),
+      halfH / Math.abs(Math.sin(outerAngle)),
+    );
+    const [x, y] = rim(outerAngle, edge);
+    const [ix, iy] = rim(-a, radius);
+    return { a, dx: x - ix, dy: y - iy };
   });
-  visitedCutMask(paper, 244, 7, 720, 604, 438, 227, 227);
-  image("09paper.webp", 377, 211, {
-    width: 454,
-    o: opacity([0, 0], [246, 0], [276, 100]),
+  const poses = [];
+  for (let t = start; t <= finish; t += 6) {
+    const progress = cutProgress(t);
+    const swept = progress * turn;
+    const contact = bladeAngle(progress);
+    const inner = [],
+      outer = [],
+      pencil = [],
+      lip = [];
+    for (const { a, dx, dy } of sections) {
+      const freeAngle = Math.max(0, swept - a);
+      let angle = contact + swept - a;
+      let [x, y] = rim(angle, radius);
+      if (freeAngle > 0) {
+        const [dropX, dropY, normal] = hangingEdge(
+          radius * freeAngle,
+          -Math.sin(contact),
+          Math.cos(contact),
+          radius * 1.6,
+        );
+        x = radius * Math.cos(contact) + dropX;
+        y = radius * Math.sin(contact) + dropY;
+        angle = normal;
+      }
+      x += cx;
+      y += cy;
+      const rotation = angle + a;
+      inner.push([x, y]);
+      pencil.push([x + 3 * Math.cos(angle), y + 3 * Math.sin(angle)]);
+      // A narrow band of underside turns into view just behind the blades.
+      const lipWidth = 16 * freeAngle * Math.exp(1 - freeAngle);
+      lip.push([
+        x + lipWidth * Math.cos(angle),
+        y + lipWidth * Math.sin(angle),
+      ]);
+      outer.push([
+        x + dx * Math.cos(rotation) - dy * Math.sin(rotation),
+        y + dx * Math.sin(rotation) + dy * Math.cos(rotation),
+      ]);
+    }
+    poses.push({ t, inner, outer, pencil, lip });
+  }
+  const pathKeys = (vertices, closed) =>
+    linearKeys(
+      poses.map((pose) => [
+        pose.t,
+        pointsShape(
+          vertices(pose).map((p) => p.map((v) => +v.toFixed(2))),
+          closed,
+        ),
+      ]),
+    );
+  const scrap = shapeLayer(
+    "Cardboard offcut",
+    pathKeys(
+      ({ inner, outer }) => [...inner, ...outer.slice().reverse()],
+      true,
+    ),
+    [243 / 255, 243 / 255, 243 / 255, 1],
+  );
+  const lip = shapeLayer(
+    "Turned cut edge",
+    pathKeys(({ inner, lip }) => [...inner, ...lip.slice().reverse()], true),
+    [0.86, 0.85, 0.83, 1],
+  );
+  lip.parent = scrap.ind;
+  const graphite = shapeLayer(
+    "Pencil guide on the offcut",
+    pathKeys(({ pencil }) => pencil, false),
+    [0.12, 0.12, 0.12, 1],
+    { stroke: 6 },
+  );
+  graphite.parent = scrap.ind;
+  // Release the intact offcut at the last snip. Its colour stays solid as it falls.
+  scrap.ks.p = linearKeys(
+    [0, 6, 12, 18, 24, 30, 36, 42, 48].map((dt) => [
+      finish + dt,
+      [0, dt * dt * 1.05, 0],
+    ]),
+  );
+  image("09paper.webp", 377, 211, { width: 454 });
+  const hand = cuttingHand(-95, 370);
+  behind(hand.rear, scrap);
+  behind(hand.fingers, scrap);
+  const cut = orbitScissors(cx, cy, radius, radius, {
+    start,
+    finish,
+    settle: true,
+    lowerScale: 1.22,
+    progressAt: cutProgress,
   });
-  holdingHand(-95, 370);
-  const cut = orbitScissors(604, 438, 227, 227, 30, 240, true, 1.22);
-  behind(cut.rear, paper);
+  behind(cut.rear, scrap);
   // The completed slit already exists when the upper blade starts returning.
   const slit = shapeLayer(
     "Single radial slit",

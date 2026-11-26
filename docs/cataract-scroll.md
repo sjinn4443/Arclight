@@ -9,7 +9,53 @@ master is preserved there. Source checksums and measured extraction bounds are
 recorded in `public/scrolly/conditions/cataract/provenance.json`. Authoring masters
 are not copied into the distribution or offline download.
 
-## Reading order and artwork
+## Current lesson · 23 November 2026
+
+The [six-section storyboard](cataract-storyboard.md) maps the poster to 19
+replayable scenes. Distance acuity, pinhole and near vision have individual
+replay points. Technique scenes show original handout artwork with the
+corresponding detailed lesson in motion. Front of Eye and Fundoscopy retain
+both columns for a final comparison. Fundal Reflex separates the two pairs of
+opacity examples before the referral findings. See the [phone captures of all
+19 final frames](lesson-review-2026-11-23/cataract-scenes.webp).
+
+The history scenes use the complete figures behind the poster's row clips.
+The examiner's shoes, sleeve and clipboard stay in their original positions
+while the original hand paths bend at the wrist. Each speech balloon retains
+its PDF outline and symbols. A finding carries its PDF column's eye badge in
+the upper-right corner. In the two comparisons, each column has its own frame
+and its badge appears with its first finding.
+The two speakers face each other with room for the mobile Replay control
+below the examiner's feet. In the acuity scene where the patient covers one
+eye, a matching trouser fill completes the original seated pose beneath the
+raised arms.
+
+The 38 English and Korean cues keep their original timestamps in the 331-second
+recordings. The scene configuration assigns local offsets to each new replay
+point. English and Korean VTTs and narration clips use that same clock. The
+progress key is still `lessonProgress:cataractScrollPage`. For an existing
+authoring cache, set `CATARACT_WORK_DIR` to its parent of `layers/`. Run
+`scripts/extract-cataract-art.py` on the original PDF to refresh the crops,
+badges and wrist geometry, then run `node scripts/build-cataract-scroll.cjs`. The asset builder
+maps cue IDs when regrouping scenes, preserving text added in other languages.
+The current configuration, provenance and storyboard take precedence over
+the dated production notes below.
+
+The two focused Cataract Jest suites cover the entry row, all scene and raster
+dependencies, narration slots and hashes, the row-five exception and selected
+downloads. Playback, exact held frames, Replay, Korean/English text, language
+fallback, progress restore, Back and the six section shortcuts were exercised
+in Chrome and Windows WebKit. On iPhone emulation, the completion-restore
+test waits for the last Replay control before scrolling to a distant guide.
+The 19 delivered scenes reference 125 distinct raster files. A Chrome offline
+download cached all 19 scenes and a cold page reload reached the first Replay
+control without network access. Physical iOS audio remains unverified.
+
+## Earlier 18-scene edition · November 2026
+
+The following records describe the prior edition and its original test runs.
+
+### Reading order and artwork
 
 The user's three reference columns determine the order within each source row:
 examination method, cataract-compatible findings, and findings requiring

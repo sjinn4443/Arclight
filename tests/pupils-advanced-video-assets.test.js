@@ -21,7 +21,7 @@ const mapTime = (time, origin = time) => {
 test("Advanced Full Animation inserts seven silent cards without changing the scroll clock", () => {
   expect(source.durationSeconds).toBe(315);
   expect(video.durationSeconds).toBeCloseTo(scenes.at(-1).end);
-  expect(video.durationSeconds).toBeLessThan(320);
+  expect(video.durationSeconds).toBeCloseTo(326.1);
   expect(video.videoTitleCues).toHaveLength(7);
   expect(video.videoTitleCues.map((c) => c.sourceText)).toEqual(
     config.sections.map((s) => s.title),
@@ -55,7 +55,10 @@ test("Advanced video retains the original English/Korean voices and grouped capt
       crypto.createHash("sha256").update(bytes).digest("hex"),
     );
     expect(track.bytes).toBe(bytes.length);
-    expect(track.durationSeconds).toBeCloseTo(video.durationSeconds);
+    // An AAC frame at the lowest delivery sample rate is 64 ms.
+    expect(
+      Math.abs(track.durationSeconds - video.durationSeconds),
+    ).toBeLessThanOrEqual(1024 / 16000);
     const vtt = fs.readFileSync(base + "video/" + track.captions, "utf8");
     expect(vtt.match(/-->/g)).toHaveLength(
       source.cues.filter((c) => c.caption?.[language] ?? c[language]).length +
@@ -79,7 +82,7 @@ test("Advanced video retains the original English/Korean voices and grouped capt
 test("shortened scene tails retain speech and 1.5 seconds after the last visual", () => {
   for (const [index, lastVisual] of [
     [0, 562 / 30],
-    [13, 341.25 / 30],
+    [14, 341.25 / 30],
   ]) {
     const clip = config.narrationClipsByFile[index];
     const kept = scenes[index].sourceEnd - clip.start;

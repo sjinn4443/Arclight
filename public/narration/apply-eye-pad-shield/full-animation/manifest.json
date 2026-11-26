@@ -1,25 +1,36 @@
 {
   "schemaVersion": 1,
-  "durationSeconds": 62.449999999999996,
+  "durationSeconds": 61.7,
   "script": "script.json",
   "tracks": {
     "en": {
       "src": "en.m4a",
       "captions": "en.vtt",
-      "bytes": 235510,
-      "sha256": "29290e16ebf34a37c4e8a258733a4b09d54e3f1d99b28c0f86fd5ce77063a711"
+      "voice": "en-GB-SoniaNeural",
+      "bytes": 412929,
+      "sha256": "07773addc5a4212ef783dbe8cc62887b15f56686e4897c14ebd7c62fc7257a82"
     },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
-      "bytes": 288799,
-      "sha256": "eb28111c5eaed7f236c8a311c118d8d79250ddcecd383cf223512d6204dca072"
+      "voice": "ko-KR-SunHiNeural",
+      "bytes": 414208,
+      "sha256": "bdbb50c623a4e33705c3fe677fc5fe6b4dd4b0bac87da23b62562904434877c8"
     },
     "ur": {
       "src": "ur.m4a",
       "captions": "ur.vtt",
-      "bytes": 253549,
-      "sha256": "038767f0542588995fd20e8eef8005368ea753c7530c2fb9f8706a2bb5dea8fd"
+      "voice": "ur-PK-UzmaNeural",
+      "bytes": 357012,
+      "sha256": "8ec45ba15f2e57e2d1aa6d282e0a62c16a76579261190473b5b49b83e82b6066"
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "voice": "facebook/mms-tts-nya",
+      "bytes": 434597,
+      "sha256": "5ce69957f73f7ba6eb8849a9084581f394d074676a44555f64000c33bfb941ca",
+      "modelLicense": "CC-BY-NC-4.0"
     }
   }
 }

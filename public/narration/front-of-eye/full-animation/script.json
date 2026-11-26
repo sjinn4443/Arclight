@@ -74,6 +74,13 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "pronunciationGuide": {
@@ -100,7 +107,8 @@
       "ha": "Duba kewayen idanu, fatar idanu da idanu. Nemi abin da ba daidai ba.",
       "yo": "Wo àyíká ojú, ìpéǹpéjú àti ojú. Ṣàyẹ̀wò ohun tí kò bójú mu.",
       "ig": "Lelee gburugburu anya, mkpuchi anya na anya. Chọọ ihe na-adịghị mma.",
-      "ur": "آنکھوں، پلکوں اور اردگرد کے حصے میں کوئی غیر معمولی علامت دیکھیں۔"
+      "ur": "آنکھوں، پلکوں اور اردگرد کے حصے میں کوئی غیر معمولی علامت دیکھیں۔",
+      "ny": "Yang'anani dera lozungulira maso, zikope ndi maso. Lembani chilichonse chachilendo."
     },
     {
       "id": "observation-02",
@@ -121,7 +129,8 @@
       "ha": "Sai a duba da ƙarin girma. Saita hasken Arclight zuwa mafi ƙarfi.",
       "yo": "Lẹ́yìn náà, fi ẹ̀rọ wo ojú ní títóbi. Yan ìmọ́lẹ̀ Arclight tó lágbára jù.",
       "ig": "Jiri nlele na-ebuwanye ihe. Tọọ Arclight ka ìhè ya sie ike karịa.",
-      "ur": "اب بڑا کر کے معائنہ کریں۔ آرک لائٹ کی سب سے تیز روشنی منتخب کریں۔"
+      "ur": "اب بڑا کر کے معائنہ کریں۔ آرک لائٹ کی سب سے تیز روشنی منتخب کریں۔",
+      "ny": "Kenako yezeni diso ndi chida chokulitsa chithunzi. Konzani Arclight ndi kusankha kuwala kwamphamvu kwambiri."
     },
     {
       "id": "observation-03",
@@ -139,7 +148,8 @@
       "ha": "Na'ura kusa da idonka; kusanci idon daman mara lafiya a hankali har gani ya fito.",
       "yo": "Di ẹ̀rọ mú lẹ́gbẹ̀ẹ́ ojú rẹ. Sún mọ́ ojú ọ̀tún aláìsàn díẹ̀díẹ̀ títí yóò fi hàn kedere.",
       "ig": "Debe ngwaọrụ nso anya gị. Bịaruo anya nri onye ọrịa nwayọọ ruo mgbe ọ doro anya.",
-      "ur": "آلہ اپنی آنکھ کے قریب رکھیں۔ مریض کی دائیں آنکھ کے قریب جائیں، یہاں تک کہ وہ صاف دکھائی دے۔"
+      "ur": "آلہ اپنی آنکھ کے قریب رکھیں۔ مریض کی دائیں آنکھ کے قریب جائیں، یہاں تک کہ وہ صاف دکھائی دے۔",
+      "ny": "Gwirani chipangizocho pafupi ndi diso lanu. Yandikirani diso lakumanja la wodwala pang'onopang'ono mpaka litaoneka bwino."
     },
     {
       "id": "observation-04",
@@ -157,7 +167,8 @@
       "ha": "Ka ce ya kalli dama, sannan hagu.",
       "yo": "Kí ó wo ọ̀tún, lẹ́yìn náà òsì.",
       "ig": "Gwa ya ka o lee aka nri, mesịa aka ekpe.",
-      "ur": "مریض سے دائیں، پھر بائیں دیکھنے کو کہیں۔"
+      "ur": "مریض سے دائیں، پھر بائیں دیکھنے کو کہیں۔",
+      "ny": "Pemphani wodwalayo kuti ayang'ane kumanja kenako kumanzere."
     },
     {
       "id": "observation-05",
@@ -175,7 +186,8 @@
       "ha": "Riƙe fatar idanu a hankali, ya kalli sama da ƙasa. Duba sassan da ka gani a rukuni-rukuni.",
       "yo": "Di ìpéǹpéjú mú rọra, kí ó wo òkè àti ìsàlẹ̀. Wo àwọn ẹ̀yà náà ní àwùjọ.",
       "ig": "Jide mkpuchi anya nwayọọ. Gwa ya ka o lee elu na ala. Lelee akụkụ ndị ị na-ahụ n'ìgwè.",
-      "ur": "پلکیں نرمی سے تھامیں اور مریض کو اوپر اور نیچے دیکھنے کو کہیں۔ نظر آنے والے حصوں کو گروپوں میں نوٹ کریں۔"
+      "ur": "پلکیں نرمی سے تھامیں اور مریض کو اوپر اور نیچے دیکھنے کو کہیں۔ نظر آنے والے حصوں کو گروپوں میں نوٹ کریں۔",
+      "ny": "Kenako mupempheni kuti ayang'ane mmwamba ndi pansi mutagwira zikope zake mofatsa. Yang'anani mbali zosiyanasiyana za diso m'magulu."
     },
     {
       "id": "structures-01",
@@ -193,7 +205,8 @@
       "ha": "Na farko: gashi da gefen fatar ido, sama da ƙasa.",
       "yo": "Àkọ́kọ́: irun àti etí ìpéǹpéjú òkè àti ìsàlẹ̀.",
       "ig": "Nke mbụ: nku anya na oke mkpuchi anya elu na ala.",
-      "ur": "پہلے گروپ میں اوپری اور نچلی پلکیں اور ڑککن کے حاشیے شامل ہیں۔"
+      "ur": "پہلے گروپ میں اوپری اور نچلی پلکیں اور ڑککن کے حاشیے شامل ہیں۔",
+      "ny": "Gulu loyamba lili ndi nsidze za zikope zapamwamba ndi zapansi, komanso m'mphepete mwa zikopezo."
     },
     {
       "id": "structures-02",
@@ -211,7 +224,8 @@
       "ha": "Na biyu: conjunctiva da sclera,",
       "yo": "Ìkejì: conjunctiva àti sclera,",
       "ig": "Nke abụọ: conjunctiva na sclera,",
-      "ur": "دوسرے میں conjunctiva اور sclera شامل ہیں،"
+      "ur": "دوسرے میں conjunctiva اور sclera شامل ہیں،",
+      "ny": "Gulu lachiwiri lili ndi nembanemba yophimba diso ndi mbali yoyera ya diso,"
     },
     {
       "id": "structures-03",
@@ -229,7 +243,8 @@
       "ha": "har da aljihun ƙasa.",
       "yo": "pẹ̀lú àpò ìsàlẹ̀.",
       "ig": "tinyere akpa dị n'okpuru.",
-      "ur": "لوئر فارنکس سمیت۔"
+      "ur": "لوئر فارنکس سمیت۔",
+      "ny": "kuphatikizapo khola la nembanembayo pansi pa chikope."
     },
     {
       "id": "structures-04",
@@ -247,7 +262,11 @@
       "ha": "Na uku: cornea,",
       "yo": "Ìkẹta: cornea,",
       "ig": "Nke atọ: cornea,",
-      "ur": "تیسرا گروپ کارنیا ہے،"
+      "ur": "تیسرا گروپ کارنیا ہے،",
+      "ny": "Gulu lachitatu lili ndi khungu lowonekera lakutsogolo kwa diso, lotchedwa cornea,",
+      "ttsText": {
+        "ny": "Gulu lachitatu lili ndi cornea,"
+      }
     },
     {
       "id": "structures-05",
@@ -265,7 +284,8 @@
       "ha": "da iyakarta da sclera, wato limbus,",
       "yo": "àti ààlà rẹ̀ pẹ̀lú sclera, limbus,",
       "ig": "na njikọ ya na sclera, limbus,",
-      "ur": "اور اس کا سکلیرا سے جوڑ، جسے لمبس کہتے ہیں،"
+      "ur": "اور اس کا سکلیرا سے جوڑ، جسے لمبس کہتے ہیں،",
+      "ny": "ndi malire ake pamene limakumana ndi mbali yoyera ya diso. Malirewa amatchedwa limbus."
     },
     {
       "id": "structures-06",
@@ -283,7 +303,8 @@
       "ha": "da baƙin tsakiyar ido da iris ya kewaye.",
       "yo": "àti ihò dúdú tí iris yí ká.",
       "ig": "na oghere ojii anya nke iris gbara gburugburu.",
-      "ur": "اس کے ساتھ ساتھ طالبہ، جو ایرس سے گھرا ہوا ہے۔"
+      "ur": "اس کے ساتھ ساتھ طالبہ، جو ایرس سے گھرا ہوا ہے۔",
+      "ny": "Lilinso ndi mwana wa diso, amene wazunguliridwa ndi mbali ya mtundu ya diso, yotchedwa iris."
     },
     {
       "id": "conditions-01",
@@ -304,7 +325,8 @@
       "ha": "Waɗannan hotunan cututtuka ne daban-daban. Ka ɗauki lokaci ka duba da Arclight.",
       "yo": "Àwòrán àwọn àìsàn oríṣiríṣi nìyí. Fi àkókò ṣe àyẹ̀wò pẹ̀lú Arclight.",
       "ig": "Ndị a bụ foto ọrịa dị iche iche. Wepụta oge jiri Arclight nyochaa.",
-      "ur": "یہ مختلف حالات کی تصویریں ہیں۔ اپنے Arclight سے جانچنے کے لیے وقت نکالیں۔"
+      "ur": "یہ مختلف حالات کی تصویریں ہیں۔ اپنے Arclight سے جانچنے کے لیے وقت نکالیں۔",
+      "ny": "Izi ndi zithunzi za mavuto osiyanasiyana a maso. Tengani nthawi yoona bwinobwino pogwiritsa ntchito Arclight."
     },
     {
       "id": "chamber-depth-01",
@@ -322,7 +344,8 @@
       "ha": "Ɗakin gaba yana tsakanin cornea da iris.",
       "yo": "Iyẹ̀wù iwájú wà láàárín cornea àti iris.",
       "ig": "Ime ụlọ ihu anya dị n'etiti cornea na iris.",
-      "ur": "پچھلا چیمبر کارنیا اور ایرس کے درمیان کی جگہ ہے۔"
+      "ur": "پچھلا چیمبر کارنیا اور ایرس کے درمیان کی جگہ ہے۔",
+      "ny": "Chipinda chakutsogolo cha diso ndi malo pakati pa cornea ndi iris."
     },
     {
       "id": "chamber-depth-02",
@@ -340,7 +363,8 @@
       "ha": "Haske daga gefen kunne yana nuna zurfin ɗakin gaba.",
       "yo": "Tan ìmọ́lẹ̀ láti ẹ̀gbẹ́ etí láti mọ ìjìnlẹ̀ iyẹ̀wù iwájú.",
       "ig": "Tinye ìhè site n'akụkụ ntị iji lelee omimi ime ụlọ ihu anya.",
-      "ur": "کنپٹی کی طرف سے روشنی ڈال کر آنکھ کے اگلے خانے کی گہرائی دیکھیں۔"
+      "ur": "کنپٹی کی طرف سے روشنی ڈال کر آنکھ کے اگلے خانے کی گہرائی دیکھیں۔",
+      "ny": "Mungayerekezere kuya kwa chipinda chakutsogolo powunikira kuchokera mbali ya khutu."
     },
     {
       "id": "chamber-depth-03",
@@ -360,8 +384,10 @@
       "ig": "Onyinyo n'akụkụ imi: omimi nwere ike ịdị nta. Ziga.",
       "ur": "ناک کی طرف سایہ ہو تو اگلا خانہ کم گہرا ہو سکتا ہے۔ مریض کو ریفر کریں۔",
       "ttsText": {
-        "ur": "ناکی سایہ، کم گہرائی ممکن۔ ریفر کریں۔"
-      }
+        "ur": "ناکی سایہ، کم گہرائی ممکن۔ ریفر کریں۔",
+        "ny": "Mthunzi wa m'mphuno ungasonyeze chipinda chosaya. Tumizani wodwala."
+      },
+      "ny": "Mthunzi kumbali ya mphuno ungasonyeze kuti chipindacho n'chosaya. Tumizani wodwala kuti akayesedwe."
     },
     {
       "id": "fluorescein-application",
@@ -379,7 +405,8 @@
       "ha": "Saka fluorescein da tsiri ko ɗigon Minims.",
       "yo": "Fi fluorescein sínú ojú pẹ̀lú bébà rẹ̀ tàbí Minims.",
       "ig": "Tinye fluorescein n'anya na mpempe ya ma ọ bụ Minims.",
-      "ur": "آنکھ میں فلوروسین لگانے کے لیے فلوروسین کی پٹی یا منیم ڈراپر استعمال کریں۔"
+      "ur": "آنکھ میں فلوروسین لگانے کے لیے فلوروسین کی پٹی یا منیم ڈراپر استعمال کریں۔",
+      "ny": "Ikani fluorescein m'diso pogwiritsa ntchito kachidutswa ka fluorescein kapena botolo laling'ono la Minims."
     },
     {
       "id": "fluorescein-01",
@@ -397,7 +424,8 @@
       "ha": "Duba cornea da haske shuɗi.",
       "yo": "Fi ìmọ́lẹ̀ búlúù wo cornea.",
       "ig": "Jiri ìhè anụnụ anụnụ lelee cornea.",
-      "ur": "نیلی روشنی میں قرنیہ دیکھیں۔"
+      "ur": "نیلی روشنی میں قرنیہ دیکھیں۔",
+      "ny": "Sankhani kuwala kwabuluu ndipo yang'anani cornea."
     },
     {
       "id": "fluorescein-02",
@@ -415,7 +443,8 @@
       "ha": "Wuraren da saman ya bare ko yake da cuta za su bayyana. Rubuta wurinsu da girmansu.",
       "yo": "Ibi tí awọ òkè ti bó àti ibi àìsàn yóò hàn. Kọ ibi àti bí wọ́n ṣe tó sílẹ̀.",
       "ig": "Ebe elu akpụkpọ furu efu na ebe ọrịa ga-apụta. Dee ebe ha nọ na nha ha.",
-      "ur": "خراب یا سطحی تہہ سے محروم حصے نمایاں ہوں گے۔ ان کی جگہ اور جسامت درج کریں۔"
+      "ur": "خراب یا سطحی تہہ سے محروم حصے نمایاں ہوں گے۔ ان کی جگہ اور جسامت درج کریں۔",
+      "ny": "Malo owonongeka pamwamba pa cornea ndi madera a matenda adzaoneka. Lembani malo ake ndi kukula kwake."
     },
     {
       "id": "lid-eversion-grip",
@@ -433,7 +462,8 @@
       "ha": "Riƙe gashin fatar ido ta sama a hankali da babban yatsa da manuniya.",
       "yo": "Fi àtàǹpàkò àti ìka atọ́ka di irun ìpéǹpéjú òkè mú rọra.",
       "ig": "Jiri mkpịsị aka ukwu na nke na-esote ya jide nku anya elu nwayọọ.",
-      "ur": "اوپری پلک کے بال انگوٹھے اور شہادت کی انگلی سے نرمی سے تھامیں۔"
+      "ur": "اوپری پلک کے بال انگوٹھے اور شہادت کی انگلی سے نرمی سے تھامیں۔",
+      "ny": "Gwirani mofatsa nsidze za chikope chakumtunda ndi chala chachikulu ndi chala cholozera."
     },
     {
       "id": "lid-eversion-01",
@@ -451,7 +481,8 @@
       "ha": "Da sandar auduga a fatar sama, tallafa ka juya fatar sama.",
       "yo": "Fi igi òwú sí ìpéǹpéjú òkè, lò ó gẹ́gẹ́ bí ìtìlẹ́yìn láti yí i sókè.",
       "ig": "Tinye osisi owu n'elu mkpuchi anya, jiri ya kwado ya ka ị tụgharịa ya elu.",
-      "ur": "اوپری پلک پر روئی کی تیلی رکھیں اور اس کے سہارے پلک اوپر الٹیں۔"
+      "ur": "اوپری پلک پر روئی کی تیلی رکھیں اور اس کے سہارے پلک اوپر الٹیں۔",
+      "ny": "Ikani kandodo ka thonje pa chikope chakumtunda monga potsamira ndipo tembenuzirani chikopecho mmwamba."
     },
     {
       "id": "lid-eversion-02",
@@ -469,7 +500,8 @@
       "ha": "Riƙe fatar a juye, ka fara duba cikinta da ido kawai.",
       "yo": "Di ìpéǹpéjú tí a yí mú. Kọ́kọ́ wo inú rẹ̀ pẹ̀lú ojú lásán.",
       "ig": "Jide mkpuchi ka ọ tụgharịrị. Lelee ime ya na anya nkịtị.",
-      "ur": "پلک الٹی رکھیں اور پہلے اس کی اندرونی سطح بغیر عدسے کے دیکھیں،"
+      "ur": "پلک الٹی رکھیں اور پہلے اس کی اندرونی سطح بغیر عدسے کے دیکھیں،",
+      "ny": "Gwirani chikope chotembenuzidwacho. Yambani kuyang'ana mkati mwake ndi maso anu,"
     },
     {
       "id": "lid-eversion-03",
@@ -490,7 +522,8 @@
       "ha": "Kusanto da Arclight don gani da girma.",
       "yo": "Lẹ́yìn náà, mú Arclight sún mọ́ ọn láti rí i tóbi.",
       "ig": "Weta Arclight nso ka i lee ya ibu.",
-      "ur": "پھر ایک بڑا منظر دیکھنے کے لیے Arclight لائیں۔"
+      "ur": "پھر ایک بڑا منظر دیکھنے کے لیے Arclight لائیں۔",
+      "ny": "kenako yandikitsani Arclight kuti muone bwino chokulitsidwa."
     }
   ],
   "originalSourceVideo": "/videos/FullAnim/New_FrontofEyeFullAnim.mp4",
@@ -509,7 +542,8 @@
         "ha": "Dubawa da bincike da ƙarin girma",
         "yo": "Wíwo àti àyẹ̀wò ní títóbi",
         "ig": "Nlele na nyocha na-ebuwanye ihe",
-        "ur": "مشاہدہ اور بڑا امتحان"
+        "ur": "مشاہدہ اور بڑا امتحان",
+        "ny": "Kuyang'ana ndi kuyeza pogwiritsa ntchito chida chokulitsa"
       }
     },
     {
@@ -526,7 +560,8 @@
         "ha": "Zurfin ɗakin gaba na ido",
         "yo": "Ìjìnlẹ̀ iyẹ̀wù iwájú ojú",
         "ig": "Omimi ime ụlọ ihu anya",
-        "ur": "پچھلے چیمبر کی گہرائی"
+        "ur": "پچھلے چیمبر کی گہرائی",
+        "ny": "Kuya kwa chipinda chakutsogolo cha diso"
       }
     },
     {
@@ -543,7 +578,8 @@
         "ha": "Rina cornea da fluorescein",
         "yo": "Fífi fluorescein kun cornea",
         "ig": "Iji fluorescein tee cornea agba",
-        "ur": "فلوروسین کورنیل سٹیننگ"
+        "ur": "فلوروسین کورنیل سٹیننگ",
+        "ny": "Kuyika utoto wa fluorescein pa cornea"
       }
     },
     {
@@ -560,7 +596,8 @@
         "ha": "Juya fatar ido ta sama",
         "yo": "Yíyí ìpéǹpéjú òkè padà",
         "ig": "Ịtụgharị mkpuchi anya elu",
-        "ur": "اوپری پپوٹا Eversion"
+        "ur": "اوپری پپوٹا Eversion",
+        "ny": "Kutembenuza chikope chakumtunda"
       }
     }
   ]

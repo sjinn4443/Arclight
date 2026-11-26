@@ -2,90 +2,135 @@
   "schemaVersion": 1,
   "title": "Apply an Eye Pad and Eye Shield",
   "sourceVideo": "/videos/Workshop/PEC/8.Applypadandshield_720p.mp4",
-  "durationSeconds": 62.449999999999996,
+  "durationSeconds": 61.7,
   "defaultLanguage": "en",
   "languages": {
     "en": {
       "label": "English",
-      "locale": "en-US",
-      "voice": "Microsoft Zira Desktop"
+      "locale": "en-GB",
+      "voice": "en-GB-SoniaNeural"
     },
     "ko": {
       "label": "한국어",
       "locale": "ko-KR",
-      "voice": "Microsoft Heami Desktop"
+      "voice": "ko-KR-SunHiNeural"
     },
     "ur": {
       "label": "اردو",
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "voice": "facebook/mms-tts-nya",
+      "provider": "Meta MMS (local)",
+      "trimEdgeSilenceDb": -42
     }
   },
   "cues": [
     {
-      "id": "apply-1",
-      "start": 1,
-      "end": 6.54,
-      "en": "Prepare an eye pad, an eye shield, adhesive tape and scissors.",
-      "ko": "안대 패드, 눈 보호대, 반창고와 가위를 준비합니다.",
-      "ur": "آئی پیڈ، آئی شیلڈ، چپکنے والی ٹیپ اور قینچی تیار کریں۔"
-    },
-    {
-      "id": "apply-2",
-      "start": 6.54,
-      "end": 10.98,
-      "en": "Explain the procedure to the patient and help them sit comfortably.",
-      "ko": "환자에게 절차를 설명하고 편안하게 앉도록 돕습니다.",
-      "ur": "مریض کو طریقہ بتائیں اور آرام سے بٹھائیں۔"
-    },
-    {
       "id": "apply-3",
-      "start": 10.98,
-      "end": 20.3,
-      "en": "Gently clean the skin around the eye, then dry it so the tape will stick.",
-      "ko": "눈 주위 피부를 부드럽게 닦고 반창고가 잘 붙도록 말립니다.",
-      "ur": "آنکھ کے ارد گرد کی جلد کو آہستہ سے صاف کریں، پھر اسے خشک کریں تاکہ ٹیپ چپک جائے۔"
+      "start": 0,
+      "end": 6.3,
+      "en": "You will need Steri-Strips, sticky tape, an eye pad, shield and scissors.",
+      "ko": "스테리 스트립, 반창고, 안대 패드, 눈 보호대와 가위가 필요합니다.",
+      "ur": "اسٹیری اسٹرپس، ٹیپ، آنکھ کا پیڈ، شیلڈ اور قینچی تیار کریں۔",
+      "ny": "Konzani timizere ta Steri-Strip, tepi yomata, chophimba chofewa, chotetezera diso ndi lumo."
     },
     {
       "id": "apply-4",
-      "start": 20.3,
-      "end": 31.42,
-      "en": "Measure and cut strips of adhesive tape before applying the pad.",
-      "ko": "패드를 붙이기 전에 반창고의 길이를 재고 잘라 준비합니다.",
-      "ur": "پیڈ لگانے سے پہلے چپکنے والی ٹیپ کی پٹیوں کی پیمائش اور کاٹ لیں۔"
-    },
-    {
-      "id": "apply-5",
-      "start": 31.42,
-      "end": 37.94,
-      "en": "Prepare the eye pad and attach the strips of tape, as shown.",
-      "ko": "그림과 같이 안대 패드에 반창고를 붙여 준비합니다.",
-      "ur": "آئی پیڈ تیار کریں اور ٹیپ کی پٹیوں کو جوڑیں، جیسا کہ دکھایا گیا ہے۔"
+      "start": 6.3,
+      "end": 17.85,
+      "en": "Explain what you're going to do and gain consent.",
+      "ko": "환자에게 절차를 설명하고 동의를 구합니다.",
+      "ur": "طریقہ سمجھائیں اور رضامندی لیں۔",
+      "ny": "Fotokozani zimene muchite ndipo pemphani chilolezo."
     },
     {
       "id": "apply-6",
-      "start": 37.94,
-      "end": 44.16,
-      "en": "Ask the patient to gently close the eye. Place the pad over the closed eyelid.",
-      "ko": "환자에게 눈을 부드럽게 감도록 한 뒤 감긴 눈꺼풀 위에 패드를 놓습니다.",
-      "ur": "مریض کو آہستہ سے آنکھ بند کرنے کو کہیں۔ بند پپوٹا کے اوپر پیڈ رکھیں۔"
+      "start": 17.85,
+      "end": 22.9,
+      "en": "Ask the patient to gently close both eyelids.",
+      "ko": "환자에게 양쪽 눈을 가볍게 감아 보도록 합니다.",
+      "ur": "مریض کو دونوں پلکیں آہستہ بند کرنے کو کہیں۔",
+      "ny": "Pemphani wodwala kuti atseke zikope zonse mofatsa."
     },
     {
       "id": "apply-7",
-      "start": 44.16,
-      "end": 52.83,
-      "en": "Secure the tape diagonally from the forehead to the cheek. Keep the other eye uncovered.",
-      "ko": "이마에서 볼 방향으로 반창고를 비스듬히 붙여 패드를 고정합니다. 반대쪽 눈은 가리지 않습니다.",
-      "ur": "ٹیپ کو پیشانی سے گال تک ترچھی طور پر محفوظ کریں۔ دوسری آنکھ کو بے پردہ رکھیں۔"
+      "start": 22.9,
+      "end": 29.85,
+      "en": "Place a strip on the upper lid, pulling it down to close the lids, then stick to the lower lid and cheek.",
+      "ko": "윗눈꺼풀에 스트립을 붙이고 아래로 당겨 눈을 감긴 뒤, 아랫눈꺼풀과 볼에 붙입니다.",
+      "ur": "پٹی اوپری پلک پر رکھیں، پلک بند کرنے کے لیے نیچے کھینچیں، پھر نچلی پلک اور گال پر چپکائیں۔",
+      "ny": "Ikani kamzere pa chikope chakumtunda. Kokani pansi kuti zikope zitseke, ndipo matani pa chikope chapansi ndi patsaya."
     },
     {
       "id": "apply-8",
-      "start": 52.83,
-      "end": 62.449999999999996,
-      "en": "Place the eye shield over the pad and secure it with tape. This is how you apply an eye shield.",
-      "ko": "패드 위에 눈 보호대를 놓고 반창고로 고정합니다. 이렇게 눈 보호대 부착을 마칩니다.",
-      "ur": "آئی شیلڈ کو پیڈ پر رکھیں اور اسے ٹیپ سے محفوظ کریں۔ اس طرح آپ آئی شیلڈ لگاتے ہیں۔"
+      "start": 29.85,
+      "end": 32.65,
+      "en": "Use two or three Steri-Strips.",
+      "ko": "스테리 스트립을 두세 줄 사용합니다.",
+      "ur": "دو یا تین پٹیاں لگائیں۔",
+      "ny": "Gwiritsani timizere tiwiri kapena titatu.",
+      "ttsText": {
+        "ur": "دو سے تین پٹیاں لگائیں۔"
+      }
+    },
+    {
+      "id": "apply-9",
+      "start": 32.65,
+      "end": 40.15,
+      "en": "Next, place a piece of sticky tape across the eye pad that is roughly two to three times the length of the pad.",
+      "ko": "다음으로 패드 길이의 두세 배 정도 되는 반창고 한 줄을 안대 패드에 가로질러 붙입니다.",
+      "ur": "پیڈ کے اوپر چپکنے والی ٹیپ لگائیں۔ ٹیپ پیڈ کی لمبائی سے تقریباً دو سے تین گنا ہو۔",
+      "ny": "Kenako ikani tepi pa chophimba chofewa. Tepi ikhale yaitali kuwirikiza kawiri kapena katatu utali wa chophimbacho."
+    },
+    {
+      "id": "apply-11",
+      "start": 40.15,
+      "end": 47.15,
+      "en": "Place the taped pad over the closed eye and secure it to the forehead.",
+      "ko": "반창고가 붙은 패드를 감긴 눈꺼풀 위에 놓고 이마에 고정합니다.",
+      "ur": "بند پلکوں پر ٹیپ والا پیڈ رکھیں اور پیشانی پر چپکائیں۔",
+      "ny": "Ikani chophimba chokhala ndi tepi pa zikope zotsekedwa ndipo matani pamphumi."
+    },
+    {
+      "id": "apply-12",
+      "start": 47.15,
+      "end": 50.35,
+      "en": "Add another two or three pieces of sticky tape.",
+      "ko": "반창고를 두세 줄 더 붙입니다.",
+      "ur": "ٹیپ کے دو یا تین اور ٹکڑے لگائیں۔",
+      "ny": "Onjezerani zidutswa ziwiri kapena zitatu za tepi."
+    },
+    {
+      "id": "apply-13",
+      "start": 50.35,
+      "end": 54.25,
+      "en": "Finally, place a length of sticky tape over the shield.",
+      "ko": "마지막으로 보호대 겉면에 반창고 한 줄을 붙입니다.",
+      "ur": "آخر میں شیلڈ پر ٹیپ کی ایک پٹی لگائیں۔",
+      "ny": "Pomaliza, ikani tepi pa chotetezera cholimba."
+    },
+    {
+      "id": "apply-14",
+      "start": 54.25,
+      "end": 58.8,
+      "en": "Position over the eye pad and secure to the forehead and cheek.",
+      "ko": "보호대를 패드 위에 놓고 이마와 볼에 고정합니다.",
+      "ur": "شیلڈ پیڈ کے اوپر رکھ کر پیشانی اور گال پر چپکائیں۔",
+      "ny": "Ikani chotetezera pamwamba pa chophimba chofewa ndipo chimateni pamphumi ndi patsaya."
+    },
+    {
+      "id": "apply-15",
+      "start": 58.8,
+      "end": 61.7,
+      "en": "Add a second length of sticky tape.",
+      "ko": "두 번째 반창고를 붙입니다.",
+      "ur": "ٹیپ کی دوسری پٹی لگائیں۔",
+      "ny": "Ikani tepi yachiwiri."
     }
   ],
   "videoTitleCues": [
@@ -93,173 +138,298 @@
       "sourceText": "Preparation",
       "translations": {
         "ko": "준비",
-        "ur": "تیاری"
+        "ur": "تیاری",
+        "ny": "Kukonzekera"
       }
     },
     {
       "sourceText": "Apply the eye pad",
       "translations": {
         "ko": "안대 패드 부착",
-        "ur": "آئی پیڈ لگائیں۔"
+        "ur": "آئی پیڈ لگائیں۔",
+        "ny": "Ikani chophimba chofewa pa diso"
       }
     },
     {
       "sourceText": "Apply the eye shield",
       "translations": {
         "ko": "눈 보호대 부착",
-        "ur": "آئی شیلڈ لگائیں۔"
+        "ur": "آئی شیلڈ لگائیں۔",
+        "ny": "Ikani chotetezera diso cholimba"
       }
     }
   ],
   "timedCues": {
     "en": [
       {
-        "id": "apply-1",
-        "start": 1,
-        "end": 6.54,
-        "text": "Prepare an eye pad, an eye shield, adhesive tape and scissors."
-      },
-      {
-        "id": "apply-2",
-        "start": 6.54,
-        "end": 10.98,
-        "text": "Explain the procedure to the patient and help them sit comfortably."
-      },
-      {
         "id": "apply-3",
-        "start": 10.98,
-        "end": 20.3,
-        "text": "Gently clean the skin around the eye, then dry it so the tape will stick."
+        "start": 0,
+        "end": 6.3,
+        "text": "You will need Steri-Strips, sticky tape, an eye pad, shield and scissors."
       },
       {
         "id": "apply-4",
-        "start": 20.3,
-        "end": 31.42,
-        "text": "Measure and cut strips of adhesive tape before applying the pad."
-      },
-      {
-        "id": "apply-5",
-        "start": 31.42,
-        "end": 37.94,
-        "text": "Prepare the eye pad and attach the strips of tape, as shown."
+        "start": 6.3,
+        "end": 17.85,
+        "text": "Explain what you're going to do and gain consent."
       },
       {
         "id": "apply-6",
-        "start": 37.94,
-        "end": 44.16,
-        "text": "Ask the patient to gently close the eye. Place the pad over the closed eyelid."
+        "start": 17.85,
+        "end": 22.9,
+        "text": "Ask the patient to gently close both eyelids."
       },
       {
         "id": "apply-7",
-        "start": 44.16,
-        "end": 52.83,
-        "text": "Secure the tape diagonally from the forehead to the cheek. Keep the other eye uncovered."
+        "start": 22.9,
+        "end": 29.85,
+        "text": "Place a strip on the upper lid, pulling it down to close the lids, then stick to the lower lid and cheek."
       },
       {
         "id": "apply-8",
-        "start": 52.83,
-        "end": 62.449999999999996,
-        "text": "Place the eye shield over the pad and secure it with tape. This is how you apply an eye shield."
+        "start": 29.85,
+        "end": 32.65,
+        "text": "Use two or three Steri-Strips."
+      },
+      {
+        "id": "apply-9",
+        "start": 32.65,
+        "end": 40.15,
+        "text": "Next, place a piece of sticky tape across the eye pad that is roughly two to three times the length of the pad."
+      },
+      {
+        "id": "apply-11",
+        "start": 40.15,
+        "end": 47.15,
+        "text": "Place the taped pad over the closed eye and secure it to the forehead."
+      },
+      {
+        "id": "apply-12",
+        "start": 47.15,
+        "end": 50.35,
+        "text": "Add another two or three pieces of sticky tape."
+      },
+      {
+        "id": "apply-13",
+        "start": 50.35,
+        "end": 54.25,
+        "text": "Finally, place a length of sticky tape over the shield."
+      },
+      {
+        "id": "apply-14",
+        "start": 54.25,
+        "end": 58.8,
+        "text": "Position over the eye pad and secure to the forehead and cheek."
+      },
+      {
+        "id": "apply-15",
+        "start": 58.8,
+        "end": 61.7,
+        "text": "Add a second length of sticky tape."
       }
     ],
     "ko": [
       {
-        "id": "apply-1",
-        "start": 1,
-        "end": 6.54,
-        "text": "안대 패드, 눈 보호대, 반창고와 가위를 준비합니다."
-      },
-      {
-        "id": "apply-2",
-        "start": 6.54,
-        "end": 10.98,
-        "text": "환자에게 절차를 설명하고 편안하게 앉도록 돕습니다."
-      },
-      {
         "id": "apply-3",
-        "start": 10.98,
-        "end": 20.3,
-        "text": "눈 주위 피부를 부드럽게 닦고 반창고가 잘 붙도록 말립니다."
+        "start": 0,
+        "end": 6.3,
+        "text": "스테리 스트립, 반창고, 안대 패드, 눈 보호대와 가위가 필요합니다."
       },
       {
         "id": "apply-4",
-        "start": 20.3,
-        "end": 31.42,
-        "text": "패드를 붙이기 전에 반창고의 길이를 재고 잘라 준비합니다."
-      },
-      {
-        "id": "apply-5",
-        "start": 31.42,
-        "end": 37.94,
-        "text": "그림과 같이 안대 패드에 반창고를 붙여 준비합니다."
+        "start": 6.3,
+        "end": 17.85,
+        "text": "환자에게 절차를 설명하고 동의를 구합니다."
       },
       {
         "id": "apply-6",
-        "start": 37.94,
-        "end": 44.16,
-        "text": "환자에게 눈을 부드럽게 감도록 한 뒤 감긴 눈꺼풀 위에 패드를 놓습니다."
+        "start": 17.85,
+        "end": 22.9,
+        "text": "환자에게 양쪽 눈을 가볍게 감아 보도록 합니다."
       },
       {
         "id": "apply-7",
-        "start": 44.16,
-        "end": 52.83,
-        "text": "이마에서 볼 방향으로 반창고를 비스듬히 붙여 패드를 고정합니다. 반대쪽 눈은 가리지 않습니다."
+        "start": 22.9,
+        "end": 29.85,
+        "text": "윗눈꺼풀에 스트립을 붙이고 아래로 당겨 눈을 감긴 뒤, 아랫눈꺼풀과 볼에 붙입니다."
       },
       {
         "id": "apply-8",
-        "start": 52.83,
-        "end": 62.449999999999996,
-        "text": "패드 위에 눈 보호대를 놓고 반창고로 고정합니다. 이렇게 눈 보호대 부착을 마칩니다."
+        "start": 29.85,
+        "end": 32.65,
+        "text": "스테리 스트립을 두세 줄 사용합니다."
+      },
+      {
+        "id": "apply-9",
+        "start": 32.65,
+        "end": 40.15,
+        "text": "다음으로 패드 길이의 두세 배 정도 되는 반창고 한 줄을 안대 패드에 가로질러 붙입니다."
+      },
+      {
+        "id": "apply-11",
+        "start": 40.15,
+        "end": 47.15,
+        "text": "반창고가 붙은 패드를 감긴 눈꺼풀 위에 놓고 이마에 고정합니다."
+      },
+      {
+        "id": "apply-12",
+        "start": 47.15,
+        "end": 50.35,
+        "text": "반창고를 두세 줄 더 붙입니다."
+      },
+      {
+        "id": "apply-13",
+        "start": 50.35,
+        "end": 54.25,
+        "text": "마지막으로 보호대 겉면에 반창고 한 줄을 붙입니다."
+      },
+      {
+        "id": "apply-14",
+        "start": 54.25,
+        "end": 58.8,
+        "text": "보호대를 패드 위에 놓고 이마와 볼에 고정합니다."
+      },
+      {
+        "id": "apply-15",
+        "start": 58.8,
+        "end": 61.7,
+        "text": "두 번째 반창고를 붙입니다."
       }
     ],
     "ur": [
       {
-        "id": "apply-1",
-        "start": 1,
-        "end": 6.54,
-        "text": "آئی پیڈ، آئی شیلڈ، چپکنے والی ٹیپ اور قینچی تیار کریں۔"
-      },
-      {
-        "id": "apply-2",
-        "start": 6.54,
-        "end": 10.98,
-        "text": "مریض کو طریقہ بتائیں اور آرام سے بٹھائیں۔"
-      },
-      {
         "id": "apply-3",
-        "start": 10.98,
-        "end": 20.3,
-        "text": "آنکھ کے ارد گرد کی جلد کو آہستہ سے صاف کریں، پھر اسے خشک کریں تاکہ ٹیپ چپک جائے۔"
+        "start": 0,
+        "end": 6.3,
+        "text": "اسٹیری اسٹرپس، ٹیپ، آنکھ کا پیڈ، شیلڈ اور قینچی تیار کریں۔"
       },
       {
         "id": "apply-4",
-        "start": 20.3,
-        "end": 31.42,
-        "text": "پیڈ لگانے سے پہلے چپکنے والی ٹیپ کی پٹیوں کی پیمائش اور کاٹ لیں۔"
-      },
-      {
-        "id": "apply-5",
-        "start": 31.42,
-        "end": 37.94,
-        "text": "آئی پیڈ تیار کریں اور ٹیپ کی پٹیوں کو جوڑیں، جیسا کہ دکھایا گیا ہے۔"
+        "start": 6.3,
+        "end": 17.85,
+        "text": "طریقہ سمجھائیں اور رضامندی لیں۔"
       },
       {
         "id": "apply-6",
-        "start": 37.94,
-        "end": 44.16,
-        "text": "مریض کو آہستہ سے آنکھ بند کرنے کو کہیں۔ بند پپوٹا کے اوپر پیڈ رکھیں۔"
+        "start": 17.85,
+        "end": 22.9,
+        "text": "مریض کو دونوں پلکیں آہستہ بند کرنے کو کہیں۔"
       },
       {
         "id": "apply-7",
-        "start": 44.16,
-        "end": 52.83,
-        "text": "ٹیپ کو پیشانی سے گال تک ترچھی طور پر محفوظ کریں۔ دوسری آنکھ کو بے پردہ رکھیں۔"
+        "start": 22.9,
+        "end": 29.85,
+        "text": "پٹی اوپری پلک پر رکھیں، پلک بند کرنے کے لیے نیچے کھینچیں، پھر نچلی پلک اور گال پر چپکائیں۔"
       },
       {
         "id": "apply-8",
-        "start": 52.83,
-        "end": 62.449999999999996,
-        "text": "آئی شیلڈ کو پیڈ پر رکھیں اور اسے ٹیپ سے محفوظ کریں۔ اس طرح آپ آئی شیلڈ لگاتے ہیں۔"
+        "start": 29.85,
+        "end": 32.65,
+        "text": "دو یا تین پٹیاں لگائیں۔"
+      },
+      {
+        "id": "apply-9",
+        "start": 32.65,
+        "end": 40.15,
+        "text": "پیڈ کے اوپر چپکنے والی ٹیپ لگائیں۔ ٹیپ پیڈ کی لمبائی سے تقریباً دو سے تین گنا ہو۔"
+      },
+      {
+        "id": "apply-11",
+        "start": 40.15,
+        "end": 47.15,
+        "text": "بند پلکوں پر ٹیپ والا پیڈ رکھیں اور پیشانی پر چپکائیں۔"
+      },
+      {
+        "id": "apply-12",
+        "start": 47.15,
+        "end": 50.35,
+        "text": "ٹیپ کے دو یا تین اور ٹکڑے لگائیں۔"
+      },
+      {
+        "id": "apply-13",
+        "start": 50.35,
+        "end": 54.25,
+        "text": "آخر میں شیلڈ پر ٹیپ کی ایک پٹی لگائیں۔"
+      },
+      {
+        "id": "apply-14",
+        "start": 54.25,
+        "end": 58.8,
+        "text": "شیلڈ پیڈ کے اوپر رکھ کر پیشانی اور گال پر چپکائیں۔"
+      },
+      {
+        "id": "apply-15",
+        "start": 58.8,
+        "end": 61.7,
+        "text": "ٹیپ کی دوسری پٹی لگائیں۔"
+      }
+    ],
+    "ny": [
+      {
+        "id": "apply-3",
+        "start": 0,
+        "end": 6.3,
+        "text": "Konzani timizere ta Steri-Strip, tepi yomata, chophimba chofewa, chotetezera diso ndi lumo."
+      },
+      {
+        "id": "apply-4",
+        "start": 6.3,
+        "end": 17.85,
+        "text": "Fotokozani zimene muchite ndipo pemphani chilolezo."
+      },
+      {
+        "id": "apply-6",
+        "start": 17.85,
+        "end": 22.9,
+        "text": "Pemphani wodwala kuti atseke zikope zonse mofatsa."
+      },
+      {
+        "id": "apply-7",
+        "start": 22.9,
+        "end": 29.85,
+        "text": "Ikani kamzere pa chikope chakumtunda. Kokani pansi kuti zikope zitseke, ndipo matani pa chikope chapansi ndi patsaya."
+      },
+      {
+        "id": "apply-8",
+        "start": 29.85,
+        "end": 32.65,
+        "text": "Gwiritsani timizere tiwiri kapena titatu."
+      },
+      {
+        "id": "apply-9",
+        "start": 32.65,
+        "end": 40.15,
+        "text": "Kenako ikani tepi pa chophimba chofewa. Tepi ikhale yaitali kuwirikiza kawiri kapena katatu utali wa chophimbacho."
+      },
+      {
+        "id": "apply-11",
+        "start": 40.15,
+        "end": 47.15,
+        "text": "Ikani chophimba chokhala ndi tepi pa zikope zotsekedwa ndipo matani pamphumi."
+      },
+      {
+        "id": "apply-12",
+        "start": 47.15,
+        "end": 50.35,
+        "text": "Onjezerani zidutswa ziwiri kapena zitatu za tepi."
+      },
+      {
+        "id": "apply-13",
+        "start": 50.35,
+        "end": 54.25,
+        "text": "Pomaliza, ikani tepi pa chotetezera cholimba."
+      },
+      {
+        "id": "apply-14",
+        "start": 54.25,
+        "end": 58.8,
+        "text": "Ikani chotetezera pamwamba pa chophimba chofewa ndipo chimateni pamphumi ndi patsaya."
+      },
+      {
+        "id": "apply-15",
+        "start": 58.8,
+        "end": 61.7,
+        "text": "Ikani tepi yachiwiri."
       }
     ]
   }

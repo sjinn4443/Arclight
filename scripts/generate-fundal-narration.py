@@ -26,7 +26,7 @@ DEFAULT_ARTIFACTS = ROOT / ".codex-artifacts/fundal-reflex-narration"
 DEFAULT_PUBLIC = ROOT / "public/narration/fundal-reflex/full-animation"
 MAX_PLAYBACK_SPEED = 1.08
 SYNC_TOLERANCE_SECONDS = 0.25
-NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur")
+NARRATION_LANGUAGES = ("en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur", "ny")
 
 
 def parse_args() -> argparse.Namespace:

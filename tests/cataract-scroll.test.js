@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import sharp from "sharp";
 import { JSDOM } from "jsdom";
 import {
   CATARACT_SCROLL_CONFIG as cfg,
@@ -28,7 +29,7 @@ test("Primary Cataract scrolly is immediately above Simulator and has a named pr
 });
 
 test("all original-art scenes have valid local dependencies and exact narration endpoints", () => {
-  expect(cfg.paths).toHaveLength(18);
+  expect(cfg.paths).toHaveLength(19);
   expect(cfg.sections.map((s) => s.title)).toEqual([
     "History Taking",
     "Visual Acuity",
@@ -37,7 +38,7 @@ test("all original-art scenes have valid local dependencies and exact narration 
     "Fundal Reflex",
     "Fundoscopy",
   ]);
-  expect(cfg.sections.map((s) => s.startIndex)).toEqual([0, 3, 6, 9, 12, 15]);
+  expect(cfg.sections.map((s) => s.startIndex)).toEqual([0, 3, 8, 10, 13, 17]);
   cfg.paths.forEach((file, i) => {
     const data = JSON.parse(fs.readFileSync(`public${file}`));
     const ids = new Set(data.assets.map((a) => a.id));
@@ -145,11 +146,82 @@ test("History Taking keeps both original actors and the revised spoken meaning",
   expect(stages[0].cues[0].en).toMatch(/^Ask if the vision/);
   expect(stages[2].cues[0].en).toMatch(/front or back of the eye/);
   expect(stages[2].cues[1].en).toMatch(/front of the eye/);
-  const source = JSON.parse(
-    fs.readFileSync("public/scrolly/conditions/cataract/provenance.json"),
+});
+
+test("the gesture leaves the clipboard and cuff fixed, and the full-body art has clear edges", async () => {
+  const scene = JSON.parse(fs.readFileSync(`public${cfg.paths[0]}`));
+  const body = scene.layers.find((l) => l.refId === "history-examiner");
+  const gesture = scene.layers.find(
+    (l) => l.nm === "Examiner gestures at the wrist",
   );
-  for (const i of [1, 2]) {
-    const box = source.assets[`history-refer-bubble-${i}`].box;
-    expect(box[0] + box[2]).toBeGreaterThanOrEqual(552);
+  expect(gesture.ks).toEqual(body.ks);
+  const dir = "public/scrolly/conditions/cataract";
+  const { assets } = JSON.parse(fs.readFileSync(dir + "/provenance.json"));
+  const { box, width } = assets["history-examiner"];
+  const wristX = ((215 - box[0]) * width) / box[2];
+  let movingFingers = false;
+  for (const group of gesture.shapes) {
+    const poses = group.it.find((it) => it.ty === "sh").ks.k;
+    const resting = poses[0].s[0];
+    for (const pose of poses.slice(1)) {
+      resting.v.forEach((point, i) => {
+        const next = pose.s[0].v[i];
+        if (point[0] <= wristX) expect(next).toEqual(point);
+        else if (Math.abs(next[1] - point[1]) > 2) movingFingers = true;
+      });
+    }
   }
+  expect(movingFingers).toBe(true);
+  for (const name of [
+    "history-examiner",
+    "history-examiner-arm",
+    "history-patient",
+  ]) {
+    const { data, info } = await sharp(`${dir}/images/${name}.webp`)
+      .extractChannel("alpha")
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    let left = info.width,
+      top = info.height,
+      right = 0,
+      bottom = 0;
+    for (let y = 0; y < info.height; y++) {
+      for (let x = 0; x < info.width; x++) {
+        if (data[y * info.width + x] < 128) continue;
+        left = Math.min(left, x);
+        right = Math.max(right, x);
+        top = Math.min(top, y);
+        bottom = Math.max(bottom, y);
+      }
+    }
+    expect(
+      Math.min(left, top, info.width - 1 - right, info.height - 1 - bottom),
+    ).toBeGreaterThan(3);
+    if (name.endsWith("-arm")) expect(bottom).toBeLessThan(info.height / 2);
+    else expect(bottom).toBeGreaterThan(info.height * 0.9);
+  }
+});
+
+test("each findings rectangle carries its own original column badge", () => {
+  const positive = [2, 7, 10, 12, 15, 16, 19],
+    other = [3, 8, 10, 13, 17, 19];
+  cfg.paths.forEach((file, i) => {
+    const scene = JSON.parse(fs.readFileSync("public" + file));
+    const mixed = [10, 19].includes(i + 1);
+    for (const [name, sceneNumbers] of [
+      ["badge-cataract", positive],
+      ["badge-other-cause", other],
+    ]) {
+      const badges = scene.layers.filter((l) => l.refId === name);
+      expect(badges).toHaveLength(sceneNumbers.includes(i + 1) ? 1 : 0);
+      if (!badges.length) continue;
+      const [x, y] = badges[0].ks.p.k;
+      const edge = mixed && name === "badge-cataract" ? scene.w / 2 : scene.w;
+      expect(edge - x).toBeGreaterThanOrEqual(55);
+      expect(edge - x).toBeLessThan(95);
+      expect(y).toBeLessThan(130);
+      if (mixed && name === "badge-other-cause")
+        expect(badges[0].ks.o.k[1].t).toBe(stages[i].cues[2].offset * scene.fr);
+    }
+  });
 });

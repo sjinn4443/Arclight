@@ -54,16 +54,16 @@ test("Advanced is a distinct accessible row immediately below its PDF", () => {
   ).toHaveLength(0);
 });
 
-test("fifteen animations preserve source order, canvas ratio and narration frames", () => {
-  expect(cfg.paths).toHaveLength(15);
+test("sixteen animations preserve source order, canvas ratio and narration frames", () => {
+  expect(cfg.paths).toHaveLength(16);
   expect(cfg.sections.map((s) => s.startIndex)).toEqual([
-    0, 3, 4, 5, 10, 11, 13,
+    0, 4, 5, 6, 11, 12, 14,
   ]);
   for (const [i, file] of cfg.paths.entries()) {
     const data = scene(i);
     expect([data.w, data.h, data.fr, data.ip]).toEqual([
       1169,
-      i === 3 ? 1093 : 1280,
+      i === 4 ? 1093 : 1280,
       30,
       0,
     ]);
@@ -133,8 +133,8 @@ const allLayers = (data) => [
   ...data.assets.flatMap((a) => a.layers || []),
 ];
 test("shared PEC artwork is preserved with explicit Advanced English overrides", () => {
-  expect(cfg.paths.slice(4, 10)).toEqual(pec.paths);
-  stages.slice(4, 10).forEach((stage, i) =>
+  expect(cfg.paths.slice(5, 11)).toEqual(pec.paths);
+  stages.slice(5, 11).forEach((stage, i) =>
     stage.cues.forEach((cue, j) => {
       const original = pecStages[i].cues[j];
       expect(cue.id).toBe(original.id);
@@ -160,7 +160,7 @@ test("shared PEC artwork is preserved with explicit Advanced English overrides",
     );
 });
 test("neural light precedes sensory paths, efferent arrival precedes constriction and labels", () => {
-  for (const i of [0, 3]) {
+  for (const i of [0, 4]) {
     const list = allLayers(scene(i));
     const lens = list.find((l) => l.nm.endsWith("-lens-off"));
     expect(lens.ks.o.k[0].s).toEqual([100]);
@@ -181,13 +181,13 @@ test("neural light precedes sensory paths, efferent arrival precedes constrictio
   expect(
     allLayers(scene(0)).some((l) => l.nm.startsWith("Original arrowhead")),
   ).toBe(false);
-  const list = allLayers(scene(3));
+  const list = allLayers(scene(4));
   const pupil = list.find(
     (l) => l.nm === "Pupil constricts after efferent arrival",
   );
   const spoken = script.visualCues.find((c) => c.id === "reflex-constriction");
   const spokenFrame = Math.round(
-    (spoken.at - cfg.narrationClipsByFile[3].start) * 30,
+    (spoken.at - cfg.narrationClipsByFile[4].start) * 30,
   );
   expect(spoken.word).toBe("constrict");
   expect(spokenFrame).toBeGreaterThan(240);
@@ -205,8 +205,48 @@ test("neural light precedes sensory paths, efferent arrival precedes constrictio
   );
   expect(stages[1].cues[0].id).toBe("efferent-definition");
 });
+
+test("the second scene uses the first diagram with the original reflex arrows", () => {
+  const first = scene(0),
+    second = scene(1),
+    layers = allLayers(second);
+  const layer = (name) => layers.find((item) => item.nm === name);
+  const reflexArrow = allLayers(scene(4)).find(
+    (item) => item.nm === "reflex-efferent",
+  );
+  const arrow = layer("reflex-efferent");
+  const wipe = (item) => item.masksProperties[0].pt.k;
+  expect(wipe(arrow).map((frame) => frame.t)).toEqual([
+    0,
+    450 - afferentWords.retina,
+  ]);
+  expect(wipe(arrow).at(-1).s[0].v[1][0]).toBeLessThan(
+    wipe(reflexArrow).at(-1).s[0].v[1][0],
+  );
+  expect(arrow.refId).toBe(reflexArrow.refId);
+  expect(second.layers.map((item) => item.ks)).toEqual(
+    first.layers.map((item) => item.ks),
+  );
+  for (const name of ["afferent-unlit", "afferent-retina", "afferent-device"]) {
+    const original = allLayers(first).find((item) => item.nm === name);
+    expect(layer(name).refId).toBe(original.refId);
+    expect(layer(name).ks).toEqual(original.ks);
+  }
+  expect(layer("afferent-pool").ks.o).toEqual({ a: 0, k: 100 });
+  expect(layer("afferent-shaft").ks.o).toEqual({ a: 0, k: 100 });
+  expect(layer("afferent-shaft").masksProperties[0].pt.a).toBe(0);
+  expect(layer("afferent-lens-off")).toBeUndefined();
+  expect(layer("reflex-unlit")).toBeUndefined();
+  expect(layer("reflex-afferent")).toBeUndefined();
+  expect(stages[1].cues[0].en).toContain(
+    "two pathways, parasympathetic and sympathetic",
+  );
+  expect(stages[2].cues[0].en).toContain(
+    "efferent signals for pupil constriction",
+  );
+});
 test("flow connections remain behind foreground boxes and original radial arrows trim progressively", () => {
-  for (const i of [1, 2]) {
+  for (const i of [2, 3]) {
     const data = scene(i),
       list = data.layers;
     const line = list.findIndex(
@@ -223,7 +263,7 @@ test("flow connections remain behind foreground boxes and original radial arrows
     for (const l of list.filter((l) => /Signal behind/.test(l.nm))) {
       const colour = l.shapes[0].it.find((it) => it.ty === "st").c.k;
       expect(colour.slice(0, 3)).toEqual(
-        i === 2 ? [58 / 255, 0, 90 / 255] : [219 / 255, 0, 1],
+        i === 3 ? [58 / 255, 0, 90 / 255] : [219 / 255, 0, 1],
       );
     }
   }
@@ -322,8 +362,8 @@ test("sympathetic inactive cards are as dark as the parasympathetic cards", asyn
 
 test("flowchart cards start muted and recover their original appearance when the signal enters", () => {
   for (const [index, name] of [
-    [1, "parasympathetic"],
-    [2, "sympathetic"],
+    [2, "parasympathetic"],
+    [3, "sympathetic"],
   ]) {
     const data = scene(index),
       cards = data.layers.filter((l) =>
@@ -361,7 +401,7 @@ test("flowchart cards start muted and recover their original appearance when the
   }
 });
 
-test("brain perimeter draws before its two branches and only the reflex rect is shorter", () => {
+test("brain perimeter draws before its two branches and the reflex diagram uses the shorter frame", () => {
   const list = allLayers(scene(0));
   for (const [outer, branch] of [
     [254, 255],
@@ -385,7 +425,7 @@ test("brain perimeter draws before its two branches and only the reflex rect is 
 });
 
 test("complete retinal light texture fits its mask after resizing the reflex rect", async () => {
-  const data = scene(3),
+  const data = scene(4),
     beam = allLayers(data).find((l) => l.nm === "reflex-shaft"),
     asset = data.assets.find((a) => a.id === beam.refId),
     full = beam.masksProperties[0].pt.k.at(-1).s[0],
@@ -432,12 +472,12 @@ test("dilator source card no longer contains a second muscle disc", async () => 
       cream++;
   expect(cream).toBe(0);
   expect(
-    allLayers(scene(2)).filter((l) => l.nm === "Original muscle disc"),
+    allLayers(scene(3)).filter((l) => l.nm === "Original muscle disc"),
   ).toHaveLength(1);
 });
 
 test("consensual panels have a one-second handoff and a foreground full-width divider", () => {
-  const data = scene(10),
+  const data = scene(11),
     list = allLayers(data),
     top = list.find((l) => l.nm === "consensual-left-marks"),
     bottom = list.find((l) => l.refId === "consensual-right-pool");
@@ -447,11 +487,11 @@ test("consensual panels have a one-second handoff and a foreground full-width di
     [0, 640],
     [1169, 640],
   ]);
-  expect(stages[10].cues[1].offset).toBe(8);
+  expect(stages[11].cues[1].offset).toBe(8);
 });
 
 test("swinging arrows are behind the examination device, without baked white dividers", async () => {
-  const data = scene(11),
+  const data = scene(12),
     comp = data.assets.find((a) => a.layers),
     device = comp.layers.findIndex(
       (l) => l.nm === "Constant brightness examination device",
@@ -487,7 +527,7 @@ test("swinging arrows are behind the examination device, without baked white div
 });
 
 test("near panels preserve source arrows, arm occlusion and proportional rounded cards", () => {
-  const data = scene(13),
+  const data = scene(14),
     list = allLayers(data),
     target = data.assets.find((a) =>
       a.layers?.some((l) => l.nm === "near-target-hand"),
@@ -499,17 +539,17 @@ test("near panels preserve source arrows, arm occlusion and proportional rounded
   expect(order("near-target-bubble")).toBeLessThan(order("near-target-hand"));
   expect(order("near-target-hand")).toBeLessThan(order("near-target-tail"));
   expect(data.layers[0].nm).toBe("Near panels foreground divider");
-  for (const layer of scene(14).layers.filter((l) => l.ty === 0)) {
+  for (const layer of scene(15).layers.filter((l) => l.ty === 0)) {
     expect((layer.w * layer.ks.s.k[0]) / 100).toBeCloseTo(800);
     expect(layer.masksProperties[0].pt.k.v).toHaveLength(8);
   }
-  expect(stages[14].cues[0].en).toContain("convergence");
-  expect(stages[14].cues.map((c) => c.en).join(" ")).toMatch(
+  expect(stages[15].cues[0].en).toContain("convergence");
+  expect(stages[15].cues.map((c) => c.en).join(" ")).toMatch(
     /pupil constriction and lens accommodation/,
   );
 });
 test("device brightness stays fixed while device and pool share swinging positions", async () => {
-  for (const i of [10, 11, 12]) {
+  for (const i of [11, 12, 13]) {
     const list = allLayers(scene(i));
     const devices = list.filter(
       (l) => l.nm === "Constant brightness examination device",
@@ -520,10 +560,10 @@ test("device brightness stays fixed while device and pool share swinging positio
       const name = d.refId.replace(/-device$/, "");
       const pool = list.find((l) => l.refId === name + "-pool");
       expect(pool.ks.p).toEqual(d.ks.p);
-      if (i > 10) expect(new Set(d.ks.p.k.map((k) => k.s[0])).size).toBe(2);
+      if (i > 11) expect(new Set(d.ks.p.k.map((k) => k.s[0])).size).toBe(2);
     }
   }
-  for (const i of [11, 12, 13]) {
+  for (const i of [12, 13, 14]) {
     const arrows = allLayers(scene(i)).filter(
       (l) => l.ty === 2 && /-arrow/.test(l.refId),
     );
@@ -547,7 +587,7 @@ test("device brightness stays fixed while device and pool share swinging positio
     expect(await imageStats(n)).toBeGreaterThan(0.1);
 });
 test("Near response has two faces, closed sclera masks, moving irises and delayed result symbols", async () => {
-  const data = scene(14),
+  const data = scene(15),
     list = allLayers(data);
   expect(list.filter((l) => /^near-single-/.test(l.nm))).toHaveLength(2);
   const irises = list.filter((l) => /^Original iris converges/.test(l.nm));
@@ -570,7 +610,7 @@ test("Near response has two faces, closed sclera masks, moving irises and delaye
         Math.round(
           (script.visualCues.find((c) => c.id === "near-further-examination")
             .at -
-            cfg.narrationClipsByFile[14].start) *
+            cfg.narrationClipsByFile[15].start) *
             30,
         ),
       );
@@ -602,7 +642,7 @@ test("provenance verifies both supplied source masters", () => {
 });
 
 test("RAPD stays constricted during the swing and dilates only after light reaches the affected eye", () => {
-  const list = allLayers(scene(12));
+  const list = allLayers(scene(13));
   const device = list.find((l) => l.refId === "swing-rapd-device");
   const arrival = device.ks.p.k.at(-2).t;
   const pupils = list.filter((l) => l.nm.startsWith("swing-rapd pupil"));
@@ -614,13 +654,13 @@ test("RAPD stays constricted during the swing and dilates only after light reach
   expect(k.at(-1).s[0]).toBe(120);
   const spoken = script.visualCues.find((c) => c.id === "rapd-dilation");
   expect(arrival + 24).toBe(
-    Math.round((spoken.at - cfg.narrationClipsByFile[12].start) * 30),
+    Math.round((spoken.at - cfg.narrationClipsByFile[13].start) * 30),
   );
   expect(arrival).toBeGreaterThan(500);
 });
 
 test("near hand settles before simultaneous highlight/arrows and face textures retain enough detail", () => {
-  const list = allLayers(scene(13));
+  const list = allLayers(scene(14));
   const hand = list.find((l) => l.nm === "near-target-hand");
   expect(hand.ks.p.a).toBe(0);
   expect(hand.ks.r.k[0].s[0]).toBe(140);
@@ -631,12 +671,12 @@ test("near hand settles before simultaneous highlight/arrows and face textures r
   );
   for (const l of list.filter((l) => /^near-target-arrow-/.test(l.nm)))
     expect(l.masksProperties[0].pt.k[1].t).toBe(settled);
-  for (const a of scene(14).assets.filter((a) => /^near-single/.test(a.id)))
+  for (const a of scene(15).assets.filter((a) => /^near-single/.test(a.id)))
     expect(a.w).toBeGreaterThan(1000);
 });
 
 test("anatomy stays fixed, light stays behind the device, and all reflex side arrows fit", () => {
-  for (const index of [0, 3]) {
+  for (const index of [0, 4]) {
     const data = scene(index),
       comp = data.assets.find((a) => a.layers),
       list = comp.layers;
@@ -647,7 +687,7 @@ test("anatomy stays fixed, light stays behind the device, and all reflex side ar
       list.findIndex((l) => /-pool$/.test(l.nm)),
     );
   }
-  const data = scene(3),
+  const data = scene(4),
     outer = data.layers.find((l) => l.ty === 0),
     x = outer.ks.p.k[0],
     width =
@@ -657,14 +697,14 @@ test("anatomy stays fixed, light stays behind the device, and all reflex side ar
 });
 
 test("muscle apertures change with radial signals and the third-nerve eye blinks", () => {
-  for (const index of [1, 2]) {
+  for (const index of [2, 3]) {
     const data = scene(index),
       radial = data.assets.find((a) => /^radial/.test(a.id)),
       pupil = radial.layers.find((l) => l.nm === "Progressive muscle pupil"),
       k = pupil.shapes[0].it[0].ks.k,
       radius = (p) => Math.abs(p.s[0].v[0][1] - p.s[0].v[2][1]) / 2;
     expect(
-      index === 1
+      index === 2
         ? radius(k[0]) > radius(k.at(-1))
         : radius(k[0]) < radius(k.at(-1)),
     ).toBe(true);
@@ -673,7 +713,7 @@ test("muscle apertures change with radial signals and the third-nerve eye blinks
       .find((it) => it.ty === "tm");
     expect(k.at(-1).t).toBe(trim.e.k.at(-1).t);
   }
-  const list = allLayers(scene(1)),
+  const list = allLayers(scene(2)),
     eye = list.find((l) => l.nm === "Eye opening and lower lid stay fixed"),
     lid = list.find((l) => l.nm === "Upper eyelid flexes 807");
   expect(eye.ks.p.a).toBe(0);
@@ -689,7 +729,7 @@ test("muscle apertures change with radial signals and the third-nerve eye blinks
 });
 
 test("examination lenses switch with the pools and enlarged starting pupils keep their final sizes", () => {
-  for (const index of [10, 11, 12]) {
+  for (const index of [11, 12, 13]) {
     const list = allLayers(scene(index));
     for (const lens of list.filter(
       (l) => l.nm === "Lens switches from black to white with light pool",
@@ -704,9 +744,9 @@ test("examination lenses switch with the pools and enlarged starting pupils keep
     for (const p of list.filter((l) => / pupil \d$/.test(l.nm))) {
       expect(p.ks.s.k[0].s[0]).toBe(155);
       expect(p.ks.s.k.at(-1).s[0]).toBe(
-        index === 10
+        index === 11
           ? 55
-          : index === 11
+          : index === 12
             ? 82
             : p.nm.startsWith("swing-rapd")
               ? 120
@@ -717,17 +757,17 @@ test("examination lenses switch with the pools and enlarged starting pupils keep
 });
 
 test("cataract controls follow speech by 1.5 seconds without changing PEC audio", () => {
-  const clip = cfg.narrationClipsByFile[9];
+  const clip = cfg.narrationClipsByFile[10];
   expect(clip.endByLanguage.en - clip.start).toBeCloseTo(8 + 8.26 + 1.5);
   expect(clip.endByLanguage.ko - clip.start).toBeCloseTo(8 + 9.82 + 1.5);
-  expect(cfg.narrationClipsByFile[10].start).toBe(clip.end);
+  expect(cfg.narrationClipsByFile[11].start).toBe(clip.end);
 });
 
 test("afferent and consensual controls follow completed visuals and speech without accelerating the animation", () => {
   for (const [index, visualFrame, speechEnds] of [
     [0, 562, { en: 16.1, ko: 14.72 }],
-    [10, 390, { en: 12.73, ko: 14.62 }],
-    [13, 341.25, { en: 13.85 - 108.75 / 30, ko: 14.45 - 108.75 / 30 }],
+    [11, 390, { en: 12.73, ko: 14.62 }],
+    [14, 341.25, { en: 13.85 - 108.75 / 30, ko: 14.45 - 108.75 / 30 }],
   ]) {
     const clip = cfg.narrationClipsByFile[index];
     for (const language of ["en", "ko"]) {
@@ -765,7 +805,7 @@ test("each named afferent structure glows at its spoken cue and the lit pupil si
     expect(l.ks.o.k[2].s[0]).toBeGreaterThan(0);
     expect(l.ks.o.k.at(-1).s[0]).toBe(0);
   }
-  const layers = scene(3).assets.find((a) => a.layers).layers;
+  const layers = scene(4).assets.find((a) => a.layers).layers;
   const beam = layers.findIndex((l) => l.nm === "reflex-shaft");
   const pupils = layers
     .filter((l) => l.nm === "Pupil constricts after efferent arrival")
@@ -803,7 +843,7 @@ test("anatomy glow textures use a middle blue between the arrows and fully trans
 });
 
 test("examination pupils wait 0.65 seconds after full illumination before constricting", () => {
-  for (const index of [10, 11, 12]) {
+  for (const index of [11, 12, 13]) {
     const list = allLayers(scene(index));
     for (const pupil of list.filter((l) => / pupil \d$/.test(l.nm))) {
       const pool = list.find(
@@ -817,7 +857,7 @@ test("examination pupils wait 0.65 seconds after full illumination before constr
 });
 
 test("second swinging arrows reveal only the area already traversed by the device", () => {
-  const data = scene(12),
+  const data = scene(13),
     list = allLayers(data);
   for (const name of ["swing-normal", "swing-rapd"]) {
     const motion = list.find((l) => l.refId === name + "-device").ks.p.k;
@@ -850,7 +890,8 @@ test("anatomy speech slows while the original signal clock is preserved", () => 
   for (const head of list.filter(
     (l) => l.nm === "Travelling original sensory arrow",
   )) {
-    expect(head.ks.p.k[1].t).toBe(240);
+    expect(head.ks.p.k[1].t).toBe(afferentWords.retina);
+    expect(head.ks.p.k[1].s[1]).toBeGreaterThan(146);
     expect(head.ks.p.k.at(-1).t).toBe(450);
   }
   expect(
@@ -862,8 +903,8 @@ test("anatomy speech slows while the original signal clock is preserved", () => 
 });
 
 test("reflex backdrop is black and examination positioning strips have white separators", () => {
-  expect(scene(3).layers.find((layer) => layer.ty === 1).sc).toBe("#000000");
-  const positioning = scene(6);
+  expect(scene(4).layers.find((layer) => layer.ty === 1).sc).toBe("#000000");
+  const positioning = scene(7);
   const lines = positioning.layers.filter((layer) =>
     layer.nm.startsWith("Positioning white divider"),
   );
@@ -877,7 +918,7 @@ test("reflex backdrop is black and examination positioning strips have white sep
 });
 
 test("dilator fibres fill the future arrow positions before the signals grow", () => {
-  const radial = scene(2).assets.find((a) => /^radial/.test(a.id));
+  const radial = scene(3).assets.find((a) => /^radial/.test(a.id));
   const fibres = radial.layers.filter((l) =>
     l.nm.startsWith("Fibre beneath radial arrow "),
   );
@@ -891,7 +932,7 @@ test("dilator fibres fill the future arrow positions before the signals grow", (
 });
 
 test("blink hides the crease only during movement and the sympathetic eye starts in the parasympathetic state", () => {
-  for (const crease of allLayers(scene(1)).filter((l) =>
+  for (const crease of allLayers(scene(2)).filter((l) =>
     l.nm.startsWith("Resting upper eyelid crease "),
   )) {
     expect(crease.ks.o.k.map((k) => [k.t, k.s[0]])).toEqual([
@@ -900,7 +941,7 @@ test("blink hides the crease only during movement and the sympathetic eye starts
         Math.round(
           (script.visualCues.find((c) => c.id === "third-nerve-eye-movements")
             .at -
-            cfg.narrationClipsByFile[1].start) *
+            cfg.narrationClipsByFile[2].start) *
             30,
         ),
         0,
@@ -909,7 +950,7 @@ test("blink hides the crease only during movement and the sympathetic eye starts
         Math.round(
           (script.visualCues.find((c) => c.id === "third-nerve-eye-movements")
             .at -
-            cfg.narrationClipsByFile[1].start) *
+            cfg.narrationClipsByFile[2].start) *
             30,
         ) + 15,
         100,
@@ -917,7 +958,7 @@ test("blink hides the crease only during movement and the sympathetic eye starts
     ]);
     expect(crease.shapes[0].it[0].ks.a).toBe(0);
   }
-  const list = allLayers(scene(2));
+  const list = allLayers(scene(3));
   const opening = list.find(
     (l) => l.nm === "Sclera revealed by sympathetic lid widening",
   );
@@ -940,26 +981,26 @@ test("blink hides the crease only during movement and the sympathetic eye starts
 });
 
 test("near technique halves the upper-to-lower pause and the warning follows further examination", () => {
-  const list = allLayers(scene(13));
+  const list = allLayers(scene(14));
   const topEnd = list
     .find((l) => l.nm === "near-distance-arrow")
     .masksProperties[0].pt.k.at(-1).t;
   const bottomStart = list.find((l) => l.nm === "near-target-hand").ks.r.k[1].t;
   expect(bottomStart - topEnd).toBe((197.5 - 125) / 2);
-  expect(stages[13].cues[1].offset * 30).toBeCloseTo(bottomStart);
+  expect(stages[14].cues[1].offset * 30).toBeCloseTo(bottomStart);
   const cue = script.visualCues.find(
     (c) => c.id === "near-further-examination",
   );
-  const icon = allLayers(scene(14)).find(
+  const icon = allLayers(scene(15)).find(
     (l) => l.refId === "near-result-1-marks-symbol-0",
   );
   expect(icon.ks.o.k.at(-1).t).toBeCloseTo(
-    (cue.at - cfg.narrationClipsByFile[14].start) * 30,
+    (cue.at - cfg.narrationClipsByFile[15].start) * 30,
   );
 });
 
 test("RAPD captions join the definition and keep Here on the next line", () => {
-  const text = stages[12].cues.find((c) => c.id === "swing-rapd").caption.en;
+  const text = stages[13].cues.find((c) => c.id === "swing-rapd").caption.en;
   expect(text.split("\n")[0]).toContain(
     "one eye sends a weaker light signal than the other.",
   );
@@ -972,13 +1013,13 @@ test("eye-movements narration triggers the blink and the sympathetic eye retains
     (c) => c.id === "third-nerve-eye-movements",
   );
   const expected = Math.round(
-    (cue.at - cfg.narrationClipsByFile[1].start) * 30,
+    (cue.at - cfg.narrationClipsByFile[2].start) * 30,
   );
-  const blink = allLayers(scene(1)).find(
+  const blink = allLayers(scene(2)).find(
     (l) => l.nm === "Upper eyelid covers stationary iris",
   );
   expect(blink.shapes[0].it[0].ks.k[1].t).toBe(expected);
-  const white = allLayers(scene(2)).find(
+  const white = allLayers(scene(3)).find(
     (l) => l.nm === "Sclera revealed by sympathetic lid widening",
   );
   expect(
@@ -987,14 +1028,14 @@ test("eye-movements narration triggers the blink and the sympathetic eye retains
 });
 
 test("dilator retains all original fibres and arrowheads while near faces converge twice as fast", () => {
-  const radial = scene(2).assets.find((a) => /^radial/.test(a.id));
+  const radial = scene(3).assets.find((a) => /^radial/.test(a.id));
   expect(
     radial.layers.filter((l) => /^Original dilator fibre /.test(l.nm)),
   ).toHaveLength(16);
   expect(
     radial.layers.filter((l) => /^Original arrowhead /.test(l.nm)),
   ).toHaveLength(8);
-  const data = scene(14);
+  const data = scene(15);
   for (const iris of allLayers(data).filter((l) =>
     /^Original iris converges/.test(l.nm),
   )) {

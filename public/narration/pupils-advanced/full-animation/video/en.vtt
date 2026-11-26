@@ -9,130 +9,130 @@ afferent-brain
 Follow the coloured pathways (retina, optic nerve, chiasm, tract and nuclei).
 
 efferent-definition
-00:00:24.233 --> 00:00:32.233
-The efferent pathway carries signals from the brain to the eye.
+00:00:24.233 --> 00:00:40.233
+Efferent signals go from the brain to the eye. There are two pathways, parasympathetic and sympathetic. Parasympathetic signals activate the constrictor muscle and sympathetic signals activate the dilator muscle.
 
 parasympathetic
-00:00:32.233 --> 00:00:42.233
-The parasympathetic pathway passes through the third cranial nerve and the ciliary ganglion.
+00:00:40.233 --> 00:00:50.233
+The third cranial nerve also carries the efferent signals for pupil constriction.
 
 constrictor
-00:00:42.233 --> 00:00:49.233
+00:00:50.233 --> 00:00:57.233
 It supplies the iris sphincter to constrict the pupil and the ciliary muscle for focusing.
 
 third-nerve
-00:00:49.233 --> 00:00:56.233
+00:00:57.233 --> 00:01:04.233
 The third nerve controls most eye movements and lifts the lid. The facial nerve controls blinking.
 
 sympathetic
-00:00:56.233 --> 00:01:06.233
+00:01:04.233 --> 00:01:14.233
 The sympathetic pathway passes through the sympathetic chain and the superior cervical ganglion.
 
 dilator
-00:01:06.233 --> 00:01:16.233
-It supplies the iris dilator and Müller's muscle, which helps raise the upper eyelid.
+00:01:14.233 --> 00:01:24.233
+It supplies two muscles. First, the iris dilator muscle. Second, Müller's muscle, a minor elevator of the upper eyelid.
 
 reflex-input
-00:01:19.233 --> 00:01:27.233
+00:01:27.233 --> 00:01:35.233
 Light in one eye sends an afferent signal towards the brain.
 
 reflex-output
-00:01:27.233 --> 00:01:35.233
+00:01:35.233 --> 00:01:43.233
 Signals from the midbrain reach both eyes, so both pupils constrict in response to light.
 
 reflex-direct
-00:01:35.233 --> 00:01:38.733
+00:01:43.233 --> 00:01:46.733
 The illuminated pupil has a direct response.
 
 reflex-consensual
-00:01:38.733 --> 00:01:43.233
+00:01:46.733 --> 00:01:51.233
 The other pupil has a consensual response.
 
 observe
-00:01:46.233 --> 00:01:52.233
-Observe the size, shape and symmetry of both pupils.
+00:01:54.233 --> 00:02:00.233
+Observe the pupils. They should be black, round and equal in size.
 
 compare-observation
-00:01:52.233 --> 00:02:04.233
+00:02:00.233 --> 00:02:12.233
 Check for changes in pupil colour or shape, unequal pupil size and drooping eyelids.
 
 light
-00:02:07.233 --> 00:02:16.233
+00:02:15.233 --> 00:02:24.233
 Switch on the Arclight and select the brightest light setting. Use a quiet, dim room.
 
 distance
-00:02:16.233 --> 00:02:22.233
+00:02:24.233 --> 00:02:30.233
 Ask the patient to look at a distant target.
 
 clear-view
-00:02:22.233 --> 00:02:34.233
+00:02:30.233 --> 00:02:42.233
 Make sure they do not look at the examiner or the light itself.
 
 move-light
-00:02:34.233 --> 00:02:40.233
+00:02:42.233 --> 00:02:48.233
 Move the light from the side towards the pupil.
 
 watch
-00:02:40.233 --> 00:02:46.233
+00:02:48.233 --> 00:02:54.233
 Watch the illuminated pupil for the direct light response.
 
 shine-constrict
-00:02:46.233 --> 00:02:52.233
+00:02:54.233 --> 00:03:00.233
 Shine the light into the eye and watch the pupil constrict.
 
 compare-responses
-00:02:52.233 --> 00:02:58.233
-Look for reduced or absent constriction.
+00:03:00.233 --> 00:03:06.233
+In a healthy eye, the pupil constricts normally.
 
 corresponding-examples
-00:02:58.233 --> 00:03:06.233
+00:03:06.233 --> 00:03:14.233
 These are possible associations. The pupil response alone does not identify the underlying eye condition.
 
 pupil-colour
-00:03:06.233 --> 00:03:14.233
+00:03:14.233 --> 00:03:22.233
 A grey or white appearance does not by itself mean the pupil cannot constrict.
 
 cataract-constriction
-00:03:14.233 --> 00:03:30.233
-A cataract may make the pupil look grey or white, but the pupil should still constrict if the light reflex pathway is intact.
+00:03:22.233 --> 00:03:38.233
+If the response is reduced in an eye with a cataract, consider coexisting disease of the retina, the optic nerve or both.
 
 consensual-first
-00:03:33.233 --> 00:03:41.233
+00:03:41.233 --> 00:03:49.233
 Shine light into one eye and watch the other pupil constrict. This is the consensual response.
 
 consensual-other
-00:03:41.233 --> 00:03:55.233
+00:03:49.233 --> 00:04:03.233
 Repeat on the other side and watch the pupil in the eye without the light.
 
 swing-method
-00:03:58.233 --> 00:04:08.233
+00:04:06.233 --> 00:04:16.233
 Move the light between the eyes, pausing for two to three seconds on each side. Compare both pupils.
 
 swing-return
-00:04:08.233 --> 00:04:18.233
+00:04:16.233 --> 00:04:26.233
 Swing the light back and watch both pupils as you change sides.
 
 swing-normal
-00:04:18.233 --> 00:04:28.233
+00:04:26.233 --> 00:04:36.233
 Normally, both pupils constrict equally when either eye is illuminated.
 
 swing-rapd
-00:04:28.233 --> 00:04:42.233
+00:04:36.233 --> 00:04:50.233
 A relative afferent pupillary defect, or RAPD, means one eye sends a weaker light signal than the other.
 Here, both pupils dilate when the light moves to the affected right eye.
 
 near-distance
-00:04:45.233 --> 00:04:50.608
+00:04:53.233 --> 00:04:58.608
 First ask the patient to look at a distant target.
 
 near-target
-00:04:50.608 --> 00:04:58.100
+00:04:58.608 --> 00:05:06.100
 Then ask them to look at a near target on the Arclight.
 
 near-normal
-00:04:58.100 --> 00:05:08.100
+00:05:06.100 --> 00:05:16.100
 The eyes turn inwards to fix on the near target. This convergence accompanies pupil constriction and lens accommodation.
 
 near-abnormal
-00:05:08.100 --> 00:05:18.100
+00:05:16.100 --> 00:05:26.100
 If the eyes do not turn inwards together for a near target, further examination is needed.

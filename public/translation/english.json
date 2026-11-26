@@ -316,7 +316,7 @@
     "card_label.tools_and_kits": "Tools and Kits",
     "card_label.extended": "Extended",
     "card_label.pec": "PEC",
-    "card_label.lid_hygiene": "Lid Hygeine",
+    "card_label.lid_hygiene": "Lid Hygiene",
     "card_label.eye_irrigation": "Eye Irrigation",
     "card_label.eyelash_removal": "Eyelash Removal",
     "card_label.foreign_body_removal": "Foreign Body Removal",
@@ -427,7 +427,8 @@
     "online_info_aria": "More information about using the app online",
     "closeButton": "Close",
     "lao": "Lao",
-    "luganda": "Luganda"
+    "luganda": "Luganda",
+    "pause_download_confirmation": "Are you sure you want to pause this download? Already downloaded files will be kept."
   },
   "menu": {
     "my_profile_link": "My Profile >",
@@ -4310,7 +4311,7 @@
         "cue_050": "Make sure that they're",
         "cue_051": "happy to proceed and answer any questions they may have.",
         "cue_052": "Dialate the patient's pupils to enable",
-        "cue_053": "a full funders view.",
+        "cue_053": "a full view of the fundus.",
         "cue_054": "A topical anesthetic can also be used to ensure the patient is comfortable",
         "cue_055": "during the examination.",
         "cue_056": "The patient should be examined ideally lying",
@@ -4555,7 +4556,7 @@
         "cue_023": "Most babies",
         "cue_024": "will naturally look at a light.",
         "cue_025": "Get the sighthole close to your eye and at arm's length observe",
-        "cue_026": "the fungal reflex in both eyes at the same time.",
+        "cue_026": "the fundal red reflex in both eyes at the same time.",
         "cue_027": "Compare the brightness and colour between",
         "cue_028": "the two eyes.",
         "cue_029": "Look for any dark patches in the reflex or complete absence of the reflex.",
@@ -4578,7 +4579,7 @@
         "cue_046": "or both eyes, or a completely absent reflex.",
         "cue_047": "To summarize, a normal examination is when there is no overall difference in the brightness",
         "cue_048": "and colour between the two eyes, with central corneal reflections.",
-        "cue_049": "An abnormal fungal reflex is when there is a difference in the brightness and colour",
+        "cue_049": "An abnormal fundal red reflex is when there is a difference in the brightness and colour",
         "cue_050": "between the two eyes, a displaced corneal reflection, a dark patch present within the",
         "cue_051": "reflex of one or both eyes, or a completely absent reflex.",
         "cue_052": "An abnormal",
@@ -5843,7 +5844,7 @@
     "visual_acuity_animation": "Visual acuity animation",
     "real_cases": "Real Cases",
     "ear_workshop": "Primary Ear Care Workshop",
-    "ear_workshop_cta": "Direct to",
+    "ear_workshop_cta": "Go to",
     "external_link": "External link",
     "completed": "Completed",
     "primary": "Primary",
@@ -5886,7 +5887,7 @@
     "exam_objectives": "Eye examination objectives",
     "diagnosis_and_action": "Diagnosis and action",
     "care_procedures": "Primary eye care procedures",
-    "lid_hygiene": "Lid Hygeine",
+    "lid_hygiene": "Lid Hygiene",
     "clean_eye": "Clean an Eye",
     "warm_compress": "Warm Compress",
     "irrigate_eye": "Irrigate an eye",
@@ -6687,7 +6688,7 @@
     "watch": "Watch >",
     "previous": "Previous",
     "next": "Next",
-    "direct_to": "Direct to",
+    "direct_to": "Go to",
     "completed": "Completed",
     "lesson_navigation": "Ear workshop lesson navigation",
     "otoscopy_folder": "Otoscopy"
@@ -6704,5 +6705,18 @@
     "role_detail": "What is your role?",
     "role_label": "Role(s)",
     "other": "Other"
+  },
+  "videoControls": {
+    "controls": "Video controls",
+    "enter": "Full screen",
+    "exit": "Exit full screen",
+    "mute": "Mute",
+    "pause": "Pause",
+    "play": "Play",
+    "seek": "Video position",
+    "unmute": "Unmute",
+    "narration": "Narration",
+    "use_app_language": "Use app language",
+    "narration_off": "Narration off"
   }
 }

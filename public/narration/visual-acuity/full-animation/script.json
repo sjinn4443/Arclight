@@ -74,6 +74,13 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "cues": [
@@ -92,7 +99,8 @@
       "ha": "Shirya jadawali, tef na awo, biro da fil don yin ƙananan ramuka.",
       "yo": "Pèsè pátákó, téèpù ìwọ̀n, bírò àti abẹ́rẹ́ fún ihò kéékèèké.",
       "ig": "Weta chaatị, teepu, biro na ntụtụ ịpu oghere.",
-      "ur": "پن ہولز بنانے کے لیے چارٹس، پیمائش کرنے والی ٹیپ، قلم اور حفاظتی پن تیار کریں۔"
+      "ur": "پن ہولز بنانے کے لیے چارٹس، پیمائش کرنے والی ٹیپ، قلم اور حفاظتی پن تیار کریں۔",
+      "ny": "Konzani matchati, tepi yoyezera, cholembera ndi pini yotetezeka yoboolera timabowo."
     },
     {
       "id": "va-02",
@@ -114,7 +122,8 @@
       "ha": "A fara koyon alamar E kafin gwaji. Nemi mara lafiya ya nuna inda E ya dosa.",
       "yo": "Kọ́ aláìsàn ní àmì E ṣáájú àyẹ̀wò. Ní kó tọ́ka sí ibi tí E kọjú sí.",
       "ig": "Mụta akara E tupu ule. Gwa onye ọrịa ka ọ tụọ aka ebe E chere ihu.",
-      "ur": "اصل ٹیسٹ سے پہلے ٹمبلنگ ای آپٹو ٹائپ کی مشق کریں۔ مریض سے E کی سمت اشارہ کرنے کو کہیں۔"
+      "ur": "اصل ٹیسٹ سے پہلے ٹمبلنگ ای آپٹو ٹائپ کی مشق کریں۔ مریض سے E کی سمت اشارہ کرنے کو کہیں۔",
+      "ny": "Yeseretsani wodwalayo ndi zilembo za E zoyang'ana mbali zosiyanasiyana musanayambe kuyeza. Mufunseni kuti aloze kumene E yayang'ana."
     },
     {
       "id": "va-03",
@@ -132,7 +141,8 @@
       "ha": "Haske ya haskaka jadawalin. Kada hasken ya fito daga bayansa.",
       "yo": "Ìmọ́lẹ̀ gbọ́dọ̀ tàn sí pátákó. Kò gbọdọ̀ wá láti ẹ̀yìn rẹ̀.",
       "ig": "Ìhè kwesịrị ịda na chaatị. Ìhè esikwala n'azụ chaatị abịa.",
-      "ur": "روشنی چارٹ پر پڑنی چاہیے۔ یقینی بنائیں کہ روشنی چارٹ کے پیچھے سے نہیں آرہی ہے۔"
+      "ur": "روشنی چارٹ پر پڑنی چاہیے۔ یقینی بنائیں کہ روشنی چارٹ کے پیچھے سے نہیں آرہی ہے۔",
+      "ny": "Kuwala kuwunikire pa tchati. Onetsetsani kuti sikuchokera kumbuyo kwa tchati."
     },
     {
       "id": "va-04",
@@ -149,7 +159,8 @@
       "ha": "Tabbatar akwai mita uku tsakanin idanun mara lafiya da jadawalin.",
       "yo": "Rí i pé mítà mẹ́ta wà láàárín ojú aláìsàn àti pátákó.",
       "ig": "Hụ na anya onye ọrịa dị mita atọ site na chaatị.",
-      "ur": "یقینی بنائیں کہ مریض کی آنکھوں سے چارٹ تک کا فاصلہ تین میٹر ہے۔"
+      "ur": "یقینی بنائیں کہ مریض کی آنکھوں سے چارٹ تک کا فاصلہ تین میٹر ہے۔",
+      "ny": "Onetsetsani kuti kuchokera m'maso mwa wodwala kufika pa tchati pali mamita atatu."
     },
     {
       "id": "va-05",
@@ -166,7 +177,8 @@
       "ha": "Rufe ido ɗaya da tafin hannu, ba yatsu ba.",
       "yo": "Fi àtẹ́lẹwọ́ bo ojú kan, má fi ìka bò ó.",
       "ig": "Jiri ọbụ aka, ọ bụghị mkpịsị, kpuchie otu anya.",
-      "ur": "ایک آنکھ کو ہتھیلی سے ڈھانپیں، انگلیوں سے نہیں۔"
+      "ur": "ایک آنکھ کو ہتھیلی سے ڈھانپیں، انگلیوں سے نہیں۔",
+      "ny": "Phimbani diso limodzi ndi chikhatho cha dzanja. Musagwiritse ntchito zala."
     },
     {
       "id": "va-06",
@@ -183,7 +195,8 @@
       "ha": "Fara da manyan haruffa, ka gangara ƙasa.",
       "yo": "Bẹ̀rẹ̀ pẹ̀lú lẹ́tà tó tóbi jù, kí o sì sọ̀kalẹ̀.",
       "ig": "Malite na mkpụrụedemede kacha ibu, gbadaa n'ala.",
-      "ur": "سب سے بڑے حروف سے شروع کریں اور چارٹ پر کام کریں۔"
+      "ur": "سب سے بڑے حروف سے شروع کریں اور چارٹ پر کام کریں۔",
+      "ny": "Yambani ndi zilembo zazikulu kwambiri ndipo pitani pansi pa tchati."
     },
     {
       "id": "va-07",
@@ -200,7 +213,8 @@
       "ha": "Rubuta nisan gwaji a saman kason Snellen. A nan mita uku ne.",
       "yo": "Kọ ijìnnà àyẹ̀wò sí òkè ìdá Snellen. Mítà mẹ́ta ni níbí.",
       "ig": "Dee anya ule n'elu nkebi Snellen. Ebe a, ọ bụ mita atọ.",
-      "ur": "ٹیسٹ کے فاصلے کو Snellen فریکشن کے اوپری نمبر کے طور پر ریکارڈ کریں۔ یہاں، یہ تین میٹر ہے."
+      "ur": "ٹیسٹ کے فاصلے کو Snellen فریکشن کے اوپری نمبر کے طور پر ریکارڈ کریں۔ یہاں، یہ تین میٹر ہے.",
+      "ny": "Lembani mtunda woyezera monga nambala yapamwamba ya muyeso wa Snellen. Apa ndi mamita atatu."
     },
     {
       "id": "va-08",
@@ -217,7 +231,8 @@
       "ha": "Nemi ya nuna inda kowane E ya dosa. Ga idon hagu, yi amfani da haruffan hagu daga babba zuwa ƙarami. Ga idon dama, yi amfani da na dama daga babba zuwa ƙarami.",
       "yo": "Ní kó tọ́ka sí ibi tí E kọ̀ọ̀kan kọjú sí. Fún ojú òsì, lo lẹ́tà òsì láti ńlá sí kékeré. Fún ojú ọ̀tún, lo lẹ́tà ọ̀tún láti ńlá sí kékeré.",
       "ig": "Gwa ya ka ọ gosi ebe E ọ bụla chere ihu. Maka anya aka ekpe, jiri mkpụrụedemede aka ekpe site n'ibu ruo n'obere. Maka anya aka nri, jiri nke aka nri otu ahụ.",
-      "ur": "مریض سے ہر E کی سمت دکھانے کے لیے کہیں۔ بائیں آنکھ کے لیے، چارٹ کے بائیں طرف کے حروف کا استعمال کریں، بڑے سے چھوٹے تک۔ دائیں آنکھ کے لیے، سب سے بڑے سے چھوٹے تک، دائیں طرف کے حروف کا استعمال کریں۔"
+      "ur": "مریض سے ہر E کی سمت دکھانے کے لیے کہیں۔ بائیں آنکھ کے لیے، چارٹ کے بائیں طرف کے حروف کا استعمال کریں، بڑے سے چھوٹے تک۔ دائیں آنکھ کے لیے، سب سے بڑے سے چھوٹے تک، دائیں طرف کے حروف کا استعمال کریں۔",
+      "ny": "Pemphani wodwala kuti aloze kumene E iliyonse yayang'ana. Pa diso lakumanzere gwiritsani zilembo za kumanzere, ndipo pa lakumanja zilembo za kumanja. Yambani ndi zazikulu."
     },
     {
       "id": "va-09",
@@ -234,7 +249,8 @@
       "ha": "Ci gaba har sai ya kasa gane haruffa daidai ko ya kammala jadawalin.",
       "yo": "Tẹ̀síwájú títí tí kò fi lè dá lẹ́tà mọ̀ dáadáa mọ́ tàbí tí ó parí pátákó.",
       "ig": "Gaa n'ihu ruo mgbe ọ na-enweghị ike ịmata mkpụrụedemede nke ọma, ma ọ bụ ruo mgbe ọ gwụchara chaatị.",
-      "ur": "اس وقت تک جاری رکھیں جب تک کہ مریض حروف کی صحیح شناخت نہ کر سکے، یا چارٹ مکمل نہ کر لے۔"
+      "ur": "اس وقت تک جاری رکھیں جب تک کہ مریض حروف کی صحیح شناخت نہ کر سکے، یا چارٹ مکمل نہ کر لے۔",
+      "ny": "Pitirizani mpaka wodwala asathenso kuzindikira zilembo molondola kapena amalize tchati."
     },
     {
       "id": "va-10",
@@ -251,7 +267,8 @@
       "ha": "Rubuta layin ƙarshe da ya gani duka daidai. A nan ƙarfin gani uku bisa goma sha tara ne.",
       "yo": "Kọ ìlà ìkẹyìn tí ó rí gbogbo rẹ̀ dáadáa. Ní àpẹẹrẹ yìí, ìríran jẹ́ mẹ́ta lórí mọ́kàndínlógún.",
       "ig": "Dee ahịrị ikpeazụ ọ hụrụ niile nke ọma. N'ebe a, ike ịhụ ụzọ bụ atọ n'elu iri na itoolu.",
-      "ur": "آخری مکمل لائن کو صحیح طریقے سے ریکارڈ کریں۔ اس مثال میں، ایکیوٹی تین سے زیادہ انیس ہے۔"
+      "ur": "آخری مکمل لائن کو صحیح طریقے سے ریکارڈ کریں۔ اس مثال میں، ایکیوٹی تین سے زیادہ انیس ہے۔",
+      "ny": "Lembani mzere womaliza umene wodwalayo waona molondola wonse. Apa muyeso wake ndi zitatu pa khumi ndi zisanu ndi zinayi."
     },
     {
       "id": "va-11",
@@ -268,7 +285,8 @@
       "ha": "Idan gani ya gaza uku bisa uku, maimaita da ƙaramin rami ko tabarau.",
       "yo": "Tí ìríran bá kéré ju mẹ́ta lórí mẹ́ta, tún ṣe pẹ̀lú ihò kékeré tàbí dígí.",
       "ig": "Ịhụ ụzọ erughị atọ n'elu atọ? Nwalee oghere ma ọ bụ ugogbe.",
-      "ur": "اگر بینائی تین سے کم تین سے کم ہو جائے تو پن ہول یا شیشے کے ساتھ ٹیسٹ کو دہرائیں۔"
+      "ur": "اگر بینائی تین سے کم تین سے کم ہو جائے تو پن ہول یا شیشے کے ساتھ ٹیسٹ کو دہرائیں۔",
+      "ny": "Ngati muyeso wa kuona ndi wochepera zitatu pa zitatu, bwerezani kuyeza pogwiritsa ntchito kabowo kakang'ono kapena magalasi."
     },
     {
       "id": "va-12",
@@ -285,7 +303,8 @@
       "ha": "Yi ramuka da fil a ɗigon baƙi na katin kusa.",
       "yo": "Fi abẹ́rẹ́ lu àwọn àmì dúdú lórí káàdì ìríran nítòsí.",
       "ig": "Jiri ntụtụ puo oghere n'akara ojii dị na kaadị nso.",
-      "ur": "قریب کی نظر والے کارڈ پر سیاہ نقطوں میں پن سے سوراخ کریں۔"
+      "ur": "قریب کی نظر والے کارڈ پر سیاہ نقطوں میں پن سے سوراخ کریں۔",
+      "ny": "Mungapange timabowo mwa kuboola ndi pini kumene kuli timadontho takuda pa khadi lowerengera pafupi."
     },
     {
       "id": "va-13",
@@ -302,7 +321,8 @@
       "ha": "Gani ya inganta da rami ko tabarau? Ana buƙatar tabarau.",
       "yo": "Tí ihò tàbí dígí bá mú ìríran dára, ó nílò dígí.",
       "ig": "Oghere ma ọ bụ ugogbe meziwanye ịhụ ụzọ? Ọ chọrọ ugogbe.",
-      "ur": "سوراخ دار پردے یا عینک سے نظر بہتر ہو تو عینک درکار ہے۔"
+      "ur": "سوراخ دار پردے یا عینک سے نظر بہتر ہو تو عینک درکار ہے۔",
+      "ny": "Ngati kuona kukuyenda bwino ndi timabowo kapena magalasi, wodwalayo akufunika magalasi."
     },
     {
       "id": "va-14",
@@ -319,7 +339,8 @@
       "ha": "Idan bai ga babban E a mita uku ba, gwada mita ɗaya da rabi. Idan bai gani ba, gwada ƙirga yatsu.",
       "yo": "Tí kò bá rí E tó tóbi jù ní mítà mẹ́ta, gbìyànjú mítà kan ààbọ̀. Tí kò bá rí i, dán kíkà ìka wò.",
       "ig": "Ọ hụghị E kachasị na mita atọ? Nwalee mita otu na ọkara. Ọ hụghị ya? Nwalee ịgụ mkpịsị aka.",
-      "ur": "اگر سب سے بڑا E تین میٹر پر نہیں دیکھا جا سکتا تو ڈیڑھ میٹر آزمائیں۔ اگر اب بھی نظر نہ آئے تو انگلیوں کی گنتی کی جانچ کریں۔"
+      "ur": "اگر سب سے بڑا E تین میٹر پر نہیں دیکھا جا سکتا تو ڈیڑھ میٹر آزمائیں۔ اگر اب بھی نظر نہ آئے تو انگلیوں کی گنتی کی جانچ کریں۔",
+      "ny": "Ngati E yaikulu kwambiri sikuoneka pa mamita atatu, yesani pa mita imodzi ndi theka. Ngati sikuonekabe, yesani kuwerenga zala."
     },
     {
       "id": "va-15",
@@ -336,7 +357,8 @@
       "ha": "Tambayi yatsu nawa aka ɗaga. Rubuta ƙirga yatsu da nisan da ya gan su.",
       "yo": "Béèrè iye ìka tí o gbé sókè. Kọ kíkà ìka àti ijìnnà tí ó ti rí wọn.",
       "ig": "Jụọ mkpịsị aka ole e weliri. Dee ịgụ mkpịsị aka na anya ebe ọ hụrụ ha.",
-      "ur": "پوچھو کتنی انگلیاں پکڑی ہوئی ہیں۔ گنتی کی انگلیاں اور وہ فاصلہ ریکارڈ کریں جس پر وہ نظر آتے ہیں۔"
+      "ur": "پوچھو کتنی انگلیاں پکڑی ہوئی ہیں۔ گنتی کی انگلیاں اور وہ فاصلہ ریکارڈ کریں جس پر وہ نظر آتے ہیں۔",
+      "ny": "Funsani kuti ndi zala zingati zimene mwakweza. Lembani kuti wodwalayo akuwerenga zala ndi mtunda umene akuzionera."
     },
     {
       "id": "va-16",
@@ -353,7 +375,8 @@
       "ha": "Idan bai ƙirga yatsu ba, motsa hannu ka tambaya ko yana ganin motsin. Rubuta motsin hannu da nisa.",
       "yo": "Tí kò bá lè ka ìka, mi ọwọ́ rẹ kí o béèrè bóyá ó rí ìṣípò. Kọ ìṣípò ọwọ́ àti ijìnnà.",
       "ig": "Ọ bụrụ na ọ gụghị mkpịsị aka, fegharịa aka gị, jụọ ma ọ na-ahụ ngagharị. Dee ngagharị aka na anya ebe ọ hụrụ ya.",
-      "ur": "اگر انگلیاں گنی نہیں جا سکتیں تو اپنا ہاتھ ہلائیں اور پوچھیں کہ کیا حرکت نظر آ رہی ہے۔ ہاتھ کی حرکت اور فاصلے کو ریکارڈ کریں۔"
+      "ur": "اگر انگلیاں گنی نہیں جا سکتیں تو اپنا ہاتھ ہلائیں اور پوچھیں کہ کیا حرکت نظر آ رہی ہے۔ ہاتھ کی حرکت اور فاصلے کو ریکارڈ کریں۔",
+      "ny": "Ngati wodwalayo sangathe kuwerenga zala, sunthani dzanja lanu ndipo funsani ngati akuona kusunthako. Lembani zotsatira ndi mtundawo."
     },
     {
       "id": "va-17",
@@ -370,7 +393,8 @@
       "ha": "Idan bai ga motsi ba, gwada ganin haske. Rubuta ko yana ganin haske ko ba ya ganin haske.",
       "yo": "Tí kò bá rí ìṣípò, dán rírí ìmọ́lẹ̀ wò. Kọ bóyá ó rí ìmọ́lẹ̀ tàbí kò rí ìmọ́lẹ̀.",
       "ig": "Ọ bụrụ na ọ hụghị ngagharị, nwalee ịhụ ìhè. Dee ma ọ na-ahụ ìhè ma ọ bụ na ọ naghị ahụ ìhè.",
-      "ur": "حرکت نہ دکھے تو روشنی کا ادراک جانچیں۔ درج کریں کہ مریض روشنی دیکھ سکتا ہے یا نہیں۔"
+      "ur": "حرکت نہ دکھے تو روشنی کا ادراک جانچیں۔ درج کریں کہ مریض روشنی دیکھ سکتا ہے یا نہیں۔",
+      "ny": "Ngati kusuntha kwa dzanja sikuoneka, yezani ngati wodwalayo angaone kuwala. Lembani ngati akuona kuwala kapena sakuona."
     },
     {
       "id": "va-18",
@@ -387,7 +411,8 @@
       "ha": "Don gani na kusa, riƙe jadawalin a santimita arba'in, idanun biyu a buɗe.",
       "yo": "Fún ìríran nítòsí, di pátákó mú ní sẹ̀ǹtímítà ogójì, kí ojú méjèèjì ṣí.",
       "ig": "Maka ịhụ nso, chaatị dị sentimita iri anọ, anya abụọ mepere.",
-      "ur": "نزدیکی بصارت کے لیے، دونوں آنکھیں کھلی رکھتے ہوئے، ریڈنگ چارٹ کو چالیس سینٹی میٹر دور رکھیں۔"
+      "ur": "نزدیکی بصارت کے لیے، دونوں آنکھیں کھلی رکھتے ہوئے، ریڈنگ چارٹ کو چالیس سینٹی میٹر دور رکھیں۔",
+      "ny": "Poyesa kuona zinthu zapafupi, gwirani tchati chowerengera patali masentimita makumi anayi. Maso onse akhale otseguka."
     },
     {
       "id": "va-19",
@@ -404,7 +429,8 @@
       "ha": "Nemi ya karanta da murya, ya fara da manyan haruffa.",
       "yo": "Ní kó kà sókè, láti lẹ́tà tó tóbi jù.",
       "ig": "Gwa ya ka ọ gụọ n'olu, malite na mkpụrụedemede kacha ibu.",
-      "ur": "سب سے بڑے پرنٹ سے شروع کرتے ہوئے ان سے بلند آواز سے پڑھنے کو کہیں۔"
+      "ur": "سب سے بڑے پرنٹ سے شروع کرتے ہوئے ان سے بلند آواز سے پڑھنے کو کہیں۔",
+      "ny": "Pemphani wodwalayo kuti awerenge mokweza, kuyambira ndi zilembo zazikulu kwambiri."
     },
     {
       "id": "va-20",
@@ -421,7 +447,8 @@
       "ha": "Rubuta ƙaramin layin da ya karanta cikin sauƙi da nisan gwaji.",
       "yo": "Kọ ìlà kékeré jù tí ó kà láìsí ìṣòro àti ijìnnà.",
       "ig": "Dee ahịrị kacha nta ọ gụrụ n'enweghị nsogbu na anya ule.",
-      "ur": "آرام سے پڑھی جانے والی سب سے چھوٹی لائن اور ٹیسٹ کا فاصلہ ریکارڈ کریں۔"
+      "ur": "آرام سے پڑھی جانے والی سب سے چھوٹی لائن اور ٹیسٹ کا فاصلہ ریکارڈ کریں۔",
+      "ny": "Lembani mzere wa zilembo zazing'ono kwambiri umene wawerengedwa mosavuta, ndi mtunda woyezera."
     },
     {
       "id": "va-21",
@@ -438,7 +465,8 @@
       "ha": "Idan karatu ya gagara, ya gane haruffa ko ya haɗa siffofi.",
       "yo": "Tí kíkà bá ṣòro, ní kó dá lẹ́tà mọ̀ tàbí kó mú àwọn ìrísí tó jọra pọ̀.",
       "ig": "Ịgụ siri ike? Ọ mata mkpụrụedemede ma ọ bụ jikọọ ụdị ha.",
-      "ur": "اگر پڑھنا مشکل ہے تو، ان سے حروف کی شناخت کرنے یا ان کی شکلوں سے ملنے کو کہیں۔"
+      "ur": "اگر پڑھنا مشکل ہے تو، ان سے حروف کی شناخت کرنے یا ان کی شکلوں سے ملنے کو کہیں۔",
+      "ny": "Ngati kuwerenga n'kovuta, pemphani wodwala kuti azindikire zilembo kapena afanizire maonekedwe ake."
     },
     {
       "id": "va-22",
@@ -455,7 +483,8 @@
       "ha": "Zai iya nuna inda E ya dosa kamar gwajin gani na nesa, ko ya zana siffarsa a iska da yatsa.",
       "yo": "Ó lè tọ́ka sí ibi tí E kọjú sí bí nínú àyẹ̀wò jíjìn, tàbí fi ìka ya ìrísí rẹ̀ sínú afẹ́fẹ́.",
       "ig": "Ọ tụọ ebe E chere ihu dịka ule dị anya, ma ọ bụ see ya n'ikuku na mkpịsị.",
-      "ur": "مریض دور کی جانچ کی طرح حرف ای کی سمت بتائے یا انگلی سے ہوا میں اس کی شکل بنائے۔"
+      "ur": "مریض دور کی جانچ کی طرح حرف ای کی سمت بتائے یا انگلی سے ہوا میں اس کی شکل بنائے۔",
+      "ny": "Angaloze kumene E yayang'ana monga poyesa kuona patali, kapena angatsanzire kaonekedwe kake polemba m'mlengalenga ndi chala."
     },
     {
       "id": "va-23",
@@ -472,7 +501,8 @@
       "ha": "Ganin kusa ya gaza N12? Gwada tabarau na karatu masu ƙarfi dabam.",
       "yo": "Tí ìríran nítòsí bá burú ju N12, tún ṣe pẹ̀lú dígí kíkà tó ní agbára ọ̀tọ̀ọ̀tọ̀.",
       "ig": "Ọ bụrụ na ịhụ ụzọ nso dị njọ karịa N12, nwalee ugogbe ịgụ ihe ndị nwere ike dị iche iche.",
-      "ur": "اگر نزدیکی بصارت N12 سے بدتر ہے تو مختلف قوتوں کے ریڈنگ گلاسز کے ساتھ دہرائیں۔"
+      "ur": "اگر نزدیکی بصارت N12 سے بدتر ہے تو مختلف قوتوں کے ریڈنگ گلاسز کے ساتھ دہرائیں۔",
+      "ny": "Ngati kuona zinthu zapafupi kuli kochepera N12, bwerezani kuyeza ndi magalasi owerengera a mphamvu zosiyanasiyana."
     },
     {
       "id": "va-24",
@@ -489,7 +519,8 @@
       "ha": "Idan gani ya inganta, yana buƙatar tabarau.",
       "yo": "Tí ìríran bá dára sí i, ó túmọ̀ sí pé ó nílò dígí.",
       "ig": "Ọ bụrụ na ịhụ ụzọ kawanye mma, ọ pụtara na ọ chọrọ ugogbe anya.",
-      "ur": "اگر بینائی بہتر ہوتی ہے تو اس کا مطلب ہے کہ انہیں عینک کی ضرورت ہے۔"
+      "ur": "اگر بینائی بہتر ہوتی ہے تو اس کا مطلب ہے کہ انہیں عینک کی ضرورت ہے۔",
+      "ny": "Ngati akuona bwino atavala magalasi, akufunika magalasi."
     }
   ],
   "sourceDurationSeconds": 198.57,
@@ -573,7 +604,8 @@
         "ha": "Shiri",
         "yo": "Ìmúrasílẹ̀",
         "ig": "Nkwadebe",
-        "ur": "تیاری"
+        "ur": "تیاری",
+        "ny": "Kukonzekera"
       }
     },
     {
@@ -590,7 +622,8 @@
         "ha": "Gani na nesa",
         "yo": "Ìríran jíjìn",
         "ig": "Ịhụ ụzọ dị anya",
-        "ur": "فاصلاتی وژن"
+        "ur": "فاصلاتی وژن",
+        "ny": "Kuona zinthu zakutali"
       }
     },
     {
@@ -607,7 +640,8 @@
         "ha": "Gwaji da ƙaramin rami ko tabarau",
         "yo": "Àyẹ̀wò pẹ̀lú ihò kékeré tàbí dígí",
         "ig": "Ule obere oghere ma ọ bụ ugogbe anya",
-        "ur": "پنہول یا شیشے کے ساتھ ٹیسٹ کریں۔"
+        "ur": "پنہول یا شیشے کے ساتھ ٹیسٹ کریں۔",
+        "ny": "Kuyeza ndi kabowo kakang'ono kapena magalasi"
       }
     },
     {
@@ -624,7 +658,8 @@
         "ha": "Raunin gani: ƙirga yatsu, motsin hannu, ganin haske",
         "yo": "Ìríran kéré: kíkà ìka, ìṣípò ọwọ́, rírí ìmọ́lẹ̀",
         "ig": "Ịhụ ụzọ na-adịghị ike: ịgụ mkpịsị aka, ngagharị aka, ịhụ ìhè",
-        "ur": "کم وژن CF-HM-LP"
+        "ur": "کم وژن CF-HM-LP",
+        "ny": "Kuona kochepa: zala, kusuntha kwa dzanja ndi kuwala"
       }
     },
     {
@@ -641,7 +676,8 @@
         "ha": "Gani na kusa",
         "yo": "Ìríran nítòsí",
         "ig": "Ịhụ ụzọ nso",
-        "ur": "وژن کے قریب"
+        "ur": "وژن کے قریب",
+        "ny": "Kuona zinthu zapafupi"
       }
     }
   ]

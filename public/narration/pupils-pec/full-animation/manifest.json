@@ -6,8 +6,8 @@
       "src": "en.m4a",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 385263,
-      "sha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5",
+      "bytes": 407944,
+      "sha256": "8652900b76d86b3b20a7b960fe31c34879a559807cc944567ca02427e12a6df5",
       "durationSeconds": 102
     },
     "es-419": {
@@ -82,6 +82,16 @@
       "label": "اردو",
       "voice": "ur-PK-UzmaNeural",
       "durationSeconds": 102
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "label": "Chichewa",
+      "voice": "facebook/mms-tts-nya",
+      "durationSeconds": 102.02000000000001,
+      "bytes": 166186,
+      "sha256": "cdd4b0fca67fc7ffcdd35cd4541c730c6d8c712a4279cd862f2d4d650d2de49f",
+      "modelLicense": "CC-BY-NC-4.0"
     }
   }
 }

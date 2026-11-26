@@ -29,6 +29,7 @@ const languages = [
   "yo",
   "ig",
   "ur",
+  "ny",
 ];
 const stamp = (time) =>
   new Date(Math.round(time * 1000)).toISOString().slice(11, 23);

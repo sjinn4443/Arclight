@@ -26,6 +26,16 @@
       "label": "اردو",
       "voice": "ur-PK-UzmaNeural",
       "durationSeconds": 331
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "label": "Chichewa",
+      "voice": "facebook/mms-tts-nya",
+      "durationSeconds": 331.01,
+      "bytes": 589367,
+      "sha256": "c46e13051b9f651219128cc1866266edcc17d69fef5c0b67d4547cc5063e7252",
+      "modelLicense": "CC-BY-NC-4.0"
     }
   }
 }

@@ -1043,6 +1043,10 @@ const STRUCTURAL_BACK_TARGETS = {
   pupilsAdvancedPdf: { routeName: "videos", subPageId: "pupilsPage" },
   frontOfEyePdf: { routeName: "videos", subPageId: "frontOfEyePage" },
   frontOfEyePdfTest: { routeName: "videos", subPageId: "frontOfEyePage" },
+  directOphthalmoscopyMobile: {
+    routeName: "videos",
+    subPageId: "directOphthalmoscopy",
+  },
   childhoodAskQuestionsObservePage: {
     routeName: "childhoodEyeScreeningWorkshop",
   },

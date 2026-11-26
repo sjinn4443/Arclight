@@ -92,6 +92,19 @@ def export(name, box, *, only=None, exclude=(), clean=False, colour=None, unclip
             continue
         if (only is not None and index not in only) or index in excluded or (clean and accent(element)):
             parents[element].remove(element)
+        elif name in ("approach-base", "approach-occluder") and index in (197, 198):
+            # The two original iris paths sit beneath the eyelid outlines.
+            element.set("fill", "#98623b")
+            pupil = ET.Element(f"{{{NS}}}ellipse", {
+                "transform": element.get("transform"),
+                "cx": "3.75" if index == 197 else "-3.4",
+                "cy": "0",
+                "rx": "1.55",
+                "ry": "2",
+                "fill": "#0d0d0a",
+            })
+            parent = parents[element]
+            parent.insert(list(parent).index(element) + 1, pupil)
         elif colour:
             if element.get("fill") != "none":
                 element.set("fill", colour)

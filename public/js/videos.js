@@ -3,6 +3,7 @@
  */
 
 import { setLessonProgress } from "./lessonProgress.js";
+import { NATIVE_LANGUAGE_NAMES } from "./language-names.js";
 import "../video-localization/video-quality.js";
 import { rememberDiabeticConditionLesson } from "./diabeticConditionContext.js";
 import {
@@ -17,7 +18,11 @@ import { loadPage, syncRouteHash, getRouteFromHash } from "./navigation.js";
 import { showExperimentalMiniAppNoticeForPage } from "./experimentalMiniAppNotice.js";
 import { syncLessonCompletionTick } from "./lessonCompletionTick.js";
 import { initializeInteractiveLearningTopicQuizzes } from "./interactiveLearningTopicQuizzes.js";
-import { syncLocalizedVideoSubtitles } from "./videoSubtitles.js";
+import {
+  releaseAppVideoNarration,
+  syncLocalizedVideoSubtitles,
+} from "./videoSubtitles.js";
+import { createVideoDubAudio } from "./videoDubAudio.js";
 import { initializeEyeExaminationConnectGame } from "./eyeExaminationConnect.js";
 import {
   initializeCataractCaseQuiz,
@@ -2134,34 +2139,6 @@ const IOS_HLS_PREFERRED_SUBTITLE_PAGE_IDS = new Set([
   "usaidFundalReflexExamPage",
   "usaidNormalAbnormalPage",
 ]);
-const CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES = {
-  en: { label: "English" },
-  am: { label: "Amharic" },
-  ar: { label: "Arabic" },
-  bn: { label: "Bangla" },
-  ne: { label: "Nepali" },
-  ny: { label: "Chichewa" },
-  zh: { label: "Chinese" },
-  fr: { label: "French" },
-  ha: { label: "Hausa" },
-  hi: { label: "Hindi" },
-  ig: { label: "Igbo" },
-  id: { label: "Indonesian" },
-  rw: { label: "Kinyarwanda" },
-  ko: { label: "Korean" },
-  ln: { label: "Lingala" },
-  lg: { label: "Luganda" },
-  fa: { label: "Persian" },
-  pt: { label: "Portuguese" },
-  sn: { label: "Shona" },
-  es: { label: "Spanish" },
-  sw: { label: "Swahili" },
-  te: { label: "Telugu" },
-  ur: { label: "اردو" },
-  yo: { label: "Yoruba" },
-  zu: { label: "Zulu" },
-  lo: { label: "Lao" },
-};
 const CHILDHOOD_EYE_SCREENING_HLS_MIME_TYPE = "application/vnd.apple.mpegurl";
 const VIDEO_NARRATION_SYNC_TOLERANCE_SECONDS = 0.2;
 const VIDEO_NARRATION_STORAGE_PREFIX = "videoNarration:";
@@ -2186,15 +2163,9 @@ function normalizeChildhoodPilotSubtitleLanguage(lang) {
     .trim()
     .toLowerCase();
   const base = normalized.split("-")[0];
-  return Object.prototype.hasOwnProperty.call(
-    CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES,
-    normalized,
-  )
+  return Object.prototype.hasOwnProperty.call(NATIVE_LANGUAGE_NAMES, normalized)
     ? normalized
-    : Object.prototype.hasOwnProperty.call(
-          CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES,
-          base,
-        )
+    : Object.prototype.hasOwnProperty.call(NATIVE_LANGUAGE_NAMES, base)
       ? base
       : "en";
 }
@@ -2288,9 +2259,8 @@ function getCurrentUiLanguage() {
 
 function getChildhoodPilotSubtitleLabel(lang) {
   return (
-    CHILDHOOD_EYE_SCREENING_SUBTITLE_LANGUAGES[
-      normalizeChildhoodPilotSubtitleLanguage(lang)
-    ]?.label || "English"
+    NATIVE_LANGUAGE_NAMES[normalizeChildhoodPilotSubtitleLanguage(lang)] ||
+    "English"
   );
 }
 
@@ -2385,6 +2355,7 @@ function sanitizeChildhoodEyeScreeningSubtitleCatalog(rawCatalog = {}) {
     sanitized[pageId] = {
       subtitles,
       audioVariants,
+      replaceSourceAudio: entry.replaceSourceAudio === true,
       defaultSubtitleLang,
       defaultAudioLang: normalizeVideoNarrationLanguageTag(
         entry.defaultAudioLang || "en",
@@ -2579,10 +2550,12 @@ function ensureVideoPageMenuButtonForPage(pageId) {
     menuBtn = document.createElement("span");
     menuBtn.className = "icon menuBtn video-page-menu-btn";
     menuBtn.setAttribute("aria-label", "Menu");
+    menuBtn.setAttribute("data-i18n", "i18nExtra.menu_aria_label:aria-label");
     menuBtn.setAttribute("role", "button");
     menuBtn.setAttribute("tabindex", "0");
     menuBtn.textContent = "\u2630";
     actionRow.appendChild(menuBtn);
+    window.I18N?.applyTranslations?.(menuBtn);
   }
 
   return actionRow;
@@ -2681,54 +2654,19 @@ function isDedicatedVideoContainerFullscreen(video) {
   );
 }
 
-function getDedicatedVideoFullscreenCopy(language = getCurrentUiLanguage()) {
-  const base = normalizeVideoNarrationLanguageTag(language).split("-")[0];
-  if (base === "ur") {
-    return {
-      controls: "ویڈیو کنٹرولز",
-      enter: "پوری اسکرین",
-      exit: "پوری اسکرین سے باہر نکلیں",
-      mute: "آواز بند کریں",
-      pause: "روکیں",
-      play: "چلائیں",
-      seek: "ویڈیو میں موجودہ مقام",
-      unmute: "آواز بحال کریں",
-    };
-  }
-  if (base === "es") {
-    return {
-      controls: "Controles de vídeo",
-      enter: "Pantalla completa",
-      exit: "Salir de pantalla completa",
-      mute: "Silenciar",
-      pause: "Pausar",
-      play: "Reproducir",
-      seek: "Posición del vídeo",
-      unmute: "Activar sonido",
-    };
-  }
-  if (base === "ko") {
-    return {
-      controls: "동영상 재생 컨트롤",
-      enter: "전체 화면",
-      exit: "전체 화면 종료",
-      mute: "음소거",
-      pause: "일시정지",
-      play: "재생",
-      seek: "동영상 재생 위치",
-      unmute: "음소거 해제",
-    };
-  }
-  return {
-    controls: "Video controls",
-    enter: "Full screen",
-    exit: "Exit full screen",
-    mute: "Mute",
-    pause: "Pause",
-    play: "Play",
-    seek: "Video position",
-    unmute: "Unmute",
-  };
+function videoControlText(key, fallback) {
+  return window.I18N?.t?.(key, fallback) || fallback;
+}
+
+function setVideoControlLabel(element, key, fallback, includeTitle = false) {
+  const label = videoControlText(key, fallback);
+  const spec = includeTitle
+    ? key + ":aria-label;" + key + ":title"
+    : key + ":aria-label";
+  if (element.dataset.i18n !== spec) element.dataset.i18n = spec;
+  if (element.getAttribute("aria-label") !== label)
+    element.setAttribute("aria-label", label);
+  if (includeTitle && element.title !== label) element.title = label;
 }
 
 function formatDedicatedVideoTime(seconds) {
@@ -2747,7 +2685,6 @@ function updateDedicatedVideoPlaybackUi(video) {
   const state = dedicatedVideoFullscreenStates.get(video);
   if (!state) return;
 
-  const copy = getDedicatedVideoFullscreenCopy();
   const duration = Number.isFinite(video.duration) ? video.duration : 0;
   const currentTime = Math.min(
     Math.max(0, Number(video.currentTime) || 0),
@@ -2755,19 +2692,27 @@ function updateDedicatedVideoPlaybackUi(video) {
   );
   const isPaused = video.paused || video.ended;
 
-  state.controls.setAttribute("aria-label", copy.controls);
-  state.playButton.textContent = isPaused ? "▶" : "❚❚";
-  state.playButton.setAttribute(
-    "aria-label",
-    isPaused ? copy.play : copy.pause,
+  setVideoControlLabel(
+    state.controls,
+    "videoControls.controls",
+    "Video controls",
   );
-  state.playButton.title = isPaused ? copy.play : copy.pause;
+  state.playButton.textContent = isPaused ? "▶" : "❚❚";
+  if (isPaused)
+    setVideoControlLabel(state.playButton, "videoControls.play", "Play", true);
+  else
+    setVideoControlLabel(
+      state.playButton,
+      "videoControls.pause",
+      "Pause",
+      true,
+    );
   state.timeLabel.textContent = `${formatDedicatedVideoTime(
     currentTime,
   )} / ${formatDedicatedVideoTime(duration)}`;
   state.timeline.max = String(duration || 0);
   state.timeline.value = String(currentTime);
-  state.timeline.setAttribute("aria-label", copy.seek);
+  setVideoControlLabel(state.timeline, "videoControls.seek", "Video position");
   state.timeline.setAttribute(
     "aria-valuetext",
     `${formatDedicatedVideoTime(currentTime)} / ${formatDedicatedVideoTime(
@@ -2776,12 +2721,16 @@ function updateDedicatedVideoPlaybackUi(video) {
   );
   state.muteButton.textContent =
     video.muted || video.volume === 0 ? "🔇" : "🔊";
-  state.muteButton.setAttribute(
-    "aria-label",
-    video.muted || video.volume === 0 ? copy.unmute : copy.mute,
-  );
-  state.muteButton.title =
-    video.muted || video.volume === 0 ? copy.unmute : copy.mute;
+  if (video.muted || video.volume === 0) {
+    setVideoControlLabel(
+      state.muteButton,
+      "videoControls.unmute",
+      "Unmute",
+      true,
+    );
+  } else {
+    setVideoControlLabel(state.muteButton, "videoControls.mute", "Mute", true);
+  }
 }
 
 function updateDedicatedVideoFullscreenUi(video) {
@@ -2789,16 +2738,25 @@ function updateDedicatedVideoFullscreenUi(video) {
   if (!state) return;
 
   const active = isDedicatedVideoContainerFullscreen(video);
-  const copy = getDedicatedVideoFullscreenCopy();
   state.fullscreenButton.setAttribute(
     "aria-pressed",
     active ? "true" : "false",
   );
-  state.fullscreenButton.setAttribute(
-    "aria-label",
-    active ? copy.exit : copy.enter,
-  );
-  state.fullscreenButton.title = active ? copy.exit : copy.enter;
+  if (active) {
+    setVideoControlLabel(
+      state.fullscreenButton,
+      "videoControls.exit",
+      "Exit full screen",
+      true,
+    );
+  } else {
+    setVideoControlLabel(
+      state.fullscreenButton,
+      "videoControls.enter",
+      "Full screen",
+      true,
+    );
+  }
 
   showChildhoodPilotSubtitleTrack(
     video,
@@ -3023,6 +2981,7 @@ function ensureDedicatedVideoFullscreenControl(pageId, video) {
 
   updateDedicatedVideoPlaybackUi(video);
   updateDedicatedVideoFullscreenUi(video);
+  window.I18N?.applyTranslations?.(controls);
   return state;
 }
 
@@ -3828,20 +3787,28 @@ function setVideoNarrationAudioTime(video, audio, { force = false } = {}) {
 }
 
 function playVideoNarrationState(state, { forceSync = false } = {}) {
-  if (!state?.enabled || !state.audio?.src || state.video?.paused) return;
+  if (
+    !state?.enabled ||
+    !state.audio?.src ||
+    state.video?.paused ||
+    state.video.style.display === "none"
+  )
+    return;
   if (state.video.dataset.timedNarrationCatchupActive === "1") return;
   setVideoNarrationAudioTime(state.video, state.audio, { force: forceSync });
   state.audio.playbackRate = state.video.playbackRate || 1;
-  state.audio.volume = state.video.volume;
-  state.audio.muted = state.video.muted;
+  state.dubOutput.enable(state.entry?.replaceSourceAudio === true);
+  state.dubOutput.updateVolume();
   try {
     const playResult = state.audio.play();
     if (playResult && typeof playResult.catch === "function") {
       playResult.catch(() => {
+        state.dubOutput.enable(false);
         state.button?.setAttribute("data-narration-playback-blocked", "true");
       });
     }
   } catch {
+    state.dubOutput.enable(false);
     state.button?.setAttribute("data-narration-playback-blocked", "true");
   }
 }
@@ -3853,54 +3820,14 @@ function updateVideoNarrationButton(
   const button = state?.button;
   if (!button) return;
   const uiBase = normalizeVideoNarrationLanguageTag(uiLanguage).split("-")[0];
-  const localizedCopy = {
-    ur: {
-      active: "صوتی بیان",
-      auto: "ایپ کی زبان استعمال کریں",
-      off: "صوتی بیان بند ہے",
-    },
-    ha: {
-      active: "Bayani",
-      auto: "Yi amfani da harshen manhaja",
-      off: "An kashe bayani",
-    },
-    yo: { active: "Ohùn", auto: "Lo èdè ìṣàfilọ́lẹ̀", off: "Ohùn ti pa" },
-    ig: { active: "Nkọwa", auto: "Jiri asụsụ ngwa", off: "Agbanyụrụ nkọwa" },
-    ne: {
-      active: "वाचन",
-      auto: "एपको भाषा प्रयोग गर्नुहोस्",
-      off: "वाचन बन्द",
-    },
-    fr: {
-      active: "Narration",
-      auto: "Utiliser la langue de l’application",
-      off: "Narration désactivée",
-    },
-    lg: {
-      active: "Eddoboozi",
-      auto: "Kozesa olulimi lwa pulogulaamu",
-      off: "Eddoboozi lizikiddwa",
-    },
+  const copy = {
+    active: videoControlText("videoControls.narration", "Narration"),
+    auto: videoControlText(
+      "videoControls.use_app_language",
+      "Use app language",
+    ),
+    off: videoControlText("videoControls.narration_off", "Narration off"),
   };
-  const copy =
-    localizedCopy[uiBase] ||
-    (uiBase === "es"
-      ? {
-          active: "Narración",
-          auto: "Usar idioma de la app",
-          off: "Narración desactivada",
-        }
-      : uiBase === "ko"
-        ? {
-            active: "내레이션",
-            auto: "앱 언어 사용",
-            off: "내레이션 끄기",
-          }
-        : {
-            active: "Narration",
-            auto: "Use app language",
-            off: "Narration off",
-          });
   const label = state.enabled
     ? `${copy.active} · ${state.variant?.label || state.variant?.language || ""}`
     : copy.off;
@@ -3913,7 +3840,7 @@ function updateVideoNarrationButton(
 
   const menu = state.menu;
   if (!menu || !state.entry) return;
-  menu.setAttribute("aria-label", copy.active);
+  setVideoControlLabel(menu, "videoControls.narration", "Narration");
   menu.replaceChildren();
 
   const appLanguageLabel =
@@ -3958,9 +3885,7 @@ function updateVideoNarrationButton(
       syncVideoNarrationForPage(state.pageId, state.entry, {
         preferredLang: getCurrentUiLanguage(),
       });
-      void syncChildhoodPilotSubtitlesForPage(state.pageId, {
-        preferredLang: getCurrentUiLanguage(),
-      });
+      void refreshChildhoodPilotNarrationAndSubtitles(state.pageId);
     });
     menu.appendChild(item);
   });
@@ -4004,6 +3929,7 @@ function ensureVideoNarrationState(pageId, video) {
 
   state = {
     audio,
+    dubOutput: createVideoDubAudio(video, audio),
     button,
     enabled: true,
     entry: null,
@@ -4065,10 +3991,7 @@ function ensureVideoNarrationState(pageId, video) {
   video.addEventListener("ratechange", () => {
     audio.playbackRate = video.playbackRate || 1;
   });
-  video.addEventListener("volumechange", () => {
-    audio.volume = video.volume;
-    audio.muted = video.muted;
-  });
+  audio.addEventListener("error", () => state.dubOutput.enable(false));
   audio.addEventListener("timeupdate", () => {
     if (
       video.dataset.timedNarrationHoldActive === "1" ||
@@ -4118,14 +4041,18 @@ function syncVideoNarrationForPage(
   const selection = readVideoNarrationSelection(pageId);
   const requestedLanguage =
     selection === "auto" || selection === "off" ? preferredLang : selection;
+  const hasVariants = Object.keys(entry?.audioVariants || {}).length > 0;
+  const preferred = normalizeVideoNarrationLanguageTag(requestedLanguage);
   const variant = getVideoNarrationVariant(entry?.audioVariants, {
     prefLang: requestedLanguage,
     defaultLang: entry?.defaultAudioLang || "en",
   });
   const existingState = videoNarrationStates.get(video);
-  if (!variant) {
+  if (!hasVariants) {
     if (existingState) {
+      existingState.enabled = false;
       existingState.audio.pause();
+      existingState.dubOutput.enable(false);
       existingState.button.hidden = true;
     }
     return "";
@@ -4134,13 +4061,17 @@ function syncVideoNarrationForPage(
   const state = existingState || ensureVideoNarrationState(pageId, video);
   if (!state) return "";
   state.button.hidden = false;
-  state.enabled = selection !== "off";
+  state.enabled = Boolean(
+    variant &&
+    selection !== "off" &&
+    (!entry.replaceSourceAudio || variant.language === preferred),
+  );
   state.entry = entry;
   state.selection = selection;
   state.variant = variant;
 
   const currentSource = state.audio.getAttribute("src") || "";
-  if (currentSource !== variant.src) {
+  if (state.enabled && currentSource !== variant.src) {
     state.audio.pause();
     state.audio.setAttribute("src", variant.src);
     state.audio.setAttribute("lang", variant.language);
@@ -4159,6 +4090,7 @@ function syncVideoNarrationForPage(
     return variant.language;
   }
   state.audio.pause();
+  state.dubOutput.enable(false);
   return "";
 }
 
@@ -4173,6 +4105,8 @@ async function syncChildhoodPilotSubtitlesForPage(
 
   const video = getVideoPageLocalVideoElement(pageId);
   if (video) {
+    video.dataset.pageLevelVideoLocalization = "true";
+    releaseAppVideoNarration(video);
     prepareVideoForChildhoodPilotSubtitles(video);
     syncChildhoodPilotInlinePlaybackPreference(video, pageId);
     ensureDedicatedVideoFullscreenControl(pageId, video);
@@ -4295,9 +4229,31 @@ async function ensureChildhoodPilotSubtitleControlsForPage(pageId) {
   return syncChildhoodPilotSubtitlesForPage(pageId);
 }
 
-async function refreshChildhoodPilotSubtitlesForLanguageChange() {
-  const preferredLang = getCurrentUiLanguage();
+function hasSelectedReplacementNarration(pageId, entry) {
+  if (!entry?.replaceSourceAudio) return false;
+  const selection = readVideoNarrationSelection(pageId);
+  const language = normalizeVideoNarrationLanguageTag(
+    selection === "auto" ? getCurrentUiLanguage() : selection,
+  );
+  return Boolean(entry.audioVariants[language]);
+}
 
+async function refreshChildhoodPilotNarrationAndSubtitles(pageId) {
+  if (isVideoPageCurrentlyOnline(pageId)) {
+    const entry = await getChildhoodPilotCatalogEntry(pageId);
+    if (
+      hasSelectedReplacementNarration(pageId, entry) &&
+      (!shouldUseIOSChildhoodPilotHls(pageId, entry) ||
+        resolveVideoPageOnlineSource(pageId, ""))
+    ) {
+      await applyVideoPageMode(pageId, "online");
+      return;
+    }
+  }
+  await syncChildhoodPilotSubtitlesForPage(pageId);
+}
+
+async function refreshChildhoodPilotSubtitlesForLanguageChange() {
   for (const pageId of CHILDHOOD_EYE_SCREENING_SUBTITLE_PAGE_IDS) {
     // A previous manual voice choice must not pin a newly selected app language.
     if (readVideoNarrationSelection(pageId) !== "off") {
@@ -4305,7 +4261,7 @@ async function refreshChildhoodPilotSubtitlesForLanguageChange() {
     }
     const page = getVideoPageElement(pageId);
     if (!page) continue;
-    await syncChildhoodPilotSubtitlesForPage(pageId, { preferredLang });
+    await refreshChildhoodPilotNarrationAndSubtitles(pageId);
   }
 }
 
@@ -4381,6 +4337,13 @@ async function applyVideoPageMode(pageId, mode, { preserveTime = true } = {}) {
     pageId,
     childhoodPilotEntry,
   );
+  if (
+    mode === "online" &&
+    hasSelectedReplacementNarration(pageId, childhoodPilotEntry) &&
+    (!canUseIosHls || resolveVideoPageOnlineSource(pageId, ""))
+  ) {
+    mode = cfg.sources.high ? "high" : "low";
+  }
   if (mode === "online" && !cfg.sources?.online && !canUseIosHls) mode = "low";
   if (mode === "online" && !(await canReachOnlineVideo())) mode = "low";
   if (page.dataset.videoModeRequestToken !== requestToken) return;
@@ -4741,6 +4704,7 @@ async function applyPupilMode(mode, { preserveTime = true } = {}) {
         "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       iframe.allowFullscreen = true;
       iframe.title = "Pupil Full Examination (online)";
+      window.I18N?.applyTranslations?.(iframe);
       iframe.src = PUPIL_VIDEO_SOURCES.online;
       container.appendChild(iframe);
     } else {

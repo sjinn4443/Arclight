@@ -41,4 +41,8 @@ export const VISUAL_ACUITY_NARRATION_TRACKS = {
     label: "اردو",
     src: "/narration/visual-acuity/full-animation/ur.m4a",
   },
+  ny: {
+    label: "Chichewa",
+    src: "/narration/visual-acuity/full-animation/ny.m4a",
+  },
 };

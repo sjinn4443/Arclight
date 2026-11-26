@@ -13,6 +13,24 @@ import {
   jest,
 } from "@jest/globals";
 
+const VIDEO_CONTROL_COPY = Object.fromEntries(
+  Object.entries({
+    en: "english",
+    es: "spanish",
+    ko: "korean",
+    ne: "nepali",
+    fr: "french",
+    lg: "luganda",
+    ha: "hausa",
+    yo: "yoruba",
+    ig: "igbo",
+  }).map(([language, name]) => [
+    language,
+    JSON.parse(fs.readFileSync(`public/translation/${name}.json`, "utf8"))
+      .videoControls,
+  ]),
+);
+
 const PILOT_CATALOG = {
   assessmentVisionPage: {
     subtitles: {
@@ -300,6 +318,10 @@ describe("childhood eye screening subtitle pilot", () => {
     window.__videosGlobalBound = true;
     window.I18N = {
       getLanguage: () => localStorage.getItem("prefLang") || "en",
+      t: (key, fallback) =>
+        VIDEO_CONTROL_COPY[localStorage.getItem("prefLang") || "en"]?.[
+          key.replace("videoControls.", "")
+        ] ?? fallback,
       applyTranslations: () => {},
     };
     window.scrollTo = jest.fn();

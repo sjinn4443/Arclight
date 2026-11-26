@@ -146,7 +146,7 @@ let layers = [],
   afferentWords,
   reflexConstrictFrame = 390,
   rapdDilationFrame = 590,
-  eyeMovementsFrame = 832,
+  eyeMovementsFrame = 592,
   nearFurtherFrame = 422;
 function add(layer) {
   layer.ind = layers.length + 1;
@@ -552,7 +552,40 @@ function anatomyHighlights(box) {
     }),
   );
 }
-function neural(name) {
+function neuralArrow(name, box, from, to, direction, offset) {
+  const asset = assets.get(name);
+  const layer = nativeImage(name, box);
+  let width = asset.w;
+  if (offset) {
+    // The diagrams share the same anatomy scale. Register their pupil centres
+    // and crop the standalone direction arrow next to the reflex heading.
+    layer.ks.p.k[0] += offset[0];
+    layer.ks.p.k[1] += offset[1];
+    layer.ks.s.k[0] *= 0.98;
+    layer.ks.s.k[1] *= 0.98;
+    width = ((506 - asset.sourceBox[0]) * asset.w) / asset.sourceBox[2];
+  }
+  // Start the overview wipe at the first coloured pixel (PDF y=438).
+  const empty = rect(
+      0,
+      direction === "up" ? asset.h : 0,
+      width,
+      offset ? (36 * asset.h) / asset.sourceBox[3] : 0,
+    ),
+    full = rect(
+      0,
+      0,
+      width,
+      offset ? (170 * asset.h) / asset.sourceBox[3] : asset.h,
+    );
+  mask(layer, full);
+  layer.masksProperties[0].pt = keys([
+    [0, [empty]],
+    [from, [empty]],
+    [to, [full]],
+  ]);
+}
+function neural(name, efferentOnly = false) {
   const a = art.neural[name],
     box = name === "reflex" ? [320, 402, 215, 201] : a.box;
   cover(
@@ -560,13 +593,15 @@ function neural(name) {
     [0, 0, W, H],
     () => {
       nativeImage(name + "-unlit", box);
-      const switchedOn = {
-        a: 1,
-        k: [
-          { t: 0, s: [0], h: 1 },
-          { t: 45, s: [100], h: 1 },
-        ],
-      };
+      const switchedOn = efferentOnly
+        ? c(100)
+        : {
+            a: 1,
+            k: [
+              { t: 0, s: [0], h: 1 },
+              { t: 45, s: [100], h: 1 },
+            ],
+          };
       nativeImage(name + "-pool", box, { o: clone(switchedOn) });
       const beam = nativeImage(name + "-shaft", box, { o: clone(switchedOn) });
       const source = assets.get(beam.refId).sourceBox,
@@ -579,20 +614,39 @@ function neural(name) {
       const empty = rect(x, bottom, width, 0),
         full = rect(x, y, width, bottom - y);
       mask(beam, full);
-      beam.masksProperties[0].pt = keys([
-        [0, [empty]],
-        [45, [empty]],
-        [150, [full]],
-      ]);
+      if (!efferentOnly)
+        beam.masksProperties[0].pt = keys([
+          [0, [empty]],
+          [45, [empty]],
+          [150, [full]],
+        ]);
       nativeImage(name + "-retina", box);
-      if (name === "afferent") anatomyHighlights(box);
-      const input = a.signals.filter((v) =>
-        ["#0b00ff", "#00fffa"].includes(v.stroke || v.fill),
-      );
-      if (name === "afferent") {
+      if (efferentOnly || name === "reflex") {
+        if (!efferentOnly) neuralArrow("reflex-afferent", box, 160, 240, "up");
+        neuralArrow(
+          "reflex-efferent",
+          box,
+          efferentOnly ? 0 : 240,
+          efferentOnly
+            ? 450 - afferentWords.retina
+            : Math.min(360, reflexConstrictFrame - 1),
+          "down",
+          efferentOnly ? [-294.3, -261.2] : undefined,
+        );
+      } else {
+        anatomyHighlights(box);
+        const input = a.signals.filter((v) =>
+          ["#0b00ff", "#00fffa"].includes(v.stroke || v.fill),
+        );
         const origin = box[1] + 65;
-        for (const r of input.filter((r) => r.stroke && r.bounds[3] > origin))
-          pdfVector(r, box, 240, 450, "up");
+        for (const r of input.filter((r) => r.stroke && r.bounds[3] > origin)) {
+          // Extend the PDF's optic-nerve shaft back into the illuminated retina.
+          const curve = r.curves[0];
+          curve.v.unshift([curve.v[0][0] - 11, 284]);
+          curve.i.unshift([0, 0]);
+          curve.o.unshift([0, -6]);
+          pdfVector(r, box, afferentWords.retina, 450, "up");
+        }
         for (const colour of ["#0b00ff", "#00fffa"]) {
           const brain = input.filter(
             (r) => r.stroke === colour && r.bounds[3] <= origin,
@@ -608,31 +662,8 @@ function neural(name) {
               (r) => r.stroke === colour && r.bounds[3] > origin,
             ),
             head = input.find((r) => r.fill === colour && !r.stroke);
-          if (line && head) travellingHead(head, line, box, 240, 450);
-        }
-      } else {
-        // Restore the original full-art directional wipes, including the long
-        // side arrows. Pupil response and label timing remain independently set.
-        for (const [asset, from, to, direction] of [
-          ["reflex-afferent", 160, 240, "up"],
-          [
-            "reflex-efferent",
-            240,
-            Math.min(360, reflexConstrictFrame - 1),
-            "down",
-          ],
-        ]) {
-          const l = nativeImage(asset, box),
-            aw = assets.get(asset).w,
-            ah = assets.get(asset).h;
-          const empty = rect(0, direction === "up" ? ah : 0, aw, 0),
-            full = rect(0, 0, aw, ah);
-          mask(l, full);
-          l.masksProperties[0].pt = keys([
-            [0, [empty]],
-            [from, [empty]],
-            [to, [full]],
-          ]);
+          if (line && head)
+            travellingHead(head, line, box, afferentWords.retina, 450);
         }
       }
       if (name === "reflex") {
@@ -662,15 +693,16 @@ function neural(name) {
         nativeImage("reflex-consensual-label", box, { o: fade(585, 12) });
       }
       nativeImage(name + "-device", box);
-      nativeImage(name + "-lens-off", box, {
-        o: {
-          a: 1,
-          k: [
-            { t: 0, s: [100], h: 1 },
-            { t: 45, s: [0], h: 1 },
-          ],
-        },
-      });
+      if (!efferentOnly)
+        nativeImage(name + "-lens-off", box, {
+          o: {
+            a: 1,
+            k: [
+              { t: 0, s: [100], h: 1 },
+              { t: 45, s: [0], h: 1 },
+            ],
+          },
+        });
       if (name === "afferent")
         for (const l of layers) {
           if (l.ks.p.a)
@@ -853,7 +885,7 @@ function inactiveCard(name, x, y, width, activateAt) {
 function flow(name) {
   const f = art.flow[name],
     purple = name === "sympathetic" ? "#3a005a" : "#db00ff",
-    start = name === "sympathetic" ? 25 : 255;
+    start = name === "sympathetic" ? 25 : 15;
   const boxes = f.boxes.map((box, i) => ({
     box,
     x: i === 3 && name === "parasympathetic" ? W * 0.56 : (W - 580) / 2,
@@ -916,8 +948,8 @@ function flow(name) {
         [leftX + leftW / 2, y + 130],
       ],
       "#000000",
-      750,
-      845,
+      510,
+      605,
     );
   else
     strokeLine(
@@ -1043,8 +1075,8 @@ function flow(name) {
     cy = centre[1] - f.right[1],
     from = name === "sympathetic" ? 6.2 : 12,
     to = (f.pupilBounds[2] - f.pupilBounds[0]) / 2,
-    at = name === "sympathetic" ? 310 : 560,
-    until = name === "sympathetic" ? 470 : 710,
+    at = name === "sympathetic" ? 310 : 320,
+    until = 470,
     morphCircle = (label, r0, r1, style) => {
       const l = shape(label, [ellipse(cx, cy, r0)], style);
       l.shapes[0].it[0].ks = keys([
@@ -1139,16 +1171,10 @@ function flow(name) {
     width: 0.55,
   });
   for (const r of f.radial)
-    pdfVector(
-      r,
-      f.right,
-      name === "sympathetic" ? 310 : 560,
-      name === "sympathetic" ? 470 : 710,
-      {
-        centre: [centre[0] - f.right[0], centre[1] - f.right[1]],
-        inward: name === "parasympathetic",
-      },
-    );
+    pdfVector(r, f.right, at, until, {
+      centre: [centre[0] - f.right[0], centre[1] - f.right[1]],
+      inward: name === "parasympathetic",
+    });
   const id = "radial-" + comps.length;
   comps.push({ id, w: f.right[2], h: f.right[3], layers });
   layers = outside;
@@ -1174,7 +1200,7 @@ function flow(name) {
     y,
     leftW,
     name === "parasympathetic"
-      ? arrival(475, y + 130, y, 750, 845)
+      ? arrival(475, y + 130, y, 510, 605)
       : arrival(last.y + 55, y + 130, y, start + 180, start + 280),
   );
 }
@@ -1595,11 +1621,12 @@ async function main() {
     PUPILS_ADVANCED_LANGUAGES: languages,
     PUPILS_ADVANCED_TITLE_TRANSLATIONS: titles,
     PUPILS_ADVANCED_URDU_TITLES: urduTitles,
+    PUPILS_ADVANCED_CHICHEWA_TITLES: chichewaTitles,
   } = config;
   afferentWords = config.PUPILS_ADVANCED_AFFERENT_WORD_FRAMES;
   // Keep the reviewed speech and its eye/lid and warning cues on the same clock.
   for (const [id, word, offset] of [
-    ["third-nerve", /^eye$/i, 25],
+    ["third-nerve", /^eye$/i, 17],
     ["near-abnormal", /^further$/i, 10],
   ]) {
     try {
@@ -1804,24 +1831,28 @@ async function main() {
       });
     }
   const usedAll = new Set();
-  for (let index = 0; index < stages.length; index++) {
-    if (stages[index].pecStageIndex != null) continue;
+  const assetNumbers = new Set();
+  for (const stage of stages) {
+    if (stage.pecStageIndex != null) continue;
+    const { assetNumber } = stage;
+    const index = assetNumber - 1;
+    assetNumbers.add(assetNumber);
     layers = [];
     comps = [];
-    H = index === 3 ? 1093 : 1280;
-    end = stages[index].seconds * FPS;
+    const reflexDiagram = assetNumber === 4;
+    H = reflexDiagram ? 1093 : 1280;
+    end = stage.seconds * FPS;
     solid(
-      index >= 10 && index <= 12
+      reflexDiagram || (index >= 10 && index <= 12)
         ? "#000000"
-        : index === 3
-          ? "#000000"
-          : index === 0
-            ? "#443e32"
-            : index === 2
-              ? "#453f35"
-              : "#aaa393",
+        : index === 0 || assetNumber === 16
+          ? "#443e32"
+          : index === 2
+            ? "#453f35"
+            : "#aaa393",
     );
-    if (index === 0) neural("afferent");
+    if (assetNumber === 16) neural("afferent", true);
+    else if (index === 0) neural("afferent");
     else if (index === 1) flow("parasympathetic");
     else if (index === 2) flow("sympathetic");
     else if (index === 3) neural("reflex");
@@ -1872,13 +1903,13 @@ async function main() {
       op: end,
       w: W,
       h: H,
-      nm: stages[index].name,
+      nm: stage.name,
       ddd: 0,
       assets: [...used].map((id) => assets.get(id)).concat(comps),
       layers,
       markers: [],
     };
-    const dir = path.join(OUTPUT, "" + (index + 1));
+    const dir = path.join(OUTPUT, String(assetNumber));
     await fs.mkdir(dir, { recursive: true });
     const jsonFile = path.join(dir, "data.json");
     const existing = await fs.readFile(jsonFile, "utf8").catch((error) => {
@@ -1901,8 +1932,7 @@ async function main() {
   // Only the generator's obsolete numeric folders and images may be removed.
   for (const entry of await fs.readdir(OUTPUT, { withFileTypes: true })) {
     if (!entry.isDirectory() || !/^\d+$/.test(entry.name)) continue;
-    const i = Number(entry.name) - 1;
-    if (i < stages.length && stages[i].pecStageIndex == null) continue;
+    if (assetNumbers.has(Number(entry.name))) continue;
     const target = path.resolve(OUTPUT, entry.name);
     if (!target.startsWith(OUTPUT + path.sep))
       throw Error("Invalid generated path");
@@ -1928,7 +1958,9 @@ async function main() {
     "public/narration/pupils-advanced/full-animation",
   );
   await fs.mkdir(narration, { recursive: true });
-  const pecStart = 1 + stages.slice(0, 4).reduce((n, s) => n + s.seconds, 0);
+  const stageStart = (index) =>
+    1 + stages.slice(0, index).reduce((n, s) => n + s.seconds, 0);
+  const pecStart = stageStart(5);
   await fs.writeFile(
     path.join(narration, "script.json"),
     JSON.stringify(
@@ -1946,16 +1978,13 @@ async function main() {
             id: "third-nerve-eye-movements",
             language: "en",
             word: "eye movements",
-            at: 1 + stages[0].seconds + eyeMovementsFrame / FPS,
+            at: stageStart(2) + eyeMovementsFrame / FPS,
           },
           {
             id: "near-further-examination",
             language: "en",
             word: "further",
-            at:
-              1 +
-              stages.slice(0, 14).reduce((sum, s) => sum + s.seconds, 0) +
-              nearFurtherFrame / FPS,
+            at: stageStart(15) + nearFurtherFrame / FPS,
           },
           ...Object.entries(afferentWords).map(([word, frame]) => ({
             id: "afferent-" + word.replaceAll(" ", "-"),
@@ -1967,19 +1996,13 @@ async function main() {
             id: "reflex-constriction",
             language: "en",
             word: "constrict",
-            at:
-              1 +
-              stages.slice(0, 3).reduce((sum, s) => sum + s.seconds, 0) +
-              reflexConstrictFrame / FPS,
+            at: stageStart(4) + reflexConstrictFrame / FPS,
           },
           {
             id: "rapd-dilation",
             language: "en",
             word: "dilate",
-            at:
-              1 +
-              stages.slice(0, 12).reduce((sum, s) => sum + s.seconds, 0) +
-              rapdDilationFrame / FPS,
+            at: stageStart(13) + rapdDilationFrame / FPS,
           },
         ],
         reusedAudio: {
@@ -1990,7 +2013,11 @@ async function main() {
         },
         videoTitleCues: sections.map((s, i) => ({
           sourceText: s.title,
-          translations: { ko: titles[i], ur: urduTitles[i] },
+          translations: {
+            ko: titles[i],
+            ur: urduTitles[i],
+            ny: chichewaTitles[i],
+          },
         })),
       },
       null,

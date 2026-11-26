@@ -7,12 +7,12 @@
   "maxPlaybackSpeed": 1.08,
   "tracks": {
     "en": {
-      "voice": "Microsoft Zira Desktop",
+      "voice": "en-GB-SoniaNeural",
       "delivery": {
         "path": "public/narration/apply-eye-pad-shield/full-animation/en.m4a",
-        "bytes": 235510,
+        "bytes": 264767,
         "duration": 62.45,
-        "sha256": "29290e16ebf34a37c4e8a258733a4b09d54e3f1d99b28c0f86fd5ce77063a711",
+        "sha256": "40d6596cae07e3c9e490aea1540cbf140219870698982ecafea868755dd5a19d",
         "format": "mono AAC in M4A, 48 kbps, 48 kHz"
       },
       "master": {
@@ -27,83 +27,83 @@
           "id": "apply-1",
           "slotStart": 1,
           "slotEnd": 6.54,
-          "sourceDuration": 4.47,
+          "sourceDuration": 4.76,
           "playbackSpeed": 1.0,
-          "renderedEnd": 5.47,
-          "endMargin": 1.07
+          "renderedEnd": 5.76,
+          "endMargin": 0.78
         },
         {
           "id": "apply-2",
           "slotStart": 6.54,
           "slotEnd": 10.98,
-          "sourceDuration": 3.81,
+          "sourceDuration": 4.27,
           "playbackSpeed": 1.0,
-          "renderedEnd": 10.35,
-          "endMargin": 0.63
+          "renderedEnd": 10.81,
+          "endMargin": 0.17
         },
         {
           "id": "apply-3",
           "slotStart": 10.98,
           "slotEnd": 20.3,
-          "sourceDuration": 4.44,
+          "sourceDuration": 4.67,
           "playbackSpeed": 1.0,
-          "renderedEnd": 15.42,
-          "endMargin": 4.88
+          "renderedEnd": 15.65,
+          "endMargin": 4.65
         },
         {
           "id": "apply-4",
           "slotStart": 20.3,
           "slotEnd": 31.42,
-          "sourceDuration": 3.74,
+          "sourceDuration": 4.42,
           "playbackSpeed": 1.0,
-          "renderedEnd": 24.04,
-          "endMargin": 7.38
+          "renderedEnd": 24.72,
+          "endMargin": 6.7
         },
         {
           "id": "apply-5",
           "slotStart": 31.42,
           "slotEnd": 37.94,
-          "sourceDuration": 4.08,
+          "sourceDuration": 4.11,
           "playbackSpeed": 1.0,
-          "renderedEnd": 35.5,
-          "endMargin": 2.44
+          "renderedEnd": 35.53,
+          "endMargin": 2.41
         },
         {
           "id": "apply-6",
           "slotStart": 37.94,
           "slotEnd": 44.16,
-          "sourceDuration": 5.49,
+          "sourceDuration": 5.78,
           "playbackSpeed": 1.0,
-          "renderedEnd": 43.43,
-          "endMargin": 0.73
+          "renderedEnd": 43.72,
+          "endMargin": 0.44
         },
         {
           "id": "apply-7",
           "slotStart": 44.16,
           "slotEnd": 52.83,
-          "sourceDuration": 5.62,
+          "sourceDuration": 6.23,
           "playbackSpeed": 1.0,
-          "renderedEnd": 49.78,
-          "endMargin": 3.05
+          "renderedEnd": 50.39,
+          "endMargin": 2.44
         },
         {
           "id": "apply-8",
           "slotStart": 52.83,
           "slotEnd": 62.449999999999996,
-          "sourceDuration": 6.22,
+          "sourceDuration": 6.41,
           "playbackSpeed": 1.0,
-          "renderedEnd": 59.05,
-          "endMargin": 3.4
+          "renderedEnd": 59.24,
+          "endMargin": 3.21
         }
       ]
     },
     "ko": {
-      "voice": "Microsoft Heami Desktop",
+      "voice": "ko-KR-SunHiNeural",
       "delivery": {
         "path": "public/narration/apply-eye-pad-shield/full-animation/ko.m4a",
-        "bytes": 288799,
+        "bytes": 281199,
         "duration": 62.45,
-        "sha256": "eb28111c5eaed7f236c8a311c118d8d79250ddcecd383cf223512d6204dca072",
+        "sha256": "5d337ca8035ff5ebaf1f76a9031cd94366f3e41c692fd3827e6602159c8a5d6a",
         "format": "mono AAC in M4A, 48 kbps, 48 kHz"
       },
       "master": {
@@ -118,73 +118,73 @@
           "id": "apply-1",
           "slotStart": 1,
           "slotEnd": 6.54,
-          "sourceDuration": 5.49,
+          "sourceDuration": 4.89,
           "playbackSpeed": 1.0,
-          "renderedEnd": 6.49,
-          "endMargin": 0.05
+          "renderedEnd": 5.89,
+          "endMargin": 0.65
         },
         {
           "id": "apply-2",
           "slotStart": 6.54,
           "slotEnd": 10.98,
-          "sourceDuration": 4.39,
+          "sourceDuration": 4.38,
           "playbackSpeed": 1.0,
-          "renderedEnd": 10.93,
-          "endMargin": 0.05
+          "renderedEnd": 10.92,
+          "endMargin": 0.06
         },
         {
           "id": "apply-3",
           "slotStart": 10.98,
           "slotEnd": 20.3,
-          "sourceDuration": 5.12,
+          "sourceDuration": 5.01,
           "playbackSpeed": 1.0,
-          "renderedEnd": 16.1,
-          "endMargin": 4.2
+          "renderedEnd": 15.99,
+          "endMargin": 4.31
         },
         {
           "id": "apply-4",
           "slotStart": 20.3,
           "slotEnd": 31.42,
-          "sourceDuration": 4.78,
+          "sourceDuration": 4.43,
           "playbackSpeed": 1.0,
-          "renderedEnd": 25.08,
-          "endMargin": 6.34
+          "renderedEnd": 24.73,
+          "endMargin": 6.69
         },
         {
           "id": "apply-5",
           "slotStart": 31.42,
           "slotEnd": 37.94,
-          "sourceDuration": 4.39,
+          "sourceDuration": 4.03,
           "playbackSpeed": 1.0,
-          "renderedEnd": 35.81,
-          "endMargin": 2.13
+          "renderedEnd": 35.45,
+          "endMargin": 2.49
         },
         {
           "id": "apply-6",
           "slotStart": 37.94,
           "slotEnd": 44.16,
-          "sourceDuration": 5.75,
+          "sourceDuration": 5.72,
           "playbackSpeed": 1.0,
-          "renderedEnd": 43.69,
-          "endMargin": 0.47
+          "renderedEnd": 43.66,
+          "endMargin": 0.5
         },
         {
           "id": "apply-7",
           "slotStart": 44.16,
           "slotEnd": 52.83,
-          "sourceDuration": 8.62,
+          "sourceDuration": 7.97,
           "playbackSpeed": 1.0,
-          "renderedEnd": 52.78,
-          "endMargin": 0.05
+          "renderedEnd": 52.13,
+          "endMargin": 0.7
         },
         {
           "id": "apply-8",
           "slotStart": 52.83,
           "slotEnd": 62.449999999999996,
-          "sourceDuration": 7.78,
+          "sourceDuration": 7.51,
           "playbackSpeed": 1.0,
-          "renderedEnd": 60.61,
-          "endMargin": 1.84
+          "renderedEnd": 60.34,
+          "endMargin": 2.11
         }
       ]
     }

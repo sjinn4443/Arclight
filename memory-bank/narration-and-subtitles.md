@@ -151,6 +151,15 @@ Make and Apply Eye Pad / Shield, Cataract and both Pupils guides. The Urdu
 tracks use `ur-PK-UzmaNeural` and follow each lesson's existing picture and cue
 timings. The Urdu translation and pronunciation still need native clinical review.
 
+The standard video catalogues also use Uzma for their separate Urdu dubs.
+`scripts/regenerate-urdu-video-dubs.py --ffmpeg <ffmpeg>` takes the voice
+from the Pupils PEC script and builds AAC tracks from the catalogue's Urdu
+WebVTT cues. The build measures the existing dub duration, checks each new
+track and stages the audio and QA report in `tmp/urdu-video-dubs-neural/`.
+Run the command again with `--publish` to copy the staged tracks into
+`public/` and update both catalogues. The same files serve video pages and
+quality variants that share a dub.
+
 ## Source and file ownership
 
 | File or folder                                                                            | Responsibility                                                                                |

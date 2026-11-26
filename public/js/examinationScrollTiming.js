@@ -334,7 +334,9 @@ export function configureExaminationTiming(cfg) {
           .getNarrationCues(index)
           .map((cue) => cue.caption?.[language] ?? cue[language] ?? cue.en)
       : previousTexts?.(index, language);
-  cfg.segmentTextModeByFile = timing.stages.map(() => "append");
+  cfg.segmentTextModeByFile = timing.stages.map(
+    () => timing.captionMode ?? "append",
+  );
 }
 
 // Called in the launcher click's user activation, before asynchronous page and
@@ -354,13 +356,23 @@ export function primeExaminationNarration(pageId, language = "en") {
   selection = String(selection).toLowerCase().split(/[-_]/)[0];
   if (selection === "es") selection = "es-419";
   if (
-    !["en", "es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig", "ur"].includes(
-      selection,
-    )
-  )
+    ![
+      "en",
+      "es-419",
+      "ko",
+      "ne",
+      "fr",
+      "lg",
+      "ha",
+      "yo",
+      "ig",
+      "ur",
+      "ny",
+    ].includes(selection) ||
+    (timing.languages && !timing.languages.includes(selection))
+  ) {
     selection = "en";
-  if (timing.languages && !timing.languages.includes(selection))
-    selection = "en";
+  }
   const old = window.__arclightPrimedScrollAudio;
   if (old) {
     old.audio.pause();
@@ -389,5 +401,8 @@ export function takePrimedExaminationAudio(pageId) {
   const entry = window.__arclightPrimedScrollAudio;
   if (!entry || entry.pageId !== pageId) return null;
   delete window.__arclightPrimedScrollAudio;
+  // Claiming can race the launcher's play promise. Only the stage controller
+  // should restart this element, after it has installed its clip boundary.
+  entry.audio.pause();
   return entry.audio;
 }

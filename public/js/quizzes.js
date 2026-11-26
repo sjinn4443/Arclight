@@ -36,6 +36,7 @@ function ensureDirectQuizTopbar(page) {
         class="icon menuBtn"
         aria-label="Menu"
         data-i18n="i18nExtra.menu_aria_label:aria-label"
+        data-i18n="i18nExtra.menu_aria_label:aria-label"
       >☰</span>
     </div>
   `;

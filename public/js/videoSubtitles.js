@@ -1,34 +1,8 @@
+import { NATIVE_LANGUAGE_NAMES } from "./language-names.js";
+import { createVideoDubAudio } from "./videoDubAudio.js";
+
 const APP_VIDEO_SUBTITLE_CATALOG_URL =
   "/video-localization/app-video-subtitles.json";
-
-const APP_VIDEO_SUBTITLE_LANGUAGES = {
-  en: { label: "English" },
-  am: { label: "Amharic" },
-  ar: { label: "Arabic" },
-  bn: { label: "Bangla" },
-  ne: { label: "Nepali" },
-  ny: { label: "Chichewa" },
-  zh: { label: "Chinese" },
-  fr: { label: "French" },
-  ha: { label: "Hausa" },
-  hi: { label: "Hindi" },
-  ig: { label: "Igbo" },
-  id: { label: "Indonesian" },
-  rw: { label: "Kinyarwanda" },
-  ko: { label: "Korean" },
-  ln: { label: "Lingala" },
-  lg: { label: "Luganda" },
-  fa: { label: "Persian" },
-  pt: { label: "Portuguese" },
-  sn: { label: "Shona" },
-  es: { label: "Spanish" },
-  sw: { label: "Swahili" },
-  te: { label: "Telugu" },
-  ur: { label: "اردو" },
-  yo: { label: "Yoruba" },
-  zu: { label: "Zulu" },
-  lo: { label: "Lao" },
-};
 
 const APP_VIDEO_LANGUAGE_ALIASES = Object.freeze({
   english: "en",
@@ -62,16 +36,33 @@ const APP_VIDEO_LANGUAGE_ALIASES = Object.freeze({
 let appVideoSubtitleCatalogPromise = null;
 let appVideoSubtitleInitialized = false;
 let appVideoSubtitleResyncTimer = 0;
+const appVideoNarration = new WeakMap();
+
+const NARRATION_SELECT_COPY = {
+  en: {
+    language: "Narration language",
+    auto: "Use app language",
+    original: "Original audio",
+  },
+  ny: {
+    language: "Chilankhulo cha mawu ofotokozera",
+    auto: "Gwiritsani ntchito chilankhulo cha pulogalamu",
+    original: "Mawu oyambirira",
+  },
+  ur: {
+    language: "صوتی بیان کی زبان",
+    auto: "ایپ کی زبان استعمال کریں",
+    original: "اصل آواز",
+  },
+};
 
 function normalizeAppVideoSubtitleLanguage(lang) {
   const normalized = String(lang || "")
     .trim()
     .toLowerCase();
-  const aliased = APP_VIDEO_LANGUAGE_ALIASES[normalized] || normalized;
-  return Object.prototype.hasOwnProperty.call(
-    APP_VIDEO_SUBTITLE_LANGUAGES,
-    aliased,
-  )
+  const base = normalized.split(/[-_]/)[0];
+  const aliased = APP_VIDEO_LANGUAGE_ALIASES[base] || base;
+  return Object.prototype.hasOwnProperty.call(NATIVE_LANGUAGE_NAMES, aliased)
     ? aliased
     : "en";
 }
@@ -97,10 +88,7 @@ function getCurrentAppVideoSubtitleLanguage() {
 }
 
 function getAppVideoSubtitleLabel(lang) {
-  return (
-    APP_VIDEO_SUBTITLE_LANGUAGES[normalizeAppVideoSubtitleLanguage(lang)]
-      ?.label || "English"
-  );
+  return NATIVE_LANGUAGE_NAMES[normalizeAppVideoSubtitleLanguage(lang)];
 }
 
 function normalizeAppVideoSource(src) {
@@ -144,6 +132,12 @@ function sanitizeAppVideoSubtitleCatalog(rawCatalog = {}) {
 
     sanitized[source] = {
       subtitles,
+      audioVariants: Object.fromEntries(
+        Object.entries(entry.audioVariants || {}).filter(
+          ([, variant]) =>
+            typeof variant?.src === "string" && variant.src.trim(),
+        ),
+      ),
       defaultSubtitleLang: normalizeAppVideoSubtitleLanguage(
         entry.defaultSubtitleLang || "en",
       ),
@@ -178,11 +172,11 @@ async function loadAppVideoSubtitleCatalog() {
 
 function collectVideoSources(video) {
   const values = [
-    video.currentSrc,
     video.getAttribute("src"),
     ...Array.from(video.querySelectorAll("source")).map((source) =>
       source.getAttribute("src"),
     ),
+    video.currentSrc,
   ];
 
   return values.map(normalizeAppVideoSource).filter(Boolean);
@@ -285,6 +279,139 @@ function applyAppVideoSubtitleTrack(video, { lang, src }) {
   showAppVideoSubtitleTrack(video, lang);
 }
 
+function applyAppVideoNarration(video, entry, preferredLang) {
+  const existing = appVideoNarration.get(video);
+  if (!Object.keys(entry.audioVariants).length && !existing)
+    return preferredLang;
+
+  const state = existing || createAppVideoNarration(video);
+  state.entry = entry;
+  state.preferredLang = preferredLang;
+  state.select.hidden = !Object.keys(entry.audioVariants).length;
+  const copy = NARRATION_SELECT_COPY[preferredLang] || NARRATION_SELECT_COPY.en;
+  state.select.setAttribute("aria-label", copy.language);
+  state.select.replaceChildren(
+    new Option(copy.auto, "auto"),
+    ...Object.entries(entry.audioVariants).map(
+      ([lang, variant]) => new Option(variant.label || lang, lang),
+    ),
+    new Option(copy.original, "off"),
+  );
+  if (
+    !Array.from(state.select.options).some(
+      ({ value }) => value === state.selection,
+    )
+  ) {
+    state.selection = "auto";
+  }
+  state.select.value = state.selection;
+  state.sync();
+  return entry.audioVariants[state.selection] ? state.selection : preferredLang;
+}
+
+function createAppVideoNarration(video) {
+  const audio = document.createElement("audio");
+  const select = document.createElement("select");
+  select.className = "video-narration-toggle";
+  audio.hidden = true;
+  video.after(select, audio);
+  audio.preload = "none";
+  const output = createVideoDubAudio(video, audio);
+  const state = {
+    select,
+    selection: "auto",
+    entry: null,
+    preferredLang: "en",
+    sync,
+  };
+  appVideoNarration.set(video, state);
+
+  function pause() {
+    audio.pause();
+  }
+
+  function play(forceSeek = false) {
+    if (
+      !audio.hasAttribute("src") ||
+      video.paused ||
+      video.seeking ||
+      video.ended
+    )
+      return;
+    if (!video.isConnected || video.getClientRects().length === 0) {
+      pause();
+      return;
+    }
+    output.enable(true, {
+      unmute: video.autoplay && state.selection !== "auto",
+    });
+    output.updateVolume();
+    audio.playbackRate = video.playbackRate;
+    if (
+      audio.readyState &&
+      (forceSeek || Math.abs(video.currentTime - audio.currentTime) > 0.35)
+    ) {
+      audio.currentTime = video.currentTime;
+    }
+    if (audio.paused) audio.play().catch(() => output.enable(false));
+  }
+
+  function reset() {
+    pause();
+    output.enable(false);
+    if (!audio.hasAttribute("src")) return;
+    audio.removeAttribute("src");
+    audio.load();
+  }
+
+  function sync() {
+    const language =
+      state.selection === "auto" ? state.preferredLang : state.selection;
+    const variant = state.entry?.audioVariants[language];
+    // Autoplay previews keep their existing muted or looping behaviour unless
+    // the learner asks for a track explicitly.
+    if (!variant || (state.selection === "auto" && video.autoplay)) {
+      reset();
+      return;
+    }
+    if (audio.getAttribute("src") !== variant.src) {
+      pause();
+      audio.src = variant.src;
+    }
+    play(true);
+  }
+
+  select.addEventListener("change", () => {
+    state.selection = select.value;
+    sync();
+    const language = state.entry.audioVariants[state.selection]
+      ? state.selection
+      : state.preferredLang;
+    applyAppVideoSubtitleTrack(
+      video,
+      resolveSubtitleSource(state.entry, language),
+    );
+  });
+  ["play", "playing", "seeked", "ratechange"].forEach((event) => {
+    video.addEventListener(event, () => play(true));
+  });
+  ["pause", "waiting", "seeking", "ended", "emptied"].forEach((event) => {
+    video.addEventListener(event, pause);
+  });
+  video.addEventListener("timeupdate", () => play());
+  audio.addEventListener("loadedmetadata", () => play(true));
+  audio.addEventListener("error", reset);
+  state.reset = reset;
+  return state;
+}
+
+export function releaseAppVideoNarration(video) {
+  const state = appVideoNarration.get(video);
+  if (!state) return;
+  state.reset();
+  state.select.hidden = true;
+}
+
 export async function syncLocalizedVideoSubtitles(root = document) {
   const catalog = await loadAppVideoSubtitleCatalog();
   if (!Object.keys(catalog).length) return;
@@ -297,16 +424,33 @@ export async function syncLocalizedVideoSubtitles(root = document) {
   const preferredLang = getCurrentAppVideoSubtitleLanguage();
 
   videos.forEach((video) => {
-    if (video.querySelector("track[data-childhood-pilot-subtitle='true']")) {
+    if (
+      video.dataset.pageLevelVideoLocalization ||
+      video.querySelector("track[data-childhood-pilot-subtitle='true']")
+    ) {
+      releaseAppVideoNarration(video);
       removeAppVideoSubtitleTracks(video);
       return;
     }
 
     const sources = collectVideoSources(video);
-    const source = sources.find((candidate) => catalog[candidate]);
-    if (!source) return;
+    const source =
+      sources.find((candidate) => catalog[candidate]) ||
+      sources
+        .flatMap((candidate) => {
+          const pair = globalThis.ArclightVideoQuality?.pair(candidate);
+          return pair ? [pair.low, pair.high, ...(pair.aliases || [])] : [];
+        })
+        .map(normalizeAppVideoSource)
+        .find((candidate) => catalog[candidate]);
+    if (!source) {
+      releaseAppVideoNarration(video);
+      return;
+    }
 
-    const resolved = resolveSubtitleSource(catalog[source], preferredLang);
+    const entry = catalog[source];
+    const language = applyAppVideoNarration(video, entry, preferredLang);
+    const resolved = resolveSubtitleSource(entry, language);
     applyAppVideoSubtitleTrack(video, resolved);
   });
 }
@@ -330,6 +474,14 @@ export function initializeLocalizedVideoSubtitles() {
   document.addEventListener("page:shown", () => {
     scheduleLocalizedVideoSubtitleSync(document);
   });
+  document.addEventListener(
+    "loadedmetadata",
+    (event) => {
+      if (event.target.matches?.("video"))
+        void syncLocalizedVideoSubtitles(event.target);
+    },
+    true,
+  );
   window.addEventListener("i18n:languageChanged", () => {
     scheduleLocalizedVideoSubtitleSync(document);
   });

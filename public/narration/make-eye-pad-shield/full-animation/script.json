@@ -73,6 +73,13 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "timingSource": "Eight Lottie scenes, beginning with equipment. Hand hygiene has been removed. Folding/taping share one stage; circle cutting and the single radial slit share one stage. Source artwork 01–12; 10–12 form one rolling, taping and projected-camera sequence. The shield completion cue starts during the camera move.",
@@ -90,7 +97,8 @@
       "ha": "Kana buƙatar gauze, auduga, kwali, fensir, kofi, tef da almakashi.",
       "yo": "O nílò gáàsì, òwú, káàdì, pẹ́ńsù, ife, téèpù àti scissors.",
       "ig": "Ị ga-achọ gauze, owu, kaadiboodu, pensụl, iko, teepu na mkpa.",
-      "ur": "آپ کو گوج، روئی، گتے، پنسل، کپ، چپچپا کاغذ اور قینچی کی ضرورت ہوگی۔"
+      "ur": "آپ کو گوج، روئی، گتے، پنسل، کپ، چپچپا کاغذ اور قینچی کی ضرورت ہوگی۔",
+      "ny": "Mufunika gauze, thonje, katoni, pensulo, kapu, pepala lomata ndi lumo."
     },
     {
       "id": "cotton",
@@ -105,7 +113,8 @@
       "ha": "Don audugar rufe ido, shimfiɗa ƙwallon auduga ya zama mai siffar ƙwai, faɗinsa santimita biyar zuwa shida.",
       "yo": "Fún páàdì ojú, tẹ òwú kan sílẹ̀ ní ìrísí ẹyin, kí ìwọ̀n rẹ̀ jẹ́ sẹ̀ǹtímítà márùn-ún sí mẹ́fà.",
       "ig": "Iji mee akwa mkpuchi anya, gbasaa bọọlụ owu ka ọ dị ka akwa, obosara ya dị sentimita ise ruo isii.",
-      "ur": "آئی پیڈ کے لیے، روئی کی ایک گیند کو بیضوی شکل میں تقریباً 5 سے 6 سینٹی میٹر چوڑا پھیلائیں۔"
+      "ur": "آئی پیڈ کے لیے، روئی کی ایک گیند کو بیضوی شکل میں تقریباً 5 سے 6 سینٹی میٹر چوڑا پھیلائیں۔",
+      "ny": "Popanga chophimba chofewa cha diso, yalani thonje kuti likhale ngati dzira, mulifupi masentimita asanu mpaka asanu ndi limodzi."
     },
     {
       "id": "gauze",
@@ -120,7 +129,8 @@
       "ha": "Nannaɗe gauze a kan audugar.",
       "yo": "Pa gáàsì yí òwú náà ká.",
       "ig": "Kechie gauze gburugburu owu ahụ.",
-      "ur": "روئی کے گرد گوج کو جوڑ دیں۔"
+      "ur": "روئی کے گرد گوج کو جوڑ دیں۔",
+      "ny": "Pindani gauze kuzungulira thonje."
     },
     {
       "id": "pad-tape",
@@ -135,7 +145,8 @@
       "ha": "Liƙa tef a buɗaɗɗen ƙarshen.",
       "yo": "Fi téèpù sí ẹnu tí ó ṣí.",
       "ig": "Tinye teepu n'ọnụ mepere emepe.",
-      "ur": "کھلے سرے پر ٹیپ۔"
+      "ur": "کھلے سرے پر ٹیپ۔",
+      "ny": "Matani mbali yotseguka ndi tepi."
     },
     {
       "id": "trim",
@@ -150,7 +161,8 @@
       "ha": "Yanke gefunan gauze su bi siffar audugar.",
       "yo": "Gé etí gáàsì náà ní ìrísí òwú náà.",
       "ig": "Bee akụkụ gauze ahụ ka ọ soro ọdịdị owu ahụ.",
-      "ur": "گوج کے کناروں کو روئی کی شکل تک کاٹ دیں۔"
+      "ur": "گوج کے کناروں کو روئی کی شکل تک کاٹ دیں۔",
+      "ny": "Dulani m'mphepete mwa gauze motsatira kaonekedwe ka thonje."
     },
     {
       "id": "finished-pad",
@@ -165,7 +177,8 @@
       "ha": "Audugar ido kenan.",
       "yo": "Èyí ni páàdì ojú rẹ.",
       "ig": "Akwa anya gị.",
-      "ur": "یہ آپ کا آئی پیڈ ہے۔"
+      "ur": "یہ آپ کا آئی پیڈ ہے۔",
+      "ny": "Ichi ndi chophimba chofewa cha diso."
     },
     {
       "id": "cardboard",
@@ -180,7 +193,8 @@
       "ha": "Don garkuwar ido, samo kwali mai tsabta. Za a iya sake amfani da marufin kayan lafiya.",
       "yo": "Fún ààbò ojú, wá káàdì tó mọ́. O lè tún àpótí ohun èlò ìṣègùn lò.",
       "ig": "Maka ọta anya, chọta kaadiboodu dị ọcha. I nwere ike iji ngwugwu ọgwụ ọzọ.",
-      "ur": "ڈھال کے لئے، کچھ صاف گتے تلاش کریں. طبی پیکیجنگ کو دوبارہ استعمال کرنا اچھا کام کرتا ہے۔"
+      "ur": "ڈھال کے لئے، کچھ صاف گتے تلاش کریں. طبی پیکیجنگ کو دوبارہ استعمال کرنا اچھا کام کرتا ہے۔",
+      "ny": "Popanga chotetezera diso cholimba, pezani katoni waukhondo. Katoni wochokera m'phukusi la zipangizo zachipatala ndi woyenera."
     },
     {
       "id": "draw",
@@ -195,7 +209,8 @@
       "ha": "Yi amfani da kofi a matsayin samfuri, ka zana da'ira mai faɗin santimita takwas.",
       "yo": "Lo ife gẹ́gẹ́ bí àwòṣe, kí o fa àyíká tó fẹ̀ tó sẹ̀ǹtímítà mẹ́jọ.",
       "ig": "Jiri iko dị ka ihe atụ see okirikiri nke obosara ya dị ihe dị ka sentimita asatọ.",
-      "ur": "ایک کپ کو ٹیمپلیٹ کے طور پر استعمال کرتے ہوئے، تقریباً 8 سینٹی میٹر قطر کے ساتھ ایک دائرہ کھینچیں۔"
+      "ur": "ایک کپ کو ٹیمپلیٹ کے طور پر استعمال کرتے ہوئے، تقریباً 8 سینٹی میٹر قطر کے ساتھ ایک دائرہ کھینچیں۔",
+      "ny": "Gwiritsani ntchito kapu monga chitsanzo pojambula bwalo lokhala ndi mulifupi pafupifupi masentimita asanu ndi atatu."
     },
     {
       "id": "cut",
@@ -210,7 +225,8 @@
       "ha": "Yanke da'irar.",
       "yo": "Gé àyíká náà jáde.",
       "ig": "Bee okirikiri ahụ.",
-      "ur": "دائرے کو کاٹ دیں۔"
+      "ur": "دائرے کو کاٹ دیں۔",
+      "ny": "Dulani bwalolo."
     },
     {
       "id": "slit",
@@ -225,7 +241,8 @@
       "ha": "Sannan ka yanka daga gefen zuwa tsakiyar.",
       "yo": "Lẹ́yìn náà, gé láti etí rẹ̀ dé àárín.",
       "ig": "Mgbe ahụ, bee site n'akụkụ ya ruo n'etiti.",
-      "ur": "پھر کنارے سے مرکز تک ایک کٹ بنائیں۔"
+      "ur": "پھر کنارے سے مرکز تک ایک کٹ بنائیں۔",
+      "ny": "Kenako dulani mzere kuchokera m'mphepete mwa bwalo kufika pakati pake."
     },
     {
       "id": "cone",
@@ -240,7 +257,8 @@
       "ha": "Lanƙwasa kwali ya zama mazubi, ka ɗaure shi da tef.",
       "yo": "Yí káàdì náà sí ìrísí kọ́ọ̀nù, kí o fi téèpù mú un dúró.",
       "ig": "Gbagọọ kaadiboodu ahụ ka ọ dị ka kọnụ, jiri teepu jide ya.",
-      "ur": "کارڈ کو ایک مخروط میں گھمائیں اور چپچپا ٹیپ سے محفوظ کریں۔"
+      "ur": "کارڈ کو ایک مخروط میں گھمائیں اور چپچپا ٹیپ سے محفوظ کریں۔",
+      "ny": "Pindani katoni kuti ukhale ngati koni, ndipo mangirirani ndi tepi yomata."
     },
     {
       "id": "finished-shield",
@@ -255,7 +273,8 @@
       "ha": "Wannan ita ce garkuwar ido.",
       "yo": "Èyí ni ààbò ojú rẹ.",
       "ig": "Nke a bụ ọta anya gị.",
-      "ur": "یہ آپ کی آنکھوں کی ڈھال ہے۔"
+      "ur": "یہ آپ کی آنکھوں کی ڈھال ہے۔",
+      "ny": "Ichi ndi chotetezera diso cholimba."
     }
   ],
   "videoTitleCues": [
@@ -273,7 +292,8 @@
         "ha": "Shiri",
         "yo": "Ìmúrasílẹ̀",
         "ig": "Nkwadebe",
-        "ur": "تیاری"
+        "ur": "تیاری",
+        "ny": "Kukonzekera"
       }
     },
     {
@@ -290,7 +310,8 @@
         "ha": "Yin audugar rufe ido",
         "yo": "Ṣíṣe páàdì ojú",
         "ig": "Ime akwa mkpuchi anya",
-        "ur": "آئی پیڈ بنائیں"
+        "ur": "آئی پیڈ بنائیں",
+        "ny": "Pangani chophimba chofewa cha diso"
       }
     },
     {
@@ -307,7 +328,8 @@
         "ha": "Yin garkuwar ido",
         "yo": "Ṣíṣe ààbò ojú",
         "ig": "Ime ọta anya",
-        "ur": "آئی شیلڈ بنائیں"
+        "ur": "آئی شیلڈ بنائیں",
+        "ny": "Pangani chotetezera diso cholimba"
       }
     }
   ]

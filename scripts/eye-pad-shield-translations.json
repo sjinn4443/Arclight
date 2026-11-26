@@ -163,5 +163,26 @@
       "کارڈ کو ایک مخروط میں گھمائیں اور چپچپا ٹیپ سے محفوظ کریں۔",
       "یہ آپ کی آنکھوں کی ڈھال ہے۔"
     ]
+  },
+  "ny": {
+    "titles": [
+      "Kukonzekera",
+      "Pangani chophimba chofewa cha diso",
+      "Pangani chotetezera diso cholimba"
+    ],
+    "cues": [
+      "Mufunika gauze, thonje, katoni, pensulo, kapu, pepala lomata ndi lumo.",
+      "Popanga chophimba chofewa cha diso, yalani thonje kuti likhale ngati dzira, mulifupi masentimita asanu mpaka asanu ndi limodzi.",
+      "Pindani gauze kuzungulira thonje.",
+      "Matani mbali yotseguka ndi tepi.",
+      "Dulani m'mphepete mwa gauze motsatira kaonekedwe ka thonje.",
+      "Ichi ndi chophimba chofewa cha diso.",
+      "Popanga chotetezera diso cholimba, pezani katoni waukhondo. Katoni wochokera m'phukusi la zipangizo zachipatala ndi woyenera.",
+      "Gwiritsani ntchito kapu monga chitsanzo pojambula bwalo lokhala ndi mulifupi pafupifupi masentimita asanu ndi atatu.",
+      "Dulani bwalolo.",
+      "Kenako dulani mzere kuchokera m'mphepete mwa bwalo kufika pakati pake.",
+      "Pindani katoni kuti ukhale ngati koni, ndipo mangirirani ndi tepi yomata.",
+      "Ichi ndi chotetezera diso cholimba."
+    ]
   }
 }

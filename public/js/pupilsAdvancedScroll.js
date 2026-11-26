@@ -9,15 +9,22 @@ export const PUPILS_ADVANCED_LANGUAGES = {
   en: { label: "English", locale: "en-GB", voice: "en-GB-SoniaNeural" },
   ko: { label: "한국어", locale: "ko-KR", voice: "ko-KR-SunHiNeural" },
   ur: { label: "اردو", locale: "ur-PK", voice: "ur-PK-UzmaNeural" },
+  ny: {
+    label: "Chichewa",
+    locale: "ny-MW",
+    voice: "facebook/mms-tts-nya",
+    provider: "Meta MMS (local)",
+    trimEdgeSilenceDb: -42,
+  },
 };
 export const PUPILS_ADVANCED_SECTIONS = [
   { startIndex: 0, title: "Afferent and Efferent Pathways" },
-  { startIndex: 3, title: "Direct and Consensual Light Response Explained" },
-  { startIndex: 4, title: "Observation" },
-  { startIndex: 5, title: "Direct Light Response" },
-  { startIndex: 10, title: "Consensual Response" },
-  { startIndex: 11, title: "Swinging Light Test" },
-  { startIndex: 13, title: "Near Response" },
+  { startIndex: 4, title: "Direct and Consensual Light Response Explained" },
+  { startIndex: 5, title: "Observation" },
+  { startIndex: 6, title: "Direct Light Response" },
+  { startIndex: 11, title: "Consensual Response" },
+  { startIndex: 12, title: "Swinging Light Test" },
+  { startIndex: 14, title: "Near Response" },
 ];
 export const PUPILS_ADVANCED_TITLE_TRANSLATIONS = [
   "구심성 및 원심성 경로",
@@ -31,7 +38,8 @@ export const PUPILS_ADVANCED_TITLE_TRANSLATIONS = [
 const OWN_STAGES = [
   {
     name: "Afferent sensory pathway",
-    seconds: 30,
+    assetNumber: 1,
+    seconds: 22,
     cues: [
       {
         id: "afferent-light",
@@ -43,41 +51,49 @@ const OWN_STAGES = [
       {
         id: "afferent-brain",
         offset: 5.6,
-        end: 30,
+        end: 22,
         en: "Follow the coloured pathways (retina, optic nerve, chiasm, tract and nuclei).",
         ko: "색으로 표시된 경로(망막, 시신경, 시신경교차, 시삭, 신경핵)를 따라갑니다.",
       },
     ],
   },
   {
-    name: "Parasympathetic motor pathway",
-    seconds: 32,
+    name: "Efferent motor pathways",
+    assetNumber: 16,
+    seconds: 16,
     cues: [
       {
         id: "efferent-definition",
         offset: 0,
-        end: 8,
-        en: "The efferent pathway carries signals from the brain to the eye.",
-        ko: "원심성 경로는 구심성 경로와 반대로, 뇌에서 눈으로 신호를 전달합니다.",
+        end: 16,
+        en: "Efferent signals go from the brain to the eye. There are two pathways, parasympathetic and sympathetic. Parasympathetic signals activate the constrictor muscle and sympathetic signals activate the dilator muscle.",
+        ko: "원심성 신호는 뇌에서 눈으로 전달됩니다. 경로는 부교감신경과 교감신경 두 가지입니다. 부교감신경은 동공괄약근을, 교감신경은 동공산대근을 활성화합니다.",
       },
+    ],
+  },
+  {
+    name: "Parasympathetic motor pathway",
+    assetNumber: 2,
+    seconds: 24,
+    cues: [
       {
         id: "parasympathetic",
-        offset: 8,
-        end: 18,
-        en: "The parasympathetic pathway passes through the third cranial nerve and the ciliary ganglion.",
-        ko: "부교감신경 경로는 제3뇌신경과 섬모체신경절을 지납니다.",
+        offset: 0,
+        end: 10,
+        en: "The third cranial nerve also carries the efferent signals for pupil constriction.",
+        ko: "제3뇌신경은 동공을 수축시키는 원심성 신호도 전달합니다.",
       },
       {
         id: "constrictor",
-        offset: 18,
-        end: 25,
+        offset: 10,
+        end: 17,
         en: "It supplies the iris sphincter to constrict the pupil and the ciliary muscle for focusing.",
         ko: "이 경로는 동공괄약근과 섬모체근에 연결됩니다.",
       },
       {
         id: "third-nerve",
-        offset: 25,
-        end: 32,
+        offset: 17,
+        end: 24,
         en: "The third nerve controls most eye movements and lifts the lid. The facial nerve controls blinking.",
         ko: "제3뇌신경은 안구운동과 눈꺼풀을 올리는 주된 근육에도 연결됩니다.",
       },
@@ -85,6 +101,7 @@ const OWN_STAGES = [
   },
   {
     name: "Sympathetic motor pathway",
+    assetNumber: 3,
     seconds: 20,
     cues: [
       {
@@ -98,13 +115,14 @@ const OWN_STAGES = [
         id: "dilator",
         offset: 10,
         end: 20,
-        en: "It supplies the iris dilator and Müller's muscle, which helps raise the upper eyelid.",
-        ko: "그림처럼 이 경로는 동공산대근과 눈꺼풀의 보조 근육에 연결됩니다.",
+        en: "It supplies two muscles. First, the iris dilator muscle. Second, Müller's muscle, a minor elevator of the upper eyelid.",
+        ko: "이 경로는 두 근육에 연결됩니다. 첫째는 동공산대근, 둘째는 위눈꺼풀을 들어 올리는 뮐러근입니다.",
       },
     ],
   },
   {
     name: "Direct and consensual reflex pathways",
+    assetNumber: 4,
     seconds: 24,
     cues: [
       {
@@ -139,6 +157,7 @@ const OWN_STAGES = [
   },
   {
     name: "Consensual response in both directions",
+    assetNumber: 11,
     seconds: 22,
     cues: [
       {
@@ -159,6 +178,7 @@ const OWN_STAGES = [
   },
   {
     name: "Swinging the light between eyes",
+    assetNumber: 12,
     seconds: 20,
     cues: [
       {
@@ -179,6 +199,7 @@ const OWN_STAGES = [
   },
   {
     name: "Normal response and right RAPD",
+    assetNumber: 13,
     seconds: 24,
     cues: [
       {
@@ -202,6 +223,7 @@ const OWN_STAGES = [
   },
   {
     name: "Near response examination",
+    assetNumber: 14,
     seconds: 21,
     cues: [
       {
@@ -222,6 +244,7 @@ const OWN_STAGES = [
   },
   {
     name: "Comparing near responses",
+    assetNumber: 15,
     seconds: 20,
     cues: [
       {
@@ -251,7 +274,7 @@ export const PUPILS_ADVANCED_ENGLISH_OVERRIDES = {
     "A grey or white appearance does not by itself mean the pupil cannot constrict.",
 };
 export const PUPILS_ADVANCED_STAGES = [
-  ...OWN_STAGES.slice(0, 4),
+  ...OWN_STAGES.slice(0, 5),
   ...PUPILS_PEC_STAGES.map((stage, pecStageIndex) => ({
     ...stage,
     pecStageIndex,
@@ -265,7 +288,7 @@ export const PUPILS_ADVANCED_STAGES = [
         : cue,
     ),
   })),
-  ...OWN_STAGES.slice(4),
+  ...OWN_STAGES.slice(5),
 ];
 let clock = 1;
 // The original signal clock is retained; speech is paced to each structure.
@@ -291,8 +314,8 @@ export const PUPILS_ADVANCED_AFFERENT_PACING = {
 };
 export const PUPILS_ADVANCED_VISUAL_END_FRAMES = {
   0: 562,
-  10: 390,
-  13: 341.25,
+  11: 390,
+  14: 341.25,
 };
 export const PUPILS_ADVANCED_URDU_TITLES = [
   "واردی اور صادری عصبی راستے",
@@ -314,11 +337,10 @@ const PUPILS_ADVANCED_URDU_CUES = {
     ur: "رنگین راستوں کی پیروی کریں (شبکیہ، آپٹک اعصاب، چیاسم، نالی اور مرکزہ)۔",
   },
   "efferent-definition": {
-    ur: "Efferent پاتھ وے دماغ سے آنکھ تک سگنل لے جاتا ہے۔",
-    caption: { ur: "صادری عصبی راستہ دماغ سے آنکھ تک عصبی اشارے پہنچاتا ہے۔" },
+    ur: "صادری اشارے دماغ سے آنکھ تک جاتے ہیں۔ ان کے دو راستے ہیں، پیراسیمپیتھیٹک اور سیمپیتھیٹک۔ پیراسیمپیتھیٹک اشارے پتلی کو سکیڑتے ہیں اور سیمپیتھیٹک اشارے اسے پھیلاتے ہیں۔",
   },
   parasympathetic: {
-    ur: "پیراسیمپیتھیٹک راستہ تیسرے کرینیل اعصاب اور سلیری گینگلیئن سے گزرتا ہے۔",
+    ur: "تیسرا دماغی عصب پتلی کو سکیڑنے والے صادری اشارے بھی لے جاتا ہے۔",
   },
   constrictor: {
     ur: "یہ پتلی سکیڑنے والے عنبیہ کے عضلے اور فوکس کرنے والے مژگانی عضلے کو عصب دیتا ہے۔",
@@ -333,7 +355,7 @@ const PUPILS_ADVANCED_URDU_CUES = {
     ur: "ہمدردی کا راستہ ہمدرد سلسلہ اور اعلیٰ سروائیکل گینگلیئن سے گزرتا ہے۔",
   },
   dilator: {
-    ur: "یہ ایرس ڈیلیٹر اور مولر کے پٹھوں کو فراہم کرتا ہے، جو اوپری پلک کو بلند کرنے میں مدد کرتا ہے۔",
+    ur: "یہ دو عضلوں کو اشارے دیتا ہے۔ پہلا پتلی پھیلاتا ہے۔ دوسرا مولر کا عضلہ ہے، جو اوپری پلک اٹھانے میں مدد دیتا ہے۔",
   },
   "reflex-input": {
     ur: "ایک آنکھ میں روشنی دماغ کی طرف متوازی سگنل بھیجتی ہے۔",
@@ -392,9 +414,134 @@ const PUPILS_ADVANCED_URDU_CUES = {
     ur: "اگر قریبی ہدف کے لیے آنکھیں ایک ساتھ اندر کی طرف نہیں مڑتی ہیں تو مزید معائنے کی ضرورت ہے۔",
   },
 };
+export const PUPILS_ADVANCED_CHICHEWA_TITLES = [
+  "Njira za uthenga wochokera m'diso ndi wobwerera m'diso",
+  "Mmene maso onse amayankhira diso limodzi likaunikiridwa",
+  "Kuyang'ana",
+  "Mmene mwana wa diso amayankhira kuwala kolunjika",
+  "Kuyankha kwa diso losaunikiridwa",
+  "Kuyeza posuntha kuwala pakati pa maso",
+  "Mmene maso amayankhira chinthu chapafupi",
+];
+const PUPILS_ADVANCED_CHICHEWA_CUES = {
+  "afferent-light": {
+    ny: "Kuwala kukalowa m'diso kumayambitsa uthenga m'njira ya minyewa yochokera m'diso kupita ku ubongo.",
+  },
+  "afferent-brain": {
+    ny: "Tsatirani njira zamitunduzi kuchokera pa retina, kudzera mu mtsempha wa kuona, pamene mitsempha imadutsana, mpaka ku malo ake mu ubongo.",
+  },
+  "efferent-definition": {
+    ny: "Uthenga wochokera muubongo umapita ku diso m'njira ziwiri. Parasympathetic imachepetsa mwana wa diso ndipo sympathetic imakulitsa.",
+  },
+  parasympathetic: {
+    ny: "Mtsempha wachitatu wa muubongo umanyamulanso uthenga umene umachepetsa mwana wa diso.",
+  },
+  constrictor: {
+    ny: "Imatumiza uthenga ku mnofu wa iris umene umachepetsa mwana wa diso, ndi ku mnofu umene umasintha mmene galasi la diso limalunjikira kuwala.",
+  },
+  "third-nerve": {
+    ny: "Mtsempha wachitatu umayendetsa kayendedwe kambiri ka diso ndi kukweza chikope. Mtsempha wa nkhope umathandiza kutseka ndi kutsegula zikope.",
+  },
+  sympathetic: {
+    ny: "Njira ya sympathetic imadutsa mndandanda wa magulu a minyewa ndi gulu lapamwamba la minyewa la m'khosi.",
+  },
+  dilator: {
+    ny: "Imalumikiza minofu iwiri. Woyamba umakulitsa mwana wa diso. Wa Müller umathandiza kukweza chikope.",
+  },
+  "reflex-input": {
+    ny: "Kuwala kukalowa m'diso limodzi, uthenga umapita ku ubongo kudzera m'njira yochokera m'disolo.",
+  },
+  "reflex-output": {
+    ny: "Mauthenga ochokera pakati pa ubongo amafika m'maso onse awiri. Choncho ana a maso onse amachepa chifukwa cha kuwala.",
+  },
+  "reflex-direct": {
+    ny: "Mwana wa diso lowunikidwa amayankha mwachindunji.",
+  },
+  "reflex-consensual": {
+    ny: "Mwana wa diso lina nayenso amayankha ngakhale kuti sanaunikiridwe.",
+  },
+  observe: {
+    ny: "Yang'anani kukula ndi kaonekedwe ka ana a maso onse awiri, ndipo muone ngati akufanana.",
+  },
+  "compare-observation": {
+    ny: "Yang'anani kusintha kwa mtundu kapena kaonekedwe, kusiyana kwa kukula kwa ana a maso, ndi zikope zotsikira pansi.",
+  },
+  light: {
+    ny: "Yatsani Arclight ndi kusankha kuwala kwamphamvu kwambiri. Gwiritsani ntchito chipinda chabata chokhala ndi kuwala kochepa.",
+  },
+  distance: {
+    ny: "Pemphani wodwala kuti ayang'ane chinthu chakutali.",
+  },
+  "clear-view": {
+    ny: "Onetsetsani kuti sakuyang'ana woyezayo",
+    caption: "Onetsetsani kuti sakuyang'ana woyezayo",
+  },
+  "avoid-light": {
+    ny: "kapena kuwala komweko.",
+    caption: "",
+  },
+  "move-light": {
+    ny: "Sunthani kuwala kuchokera pambali kulunjika pa mwana wa diso.",
+  },
+  watch: {
+    ny: "Yang'anani mmene mwana wa diso amene waunikiridwa akuyankhira kuwalako.",
+  },
+  "shine-constrict": {
+    ny: "Unikirani m'diso ndipo onani mwana wa diso akuchepa.",
+  },
+  "compare-responses": {
+    ny: "Onani ngati mwana wa diso akuchepa pang'ono kapena sakuchepa n'komwe.",
+  },
+  "corresponding-examples": {
+    ny: "Zimenezi zikhoza kugwirizana ndi matenda osiyanasiyana. Kuyankha kwa mwana wa diso kokha sikungasonyeze matenda amene ayambitsa vutolo.",
+  },
+  "pupil-colour": {
+    ny: "Mwana wa diso kuoneka waimvi kapena woyera sikutanthauza kuti sangathe kuchepa.",
+  },
+  "cataract-constriction": {
+    ny: "Ng'ala ingapangitse mwana wa diso kuoneka waimvi kapena woyera. Koma mwana wa disoyo ayenera kuchepabe ngati njira yoyendetsera kuyankha kuwala ikugwira ntchito.",
+  },
+  "consensual-first": {
+    ny: "Unikirani diso limodzi ndipo onani mwana wa diso linalo akuchepa. Izi ndi kuyankha kwa diso losaunikiridwa.",
+  },
+  "consensual-other": {
+    ny: "Bwerezani mbali inayo ndipo yang'anani mwana wa diso limene silinaunikiridwe.",
+  },
+  "swing-method": {
+    ny: "Sunthani kuwala pakati pa maso awiriwo. Imani masekondi awiri mpaka atatu pa diso lililonse. Yerekezani ana a maso onse awiri.",
+  },
+  "swing-return": {
+    ny: "Bwezerani kuwala ku diso lina ndipo yang'anani ana a maso onse pamene mukusintha mbali.",
+  },
+  "swing-normal": {
+    ny: "Nthawi zambiri ana a maso onse amachepa mofanana mukaunikira diso lililonse.",
+  },
+  "swing-rapd": {
+    ny: "Vuto lotchedwa RAPD limatanthauza kuti diso limodzi limatumiza uthenga wofooka wa kuwala kusiyana ndi lina. Apa ana a maso onse amakula kuwala kukasamukira ku diso lakumanja limene lili ndi vuto.",
+    caption:
+      "Vuto lotchedwa RAPD limatanthauza kuti diso limodzi limatumiza uthenga wofooka wa kuwala kusiyana ndi lina. Apa ana a maso onse amakula kuwala kukasamukira ku diso lakumanja limene lili ndi vuto.",
+  },
+  "near-distance": {
+    ny: "Choyamba pemphani wodwalayo kuti ayang'ane chinthu chakutali.",
+  },
+  "near-target": {
+    ny: "Kenako pemphani wodwalayo kuti ayang'ane chinthu chapafupi pa Arclight.",
+  },
+  "near-normal": {
+    ny: "Maso amatembenukira mkati kuti ayang'ane chinthu chapafupi. Nthawi yomweyo ana a maso amachepa ndipo magalasi a m'maso amasintha kuti chinthucho chioneke bwino.",
+  },
+  "near-abnormal": {
+    ny: "Ngati maso satembenukira mkati pamodzi poyang'ana chinthu chapafupi, wodwalayo afunika kuyezedwanso.",
+  },
+};
 for (const stage of PUPILS_ADVANCED_STAGES) {
   for (const cue of stage.cues) {
     Object.assign(cue, PUPILS_ADVANCED_URDU_CUES[cue.id]);
+    const chichewa = PUPILS_ADVANCED_CHICHEWA_CUES[cue.id];
+    cue.ny = chichewa.ny;
+    if (chichewa.caption !== undefined) {
+      cue.caption = { ...cue.caption, ny: chichewa.caption };
+    }
   }
 }
 
@@ -411,11 +558,11 @@ const clips = PUPILS_ADVANCED_STAGES.map((stage, i) => {
       ko: clip.start + 562 / 30 + 1.5,
     };
   // Keep the reused PEC recording intact and skip only its silent tail.
-  if (i === 9)
-    clip.endByLanguage = { en: clip.start + 17.76, ko: clip.start + 19.32 };
   if (i === 10)
+    clip.endByLanguage = { en: clip.start + 17.76, ko: clip.start + 19.32 };
+  if (i === 11)
     clip.endByLanguage = { en: clip.start + 14.5, ko: clip.start + 16.12 };
-  if (i === 13)
+  if (i === 14)
     clip.endByLanguage = {
       en: clip.start + 341.25 / 30 + 1.5,
       ko: clip.start + 341.25 / 30 + 1.5,
@@ -444,8 +591,8 @@ export const PUPILS_ADVANCED_SCROLL_CONFIG = {
   label: "Pupils",
   playMode: "stageAutoplay",
   enableReplay: true,
-  stageAspectRatioByFile: PUPILS_ADVANCED_STAGES.map((_, i) =>
-    i === 3 ? "1169 / 1093" : "1169 / 1280",
+  stageAspectRatioByFile: PUPILS_ADVANCED_STAGES.map(({ assetNumber }) =>
+    assetNumber === 4 ? "1169 / 1093" : "1169 / 1280",
   ),
   fitCaptionsInViewport: true,
   centerPlaybackGroup: true,
@@ -457,9 +604,9 @@ export const PUPILS_ADVANCED_SCROLL_CONFIG = {
   lazyInitialStageCount: 1,
   skipRouteImageWarmup: true,
   progressStoragePrefix: "lessonProgress:",
-  paths: PUPILS_ADVANCED_STAGES.map((stage, i) =>
+  paths: PUPILS_ADVANCED_STAGES.map((stage) =>
     stage.pecStageIndex == null
-      ? "/scrolly/coreexam/pupils-advanced/" + (i + 1) + "/data.json"
+      ? `/scrolly/coreexam/pupils-advanced/${stage.assetNumber}/data.json`
       : PUPILS_PEC_SCROLL_CONFIG.paths[stage.pecStageIndex],
   ),
   sections: PUPILS_ADVANCED_SECTIONS,

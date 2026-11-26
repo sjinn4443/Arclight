@@ -352,7 +352,9 @@ function applyLiteralTranslations(root = document) {
   }
 
   const attrNames = ["aria-label", "title", "placeholder", "alt"];
-  scope.querySelectorAll("*").forEach((el) => {
+  const elements = [...scope.querySelectorAll("*")];
+  if (scope.nodeType === 1) elements.unshift(scope);
+  elements.forEach((el) => {
     if (el.closest("[data-i18n-skip]")) return;
     const spec = (el.getAttribute("data-i18n") || "").trim();
     const explicitTargets = new Set(

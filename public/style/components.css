@@ -2129,14 +2129,6 @@ input:checked + .slider:before {
   gap: 12px;
 }
 
-#languageInstallPage .lang-install__custom-select-label .lang-install__item-en,
-#languageInstallPage
-  .lang-install__custom-select-label
-  .lang-install__item-native {
-  color: inherit;
-  font-size: 12px;
-}
-
 #languageInstallPage .lang-install__custom-select-caret {
   position: absolute;
   right: 12px;
@@ -2169,14 +2161,8 @@ input:checked + .slider:before {
   list-style: none;
 }
 
-#languageInstallPage .lang-install__dropdown .lang-install__item,
-#languageInstallPage .lang-install__dropdown .lang-install__item-en,
-#languageInstallPage .lang-install__dropdown .lang-install__item-native {
+#languageInstallPage .lang-install__dropdown .lang-install__item {
   color: #111;
-}
-
-#languageInstallPage .lang-install__dropdown .lang-install__item-en,
-#languageInstallPage .lang-install__dropdown .lang-install__item-native {
   font-size: 12px;
 }
 
@@ -2213,10 +2199,7 @@ input:checked + .slider:before {
 }
 
 .lang-install__item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
+  display: block;
   padding: 10px 12px;
   cursor: pointer;
   box-sizing: border-box;
@@ -2226,21 +2209,6 @@ input:checked + .slider:before {
 .lang-install__item:focus {
   background: rgba(0, 0, 0, 0.05);
   outline: none;
-}
-
-.lang-install__item-en {
-  min-width: 0;
-  font-weight: 400;
-  font-size: 14px;
-  overflow-wrap: anywhere;
-}
-
-.lang-install__item-native {
-  min-width: 0;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: end;
-  overflow-wrap: anywhere;
 }
 
 /* Collapsed bar (pic 1) */
@@ -2329,10 +2297,7 @@ input:checked + .slider:before {
 }
 
 .lang-install__item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
+  display: block;
   padding: 10px 12px;
   cursor: pointer;
   box-sizing: border-box;
@@ -2342,20 +2307,6 @@ input:checked + .slider:before {
 .lang-install__item:focus {
   background: rgba(0, 0, 0, 0.05);
   outline: none;
-}
-
-.lang-install__item-en {
-  min-width: 0;
-  font-weight: 400;
-  font-size: 14px;
-  overflow-wrap: anywhere;
-}
-.lang-install__item-native {
-  min-width: 0;
-  font-weight: 600;
-  font-size: 14px;
-  text-align: end;
-  overflow-wrap: anywhere;
 }
 
 /* ============================================= Catalog components ============================================= */

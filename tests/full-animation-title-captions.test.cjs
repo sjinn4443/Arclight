@@ -2,7 +2,18 @@
 import fs from "node:fs";
 import { describe, expect, it } from "@jest/globals";
 
-const languages = ["es-419", "ko", "ne", "fr", "lg", "ha", "yo", "ig"];
+const languages = [
+  "es-419",
+  "ko",
+  "ne",
+  "fr",
+  "lg",
+  "ha",
+  "yo",
+  "ig",
+  "ur",
+  "ny",
+];
 const definitions = JSON.parse(
   fs.readFileSync("scripts/full-animation-title-captions.json", "utf8"),
 );

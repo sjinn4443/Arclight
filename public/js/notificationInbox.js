@@ -151,7 +151,8 @@ export function initializeNotificationInbox({ readState, request }) {
       dialog.querySelector("h2").textContent = text("Notifications");
       const close = dialog.querySelector("[data-inbox-close]");
       close.textContent = "×";
-      close.setAttribute("aria-label", text("Close notifications"));
+      close.setAttribute("aria-label", "Close");
+      close.setAttribute("data-i18n", "languageInstall.closeButton:aria-label");
       close.addEventListener("click", () => dialog.close());
       dialog.addEventListener("click", (event) => {
         if (event.target === dialog) dialog.close();
@@ -166,6 +167,7 @@ export function initializeNotificationInbox({ readState, request }) {
         location.hash = "#/settings";
       });
       document.body.appendChild(dialog);
+      window.I18N?.applyTranslations?.(dialog);
     }
     if (!dialog.open) dialog.showModal();
     dialog.querySelector("[data-inbox-status]").textContent = text(

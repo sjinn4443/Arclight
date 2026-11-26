@@ -8039,6 +8039,12 @@ select.onb-input.has-value + .onb-select-caret {
   white-space: pre-line;
 }
 
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .childhood-fundal-scroll-page .childhood-fundal-segment-text__line {
+    font-size: 18px;
+  }
+}
+
 .childhood-fundal-scroll-page
   .childhood-fundal-segment-text.childhood-fundal-segment-text--bullet-summary {
   text-align: left;

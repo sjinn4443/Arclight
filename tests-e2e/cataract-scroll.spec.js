@@ -34,7 +34,7 @@ test.beforeEach(async ({ page, browserName }) => {
     sessionStorage.setItem("cataractCommonSeeded", "1");
   });
 });
-test("Primary launcher plays all 18 original scenes, preserves captions and restores completion", async ({
+test("Primary launcher plays all storyboard scenes, preserves captions and restores completion", async ({
   page,
 }, info) => {
   test.setTimeout(240000);
@@ -51,12 +51,13 @@ test("Primary launcher plays all 18 original scenes, preserves captions and rest
   await row.click();
   const guide = page.locator(`#${id}`),
     stages = guide.locator(".childhood-fundal-prep-stage");
-  await expect(stages).toHaveCount(18);
+  const count = cfg.paths.length;
+  await expect(stages).toHaveCount(count);
   await expect(
     guide.locator(".fundal-reflex-section-divider__title"),
   ).toHaveText(cfg.sections.map((s) => s.title));
   const shots = [];
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < count; i++) {
     const stage = stages.nth(i);
     await expect(
       stage.locator(".childhood-fundal-stage-replay-btn"),
@@ -75,6 +76,42 @@ test("Primary launcher plays all 18 original scenes, preserves captions and rest
     ).toBe(true);
     const box = await stage.boundingBox();
     expect(box.width / box.height).toBeCloseTo(1169 / 1280, 2);
+    if (i < 3) {
+      await stage.scrollIntoViewIfNeeded();
+      const stageBox = await stage.boundingBox();
+      const button = stage.locator(".childhood-fundal-stage-replay-btn");
+      const replay = await button.boundingBox();
+      await button.evaluate((el) =>
+        el.style.setProperty("opacity", "0", "important"),
+      );
+      const artwork = await stage.screenshot({ scale: "css" });
+      await button.evaluate((el) => el.style.removeProperty("opacity"));
+      const beneathReplay = await sharp(artwork)
+        .extract({
+          left: Math.round(replay.x - stageBox.x),
+          top: Math.round(replay.y - stageBox.y),
+          width: Math.floor(replay.width),
+          height: Math.floor(replay.height),
+        })
+        .png()
+        .toBuffer();
+      const { channels } = await sharp(beneathReplay).stats();
+      // The held replay button should cover only the flat floor.
+      if (Math.max(...channels.map((c) => c.stdev)) >= 1) {
+        await info.attach("replay-background", {
+          body: beneathReplay,
+          contentType: "image/png",
+        });
+        await info.attach("held-artwork", {
+          body: artwork,
+          contentType: "image/png",
+        });
+      }
+      expect(
+        Math.max(...channels.map((c) => c.stdev)),
+        `Replay overlaps scene ${i + 1}`,
+      ).toBeLessThan(1);
+    }
     const screenshot = await stage.screenshot();
     const stats = await sharp(screenshot).stats();
     expect(stats.channels[0].stdev).toBeGreaterThan(15);
@@ -83,7 +120,7 @@ test("Primary launcher plays all 18 original scenes, preserves captions and rest
       left: (i % 3) * 234,
       top: Math.floor(i / 3) * 256,
     });
-    if (i < 17) {
+    if (i < count - 1) {
       await stage
         .locator("..")
         .locator(".childhood-fundal-scroll-down-arrow")
@@ -92,7 +129,12 @@ test("Primary launcher plays all 18 original scenes, preserves captions and rest
     }
   }
   await sharp({
-    create: { width: 702, height: 1536, channels: 3, background: "white" },
+    create: {
+      width: 702,
+      height: Math.ceil(count / 3) * 256,
+      channels: 3,
+      background: "white",
+    },
   })
     .composite(shots)
     .png()
@@ -107,9 +149,9 @@ test("Primary launcher plays all 18 original scenes, preserves captions and rest
   await expect
     .poll(() =>
       page.evaluate(
-        (route) =>
-          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 17)?.playing,
-        route,
+        ({ route, index }) =>
+          window.__ARCLIGHT_E2E__.fundal.getStageState(route, index)?.playing,
+        { route, index: count - 1 },
       ),
     )
     .toBe(true);
@@ -194,6 +236,7 @@ test("unsupported narration languages fall back to English", async ({
 
 test("each section shortcut opens the corresponding detailed guide", async ({
   page,
+  hasTouch,
 }) => {
   await page.addInitScript(() => {
     localStorage.setItem(
@@ -202,13 +245,25 @@ test("each section shortcut opens the corresponding detailed guide", async ({
     );
   });
   for (const [index, section] of cfg.sections.entries()) {
+    // Start each independent deep link in a fresh document. A hash-only visit
+    // can retain the previous guide's scroll restoration on mobile WebKit.
+    await page.goto("about:blank");
     await page.goto(`/#/videos/${id}`);
+    // Restoring a completed lesson initially returns the viewport to its start.
+    // Let that navigation finish before scrolling down to a section shortcut.
+    await expect(
+      page.locator(`#${id} .childhood-fundal-stage-replay-btn`).last(),
+    ).toBeVisible({ timeout: 30000 });
     const shortcut = page
       .locator(`#${id} .fundal-reflex-section-shortcut`)
       .nth(index);
     await expect(shortcut).toHaveAttribute("href", section.shortcut);
     await expect(shortcut).toHaveText("Open guide");
-    await shortcut.click();
+    await shortcut.evaluate((link) =>
+      link.scrollIntoView({ block: "center", behavior: "instant" }),
+    );
+    if (hasTouch) await shortcut.tap();
+    else await shortcut.click();
     await expect(page).toHaveURL(
       new RegExp(section.shortcut.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"),
     );

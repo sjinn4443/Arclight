@@ -1,0 +1,49 @@
+#directOphthalmoscopyMobilePage {
+  background: #f2f2f7;
+}
+#directOphthalmoscopyMobilePage > .container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 18px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+}
+#directOphthalmoscopyMobilePage .eyes-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62px;
+  gap: 12px;
+}
+#directOphthalmoscopyMobilePage .eyes-topbar__title {
+  position: static;
+  font-size: 14px;
+  font-weight: 600;
+}
+#directOphthalmoscopyMobilePage .icon.menuBtn {
+  margin: 0;
+}
+#directOphthalmoscopyMobilePage .foe-book {
+  scroll-margin-top: 80px;
+}
+#directOphthalmoscopyMobilePage .foe-book__zoom form {
+  height: 52px;
+  background: white;
+}
+#directOphthalmoscopyMobilePage [data-book-magnify] {
+  left: 8px;
+  right: auto;
+  width: auto;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+#directOphthalmoscopyMobilePage .direct-book-detail {
+  max-height: calc(90dvh - 52px);
+  overflow: auto;
+}
+#directOphthalmoscopyMobilePage .direct-book-detail.is-magnified img {
+  width: 200%;
+  max-width: none;
+}
+#directOphthalmoscopyMobilePage .foe-book__navigation button:disabled {
+  background: #9ca3af;
+}

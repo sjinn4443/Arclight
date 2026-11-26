@@ -1,36 +1,46 @@
 {
   "schemaVersion": 1,
-  "durationSeconds": 318.1,
+  "durationSeconds": 326.1,
   "tracks": {
     "en": {
       "src": "en.m4a",
       "captions": "en.vtt",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 1244678,
-      "sha256": "b57501d03199e6caeb96adf096377cc0549497efc90a94693fbf806b50cdf85e",
-      "durationSeconds": 318.1,
-      "sourceSha256": "30ff5dde5a82dd9fe2c581b5d557935588cd245c48206f317fa63b90def282bd"
+      "bytes": 1331879,
+      "sha256": "9c7f8fa421bee3451c4a0f2fd7dd7983fb5fa2da51664e640d644e92a9fb89c6",
+      "durationSeconds": 326.1,
+      "sourceSha256": "b372d233a70db39a73da3f066bc61141e5e1acd2ccba584b12b791acef120f42"
     },
     "ko": {
       "src": "ko.m4a",
       "captions": "ko.vtt",
       "label": "한국어",
       "voice": "ko-KR-SunHiNeural",
-      "bytes": 1251910,
-      "sha256": "5ab661fb440746ff2f224928efdef116ce3900d573bbfc6fb50616f84b7e4669",
-      "durationSeconds": 318.1,
-      "sourceSha256": "b6cbddeeab725bdf57512050b9207a3d3f94d3820de7aef8017757bc1b51ccc4"
+      "bytes": 1317611,
+      "sha256": "bf4600ee4881f9b165c39de1251dd7cf903cdd46ce7fd8c2803692e63cd911aa",
+      "durationSeconds": 326.1,
+      "sourceSha256": "c9617daedc76a34dd0da4d7fd23ad8c6a1bfaf63491f5d266e354caf3f98c3d1"
     },
     "ur": {
       "src": "ur.m4a",
       "captions": "ur.vtt",
       "label": "اردو",
       "voice": "ur-PK-UzmaNeural",
-      "bytes": 1190620,
-      "sha256": "995b0b14a64747c24c8ceecb333e0e005c46b849bb3cfeb3546dfb27aaab5085",
-      "durationSeconds": 318.1,
-      "sourceSha256": "2ace2bf6744639599b8e72adc8480de9b8164952166ac5525315bb3ad17dd9f1"
+      "bytes": 1262693,
+      "sha256": "8fb7f54048cde3fa8bf90976903723d22e6921d1ede64bdebf0a992f8f5d35c8",
+      "durationSeconds": 326.1,
+      "sourceSha256": "f99ac7b4d34b11538b9cefb66b1d567a8f61905eae87b0170769d2620e5a7a0b"
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "label": "Chichewa",
+      "voice": "facebook/mms-tts-nya",
+      "bytes": 1718027,
+      "sha256": "57e2ab20943f3d976e5d4eacffcfd3ad18a2b156f653c23d228172f797ecbea9",
+      "durationSeconds": 326.1,
+      "sourceSha256": "7c0a58319a86a3ad4295653d4e6267dfca8f677de4e21cb4dec4317357b64698"
     }
   }
 }

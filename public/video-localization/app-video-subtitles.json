@@ -28,7 +28,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f/ny-117e0904a792dedbec.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f/ur-788467f104adcdb2d4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/SignsVIppts/04.mp4": {
     "subtitles": {
@@ -59,7 +72,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-04-5bb0c29e/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-04-5bb0c29e/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-04-5bb0c29e/ny-3f2e76a03fd15f88fb.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-04-5bb0c29e/ur-d6735fc8e2a24008ca.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/SignsVIppts/05.mp4": {
     "subtitles": {
@@ -90,7 +116,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-05-043c2e2f/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-05-043c2e2f/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-05-043c2e2f/ny-bfa35ef2df0c3b589a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-05-043c2e2f/ur-77a6f726cc9285da09.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/SignsVIppts/06.mp4": {
     "subtitles": {
@@ -121,7 +160,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c/ny-14da9473fd651088b0.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c/ur-5dd0dd08ddbe97a09f.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/SignsVIppts/07.mp4": {
     "subtitles": {
@@ -152,7 +204,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f/ny-e07f7e89f65dae06e9.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f/ur-2d8e5559e6ae663782.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/SignsVIppts/08.mp4": {
     "subtitles": {
@@ -183,7 +248,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-08-64b1565e/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-08-64b1565e/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-08-64b1565e/ny-c87eda29ffc1a40b75.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-08-64b1565e/ur-07a7bbe01648a0df08.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/CausesVIppts/03.mp4": {
     "subtitles": {
@@ -214,7 +292,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-03-cce3d3c0/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-03-cce3d3c0/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f/ny-117e0904a792dedbec.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-01-2cfda65f/ur-788467f104adcdb2d4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/CausesVIppts/05.mp4": {
     "subtitles": {
@@ -245,7 +336,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-05-f9ebb50d/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-05-f9ebb50d/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c/ny-14da9473fd651088b0.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-06-419c7e4c/ur-5dd0dd08ddbe97a09f.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/CausesVIppts/07.mp4": {
     "subtitles": {
@@ -276,7 +380,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-07-6e064ca4/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-07-6e064ca4/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f/ny-e07f7e89f65dae06e9.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-signsvippts-07-99098e9f/ur-2d8e5559e6ae663782.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/CausesVIppts/09.mp4": {
     "subtitles": {
@@ -307,7 +424,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-09-615c3920/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-09-615c3920/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-09-615c3920/ny-e8bad864edde39a9ce.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-causesvippts-09-615c3920/ur-78d388925578c3088e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/VisualDevelopment/01.mp4": {
     "subtitles": {
@@ -338,7 +468,20 @@
       "lo": "/video-subtitles/app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f/lo.vtt",
       "lg": "/video-subtitles/app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f/ny-101eecc4e638b3cc80.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f/ur-3e2cbc16c0e55c6163.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "images/pdf/Workshop/Childhood/VisualDevelopment/01_ios.mp4": {
     "subtitles": {
@@ -369,7 +512,20 @@
       "lo": "/video-subtitles/app-videos/assessingVisualFunctionPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/assessingVisualFunctionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f/ny-101eecc4e638b3cc80.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/images-pdf-workshop-childhood-visualdevelopment-01-b30c649f/ur-3e2cbc16c0e55c6163.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Arclight/PhoneAttach.mp4": {
     "subtitles": {
@@ -400,7 +556,20 @@
       "lo": "/video-subtitles/app-videos/phoneAttachmentVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/phoneAttachmentVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/phoneAttachmentVideoPage/ny-ff19dbdfe01753f636.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/phoneAttachmentVideoPage/ur-76f99f0df3f0eb3d70.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Otoscopy/Otoscopy_Instructional_Video_051124_720p.mp4": {
     "subtitles": {
@@ -431,7 +600,20 @@
       "lo": "/video-subtitles/app-videos/videos-otoscopy-otoscopy-instructional-video-051124-4bc3f9e9/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-otoscopy-otoscopy-instructional-video-051124-4bc3f9e9/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-otoscopy-otoscopy-instructional-video-051124-4bc3f9e9/ny-d84a42e5fb8d9b58f6.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-otoscopy-otoscopy-instructional-video-051124-4bc3f9e9/ur-c14aa4ed92648243ea.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/USAID/AssessmentVision.mp4": {
     "subtitles": {
@@ -462,7 +644,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-assessmentvision-c7ce5026/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-assessmentvision-c7ce5026/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-usaid-assessmentvision-c7ce5026/ur-412eb60bb453bc7649.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-usaid-assessmentvision-c7ce5026/ny-3167427e760e5899f3.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID/FundalReflexUSAID.mp4": {
     "subtitles": {
@@ -493,7 +688,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ur-f1d819185cfcb18525.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ny-20cab5bee42694ed69.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID/HowtoArclight.mp4": {
     "subtitles": {
@@ -524,7 +732,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ur-7b885b46b04c16e769.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ny-e8caea9f300a0b0ceb.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID/NormalAbnormal.mp4": {
     "subtitles": {
@@ -555,7 +776,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidNormalAbnormalPage/ur-0ad3a2ac09bdc1f496.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidNormalAbnormalPage/ny-19b198e2e880b6d1cf.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Intro/GIFQuiz_Comp.mp4": {
     "subtitles": {
@@ -586,7 +820,20 @@
       "lo": "/video-subtitles/app-videos/videos-intro-gifquiz-comp-11741e5d/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-intro-gifquiz-comp-11741e5d/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-intro-gifquiz-comp-11741e5d/ny-c32ec7aa2153be3853.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-intro-gifquiz-comp-11741e5d/ur-44c1f0baab255664de.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Intro/GIFRecommended_Comp.mp4": {
     "subtitles": {
@@ -617,7 +864,20 @@
       "lo": "/video-subtitles/app-videos/videos-intro-gifrecommended-comp-f7b8b3f3/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-intro-gifrecommended-comp-f7b8b3f3/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-intro-gifrecommended-comp-f7b8b3f3/ny-885bb360972fa6bcee.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-intro-gifrecommended-comp-f7b8b3f3/ur-bd2c4cd884517e985f.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Intro/GIFVideo_Comp.mp4": {
     "subtitles": {
@@ -648,7 +908,20 @@
       "lo": "/video-subtitles/app-videos/videos-intro-gifvideo-comp-51de8d7c/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-intro-gifvideo-comp-51de8d7c/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-intro-gifvideo-comp-51de8d7c/ny-cf85ac96dc38707864.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-intro-gifvideo-comp-51de8d7c/ur-eabb3533ccad5793bf.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/FrontofEye/FE_Full_220p.mp4": {
     "subtitles": {
@@ -679,7 +952,20 @@
       "lo": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/ur-83f4161ebf97092fd4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/ny-ea2bd593a6678bfe80.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FrontofEye/FE_Full_720p.mp4": {
     "subtitles": {
@@ -710,7 +996,20 @@
       "lo": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/ur-83f4161ebf97092fd4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/feFullAnteriorSegmentPage/ny-ea2bd593a6678bfe80.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FrontofEye/FE_PEC_220p.mp4": {
     "subtitles": {
@@ -741,7 +1040,20 @@
       "lo": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/ur-5b8665b7590f73abd1.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/ny-6ab0b97b37577ea18d.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FrontofEye/FE_PEC_720p.mp4": {
     "subtitles": {
@@ -772,7 +1084,20 @@
       "lo": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/ur-5b8665b7590f73abd1.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fePecAnteriorSegmentPage/ny-6ab0b97b37577ea18d.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FundalReflex/FR_Scotland_720p.mp4": {
     "subtitles": {
@@ -803,7 +1128,20 @@
       "lo": "/video-subtitles/app-videos/fundalExamPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fundalExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fundalExamPage/ur-5a100a2ccc11f75137.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fundalExamPage/ny-a00592de9f8261bf70.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FundalReflex/FR_Scotland_220p.mp4": {
     "subtitles": {
@@ -834,7 +1172,20 @@
       "lo": "/video-subtitles/app-videos/fundalExamPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fundalExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fundalExamPage/ur-5a100a2ccc11f75137.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fundalExamPage/ny-a00592de9f8261bf70.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FundalReflex/FRT Testing Tools/FR_SREN_720p.mp4": {
     "subtitles": {
@@ -865,7 +1216,20 @@
       "lo": "/video-subtitles/app-videos/fundalRealPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fundalRealPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fundalRealPage/ur-100e3b21628302022a.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fundalRealPage/ny-315b73c3fa9e158d1c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FundalReflex/FRT Testing Tools/FR_SREN_220p.mp4": {
     "subtitles": {
@@ -896,7 +1260,20 @@
       "lo": "/video-subtitles/app-videos/fundalRealPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fundalRealPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fundalRealPage/ur-100e3b21628302022a.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fundalRealPage/ny-315b73c3fa9e158d1c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FundalReflex/FRT Testing Tools/FR_Stillimg_220p.mp4": {
     "subtitles": {
@@ -927,7 +1304,20 @@
       "lo": "/video-subtitles/app-videos/fundalStillPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fundalStillPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fundalStillPage/ur-8180eedc677ed50953.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fundalStillPage/ny-808ac413c1b5843549.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/FundalReflex/FRT Testing Tools/FR_Stillimg_720p.mp4": {
     "subtitles": {
@@ -958,7 +1348,20 @@
       "lo": "/video-subtitles/app-videos/fundalStillPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/fundalStillPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/fundalStillPage/ur-8180eedc677ed50953.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/fundalStillPage/ny-808ac413c1b5843549.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/Intro/1. How to use the Arclight - ENGLISH - HD_720p.mp4": {
     "subtitles": {
@@ -989,7 +1392,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ur-7b885b46b04c16e769.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ny-e8caea9f300a0b0ceb.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/Pupils/Pupils_PEC_720p.mp4": {
     "subtitles": {
@@ -1020,7 +1436,20 @@
       "lo": "/video-subtitles/app-videos/pupilExamPECPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/pupilExamPECPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/pupilExamPECPage/ur-fcdfb4a45c73084051.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/pupilExamPECPage/ny-efc65aaacb58ad4759.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/Pupils/Pupils_PEC_220p.mp4": {
     "subtitles": {
@@ -1051,7 +1480,20 @@
       "lo": "/video-subtitles/app-videos/pupilExamPECPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/pupilExamPECPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/pupilExamPECPage/ur-fcdfb4a45c73084051.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/pupilExamPECPage/ny-efc65aaacb58ad4759.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/Pupils/Pupils_Full_720p.mp4": {
     "subtitles": {
@@ -1082,7 +1524,20 @@
       "lo": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/ny-d5f8310c240723968b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/ur-946b74727632a1d3e6.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/Pupils/Pupils_Full_220p.mp4": {
     "subtitles": {
@@ -1113,7 +1568,20 @@
       "lo": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/ny-d5f8310c240723968b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-core-pupils-pupils-full-ec671d76/ur-946b74727632a1d3e6.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/Pupils/Pupils_RAPD24_720p.mp4": {
     "subtitles": {
@@ -1144,7 +1612,20 @@
       "lo": "/video-subtitles/app-videos/rapdTestVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/rapdTestVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/rapdTestVideoPage/ur-1ed04fade24d402d22.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/rapdTestVideoPage/ny-3001194d448a0cc934.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/Pupils/Pupils_RAPD24_220p.mp4": {
     "subtitles": {
@@ -1175,7 +1656,20 @@
       "lo": "/video-subtitles/app-videos/rapdTestVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/rapdTestVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/rapdTestVideoPage/ur-1ed04fade24d402d22.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/rapdTestVideoPage/ny-3001194d448a0cc934.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_Mum_720p.mp4": {
     "subtitles": {
@@ -1206,7 +1700,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/mumVisionPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/mumVisionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/mumVisionPage/ny-f45e08f20c0de20ca8.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/mumVisionPage/ur-7bb3a81e9d990b64eb.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_NearDIst_720p.mp4": {
     "subtitles": {
@@ -1237,7 +1744,20 @@
       "lo": "/video-subtitles/app-videos/vaNearVisionPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/vaNearVisionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/vaNearVisionPage/ny-424866230f9818863b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/vaNearVisionPage/ur-aaaa7be5e8613bbde3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_NearDIst_220p.mp4": {
     "subtitles": {
@@ -1268,7 +1788,20 @@
       "lo": "/video-subtitles/app-videos/vaNearVisionPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/vaNearVisionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/vaNearVisionPage/ny-424866230f9818863b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/vaNearVisionPage/ur-aaaa7be5e8613bbde3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_PEC1_720p.mp4": {
     "subtitles": {
@@ -1299,7 +1832,20 @@
       "lo": "/video-subtitles/app-videos/vaWhoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/vaWhoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/vaWhoPage/ny-c23ff4f4a3634ab87a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/vaWhoPage/ur-ef59dfca9e52953f2b.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_PEC1_220p.mp4": {
     "subtitles": {
@@ -1330,7 +1876,20 @@
       "lo": "/video-subtitles/app-videos/vaWhoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/vaWhoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/vaWhoPage/ny-c23ff4f4a3634ab87a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/vaWhoPage/ur-ef59dfca9e52953f2b.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_Assessment_720p.mp4": {
     "subtitles": {
@@ -1361,7 +1920,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/assessmentVisionPage/ny-cf5a47bbcabc18255c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/assessmentVisionPage/ur-d76f73c4273226e2ac.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_Mum_220p.mp4": {
     "subtitles": {
@@ -1392,7 +1964,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/mumVisionPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/mumVisionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/mumVisionPage/ny-f45e08f20c0de20ca8.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/mumVisionPage/ur-7bb3a81e9d990b64eb.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/VisualAcuity/VA_Assessment_220p.mp4": {
     "subtitles": {
@@ -1423,7 +2008,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/assessmentVisionPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/assessmentVisionPage/ny-cf5a47bbcabc18255c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/assessmentVisionPage/ur-d76f73c4273226e2ac.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/Ophthalmoscopy/DirectOphth_720p.mp4": {
     "subtitles": {
@@ -1454,7 +2052,20 @@
       "lo": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/ny-3ae535296125bfbdf2.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/ur-f615a222b340506d4c.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Core/Ophthalmoscopy/DirectOphth_220p.mp4": {
     "subtitles": {
@@ -1485,7 +2096,20 @@
       "lo": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/ny-3ae535296125bfbdf2.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/directOphthalmoscopyVideoPage/ur-f615a222b340506d4c.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Cataract/Cataract Identification PEC 20MB.mp4": {
     "subtitles": {
@@ -1516,7 +2140,20 @@
       "lo": "/video-subtitles/app-videos/videos-cataract-cataract-identification-pec-20mb-83b65eb3/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-cataract-cataract-identification-pec-20mb-83b65eb3/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-cataract-cataract-identification-pec-20mb-83b65eb3/ny-7a00236ea003d06e50.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-cataract-cataract-identification-pec-20mb-83b65eb3/ur-5cfdac2fee8502dcec.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Tools/MobilePhoneAttachment_720p.mp4": {
     "subtitles": {
@@ -1547,7 +2184,20 @@
       "lo": "/video-subtitles/app-videos/videos-tools-mobilephoneattachment-4be1e646/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-tools-mobilephoneattachment-4be1e646/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-tools-mobilephoneattachment-4be1e646/ny-168b4aa11d325803ac.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-tools-mobilephoneattachment-4be1e646/ur-9882a56f1f775c305b.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Tools/BIOvideo_220p.mp4": {
     "subtitles": {
@@ -1578,7 +2228,20 @@
       "lo": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/ny-9f55be9fc6f13b02d4.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/ur-e498222a39854f0b9e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Tools/BIOvideo_720p.mp4": {
     "subtitles": {
@@ -1609,7 +2272,20 @@
       "lo": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/ny-9f55be9fc6f13b02d4.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/binocularIndirectOphthalmoscopyVideoPage/ur-e498222a39854f0b9e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/URE/Arclight & Eyeglasses_720p.mp4": {
     "subtitles": {
@@ -1640,7 +2316,20 @@
       "lo": "/video-subtitles/app-videos/videos-ure-arclight-eyeglasses-3dce0666/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-ure-arclight-eyeglasses-3dce0666/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-ure-arclight-eyeglasses-3dce0666/ny-2f3b0ddd5ab030fc2c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-ure-arclight-eyeglasses-3dce0666/ur-37e450337cfd77ddc6.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/URE/URE - Refractive Error Groups by VA testing PPP slides for video_720p.mp4": {
     "subtitles": {
@@ -1671,7 +2360,20 @@
       "lo": "/video-subtitles/app-videos/videos-ure-ure-refractive-error-groups-by-va-testing-ppp-slides-for-video-b1b87654/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-ure-ure-refractive-error-groups-by-va-testing-ppp-slides-for-video-b1b87654/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-ure-ure-refractive-error-groups-by-va-testing-ppp-slides-for-video-b1b87654/ur-ba9773f60150d4f2e7.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-ure-ure-refractive-error-groups-by-va-testing-ppp-slides-for-video-b1b87654/ny-1e0431b45bbf7fc2a0.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_720p.mp4": {
     "subtitles": {
@@ -1702,7 +2404,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ny-e8caea9f300a0b0ceb.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ur-7b885b46b04c16e769.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/2. Assessment of eyes and vision ENGLISH - HD_720p.mp4": {
     "subtitles": {
@@ -1733,7 +2448,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/ny-53440934f5fb7d422c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/ur-7bcb793e4990b14e7a.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/2. Assessment of eyes and vision ENGLISH - HD_220p.mp4": {
     "subtitles": {
@@ -1764,7 +2492,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/ny-53440934f5fb7d422c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-2-assessment-of-eyes-and-vision-english-hd-5e7af5c6/ur-7bcb793e4990b14e7a.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/3. Fundal Reflex examination SWAHILI - HD_720p.mp4": {
     "subtitles": {
@@ -1795,7 +2536,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/ur-39b57c58bfe8586670.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/ny-d57750292fcf65b657.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/3. Fundal Reflex examination SWAHILI - HD_220p.mp4": {
     "subtitles": {
@@ -1826,7 +2580,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/ur-39b57c58bfe8586670.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-3-fundal-reflex-examination-swahili-hd-ac3cd66d/ny-d57750292fcf65b657.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/3. USAID FRT How to Perform Short_720p.mp4": {
     "subtitles": {
@@ -1857,7 +2624,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ur-f1d819185cfcb18525.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ny-20cab5bee42694ed69.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_720p.mp4": {
     "subtitles": {
@@ -1888,7 +2668,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidNormalAbnormalPage/ur-0ad3a2ac09bdc1f496.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidNormalAbnormalPage/ny-19b198e2e880b6d1cf.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/5. USAID TZ Arclight clip to Camera SHORT_720p.mp4": {
     "subtitles": {
@@ -1919,7 +2712,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-607d592b/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-607d592b/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-tools-mobilephoneattachment-4be1e646/ur-9882a56f1f775c305b.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-tools-mobilephoneattachment-4be1e646/ny-168b4aa11d325803ac.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/FundalReflexUSAID_220p.mp4": {
     "subtitles": {
@@ -1950,7 +2756,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ur-f1d819185cfcb18525.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ny-20cab5bee42694ed69.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/1. How to use the Arclight - ENGLISH - HD_220p.mp4": {
     "subtitles": {
@@ -1981,7 +2800,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidHowToUseArclightPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ur-7b885b46b04c16e769.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidHowToUseArclightPage/ny-e8caea9f300a0b0ceb.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/3. USAID FRT How to Perform Short_720p_220p.mp4": {
     "subtitles": {
@@ -2012,7 +2844,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ur-f1d819185cfcb18525.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ny-20cab5bee42694ed69.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/4. Normal and Abnormal findings - ENGLISH - HD_220p.mp4": {
     "subtitles": {
@@ -2043,7 +2888,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidNormalAbnormalPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidNormalAbnormalPage/ur-0ad3a2ac09bdc1f496.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidNormalAbnormalPage/ny-19b198e2e880b6d1cf.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/5. USAID TZ Arclight clip to Camera SHORT_720p_220p.mp4": {
     "subtitles": {
@@ -2074,7 +2932,20 @@
       "lo": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-720p-4867698b/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-720p-4867698b/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-720p-4867698b/ur-8093587658f1c0e485.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-usaid-childhood-eye-screening-5-usaid-tz-arclight-clip-to-camera-short-720p-4867698b/ny-5835fb54960f60c3f3.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/USAID Childhood eye screening/FundalReflexUSAID_720p.mp4": {
     "subtitles": {
@@ -2105,7 +2976,20 @@
       "lo": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lo.vtt",
       "lg": "/video-subtitles/childhood-eye-screening/usaidFundalReflexExamPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ur-f1d819185cfcb18525.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/usaidFundalReflexExamPage/ny-20cab5bee42694ed69.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/A2 - VIDEOS - Norm v Abnorm.mp4": {
     "subtitles": {
@@ -2136,7 +3020,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-a2-videos-norm-v-abnorm-103f9d6b/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-a2-videos-norm-v-abnorm-103f9d6b/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-a2-videos-norm-v-abnorm-103f9d6b/ur-73252372641f24204e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-a2-videos-norm-v-abnorm-103f9d6b/ny-a52c393aa4364fc9c8.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRACAG_220p.mp4": {
     "subtitles": {
@@ -2167,7 +3064,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/ny-e21dac6d0a10c40a1c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/ur-79c6312d34fe7075d3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRACAG_720p.mp4": {
     "subtitles": {
@@ -2198,7 +3108,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/ny-e21dac6d0a10c40a1c.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaACAGCaseWorkshopVideoPage/ur-79c6312d34fe7075d3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRACD_220p.mp4": {
     "subtitles": {
@@ -2229,7 +3152,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/ny-b980c3c6588af3fc6b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/ur-691df5aa116466037e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRACD_720p.mp4": {
     "subtitles": {
@@ -2260,7 +3196,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/ny-b980c3c6588af3fc6b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaAnteriorChamberDepthVideoPage/ur-691df5aa116466037e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRDisease_220p.mp4": {
     "subtitles": {
@@ -2291,7 +3240,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/ny-5ed96e55776aa6120b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/ur-1db833d947fd6fe9fb.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRDisease_720p.mp4": {
     "subtitles": {
@@ -2322,7 +3284,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/ny-5ed96e55776aa6120b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaFundalReflexDiseaseVideoPage/ur-1db833d947fd6fe9fb.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRsignsglaucoma_220p.mp4": {
     "subtitles": {
@@ -2353,7 +3328,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/ny-6c789a780ad263e042.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/ur-bfb177b90e3c65fe97.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/FRsignsglaucoma_720p.mp4": {
     "subtitles": {
@@ -2384,7 +3372,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/ny-6c789a780ad263e042.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaSignsOfGlaucomaVideoPage/ur-bfb177b90e3c65fe97.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/opticdiseases_220p.mp4": {
     "subtitles": {
@@ -2415,7 +3416,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/ny-3e30f08c884173f68d.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/ur-e636d6a533547ac2f5.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/opticdiseases_720p.mp4": {
     "subtitles": {
@@ -2446,7 +3460,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/ny-3e30f08c884173f68d.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaOtherOpticNerveDiseasesVideoPage/ur-e636d6a533547ac2f5.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/pupilreaction_220p.mp4": {
     "subtitles": {
@@ -2477,7 +3504,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/ny-431e448d4bc4458e11.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/ur-3bbf0d97b1e2d52125.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/pupilreaction_720p.mp4": {
     "subtitles": {
@@ -2508,7 +3548,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/ny-431e448d4bc4458e11.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaPupilReactionsVideoPage/ur-3bbf0d97b1e2d52125.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/BE_disccuppingonly_720p.mp4": {
     "subtitles": {
@@ -2539,7 +3592,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/ny-4c1150dcc50f6949fd.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/ur-c5e6fd87e16f4e2fbc.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/BE_disccuppingonly_220p.mp4": {
     "subtitles": {
@@ -2570,7 +3636,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/ny-4c1150dcc50f6949fd.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaDiscCuppingVideoPage/ur-c5e6fd87e16f4e2fbc.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/BE_Margin_720p.mp4": {
     "subtitles": {
@@ -2601,7 +3680,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaMarginVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaMarginVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaMarginVideoPage/ny-02ad47b17039f48797.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaMarginVideoPage/ur-2da28fe8c697904083.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/BE_Margin_220p.mp4": {
     "subtitles": {
@@ -2632,7 +3724,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaMarginVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaMarginVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaMarginVideoPage/ny-02ad47b17039f48797.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaMarginVideoPage/ur-2da28fe8c697904083.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/BE_opticdiscanatomy_720p.mp4": {
     "subtitles": {
@@ -2663,7 +3768,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/ny-27aff30237cdffe41a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/ur-1ca425e180492cc5a3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/BE_opticdiscanatomy_220p.mp4": {
     "subtitles": {
@@ -2694,7 +3812,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/ny-27aff30237cdffe41a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaOpticDiscAnatomyVideoPage/ur-1ca425e180492cc5a3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/DO_discsannotated_720p.mp4": {
     "subtitles": {
@@ -2725,7 +3856,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/ur-bad7c2c0533778872c.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/ny-6886ee4cfa3f9793e7.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/DO_discsannotated_220p.mp4": {
     "subtitles": {
@@ -2756,7 +3900,20 @@
       "lo": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/ur-bad7c2c0533778872c.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/glaucomaDirectOphthalmoscopyDiscsAnnotatedVideoPage/ny-6886ee4cfa3f9793e7.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case1_720p.mp4": {
     "subtitles": {
@@ -2787,7 +3944,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case1-f654edd8/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case1-f654edd8/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case1-f654edd8/ny-3a49f520f42a06fc2a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case1-f654edd8/ur-527caba90c1194a4b4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case2_720p.mp4": {
     "subtitles": {
@@ -2818,7 +3988,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case2-eac7e6fc/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case2-eac7e6fc/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case2-eac7e6fc/ny-d6bbee9450a110a1f8.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case2-eac7e6fc/ur-0606398a573fc48392.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case3_720p.mp4": {
     "subtitles": {
@@ -2849,7 +4032,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case3-4ed80c80/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case3-4ed80c80/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case3-4ed80c80/ny-6e182379947e53aff5.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case3-4ed80c80/ur-efde877145296b89a3.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case4_720p.mp4": {
     "subtitles": {
@@ -2880,7 +4076,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case4-041c9121/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case4-041c9121/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case4-041c9121/ny-f372c8330b8ab8b0c2.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case4-041c9121/ur-30c67b8607d2c4beab.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case5_720p.mp4": {
     "subtitles": {
@@ -2911,7 +4120,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case5-5d1031f9/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case5-5d1031f9/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case5-5d1031f9/ny-284c4bb1b134f5eed8.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case5-5d1031f9/ur-b811ee8ea001761743.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case6_720p.mp4": {
     "subtitles": {
@@ -2942,7 +4164,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case6-3d049649/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case6-3d049649/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case6-3d049649/ny-c8245dbe22d044f0f2.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case6-3d049649/ur-35c773599e3fd6df06.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case7_720p.mp4": {
     "subtitles": {
@@ -2973,7 +4208,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case7-25d31f89/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case7-25d31f89/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case7-25d31f89/ny-47150c92eac984406b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case7-25d31f89/ur-6d9ea9f4837fef4326.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case8_720p.mp4": {
     "subtitles": {
@@ -3004,7 +4252,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case8-d7bc580f/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case8-d7bc580f/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case8-d7bc580f/ny-626c40bda473d65301.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case8-d7bc580f/ur-a63b16c4e525c8055b.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case9_720p.mp4": {
     "subtitles": {
@@ -3035,7 +4296,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case9-23bfd4bb/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case9-23bfd4bb/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case9-23bfd4bb/ny-8383a512e5f6215b68.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case9-23bfd4bb/ur-6eb350c76c44cb9e70.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case10_720p.mp4": {
     "subtitles": {
@@ -3066,7 +4340,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case10-3f2a191f/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case10-3f2a191f/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case10-3f2a191f/ny-5b0450240867d2464a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case10-3f2a191f/ur-11435ac9bc813d22f9.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case11_720p.mp4": {
     "subtitles": {
@@ -3097,7 +4384,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case11-bb39a66c/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case11-bb39a66c/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case11-bb39a66c/ny-985d88af4c4a1e2d58.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case11-bb39a66c/ur-157483e6aa6e1bd6b2.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Glaucoma/NormalAbnormal/case12_720p.mp4": {
     "subtitles": {
@@ -3128,7 +4428,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case12-093105ad/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case12-093105ad/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case12-093105ad/ny-cf87a297755e0f00af.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-glaucoma-normalabnormal-case12-093105ad/ur-7f3934f2554d4d75f1.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_220p.mp4": {
     "subtitles": {
@@ -3159,7 +4472,20 @@
       "lo": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/lo.vtt",
       "lg": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/diabeticIntroductionToArclightVideoPage/ur-d1ea2c79f6e7b49de2.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/diabeticIntroductionToArclightVideoPage/ny-11f633a567bbca6c90.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Diabetic/1.ArclightIntroduction_eyesOnly_720p.mp4": {
     "subtitles": {
@@ -3190,7 +4516,20 @@
       "lo": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/lo.vtt",
       "lg": "/video-subtitles/diabetic-retinopathy-workshop/diabeticIntroductionToArclightVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/diabeticIntroductionToArclightVideoPage/ur-d1ea2c79f6e7b49de2.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/diabeticIntroductionToArclightVideoPage/ny-11f633a567bbca6c90.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Diabetic/3.DR_LossofVisionCause_220p.mp4": {
     "subtitles": {
@@ -3221,7 +4560,20 @@
       "lo": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/ny-b0d637d6a7e829ea9a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/ur-02d8321cc4ba3be4e4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/3.DR_LossofVisionCause_720p.mp4": {
     "subtitles": {
@@ -3252,7 +4604,20 @@
       "lo": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/ny-b0d637d6a7e829ea9a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/diabeticCausesOfVisionLossVideoPage/ur-02d8321cc4ba3be4e4.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/4.DRSinNCDClinicflow_220p.mp4": {
     "subtitles": {
@@ -3283,7 +4648,20 @@
       "lo": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/ny-b036a2d86df859c299.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/ur-225d6bf561a56689d2.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/4.DRSinNCDClinicflow_720p.mp4": {
     "subtitles": {
@@ -3314,7 +4692,20 @@
       "lo": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/lo.vtt",
       "lg": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/ny-ae4ee602974c1712fd.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/diabeticSimpleSafeScalableVideoPage/ur-76d9908b25c21bc1d6.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/2.DODRMaculopathy.mp4": {
     "subtitles": {
@@ -3345,7 +4736,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-2-dodrmaculopathy-4b3a4343/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-2-dodrmaculopathy-4b3a4343/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-2-dodrmaculopathy-4b3a4343/ny-3e4cf258fb99ff7e5f.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-2-dodrmaculopathy-4b3a4343/ur-dd2f0fdeb011d23c6a.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/15. DO DR Maculopathy copy_220p.mp4": {
     "subtitles": {
@@ -3376,7 +4780,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-15-do-dr-maculopathy-copy-7f98f54e/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-15-do-dr-maculopathy-copy-7f98f54e/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-15-do-dr-maculopathy-copy-7f98f54e/ny-e32679c4da8d5e1149.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-15-do-dr-maculopathy-copy-7f98f54e/ur-682176256408da63d6.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/14. DRS non PDR signs_220p.mp4": {
     "subtitles": {
@@ -3407,7 +4824,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-14-drs-non-pdr-signs-79d0b7ca/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-14-drs-non-pdr-signs-79d0b7ca/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-14-drs-non-pdr-signs-79d0b7ca/ny-c4cf8138583a6a1307.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-14-drs-non-pdr-signs-79d0b7ca/ur-1bfa29e597e6d20fe8.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/13. DRS PDR Signs_220p.mp4": {
     "subtitles": {
@@ -3438,7 +4868,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-13-drs-pdr-signs-64c6203c/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-13-drs-pdr-signs-64c6203c/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-13-drs-pdr-signs-64c6203c/ny-e1e1d9e0f043e1b83a.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-13-drs-pdr-signs-64c6203c/ur-9c572e7ce6c2e55be9.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/12. Direct Ophthalmoscopy Traditional + Arclight OSCE_220p.mp4": {
     "subtitles": {
@@ -3469,7 +4912,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-12-direct-ophthalmoscopy-traditional-arclight-osce-11741446/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-12-direct-ophthalmoscopy-traditional-arclight-osce-11741446/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-12-direct-ophthalmoscopy-traditional-arclight-osce-11741446/ur-c40bc2a3bdd235c727.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-12-direct-ophthalmoscopy-traditional-arclight-osce-11741446/ny-01311cb34cd51abc25.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Diabetic/11. Direct Ophthalmoscopy Short Low Resolution_220p.mp4": {
     "subtitles": {
@@ -3500,7 +4956,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-11-direct-ophthalmoscopy-short-ca98a960/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-11-direct-ophthalmoscopy-short-ca98a960/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-11-direct-ophthalmoscopy-short-ca98a960/ur-3f59ff26fe3dd73b05.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-11-direct-ophthalmoscopy-short-ca98a960/ny-e7e28a8c0789cde58b.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Diabetic/10. FRT for DR _220p.mp4": {
     "subtitles": {
@@ -3531,7 +5000,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-10-frt-for-dr-356f6098/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-10-frt-for-dr-356f6098/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-10-frt-for-dr-356f6098/ny-003aad3d81d2f48066.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-10-frt-for-dr-356f6098/ur-36f0b23368a9a61c5f.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/9. Front of eye DR_220p.mp4": {
     "subtitles": {
@@ -3562,7 +5044,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-9-front-of-eye-dr-e648cde9/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-9-front-of-eye-dr-e648cde9/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-9-front-of-eye-dr-e648cde9/ny-15657ba35fe6109434.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-9-front-of-eye-dr-e648cde9/ur-bef6d29ae62614113f.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/8. Anterior Segment FULL 2026 - level 2 + glaucoma_220p.mp4": {
     "subtitles": {
@@ -3593,7 +5088,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-8-anterior-segment-full-2026-level-2-glaucoma-f0851d4c/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-8-anterior-segment-full-2026-level-2-glaucoma-f0851d4c/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-8-anterior-segment-full-2026-level-2-glaucoma-f0851d4c/ur-72ae9ea381324dc94e.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-8-anterior-segment-full-2026-level-2-glaucoma-f0851d4c/ny-f8d18e5c12d0e17580.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Diabetic/7. Pupil response good to bad_220p.mp4": {
     "subtitles": {
@@ -3624,7 +5132,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-7-pupil-response-good-to-bad-f03f3fa4/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-7-pupil-response-good-to-bad-f03f3fa4/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-7-pupil-response-good-to-bad-f03f3fa4/ny-54aace7b5cc4d99c1f.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-7-pupil-response-good-to-bad-f03f3fa4/ur-47def14ec4774bb8c0.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/6. Pupil Exam PEC 080525_220p.mp4": {
     "subtitles": {
@@ -3655,7 +5176,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-6-pupil-exam-pec-080525-af7ae232/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-6-pupil-exam-pec-080525-af7ae232/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-6-pupil-exam-pec-080525-af7ae232/ny-dfa72d21075dbf26da.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      },
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-6-pupil-exam-pec-080525-af7ae232/ur-c5d976bb415dede11d.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      }
+    }
   },
   "videos/Workshop/Diabetic/5.1 Visual Acuity Near + Distance_220p.mp4": {
     "subtitles": {
@@ -3686,7 +5220,20 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-5-1-visual-acuity-near-distance-9c02e9ae/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-5-1-visual-acuity-near-distance-9c02e9ae/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-5-1-visual-acuity-near-distance-9c02e9ae/ur-6c6de6dbdd3dd3f7e7.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-5-1-visual-acuity-near-distance-9c02e9ae/ny-48ccb01582b7ec7c35.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   },
   "videos/Workshop/Diabetic/5.2 Near Visual Acuity + Dispense Glasses - PEC_220p.mp4": {
     "subtitles": {
@@ -3717,6 +5264,19 @@
       "lo": "/video-subtitles/app-videos/videos-workshop-diabetic-5-2-near-visual-acuity-dispense-glasses-pec-be1a72ad/lo.vtt",
       "lg": "/video-subtitles/app-videos/videos-workshop-diabetic-5-2-near-visual-acuity-dispense-glasses-pec-be1a72ad/lg.vtt"
     },
-    "defaultSubtitleLang": "en"
+    "defaultSubtitleLang": "en",
+    "audioVariants": {
+      "ur": {
+        "label": "اردو",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-5-2-near-visual-acuity-dispense-glasses-pec-be1a72ad/ur-858322ab4d42ebe5be.m4a",
+        "voice": "ur-PK-UzmaNeural"
+      },
+      "ny": {
+        "label": "Chichewa",
+        "src": "/video-subtitles/app-videos/videos-workshop-diabetic-5-2-near-visual-acuity-dispense-glasses-pec-be1a72ad/ny-6279faf804c971089d.m4a",
+        "voice": "facebook/mms-tts-nya",
+        "modelLicense": "CC-BY-NC-4.0"
+      }
+    }
   }
 }

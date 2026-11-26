@@ -22,6 +22,13 @@ for (const [language, lines] of Object.entries(translations)) {
   });
 }
 const titles = {
+  ny: [
+    "Kukonzekera",
+    "Kuona zinthu zakutali",
+    "Kuyeza ndi kabowo kakang'ono kapena magalasi",
+    "Kuona kochepa: zala, kusuntha kwa dzanja ndi kuwala",
+    "Kuona zinthu zapafupi",
+  ],
   ur: [
     "تیاری",
     "فاصلاتی وژن",

@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import fsSync from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { NATIVE_LANGUAGE_NAMES } from "../public/js/language-names.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
@@ -17,33 +18,6 @@ const outputRoot = path.join(
   "video-hls",
   "childhood-eye-screening",
 );
-const languageLabels = {
-  en: "English",
-  am: "Amharic",
-  ar: "Arabic",
-  bn: "Bangla",
-  ne: "Nepali",
-  ny: "Chichewa",
-  zh: "Chinese",
-  fr: "French",
-  ha: "Hausa",
-  hi: "Hindi",
-  ig: "Igbo",
-  id: "Indonesian",
-  rw: "Kinyarwanda",
-  ko: "Korean",
-  ln: "Lingala",
-  fa: "Persian",
-  pt: "Portuguese",
-  sn: "Shona",
-  es: "Spanish",
-  sw: "Swahili",
-  te: "Telugu",
-  ur: "اردو",
-  yo: "Yoruba",
-  zu: "Zulu",
-  lo: "Lao",
-};
 
 function resolveBinary(explicitEnvName, defaultCommand) {
   const fromEnv = process.env[explicitEnvName];
@@ -125,7 +99,7 @@ function buildMasterPlaylist({
     : "avc1.42E01E,mp4a.40.2";
   const lines = ["#EXTM3U", "#EXT-X-VERSION:3", ""];
   languages.forEach((lang, index) => {
-    const label = languageLabels[lang] || lang.toUpperCase();
+    const label = NATIVE_LANGUAGE_NAMES[lang] || lang.toUpperCase();
     lines.push(
       `#EXT-X-MEDIA:TYPE=SUBTITLES,GROUP-ID="subs",NAME="${label}",LANGUAGE="${lang}",AUTOSELECT=YES,DEFAULT=${index === 0 ? "YES" : "NO"},FORCED=NO,URI="subtitles/${lang}/index.m3u8"`,
     );

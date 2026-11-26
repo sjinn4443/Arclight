@@ -74,6 +74,13 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "pronunciationGuide": {
@@ -100,7 +107,8 @@
       "ha": "Fara da wanke hannuwa, ka busar.",
       "yo": "Kọ́kọ́ fọ ọwọ́ rẹ, kí o sì gbẹ wọ́n.",
       "ig": "Buru ụzọ saa aka ma hichaa ha.",
-      "ur": "اپنے ہاتھ دھونے اور خشک کرنے سے شروع کریں۔"
+      "ur": "اپنے ہاتھ دھونے اور خشک کرنے سے شروع کریں۔",
+      "ny": "Yambani posamba ndi kuumitsa m'manja."
     },
     {
       "id": "preparation-02",
@@ -121,7 +129,8 @@
       "ha": "Kunna hasken BIO. Danna maɓallin sau biyar don samun haske mafi ƙarfi.",
       "yo": "Tan ìmọ́lẹ̀ BIO. Tẹ bọ́tìnì lẹ́ẹ̀márùn-ún fún ìmọ́lẹ̀ tó lágbára jù.",
       "ig": "Gbanye ìhè BIO. Pịa bọtịnụ ugboro ise ka ìhè sie ike karịa.",
-      "ur": "BIO لائٹ آن کریں اور روشن ترین لائٹ سیٹنگ کو منتخب کرنے کے لیے بٹن کو پانچ بار دبائیں۔"
+      "ur": "BIO لائٹ آن کریں اور روشن ترین لائٹ سیٹنگ کو منتخب کرنے کے لیے بٹن کو پانچ بار دبائیں۔",
+      "ny": "Yatsani kuwala kwa BIO. Dinani batani kasanu kuti musankhe kuwala kwamphamvu kwambiri."
     },
     {
       "id": "preparation-03",
@@ -139,7 +148,8 @@
       "ha": "Na'urar tana kashe kanta bayan daƙiƙa casa'in.",
       "yo": "Ẹ̀rọ yóò pa ara rẹ̀ lẹ́yìn ìṣẹ́jú àáyá àádọ́rùn-ún.",
       "ig": "Ngwaọrụ ahụ na-agbanyụ onwe ya mgbe sekọnd iri itoolu gasịrị.",
-      "ur": "ڈیوائس نوے سیکنڈ کے بعد خود بخود بند ہو جاتی ہے۔"
+      "ur": "ڈیوائس نوے سیکنڈ کے بعد خود بخود بند ہو جاتی ہے۔",
+      "ny": "Chipangizochi chimadzizimitsa pakatha masekondi makumi asanu ndi anayi."
     },
     {
       "id": "preparation-04",
@@ -160,7 +170,8 @@
       "ha": "Sanya BIO a kai. Daidaita madaurin ya zauna lafiya cikin jin daɗi.",
       "yo": "Gbé BIO sórí. Ṣàtúnṣe okùn rẹ̀ kí ó dúró dáadáa, kí ó sì rọrùn.",
       "ig": "Yiri BIO n'isi. Hazie eriri ka ọ kwụsie ike ma dị mma n'isi.",
-      "ur": "آلہ سر پر پہنیں اور پٹا آرام دہ اور مضبوط رکھیں۔"
+      "ur": "آلہ سر پر پہنیں اور پٹا آرام دہ اور مضبوط رکھیں۔",
+      "ny": "Valani BIO pamutu ndipo konzani lamba wake kuti ugwire bwino komanso usakuvutitseni."
     },
     {
       "id": "preparation-05",
@@ -178,7 +189,8 @@
       "ha": "Tsakiya a hanci. Duba babban yatsa a nisan hannu da ido ɗaya-ɗaya.",
       "yo": "Mú àárín rẹ̀ bá imú mu. Wo àtàǹpàkò rẹ ní gígùn apá, pẹ̀lú ojú kọ̀ọ̀kan, láti ṣàyẹ̀wò ìlà.",
       "ig": "Debe etiti ya n'ahịrị imi. Gbatịa aka lee mkpịsị aka ukwu na anya otu otu iji chọpụta nhazi.",
-      "ur": "آلے کا مرکز ناک کے سامنے رکھیں۔ بازو سیدھا کر کے باری باری ہر آنکھ سے انگوٹھا دیکھیں۔"
+      "ur": "آلے کا مرکز ناک کے سامنے رکھیں۔ بازو سیدھا کر کے باری باری ہر آنکھ سے انگوٹھا دیکھیں۔",
+      "ny": "Linganizani pakati pake ndi mphuno yanu. Yang'anani chala chachikulu chili patali utali wa mkono, pogwiritsa ntchito diso limodzi pa nthawi."
     },
     {
       "id": "preparation-06",
@@ -196,7 +208,8 @@
       "ha": "Maduban su karkata waje, digiri casa'in da layin gani idan ka kalli ƙasa kaɗan.",
       "yo": "Tẹ àwọn ojú ẹ̀rọ síta kí wọ́n wà ní igun àádọ́rùn-ún sí ìlà ìwòran nígbà tí o bá wo ìsàlẹ̀ díẹ̀.",
       "ig": "Tụgharịa ebe nlele anya n'èzí ka ha bụrụ ogo iri itoolu n'ahịrị nlele mgbe i lere ntakịrị ala.",
-      "ur": "عدسے باہر کو موڑیں تاکہ قدرے نیچے دیکھنے پر زاویہ نوے درجے ہو۔"
+      "ur": "عدسے باہر کو موڑیں تاکہ قدرے نیچے دیکھنے پر زاویہ نوے درجے ہو۔",
+      "ny": "Malo oyang'aniramo apendekere kunja kuti akhale pa ngodya ya madigiri makumi asanu ndi anayi ndi kumene mukuyang'ana mukayang'ana pansi pang'ono."
     },
     {
       "id": "sitting-01",
@@ -214,7 +227,8 @@
       "ha": "Faɗaɗa baƙin tsakiyar idanun mara lafiya don ganin cikin ido gaba ɗaya a faɗe.",
       "yo": "Fẹ ihò dúdú ojú aláìsàn kí o lè rí inú ẹ̀yìn ojú ní kíkún àti ní fífẹ̀.",
       "ig": "Meghee oghere ojii anya onye ọrịa ka ị hụ ime azụ anya nke ọma na nke sara mbara.",
-      "ur": "فنڈس کا مکمل، وسیع نظارہ حاصل کرنے کے لیے مریض کے پتلیوں کو پھیلا دیں۔"
+      "ur": "فنڈس کا مکمل، وسیع نظارہ حاصل کرنے کے لیے مریض کے پتلیوں کو پھیلا دیں۔",
+      "ny": "Kulitsani ana a maso a wodwalayo kuti muone bwinobwino malo aakulu kumbuyo kwa diso."
     },
     {
       "id": "sitting-02",
@@ -232,7 +246,8 @@
       "ha": "Lens kusa da ido. Ɗaga fatar sama, sauran yatsu su kwanta a gira da kumatu a hankali.",
       "yo": "Di lẹ́ńsì tó ń kó ìmọ́lẹ̀ jọ mú lẹ́gbẹ̀ẹ́ ojú. Gbé ìpéǹpéjú òkè, kí àwọn ìka yòókù sinmi rọra lórí ojú ìrun àti ẹ̀rẹ̀kẹ́.",
       "ig": "Jide lens nso anya. Welie mkpuchi elu, tụkwasị mkpịsị aka ndị ọzọ nwayọọ n'elu nkuanya na ntì.",
-      "ur": "کنڈینسنگ لینس کو آنکھ کے قریب رکھیں، اوپری ڈھکن اٹھائیں اور اپنی دوسری انگلیاں نرمی سے پیشانی اور گال پر رکھیں۔"
+      "ur": "کنڈینسنگ لینس کو آنکھ کے قریب رکھیں، اوپری ڈھکن اٹھائیں اور اپنی دوسری انگلیاں نرمی سے پیشانی اور گال پر رکھیں۔",
+      "ny": "Gwirani galasi lokulitsa pafupi ndi diso. Kwezani chikope chakumtunda ndipo tsamiritsani zala zina mofatsa pansidze ndi patsaya."
     },
     {
       "id": "sitting-03",
@@ -250,7 +265,8 @@
       "ha": "Lens a nisan hannu, da haske da retina a layi. Inuwar gefe: ba daidai ba.",
       "yo": "Di lẹ́ńsì mú ní gígùn apá, ní ìlà kan pẹ̀lú ìmọ́lẹ̀ àti retina. Òjìji lẹ́gbẹ̀ẹ́ túmọ̀ sí àìbámu ìlà.",
       "ig": "Jide lens n'ogologo aka, n'ahịrị ìhè na retina. Onyinyo n'ọnụ ya na-egosi nhazi na-adịghị mma.",
-      "ur": "بازو بھر دور عدسہ روشنی اور شبکیے کی سیدھ میں رکھیں۔ کناروں پر سایہ غلط سیدھ کی علامت ہے۔"
+      "ur": "بازو بھر دور عدسہ روشنی اور شبکیے کی سیدھ میں رکھیں۔ کناروں پر سایہ غلط سیدھ کی علامت ہے۔",
+      "ny": "Gwirani galasilo patali utali wa mkono. Ligwirizane ndi kuwala ndi retina. Mthunzi m'mphepete umasonyeza kuti sizinagwirizane bwino."
     },
     {
       "id": "sitting-04",
@@ -268,7 +284,8 @@
       "ha": "Don gefen retina, ya kalli wurare dabam.",
       "yo": "Láti wo etí retina, kí aláìsàn wo àwọn ọ̀nà tó yàtọ̀.",
       "ig": "Iji lelee ọnụ retina, gwa onye ọrịa ka o lee n'akụkụ dị iche iche.",
-      "ur": "شبکیہ کے کناروں کی جانچ کرنے کے لیے، مریض سے مختلف سمتوں میں دیکھنے کو کہیں۔"
+      "ur": "شبکیہ کے کناروں کی جانچ کرنے کے لیے، مریض سے مختلف سمتوں میں دیکھنے کو کہیں۔",
+      "ny": "Kuti muone m'mphepete mwa retina, pemphani wodwala kuti ayang'ane mbali zosiyanasiyana."
     },
     {
       "id": "sitting-05",
@@ -286,7 +303,8 @@
       "ha": "Idan ya zama dole, ya kalli yatsansa a nisan hannu.",
       "yo": "Tí ó bá yẹ, lo ìka aláìsàn ní gígùn apá gẹ́gẹ́ bí ohun tí yóò tẹjú mọ́.",
       "ig": "Ọ dị mkpa? Ka o lekwasị mkpịsị aka ya anya n'ogologo aka.",
-      "ur": "ضرورت ہو تو مریض کو بازو بھر دور اپنی انگلی یا انگوٹھا دیکھنے کو کہیں۔"
+      "ur": "ضرورت ہو تو مریض کو بازو بھر دور اپنی انگلی یا انگوٹھا دیکھنے کو کہیں۔",
+      "ny": "Ngati pakufunika, wodwala ayang'ane chala chake, chili patali utali wa mkono."
     },
     {
       "id": "sitting-06",
@@ -304,7 +322,8 @@
       "ha": "Bayan macula, duba gefe huɗu na fundus.",
       "yo": "Lẹ́yìn macula, wo gbogbo apá mẹ́rin inú ẹ̀yìn ojú tó wà lẹ́gbẹ̀ẹ́.",
       "ig": "Mgbe macula gasịrị, lelee akụkụ anọ nke fundus dị n'akụkụ.",
-      "ur": "میکولا کے بعد، پیریفرل فنڈس کے چاروں کواڈرینٹ کی جانچ کریں۔"
+      "ur": "میکولا کے بعد، پیریفرل فنڈس کے چاروں کواڈرینٹ کی جانچ کریں۔",
+      "ny": "Mukamaliza kuyang'ana macula, yezani zigawo zonse zinayi za kumbali kwa retina."
     },
     {
       "id": "indentation-01",
@@ -322,7 +341,8 @@
       "ha": "Ka sanar: yana iya jin rashin daɗi.",
       "yo": "Kọ́kọ́ sọ fún un pé ó lè mú àìrọrùn wá.",
       "ig": "Buru ụzọ gwa ya: ọ nwere ike inye nsogbu.",
-      "ur": "پہلے مریض کو بتائیں کہ کچھ تکلیف ہو سکتی ہے۔"
+      "ur": "پہلے مریض کو بتائیں کہ کچھ تکلیف ہو سکتی ہے۔",
+      "ny": "Choyamba dziwitsani wodwala kuti zimenezi zingamupweteke pang'ono."
     },
     {
       "id": "indentation-02",
@@ -343,7 +363,8 @@
       "ur": "مریض کو زیرِ معائنہ حصے سے دوسری طرف دیکھنے کو کہیں۔ پھر اس حصے پر دباؤ دینے والا آلہ رکھیں۔",
       "ttsText": {
         "ur": "مریض دوسری طرف دیکھے۔ زیرِ معائنہ حصے پر دباؤ دینے والا آلہ رکھیں۔"
-      }
+      },
+      "ny": "Pemphani wodwalayo kuti ayang'ane kutali ndi dera loyezedwalo. Kenako ikani chida chokankhira pa deralo."
     },
     {
       "id": "indentation-03",
@@ -361,7 +382,8 @@
       "ha": "Ya kalli wurin da ake dubawa, sannan ka danna a hankali.",
       "yo": "Kí ó wo agbègbè àyẹ̀wò, kí o sì tẹ̀ rọra.",
       "ig": "Gwa ya ka o lee ebe a na-enyocha, wee pịa nwayọọ.",
-      "ur": "مریض کو زیرِ معائنہ حصے کی طرف دیکھنے کو کہیں اور ہلکا دباؤ دیں۔"
+      "ur": "مریض کو زیرِ معائنہ حصے کی طرف دیکھنے کو کہیں اور ہلکا دباؤ دیں۔",
+      "ny": "Pemphani wodwalayo kuti ayang'ane kumene mukuyesa, kenako kanikizani mofatsa."
     },
     {
       "id": "indentation-04",
@@ -379,7 +401,8 @@
       "ha": "Ga misalin duba retina ta sama.",
       "yo": "Àpẹẹrẹ àyẹ̀wò retina òkè nìyí.",
       "ig": "Nke a bụ nlele retina dị n'elu.",
-      "ur": "یہ اعلیٰ شبکیہ کی جانچ کی ایک مثال ہے۔"
+      "ur": "یہ اعلیٰ شبکیہ کی جانچ کی ایک مثال ہے۔",
+      "ny": "Ichi ndi chitsanzo choyezera mbali yapamwamba ya retina."
     },
     {
       "id": "indentation-05",
@@ -397,7 +420,8 @@
       "ha": "Riƙe haske, ruwan tabarau da retina a layi.",
       "yo": "Mú ìmọ́lẹ̀, lẹ́ńsì àti retina wà ní ìlà kan.",
       "ig": "Debe ìhè, lens na retina n'ahịrị otu.",
-      "ur": "روشنی، عدسے اور شبکیے کو ایک سیدھ میں رکھیں۔"
+      "ur": "روشنی، عدسے اور شبکیے کو ایک سیدھ میں رکھیں۔",
+      "ny": "Sungani kuwala, galasi lokulitsa ndi retina zogwirizana."
     },
     {
       "id": "indentation-06",
@@ -415,7 +439,8 @@
       "ha": "Haka za ka iya duba ƙarshen gefen retina mai nisa.",
       "yo": "Ó yẹ kí o lè ṣàyẹ̀wò etí retina tó jìnnà jù lọ.",
       "ig": "Ị ga-enwe ike inyocha ọnụ retina dị anya nke ukwuu.",
-      "ur": "آپ کو شبکیہ کے دور دراز حصے کی جانچ کرنے کے قابل ہونا چاہئے۔"
+      "ur": "آپ کو شبکیہ کے دور دراز حصے کی جانچ کرنے کے قابل ہونا چاہئے۔",
+      "ny": "Muyenera kuona mpaka m'mphepete mwakutali mwa retina."
     }
   ],
   "videoTitleCues": [
@@ -433,7 +458,8 @@
         "ha": "Shiri",
         "yo": "Ìmúrasílẹ̀",
         "ig": "Nkwadebe",
-        "ur": "تیاری"
+        "ur": "تیاری",
+        "ny": "Kukonzekera"
       }
     },
     {
@@ -450,7 +476,8 @@
         "ha": "Binciken cikin ido a zaune",
         "yo": "Àyẹ̀wò inú ẹ̀yìn ojú ní ìjókòó",
         "ig": "Nnyocha ime azụ anya mgbe onye ọrịa nọ ọdụ",
-        "ur": "فنڈوسکوپی سیٹنگ"
+        "ur": "فنڈوسکوپی سیٹنگ",
+        "ny": "Kuyang'ana kumbuyo kwa diso wodwala atakhala"
       }
     },
     {
@@ -467,7 +494,8 @@
         "ha": "Binciken cikin ido tare da dannawa",
         "yo": "Àyẹ̀wò inú ẹ̀yìn ojú pẹ̀lú títẹ̀",
         "ig": "Nnyocha ime azụ anya site na ịpị",
-        "ur": "انڈینٹیشن کے ساتھ فنڈوسکوپی"
+        "ur": "انڈینٹیشن کے ساتھ فنڈوسکوپی",
+        "ny": "Kuyang'ana kumbuyo kwa diso pokanikiza mofatsa"
       }
     }
   ]

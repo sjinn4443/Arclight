@@ -94,65 +94,60 @@
       "width": 917,
       "height": 742
     },
-    "history-method-bubble-1": {
-      "box": [79, 139, 73, 31],
-      "width": 511,
-      "height": 217
+    "bubble-examiner-time": {
+      "box": [79, 138, 72, 33],
+      "width": 504,
+      "height": 231
     },
-    "history-method-bubble-2": {
-      "box": [79, 174, 73, 32],
-      "width": 511,
-      "height": 224
+    "bubble-examiner-symptoms": {
+      "box": [79, 174, 72, 33],
+      "width": 504,
+      "height": 231
     },
-    "history-method-base": {
-      "box": [69, 129, 170, 96],
-      "width": 1190,
-      "height": 672
-    },
-    "history-cataract-bubble-1": {
+    "bubble-patient-time": {
       "box": [345, 139, 53, 32],
       "width": 371,
       "height": 224
     },
-    "history-cataract-bubble-2": {
+    "bubble-patient-eyes": {
       "box": [345, 174, 53, 32],
       "width": 371,
       "height": 224
     },
-    "history-cataract-base": {
-      "box": [273, 129, 131, 96],
-      "width": 917,
-      "height": 672
+    "bubble-patient-sudden": {
+      "box": [465, 130, 84, 42],
+      "width": 588,
+      "height": 294
     },
-    "history-refer-bubble-1": {
-      "box": [462, 135, 90, 37],
-      "width": 630,
+    "bubble-patient-pain": {
+      "box": [465, 170, 78, 37],
+      "width": 546,
       "height": 259
     },
-    "history-refer-bubble-2": {
-      "box": [462, 173, 90, 34],
-      "width": 630,
-      "height": 238
+    "badge-cataract": {
+      "box": [269, 84, 47, 47],
+      "width": 329,
+      "height": 329
     },
-    "history-refer-base": {
-      "box": [413, 129, 141, 96],
-      "width": 987,
-      "height": 672
+    "badge-other-cause": {
+      "box": [408, 84, 47, 47],
+      "width": 329,
+      "height": 329
     },
     "history-examiner": {
-      "box": [155, 139, 80, 150],
+      "box": [155, 139, 80, 156],
       "width": 560,
-      "height": 1050
+      "height": 1092
     },
     "history-examiner-arm": {
-      "box": [155, 139, 80, 150],
+      "box": [155, 139, 80, 156],
       "width": 560,
-      "height": 1050
+      "height": 1092
     },
     "history-patient": {
-      "box": [268, 162, 78, 120],
-      "width": 546,
-      "height": 840
+      "box": [257, 159, 87, 136],
+      "width": 609,
+      "height": 952
     },
     "symbol-calendar": {
       "box": [83, 146, 15, 16],
@@ -195,24 +190,24 @@
       "height": 147
     },
     "symbol-down": {
-      "box": [360, 252, 24, 24],
-      "width": 168,
-      "height": 168
+      "box": [358, 250, 28, 28],
+      "width": 196,
+      "height": 196
     },
     "symbol-no-gain": {
-      "box": [360, 295, 24, 22],
-      "width": 168,
-      "height": 154
+      "box": [358, 288, 28, 29],
+      "width": 196,
+      "height": 203
     },
     "symbol-up": {
-      "box": [498, 280, 24, 24],
-      "width": 168,
-      "height": 168
+      "box": [495, 277, 28, 28],
+      "width": 196,
+      "height": 196
     },
     "symbol-glasses": {
-      "box": [523, 284, 19, 19],
-      "width": 133,
-      "height": 133
+      "box": [521, 281, 23, 24],
+      "width": 161,
+      "height": 168
     },
     "front-cataract-1": {
       "box": [286, 363, 109, 46],
@@ -238,20 +233,17 @@
       "width": 134,
       "height": 134
     },
-    "symbol-front-refer-1-2": {
-      "box": [
-        513.9753000000001, 364.30109999999996, 16.80600000000002,
-        16.80600000000002
-      ],
-      "width": 118,
-      "height": 118
-    },
     "front-refer-1": {
       "box": [425, 358, 119, 52],
       "width": 833,
       "height": 364,
       "symbols": ["symbol-front-refer-1-0", "symbol-front-refer-1-1"],
       "arrows": []
+    },
+    "symbol-front-refer-2-0": {
+      "box": [512.3904, 416.7093, 19.210000000000036, 19.210000000000036],
+      "width": 134,
+      "height": 134
     },
     "front-refer-2": {
       "box": [425, 416, 119, 49],
@@ -260,6 +252,11 @@
       "symbols": ["symbol-front-refer-2-0"],
       "arrows": []
     },
+    "symbol-pupil-cataract-1-arrow": {
+      "box": [332, 506, 15, 17],
+      "width": 105,
+      "height": 119
+    },
     "pupil-cataract-1": {
       "box": [285, 491, 110, 42],
       "width": 770,
@@ -267,12 +264,22 @@
       "symbols": [],
       "arrows": ["symbol-pupil-cataract-1-arrow"]
     },
+    "symbol-pupil-cataract-2-arrow": {
+      "box": [332, 555, 15, 17],
+      "width": 105,
+      "height": 119
+    },
     "pupil-cataract-2": {
       "box": [285, 541, 110, 44],
       "width": 770,
       "height": 308,
       "symbols": [],
       "arrows": ["symbol-pupil-cataract-2-arrow"]
+    },
+    "symbol-pupil-refer-1-arrow": {
+      "box": [470, 506, 15, 17],
+      "width": 105,
+      "height": 119
     },
     "symbol-pupil-refer-1-0": {
       "box": [512.7753, 487.22663, 19.206000000000017, 19.206000000000017],
@@ -286,20 +293,17 @@
       "symbols": ["symbol-pupil-refer-1-0"],
       "arrows": ["symbol-pupil-refer-1-arrow"]
     },
+    "symbol-pupil-refer-2-arrow": {
+      "box": [470, 555, 15, 17],
+      "width": 105,
+      "height": 119
+    },
     "symbol-pupil-refer-2-0": {
       "box": [
         512.7753, 535.8367000000001, 19.206000000000017, 19.205999999999904
       ],
       "width": 134,
       "height": 134
-    },
-    "symbol-pupil-refer-2-1": {
-      "box": [
-        513.9753000000001, 537.0367000000001, 16.80600000000002,
-        16.805999999999905
-      ],
-      "width": 118,
-      "height": 118
     },
     "pupil-refer-2": {
       "box": [423, 538, 114, 47],
@@ -351,21 +355,19 @@
       "width": 134,
       "height": 134
     },
-    "symbol-reflex-refer-1-2": {
-      "box": [
-        514.0558, 615.4389000000001, 16.80600000000002, 16.805999999999905
-      ],
-      "width": 118,
-      "height": 118
-    },
     "reflex-refer-1": {
-      "box": [426, 610, 118, 44],
-      "width": 826,
-      "height": 308,
+      "box": [424, 608, 119, 47],
+      "width": 833,
+      "height": 329,
       "symbols": ["symbol-reflex-refer-1-0", "symbol-reflex-refer-1-1"],
       "arrows": []
     },
     "symbol-reflex-refer-2-0": {
+      "box": [521.8441, 654.4891, 19.206000000000017, 19.205999999999904],
+      "width": 134,
+      "height": 134
+    },
+    "symbol-reflex-refer-2-1": {
       "box": [
         512.8557999999999, 660.7909000000001, 19.206000000000017,
         19.205999999999904
@@ -373,18 +375,11 @@
       "width": 134,
       "height": 134
     },
-    "symbol-reflex-refer-2-1": {
-      "box": [
-        514.0558, 661.9909000000001, 16.80600000000002, 16.805999999999905
-      ],
-      "width": 118,
-      "height": 118
-    },
     "reflex-refer-2": {
-      "box": [426, 665, 118, 39],
-      "width": 826,
-      "height": 273,
-      "symbols": ["symbol-reflex-refer-2-0"],
+      "box": [424, 659, 119, 45],
+      "width": 833,
+      "height": 315,
+      "symbols": ["symbol-reflex-refer-2-0", "symbol-reflex-refer-2-1"],
       "arrows": []
     },
     "fundus-cataract-1": {
@@ -405,13 +400,6 @@
       "box": [517.35, 718.3881, 19.206000000000017, 19.205999999999904],
       "width": 134,
       "height": 134
-    },
-    "symbol-fundus-refer-1-1": {
-      "box": [
-        518.5500000000001, 719.5881, 16.80600000000002, 16.805999999999905
-      ],
-      "width": 118,
-      "height": 118
     },
     "fundus-refer-1": {
       "box": [420, 720, 124, 98],
@@ -471,34 +459,44 @@
       "height": 742
     },
     "acuity-method-distance": {
-      "box": [75, 232, 57, 113],
-      "width": 399,
-      "height": 791
+      "box": [75, 235, 62, 123],
+      "width": 434,
+      "height": 861
+    },
+    "acuity-method-pinhole": {
+      "box": [133, 233, 51, 29],
+      "width": 357,
+      "height": 203
+    },
+    "acuity-method-near": {
+      "box": [186, 267, 71, 95],
+      "width": 497,
+      "height": 665
+    },
+    "acuity-cataract-pinhole": {
+      "box": [289, 292, 56, 25],
+      "width": 392,
+      "height": 175
+    },
+    "acuity-refer-distance": {
+      "box": [421, 249, 45, 56],
+      "width": 315,
+      "height": 392
+    },
+    "acuity-refer-patient": {
+      "box": [451, 253, 47, 98],
+      "width": 329,
+      "height": 686
     },
     "acuity-method-cover": {
       "box": [134, 267, 57, 78],
       "width": 399,
       "height": 546
     },
-    "acuity-method-pinhole": {
-      "box": [137, 237, 42, 21],
-      "width": 294,
-      "height": 147
-    },
-    "acuity-method-near": {
-      "box": [180, 232, 57, 114],
-      "width": 399,
-      "height": 798
-    },
     "acuity-cataract-distance": {
       "box": [287, 238, 47, 53],
       "width": 329,
       "height": 371
-    },
-    "acuity-cataract-pinhole": {
-      "box": [288, 294, 48, 20],
-      "width": 336,
-      "height": 140
     },
     "acuity-cataract-near": {
       "box": [288, 319, 48, 25],
@@ -520,11 +518,6 @@
       "width": 189,
       "height": 203
     },
-    "acuity-refer-distance": {
-      "box": [423, 251, 72, 51],
-      "width": 504,
-      "height": 357
-    },
     "acuity-refer-near": {
       "box": [424, 304, 39, 23],
       "width": 273,
@@ -534,52 +527,28 @@
       "box": [497, 279, 46, 25],
       "width": 322,
       "height": 175
-    },
-    "symbol-pupil-cataract-1-arrow": {
-      "box": [332, 506, 15, 17],
-      "width": 105,
-      "height": 119
-    },
-    "symbol-pupil-cataract-2-arrow": {
-      "box": [332, 555, 15, 17],
-      "width": 105,
-      "height": 119
-    },
-    "symbol-pupil-refer-1-arrow": {
-      "box": [470, 506, 15, 17],
-      "width": 105,
-      "height": 119
-    },
-    "symbol-pupil-refer-2-arrow": {
-      "box": [470, 555, 15, 17],
-      "width": 105,
-      "height": 119
-    },
-    "symbol-front-refer-2-0": {
-      "box": [512.3904, 416.7093, 19.210000000000036, 19.210000000000036],
-      "width": 134,
-      "height": 134
     }
   },
   "stages": [
     "history-method",
-    "history-cataract",
-    "history-refer",
-    "acuity-method",
-    "acuity-cataract",
-    "acuity-refer",
-    "method-3",
-    "front-cataract",
-    "front-refer",
-    "method-4",
-    "pupil-cataract",
-    "pupil-refer",
-    "method-5",
-    "reflex-cataract",
-    "reflex-refer",
-    "method-6",
-    "fundus-cataract",
-    "fundus-refer"
+    "history-gradual",
+    "history-urgent",
+    "distance",
+    "pinhole",
+    "near",
+    "acuity-results",
+    "refraction",
+    "front-method",
+    "front-comparison",
+    "pupils-method",
+    "pupils-response",
+    "pupils-comparison",
+    "reflex-method",
+    "reflex-opacity",
+    "reflex-patterns",
+    "reflex-comparison",
+    "fundoscopy-method",
+    "fundoscopy-comparison"
   ],
-  "readingOrder": "Each source row: examination, cataract-compatible findings, alternative causes/referral. Green row 5 is explicitly abnormal cataract artwork."
+  "readingOrder": "Read each row from examination to the illustrated response to assessment/referral. The centre column has row-specific meaning. Row 5 shows four cataract examples."
 }

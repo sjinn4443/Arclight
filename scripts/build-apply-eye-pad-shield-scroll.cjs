@@ -280,6 +280,23 @@ async function deriveArtwork() {
     .linear(0.15, 216)
     .png()
     .toBuffer();
+  // Warm porous backing and fine broken fibres, as on the reference strips.
+  const strip = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="232" viewBox="0 0 16 116">
+    <defs>
+      <pattern id="paper" width="15" height="15" patternUnits="userSpaceOnUse"><image width="15" height="15" href="data:image/png;base64,${paperGrain.toString("base64")}"/></pattern>
+      <pattern id="fibres" width="7" height="11" patternUnits="userSpaceOnUse">
+        <path d="M1 0l2 3m2 0L3 7m-3 1 2 2m3-2 1 3" stroke="#805f3b" stroke-width=".8" opacity=".72"/>
+        <path d="M0 2l2 2m4-3L4 5m-2 2 2 2" stroke="#fff2ce" stroke-width="1" opacity=".78"/>
+      </pattern>
+      <rect id="strip" x="1.1" y=".7" width="13.8" height="114.6" rx="2.3"/>
+    </defs>
+    <use href="#strip" fill="#c4a276" opacity=".65"/>
+    <use href="#strip" fill="url(#paper)" opacity=".1"/>
+    <use href="#strip" fill="url(#fibres)"/>
+  </svg>`;
+  await sharp(Buffer.from(strip))
+    .webp({ lossless: true })
+    .toFile(path.join(OUT, "images/steri-strip.webp"));
   const equipment = await sharp(path.join(PUBLIC, SHARED + "01background.webp"))
     .ensureAlpha()
     .raw()
@@ -322,9 +339,33 @@ async function deriveArtwork() {
     .toFile(path.join(OUT, "images/equipment-pad.webp"));
   // The source's formed, shallow cone exposes its full circular rim. This angle
   // covers the round pad, unlike the old edge-on triangular projection.
-  const cone = await sharp(path.join(PUBLIC, SHARED + "12cone.webp"))
-    .png()
-    .toBuffer();
+  const { data: conePixels, info: coneInfo } = await sharp(
+    path.join(PUBLIC, SHARED + "12cone.webp"),
+  )
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const grain = await sharp(paperGrain).removeAlpha().raw().toBuffer();
+  for (let y = 0; y < coneInfo.height; y++)
+    for (let x = 0; x < coneInfo.width; x++) {
+      const i = (y * coneInfo.width + x) * 4;
+      // Only the sealing tab is cream in the source illustration.
+      const weight = Math.min(
+        1,
+        Math.max(0, (conePixels[i] - conePixels[i + 2]) / 16),
+      );
+      for (let k = 0; k < 3; k++) {
+        const paper = grain[((y % 30) * 30 + (x % 30)) * 3 + k];
+        conePixels[i + k] = Math.round(
+          conePixels[i + k] * (1 - weight) + paper * weight,
+        );
+      }
+    }
+  const coneFile = path.join(OUT, "images/finished-shield.webp");
+  await sharp(conePixels, { raw: coneInfo })
+    .webp({ lossless: true })
+    .toFile(coneFile);
+  const cone = await sharp(coneFile).png().toBuffer();
   await sharp(
     Buffer.from(
       `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><image width="767" height="486" transform="translate(224 200) rotate(-90) scale(.49) translate(-384 -295)" href="data:image/png;base64,${cone.toString("base64")}"/></svg>`,
@@ -421,42 +462,11 @@ async function deriveArtwork() {
       .webp({ lossless: true })
       .toFile(path.join(OUT, "images", output + ".webp"));
   }
-  const scissorsPng = await sharp(path.join(OUT, "images/scissors.webp"))
-    .png()
-    .toBuffer();
-  for (const [name, side] of [
-    ["cutting-upper.webp", 1],
-    ["cutting-lower.webp", 0],
-  ]) {
-    // The shanks overlap around the complete pivot. Keep both blade tips and
-    // follow each metal shank from its own loop into the joint.
-    const clip = side
-      ? "M151 0H304V509H0V279L130 279Q147 258 164 202L152 145Z"
-      : "M0 0H151L151 155Q143 213 168 268L180 283H304V509H0Z";
-    await sharp(
-      Buffer.from(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="304" height="509"><defs><clipPath id="half"><path d="${clip}"/></clipPath></defs><image width="304" height="509" href="data:image/png;base64,${scissorsPng.toString("base64")}" clip-path="url(#half)"/></svg>`,
-      ),
-    )
-      .webp({ lossless: true })
-      .toFile(path.join(OUT, "images", name));
-  }
-  await sharp(
-    Buffer.from(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><defs><pattern id="paper" width="30" height="30" patternUnits="userSpaceOnUse"><image width="30" height="30" href="data:image/png;base64,${paperGrain.toString("base64")}"/></pattern></defs><path d="M150 2 A148 148 0 1 1 149.99 2Z M150 65 A85 85 0 1 0 150.01 65Z" fill="url(#paper)" fill-rule="evenodd"/><circle cx="150" cy="150" r="125" fill="none" stroke="#e2e2df" stroke-width="1.4"/><circle cx="150" cy="150" r="146" fill="none" stroke="#e1e2df" stroke-width="3"/><path d="M223 124 L288 100" fill="none" stroke="#d0d2ce" stroke-width="3"/></svg>`,
-    ),
-  )
-    .webp({ lossless: true })
-    .toFile(path.join(OUT, "images/roll-face.webp"));
   const hashes = {};
   for (const file of [
     SOURCE,
     SHARED + "01background.webp",
-    SHARED + "02cotton.webp",
-    SHARED + "11cone.webp",
     seatedSource,
-    SHARED + "scissorupperhand.webp",
-    SHARED + "scissorlowerhand.webp",
     "videos/Workshop/PEC/8.Applypadandshield_720p.mp4",
     SHARED + "03and04foldedgauze.webp",
     SHARED + "03tape.webp",
@@ -478,18 +488,19 @@ async function deriveArtwork() {
         materials:
           "Round source-weave pad; original equipment and shallow formed cone; source paper wrapped to gauze, face and cone surfaces, with pinked ends and contact shadows.",
         anatomy:
-          "No hand in skin cleaning: only the original cotton follows the periocular skin. Seated arms and fingers retain the source resting pose.",
+          "Both eyelids close on request. The treated lid stays closed beneath the strips. Seated arms and fingers retain the source resting pose.",
         teaching:
-          "Treated eye closes before pad contact. Tools share material contact points; the other eye stays uncovered at completion.",
+          "Three translucent Steri-Strips cross the closed lid before the prepared pad is placed directly over the lid.",
       },
       null,
       2,
     ) + "\n",
   );
 }
-const SHIELD_WIDTH = 414;
-const SHIELD_X = 366;
-const SHIELD_Y = 581;
+const SHIELD_TAPE_SCALE = 2 / 3;
+const SHIELD_WIDTH = 262.2;
+const SHIELD_X = 389;
+const SHIELD_Y = 592;
 const ACTOR = { left: 17.5, top: 125.2, scale: 1.0125 };
 const EYE = { x: 374, y: 574 };
 async function patient({ closed = false, closeAt = null, small = false } = {}) {
@@ -523,7 +534,6 @@ async function patient({ closed = false, closeAt = null, small = false } = {}) {
         ACTOR.left + px * ACTOR.scale,
         ACTOR.top + py * ACTOR.scale,
       ]);
-    const close = side === "left" && closed;
     const eye = await texture(
       "Original " + side + " eye",
       LOCAL + "patient-" + side + "-eye.webp",
@@ -532,50 +542,36 @@ async function patient({ closed = false, closeAt = null, small = false } = {}) {
       1200 * ACTOR.scale * s,
       { anchor: [px, py, 0] },
     );
-    if (close) {
-      eye.layer.ks.o =
-        closeAt === null
-          ? c(0)
-          : keys([
-              [0, 100],
-              [closeAt, 100],
-              [closeAt + 28, 0],
-            ]);
-      eye.layer.ks.s =
-        closeAt === null
-          ? c([100 * ACTOR.scale * s, 0, 100])
-          : keys([
-              [0, [100 * ACTOR.scale * s, 100 * ACTOR.scale * s, 100]],
-              [closeAt, [100 * ACTOR.scale * s, 100 * ACTOR.scale * s, 100]],
-              [closeAt + 28, [100 * ACTOR.scale * s, 0, 100]],
-            ]);
-    }
-  }
-  if (closed) {
-    const pdfX = 328.6,
-      pdfY = 171.0,
-      px = (pdfX - 285) * 8,
-      py = (pdfY - 118) * 8;
-    const pos = map([EYE.x, EYE.y]);
-    const lid = await texture(
-      "Original lid, gently closed",
-      LOCAL + "patient-closed-lid.webp",
-      pos[0],
-      pos[1],
-      1200 * ACTOR.scale * s,
-      {
-        anchor: [px, py, 0],
-        o:
-          closeAt === null
-            ? c(100)
-            : keys([
-                [0, 0],
-                [closeAt + 16, 0],
-                [closeAt + 28, 100],
-              ]),
-      },
+    if (!closed || (side === "right" && closeAt === null)) continue;
+    const mirror = side === "right";
+    const closure = (open, shut) =>
+      closeAt === null
+        ? c(shut)
+        : keys([
+            [closeAt, open],
+            [closeAt + 28, shut],
+          ]);
+    const scale = ACTOR.scale * s * 100;
+    eye.layer.ks.s = closure([scale, scale, 100], [scale, 0, 100]);
+    eye.layer.ks.o = closure(100, 0);
+    // Mirror the same black PDF lid about the untreated eye's centre.
+    const lidPos = map(
+      side === "left"
+        ? [EYE.x, EYE.y]
+        : [
+            ACTOR.left + px * ACTOR.scale,
+            EYE.y + (174.2 - 173.3) * 8 * ACTOR.scale,
+          ],
     );
-    lid.layer.ks.s = c([ACTOR.scale * s * 100, -ACTOR.scale * s * 35, 100]);
+    const lid = await texture(
+      "Closed " + side + " eyelid",
+      LOCAL + "patient-closed-lid.webp",
+      lidPos[0],
+      lidPos[1],
+      1200 * ACTOR.scale * s,
+      { anchor: [(328.6 - 285) * 8, (171 - 118) * 8, 0], o: closure(0, 100) },
+    );
+    lid.layer.ks.s = c([mirror ? -scale : scale, -scale * 0.7, 100]);
   }
 }
 async function nose() {
@@ -597,6 +593,35 @@ async function pad(nm, x = 374, y = 594, w = 170, options = {}) {
     options,
   );
 }
+async function lidStrips(start = null, interval = 23) {
+  for (const [i, x] of [349, 373, 397].entries()) {
+    const at = start === null ? null : start + i * interval;
+    const item = await texture(
+      "Eyelid Steri-Strip " + (i + 1),
+      LOCAL + "steri-strip.webp",
+      x,
+      589,
+      15,
+      {
+        r: c([-6, -2, 3][i]),
+        ...(at === null
+          ? {}
+          : {
+              masks: [
+                mask(
+                  "Press from upper lid to cheek",
+                  keys([
+                    [at, [box(-2, -2, 36, 3)]],
+                    [at + interval, [box(-2, -2, 36, 238)]],
+                  ]),
+                ),
+              ],
+            }),
+      },
+    );
+    item.layer.ip = at ?? 0;
+  }
+}
 async function ribbon(
   nm,
   id,
@@ -612,9 +637,7 @@ async function ribbon(
         points,
         width,
         paper: paperGrain,
-        squareStart: id === "unwound-feed",
         shadeBySlope: id === "shield-tape-1" || id === "shield-outer-tape",
-        solidFill: id === "unwound-feed" ? "#e1e1e1" : null,
         outDir: path.join(OUT, "images"),
       }),
     );
@@ -630,14 +653,10 @@ async function ribbon(
               t,
               [
                 polygon(
-                  ribbonOutline(
-                    points,
-                    width + 16,
-                    from,
-                    to,
-                    6,
-                    id === "unwound-feed",
-                  ).map((p) => [p[0] - art.left, p[1] - art.top]),
+                  ribbonOutline(points, width + 16, from, to).map((p) => [
+                    p[0] - art.left,
+                    p[1] - art.top,
+                  ]),
                 ),
               ],
             ]),
@@ -704,36 +723,27 @@ function approachingStrip(index, start, end, draped, motion) {
   };
   return settled;
 }
-async function padTapes({ motion = null, fadeAt = null } = {}) {
-  for (let n = 0; n < 3; n++) {
-    const start = [345 + n * 31, 476 + n * 4],
-      end = [332 + n * 34, 742];
-    const points = surfacePoints(start, end, {
-      x: 351,
-      y: 594,
-      rx: 105,
-      ry: 99,
-      depth: [23, 15, -12][n],
-      face: true,
-    });
-    const settled = motion
-      ? approachingStrip(n + 1, start, end, points, motion)
-      : 0;
-    const tape = await ribbon(
-      "Tape on top of pad " + (n + 1),
-      "face-tape-" + (n + 1),
-      points,
-      31,
-    );
-    tape.layer.ip = settled;
-  }
+async function padTapes({ motion = null, fadeAt = null, interval = 40 } = {}) {
+  const start = [386, 480],
+    end = [423, 742];
+  const points = surfacePoints(start, end, {
+    x: 366,
+    y: 594,
+    rx: 105,
+    ry: 99,
+    depth: 28,
+    face: true,
+  });
+  const settled = motion ? approachingStrip(2, start, end, points, motion) : 0;
+  const tape = await ribbon("Tape on top of pad 2", "face-tape-2", points, 31);
+  tape.layer.ip = settled;
   if (fadeAt !== null)
     for (let n = 0; n < 2; n++)
       await ribbon(
         "Additional diagonal securing tape " + (n + 1),
         "diagonal-tape-" + n,
-        surfacePoints([415 + n * 35, 477], [310 + n * 40, 740], {
-          x: 351,
+        surfacePoints([332 + n * 104, 477], [397 + n * 55, 740], {
+          x: 366,
           y: 594,
           rx: 105,
           ry: 99,
@@ -741,24 +751,27 @@ async function padTapes({ motion = null, fadeAt = null } = {}) {
           face: true,
         }),
         32,
-        { opacity: fadeAt === 0 ? c(100) : fade(fadeAt + n * 45) },
+        { opacity: fadeAt === 0 ? c(100) : fade(fadeAt + n * interval) },
       );
 }
 // Project the strip across the two slopes of the shallow cone. The ends
 // lie flat on skin. The visible nasal strip rounds the near side of the rim.
 function shieldTapePoints(far) {
+  // Offsets from the cone's anchor in the original 414-unit projection.
   const points = surfacePoints(
-    far ? [433, 345] : [390, 345],
-    far ? [402, 809] : [348, 813],
+    far ? [-78, -220] : [31, -228],
+    far ? [52, 220] : [16, 231],
   );
   return points.map(([x, y], i) => {
     const t = i / (points.length - 1);
-    const axial = (y - SHIELD_Y) / (far ? 163 : 178);
+    const axial = y / (far ? 163 : 178);
     const depth = Math.max(0, 1 - axial * axial);
     const crown = depth * depth;
+    const arc = 5 * Math.sin(Math.PI * t);
+    const bend = far ? -30 * crown + arc : 24 * crown - arc;
     return [
-      x + (far ? -16 : 46) * crown + 5 * Math.sin(Math.PI * t),
-      y - 8 * crown,
+      SHIELD_X + (x + bend) * SHIELD_TAPE_SCALE,
+      SHIELD_Y + (y - 8 * crown) * SHIELD_TAPE_SCALE,
       crown,
       -(1 - (far ? 0.12 : 0.22) * crown),
       (far ? 0.1 : 0.24) * axial * depth,
@@ -766,13 +779,14 @@ function shieldTapePoints(far) {
   });
 }
 
-async function applyShieldTape(name, id, far, start, end) {
+async function applyShieldTape(name, id, far, start, end, parent) {
+  const arrival = far ? start + Math.round((end - start) * 0.4) : start;
   const points = shieldTapePoints(far),
-    width = far ? 32 : 38;
+    width = far ? 25 : 29;
   // The free end points towards the viewer. As the contact line travels
   // downward, each section rolls onto the rim and finally onto the cheek.
   const poses = [0, 0.12, 0.3, 0.47, 0.63, 0.8, 0.92, 1].map((fraction) => {
-    const frame = start + Math.round((end - start) * fraction);
+    const frame = arrival + Math.round((end - arrival) * fraction);
     const bent = points.map(([x, y, z, acrossX, acrossY], i) => {
       const t = i / (points.length - 1);
       const lift = Math.max(0, t - fraction) ** 1.45;
@@ -798,17 +812,67 @@ async function applyShieldTape(name, id, far, start, end) {
     stroke: "c7c4ba",
     width: 0.7,
   });
+  if (far) {
+    for (const [part, x, y] of [
+      [loose, 0, 0],
+      [shadow, 4, 7],
+    ]) {
+      part.ks.p = shifted(
+        [
+          [start, [-270, -85]],
+          [arrival, [0, 0]],
+        ],
+        x,
+        y,
+      );
+    }
+  }
   shadow.ip = loose.ip = start;
   shadow.op = loose.op = end;
   const strip = await ribbon(name, id, points, width, {
     opacity: keys([
       [0, 0],
       [start, 0],
-      [start + 5, 100],
+      [arrival + 5, 100],
     ]),
     progress: poses.map((p) => [p.frame, [0, Math.max(0.015, p.fraction)]]),
   });
-  strip.layer.ip = start;
+  strip.layer.ip = arrival;
+  if (parent !== undefined)
+    for (const part of [shadow, loose, strip.layer]) part.parent = parent;
+}
+async function tapeAndPlaceShield(
+  approach,
+  nearStart,
+  nearEnd,
+  farStart,
+  farEnd,
+) {
+  const rig = layer("Shield and first strip travel together", {
+    p: shifted(approach, 0, 0),
+  });
+  rig.ty = 3;
+  delete rig.shapes;
+  if (farStart !== undefined) {
+    await applyShieldTape(
+      "Far tape behind the shield",
+      "shield-outer-tape",
+      true,
+      farStart,
+      farEnd,
+    );
+  }
+  const cone = await shield(SHIELD_X, SHIELD_Y, SHIELD_WIDTH);
+  cone.layer.parent = rig.ind;
+  cone.layer.ip = approach[0][0];
+  await applyShieldTape(
+    "Near tape across the shield",
+    "shield-tape-1",
+    false,
+    nearStart,
+    nearEnd,
+    rig.ind,
+  );
 }
 async function dressingShadow(nm, options = {}) {
   const cone = nm.startsWith("Shield");
@@ -827,31 +891,55 @@ async function dressingShadow(nm, options = {}) {
 }
 async function dressedPatient() {
   await patient({ closed: true });
+  await lidStrips();
   await dressingShadow("Pad contact shadow");
   await pad("Original woven pad, stationary on the eye");
   await padTapes({ fadeAt: 0 });
+}
+function alignDressing(firstLayer) {
+  const parts = layers.filter((l) => l.ind >= firstLayer && l.parent == null);
+  const rig = layer("Dressing aligned with the cheek", {
+    r: c(24),
+    p: c([345, 561, 0]),
+  });
+  rig.ty = 3;
+  delete rig.shapes;
+  rig.ks.a = c([374, 574, 0]);
+  for (const part of parts) part.parent = rig.ind;
 }
 async function bubbleProcedure() {
   const outer = layers;
   layers = [];
   rect("Procedure inset background", 584, 640, W, H, 0, "625f54");
   await patient({ closed: true });
+  await lidStrips(18, 27);
   const approach = [
     [0, [-720, 70]],
-    [45, [-720, 70]],
-    [120, [0, 0]],
+    [99, [-720, 70]],
+    [189, [0, 0]],
   ];
+  const firstDressing = layers.length + 1;
   await dressingShadow("Inset pad contact shadow", {
     o: keys([
       [0, 0],
-      [100, 0],
-      [120, 26],
+      [165, 0],
+      [189, 26],
     ]),
   });
   await pad("Pad placement demonstrated inside bubble", 374, 594, 170, {
     p: shifted(approach, 374, 594),
   });
-  await padTapes({ motion: approach });
+  await padTapes({ motion: approach, fadeAt: 190, interval: 16 });
+  await tapeAndPlaceShield(
+    [
+      [218, [-245, 10]],
+      [252, [-245, 10]],
+      [292, [0, 0]],
+    ],
+    219,
+    249,
+  );
+  alignDressing(firstDressing);
   await nose();
   const inset = layers;
   layers = outer;
@@ -864,7 +952,7 @@ async function bubbleProcedure() {
   l.refId = "procedure-inset";
   l.w = W;
   l.h = H;
-  const scale = 0.94;
+  const scale = 0.78;
   l.ks.a = c([374, 594, 0]);
   l.ks.p = c([584, 272, 0]);
   l.ks.s = c([scale * 100, scale * 100, 100]);
@@ -897,108 +985,12 @@ async function shield(x, y, w, options = {}) {
     { r: c(0), anchor: [224, 200, 0], ...options },
   );
 }
-function unspooledPoint(t) {
-  // Front edge follows the tangent off the upper-right quadrant. The paper
-  // spans the depth of the reel, then turns toward the table at the free end.
-  return [
-    455 + 330 * t - 220 * t * t + 200 * t * t * t,
-    198 + 475 * t + 85 * t * t,
-    0,
-    0.98 - 0.12 * t,
-    -0.08 - 0.36 * t,
-  ];
-}
-async function scissorsHalf(side) {
-  const [cutX, cutY] = unspooledPoint(35 / 64);
-  const position = keys([
-    [0, [1500, cutY, 0]],
-    [53, [cutX + 193, cutY, 0]],
-    [290, [cutX + 193, cutY, 0]],
-    [330, [1500, cutY, 0]],
-  ]);
-  const openAngle = side === "upper" ? 104 : 76;
-  await texture(
-    "Complete scissors " + side,
-    LOCAL + "cutting-" + side + ".webp",
-    0,
-    0,
-    360,
-    {
-      anchor: [149, 291, 0],
-      p: position,
-      r: keys([
-        [0, openAngle],
-        [53, openAngle],
-        [75, 90],
-        [90, openAngle],
-        [153, openAngle],
-        [175, 90],
-        [190, openAngle],
-        [253, openAngle],
-        [275, 90],
-        [290, openAngle],
-      ]),
-      o: keys([
-        [0, 0],
-        [25, 0],
-        [40, 100],
-        [295, 100],
-        [330, 0],
-      ]),
-    },
-  );
-}
-async function fixedAxisRoll() {
-  ellipse("Standing reel shadow", 361, 512, 263, 32, "38220f", { o: c(30) });
-  await texture(
-    "Original standing tape roll",
-    LOCAL + "tape-roll.webp",
-    312,
-    335,
-    350,
-    {
-      anchor: [103, 86, 0],
-      r: c(-90),
-    },
-  );
-  const outer = layers;
-  layers = [];
-  const face = await texture(
-    "Paper rotates about its own fixed axle",
-    LOCAL + "roll-face.webp",
-    150,
-    150,
-    300,
-  );
-  face.layer.ks.r = keys([
-    [0, 0],
-    [20, 0],
-    [55, 100],
-    [120, 100],
-    [155, 200],
-    [220, 200],
-    [255, 300],
-  ]);
-  const disc = layers;
-  layers = outer;
-  assets.push({ id: "fixed-axle-disc", w: 300, h: 300, layers: disc });
-  const projection = layer("Fixed-axis roll face projection");
-  projection.ty = 0;
-  delete projection.shapes;
-  projection.refId = "fixed-axle-disc";
-  projection.w = 300;
-  projection.h = 300;
-  projection.ks.a = c([150, 150, 0]);
-  projection.ks.p = c([312, 335, 0]);
-  projection.ks.s = c([97, 116, 100]);
-}
 async function main() {
   await deriveArtwork();
   const {
     APPLY_EYE_PAD_SHIELD_STAGES: stages,
     APPLY_EYE_PAD_SHIELD_CLIPS: clips,
     APPLY_EYE_PAD_SHIELD_NARRATION_CUES: cues,
-    APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS: sourceClips,
   } = await import(
     pathToFileURL(path.join(ROOT, "public/js/applyEyePadShieldScroll.js"))
   );
@@ -1017,17 +1009,17 @@ async function main() {
           295,
           365,
           440,
-          10,
+          62,
         ],
         [
           "Original finished cone shield",
-          SHARED + "12cone.webp",
+          LOCAL + "finished-shield.webp",
           855,
           365,
           420,
-          45,
+          84,
         ],
-        ["Original tape roll", LOCAL + "tape-roll.webp", 320, 900, 310, 80],
+        ["Original tape roll", LOCAL + "tape-roll.webp", 305, 1140, 310, 33],
         [
           "Original scissors from Make equipment",
           LOCAL + "scissors.webp",
@@ -1048,6 +1040,28 @@ async function main() {
         );
         await texture(name, file, x, y - 105, w, { o: fade(at) });
       }
+      // A clear peel pouch with a white carrier and five parallel tan strips.
+      rect("Steri-Strip pouch shadow", 309, 658, 222, 270, 9, "392916", {
+        o: fade(27),
+      });
+      rect("Translucent pouch seam", 305, 650, 222, 270, 9, "d4cbc0", {
+        o: fade(27),
+      });
+      rect("Steri-Strip release liner", 305, 653, 198, 228, 3, "f7f3e9", {
+        o: fade(27),
+      });
+      rect("Sealed top of pouch", 305, 530, 200, 6, 2, "ebe6de", {
+        o: fade(27),
+      });
+      for (const [i, x] of [242, 273, 304, 335, 366].entries())
+        await texture(
+          "Preparation Steri-Strip " + (i + 1),
+          LOCAL + "steri-strip.webp",
+          x,
+          653,
+          26,
+          { o: fade(27) },
+        );
     } else if (i === 1) {
       await patient({ small: true });
       await texture(
@@ -1095,174 +1109,96 @@ async function main() {
       });
       await bubbleProcedure();
     } else if (i === 2) {
-      await patient({ closed: true });
-      const cleaning = [
-        [0, [-100, 570]],
-        [45, [355, 534]],
-        [95, [333, 575]],
-        [145, [351, 616]],
-        [190, [404, 627]],
-        [220, [402, 595]],
-        [275, [-100, 570]],
-      ];
-      await texture(
-        "Original cotton gently cleans the eye area",
-        SHARED + "02cotton.webp",
-        0,
-        0,
-        98,
-        { p: keys(cleaning.map(([t, [x, y]]) => [t, [x, y, 0]])) },
+      await patient({ closed: true, closeAt: 16 });
+      const stripAt = Math.round(
+        (stages[i].cues[1].start - clips[i].start) * FPS,
       );
+      await lidStrips(stripAt, 70);
       await nose();
-      contact("Cotton gently cleans surrounding skin", 45, 220);
-    } else if (i === 3) {
-      rect("Brown tape preparation table", 584, 640, W, H, 0, "59391c");
-      await fixedAxisRoll();
-      await scissorsHalf("lower");
-      const feed = Array.from({ length: 65 }, (_, i) => {
-        const t = i / 64;
-        return unspooledPoint(t);
-      });
-      // The taut length peels from the upper-right rim.
-      // The blades cross its middle; the free portion moves away after the snip.
-      const reveal = [[0, [0, 0.06]]];
-      for (let n = 0; n < 3; n++) {
-        const at = 20 + n * 100,
-          cut = at + 55;
-        reveal.push(
-          [at, [0, n ? 35 / 64 : 0.06]],
-          [at + 35, [0, 1]],
-          [cut, [0, 1]],
-          [cut + 1, [0, 35 / 64]],
-        );
-      }
-      await ribbon(
-        "Continuous tape pulled from the round roll",
-        "unwound-feed",
-        feed,
-        104,
-        { progress: reveal },
+      contact(
+        "Press Steri-Strips onto the closed eyelid",
+        stripAt,
+        stripAt + 210,
       );
-      for (let n = 0; n < 3; n++) {
-        const at = 20 + n * 100,
-          cut = at + 55;
-        await ribbon(
-          "Cut strip separates only after snip " + (n + 1),
-          "separated-tape",
-          feed.slice(35),
-          104,
-          {
-            opacity: keys([
-              [0, 0],
-              [cut, 0],
-              [cut + 1, 100],
-            ]),
-            motion: [
-              [0, [0, 0]],
-              [cut + 1, [0, 0]],
-              [cut + 28, [-385 + n * 228, 420]],
-            ],
-          },
-        );
-        contact("Unroll then snip strip " + (n + 1), at, cut);
-      }
-      await scissorsHalf("upper");
-    } else if (i === 4) {
+    } else if (i === 3) {
       rect("Brown pad preparation table", 584, 640, W, H, 0, "59391c");
       ellipse("Gauze contact shadow", 596, 673, 502, 476, "38220f", {
         o: c(40),
       });
       await pad("Original gauze eye pad", 585, 650, 500);
-      for (let n = 0; n < 3; n++)
-        await ribbon(
-          "Tape fades in above the gauze " + (n + 1),
-          "prepared-tape-" + (n + 1),
-          surfacePoints([452 + n * 130, 330], [452 + n * 130, 974], {
-            x: 585,
-            y: 650,
-            rx: 248,
-            ry: 235,
-            depth: [47, 10, -35][n],
-          }),
-          58,
-          { opacity: fade(40 + n * 65) },
-        );
-    } else if (i === 5) {
-      await patient({ closed: true, closeAt: 35 });
+      await ribbon(
+        "Tape across the gauze",
+        "prepared-tape-2",
+        surfacePoints([585, 105], [585, 1195], {
+          x: 585,
+          y: 650,
+          rx: 248,
+          ry: 235,
+          depth: 18,
+        }),
+        66,
+        {
+          opacity: fade(38),
+          progress: [
+            [38, [0, 0.01]],
+            [134, [0, 1]],
+          ],
+        },
+      );
+    } else if (i === 4) {
+      await patient({ closed: true });
+      await lidStrips();
       const approach = [
         [0, [-720, 70]],
-        [90, [-720, 70]],
-        [180, [0, 0]],
+        [10, [-720, 70]],
+        [100, [0, 0]],
       ];
       await dressingShadow("Pad contact shadow", {
         o: keys([
           [0, 0],
-          [150, 0],
-          [180, 26],
+          [76, 0],
+          [100, 26],
         ]),
       });
       await pad("Prepared pad approaches the closed eye", 374, 594, 170, {
         p: shifted(approach, 374, 594),
       });
-      await padTapes({ motion: approach });
-      const secureAt = Math.round(cues[5].seconds * 30) + 10;
-      for (let n = 0; n < 2; n++)
-        await ribbon(
-          "Additional diagonal securing tape " + (n + 1),
-          "diagonal-tape-" + n,
-          surfacePoints([415 + n * 35, 477], [310 + n * 40, 740], {
-            x: 351,
-            y: 594,
-            rx: 105,
-            ry: 99,
-            depth: 24,
-            face: true,
-          }),
-          32,
-          { opacity: fade(secureAt + n * 45) },
-        );
+      const secureAt = Math.round(
+        (stages[i].cues[1].start - clips[i].start) * FPS,
+      );
+      await padTapes({ motion: approach, fadeAt: secureAt });
+      alignDressing(layers.find((l) => l.nm === "Pad contact shadow").ind);
       await nose();
-      contact("Eye closes before the pad approaches", 35, 63);
-      contact("Pad is placed before securing tape", 90, 180);
-      contact("Three strips secure the pad in the same scene", 370, 500);
-    } else if (i === 6) {
+      contact("Pad is placed before securing tape", 10, 100);
+      contact(
+        "Secure the outer pad with diagonal tape",
+        secureAt,
+        secureAt + 65,
+      );
+    } else if (i === 5) {
       await dressedPatient();
+      // First wrap the free shield, then carry shield and strip to the face together.
       const approach = [
-        [0, [-365, -175]],
-        [92, [0, 0]],
+        [0, [-218, 155]],
+        [111, [-218, 155]],
+        [202, [0, 0]],
       ];
       await dressingShadow("Shield contact shadow", {
         o: keys([
           [0, 0],
-          [68, 0],
-          [92, 20],
+          [181, 0],
+          [202, 20],
         ]),
       });
-      // The posterior strip catches the back rim. Only its forehead and
-      // cheek tabs remain exposed after the cone covers the middle.
-      await applyShieldTape(
-        "Far rim securing tape",
-        "shield-outer-tape",
-        true,
-        108,
-        169,
-      );
-      await shield(SHIELD_X, SHIELD_Y, SHIELD_WIDTH, {
-        p: shifted(approach, SHIELD_X, SHIELD_Y),
-      });
-      await applyShieldTape(
-        "Tape above the shield 1",
-        "shield-tape-1",
-        false,
-        175,
-        256,
-      );
+      await tapeAndPlaceShield(approach, 11, 91, 241, 307);
+      alignDressing(layers.find((l) => l.nm === "Pad contact shadow").ind);
       await nose();
-      contact("Shield rests over the pad before tape appears", 0, 92);
+      contact("Pretaped shield moves onto the pad", 111, 202);
     }
-    if ([2, 5, 6].includes(i)) {
+    if ([2, 4, 5].includes(i)) {
       for (const l of layers)
-        if (l.nm !== "Warm procedure background") l.parent = 10000;
+        if (l.nm !== "Warm procedure background" && l.parent == null)
+          l.parent = 10000;
       const camera = layer("Clinical camera toward the shield");
       camera.ty = 3;
       delete camera.shapes;
@@ -1290,13 +1226,18 @@ async function main() {
       }),
     );
   }
-  // The placement and securing scenes now share stage 6; stage 7 is the shield.
-  await fs.rm(path.join(OUT, "8/data.json"), { force: true });
+  await fs.rm(path.join(OUT, "7/data.json"), { force: true });
   const dir = path.join(
     ROOT,
     "public/narration/apply-eye-pad-shield/full-animation",
   );
   await fs.mkdir(dir, { recursive: true });
+  const { languages: pupilsLanguages } = JSON.parse(
+    await fs.readFile(
+      path.join(PUBLIC, "narration/pupils-pec/full-animation/script.json"),
+      "utf8",
+    ),
+  );
   const script = {
     schemaVersion: 1,
     title: "Apply an Eye Pad and Eye Shield",
@@ -1306,13 +1247,13 @@ async function main() {
     languages: {
       en: {
         label: "English",
-        locale: "en-US",
-        voice: "Microsoft Zira Desktop",
+        locale: "en-GB",
+        voice: pupilsLanguages.en.voice,
       },
       ko: {
         label: "한국어",
         locale: "ko-KR",
-        voice: "Microsoft Heami Desktop",
+        voice: pupilsLanguages.ko.voice,
       },
       ur: {
         label: "اردو",
@@ -1320,24 +1261,46 @@ async function main() {
         voice: "ur-PK-UzmaNeural",
         style: "Calm medical educator",
       },
+      ny: {
+        label: "Chichewa",
+        locale: "ny-MW",
+        voice: "facebook/mms-tts-nya",
+        provider: "Meta MMS (local)",
+        trimEdgeSilenceDb: -42,
+      },
     },
-    cues: cues.map((s, i) => ({
-      id: sourceClips[i].cueIds[0],
-      start: sourceClips[i].start,
-      end: sourceClips[i].end,
+    cues: cues.map((s) => ({
+      id: s.id,
+      start: s.start,
+      end: s.end,
       en: s.en,
       ko: s.ko,
       ur: s.ur,
+      ny: s.ny,
+      ...(s.ur === "دو یا تین پٹیاں لگائیں۔"
+        ? { ttsText: { ur: "دو سے تین پٹیاں لگائیں۔" } }
+        : {}),
     })),
     videoTitleCues: [
-      { sourceText: "Preparation", translations: { ko: "준비", ur: "تیاری" } },
+      {
+        sourceText: "Preparation",
+        translations: { ko: "준비", ur: "تیاری", ny: "Kukonzekera" },
+      },
       {
         sourceText: "Apply the eye pad",
-        translations: { ko: "안대 패드 부착", ur: "آئی پیڈ لگائیں۔" },
+        translations: {
+          ko: "안대 패드 부착",
+          ur: "آئی پیڈ لگائیں۔",
+          ny: "Ikani chophimba chofewa pa diso",
+        },
       },
       {
         sourceText: "Apply the eye shield",
-        translations: { ko: "눈 보호대 부착", ur: "آئی شیلڈ لگائیں۔" },
+        translations: {
+          ko: "눈 보호대 부착",
+          ur: "آئی شیلڈ لگائیں۔",
+          ny: "Ikani chotetezera diso cholimba",
+        },
       },
     ],
   };
@@ -1357,7 +1320,7 @@ async function main() {
     JSON.stringify(script, null, 2) + "\n",
   );
   console.log(
-    "Built seven Apply Eye Pad / Shield scenes with eight original cues and narration script.",
+    "Built six Apply Eye Pad / Shield scenes with the PEC demonstration cue sheet.",
   );
 }
 main().catch((e) => {

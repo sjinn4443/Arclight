@@ -215,6 +215,30 @@
       "اوپری پلک پر روئی کی تیلی رکھیں اور اس کے سہارے پلک اوپر الٹیں۔",
       "پلک الٹی رکھیں اور پہلے اس کی اندرونی سطح بغیر عدسے کے دیکھیں،",
       "پھر ایک بڑا منظر دیکھنے کے لیے Arclight لائیں۔"
+    ],
+    "ny": [
+      "Yang'anani dera lozungulira maso, zikope ndi maso. Lembani chilichonse chachilendo.",
+      "Kenako yezeni diso ndi chida chokulitsa chithunzi. Konzani Arclight ndi kusankha kuwala kwamphamvu kwambiri.",
+      "Gwirani chipangizocho pafupi ndi diso lanu. Yandikirani diso lakumanja la wodwala pang'onopang'ono mpaka litaoneka bwino.",
+      "Pemphani wodwalayo kuti ayang'ane kumanja kenako kumanzere.",
+      "Kenako mupempheni kuti ayang'ane mmwamba ndi pansi mutagwira zikope zake mofatsa. Yang'anani mbali zosiyanasiyana za diso m'magulu.",
+      "Gulu loyamba lili ndi nsidze za zikope zapamwamba ndi zapansi, komanso m'mphepete mwa zikopezo.",
+      "Gulu lachiwiri lili ndi nembanemba yophimba diso ndi mbali yoyera ya diso,",
+      "kuphatikizapo khola la nembanembayo pansi pa chikope.",
+      "Gulu lachitatu lili ndi khungu lowonekera lakutsogolo kwa diso, lotchedwa cornea,",
+      "ndi malire ake pamene limakumana ndi mbali yoyera ya diso. Malirewa amatchedwa limbus.",
+      "Lilinso ndi mwana wa diso, amene wazunguliridwa ndi mbali ya mtundu ya diso, yotchedwa iris.",
+      "Izi ndi zithunzi za mavuto osiyanasiyana a maso. Tengani nthawi yoona bwinobwino pogwiritsa ntchito Arclight.",
+      "Chipinda chakutsogolo cha diso ndi malo pakati pa cornea ndi iris.",
+      "Mungayerekezere kuya kwa chipinda chakutsogolo powunikira kuchokera mbali ya khutu.",
+      "Mthunzi kumbali ya mphuno ungasonyeze kuti chipindacho n'chosaya. Tumizani wodwala kuti akayesedwe.",
+      "Ikani fluorescein m'diso pogwiritsa ntchito kachidutswa ka fluorescein kapena botolo laling'ono la Minims.",
+      "Sankhani kuwala kwabuluu ndipo yang'anani cornea.",
+      "Malo owonongeka pamwamba pa cornea ndi madera a matenda adzaoneka. Lembani malo ake ndi kukula kwake.",
+      "Gwirani mofatsa nsidze za chikope chakumtunda ndi chala chachikulu ndi chala cholozera.",
+      "Ikani kandodo ka thonje pa chikope chakumtunda monga potsamira ndipo tembenuzirani chikopecho mmwamba.",
+      "Gwirani chikope chotembenuzidwacho. Yambani kuyang'ana mkati mwake ndi maso anu,",
+      "kenako yandikitsani Arclight kuti muone bwino chokulitsidwa."
     ]
   },
   "binocular-indirect-ophthalmoscopy": {
@@ -397,6 +421,26 @@
       "یہ اعلیٰ شبکیہ کی جانچ کی ایک مثال ہے۔",
       "روشنی، عدسے اور شبکیے کو ایک سیدھ میں رکھیں۔",
       "آپ کو شبکیہ کے دور دراز حصے کی جانچ کرنے کے قابل ہونا چاہئے۔"
+    ],
+    "ny": [
+      "Yambani posamba ndi kuumitsa m'manja.",
+      "Yatsani kuwala kwa BIO. Dinani batani kasanu kuti musankhe kuwala kwamphamvu kwambiri.",
+      "Chipangizochi chimadzizimitsa pakatha masekondi makumi asanu ndi anayi.",
+      "Valani BIO pamutu ndipo konzani lamba wake kuti ugwire bwino komanso usakuvutitseni.",
+      "Linganizani pakati pake ndi mphuno yanu. Yang'anani chala chachikulu chili patali utali wa mkono, pogwiritsa ntchito diso limodzi pa nthawi.",
+      "Malo oyang'aniramo apendekere kunja kuti akhale pa ngodya ya madigiri makumi asanu ndi anayi ndi kumene mukuyang'ana mukayang'ana pansi pang'ono.",
+      "Kulitsani ana a maso a wodwalayo kuti muone bwinobwino malo aakulu kumbuyo kwa diso.",
+      "Gwirani galasi lokulitsa pafupi ndi diso. Kwezani chikope chakumtunda ndipo tsamiritsani zala zina mofatsa pansidze ndi patsaya.",
+      "Gwirani galasilo patali utali wa mkono. Ligwirizane ndi kuwala ndi retina. Mthunzi m'mphepete umasonyeza kuti sizinagwirizane bwino.",
+      "Kuti muone m'mphepete mwa retina, pemphani wodwala kuti ayang'ane mbali zosiyanasiyana.",
+      "Ngati pakufunika, wodwala ayang'ane chala chake, chili patali utali wa mkono.",
+      "Mukamaliza kuyang'ana macula, yezani zigawo zonse zinayi za kumbali kwa retina.",
+      "Choyamba dziwitsani wodwala kuti zimenezi zingamupweteke pang'ono.",
+      "Pemphani wodwalayo kuti ayang'ane kutali ndi dera loyezedwalo. Kenako ikani chida chokankhira pa deralo.",
+      "Pemphani wodwalayo kuti ayang'ane kumene mukuyesa, kenako kanikizani mofatsa.",
+      "Ichi ndi chitsanzo choyezera mbali yapamwamba ya retina.",
+      "Sungani kuwala, galasi lokulitsa ndi retina zogwirizana.",
+      "Muyenera kuona mpaka m'mphepete mwakutali mwa retina."
     ]
   }
 }

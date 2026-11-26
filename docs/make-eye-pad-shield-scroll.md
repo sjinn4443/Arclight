@@ -151,17 +151,17 @@ The supplied instructions are the English captions and narration. The existing
 `#/eyePadShield/eyeCareVideo-make_eye_pad` lesson supplies the motion reference:
 `public/videos/Workshop/PEC/7.MakepadNshield_720p.mp4`.
 
-| Animation              | Reference          | Narration interval | Motion                                                                                                                                             |
-| ---------------------- | ------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 01 Hand hygiene        | DO first animation | 1–7s               | Original geometry and six images, retimed to six seconds                                                                                           |
-| 02 Preparation         | 01                 | 7–17s              | Equipment illustration without highlight circles; no preparation cue                                                                               |
-| 03 Spread cotton wool  | 02                 | 17–30s             | Cotton pulls in several directions; registered hand/thumb pairs translate without deformation                                                      |
-| 04 Fold and tape gauze | 03                 | 30–46s             | Complete gauze artwork; flap registered along the sloping right edge; extended right hand fades as one composition; tape lands later               |
-| 05 Trim the eye pad    | 04                 | 46–59s             | Progressively trim only the short visited arc to the tape, then dissolve remaining edges, including tape; finished-pad cue                         |
-| 06 Choose cardboard    | 05                 | 59–70s             | Static box illustration without scissors                                                                                                           |
-| 07 Draw a circle       | 06–07              | 70–84s             | Pencil moves left-to-right in front, then right-to-left behind cup; cup rotates 45 degrees offscreen; circle, line wipe, then 8cm                  |
-| 08 Cut circle and slit | 08–09              | 84–104s            | Progressively trim the short arc, dissolve remaining outline, settle into reference-09 pose; one upper-blade snip; slit visible at start of return |
-| 09 Complete the shield | 10–12              | 104–125s           | Continuous roll/tape/camera sequence; finished-shield cue starts during camera rotation                                                            |
+| Animation              | Reference          | Narration interval | Motion                                                                                                                               |
+| ---------------------- | ------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 01 Hand hygiene        | DO first animation | 1–7s               | Original geometry and six images, retimed to six seconds                                                                             |
+| 02 Preparation         | 01                 | 7–17s              | Equipment illustration without highlight circles; no preparation cue                                                                 |
+| 03 Spread cotton wool  | 02                 | 17–30s             | Cotton pulls in several directions; registered hand/thumb pairs translate without deformation                                        |
+| 04 Fold and tape gauze | 03                 | 30–46s             | Complete gauze artwork; flap registered along the sloping right edge; extended right hand fades as one composition; tape lands later |
+| 05 Trim the eye pad    | 04                 | 46–59s             | Rotate and trim the gauze around the cotton, release the woven offcut and withdraw the scissors.                                     |
+| 06 Choose cardboard    | 05                 | 59–70s             | Static box illustration without scissors                                                                                             |
+| 07 Draw a circle       | 06–07              | 70–84s             | Pencil moves left-to-right in front, then right-to-left behind cup; cup rotates 45 degrees offscreen; circle, line wipe, then 8cm    |
+| 08 Cut circle and slit | 08–09              | 84–104s            | Turn the card through the scissors, release the offcut, then make one radial snip. The slit is visible at the start of the return.   |
+| 09 Complete the shield | 10–12              | 104–125s           | Continuous roll/tape/camera sequence; finished-shield cue starts during camera rotation                                              |
 
 The final stage is one 630-frame Lottie animation at 30fps. Its paper facets and
 overlapping flap share projected geometry. Folding and taping retain a fixed
@@ -219,9 +219,12 @@ frame 141. A rendered alpha-overlap check confirms there are no visible cloth/
 holding-thumb intersections. The stationary gauze/cotton crossfade to the folded
 texture at frames 125–150 so the earlier disappearance has a continuous handoff.
 
-Pad/circle masks change only on the visited right-to-top quarter arc. Opposite
-edges remain unchanged until the final-outline dissolve at frames 246–276.
-The pad's tape uses the same progressive and final masks. The pencil's wrist extension shares its position,
+The left hand holds the pad steady while the scissors follow its edge, then
+turns the gauze and tape together by 32 degrees on each regrip. The cut strip retains the weave
+and drops at frame 240. In both cutting scenes the thumb lifts and presses again as the material advances. For the shield, the
+card turns under the scissors from frames 24–240. The outer strip opens behind
+the blade, carries the pencil mark with it and drops clear of the held disk.
+The pencil's wrist extension shares its position,
 uniform scale and rotation. Ellipse arc length keeps the growing visible segment
 at the graphite; the remaining circle is revealed while the cup still covers it.
 The pencil wrist continues along the source crop's cut edge beyond the viewport.

@@ -31,7 +31,7 @@ test.beforeEach(async ({ page, browserName }) => {
     sessionStorage.setItem("arclight:account:nudge-dismissed", "1");
   });
 });
-test("Advanced PDF is followed by Pupils; all fifteen narrated scenes complete and restore", async ({
+test("Advanced PDF is followed by Pupils; all sixteen narrated scenes complete and restore", async ({
   page,
 }, testInfo) => {
   test.setTimeout(240000);
@@ -77,7 +77,7 @@ test("Advanced PDF is followed by Pupils; all fifteen narrated scenes complete a
     );
     expect(state.failed).toBe(false);
     expect(state.currentFrame).toBe(cfg.completionHoldFrameByFile[i]);
-    if ([0, 9, 10].includes(i)) {
+    if ([0, 10, 11].includes(i)) {
       expect(
         await guide.locator("audio").evaluate((el) => el.currentTime),
       ).toBeCloseTo(cfg.narrationClipsByFile[i].endByLanguage.en, 1);
@@ -87,14 +87,14 @@ test("Advanced PDF is followed by Pupils; all fifteen narrated scenes complete a
     ).toHaveText(cfg.segmentStartTexts[i].filter(Boolean));
     const bounds = await stage.boundingBox();
     expect(bounds.width / bounds.height).toBeCloseTo(
-      1169 / (i === 3 ? 1093 : 1280),
+      1169 / (i === 4 ? 1093 : 1280),
       2,
     );
     expect(
       await guide.evaluate((el) => el.scrollWidth <= window.innerWidth),
     ).toBe(true);
     const rendered = await stage.screenshot();
-    if (i === 14) {
+    if (i === 15) {
       const pixels = await sharp(rendered).removeAlpha().raw().toBuffer();
       let irisPixels = 0;
       for (let p = 0; p < pixels.length; p += 3) {
@@ -104,7 +104,7 @@ test("Advanced PDF is followed by Pupils; all fifteen narrated scenes complete a
       }
       expect(irisPixels).toBeGreaterThan(30);
     }
-    if ([1, 14].includes(i)) {
+    if ([2, 15].includes(i)) {
       const stats = await sharp(rendered).stats();
       expect(
         stats.channels.slice(0, 3).reduce((sum, c) => sum + c.mean, 0) / 3,
@@ -133,7 +133,7 @@ test("Advanced PDF is followed by Pupils; all fifteen narrated scenes complete a
   })
     .composite(shots)
     .png()
-    .toFile(testInfo.outputPath("fifteen-advanced-scenes.png"));
+    .toFile(testInfo.outputPath("sixteen-advanced-scenes.png"));
   expect(
     await page.evaluate(
       (id) => JSON.parse(localStorage.getItem(`lessonProgress:${id}`)).percent,
@@ -145,7 +145,7 @@ test("Advanced PDF is followed by Pupils; all fifteen narrated scenes complete a
     .poll(() =>
       page.evaluate(
         (route) =>
-          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 14).playing,
+          window.__ARCLIGHT_E2E__.fundal.getStageState(route, 15).playing,
         route,
       ),
     )

@@ -1,134 +1,148 @@
-// Teaching sequence derived from PEC's 8.Applypadandshield video.
+// Keep cue IDs stable when editing the lesson so recordings stay paired with their text.
 export const APPLY_EYE_PAD_SHIELD_SCROLL_PAGE = "applyEyePadShieldScrollPage";
 export const APPLY_EYE_PAD_SHIELD_SCROLL_ROUTE = "applyEyePadShieldScroll";
 export const APPLY_EYE_PAD_SHIELD_NARRATION_CUES = [
   {
-    name: "Equipment",
-    seconds: 5.54,
-    en: "Prepare an eye pad, an eye shield, adhesive tape and scissors.",
-    ko: "안대 패드, 눈 보호대, 반창고와 가위를 준비합니다.",
-    ur: "آئی پیڈ، آئی شیلڈ، چپکنے والی ٹیپ اور قینچی تیار کریں۔",
+    start: 0,
+    end: 6.3,
+    en: "You will need Steri-Strips, sticky tape, an eye pad, shield and scissors.",
+    ko: "스테리 스트립, 반창고, 안대 패드, 눈 보호대와 가위가 필요합니다.",
+    ur: "اسٹیری اسٹرپس، ٹیپ، آنکھ کا پیڈ، شیلڈ اور قینچی تیار کریں۔",
+    ny: "Konzani timizere ta Steri-Strip, tepi yomata, chophimba chofewa, chotetezera diso ndi lumo.",
+    id: "apply-3",
   },
   {
-    name: "Explain the procedure",
-    seconds: 4.44,
-    en: "Explain the procedure to the patient and help them sit comfortably.",
-    ko: "환자에게 절차를 설명하고 편안하게 앉도록 돕습니다.",
-    ur: "مریض کو طریقہ بتائیں اور آرام سے بٹھائیں۔",
+    start: 6.3,
+    end: 17.85,
+    en: "Explain what you're going to do and gain consent.",
+    ko: "환자에게 절차를 설명하고 동의를 구합니다.",
+    ur: "طریقہ سمجھائیں اور رضامندی لیں۔",
+    ny: "Fotokozani zimene muchite ndipo pemphani chilolezo.",
+    id: "apply-4",
   },
   {
-    name: "Prepare the skin",
-    seconds: 9.32,
-    en: "Gently clean the skin around the eye, then dry it so the tape will stick.",
-    ko: "눈 주위 피부를 부드럽게 닦고 반창고가 잘 붙도록 말립니다.",
-    ur: "آنکھ کے ارد گرد کی جلد کو آہستہ سے صاف کریں، پھر اسے خشک کریں تاکہ ٹیپ چپک جائے۔",
+    start: 17.85,
+    end: 22.9,
+    en: "Ask the patient to gently close both eyelids.",
+    ko: "환자에게 양쪽 눈을 가볍게 감아 보도록 합니다.",
+    ur: "مریض کو دونوں پلکیں آہستہ بند کرنے کو کہیں۔",
+    ny: "Pemphani wodwala kuti atseke zikope zonse mofatsa.",
+    id: "apply-6",
   },
   {
-    name: "Prepare the tape",
-    seconds: 11.12,
-    en: "Measure and cut strips of adhesive tape before applying the pad.",
-    ko: "패드를 붙이기 전에 반창고의 길이를 재고 잘라 준비합니다.",
-    ur: "پیڈ لگانے سے پہلے چپکنے والی ٹیپ کی پٹیوں کی پیمائش اور کاٹ لیں۔",
+    start: 22.9,
+    end: 29.85,
+    en: "Place a strip on the upper lid, pulling it down to close the lids, then stick to the lower lid and cheek.",
+    ko: "윗눈꺼풀에 스트립을 붙이고 아래로 당겨 눈을 감긴 뒤, 아랫눈꺼풀과 볼에 붙입니다.",
+    ur: "پٹی اوپری پلک پر رکھیں، پلک بند کرنے کے لیے نیچے کھینچیں، پھر نچلی پلک اور گال پر چپکائیں۔",
+    ny: "Ikani kamzere pa chikope chakumtunda. Kokani pansi kuti zikope zitseke, ndipo matani pa chikope chapansi ndi patsaya.",
+    id: "apply-7",
   },
   {
-    name: "Prepare the pad",
-    seconds: 6.52,
-    en: "Prepare the eye pad and attach the strips of tape, as shown.",
-    ko: "그림과 같이 안대 패드에 반창고를 붙여 준비합니다.",
-    ur: "آئی پیڈ تیار کریں اور ٹیپ کی پٹیوں کو جوڑیں، جیسا کہ دکھایا گیا ہے۔",
+    start: 29.85,
+    end: 32.65,
+    en: "Use two or three Steri-Strips.",
+    ko: "스테리 스트립을 두세 줄 사용합니다.",
+    ur: "دو یا تین پٹیاں لگائیں۔",
+    ny: "Gwiritsani timizere tiwiri kapena titatu.",
+    id: "apply-8",
   },
   {
-    name: "Close the eye",
-    seconds: 6.22,
-    en: "Ask the patient to gently close the eye. Place the pad over the closed eyelid.",
-    ko: "환자에게 눈을 부드럽게 감도록 한 뒤 감긴 눈꺼풀 위에 패드를 놓습니다.",
-    ur: "مریض کو آہستہ سے آنکھ بند کرنے کو کہیں۔ بند پپوٹا کے اوپر پیڈ رکھیں۔",
+    start: 32.65,
+    end: 40.15,
+    en: "Next, place a piece of sticky tape across the eye pad that is roughly two to three times the length of the pad.",
+    ko: "다음으로 패드 길이의 두세 배 정도 되는 반창고 한 줄을 안대 패드에 가로질러 붙입니다.",
+    ur: "پیڈ کے اوپر چپکنے والی ٹیپ لگائیں۔ ٹیپ پیڈ کی لمبائی سے تقریباً دو سے تین گنا ہو۔",
+    ny: "Kenako ikani tepi pa chophimba chofewa. Tepi ikhale yaitali kuwirikiza kawiri kapena katatu utali wa chophimbacho.",
+    id: "apply-9",
   },
   {
-    name: "Secure the pad",
-    seconds: 8.67,
-    en: "Secure the tape diagonally from the forehead to the cheek. Keep the other eye uncovered.",
-    ko: "이마에서 볼 방향으로 반창고를 비스듬히 붙여 패드를 고정합니다. 반대쪽 눈은 가리지 않습니다.",
-    ur: "ٹیپ کو پیشانی سے گال تک ترچھی طور پر محفوظ کریں۔ دوسری آنکھ کو بے پردہ رکھیں۔",
+    start: 40.15,
+    end: 47.15,
+    en: "Place the taped pad over the closed eye and secure it to the forehead.",
+    ko: "반창고가 붙은 패드를 감긴 눈꺼풀 위에 놓고 이마에 고정합니다.",
+    ur: "بند پلکوں پر ٹیپ والا پیڈ رکھیں اور پیشانی پر چپکائیں۔",
+    ny: "Ikani chophimba chokhala ndi tepi pa zikope zotsekedwa ndipo matani pamphumi.",
+    id: "apply-11",
   },
   {
-    name: "Apply the shield",
-    seconds: 9.62,
-    en: "Place the eye shield over the pad and secure it with tape. This is how you apply an eye shield.",
-    ko: "패드 위에 눈 보호대를 놓고 반창고로 고정합니다. 이렇게 눈 보호대 부착을 마칩니다.",
-    ur: "آئی شیلڈ کو پیڈ پر رکھیں اور اسے ٹیپ سے محفوظ کریں۔ اس طرح آپ آئی شیلڈ لگاتے ہیں۔",
+    start: 47.15,
+    end: 50.35,
+    en: "Add another two or three pieces of sticky tape.",
+    ko: "반창고를 두세 줄 더 붙입니다.",
+    ur: "ٹیپ کے دو یا تین اور ٹکڑے لگائیں۔",
+    ny: "Onjezerani zidutswa ziwiri kapena zitatu za tepi.",
+    id: "apply-12",
+  },
+  {
+    start: 50.35,
+    end: 54.25,
+    en: "Finally, place a length of sticky tape over the shield.",
+    ko: "마지막으로 보호대 겉면에 반창고 한 줄을 붙입니다.",
+    ur: "آخر میں شیلڈ پر ٹیپ کی ایک پٹی لگائیں۔",
+    ny: "Pomaliza, ikani tepi pa chotetezera cholimba.",
+    id: "apply-13",
+  },
+  {
+    start: 54.25,
+    end: 58.8,
+    en: "Position over the eye pad and secure to the forehead and cheek.",
+    ko: "보호대를 패드 위에 놓고 이마와 볼에 고정합니다.",
+    ur: "شیلڈ پیڈ کے اوپر رکھ کر پیشانی اور گال پر چپکائیں۔",
+    ny: "Ikani chotetezera pamwamba pa chophimba chofewa ndipo chimateni pamphumi ndi patsaya.",
+    id: "apply-14",
+  },
+  {
+    start: 58.8,
+    end: 61.7,
+    en: "Add a second length of sticky tape.",
+    ko: "두 번째 반창고를 붙입니다.",
+    ur: "ٹیپ کی دوسری پٹی لگائیں۔",
+    ny: "Ikani tepi yachiwiri.",
+    id: "apply-15",
   },
 ];
-let clock = 1;
-export const APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS =
-  APPLY_EYE_PAD_SHIELD_NARRATION_CUES.map((stage, index) => {
-    const clip = {
-      start: clock,
-      end: clock + stage.seconds,
-      cueIds: [`apply-${index + 1}`],
-    };
-    clock = clip.end;
-    return clip;
-  });
-// Placement and securing play continuously; retain both original audio cues.
-const sceneCues = [[0], [1], [2], [3], [4], [5, 6], [7]];
-export const APPLY_EYE_PAD_SHIELD_STAGES = sceneCues.map((indices) => ({
-  name:
-    indices.length > 1
-      ? "Place and secure the pad"
-      : APPLY_EYE_PAD_SHIELD_NARRATION_CUES[indices[0]].name,
-  seconds: indices.reduce(
-    (sum, i) => sum + APPLY_EYE_PAD_SHIELD_NARRATION_CUES[i].seconds,
-    0,
-  ),
-  ...Object.fromEntries(
-    ["en", "ko", "ur"].map((language) => [
-      language,
-      indices
-        .map((i) => APPLY_EYE_PAD_SHIELD_NARRATION_CUES[i][language])
-        .join(" "),
-    ]),
-  ),
+
+const cues = APPLY_EYE_PAD_SHIELD_NARRATION_CUES;
+export const APPLY_EYE_PAD_SHIELD_STAGES = [
+  ["Equipment", cues.slice(0, 1)],
+  ["Explain the procedure", cues.slice(1, 2)],
+  ["Tape the eyelid", cues.slice(2, 5)],
+  ["Prepare the pad", cues.slice(5, 6)],
+  ["Place and secure the pad", cues.slice(6, 8)],
+  ["Apply the shield", cues.slice(8)],
+].map(([name, lines]) => ({
+  name,
+  cues: lines,
+  seconds: lines.at(-1).end - lines[0].start,
 }));
-export const APPLY_EYE_PAD_SHIELD_CLIPS = sceneCues.map((indices) => ({
-  start: APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS[indices[0]].start,
-  end: APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS[indices.at(-1)].end,
-  endByLanguage: Object.fromEntries(
-    Object.entries({
-      en: [4.62, 4.12, 9.32, 11.12, 6.52, 11.9, 9.62],
-      ko: [5.54, 4.44, 9.32, 11.12, 6.52, 14.89, 9.62],
-    }).map(([lang, durations]) => [
-      lang,
-      APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS[indices[0]].start +
-        durations[sceneCues.indexOf(indices)],
-    ]),
-  ),
-  cueIds: indices.flatMap((i) => APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS[i].cueIds),
-}));
+
+export const APPLY_EYE_PAD_SHIELD_CLIPS = APPLY_EYE_PAD_SHIELD_STAGES.map(
+  (stage) => ({
+    start: stage.cues[0].start,
+    end: stage.cues.at(-1).end,
+    cueIds: stage.cues.map((cue) => cue.id),
+  }),
+);
 export const APPLY_EYE_PAD_SHIELD_TIMING = {
   folder: "apply-eye-pad-shield",
   route: "eyePadShield",
-  languages: ["en", "ko", "ur"],
-  stages: APPLY_EYE_PAD_SHIELD_CLIPS.map((clip, i) => [
-    [clip.start, 0],
-    ...(i === 5
-      ? [
-          [
-            APPLY_EYE_PAD_SHIELD_SOURCE_CLIPS[5].end,
-            Math.round(APPLY_EYE_PAD_SHIELD_NARRATION_CUES[5].seconds * 30),
-          ],
-        ]
-      : []),
-    [clip.end, Math.round(APPLY_EYE_PAD_SHIELD_STAGES[i].seconds * 30) - 1],
+  languages: ["en", "ko", "ur", "ny"],
+  captionMode: "replace",
+  stages: APPLY_EYE_PAD_SHIELD_CLIPS.map(({ start, end }) => [
+    [start, 0],
+    [end, Math.round((end - start) * 30) - 1],
   ]),
 };
 export const APPLY_EYE_PAD_SHIELD_SCROLL_CONFIG = {
   pageId: APPLY_EYE_PAD_SHIELD_SCROLL_PAGE,
   label: "Apply an Eye Pad and Eye Shield",
   playMode: "stageAutoplay",
+  requireStageAdvance: true,
   enableReplay: true,
   segmentTextToggleOnTitle: true,
   fitCaptionsInViewport: true,
+  showAllCaptionsOnCompletion: true,
   narrationCompletionPauseSeconds: 0.7,
   strictFrameLockNoFallback: true,
   strictFrameRemountOnBlank: true,
@@ -142,8 +156,8 @@ export const APPLY_EYE_PAD_SHIELD_SCROLL_CONFIG = {
   ),
   sections: [
     { startIndex: 0, title: "Preparation" },
-    { startIndex: 4, title: "Apply the eye pad" },
-    { startIndex: 6, title: "Apply the eye shield" },
+    { startIndex: 3, title: "Apply the eye pad" },
+    { startIndex: 5, title: "Apply the eye shield" },
   ],
   segmentRanges: APPLY_EYE_PAD_SHIELD_STAGES.map((s) => [
     { from: 0, to: Math.round(s.seconds * 30) - 1 },
@@ -151,15 +165,15 @@ export const APPLY_EYE_PAD_SHIELD_SCROLL_CONFIG = {
   completionHoldFrameByFile: APPLY_EYE_PAD_SHIELD_STAGES.map(
     (s) => Math.round(s.seconds * 30) - 1,
   ),
-  segmentStartTexts: sceneCues.map((indices) =>
-    indices.map((i) => APPLY_EYE_PAD_SHIELD_NARRATION_CUES[i].en),
+  segmentStartTexts: APPLY_EYE_PAD_SHIELD_STAGES.map((stage) =>
+    stage.cues.map((cue) => cue.en),
   ),
-  segmentTextModeByFile: APPLY_EYE_PAD_SHIELD_STAGES.map(() => "append"),
   narrationTracks: Object.fromEntries(
     [
       ["en", "English"],
       ["ko", "한국어"],
       ["ur", "اردو"],
+      ["ny", "Chichewa"],
     ].map(([lang, label]) => [
       lang,
       {

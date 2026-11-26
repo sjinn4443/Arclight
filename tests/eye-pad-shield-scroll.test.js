@@ -134,43 +134,56 @@ test("completion skips trailing silence and holds for 1.5s after motion and spee
   expect(cfg.narrationClipsByFile.at(-1).endByLanguage.en).toBeCloseTo(112.501);
 });
 
-test("short cutting arcs reveal finished shapes and keep the scissor pieces joined", () => {
+test("both cutting scenes keep the material between the holding fingers and the scissor pieces joined", () => {
   for (const stage of [5, 8]) {
     const data = JSON.parse(
       fs.readFileSync(`public${cfg.paths[stage - 2]}`, "utf8"),
     );
     const paper = data.layers.find(
       (layer) =>
-        layer.nm ===
-          (stage === 5 ? "03and04foldedgauze.webp" : "08paper.webp") &&
-        layer.masksProperties?.[0]?.pt.a === 1,
+        layer.nm === (stage === 5 ? "03and04foldedgauze.webp" : "09paper.webp"),
     );
-    expect(paper.ks.o.k.at(-1).s).toEqual([0]);
-    const finished = data.layers.find((layer) =>
-      stage === 5
-        ? layer.nm === "03and04foldedgauze.webp" &&
-          layer.masksProperties?.[0]?.pt.a === 0
-        : layer.nm === "09paper.webp",
-    );
-    expect(finished.ks.o.k.at(-1).s).toEqual([100]);
     const holdingTop = data.layers.find(
       (layer) => layer.nm === "holdinghand_top.png",
     );
     const holdingBottom = data.layers.find(
       (layer) => layer.nm === "holdinghand_bottom.png",
     );
-    expect(holdingTop.ks.s).toEqual(holdingBottom.ks.s);
+    const palm = data.layers.find(
+      (l) => l.nm === "Stationary thumb base and wrist",
+    );
+    const shadow = data.layers.find((l) => l.nm === "Thumb contact shadow");
+    const grip = holdingTop.ks.s.k;
+    const fingers = data.layers.find((l) => l.nm === "Supporting fingers");
+    const web = data.layers.find((l) => l.nm === "Palm beneath thumb");
+    expect(data.layers.indexOf(web)).toBeGreaterThan(
+      data.layers.indexOf(holdingTop),
+    );
+    expect(data.layers.indexOf(web)).toBeLessThan(data.layers.indexOf(paper));
+    expect(data.layers.indexOf(fingers)).toBeGreaterThan(
+      data.layers.indexOf(paper),
+    );
+    expect(fingers.ks.sk.k.map((k) => k.t)).toEqual(grip.map((k) => k.t));
+    expect(fingers.ks.sk.k.some((k) => Math.abs(k.s[0]) > 1)).toBe(true);
+    expect(palm.ks.s).toEqual(holdingBottom.ks.s);
+    expect(palm.ks.p.a).toBe(0);
+    expect(grip[0].s).toEqual(holdingBottom.ks.s.k);
+    expect(grip.at(-1).s).toEqual(grip[0].s);
+    expect(grip.at(-1).t).toBe(240);
+    for (const lift of grip.filter((k) => k.s[1] < k.s[0])) {
+      expect(shadow.ks.o.k.find((k) => k.t === lift.t).s[0]).toBeLessThan(
+        shadow.ks.o.k[0].s[0],
+      );
+      const press = grip.find((k) => k.t === lift.t + 5);
+      expect(press.s).toEqual(grip[0].s);
+    }
+    expect(grip.filter((k) => k.s[1] < k.s[0]).length).toBeGreaterThan(1);
     expect(data.layers.indexOf(holdingTop)).toBeLessThan(
       data.layers.indexOf(paper),
     );
     expect(data.layers.indexOf(holdingBottom)).toBeGreaterThan(
       data.layers.indexOf(paper),
     );
-    const mask = paper.masksProperties[0].pt.k;
-    // The right and upper edge are actually cut as visited; the opposite side
-    // stays unchanged until the completed-outline dissolve.
-    expect(mask.at(-1).s[0].v[16]).not.toEqual(mask[0].s[0].v[16]);
-    expect(mask.at(-1).s[0].v[64]).toEqual(mask[0].s[0].v[64]);
     expect(data.layers.some((layer) => layer.nm === "02leftthumb.webp")).toBe(
       false,
     );
@@ -224,18 +237,87 @@ test("short cutting arcs reveal finished shapes and keep the scissor pieces join
     const angle = upper.ks.r.k;
     expect(
       Math.abs(angle.find((key) => key.t === 240).s[0] - angle[0].s[0]),
-    ).toBeCloseTo(90);
+    ).toBeCloseTo(stage === 5 ? 72 : 90);
     if (stage === 5) {
-      expect(
-        data.layers.some(
-          (layer) => layer.nm === "03tape.webp" && layer.hasMask,
-        ),
-      ).toBe(true);
+      const tape = data.layers.find((l) => l.nm === "03tape.webp");
+      expect(tape.ks.r).toEqual(paper.ks.r);
+      const sheetAt = (t) => paper.ks.r.k.find((k) => k.t === t).s[0];
+      const screwAt = (t) => upper.ks.p.k.find((k) => k.t === t).s;
+      for (let t = 24; t < 240; t += 24) {
+        expect(sheetAt(t + 6)).toBeCloseTo(sheetAt(t));
+        expect(sheetAt(t + 12)).toBeCloseTo(sheetAt(t));
+        expect(grip.find((k) => k.t === t + 12).s).toEqual(grip[0].s);
+        expect(screwAt(t + 12)).not.toEqual(screwAt(t));
+        expect(sheetAt(t + 24) - sheetAt(t + 12)).toBeCloseTo(32);
+      }
+      expect(sheetAt(246)).toBeCloseTo(sheetAt(240));
+      expect(sheetAt(276)).toBeCloseTo(360);
+      expect(paper.ks.r.k.at(-1).t).toBe(276);
+      for (const material of [paper, tape]) {
+        const strips = data.layers.filter((l) =>
+          l.nm.startsWith(material.nm + " offcut "),
+        );
+        expect(strips.length).toBeGreaterThan(1);
+        for (const strip of strips) {
+          expect(strip.refId).toBe(material.refId);
+          expect(strip.hasMask).toBe(true);
+          expect(strip.ks.o.k).toBe(100);
+          expect(strip.ks.p.k[0].t).toBe(240);
+          expect(strip.ks.p.k.at(-1).s[1]).toBeGreaterThan(data.h);
+        }
+      }
       expect(data.layers.indexOf(lower)).toBeGreaterThan(
         data.layers.indexOf(paper),
       );
     }
   }
+});
+
+test("the shield offcut opens behind the blade and drops only after a complete circuit", () => {
+  const data = JSON.parse(fs.readFileSync(`public${cfg.paths[6]}`, "utf8"));
+  const scrap = data.layers.find((l) => l.nm === "Cardboard offcut");
+  const guide = data.layers.find((l) => l.nm === "Pencil guide on the offcut");
+  const disk = data.layers.find((l) => l.nm === "09paper.webp");
+  const blade = data.layers.find((l) => l.nm === "scissorupperhand.png");
+  expect(guide.parent).toBe(scrap.ind);
+  for (const l of [scrap, disk]) expect(l.ks.o).toEqual({ a: 0, k: 100 });
+  const outline = scrap.shapes[0].it[0].ks.k;
+  const rim = outline.map(({ t, s: [shape] }) => ({
+    t,
+    edge: shape.v.slice(0, shape.v.length / 2),
+  }));
+  const radius = ([x, y]) => Math.hypot(x - 604, y - 438);
+  expect(rim[0].edge.every((p) => Math.abs(radius(p) - 226) < 0.01)).toBe(true);
+  for (const { t, edge } of rim.slice(1)) {
+    const pivot = blade.ks.p.k.find((k) => k.t === t).s;
+    const angle = (blade.ks.r.k.find((k) => k.t === t).s[0] * Math.PI) / 180;
+    const [ax, ay] = blade.ks.a.k;
+    const scale = blade.ks.s.k[0] / 100;
+    const tipX =
+      pivot[0] - scale * (ax * Math.cos(angle) - ay * Math.sin(angle));
+    const tipY =
+      pivot[1] - scale * (ax * Math.sin(angle) + ay * Math.cos(angle));
+    expect(
+      Math.min(...edge.map(([x, y]) => Math.hypot(x - tipX, y - tipY))),
+    ).toBeLessThan(16);
+    expect(radius(edge.at(-1))).toBeCloseTo(226, 1);
+  }
+  const halfway = rim.find((k) => k.t === 132).edge;
+  expect(radius(halfway[0])).toBeGreaterThan(326);
+  const released = rim.at(-1);
+  for (const { edge } of rim) {
+    // The loose end stays on the scissors side of the holding thumb until
+    // it passes below the wrist, including while the sheet is still turning.
+    const [x, y] = edge[0];
+    expect(y).toBeGreaterThan(430);
+    if (y < 1280) expect(x).toBeGreaterThan(480);
+  }
+  expect(released.edge.slice(0, -1).every((p) => radius(p) > 226.1)).toBe(true);
+  expect(scrap.ks.p.k[0].t).toBe(released.t);
+  expect(
+    scrap.ks.p.k.at(-1).s[1] +
+      Math.min(...outline.at(-1).s[0].v.map((p) => p[1])),
+  ).toBeGreaterThan(data.h);
 });
 
 test("rolling, taping and the camera move share one continuous cone scene", () => {

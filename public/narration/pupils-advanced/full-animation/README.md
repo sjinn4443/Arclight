@@ -10,9 +10,9 @@ is retained beside it. SHA-256 checksums for both masters are recorded in
 `public/scrolly/coreexam/pupils-advanced/provenance.json`. Neither source master is
 included in distribution or offline downloads.
 
-Fifteen 30fps rects cover seven sections. Fourteen are 1169 x 1280; only the
-Direct/Consensual pathway explanation is shortened to 1169 x 1093 to match its
-artwork. Nine scenes are authored
+Sixteen 30fps rects cover seven sections. The Direct/Consensual pathway
+explanation uses 1169 x 1093 to fit its artwork. The other fifteen use
+1169 x 1280. Ten scenes are authored
 from Advanced source components. Observation and all five Direct Light Response
 scenes (including cataract) reference the six original PEC JSON paths verbatim.
 Both languages reuse the shipped PEC audio from seconds 1–102 at seconds 107–208
@@ -37,12 +37,17 @@ Afferent signals retain one original rounded Bezier head per colour, overlapping
 each shaft along a distance-matched trajectory. Brain perimeter paths reach a shared
 junction before two branches draw together. Retina, optic nerve, chiasm, tract and
 nuclei use blue gradient pools midway between the cyan and deep-blue signal arrows at their spoken English onsets.
-`PUPILS_ADVANCED_AFFERENT_WORD_FRAMES` records those onsets. The original arrow
-clock is preserved: shafts and heads travel from frame 240 to 450, with the brain
+`PUPILS_ADVANCED_AFFERENT_WORD_FRAMES` records those onsets. The arrows begin
+in the illuminated retina on frame 246 and reach the brain on frame 450, with the brain
 branches completing at 550 and the final glow clearing at 562. The nuclei
 branches now draw in half their previous time (450–550 instead of 450–650). Cached English
 anatomy speech plays at 0.85x speed with pauses between names; the source utterance
 is retained and `afferentPacing` makes this edit reproducible without new TTS.
+The next scene uses the first scene's diagram with the light already on. The
+pink arrows from the Direct/Consensual diagram follow the yellow tracts
+from the first frame over the same 204 frames as the afferent arrows. The narration
+introduces the parasympathetic and sympathetic pathways and their roles in
+pupil constriction and dilation before the individual flowcharts.
 Reflex diagrams use
 the earlier full-art vertical wipes, keeping independent pupil and label timing.
 Flow signals run behind opaque boxes/text; original radial arrows trim inward for
@@ -54,7 +59,7 @@ cards' darkness. Each card returns to its original
 appearance over 12 frames when the signal reaches its upper edge. The eye cards
 follow their respective branch; source rounded corners are preserved.
 The third-nerve blink shows the original upper crease while resting and hides it
-only during frames 832–847, aligned to “eye movements”; lashes bend and flatten as it closes,
+for 15 frames at the start of “eye movements”. Lashes bend and flatten as it closes,
 while the iris and lower lid stay fixed. Flowchart connectors restore source magenta
 for the parasympathetic diagram and the original radial-arrow purple for the sympathetic diagram. The
 dilator preserves all sixteen original fibres and eight complete arrowheads, with
@@ -147,12 +152,12 @@ It uses the PEC Full Animation shell and shared player for quality, narration,
 captions, fullscreen, sharing, Back, progress and My Learning. English and Korean
 reuse the existing Advanced recordings; other app languages fall back to English.
 
-`node scripts/build-pupils-advanced-video.cjs` renders all fifteen shipped scenes
+`node scripts/build-pupils-advanced-video.cjs` renders all sixteen shipped scenes
 with pinned Lottie Canvas and decoded images at 30fps. The original 315-second
 scroll clock stays intact. Video delivery skips silent tails in the first pathway
 and near examination scenes, holding 1.5 seconds after visual completion without
-cutting either language's speech. With seven silent 3-second section cards the
-video lasts 318.1 seconds. `pupils-advanced-video-timeline.cjs` supplies one shared
+cutting the speech. With seven silent 3-second section cards the video lasts
+326.1 seconds. `pupils-advanced-video-timeline.cjs` supplies one shared
 edit list for frames, audio, captions and visual cues; `videoSceneCues` records it.
 Long
 English titles wrap centrally without squeezing the letters. The shorter reflex

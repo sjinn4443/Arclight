@@ -1,11 +1,18 @@
 // Teaching order follows the six rows of Cataract_Edit5.pdf, left to right.
-// The green column is cataract-compatible, not an all-normal column (row 5).
+// The centre column has row-specific findings. Row 5 shows lens opacity.
 export const CATARACT_SCROLL_PAGE = "cataractScrollPage";
 export const CATARACT_SCROLL_ROUTE = "cataractScroll";
 export const CATARACT_LANGUAGES = {
   en: { label: "English", voice: "en-GB-SoniaNeural" },
   ko: { label: "한국어", voice: "ko-KR-SunHiNeural" },
   ur: { label: "اردو", locale: "ur-PK", voice: "ur-PK-UzmaNeural" },
+  ny: {
+    label: "Chichewa",
+    locale: "ny-MW",
+    voice: "facebook/mms-tts-nya",
+    provider: "Meta MMS (local)",
+    trimEdgeSilenceDb: -42,
+  },
 };
 export const CATARACT_SECTIONS = [
   {
@@ -19,18 +26,18 @@ export const CATARACT_SECTIONS = [
     shortcut: "#/videos/visualAcuityExaminationScrollPage",
   },
   {
-    startIndex: 6,
+    startIndex: 8,
     title: "Front of Eye",
     shortcut: "#/videos/frontOfEyeExaminationScrollPage",
   },
-  { startIndex: 9, title: "Pupils", shortcut: "#/videos/pupilsPecScrollPage" },
+  { startIndex: 10, title: "Pupils", shortcut: "#/videos/pupilsPecScrollPage" },
   {
-    startIndex: 12,
+    startIndex: 13,
     title: "Fundal Reflex",
     shortcut: "#/videos/fundalReflexExaminationScrollPage",
   },
   {
-    startIndex: 15,
+    startIndex: 17,
     title: "Fundoscopy",
     shortcut: "#/videos/directOphthalmoscopyScrollPage",
   },
@@ -66,7 +73,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "history-cataract",
+    art: "history-gradual",
     seconds: 18,
     cues: [
       {
@@ -86,7 +93,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "history-refer",
+    art: "history-urgent",
     seconds: 18,
     cues: [
       {
@@ -106,8 +113,8 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "acuity-method",
-    seconds: 20,
+    art: "distance",
+    seconds: 8,
     cues: [
       {
         id: "acuity-distance",
@@ -116,24 +123,36 @@ export const CATARACT_STAGES = [
         en: "Measure distance vision in each eye separately, using the patient's usual distance glasses.",
         ko: "평소 원거리 안경을 착용한 상태에서 한쪽 눈씩 가리고 원거리 시력을 측정합니다.",
       },
+    ],
+  },
+  {
+    art: "pinhole",
+    seconds: 6,
+    cues: [
       {
         id: "acuity-method-pinhole",
-        offset: 8,
-        end: 14,
+        offset: 0,
+        end: 6,
         en: "If distance vision is reduced, repeat the test with a pinhole.",
         ko: "원거리 시력이 낮으면 핀홀을 통해 다시 측정합니다.",
       },
+    ],
+  },
+  {
+    art: "near",
+    seconds: 6,
+    cues: [
       {
         id: "acuity-near",
-        offset: 14,
-        end: 20,
+        offset: 0,
+        end: 6,
         en: "Then check near vision using a reading chart.",
         ko: "그다음 읽기 시력표로 근거리 시력을 확인합니다.",
       },
     ],
   },
   {
-    art: "acuity-cataract",
+    art: "acuity-results",
     seconds: 20,
     cues: [
       {
@@ -160,7 +179,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "acuity-refer",
+    art: "refraction",
     seconds: 18,
     cues: [
       {
@@ -180,7 +199,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "method-3",
+    art: "front-method",
     seconds: 16,
     cues: [
       {
@@ -200,8 +219,8 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "front-cataract",
-    seconds: 16,
+    art: "front-comparison",
+    seconds: 34,
     cues: [
       {
         id: "front-quiet",
@@ -217,30 +236,24 @@ export const CATARACT_STAGES = [
         en: "A normal-looking front of eye does not exclude a cataract behind the pupil.",
         ko: "눈 앞부분이 정상처럼 보여도 동공 뒤 수정체의 백내장을 배제할 수는 없습니다.",
       },
-    ],
-  },
-  {
-    art: "front-refer",
-    seconds: 18,
-    cues: [
       {
         id: "front-opacity",
-        offset: 0,
-        end: 9,
+        offset: 16,
+        end: 25,
         en: "A visible opacity or another abnormal appearance needs further eye assessment.",
         ko: "눈에 보이는 혼탁이나 다른 비정상 소견이 있으면 추가 안과 평가가 필요합니다.",
       },
       {
         id: "front-red",
-        offset: 9,
-        end: 18,
+        offset: 25,
+        end: 34,
         en: "A red or painful eye is not explained by an uncomplicated cataract. Assess and refer appropriately.",
         ko: "단순 백내장으로 충혈이나 통증을 설명해서는 안 됩니다. 상태를 평가하고 적절히 의뢰합니다.",
       },
     ],
   },
   {
-    art: "method-4",
+    art: "pupils-method",
     seconds: 18,
     cues: [
       {
@@ -260,7 +273,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "pupil-cataract",
+    art: "pupils-response",
     seconds: 16,
     cues: [
       {
@@ -280,7 +293,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "pupil-refer",
+    art: "pupils-comparison",
     seconds: 18,
     cues: [
       {
@@ -300,7 +313,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "method-5",
+    art: "reflex-method",
     seconds: 18,
     cues: [
       {
@@ -320,8 +333,8 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "reflex-cataract",
-    seconds: 22,
+    art: "reflex-opacity",
+    seconds: 11,
     cues: [
       {
         id: "reflex-opacity",
@@ -330,17 +343,23 @@ export const CATARACT_STAGES = [
         en: "This green-column example is an exception: it shows lens opacity and dark interruptions consistent with cataract, not normal findings.",
         ko: "초록 열의 이 예시는 예외입니다. 정상 소견이 아니라 백내장에 부합하는 수정체 혼탁과 검은 그림자를 보여 줍니다.",
       },
+    ],
+  },
+  {
+    art: "reflex-patterns",
+    seconds: 11,
+    cues: [
       {
         id: "reflex-patterns",
-        offset: 11,
-        end: 22,
+        offset: 0,
+        end: 11,
         en: "The appearance varies with the position and density of the opacity. Assess it together with the history and vision.",
         ko: "혼탁의 위치와 정도에 따라 모습이 달라집니다. 병력 및 시력과 함께 평가합니다.",
       },
     ],
   },
   {
-    art: "reflex-refer",
+    art: "reflex-comparison",
     seconds: 20,
     cues: [
       {
@@ -360,7 +379,7 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "method-6",
+    art: "fundoscopy-method",
     seconds: 18,
     cues: [
       {
@@ -380,8 +399,8 @@ export const CATARACT_STAGES = [
     ],
   },
   {
-    art: "fundus-cataract",
-    seconds: 18,
+    art: "fundoscopy-comparison",
+    seconds: 38,
     cues: [
       {
         id: "fundus-hazy",
@@ -397,23 +416,17 @@ export const CATARACT_STAGES = [
         en: "An obscured fundus does not prove that the retina is healthy. Consider specialist assessment.",
         ko: "안저가 가려져 보이지 않는다고 망막이 정상이라는 뜻은 아닙니다. 전문 평가를 고려합니다.",
       },
-    ],
-  },
-  {
-    art: "fundus-refer",
-    seconds: 20,
-    cues: [
       {
         id: "fundus-abnormal",
-        offset: 0,
-        end: 10,
+        offset: 18,
+        end: 28,
         en: "Visible abnormalities of the optic disc or retina may explain vision loss and require referral.",
         ko: "시신경유두나 망막의 이상은 시력 저하의 원인일 수 있으며 의뢰가 필요합니다.",
       },
       {
         id: "fundus-combine",
-        offset: 10,
-        end: 20,
+        offset: 28,
+        end: 38,
         en: "Combine all six parts of the examination. Cataract can coexist with other disease, so refer according to the complete findings.",
         ko: "여섯 단계의 검사 결과를 종합합니다. 백내장은 다른 질환과 함께 있을 수 있으므로 전체 소견에 따라 의뢰합니다.",
       },
@@ -460,7 +473,9 @@ export const CATARACT_SCROLL_CONFIG = {
   stageAspectRatioByFile: CATARACT_STAGES.map(() => "1169 / 1280"),
   sections: CATARACT_SECTIONS,
   getSectionShortcutLabel: (language) =>
-    ({ ko: "바로가기", ur: "رہنما کھولیں" })[language] || "Open guide",
+    ({ ko: "바로가기", ny: "Tsegulani malangizo", ur: "رہنما کھولیں" })[
+      language
+    ] || "Open guide",
   segmentRanges: CATARACT_STAGES.map((s) => [
     { from: 0, to: s.seconds * 30 - 1 },
   ]),

@@ -62,6 +62,16 @@
       "captions": "ur.vtt",
       "bytes": 941959,
       "sha256": "1d11281bf0591d183f35afb9c38978688b62c2e15d1806567047b2348d274500"
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "label": "Chichewa",
+      "voice": "facebook/mms-tts-nya",
+      "durationSeconds": 222.93,
+      "bytes": 350137,
+      "sha256": "73f03fbeaa7665aed6941c4cedc7948eb11c3edac1933ce90c20cc1198226646",
+      "modelLicense": "CC-BY-NC-4.0"
     }
   }
 }

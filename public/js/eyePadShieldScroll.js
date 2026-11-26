@@ -12,6 +12,7 @@ export const EYE_PAD_SHIELD_LANGUAGES = {
   yo: "Yorùbá",
   ig: "Igbo",
   ur: "اردو",
+  ny: "Chichewa",
 };
 export const EYE_PAD_SHIELD_SECTIONS = [
   { startIndex: 0, title: "Preparation" },

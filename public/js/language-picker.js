@@ -12,63 +12,6 @@
   let pickerOptionsHydrated = false;
   currentEl?.setAttribute("data-i18n-skip", "true");
   listEl?.setAttribute("data-i18n-skip", "true");
-  const nativeByCode = {
-    lg: "Luganda",
-    en: "English",
-    am: "\u12A0\u121B\u122D\u129B",
-    ar: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
-    bn: "\u09AC\u09BE\u0982\u09B2\u09BE",
-    ny: "Chinyanja",
-    zh: "\u4E2D\u6587",
-    fr: "Fran\u00E7ais",
-    ha: "Hausa",
-    hi: "\u0939\u093F\u0928\u094D\u0926\u0940",
-    ne: "\u0928\u0947\u092A\u093E\u0932\u0940",
-    ig: "\u00CDgb\u00F2",
-    id: "Bahasa Indonesia",
-    rw: "Ikinyarwanda",
-    ko: "\uD55C\uAD6D\uC5B4",
-    te: "\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41",
-    ln: "Ling\u00E1la",
-    fa: "\u0641\u0627\u0631\u0633\u06CC",
-    pt: "Portugu\u00EAs",
-    sn: "ChiShona",
-    es: "Espa\u00F1ol",
-    sw: "Kiswahili",
-    ur: "\u0627\u0631\u062F\u0648",
-    yo: "Yor\u00F9b\u00E1",
-    zu: "isiZulu",
-    lo: "ລາວ",
-  };
-  const englishByCode = {
-    lg: "Luganda",
-    en: "English",
-    am: "Amharic",
-    ar: "Arabic",
-    bn: "Bangla",
-    ne: "Nepali",
-    ny: "Nyanja",
-    zh: "Chinese",
-    fr: "French",
-    ha: "Hausa",
-    hi: "Hindi",
-    ig: "Igbo",
-    id: "Indonesian",
-    rw: "Kinyarwanda",
-    ko: "Korean",
-    te: "Telugu",
-    ln: "Lingala",
-    fa: "Persian",
-    pt: "Portuguese",
-    sn: "Shona",
-    es: "Spanish",
-    sw: "Swahili",
-    ur: "Urdu",
-    yo: "Yoruba",
-    zu: "Zulu",
-    lo: "Lao",
-  };
-
   function getCurrentLanguageCode() {
     return (
       window.I18N?.getLanguage?.() ||
@@ -89,14 +32,6 @@
   function syncPickerSelection(code = getCurrentLanguageCode()) {
     syncSelectToLanguage(selectEl, code);
     syncSelectToLanguage(document.getElementById("prefLang"), code);
-  }
-
-  function getBarLabelForOption(opt) {
-    if (!opt) return nativeByCode[DEFAULT_LANGUAGE_CODE] || "English";
-    const code = String(opt.value || "").trim();
-    const english = (englishByCode[code] || opt.textContent || "").trim();
-    const native = (opt.getAttribute("data-native") || "").trim();
-    return nativeByCode[code] || native || english || "English";
   }
 
   function markSelectedLanguage(code = getCurrentLanguageCode()) {
@@ -205,16 +140,14 @@
     // Prefer current selection from #prefLang if present; else from hidden select.
     const installSelect = document.getElementById("prefLang");
     const src = installSelect || selectEl;
-    let label = nativeByCode[getCurrentLanguageCode()] || "English";
-    if (src) {
-      const opt = src.options[src.selectedIndex] || src.options[0];
-      if (opt) label = getBarLabelForOption(opt);
-    }
-    currentEl.textContent = label;
+    const option = src?.selectedOptions[0];
+    currentEl.lang = option?.value || DEFAULT_LANGUAGE_CODE;
+    currentEl.dir = "auto";
+    currentEl.textContent =
+      (option?.dataset.native || option?.textContent)?.trim() || "English";
     markSelectedLanguage(src?.value || getCurrentLanguageCode());
   }
 
-  // Build two-column list from Language Install select, falling back to hidden select
   function buildListFromInstallSelect() {
     const installSelect = document.getElementById("prefLang");
     const source = installSelect || selectEl;
@@ -224,20 +157,6 @@
     listEl.textContent = "";
     [...source.options].forEach((opt) => {
       const code = String(opt.value || "").trim();
-      const rawEnglish = (opt.textContent || "").trim();
-      const english = (englishByCode[code] || rawEnglish).trim();
-      const attrNative = (opt.getAttribute("data-native") || "").trim();
-      const rawEnglishNorm = rawEnglish.toLocaleLowerCase();
-      const englishNorm = english.toLocaleLowerCase();
-      const nativeAttrNorm = attrNative.toLocaleLowerCase();
-      const nativeLooksFallback =
-        !attrNative ||
-        nativeAttrNorm === rawEnglishNorm ||
-        nativeAttrNorm === englishNorm;
-      const native = (
-        nativeLooksFallback ? nativeByCode[code] || english : attrNative
-      ).trim();
-
       const li = document.createElement("li");
       li.className = "lang-install__item";
       li.setAttribute("role", "option");
@@ -248,16 +167,9 @@
         code === getCurrentLanguageCode() ? "true" : "false",
       );
       li.dataset.code = code;
-      const en = document.createElement("span");
-      en.className = "lang-install__item-en";
-      en.setAttribute("data-i18n-skip", "true");
-      en.textContent = english;
-      const nativeEl = document.createElement("span");
-      nativeEl.className = "lang-install__item-native";
-      nativeEl.setAttribute("data-i18n-skip", "true");
-      nativeEl.textContent = native;
-      li.appendChild(en);
-      li.appendChild(nativeEl);
+      li.lang = code;
+      li.dir = "auto";
+      li.textContent = (opt.dataset.native || opt.textContent).trim();
 
       const choose = () => applyLanguage(code, installSelect);
       li.addEventListener("click", choose);

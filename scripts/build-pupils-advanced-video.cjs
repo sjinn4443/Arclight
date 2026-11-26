@@ -171,6 +171,7 @@ async function main() {
     PUPILS_ADVANCED_SCROLL_CONFIG: config,
     PUPILS_ADVANCED_TITLE_TRANSLATIONS,
     PUPILS_ADVANCED_URDU_TITLES,
+    PUPILS_ADVANCED_CHICHEWA_TITLES,
   } = await import(
     pathToFileURL(path.join(publicDir, "js/pupilsAdvancedScroll.js"))
   );
@@ -180,6 +181,7 @@ async function main() {
       {
         ko: PUPILS_ADVANCED_TITLE_TRANSLATIONS[i],
         ur: PUPILS_ADVANCED_URDU_TITLES[i],
+        ny: PUPILS_ADVANCED_CHICHEWA_TITLES[i],
       },
     ]),
   );

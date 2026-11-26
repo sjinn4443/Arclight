@@ -127,9 +127,7 @@ test("Observation is one four-panel scene without eye circles", () => {
       layer(0, `observation-label-${panel}`).ks.o.k,
     );
   }
-  expect(
-    stages[0].cues.every((cue) => !/drooping|eyelid position/.test(cue.en)),
-  ).toBe(true);
+  expect(stages[0].cues[1].en).toContain("drooping eyelid");
 });
 
 test("the real finger presses and the beam brightens", () => {

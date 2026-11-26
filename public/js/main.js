@@ -336,6 +336,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (routeName === "directOphthalmoscopyMobile") {
+      const { initializeDirectOphthalmoscopyBook } =
+        await import("./directOphthalmoscopyBook.js");
+      initializeDirectOphthalmoscopyBook();
+      return;
+    }
+
     if (routeName === "frontOfEyePdfTest") {
       const { initializeFrontOfEyePdfTest } =
         await import("./frontOfEyePdfTest.js");

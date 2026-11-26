@@ -74,6 +74,13 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "pronunciationGuide": [
@@ -2194,6 +2201,182 @@
         "end": 274.27,
         "text": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔"
       }
+    ],
+    "ny": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Sambani m'manja ndi kuvala zipangizo zodzitetezera."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Konzani Arclight. Sankhani kuwala kwamphamvu kwambiri. Kwezani zonyamulira magalasi zonse ziwiri mpaka pamwamba. Gwiritsani ntchito chipinda chabata cha kuwala kochepa."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Yandikitsani bowo loyang'aniramo pafupi ndi diso lanu."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Musaunikire m'diso lanu, ndipo musagwire chipangizocho cham'mbali."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "Mwana wobadwa kumene akulungidwe bwino ndi nsalu."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Pemphani kholo kuti ligwire khanda lokulirapo,"
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "ndipo mwana amene amakhala bwinobwino akhoza kukhala yekha."
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Yambani patali pafupifupi utali wa mkono."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Yendani pang'ono chammbali ndi chammbali. Yandikirani ngati mukufuna kuona bwino."
+      },
+      {
+        "id": "examination-03",
+        "start": 71.4,
+        "end": 87.4,
+        "text": "Mukakhala patali utali wa mkono, pemphani mwanayo kuti akuyang'aneni. Yezeni maso onse awiri nthawi imodzi. Maonekedwe amasiyanasiyana malinga ndi mtunda wanu ndi kumene mwanayo akuyang'ana."
+      },
+      {
+        "id": "examination-04",
+        "start": 87.4,
+        "end": 99.4,
+        "text": "Kuwala kobwerera kuchokera kumbuyo kwa maso awiri kukhale kofanana pa kuwala kwake ndi mtundu wake. Kusiyana kwa mtundu kapena mphamvu ya kuwala, kapena kusapezeka kwa kuwalako, ndi kwachilendo. Ana amenewa atumizidwe kuti akayesedwe."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Mtundu wabwinobwino wa kuwala kobwerera umasiyana ndi mtundu wa retina. Ungakhale wachikasu wosakanikirana ndi woyera, wabuluu pang'ono, walalanje wofiira kapena walalanje wachikasu."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Maonekedwe onsewa ndi abwinobwino kwa ana amenewa."
+      },
+      {
+        "id": "eyes-open-01",
+        "start": 118.4,
+        "end": 129.4,
+        "text": "Pemphani kholo kuti ligwire bwino mwana wobadwa kumene, atakulungidwa ndi nsalu, manja ali mkati."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 144.4,
+        "text": "Ngati maso ali otseguka, yesani kuona kuwala kobwerera m'maso onse awiri nthawi imodzi popanda kukhudza khandalo."
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Ngati khandalo lagona, yesetsani kuti musalidzutse."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Lungani khandalo ndi nsalu, manja ali mkati."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Tsegulani ndi kuyeza diso limodzi pa nthawi mofatsa. Chitani modekha, mofatsa ndi moleza mtima."
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 180,
+        "text": "Ndi chizindikiro chabwino ngati mtundu ndi mphamvu ya kuwala zikufanana."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "M'mwezi woyamba maso amatha kuyang'ana mbali zosiyana kwa kanthawi. Vutoli nthawi zambiri limatha pasanathe miyezi itatu. Ngati likupitirirabe mwana atakwanitsa miyezi itatu, mutumizeni kuti akayesedwe."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Kusiyana kwa mtundu, kapena kuwala kobwerera kusowa pang'ono kapena konse, n'kwachilendo ndipo kumafunika kuyezedwanso."
+      },
+      {
+        "id": "unclear-findings-01",
+        "start": 211.35,
+        "end": 220.35,
+        "text": "Ngati zomwe mwaona sizikumveka bwino, tsatirani njira zitatu zotsatirazi."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Choyamba, yerekezerani kuwala kobwerera kwa khandalo ndi kwa kholo lake. Kuyenera kuoneka kofanana."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Chachiwiri, ngati simukutsimikizabe, pemphani mnzanu wa kuntchito kuti aonenso."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Chachitatu, ngati palibe mnzanu, pemphani chilolezo,"
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Lumikizani Arclight ku kamera ya foni ndipo jambulani kuwala kobwererako."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Tumizani vidiyoyi motetezeka kuti munthu wina aonenso."
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "Thokozani kholo. Fotokozani zomwe mwaona ndi zomwe zichitike pambuyo pake."
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.27,
+        "text": "Sambaninso m'manja. Apa kuyeza kuwala kobwerera kuchokera kumbuyo kwa diso kwatha."
+      }
     ]
   },
   "timedAudioCues": {
@@ -4090,6 +4273,224 @@
         "text": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔",
         "ttsText": "دوبارہ ہاتھ دھوئیں۔ قعرِ چشم کے انعکاس کا معائنہ مکمل ہے۔"
       }
+    ],
+    "ny": [
+      {
+        "id": "preparation-01",
+        "start": 4.2,
+        "end": 9.2,
+        "text": "Sambani m'manja ndi kuvala zipangizo zodzitetezera."
+      },
+      {
+        "id": "preparation-02",
+        "start": 9.2,
+        "end": 19.2,
+        "text": "Konzani Arclight. Sankhani kuwala kwamphamvu kwambiri. Kwezani zonyamulira magalasi zonse ziwiri mpaka pamwamba. Gwiritsani ntchito chipinda chabata cha kuwala kochepa."
+      },
+      {
+        "id": "preparation-03a",
+        "start": 19.2,
+        "end": 28.2,
+        "text": "Yandikitsani bowo loyang'aniramo pafupi ndi diso lanu."
+      },
+      {
+        "id": "preparation-03b",
+        "start": 28.2,
+        "end": 35.2,
+        "text": "Musaunikire m'diso lanu, ndipo musagwire chipangizocho cham'mbali."
+      },
+      {
+        "id": "preparation-04a",
+        "start": 36.2,
+        "end": 44.2,
+        "text": "Mwana wobadwa kumene akulungidwe bwino ndi nsalu."
+      },
+      {
+        "id": "preparation-04b",
+        "start": 44.2,
+        "end": 48.2,
+        "text": "Pemphani kholo kuti ligwire khanda lokulirapo,"
+      },
+      {
+        "id": "preparation-04c",
+        "start": 48.2,
+        "end": 52.2,
+        "text": "ndipo mwana amene amakhala bwinobwino akhoza kukhala yekha."
+      },
+      {
+        "id": "examination-01",
+        "start": 55.8,
+        "end": 59.8,
+        "text": "Yambani patali pafupifupi utali wa mkono."
+      },
+      {
+        "id": "examination-02",
+        "start": 60.4,
+        "end": 71.4,
+        "text": "Yendani pang'ono chammbali ndi chammbali. Yandikirani ngati mukufuna kuona bwino."
+      },
+      {
+        "id": "examination-03a1",
+        "start": 71.4,
+        "end": 75.4,
+        "text": "Mukakhala patali utali wa mkono, pemphani mwanayo kuti akuyang'aneni."
+      },
+      {
+        "id": "examination-03a2",
+        "start": 75.4,
+        "end": 78.4,
+        "text": "Yezeni maso onse awiri nthawi imodzi."
+      },
+      {
+        "id": "examination-03b",
+        "start": 78.4,
+        "end": 87.4,
+        "text": "Maonekedwe amasiyanasiyana malinga ndi mtunda wanu ndi kumene mwanayo akuyang'ana."
+      },
+      {
+        "id": "examination-04a",
+        "start": 87.4,
+        "end": 91.9,
+        "text": "Kuwala kobwerera kuchokera kumbuyo kwa maso awiri kukhale kofanana pa kuwala kwake ndi mtundu wake."
+      },
+      {
+        "id": "examination-04b",
+        "start": 91.9,
+        "end": 96.9,
+        "text": "Kusiyana kwa mtundu kapena mphamvu ya kuwala, kapena kusapezeka kwa kuwalako, ndi kwachilendo."
+      },
+      {
+        "id": "examination-04c",
+        "start": 96.9,
+        "end": 99.4,
+        "text": "Ana amenewa atumizidwe kuti akayesedwe."
+      },
+      {
+        "id": "examination-05a",
+        "start": 99.4,
+        "end": 109.1,
+        "text": "Mtundu wabwinobwino wa kuwala kobwerera umasiyana ndi mtundu wa retina. Ungakhale wachikasu wosakanikirana ndi woyera, wabuluu pang'ono, walalanje wofiira kapena walalanje wachikasu."
+      },
+      {
+        "id": "examination-05b",
+        "start": 109.1,
+        "end": 114.35,
+        "text": "Maonekedwe onsewa ndi abwinobwino kwa ana amenewa."
+      },
+      {
+        "id": "eyes-open-01a",
+        "start": 118.4,
+        "end": 125.4,
+        "text": "Pemphani kholo kuti ligwire bwino mwana wobadwa kumene,"
+      },
+      {
+        "id": "eyes-open-01b",
+        "start": 125.4,
+        "end": 129.4,
+        "text": "atakulungidwa ndi nsalu, manja ali mkati."
+      },
+      {
+        "id": "eyes-open-02",
+        "start": 129.4,
+        "end": 135.4,
+        "text": "Ngati maso ali otseguka, yesani kuona kuwala kobwerera m'maso onse awiri nthawi imodzi"
+      },
+      {
+        "id": "eyes-open-03",
+        "start": 136.4,
+        "end": 144.4,
+        "text": "popanda kukhudza khandalo."
+      },
+      {
+        "id": "eyes-closed-01",
+        "start": 150,
+        "end": 154.5,
+        "text": "Ngati khandalo lagona, yesetsani kuti musalidzutse."
+      },
+      {
+        "id": "eyes-closed-02",
+        "start": 154.5,
+        "end": 158.2,
+        "text": "Lungani khandalo ndi nsalu, manja ali mkati."
+      },
+      {
+        "id": "eyes-closed-03",
+        "start": 158.2,
+        "end": 170.4,
+        "text": "Tsegulani ndi kuyeza diso limodzi pa nthawi mofatsa. Chitani modekha, mofatsa ndi moleza mtima."
+      },
+      {
+        "id": "possible-findings-02",
+        "start": 175.2,
+        "end": 178.95,
+        "text": "Ndi chizindikiro chabwino ngati mtundu ndi mphamvu ya kuwala zikufanana."
+      },
+      {
+        "id": "possible-findings-01",
+        "start": 180,
+        "end": 192,
+        "text": "M'mwezi woyamba maso amatha kuyang'ana mbali zosiyana kwa kanthawi. Vutoli nthawi zambiri limatha pasanathe miyezi itatu. Ngati likupitirirabe mwana atakwanitsa miyezi itatu, mutumizeni kuti akayesedwe."
+      },
+      {
+        "id": "possible-findings-03",
+        "start": 192,
+        "end": 207,
+        "text": "Kusiyana kwa mtundu, kapena kuwala kobwerera kusowa pang'ono kapena konse, n'kwachilendo ndipo kumafunika kuyezedwanso."
+      },
+      {
+        "id": "unclear-findings-01a",
+        "start": 211.35,
+        "end": 216.35,
+        "text": "Ngati zomwe mwaona sizikumveka bwino,"
+      },
+      {
+        "id": "unclear-findings-01b",
+        "start": 216.35,
+        "end": 220.35,
+        "text": "tsatirani njira zitatu zotsatirazi."
+      },
+      {
+        "id": "unclear-findings-02",
+        "start": 220.35,
+        "end": 230.35,
+        "text": "Choyamba, yerekezerani kuwala kobwerera kwa khandalo ndi kwa kholo lake. Kuyenera kuoneka kofanana."
+      },
+      {
+        "id": "unclear-findings-03",
+        "start": 230.35,
+        "end": 237.35,
+        "text": "Chachiwiri, ngati simukutsimikizabe, pemphani mnzanu wa kuntchito kuti aonenso."
+      },
+      {
+        "id": "unclear-findings-04",
+        "start": 237.35,
+        "end": 246.35,
+        "text": "Chachitatu, ngati palibe mnzanu, pemphani chilolezo,"
+      },
+      {
+        "id": "unclear-findings-05a",
+        "start": 246.35,
+        "end": 254.35,
+        "text": "Lumikizani Arclight ku kamera ya foni ndipo jambulani kuwala kobwererako."
+      },
+      {
+        "id": "unclear-findings-05b",
+        "start": 254.35,
+        "end": 260.35,
+        "text": "Tumizani vidiyoyi motetezeka kuti munthu wina aonenso."
+      },
+      {
+        "id": "after-examination-01",
+        "start": 264.3,
+        "end": 268.3,
+        "text": "Thokozani kholo. Fotokozani zomwe mwaona ndi zomwe zichitike pambuyo pake."
+      },
+      {
+        "id": "after-examination-02",
+        "start": 268.3,
+        "end": 274.2,
+        "text": "Sambaninso m'manja. Apa kuyeza kuwala kobwerera kuchokera kumbuyo kwa diso kwatha."
+      }
     ]
   },
   "cues": [
@@ -4109,7 +4510,8 @@
       "ha": "Wanke hannuwanka, ka sa kayan kariya.",
       "yo": "Fọ ọwọ́ rẹ, kí o sì wọ ohun èlò ààbò.",
       "ig": "Saa aka gị, yirikwa ngwa nchebe.",
-      "ur": "ہاتھ دھوئیں اور حفاظتی سامان پہنیں۔"
+      "ur": "ہاتھ دھوئیں اور حفاظتی سامان پہنیں۔",
+      "ny": "Sambani m'manja ndi kuvala zipangizo zodzitetezera."
     },
     {
       "id": "preparation-02",
@@ -4132,7 +4534,8 @@
       "ha": "A ɗaki mai shiru da duhu, zaɓi haske mafi ƙarfi na Arclight. Tura maƙallan ruwan tabarau biyu sama gaba ɗaya.",
       "yo": "Mú Arclight sílẹ̀ ní yàrá tó dákẹ́, tí ìmọ́lẹ̀ rẹ̀ kéré. Yan ìmọ́lẹ̀ tó lágbára jù, kí o sì gbé àwọn àgbékalẹ̀ lẹ́ńsì méjèèjì sókè pátápátá.",
       "ig": "Kwadebe Arclight n’ụlọ dị jụụ, ìhè ya pere mpe. Họrọ ìhè kacha ike, bugokwa ihe njide lens abụọ elu kpamkpam.",
-      "ur": "Arclight تیار کریں: روشن ترین لائٹ سیٹنگ کا انتخاب کریں، دونوں لینز ریک کو پوری طرح اوپر رکھیں، اور ایک پرسکون، مدھم کمرے کا استعمال کریں۔"
+      "ur": "Arclight تیار کریں: روشن ترین لائٹ سیٹنگ کا انتخاب کریں، دونوں لینز ریک کو پوری طرح اوپر رکھیں، اور ایک پرسکون، مدھم کمرے کا استعمال کریں۔",
+      "ny": "Konzani Arclight. Sankhani kuwala kwamphamvu kwambiri. Kwezani zonyamulira magalasi zonse ziwiri mpaka pamwamba. Gwiritsani ntchito chipinda chabata cha kuwala kochepa."
     },
     {
       "id": "preparation-03",
@@ -4155,7 +4558,8 @@
       "ha": "Kawo ramin dubawa kusa da idonka. Kada ka haska idonka, ko ka riƙe na’urar a kwance.",
       "yo": "Mú ihò ìwòran sún mọ́ ojú rẹ. Má tan ìmọ́lẹ̀ sí ojú ara rẹ. Má sì di ẹ̀rọ náà ní ẹ̀gbẹ́.",
       "ig": "Weta oghere nlele nso anya gị. Atụnyela ìhè n’anya gị. Ejikwala ngwaọrụ ahụ n’akụkụ.",
-      "ur": "بصری سوراخ کو اپنی آنکھ کے قریب لائیں۔ روشنی کو اپنی آنکھوں میں مت چمکائیں، یا اسے ایک طرف رکھیں۔"
+      "ur": "بصری سوراخ کو اپنی آنکھ کے قریب لائیں۔ روشنی کو اپنی آنکھوں میں مت چمکائیں، یا اسے ایک طرف رکھیں۔",
+      "ny": "Yandikitsani bowo loyang'aniramo pafupi ndi diso lanu. Musaunikire m'diso lanu, ndipo musagwire chipangizocho cham'mbali."
     },
     {
       "id": "preparation-04",
@@ -4173,7 +4577,8 @@
       "ha": "A naɗe jariri cikin zane lafiya. Iyaye su riƙe jariri mai ɗan girma. Yaron da ke iya zama da kyau zai iya zama shi kaɗai.",
       "yo": "Fi aṣọ di ọmọ tuntun ní àìléwu. Jẹ́ kí òbí gbé ọmọ tó ti dàgbà díẹ̀. Ọmọ tó lè jókòó dáadáa lè jókòó fúnra rẹ̀.",
       "ig": "Kechie nwa amụrụ ọhụrụ n’ákwà n’enweghị nsogbu. Gwa nne ma ọ bụ nna ka o jide nwa toro ntakịrị. Nwa nwere ike ịnọdụ nke ọma nwere ike ịnọdụ naanị ya.",
-      "ur": "ایک نوزائیدہ کو محفوظ طریقے سے لپیٹنا چاہئے۔ والدین سے ایک بڑے بچے کو پکڑنے کو کہیں، اور جو بچہ مستقل طور پر بیٹھ سکتا ہے وہ خود ہی بیٹھ سکتا ہے۔"
+      "ur": "ایک نوزائیدہ کو محفوظ طریقے سے لپیٹنا چاہئے۔ والدین سے ایک بڑے بچے کو پکڑنے کو کہیں، اور جو بچہ مستقل طور پر بیٹھ سکتا ہے وہ خود ہی بیٹھ سکتا ہے۔",
+      "ny": "Mwana wobadwa kumene akulungidwe bwino ndi nsalu. Pemphani kholo kuti ligwire khanda lokulirapo, ndipo mwana amene amakhala bwinobwino akhoza kukhala yekha."
     },
     {
       "id": "examination-01",
@@ -4191,7 +4596,8 @@
       "ha": "Fara daga nisan tsawon hannu.",
       "yo": "Bẹ̀rẹ̀ láti ìjìnnà gígùn apá.",
       "ig": "Malite n’ebe dị ka ogologo aka.",
-      "ur": "بازو کی لمبائی سے شروع کریں۔"
+      "ur": "بازو کی لمبائی سے شروع کریں۔",
+      "ny": "Yambani patali pafupifupi utali wa mkono."
     },
     {
       "id": "examination-02",
@@ -4209,7 +4615,8 @@
       "ha": "Matsa kaɗan daga gefe zuwa gefe. Matso kusa idan kana buƙatar gani dalla-dalla.",
       "yo": "Rìn díẹ̀ sí ẹ̀gbẹ́ méjèèjì. Sún mọ́ ọn bí o bá nílò láti rí dáadáa sí i.",
       "ig": "Gaa ntakịrị n’akụkụ abụọ. Bịaruo nso ma ọ bụrụ na ị chọrọ ịhụ nke ọma.",
-      "ur": "تھوڑا سا ایک طرف سے دوسری طرف بڑھیں، اور اگر آپ کو مزید تفصیلی نظارے کی ضرورت ہو تو قریب جائیں۔"
+      "ur": "تھوڑا سا ایک طرف سے دوسری طرف بڑھیں، اور اگر آپ کو مزید تفصیلی نظارے کی ضرورت ہو تو قریب جائیں۔",
+      "ny": "Yendani pang'ono chammbali ndi chammbali. Yandikirani ngati mukufuna kuona bwino."
     },
     {
       "id": "examination-03",
@@ -4227,7 +4634,8 @@
       "ha": "Daga nisan hannu, ka sa yaron ya dube ka. Duba idanu biyu tare. Yanayin hasken zai bambanta da nisa da kuma inda yaron yake kallo.",
       "yo": "Ní ìjìnnà gígùn apá, sọ fún ọmọ láti wò ọ́. Ṣàyẹ̀wò ojú méjèèjì lẹ́ẹ̀kan náà. Ìrísí yóò yàtọ̀ gẹ́gẹ́ bí ìjìnnà àti ibi tí ọmọ ń wò.",
       "ig": "N’ebe dị ka ogologo aka, gwa nwa ka o lee gị anya. Nyochaa anya abụọ ọnụ. Ihe ị na-ahụ na-agbanwe dabere n’ebe ị nọ na ebe nwa na-ele.",
-      "ur": "تقریباً بازو کی لمبائی پر، بچے کو اپنی طرف دیکھنے کی ترغیب دیں۔ ایک ہی وقت میں دونوں آنکھوں کا معائنہ کریں۔ ظاہری شکل اس بات پر منحصر ہوگی کہ آپ کتنے دور ہیں اور بچہ کہاں دیکھ رہا ہے۔"
+      "ur": "تقریباً بازو کی لمبائی پر، بچے کو اپنی طرف دیکھنے کی ترغیب دیں۔ ایک ہی وقت میں دونوں آنکھوں کا معائنہ کریں۔ ظاہری شکل اس بات پر منحصر ہوگی کہ آپ کتنے دور ہیں اور بچہ کہاں دیکھ رہا ہے۔",
+      "ny": "Mukakhala patali utali wa mkono, pemphani mwanayo kuti akuyang'aneni. Yezeni maso onse awiri nthawi imodzi. Maonekedwe amasiyanasiyana malinga ndi mtunda wanu ndi kumene mwanayo akuyang'ana."
     },
     {
       "id": "examination-04",
@@ -4245,7 +4653,8 @@
       "ha": "Launi da ƙarfin hasken da ke dawowa daga idanu biyu su zama iri ɗaya. Bambanci ko rashin hasken ba al’ada ba ne. Tura yaron don ƙarin bincike.",
       "yo": "Àwọ̀ àti ìmọ́lẹ̀ ìtànṣán láti ojú méjèèjì gbọ́dọ̀ jọra. Ìyàtọ̀ tàbí àìsí ìtànṣán kò bójú mu. Rán ọmọ lọ fún àyẹ̀wò síwájú.",
       "ig": "Agba na ike ìhè na-alọghachi n’anya abụọ kwesịrị ịdị otu. Ọdịiche ma ọ bụ enweghị ìhè abụghị ihe nkịtị. Ziga nwa maka nyocha ọzọ.",
-      "ur": "دونوں انعکاس رنگ اور چمک میں یکساں ہوں۔ رنگ یا چمک کا فرق یا انعکاس کا نہ دکھنا غیر معمولی ہے۔ ایسے مریض ریفر کریں۔"
+      "ur": "دونوں انعکاس رنگ اور چمک میں یکساں ہوں۔ رنگ یا چمک کا فرق یا انعکاس کا نہ دکھنا غیر معمولی ہے۔ ایسے مریض ریفر کریں۔",
+      "ny": "Kuwala kobwerera kuchokera kumbuyo kwa maso awiri kukhale kofanana pa kuwala kwake ndi mtundu wake. Kusiyana kwa mtundu kapena mphamvu ya kuwala, kapena kusapezeka kwa kuwalako, ndi kwachilendo. Ana amenewa atumizidwe kuti akayesedwe."
     },
     {
       "id": "examination-05",
@@ -4263,7 +4672,8 @@
       "ha": "Launin haske ya danganta da launin retina. Yana iya zama fari-rawaya, shuɗi, ja-lemo, ko rawaya-lemo. Waɗannan duk yanayi ne na lafiya ga yaran nan.",
       "yo": "Àwọ̀ ìtànṣán déédéé sinmi lórí àwọ̀ retina. Ó lè jẹ́ ofeefee-funfun, búlúù, ọsàn-pupa, tàbí ọsàn-ofeefee. Gbogbo ìrísí wọ̀nyí dára fún àwọn ọmọ wọ̀nyí.",
       "ig": "Agba ìhè nkịtị dabere n’agba retina. Ọ nwere ike ịbụ odo-ọcha, anụnụ anụnụ, oroma-uhie, ma ọ bụ oroma-odo. Ihe ndị a niile bụ ihe nkịtị n’ụmụaka ndị a.",
-      "ur": "ریٹینل پگمنٹیشن کے ساتھ عام اضطراری رنگ مختلف ہوتا ہے۔ یہ پیلا سفید یا نیلا، نارنجی سرخ یا نارنجی پیلا ظاہر ہو سکتا ہے۔ یہ سب ان بچوں کے لیے صحت مند اور نارمل صورتیں ہیں۔"
+      "ur": "ریٹینل پگمنٹیشن کے ساتھ عام اضطراری رنگ مختلف ہوتا ہے۔ یہ پیلا سفید یا نیلا، نارنجی سرخ یا نارنجی پیلا ظاہر ہو سکتا ہے۔ یہ سب ان بچوں کے لیے صحت مند اور نارمل صورتیں ہیں۔",
+      "ny": "Mtundu wabwinobwino wa kuwala kobwerera umasiyana ndi mtundu wa retina. Ungakhale wachikasu wosakanikirana ndi woyera, wabuluu pang'ono, walalanje wofiira kapena walalanje wachikasu. Maonekedwe onsewa ndi abwinobwino kwa ana amenewa."
     },
     {
       "id": "eyes-open-01",
@@ -4281,7 +4691,8 @@
       "ha": "Iyaye su riƙe jaririn da aka naɗe lafiya, hannuwansa suna cikin zane.",
       "yo": "Sọ fún òbí kí ó gbé ọmọ tuntun dáadáa, pẹ̀lú aṣọ yí i ká àti apá méjèèjì nínú rẹ̀.",
       "ig": "Gwa nne ma ọ bụ nna ka o jide nwa ọhụrụ nke ọma, kechie ya n’ákwà ka aka ya dị n’ime.",
-      "ur": "والدین سے کہو کہ وہ نوزائیدہ کو محفوظ طریقے سے پکڑے، بازوؤں میں لپٹے۔"
+      "ur": "والدین سے کہو کہ وہ نوزائیدہ کو محفوظ طریقے سے پکڑے، بازوؤں میں لپٹے۔",
+      "ny": "Pemphani kholo kuti ligwire bwino mwana wobadwa kumene, atakulungidwa ndi nsalu, manja ali mkati."
     },
     {
       "id": "eyes-open-02",
@@ -4299,7 +4710,8 @@
       "ha": "Idan idanu suna buɗe, duba hasken da ke dawowa daga idanu biyu tare, ba tare da taɓa jaririn ba.",
       "yo": "Bí ojú bá ṣí, wo ìtànṣán láti ojú méjèèjì lẹ́ẹ̀kan náà láìfọwọ́ kan ọmọ.",
       "ig": "Ọ bụrụ na anya mepere emepe, lee ìhè na-alọghachi n’anya abụọ ọnụ, emetụghị nwa ahụ aka.",
-      "ur": "آنکھیں کھلی ہوں تو بچے کو چھوئے بغیر دونوں آنکھوں کا انعکاس ساتھ دیکھیں۔"
+      "ur": "آنکھیں کھلی ہوں تو بچے کو چھوئے بغیر دونوں آنکھوں کا انعکاس ساتھ دیکھیں۔",
+      "ny": "Ngati maso ali otseguka, yesani kuona kuwala kobwerera m'maso onse awiri nthawi imodzi,"
     },
     {
       "id": "eyes-open-03",
@@ -4317,7 +4729,8 @@
       "ha": "ba tare da taba jaririn ba.\nSaukewa:",
       "yo": "lai kan omo.",
       "ig": "na-emetụghị nwa ọhụrụ aka.",
-      "ur": "بچے کو چھونے کے بغیر."
+      "ur": "بچے کو چھونے کے بغیر.",
+      "ny": "popanda kukhudza khandalo."
     },
     {
       "id": "eyes-closed-01",
@@ -4335,7 +4748,8 @@
       "ha": "Idan jariri yana barci, kada ka tashe shi.",
       "yo": "Bí ọmọ bá ń sùn, má jí i.",
       "ig": "Ọ bụrụ na nwa na-ehi ụra, akpọtela ya.",
-      "ur": "اگر بچہ سو رہا ہے تو اسے جگانے کی کوشش نہ کریں۔"
+      "ur": "اگر بچہ سو رہا ہے تو اسے جگانے کی کوشش نہ کریں۔",
+      "ny": "Ngati khandalo lagona, yesetsani kuti musalidzutse."
     },
     {
       "id": "eyes-closed-02",
@@ -4353,7 +4767,8 @@
       "ha": "Naɗe shi, hannuwansa a ciki.",
       "yo": "Fi aṣọ yí i ká, kí apá wà nínú rẹ̀.",
       "ig": "Kechie ya, ka aka ya dị n’ime.",
-      "ur": "بازوؤں کے ساتھ لپٹیں۔ آہستہ سے کھولیں اور ایک وقت میں ایک آنکھ کا معائنہ کریں۔ ایک پرسکون، نرم، اور مریض نقطہ نظر اہم ہے."
+      "ur": "بازوؤں کے ساتھ لپٹیں۔ آہستہ سے کھولیں اور ایک وقت میں ایک آنکھ کا معائنہ کریں۔ ایک پرسکون، نرم، اور مریض نقطہ نظر اہم ہے.",
+      "ny": "Lungani khandalo ndi nsalu, manja ali mkati. Tsegulani ndi kuyeza diso limodzi pa nthawi mofatsa. Chitani modekha, mofatsa ndi moleza mtima."
     },
     {
       "id": "possible-findings-02",
@@ -4371,7 +4786,8 @@
       "ha": "Launi da haske iri ɗaya alama ce mai kyau.",
       "yo": "Àwọ̀ àti ìmọ́lẹ̀ tó jọra ń fúnni ní ìdánilójú.",
       "ig": "Agba na ike ìhè yiri ibe ha bụ ihe na-enye obi ike.",
-      "ur": "دونوں آنکھوں میں یکساں رنگ اور چمک اطمینان بخش ہے۔"
+      "ur": "دونوں آنکھوں میں یکساں رنگ اور چمک اطمینان بخش ہے۔",
+      "ny": "Ndi chizindikiro chabwino ngati mtundu ndi mphamvu ya kuwala zikufanana m’maso onse awiri."
     },
     {
       "id": "possible-findings-01",
@@ -4389,7 +4805,8 @@
       "ha": "Ɗan karkacewar ido na lokaci-lokaci yakan faru a watan farko, ya daina kafin wata uku. Idan ya ci gaba bayan wata uku, tura yaron ga ƙwararre.",
       "yo": "Ojú lè yí padà fún ìgbà díẹ̀ ní oṣù àkọ́kọ́. Ó sábà máa ń dáwọ́ dúró kí oṣù mẹ́ta tó pé. Bí ó bá tẹ̀síwájú, rán ọmọ lọ sí ọ̀dọ̀ onímọ̀.",
       "ig": "Anya nwere ike ịgbagọ obere oge n’ọnwa mbụ. Nke a na-akwụsịkarị tupu ọnwa atọ. Ọ bụrụ na ọ gara n’ihu mgbe ọnwa atọ gasịrị, ziga nwa n’aka ọkachamara.",
-      "ur": "مختصر، کبھی کبھار squints پہلے مہینے میں عام ہیں اور عام طور پر تین مہینے تک غائب ہو جاتے ہیں. اگر وہ تین ماہ کے بعد بھی برقرار رہیں تو بچے کو ریفر کریں۔"
+      "ur": "مختصر، کبھی کبھار squints پہلے مہینے میں عام ہیں اور عام طور پر تین مہینے تک غائب ہو جاتے ہیں. اگر وہ تین ماہ کے بعد بھی برقرار رہیں تو بچے کو ریفر کریں۔",
+      "ny": "M'mwezi woyamba maso amatha kuyang'ana mbali zosiyana kwa kanthawi. Vutoli nthawi zambiri limatha pasanathe miyezi itatu. Ngati likupitirirabe mwana atakwanitsa miyezi itatu, mutumizeni kuti akayesedwe."
     },
     {
       "id": "possible-findings-03",
@@ -4407,7 +4824,8 @@
       "ha": "Bambancin launi ko rashin wani ɓangare na hasken, ko dukansa, ba al’ada ba ne. Ana buƙatar ƙarin bincike.",
       "yo": "Ìyàtọ̀ àwọ̀, tàbí àìsí apá kan tàbí gbogbo ìtànṣán, kò bójú mu. Ó nílò àyẹ̀wò síwájú.",
       "ig": "Ọdịiche agba ma ọ bụ enweghị akụkụ ìhè, ma ọ bụ ìhè niile, abụghị ihe nkịtị. Ọ chọrọ nyocha ọzọ.",
-      "ur": "رنگ کا فرق یا انعکاس کا کچھ حصہ یا پورا انعکاس غائب ہونا غیر معمولی ہے۔ مزید معائنہ ضروری ہے۔"
+      "ur": "رنگ کا فرق یا انعکاس کا کچھ حصہ یا پورا انعکاس غائب ہونا غیر معمولی ہے۔ مزید معائنہ ضروری ہے۔",
+      "ny": "Kusiyana kwa mtundu, kapena kuwala kobwerera kusowa pang'ono kapena konse, n'kwachilendo ndipo kumafunika kuyezedwanso."
     },
     {
       "id": "unclear-findings-01",
@@ -4425,7 +4843,8 @@
       "ha": "Idan sakamakon bai bayyana ba, bi matakai uku nan.",
       "yo": "Bí àbájáde kò bá ṣe kedere, tẹ̀lé ìgbésẹ̀ mẹ́ta yìí.",
       "ig": "Ọ bụrụ na ihe ị hụrụ edoghị anya, soro usoro atọ ndị a.",
-      "ur": "اگر تلاش غیر واضح ہے، تو اگلے تین مراحل پر عمل کریں۔"
+      "ur": "اگر تلاش غیر واضح ہے، تو اگلے تین مراحل پر عمل کریں۔",
+      "ny": "Ngati zomwe mwaona sizikumveka bwino, tsatirani njira zitatu zotsatirazi."
     },
     {
       "id": "unclear-findings-02",
@@ -4443,7 +4862,8 @@
       "ha": "Da farko, kwatanta hasken jariri da na iyayensa. Ya kamata su yi kama.",
       "yo": "Àkọ́kọ́, fi ìtànṣán ọmọ wé ti òbí. Wọ́n gbọ́dọ̀ jọra.",
       "ig": "Mbụ, tụnyere ìhè anya nwa na nke nne ma ọ bụ nna. Ha kwesịrị ịdị ka ibe ha.",
-      "ur": "پہلے بچے اور اس کے والد یا والدہ کے انعکاس کا موازنہ کریں۔ دونوں ایک جیسے دکھنے چاہییں۔"
+      "ur": "پہلے بچے اور اس کے والد یا والدہ کے انعکاس کا موازنہ کریں۔ دونوں ایک جیسے دکھنے چاہییں۔",
+      "ny": "Choyamba, yerekezerani kuwala kobwerera kwa khandalo ndi kwa kholo lake. Kuyenera kuoneka kofanana."
     },
     {
       "id": "unclear-findings-03",
@@ -4461,7 +4881,8 @@
       "ha": "Idan kana shakka, nemi ra’ayin abokin aiki.",
       "yo": "Bí o bá ṣì ń ṣiyèméjì, béèrè èrò ẹlẹgbẹ́ rẹ.",
       "ig": "Ọ bụrụ na ị ka na-enwe obi abụọ, jụọ onye ọrụ ibe gị.",
-      "ur": "دوسرا، اگر آپ کو اب بھی یقین نہیں ہے، تو کسی ساتھی سے دوسری رائے طلب کریں۔"
+      "ur": "دوسرا، اگر آپ کو اب بھی یقین نہیں ہے، تو کسی ساتھی سے دوسری رائے طلب کریں۔",
+      "ny": "Chachiwiri, ngati simukutsimikizabe, pemphani mnzanu wa kuntchito kuti aonenso."
     },
     {
       "id": "unclear-findings-04",
@@ -4479,7 +4900,8 @@
       "ha": "Idan babu abokin aiki, nemi yardar iyaye.",
       "yo": "Bí ẹlẹgbẹ́ kò bá sí, gba ìyọ̀ǹda òbí.",
       "ig": "Ọ bụrụ na onye ọrụ ibe gị anọghị, nweta nkwenye nne ma ọ bụ nna.",
-      "ur": "تیسرا، اگر کوئی ساتھی دستیاب نہ ہو تو رضامندی حاصل کریں،"
+      "ur": "تیسرا، اگر کوئی ساتھی دستیاب نہ ہو تو رضامندی حاصل کریں،",
+      "ny": "Chachitatu, ngati palibe mnzanu, pemphani chilolezo,"
     },
     {
       "id": "unclear-findings-05",
@@ -4502,7 +4924,8 @@
       "ha": "Haɗa Arclight da kyamarar waya, ka ɗauki bidiyon hasken ido. Aika bidiyon cikin tsaro don neman wani ra’ayi.",
       "yo": "So Arclight mọ́ kámẹ́rà fóònù, kí o ya fídíò ìtànṣán ojú. Fi fídíò ránṣẹ́ ní ààbò láti gba èrò kejì.",
       "ig": "Tinye Arclight na igwefoto ekwentị, dekọọ ìhè anya na vidio. Ziga vidio ahụ n’enweghị nsogbu ka ị nweta echiche ọzọ.",
-      "ur": "Arclight کو فون کے کیمرے سے منسلک کریں، اضطراری ریکارڈ کریں، اور دوسری رائے کے لیے محفوظ طریقے سے ویڈیو کا اشتراک کریں۔"
+      "ur": "Arclight کو فون کے کیمرے سے منسلک کریں، اضطراری ریکارڈ کریں، اور دوسری رائے کے لیے محفوظ طریقے سے ویڈیو کا اشتراک کریں۔",
+      "ny": "Lumikizani Arclight ku kamera ya foni ndipo jambulani kuwala kobwererako. Tumizani vidiyoyi motetezeka kuti munthu wina aonenso."
     },
     {
       "id": "after-examination-01",
@@ -4520,7 +4943,8 @@
       "ha": "Gode wa iyaye. Bayyana sakamako da mataki na gaba.",
       "yo": "Dúpẹ́ lọ́wọ́ òbí. Ṣàlàyé àbájáde àti ìgbésẹ̀ tó kàn.",
       "ig": "Kelee nne ma ọ bụ nna. Kọwaa ihe ị hụrụ na ihe ọzọ a ga-eme.",
-      "ur": "والدین کا شکریہ ادا کریں۔ نتیجہ اور اگلا قدم بتائیں۔"
+      "ur": "والدین کا شکریہ ادا کریں۔ نتیجہ اور اگلا قدم بتائیں۔",
+      "ny": "Thokozani kholo. Fotokozani zomwe mwaona ndi zomwe zichitike pambuyo pake."
     },
     {
       "id": "after-examination-02",
@@ -4538,7 +4962,8 @@
       "ha": "Sake wanke hannu. An gama gwajin jan hasken ido.",
       "yo": "Fọ ọwọ́ lẹ́ẹ̀kan sí i. Àyẹ̀wò ìtànṣán pupa ti parí.",
       "ig": "Saa aka ọzọ. Nyocha ìhè uhie anya agwụla.",
-      "ur": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔"
+      "ur": "ہاتھ دھونے کو دہرائیں۔ یہ قعرِ چشم کا انعکاس امتحان کا اختتام ہے۔",
+      "ny": "Sambaninso m'manja. Apa kuyeza kuwala kobwerera kuchokera kumbuyo kwa diso kwatha."
     }
   ]
 }

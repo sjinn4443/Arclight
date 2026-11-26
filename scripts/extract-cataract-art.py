@@ -89,7 +89,7 @@ def inside(bounds, box):
     return x <= (bounds[0]+bounds[2])/2 <= x+w and y <= (bounds[1]+bounds[3])/2 <= y+h
 
 
-def export(name, box, only=None, remove=(), unclip=False):
+def export(name, box, only=None, remove=(), unclip=False, backdrop=None, underlay=None):
     if EXPORT_PREFIX and not any(name.startswith(p) for p in EXPORT_PREFIX.split(",")):
         return
     root = copy.deepcopy(source)
@@ -98,6 +98,12 @@ def export(name, box, only=None, remove=(), unclip=False):
     parents = {child:parent for parent in root.iter() for child in parent}
     for i,(node,_) in enumerate(paint(root)):
         if (only is not None and i not in only) or i in remove: parents[node].remove(node)
+        elif backdrop and node.get("fill") in {"#e8e3d4","#cfc9b7"}:
+            # The poster paints over hidden limbs with its wall/floor colours.
+            # Retain those occlusions against the recomposed scene's backdrop.
+            node.set("fill",backdrop)
+    if underlay is not None:
+        root.insert(0, ET.Element(f"{{{NS}}}path", underlay))
     x,y,w,h = box
     factor = min(80 if max(w,h) < 5 else 7, 1600/max(w,h))
     root.set("viewBox",f"{x} {y} {w} {h}")
@@ -113,31 +119,42 @@ for section,(top,height) in enumerate(rows,1):
     for column,left in [("cataract",273),("refer",413)]:
         export(f"{column}-{section}",[left,top,131,height])
 
-# Speech bubbles are original source paths, revealed one at a time.
-for mode, boxes in {
-    "method":[[79,139,73,31],[79,174,73,32]],
-    "cataract":[[345,139,53,32],[345,174,53,32]],
-    "refer":[[462,135,90,37],[462,173,90,34]],
+# Keep the short pointer, lettering and symbols together at the PDF aspect ratio.
+for name,box in {
+    "examiner-time":[79,138,72,33], "examiner-symptoms":[79,174,72,33],
+    "patient-time":[345,139,53,32], "patient-eyes":[345,174,53,32],
 }.items():
-    removed = set()
-    for i,box in enumerate(boxes):
-        selected = {n for n,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<100 and b[3]-b[1]<50}
-        removed |= selected
-        export(f"history-{mode}-bubble-{i+1}",box,only=selected)
-    left,width = (69,170) if mode == "method" else (273,131) if mode == "cataract" else (413,141)
-    if mode == "refer":
-        # Widen the view for the eye symbols without bringing the original red
-        # column frame into the animation. Large source backgrounds/frames are
-        # replaced by the shared stage background; keep the patient and chair.
-        removed |= {i for i,(_,b) in enumerate(nodes) if b[2]-b[0]>100 or b[3]-b[1]>120}
-    export(f"history-{mode}-base",[left,129,width,96],remove=removed)
+    selected = {i for i,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<100 and b[3]-b[1]<50}
+    export("bubble-"+name,box,only=selected)
+export("bubble-patient-sudden",[465,130,84,42],only={4155}|set(range(4157,4167))|set(range(5752,5781)))
+export("bubble-patient-pain",[465,170,78,37],only={4156}|set(range(4167,4173))|set(range(5734,5748)))
+
+# Source column headers, including their coloured rims and the red diagonal.
+export("badge-cataract",[269,84,47,47],only=range(43,50))
+export("badge-other-cause",[408,84,47,47],only=range(50,59))
 
 # Put the original examiner and patient in one room. Extract actors separately
 # from the source backgrounds so there is no column border or white gutter.
-arm = {64,65,66,67,79,81,89}
-export("history-examiner",[155,139,80,150],only=set(range(60,92))-arm,unclip=True)
-export("history-examiner-arm",[155,139,80,150],only=arm,unclip=True)
-export("history-patient",[268,162,78,120],only=set(range(2604,2641)),unclip=True)
+arm = {64,66,79,81,89}
+examiner_box = [155,139,80,156]
+export("history-examiner",examiner_box,only=set(range(60,92))-arm,unclip=True)
+export("history-examiner-arm",examiner_box,only=arm,unclip=True)
+export("history-patient",[257,159,87,136],only=range(2604,2640),unclip=True)
+
+# These five original outlines are closed cubic chains. Keep their handles in
+# PDF coordinates so the builder can bend the wrist without moving the cuff.
+gesture = []
+for index in sorted(arm):
+    node = nodes[index][0]
+    path = node.attrib["d"]
+    assert re.fullmatch(r"M[^A-Za-z]+C[^A-Za-z]+", path)
+    matrix = transform(node.attrib["transform"])
+    coords = points(path)
+    curve = [[round(matrix[0]*x + matrix[2]*y + matrix[4],4),
+              round(matrix[1]*x + matrix[3]*y + matrix[5],4)] for x,y in coords]
+    assert curve[0] == curve[-1]
+    gesture.append({"fill":node.attrib["fill"], "curve":curve})
+(OUT / "history-gesture.json").write_text(json.dumps(gesture),encoding="utf-8")
 
 # One visual size for every teaching glyph, independent of its PDF crop.
 glyphs = {
@@ -145,8 +162,8 @@ glyphs = {
  "clock":[114,146,15,16], "pain-eye":[82,182,17,17],
  "eyes":[362,185,27,11], "sudden":[474,144,30,18],
  "front-eye":[518,174,20,22], "back-eye":[531,134,18,21],
- "down":[360,252,24,24], "no-gain":[360,295,24,22],
- "up":[498,280,24,24], "glasses":[523,284,19,19],
+ "down":[358,250,28,28], "no-gain":[358,288,28,29],
+ "up":[495,277,28,28], "glasses":[521,281,23,24],
 }
 for name,box in glyphs.items():
     selected={i for i,(_,b) in enumerate(nodes) if inside(b,box) and b[2]-b[0]<35 and b[3]-b[1]<35}
@@ -161,7 +178,7 @@ panel_boxes = {
     "pupil-refer-1":[423,486,114,48],"pupil-refer-2":[423,538,114,47],
     "reflex-cataract-1":[290,616,48,39],"reflex-cataract-2":[340,616,45,39],
     "reflex-cataract-3":[290,663,48,39],"reflex-cataract-4":[340,663,45,39],
-    "reflex-refer-1":[426,610,118,44],"reflex-refer-2":[426,665,118,39],
+    "reflex-refer-1":[424,608,119,47],"reflex-refer-2":[424,659,119,45],
     "fundus-cataract-1":[286,727,109,41],"fundus-cataract-2":[286,774,109,41],
     "fundus-refer-1":[420,720,124,98],
 }
@@ -180,10 +197,12 @@ for name,box in panel_boxes.items():
         start=index-1
         # Each supplied badge starts with its own 21-point raster shadow.
         stop=index+1
+        # An SVG <use> can be a reused shadow with zero measured bounds.
+        # Stop at the badge's final stroked rim, even for overlapping badges.
         while stop<len(nodes) and stop<index+35:
             n,q=nodes[stop]
-            if n.tag.endswith("}image") and 20<q[2]-q[0]<22 and 20<q[3]-q[1]<22: break
             stop+=1
+            if n.get("fill")=="none" and all(abs(u-v)<1 for u,v in zip(b,q)): break
         selected=set(range(start,stop))
         label=f"symbol-{name}-{len(symbols)}"
         export(label,[b[0]-2,b[1]-2,w+4,h+4],only=selected)
@@ -218,19 +237,28 @@ for section in range(3,7):
     export(f"method-{section}-base",box,remove=beam)
     export(f"method-{section}-light",box,only=beam)
 
-# VA source panels are presented at readable size instead of one tiny collage.
+# Isolate complete groups before removing the row clip. This restores chair
+# legs, feet and the pinhole cord without admitting the neighbouring figures.
+export("acuity-method-distance",[75,235,62,123],only=set(range(163,986))|{2409,2410},unclip=True,backdrop="#cfc9b7")
+export("acuity-method-pinhole",[133,233,51,29],only=range(1088,1296))
+export("acuity-method-near",[186,267,71,95],only=range(1296,1392),unclip=True,backdrop="#cfc9b7")
+export("acuity-cataract-pinhole",[289,292,56,25],only=range(4018,4080))
+export("acuity-refer-distance",[421,249,45,56],only=range(4257,4335))
+# Above the row clip this patient covers his eye. Below it the illustrator
+# left empty hand silhouettes and finger lines from an earlier hands-on-lap
+# pose. Complete the trouser fabric behind the original hem, knees and shoes.
+lap = {"fill":nodes[5134][0].attrib["fill"],
+       "d":"M467 305.6 Q465.5 308 462.7 311 Q461.3 312.6 461.7 316.5 L470.4 318.5 Q476 314.7 482 318.5 L490.8 316.5 Q491.7 312.9 489.6 309.7 L487.9 305.6Z"}
+patient = set(range(5131,5233)) - {5132,5155,5156,5231,5232} - set(range(5157,5165))
+export("acuity-refer-patient",[451,253,47,98],only=patient,unclip=True,backdrop="#7b776c",underlay=lap)
+
 for name,box in {
-    "acuity-method-distance":[75,232,57,113],
     "acuity-method-cover":[134,267,57,78],
-    "acuity-method-pinhole":[137,237,42,21],
-    "acuity-method-near":[180,232,57,114],
     "acuity-cataract-distance":[287,238,47,53],
-    "acuity-cataract-pinhole":[288,294,48,20],
     "acuity-cataract-near":[288,319,48,25],
     "acuity-cataract-down-1":[359,251,27,29],
     "acuity-cataract-no-gain":[359,294,27,23],
     "acuity-cataract-down-2":[359,318,27,29],
-    "acuity-refer-distance":[423,251,72,51],
     "acuity-refer-near":[424,304,39,23],
     "acuity-refer-up":[497,279,46,25],
 }.items(): export(name,box)

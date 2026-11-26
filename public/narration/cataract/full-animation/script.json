@@ -18,6 +18,13 @@
       "locale": "ur-PK",
       "voice": "ur-PK-UzmaNeural",
       "style": "Calm medical educator"
+    },
+    "ny": {
+      "label": "Chichewa",
+      "locale": "ny-MW",
+      "provider": "Meta MMS (local)",
+      "voice": "facebook/mms-tts-nya",
+      "trimEdgeSilenceDb": -42
     }
   },
   "cues": [
@@ -27,7 +34,8 @@
       "ko": "시력이 변했는지, 서서히 나빠졌는지 갑자기 나빠졌는지 묻습니다.",
       "start": 1,
       "end": 10,
-      "ur": "پوچھیں کہ کیا نقطہ نظر بدل گیا ہے اور آیا یہ آہستہ آہستہ خراب ہوا ہے یا اچانک۔"
+      "ur": "پوچھیں کہ کیا نقطہ نظر بدل گیا ہے اور آیا یہ آہستہ آہستہ خراب ہوا ہے یا اچانک۔",
+      "ny": "Funsani ngati kuona kwasintha ndiponso ngati kwafooka pang'onopang'ono kapena mwadzidzidzi."
     },
     {
       "id": "history-symptoms",
@@ -35,7 +43,8 @@
       "ko": "통증과 충혈, 한쪽 눈인지 양쪽 눈인지, 일상생활에서 겪는 불편을 확인합니다.",
       "start": 10,
       "end": 19,
-      "ur": "درد، لالی، ایک یا دونوں آنکھوں، اور روزمرہ کی سرگرمیوں میں دشواری کے بارے میں پوچھیں۔"
+      "ur": "درد، لالی، ایک یا دونوں آنکھوں، اور روزمرہ کی سرگرمیوں میں دشواری کے بارے میں پوچھیں۔",
+      "ny": "Funsani za ululu, kufiira kwa diso, ngati vuto lili m'diso limodzi kapena onse awiri, ndi ngati ntchito za tsiku ndi tsiku zavuta."
     },
     {
       "id": "history-gradual",
@@ -43,7 +52,8 @@
       "ko": "백내장은 대개 통증 없이 서서히 시야가 흐려지는 증상을 일으킵니다.",
       "start": 19,
       "end": 28,
-      "ur": "موتیا بند عام طور پر بتدریج، بے درد بینائی کے دھندلا پن کا سبب بنتا ہے۔"
+      "ur": "موتیا بند عام طور پر بتدریج، بے درد بینائی کے دھندلا پن کا سبب بنتا ہے۔",
+      "ny": "Kawirikawiri ng'ala imachititsa kuona mosadziwika bwino pang'onopang'ono popanda ululu."
     },
     {
       "id": "history-both",
@@ -51,7 +61,8 @@
       "ko": "양쪽 눈에 생길 수 있지만 눈마다 증상은 다를 수 있습니다.",
       "start": 28,
       "end": 37,
-      "ur": "یہ دونوں آنکھوں کو متاثر کر سکتا ہے، لیکن ہر آنکھ میں علامات مختلف ہو سکتی ہیں۔"
+      "ur": "یہ دونوں آنکھوں کو متاثر کر سکتا ہے، لیکن ہر آنکھ میں علامات مختلف ہو سکتی ہیں۔",
+      "ny": "Ng'ala ingagwire maso onse awiri, koma zizindikiro zingasiyane m'diso lililonse."
     },
     {
       "id": "history-sudden",
@@ -59,7 +70,8 @@
       "ko": "갑작스러운 시력 소실은 눈 앞부분이나 뒷부분의 문제일 수 있으며 긴급한 평가가 필요합니다.",
       "start": 37,
       "end": 46,
-      "ur": "بصارت کا اچانک ضائع ہونا آنکھ کے سامنے یا پچھلے حصے میں کسی مسئلے کی نشاندہی کر سکتا ہے اور اسے فوری تشخیص کی ضرورت ہے۔"
+      "ur": "بصارت کا اچانک ضائع ہونا آنکھ کے سامنے یا پچھلے حصے میں کسی مسئلے کی نشاندہی کر سکتا ہے اور اسے فوری تشخیص کی ضرورت ہے۔",
+      "ny": "Kusiya kuona mwadzidzidzi kungasonyeze vuto kutsogolo kapena kumbuyo kwa diso. Munthuyo afunika kuyezedwa mwachangu."
     },
     {
       "id": "history-pain",
@@ -67,7 +79,8 @@
       "ko": "통증이나 충혈은 눈 앞부분의 문제를 시사합니다. 백내장으로 단정하지 말고 의뢰합니다.",
       "start": 46,
       "end": 55,
-      "ur": "درد یا سرخ آنکھ آنکھ کے سامنے ایک مسئلہ بتاتی ہے۔ موتیابند ماننے کے بجائے حوالہ کا بندوبست کریں۔"
+      "ur": "درد یا سرخ آنکھ آنکھ کے سامنے ایک مسئلہ بتاتی ہے۔ موتیابند ماننے کے بجائے حوالہ کا بندوبست کریں۔",
+      "ny": "Ululu kapena diso lofiira zingasonyeze vuto kutsogolo kwa diso. Tumizani wodwalayo kuti akayesedwe musaganize kuti ndi ng'ala."
     },
     {
       "id": "acuity-distance",
@@ -75,7 +88,8 @@
       "ko": "평소 원거리 안경을 착용한 상태에서 한쪽 눈씩 가리고 원거리 시력을 측정합니다.",
       "start": 55,
       "end": 63,
-      "ur": "مریض کے معمول کے فاصلے کے شیشے کا استعمال کرتے ہوئے، ہر آنکھ میں الگ الگ فاصلے کی بینائی کی پیمائش کریں۔"
+      "ur": "مریض کے معمول کے فاصلے کے شیشے کا استعمال کرتے ہوئے، ہر آنکھ میں الگ الگ فاصلے کی بینائی کی پیمائش کریں۔",
+      "ny": "Yezerani kuona zinthu zakutali pa diso lililonse palokha. Wodwalayo avale magalasi amene amagwiritsa ntchito poona zinthu zakutali."
     },
     {
       "id": "acuity-method-pinhole",
@@ -83,7 +97,8 @@
       "ko": "원거리 시력이 낮으면 핀홀을 통해 다시 측정합니다.",
       "start": 63,
       "end": 69,
-      "ur": "اگر فاصلاتی بصارت کم ہو جائے تو پن ہول کے ساتھ ٹیسٹ کو دہرائیں۔"
+      "ur": "اگر فاصلاتی بصارت کم ہو جائے تو پن ہول کے ساتھ ٹیسٹ کو دہرائیں۔",
+      "ny": "Ngati kuona zinthu zakutali kwachepa, bwerezani kuyeza pogwiritsa ntchito kabowo kakang'ono."
     },
     {
       "id": "acuity-near",
@@ -91,7 +106,8 @@
       "ko": "그다음 읽기 시력표로 근거리 시력을 확인합니다.",
       "start": 69,
       "end": 75,
-      "ur": "پھر پڑھنے کے چارٹ کا استعمال کرتے ہوئے قریب کی بصارت کی جانچ کریں۔"
+      "ur": "پھر پڑھنے کے چارٹ کا استعمال کرتے ہوئے قریب کی بصارت کی جانچ کریں۔",
+      "ny": "Kenako yezani kuona zinthu zapafupi pogwiritsa ntchito tchati chowerengera."
     },
     {
       "id": "acuity-reduced",
@@ -99,7 +115,8 @@
       "ko": "원거리 시력이 떨어져 있습니다.",
       "start": 75,
       "end": 82,
-      "ur": "دور بینائی کم ہو جاتی ہے۔"
+      "ur": "دور بینائی کم ہو جاتی ہے۔",
+      "ny": "Kuona zinthu zakutali kwachepa."
     },
     {
       "id": "acuity-pinhole",
@@ -107,7 +124,8 @@
       "ko": "핀홀을 사용해도 시력이 좋아지지 않습니다.",
       "start": 82,
       "end": 88,
-      "ur": "پن ہول بینائی کو بہتر نہیں کرتا ہے۔"
+      "ur": "پن ہول بینائی کو بہتر نہیں کرتا ہے۔",
+      "ny": "Kabowo kakang'ono sikanathandize kuti wodwalayo aone bwino."
     },
     {
       "id": "acuity-cataract-near",
@@ -115,7 +133,8 @@
       "ko": "근거리 시력도 떨어져 있다면, 이 소견들을 종합해 백내장을 의심할 수 있습니다.",
       "start": 88,
       "end": 95,
-      "ur": "قریب کی بینائی بھی کم ہو جاتی ہے۔ ایک ساتھ، یہ نتائج موتیابند کا مشورہ دے سکتے ہیں۔"
+      "ur": "قریب کی بینائی بھی کم ہو جاتی ہے۔ ایک ساتھ، یہ نتائج موتیابند کا مشورہ دے سکتے ہیں۔",
+      "ny": "Kuona zinthu zapafupi kwachepanso. Zimenezi pamodzi zingasonyeze ng'ala."
     },
     {
       "id": "acuity-improves",
@@ -123,7 +142,8 @@
       "ko": "핀홀을 통해 시력이 좋아지면 굴절이상이 시력 저하의 원인일 수 있습니다.",
       "start": 95,
       "end": 104,
-      "ur": "پن ہول کے ساتھ بہتری سے پتہ چلتا ہے کہ ایک اضطراری خرابی بینائی کو کم کرنے میں معاون ہے۔"
+      "ur": "پن ہول کے ساتھ بہتری سے پتہ چلتا ہے کہ ایک اضطراری خرابی بینائی کو کم کرنے میں معاون ہے۔",
+      "ny": "Ngati wodwalayo akuona bwino kudzera m'kabowo kakang'ono, vuto la mmene diso limayang'anitsira kuwala lingakhale likuchepetsa kuona."
     },
     {
       "id": "acuity-refraction",
@@ -131,7 +151,8 @@
       "ko": "굴절검사를 안내하고 나머지 소견도 평가합니다. 백내장과 굴절이상은 함께 있을 수 있습니다.",
       "start": 104,
       "end": 113,
-      "ur": "ریفریکشن کا بندوبست کریں اور بقیہ نتائج کا اندازہ لگائیں۔ موتیا بند اور اضطراری خرابی ایک ساتھ ہوسکتی ہے۔"
+      "ur": "ریفریکشن کا بندوبست کریں اور بقیہ نتائج کا اندازہ لگائیں۔ موتیا بند اور اضطراری خرابی ایک ساتھ ہوسکتی ہے۔",
+      "ny": "Konzani kuyezetsa magalasi ndipo ganizirani zina zimene mwaona. Ng'ala ndi vuto lolunjika kuwala zingakhalepo nthawi imodzi."
     },
     {
       "id": "front-examine",
@@ -139,7 +160,8 @@
       "ko": "아크라이트의 검사 조명을 사용해 양쪽 눈의 앞부분을 살펴봅니다.",
       "start": 113,
       "end": 121,
-      "ur": "Arclight استعمال کریں تاکہ ہر آنکھ کے سامنے کی روشنی کا معائنہ کریں۔"
+      "ur": "Arclight استعمال کریں تاکہ ہر آنکھ کے سامنے کی روشنی کا معائنہ کریں۔",
+      "ny": "Gwiritsani ntchito kuwala kwa Arclight kuti muone kutsogolo kwa diso lililonse."
     },
     {
       "id": "front-compare",
@@ -147,7 +169,8 @@
       "ko": "양쪽 눈을 비교하며 충혈, 각막 혼탁과 그 밖의 눈에 보이는 이상을 확인합니다.",
       "start": 121,
       "end": 129,
-      "ur": "آنکھوں کا موازنہ کریں اور لالی، قرنیہ کے بادل اور دیگر نظر آنے والی اسامانیتاوں کو تلاش کریں۔"
+      "ur": "آنکھوں کا موازنہ کریں اور لالی، قرنیہ کے بادل اور دیگر نظر آنے والی اسامانیتاوں کو تلاش کریں۔",
+      "ny": "Yerekezani maso awiriwo. Yang'anani kufiira, kusawonekera bwino kwa khungu lowonekera lakutsogolo kwa diso, ndi zinthu zina zachilendo."
     },
     {
       "id": "front-quiet",
@@ -155,7 +178,8 @@
       "ko": "눈 앞부분은 충혈이나 뚜렷한 표면 이상 없이 정상처럼 보일 수 있습니다.",
       "start": 129,
       "end": 137,
-      "ur": "آنکھ کا اگلا حصہ خاموش نظر آسکتا ہے، بغیر لالی یا سطح کی واضح غیر معمولی۔"
+      "ur": "آنکھ کا اگلا حصہ خاموش نظر آسکتا ہے، بغیر لالی یا سطح کی واضح غیر معمولی۔",
+      "ny": "Kutsogolo kwa diso kungaoneke kwabwinobwino, kopanda kufiira kapena kusintha kooneka bwino pamwamba pake."
     },
     {
       "id": "front-not-excluded",
@@ -163,7 +187,8 @@
       "ko": "눈 앞부분이 정상처럼 보여도 동공 뒤 수정체의 백내장을 배제할 수는 없습니다.",
       "start": 137,
       "end": 145,
-      "ur": "ایک عام نظر آنے والی آنکھ کے سامنے کی پتلی کے پیچھے موتیابند کو خارج نہیں کرتا ہے۔"
+      "ur": "ایک عام نظر آنے والی آنکھ کے سامنے کی پتلی کے پیچھے موتیابند کو خارج نہیں کرتا ہے۔",
+      "ny": "Ngakhale kutsogolo kwa diso kukuoneka kwabwinobwino, ng'ala ikhoza kukhalabe kumbuyo kwa mwana wa diso."
     },
     {
       "id": "front-opacity",
@@ -171,7 +196,8 @@
       "ko": "눈에 보이는 혼탁이나 다른 비정상 소견이 있으면 추가 안과 평가가 필요합니다.",
       "start": 145,
       "end": 154,
-      "ur": "نظر آنے والی دھندلاپن یا کسی اور غیر معمولی ظاہری شکل کو مزید آنکھوں کی جانچ کی ضرورت ہے۔"
+      "ur": "نظر آنے والی دھندلاپن یا کسی اور غیر معمولی ظاہری شکل کو مزید آنکھوں کی جانچ کی ضرورت ہے۔",
+      "ny": "Ngati mwaona malo osaonekera bwino kapena maonekedwe ena achilendo, disolo lifunika kuyezedwanso."
     },
     {
       "id": "front-red",
@@ -179,7 +205,8 @@
       "ko": "단순 백내장으로 충혈이나 통증을 설명해서는 안 됩니다. 상태를 평가하고 적절히 의뢰합니다.",
       "start": 154,
       "end": 163,
-      "ur": "سرخ یا تکلیف دہ آنکھ کی وضاحت غیر پیچیدہ موتیابند سے نہیں ہوتی۔ مناسب طریقے سے جائزہ لیں اور حوالہ دیں۔"
+      "ur": "سرخ یا تکلیف دہ آنکھ کی وضاحت غیر پیچیدہ موتیابند سے نہیں ہوتی۔ مناسب طریقے سے جائزہ لیں اور حوالہ دیں۔",
+      "ny": "Ng'ala yopanda mavuto ena siyambitsa diso lofiira kapena lopweteka. Yezeni disolo ndipo tumizani wodwalayo kumalo oyenera."
     },
     {
       "id": "pupil-direct",
@@ -187,7 +214,8 @@
       "ko": "한쪽 눈씩 번갈아 빛을 비추며 직접 대광반사와 간접 대광반사를 관찰합니다.",
       "start": 163,
       "end": 172,
-      "ur": "باری باری ہر آنکھ میں روشنی ڈالیں اور پتلی کے براہ راست اور متفقہ ردعمل کا مشاہدہ کریں۔"
+      "ur": "باری باری ہر آنکھ میں روشنی ڈالیں اور پتلی کے براہ راست اور متفقہ ردعمل کا مشاہدہ کریں۔",
+      "ny": "Unikirani kuwala m'diso lililonse mosinthana. Yang'anani mmene mwana wa diso lowunikidwa ndi wa diso linalo akuyankhira."
     },
     {
       "id": "pupil-swing",
@@ -195,7 +223,8 @@
       "ko": "빛을 양쪽 눈 사이로 옮기면서 동공 반응을 비교합니다.",
       "start": 172,
       "end": 181,
-      "ur": "آنکھوں کے درمیان روشنی کی حرکت کے ساتھ جوابات کا موازنہ کریں۔"
+      "ur": "آنکھوں کے درمیان روشنی کی حرکت کے ساتھ جوابات کا موازنہ کریں۔",
+      "ny": "Yerekezani mmene ana a maso akuyankhira pamene mukusuntha kuwala kuchokera m'diso lina kupita m'lina."
     },
     {
       "id": "pupil-constrict",
@@ -203,7 +232,8 @@
       "ko": "그림의 정상 반응에서는 눈에 빛을 비추면 동공이 작아집니다.",
       "start": 181,
       "end": 189,
-      "ur": "مثالی عام ردعمل میں، آنکھوں میں روشنی آنے پر پتلی چھوٹے ہو جاتے ہیں۔"
+      "ur": "مثالی عام ردعمل میں، آنکھوں میں روشنی آنے پر پتلی چھوٹے ہو جاتے ہیں۔",
+      "ny": "M'zitsanzo zabwinobwino zimene zikusonyezedwazi, ana a maso amachepa pamene kuwala kwalunjikitsidwa m'maso."
     },
     {
       "id": "pupil-cataract",
@@ -211,7 +241,8 @@
       "ko": "백내장이 있는 환자에서도 정상 동공 반응을 보일 수 있습니다.",
       "start": 189,
       "end": 197,
-      "ur": "موتیابند کے مریض میں عام پتلیوں کا رد عمل ہو سکتا ہے۔"
+      "ur": "موتیابند کے مریض میں عام پتلیوں کا رد عمل ہو سکتا ہے۔",
+      "ny": "Ana a maso a munthu amene ali ndi ng'ala angayankhe kuwala bwinobwino."
     },
     {
       "id": "pupil-abnormal",
@@ -219,7 +250,8 @@
       "ko": "동공 반응이 약하거나 없거나 양쪽이 다르면 추가 평가가 필요합니다.",
       "start": 197,
       "end": 206,
-      "ur": "ایک کمزور، غیر حاضر یا غیر مساوی پتلی کے ردعمل کو مزید تشخیص کی ضرورت ہے۔"
+      "ur": "ایک کمزور، غیر حاضر یا غیر مساوی پتلی کے ردعمل کو مزید تشخیص کی ضرورت ہے۔",
+      "ny": "Ngati kuyankha kwa mwana wa diso n'kochepa, kulibe kapena n'kosiyana pakati pa maso awiri, wodwalayo afunika kuyezedwanso."
     },
     {
       "id": "pupil-rapd",
@@ -227,7 +259,8 @@
       "ko": "구심성 동공운동장애는 단순 백내장 이외의 질환을 시사하므로 의뢰합니다.",
       "start": 206,
       "end": 215,
-      "ur": "ایک متوازی پتلی کی خرابی ایک سادہ موتیابند سے باہر بیماری کی نشاندہی کرتی ہے۔ حوالہ ترتیب دیں۔"
+      "ur": "ایک متوازی پتلی کی خرابی ایک سادہ موتیابند سے باہر بیماری کی نشاندہی کرتی ہے۔ حوالہ ترتیب دیں۔",
+      "ny": "Vuto la uthenga wochokera m'diso kupita ku ubongo lingasonyeze matenda ena kuwonjezera pa ng'ala. Tumizani wodwalayo kuti akayesedwe."
     },
     {
       "id": "reflex-position",
@@ -235,7 +268,8 @@
       "ko": "어두운 방에서 거리를 두고 아크라이트를 통해 양쪽 안저반사를 비교합니다.",
       "start": 215,
       "end": 224,
-      "ur": "ایک مدھم کمرے میں، دور سے Arclight کو دیکھیں اور قعرِ چشم کا انعکاس کا موازنہ کریں۔"
+      "ur": "ایک مدھم کمرے میں، دور سے Arclight کو دیکھیں اور قعرِ چشم کا انعکاس کا موازنہ کریں۔",
+      "ny": "M'chipinda cha kuwala kochepa, yang'anani kudzera mu Arclight muli patali. Yerekezani kuwala kobwerera kuchokera kumbuyo kwa maso awiriwo."
     },
     {
       "id": "reflex-observe",
@@ -243,7 +277,8 @@
       "ko": "동공 안의 반사 밝기와 색, 그림자가 있는지 관찰합니다.",
       "start": 224,
       "end": 233,
-      "ur": "ہر پتلی کے اندر چمک، رنگ اور کسی بھی سائے کو تلاش کریں۔"
+      "ur": "ہر پتلی کے اندر چمک، رنگ اور کسی بھی سائے کو تلاش کریں۔",
+      "ny": "Yang'anani mphamvu ndi mtundu wa kuwalako, komanso ngati pali mithunzi mkati mwa mwana wa diso lililonse."
     },
     {
       "id": "reflex-opacity",
@@ -251,7 +286,8 @@
       "ko": "초록 열의 이 예시는 예외입니다. 정상 소견이 아니라 백내장에 부합하는 수정체 혼탁과 검은 그림자를 보여 줍니다.",
       "start": 233,
       "end": 244,
-      "ur": "یہ سبز کالم کی مثال ایک استثناء ہے: یہ عینک کی دھندلاپن اور تاریک رکاوٹوں کو موتیابند کے مطابق دکھاتا ہے، عام نتائج سے نہیں۔"
+      "ur": "یہ سبز کالم کی مثال ایک استثناء ہے: یہ عینک کی دھندلاپن اور تاریک رکاوٹوں کو موتیابند کے مطابق دکھاتا ہے، عام نتائج سے نہیں۔",
+      "ny": "Chitsanzo cha m'gawo lobiriwirachi n'chosiyana ndi zina. Chikusonyeza galasi la diso losaonekera bwino ndi madera amdima ogwirizana ndi ng'ala."
     },
     {
       "id": "reflex-patterns",
@@ -259,7 +295,8 @@
       "ko": "혼탁의 위치와 정도에 따라 모습이 달라집니다. 병력 및 시력과 함께 평가합니다.",
       "start": 244,
       "end": 255,
-      "ur": "ظاہری شکل دھندلاپن کی پوزیشن اور کثافت کے ساتھ مختلف ہوتی ہے۔ تاریخ اور وژن کے ساتھ مل کر اس کا اندازہ لگائیں۔"
+      "ur": "ظاہری شکل دھندلاپن کی پوزیشن اور کثافت کے ساتھ مختلف ہوتی ہے۔ تاریخ اور وژن کے ساتھ مل کر اس کا اندازہ لگائیں۔",
+      "ny": "Maonekedwe amasiyanasiyana malinga ndi malo ndi kuchuluka kwa kusawonekera kwa galasi la diso. Ganizirani izi pamodzi ndi mbiri ya wodwala ndi kuyezetsa kuona."
     },
     {
       "id": "reflex-white",
@@ -267,7 +304,8 @@
       "ko": "흰색이거나 유난히 창백하거나 없거나 비대칭인 반사를 백내장으로 단정해서는 안 됩니다.",
       "start": 255,
       "end": 265,
-      "ur": "ایک سفید، غیر معمولی طور پر پیلا، غیر حاضر یا غیر متناسب اضطراب کو خود بخود موتیابند کا لیبل نہیں لگانا چاہیے۔"
+      "ur": "ایک سفید، غیر معمولی طور پر پیلا، غیر حاضر یا غیر متناسب اضطراب کو خود بخود موتیابند کا لیبل نہیں لگانا چاہیے۔",
+      "ny": "Kuwala kobwerera koyera, kotuwa kwambiri, kosapezeka kapena kosiyana pakati pa maso sikuyenera kutchedwa ng'ala nthawi yomweyo."
     },
     {
       "id": "reflex-referral",
@@ -275,7 +313,8 @@
       "ko": "다른 안질환도 반사 이상을 일으킬 수 있습니다. 안과 평가를 의뢰하며, 소아의 흰 동공은 긴급 의뢰가 필요합니다.",
       "start": 265,
       "end": 275,
-      "ur": "آنکھ کی دوسری بیماری بھی انعکاس بدل سکتی ہے۔ معائنہ کروائیں۔ بچے کی پتلی سفید ہو تو فوراً ریفر کریں۔"
+      "ur": "آنکھ کی دوسری بیماری بھی انعکاس بدل سکتی ہے۔ معائنہ کروائیں۔ بچے کی پتلی سفید ہو تو فوراً ریفر کریں۔",
+      "ny": "Matenda ena a diso angayambitse kuwala kobwerera kwachilendo. Konzani kuyezetsa disolo. Mwana wa diso woyera mwa mwana amafunika kutumizidwa mwachangu."
     },
     {
       "id": "fundus-close",
@@ -283,7 +322,8 @@
       "ko": "아크라이트를 동공에 맞춘 상태에서 가까이 다가가 안저를 검사합니다.",
       "start": 275,
       "end": 284,
-      "ur": "Arclight کو پتلی کے ساتھ منسلک رکھتے ہوئے فنڈوسکوپی کے لیے قریب جائیں۔"
+      "ur": "Arclight کو پتلی کے ساتھ منسلک رکھتے ہوئے فنڈوسکوپی کے لیے قریب جائیں۔",
+      "ny": "Yandikirani kuti muwone kumbuyo kwa diso. Sungani Arclight molunjika ndi mwana wa diso."
     },
     {
       "id": "fundus-view",
@@ -291,7 +331,8 @@
       "ko": "수정체를 통한 시야를 평가하고, 보이는 경우 시신경유두와 망막을 살펴봅니다.",
       "start": 284,
       "end": 293,
-      "ur": "عینک کے ذریعے منظر کا جائزہ لیں اور نظر آنے پر آپٹک ڈسک اور شبکیہ کا معائنہ کریں۔"
+      "ur": "عینک کے ذریعے منظر کا جائزہ لیں اور نظر آنے پر آپٹک ڈسک اور شبکیہ کا معائنہ کریں۔",
+      "ny": "Onani mmene mukuwonera kudzera mugalasi la diso. Ngati mukuona bwino, yang'anani retina ndi pomwe mtsempha wa kuona umalowera m'diso."
     },
     {
       "id": "fundus-hazy",
@@ -299,7 +340,8 @@
       "ko": "수정체 혼탁으로 안저가 흐리게 보이거나 선명하게 관찰되지 않을 수 있습니다.",
       "start": 293,
       "end": 302,
-      "ur": "لینس کی دھندلاپن فنڈس کو دھندلا بنا سکتی ہے یا واضح نظارے کو روک سکتی ہے۔"
+      "ur": "لینس کی دھندلاپن فنڈس کو دھندلا بنا سکتی ہے یا واضح نظارے کو روک سکتی ہے۔",
+      "ny": "Galasi la diso likakhala losaonekera bwino, kumbuyo kwa diso kungaoneke ngati kuli chifunga kapena kusaoneka konse."
     },
     {
       "id": "fundus-limits",
@@ -307,7 +349,8 @@
       "ko": "안저가 가려져 보이지 않는다고 망막이 정상이라는 뜻은 아닙니다. 전문 평가를 고려합니다.",
       "start": 302,
       "end": 311,
-      "ur": "ایک غیر واضح فنڈس ثابت نہیں کرتا کہ شبکیہ صحت مند ہے۔ ماہر تشخیص پر غور کریں۔"
+      "ur": "ایک غیر واضح فنڈس ثابت نہیں کرتا کہ شبکیہ صحت مند ہے۔ ماہر تشخیص پر غور کریں۔",
+      "ny": "Kusawona bwino kumbuyo kwa diso sikutsimikizira kuti retina ili bwino. Ganizirani kutumiza wodwalayo kwa katswiri wa maso."
     },
     {
       "id": "fundus-abnormal",
@@ -315,7 +358,8 @@
       "ko": "시신경유두나 망막의 이상은 시력 저하의 원인일 수 있으며 의뢰가 필요합니다.",
       "start": 311,
       "end": 321,
-      "ur": "آپٹک ڈسک یا شبکیہ کی نظر آنے والی غیر معمولیات بینائی کے نقصان کی وضاحت کر سکتی ہیں اور حوالہ کی ضرورت ہوتی ہے۔"
+      "ur": "آپٹک ڈسک یا شبکیہ کی نظر آنے والی غیر معمولیات بینائی کے نقصان کی وضاحت کر سکتی ہیں اور حوالہ کی ضرورت ہوتی ہے۔",
+      "ny": "Zinthu zachilendo zooneka pa retina kapena pomwe mtsempha wa kuona umalowera m'diso zingafotokoze kuchepa kwa kuona ndipo zimafunika kutumiza wodwalayo."
     },
     {
       "id": "fundus-combine",
@@ -323,7 +367,8 @@
       "ko": "여섯 단계의 검사 결과를 종합합니다. 백내장은 다른 질환과 함께 있을 수 있으므로 전체 소견에 따라 의뢰합니다.",
       "start": 321,
       "end": 331,
-      "ur": "امتحان کے تمام چھ حصوں کو یکجا کریں۔ موتیا بند دوسری بیماری کے ساتھ رہ سکتا ہے، اس لیے مکمل نتائج کے مطابق رجوع کریں۔"
+      "ur": "امتحان کے تمام چھ حصوں کو یکجا کریں۔ موتیا بند دوسری بیماری کے ساتھ رہ سکتا ہے، اس لیے مکمل نتائج کے مطابق رجوع کریں۔",
+      "ny": "Phatikizani zotsatira za mbali zonse zisanu ndi chimodzi za kuyezetsa. Ng'ala ingakhalepo pamodzi ndi matenda ena. Gwiritsani ntchito zotsatira zonse posankha kumene mungatumize wodwalayo."
     }
   ],
   "videoTitleCues": [
@@ -331,42 +376,48 @@
       "sourceText": "History Taking",
       "translations": {
         "ko": "병력 청취",
-        "ur": "تاریخ لینا"
+        "ur": "تاریخ لینا",
+        "ny": "Kufunsa mbiri ya wodwala"
       }
     },
     {
       "sourceText": "Visual Acuity",
       "translations": {
         "ko": "시력",
-        "ur": "حدّتِ بصارت"
+        "ur": "حدّتِ بصارت",
+        "ny": "Kuyeza mphamvu ya kuona"
       }
     },
     {
       "sourceText": "Front of Eye",
       "translations": {
         "ko": "눈 앞부분",
-        "ur": "آنکھ کا اگلا حصہ"
+        "ur": "آنکھ کا اگلا حصہ",
+        "ny": "Kutsogolo kwa diso"
       }
     },
     {
       "sourceText": "Pupils",
       "translations": {
         "ko": "동공",
-        "ur": "آنکھوں کی پتلیاں"
+        "ur": "آنکھوں کی پتلیاں",
+        "ny": "Ana a maso"
       }
     },
     {
       "sourceText": "Fundal Reflex",
       "translations": {
         "ko": "안저반사",
-        "ur": "قعرِ چشم کا انعکاس"
+        "ur": "قعرِ چشم کا انعکاس",
+        "ny": "Kuwala kobwerera kuchokera kumbuyo kwa diso"
       }
     },
     {
       "sourceText": "Fundoscopy",
       "translations": {
         "ko": "안저검사",
-        "ur": "فنڈوسکوپی"
+        "ur": "فنڈوسکوپی",
+        "ny": "Kuyang'ana kumbuyo kwa diso"
       }
     }
   ]

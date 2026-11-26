@@ -575,17 +575,17 @@ const build = async () => {
       await fs.writeFile(file, minified);
     }
 
-    // 7. Compact runtime catalogues without changing the editable source JSON.
+    // 7. Compact runtime JSON without changing the editable source files.
     // Do this before packaging so offline sizes and revisions use final bytes.
-    console.log("[build] minifying translation and video catalogues");
-    for (const directory of ["translation", "video-localization"]) {
+    console.log("[build] minifying translation, video, and scrolly JSON");
+    for (const directory of ["translation", "video-localization", "scrolly"]) {
       const jsonFiles = await findFiles(
         path.join(distPath, directory),
         ".json",
       );
       for (const file of jsonFiles) {
-        const catalogue = JSON.parse(await fs.readFile(file, "utf8"));
-        await fs.writeFile(file, JSON.stringify(catalogue));
+        const data = JSON.parse(await fs.readFile(file, "utf8"));
+        await fs.writeFile(file, JSON.stringify(data));
       }
     }
 

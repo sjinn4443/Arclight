@@ -6,9 +6,9 @@
       "src": "en.m4a",
       "label": "English",
       "voice": "en-GB-SoniaNeural",
-      "bytes": 1238921,
-      "sha256": "30ff5dde5a82dd9fe2c581b5d557935588cd245c48206f317fa63b90def282bd",
-      "durationSeconds": 315,
+      "bytes": 1333825,
+      "sha256": "b372d233a70db39a73da3f066bc61141e5e1acd2ccba584b12b791acef120f42",
+      "durationSeconds": 315.0,
       "reusedPecSha256": "cf6311947b6bffe2efefd8e1a4c79e284fba13d77ae4f0f67942a3724367a0b5",
       "overriddenPecCueIds": [
         "compare-observation",
@@ -20,19 +20,29 @@
       "src": "ko.m4a",
       "label": "한국어",
       "voice": "ko-KR-SunHiNeural",
-      "bytes": 1261267,
-      "sha256": "b6cbddeeab725bdf57512050b9207a3d3f94d3820de7aef8017757bc1b51ccc4",
-      "durationSeconds": 315,
+      "bytes": 1320463,
+      "sha256": "c9617daedc76a34dd0da4d7fd23ad8c6a1bfaf63491f5d266e354caf3f98c3d1",
+      "durationSeconds": 315.0,
       "reusedPecSha256": "70c1eb4a982b6d18771ec7c4d913e5fcd12fdb3f135537ee57b96df7bb46a8c1"
     },
     "ur": {
       "src": "ur.m4a",
       "captions": "ur.vtt",
-      "bytes": 1186199,
-      "sha256": "2ace2bf6744639599b8e72adc8480de9b8164952166ac5525315bb3ad17dd9f1",
+      "bytes": 1269099,
+      "sha256": "f99ac7b4d34b11538b9cefb66b1d567a8f61905eae87b0170769d2620e5a7a0b",
       "label": "اردو",
       "voice": "ur-PK-UzmaNeural",
-      "durationSeconds": 315
+      "durationSeconds": 315.0
+    },
+    "ny": {
+      "src": "ny.m4a",
+      "captions": "ny.vtt",
+      "label": "Chichewa",
+      "voice": "facebook/mms-tts-nya",
+      "durationSeconds": 315.0,
+      "bytes": 1723303,
+      "sha256": "7c0a58319a86a3ad4295653d4e6267dfca8f677de4e21cb4dec4317357b64698",
+      "modelLicense": "CC-BY-NC-4.0"
     }
   }
 }

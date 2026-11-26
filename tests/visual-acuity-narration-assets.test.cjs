@@ -31,6 +31,7 @@ const languages = [
   "yo",
   "ig",
   "ur",
+  "ny",
 ];
 
 describe("Visual Acuity localized narration", () => {
