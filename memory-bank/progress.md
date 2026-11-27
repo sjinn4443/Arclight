@@ -1,5 +1,24 @@
 # Progress
 
+## Learning updates — 23–27 November 2026
+
+- Added Interactive Learning test launchers for Cataract, RAPD and shared
+  simulators. The fundus case quiz now presents Sign, Diagnosis and Action on
+  the same screen. The Paediatric Playwright spec checks all three labels and
+  the caller-specific controls and return path.
+- Added the seven-page Direct Ophthalmoscopy mobile reader alongside the
+  original PDF. Its authoring record includes Chrome and Windows WebKit checks
+  and a Chrome offline reload through all seven pages.
+  [Mobile PDF viewer rulebook](../docs/mobile-pdf-viewer-rulebook.md).
+- Regrouped Cataract into 19 scenes and revised Apply Eye Pad / Shield to six
+  scenes with English, Korean, Urdu and Chichewa narration.
+  [Cataract authoring record](../docs/cataract-scroll.md) and
+  [Apply authoring record](../docs/apply-eye-pad-shield-scroll.md).
+- Verified the Ears curriculum source map and checked topic and lesson layouts
+  at phone, tablet and desktop widths. The verification record reports 39
+  passing browser cases and three failures of the legacy Dashboard entry test.
+  [Ears verification record](../docs/ears-verification-2026-11-23.md).
+
 ## Dashboard and lesson documentation — 20 November 2026
 
 - Recorded the shared desktop shell, live titlebars and notification inbox,

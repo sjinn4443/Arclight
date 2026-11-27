@@ -1,6 +1,6 @@
 # Agent Notes
 
-Last refreshed: 2026-11-20
+Last refreshed on 2026-11-27
 
 ## Graphics and illustration: read before artwork work
 
@@ -38,8 +38,7 @@ complete index finger/thumb pinch and a tapered wrist, not an enlarged cropped
 hand. For eye dressings, draw the pad before its tape and restore the original
 nose in front, leaving the other eye visible. Omit hands when staged material
 placement explains the action clearly. Show tape unwinding from its roll before
-the snip and separation. Apply Eye Pad / Shield has seven scenes with eight
-original narration cues; Replay/Next wait 0.7 seconds after speech and motion.
+the snip and separation.
 
 Latest Apply refinements use the linked Apply video for every step: broad round
 gauze, curved/shaded tape with pinked ends, and a complete shield rim covering
@@ -73,6 +72,14 @@ This applies to app graphics generally, as well as scrolly pages.
   - `public/html/videos.html` owns the diabetic video pages and the Interactive Learning `Demo Quizzes` folder/pages.
   - `public/js/diabeticRetinopathyWorkshop.js` initializes workshop-only behavior plus the diabetic demo quiz pages when those pages exist.
   - `public/js/diabeticWorkshopProgress.js` and `public/js/diabeticWorkshopNextFlow.js` keep progress, previous/next flow, and return-to-folder behavior aligned across route boundaries.
+- Interactive Learning's For Test section lives in `public/html/videos.html`.
+  `public/js/videos.js` restores `testCataract` and `testPupilApp` via
+  `interactiveLearning:testFolderOpen`. Preserve Cataract's distinct regular
+  folder return in `cataractCaseQuiz.js` and pass the explicit Practice or Test
+  launch mode to RAPD. The shared fundus case quiz in
+  `diabeticRetinopathyWorkshop.js` presents Sign, Diagnosis and Action together.
+  The Paediatric workshop spec checks the question labels, caller colour and
+  return path.
 - The Videos route hosts local mini-app iframes; for any future external lessons, cross-origin iframe internals cannot be styled or scripted from Arclight.
 - The Case Study route (`public/html/casestudy.html`) owns primary/intermediate/advanced case-study pages. Primary chat and flashcard behavior live in `public/js/casestudy_primary.js`; intermediate chat behavior lives in `public/js/casestudy.js`. The Glaucoma history case-study route lives in `public/html/glaucomaHistoryCaseStudy.html` and `public/js/glaucomaHistoryCaseStudy.js`.
 - Childhood Fundal Reflex scrollytelling routes (`childhoodFundalPreparation` through `childhoodFundalAfterExamination`) share `public/js/childhoodFundalPreparation.js` for Lottie stage autoplay, settle frames, replay/down-arrow controls, text toggles, scroll locks, and `FUNDAL_PAGE_ROUTE_SEQUENCE`; route shells stay minimal in `public/html/childhoodFundal*.html`.
@@ -99,12 +106,17 @@ This applies to app graphics generally, as well as scrolly pages.
   Regenerate lossless WebPs with `scripts/build-front-of-eye-book.cjs`; the
   Python helper squares the eversion panel borders in a temporary PDF copy.
   Use `tests-e2e/front-of-eye-pdf-test.spec.js` for reader changes.
-- For Cataract, keep the 18-stage order, six detailed-guide shortcuts, bilingual
-  cues and `condition-cataract` offline dependencies aligned. For Apply Eye
-  Pad / Shield, keep both captions in the merged placement/securing scene and
-  retain the 0.7-second completion delay. See the
-  [Cataract authoring guide](./docs/cataract-scroll.md) and the
-  [Apply authoring guide](./docs/apply-eye-pad-shield-scroll.md).
+- For Direct Ophthalmoscopy PDF (Mobile), keep the seven-page source map,
+  section chooser, zoom focus return and independent session bookmark aligned
+  with `directOphthalmoscopyBookData.js`. Keep all 15 derivatives in the
+  Ophthalmoscopy offline pack. See the
+  [mobile PDF viewer rulebook](./docs/mobile-pdf-viewer-rulebook.md).
+- For Cataract, keep the 19 replay points, six detailed-guide shortcuts,
+  bilingual cues and `condition-cataract` offline dependencies aligned. See the
+  [Cataract authoring guide](./docs/cataract-scroll.md).
+- For Apply Eye Pad / Shield, keep the six scenes and eleven cues on the shared
+  media clock across English, Korean, Urdu and Chichewa. End each scene with its
+  complete captions. See the [Apply authoring guide](./docs/apply-eye-pad-shield-scroll.md).
 
 ## VS Code localhost launcher
 

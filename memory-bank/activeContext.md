@@ -1,6 +1,26 @@
 # Active Context
 
-## Current working tree — 20 November 2026
+## Current working tree — 27 November 2026
+
+- Interactive Learning's For Test section exposes the Cataract simulator and
+  three quiz levels, plus separate RAPD Practice and Test launches. Follow the
+  return handling in `videos.js` and `cataractCaseQuiz.js` when adding shared quiz
+  rows. The shared fundus case quiz uses three visible question cards. Its
+  Paediatric caller still supplies its own colour and return context.
+- Cataract now has 19 replayable scenes across six sections. Preserve the
+  38-cue English/Korean timeline and `lessonProgress:cataractScrollPage`.
+  [Cataract authoring record](../docs/cataract-scroll.md).
+- Apply Eye Pad / Shield follows the PEC video in six scenes and eleven cues.
+  Keep the shared caption/audio timeline across English, Korean, Urdu and
+  Chichewa. [Apply authoring record](../docs/apply-eye-pad-shield-scroll.md).
+- The Direct Ophthalmoscopy mobile reader has seven pages and 15 zoomable
+  panels. It keeps a separate bookmark, furthest-page progress and a Back route
+  to the Direct lesson list. [Mobile PDF viewer rulebook](../docs/mobile-pdf-viewer-rulebook.md).
+- For current Ears curriculum coverage and the legacy Dashboard selector
+  failures seen during browser verification, see the
+  [Ears verification record](../docs/ears-verification-2026-11-23.md).
+
+## Dashboard and lesson baseline — 20 November 2026
 
 - The desktop workspace keeps the same shell across Overview and seven embedded
   routes. Search starts collapsed and the shared topbar bell uses the Profile

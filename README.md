@@ -66,6 +66,8 @@ Lessons use the shared wide Previous/Next controls and their level colour.
 - Agent notes: [`agent.md`](./agent.md)
 - Desktop dashboard and embedded routes: [Workspace layout](#desktop-dashboard-workspace)
 - Experimental Front of Eye PDF reader: [Reader and source assets](#experimental-front-of-eye-pdf-reader)
+- Direct Ophthalmoscopy mobile reader: [Reader and source assets](#direct-ophthalmoscopy-mobile-reader)
+- Interactive Learning tests: [Quiz and simulator entry points](#interactive-learning-tests)
 - Lottie examination scroll pages: [implementation guide](./docs/lottie-examination-scroll-pages.md)
 - Narration and captions: [overview](#narration-and-captions-for-examination-lessons) and [production record](./memory-bank/narration-and-subtitles.md)
 
@@ -174,6 +176,14 @@ panel borders in a temporary copy while preserving the internal artwork. Use
 `node scripts/build-front-of-eye-book.cjs` with Python/pypdf and Poppler's
 `pdftoppm` to regenerate the images. See the
 [reader regression spec](./tests-e2e/front-of-eye-pdf-test.spec.js).
+
+## Direct Ophthalmoscopy mobile reader
+
+**Direct Ophthalmoscopy PDF (Mobile)** appears immediately below the original PDF
+in `#/videos/directOphthalmoscopy`. The reader has seven pages, a section chooser,
+keyboard page turns and image zoom. It saves a session bookmark and records the
+furthest page reached as lesson progress. The Ophthalmoscopy offline pack includes
+the 15 extracted panels. See the [mobile PDF viewer rulebook](./docs/mobile-pdf-viewer-rulebook.md).
 
 ## Advanced Pupils scroll lesson
 
@@ -369,6 +379,16 @@ its expanded panel using the same open/close pattern, rather than navigating to
 the source page. `tests-e2e/eyes-examination-layout.spec.js` checks the row
 count, single-line heading, close-button bounds and lesson-row proportion on
 desktop Chromium and iPhone WebKit.
+
+## Interactive Learning tests
+
+The **For Test** section of Interactive Learning includes Cataract and Pupils
+folders alongside direct links to other tests and simulators. Cataract opens the
+shared simulator and the Primary, Intermediate and Advanced case quizzes. Pupils
+offers separate Practice and Test launches of the RAPD simulator. The active test
+folder is restored on return. The shared fundus case quiz guides learners through
+the history and scope exam, then presents **Sign**, **Diagnosis** and **Action**
+together. Workshop launches retain their own return path.
 
 ## Medical Students workshop
 
@@ -998,12 +1018,18 @@ videos/pupilsAdvancedScrollPage is published. Track its dedicated configuration,
 ### Cataract examination scroll lesson
 
 The Primary **Cataract** lesson sits above **Simulator** and opens at
-`#/videos/cataractScrollPage`. Its 18 scenes cover six examination sections,
-each with a shortcut to the detailed guide. Examination method scenes reuse
-artwork from those guides. Visual Acuity presents distance, pinhole and near
-vision in that order, with separate English and Korean cues. The Cataract
-download includes the lesson and its narration. See
+`#/videos/cataractScrollPage`. Its 19 replayable scenes cover six examination
+sections, each with a shortcut to the detailed guide. Visual Acuity gives
+distance, pinhole and near vision their own replay points. The Cataract download
+includes the lesson and its English and Korean narration. See
 [Cataract authoring and verification](./docs/cataract-scroll.md).
+
+### Apply an Eye Pad and Eye Shield
+
+The scroll lesson at `#/eyePadShield/applyEyePadShieldScrollPage` follows the PEC
+video in six scenes and eleven cues, including the eyelid tape and the far-side
+shield strip. English, Korean, Urdu and Chichewa playback use a shared media
+timeline. See the [Apply authoring guide](./docs/apply-eye-pad-shield-scroll.md).
 
 ## Desktop dashboard workspace
 
