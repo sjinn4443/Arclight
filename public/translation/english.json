@@ -4250,8 +4250,10 @@
   "dropdownViewUnthrottledTrace": "View Unthrottled Trace",
   "dropdownViewer": "Open in Viewer",
   "diabeticCaseQuiz": {
-    "intro_title": "Quiz",
-    "intro_copy": "Drag the sight hole to examine the case, then answer the questions.",
+    "intro_title": "How to use the quiz",
+    "intro_history": "Read the patient's history carefully.",
+    "intro_scope": "Move the scope to examine the back of the eye.",
+    "intro_questions": "Answer the three questions on Sign, Diagnosis and Action.",
     "start_quiz": "Start quiz",
     "close_instructions": "Close instructions"
   },

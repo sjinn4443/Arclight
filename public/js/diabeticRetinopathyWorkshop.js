@@ -223,7 +223,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: ["New Vessels at Disc (NVD)", "Dot & Blot Haemorrhage"],
         options: [
@@ -247,7 +247,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -272,7 +272,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: ["New vessels at disc and elsewhere (NVD & NVE)"],
         options: [
@@ -296,7 +296,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -321,7 +321,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: [
           "New vessels at disc and elsewhere",
@@ -348,7 +348,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -373,7 +373,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: [
           "New vessels at disc and elsewhere",
@@ -401,7 +401,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -426,7 +426,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: ["Dark red patch on retina inferiorly"],
         options: [
@@ -450,7 +450,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -475,7 +475,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: ["Dark red patches on retina"],
         options: [
@@ -499,7 +499,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -524,7 +524,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: ["Loss of fundal reflex. No retinal detail seen."],
         options: [
@@ -548,7 +548,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -573,7 +573,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: ["Mild hard exudate not involving fovea"],
         options: [
@@ -597,7 +597,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Routine review"],
         options: [
@@ -622,7 +622,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
     questions: [
       {
         type: "multi",
-        label: "Signs",
+        label: "Sign",
         prompt: "Select the signs seen in this case.",
         correct: [
           "Microaneurysms",
@@ -651,7 +651,7 @@ const DIABETIC_CASE_QUIZ_CASES = Object.freeze([
       },
       {
         type: "single",
-        label: "Outcome",
+        label: "Action",
         prompt: "Select the correct outcome.",
         correct: ["Refer"],
         options: [
@@ -3477,16 +3477,12 @@ function initializeDiabeticCaseQuizPage() {
 
   const title = page.querySelector("#diabeticCaseQuizTitle");
   const stage = page.querySelector("#diabeticCaseQuizStage");
-  const progressLabel = page.querySelector("#diabeticCaseQuizProgressLabel");
   const patientInfo = page.querySelector("#diabeticCaseQuizPatientInfo");
   const image = page.querySelector("#diabeticCaseQuizImage");
   const sightCanvas = page.querySelector("#diabeticCaseQuizSightCanvas");
-  const question = page.querySelector("#diabeticCaseQuizQuestion");
-  const questionHint = page.querySelector("#diabeticCaseQuizQuestionHint");
-  const options = page.querySelector("#diabeticCaseQuizOptions");
-  const feedback = page.querySelector("#diabeticCaseQuizFeedback");
-  const questionNavButtons = Array.from(
-    page.querySelectorAll("[data-diabetic-case-question]"),
+  const questionList = page.querySelector("#diabeticCaseQuizQuestions");
+  const questionTemplate = page.querySelector(
+    "#diabeticCaseQuizQuestionTemplate",
   );
   const caseSummary = page.querySelector("#diabeticCaseQuizCaseSummary");
   const submitButton = page.querySelector("#diabeticCaseQuizSubmit");
@@ -3504,15 +3500,11 @@ function initializeDiabeticCaseQuizPage() {
   if (
     !title ||
     !stage ||
-    !progressLabel ||
     !patientInfo ||
     !image ||
     !sightCanvas ||
-    !question ||
-    !questionHint ||
-    !options ||
-    !feedback ||
-    questionNavButtons.length !== 3 ||
+    !questionList ||
+    !questionTemplate ||
     !caseSummary ||
     !submitButton ||
     !introModal ||
@@ -3530,7 +3522,6 @@ function initializeDiabeticCaseQuizPage() {
 
   const state = {
     caseIndex: 0,
-    questionIndex: 0,
     selections: [],
     caseResults: [],
     submitted: false,
@@ -3551,25 +3542,10 @@ function initializeDiabeticCaseQuizPage() {
 
   const getCurrentCase = () => DIABETIC_CASE_QUIZ_CASES[state.caseIndex];
 
-  const getCurrentQuestion = () => {
-    const caseItem = getCurrentCase();
-    return caseItem?.questions[state.questionIndex] || null;
-  };
-
   const createEmptySelections = () =>
     getCurrentCase().questions.map(() => new Set());
 
-  const getCurrentSelection = () => {
-    if (!state.selections[state.questionIndex]) {
-      state.selections[state.questionIndex] = new Set();
-    }
-    return state.selections[state.questionIndex];
-  };
-
   const getCurrentCaseResult = () => state.caseResults[state.caseIndex] || null;
-
-  const getCurrentQuestionResult = () =>
-    getCurrentCaseResult()?.answers[state.questionIndex] || null;
 
   const setModalState = (modal, isOpen) => {
     modal.hidden = !isOpen;
@@ -3579,8 +3555,16 @@ function initializeDiabeticCaseQuizPage() {
 
   const openResultsModal = () => setModalState(resultsModal, true);
   const closeResultsModal = () => setModalState(resultsModal, false);
-  const openIntroModal = () => setModalState(introModal, true);
-  const closeIntroModal = () => setModalState(introModal, false);
+  const openIntroModal = () => {
+    if (!introModal.hidden) return;
+    setModalState(introModal, true);
+    introModal.querySelector(".casechat-confirm__btn")?.focus();
+  };
+  const closeIntroModal = () => {
+    if (introModal.hidden) return;
+    setModalState(introModal, false);
+    title.focus({ preventScroll: true });
+  };
 
   const isSelectionCorrect = (quizQuestion, selectedValues) => {
     if (selectedValues.length !== quizQuestion.correct.length) return false;
@@ -3618,12 +3602,6 @@ function initializeDiabeticCaseQuizPage() {
       : (answeredCount / totalQuestions) * 90;
 
     setDiabeticLessonProgress("diabeticCaseQuizPage", percent);
-  };
-
-  const renderProgress = () => {
-    progressLabel.textContent = `${t("Quiz")} ${state.questionIndex + 1} ${t(
-      "of",
-    )} 3`;
   };
 
   const renderPatientInfo = () => {
@@ -3687,19 +3665,17 @@ function initializeDiabeticCaseQuizPage() {
     sightViewer.setSubmitted(state.submitted);
   };
 
-  const renderOptions = () => {
-    const quizQuestion = getCurrentQuestion();
-    const selection = getCurrentSelection();
-    options.innerHTML = "";
+  const renderOptions = (quizQuestion, questionIndex, options) => {
+    const selection = state.selections[questionIndex];
 
     quizQuestion.options.forEach((optionText, index) => {
-      const optionId = `diabeticCaseQuiz-${getCurrentCase().id}-${state.questionIndex}-${index}`;
+      const optionId = `diabeticCaseQuiz-${getCurrentCase().id}-${questionIndex}-${index}`;
       const label = document.createElement("label");
       label.className = "diabetic-case-quiz__option";
 
       const input = document.createElement("input");
       input.type = quizQuestion.type === "multi" ? "checkbox" : "radio";
-      input.name = `diabeticCaseQuiz-${getCurrentCase().id}-${state.questionIndex}`;
+      input.name = `diabeticCaseQuiz-${getCurrentCase().id}-${questionIndex}`;
       input.value = optionText;
       input.id = optionId;
       input.checked = selection.has(optionText);
@@ -3720,14 +3696,9 @@ function initializeDiabeticCaseQuizPage() {
       }
 
       input.addEventListener("change", () => {
-        if (quizQuestion.type === "single") {
-          state.selections[state.questionIndex] = new Set([optionText]);
-        } else if (input.checked) {
-          selection.add(optionText);
-        } else {
-          selection.delete(optionText);
-        }
-        renderProgress();
+        if (quizQuestion.type === "single") selection.clear();
+        if (input.checked) selection.add(optionText);
+        else selection.delete(optionText);
         updateSubmitState();
       });
 
@@ -3738,51 +3709,43 @@ function initializeDiabeticCaseQuizPage() {
     });
   };
 
-  const renderQuestion = () => {
-    const quizQuestion = getCurrentQuestion();
-    question.textContent = t(quizQuestion.prompt);
-    questionHint.textContent =
-      quizQuestion.type === "multi"
-        ? t("More than one answer may be correct.")
-        : "";
-    questionHint.hidden = quizQuestion.type !== "multi";
-    renderOptions();
-  };
+  const renderQuestions = () => {
+    const cards = getCurrentCase().questions.map((quizQuestion, index) => {
+      const card = questionTemplate.content.firstElementChild.cloneNode(true);
+      const label = card.querySelector(".diabetic-case-quiz__question-label");
+      const question = card.querySelector(".diabetic-case-quiz__question");
+      const hint = card.querySelector(".diabetic-case-quiz__question-hint");
+      const options = card.querySelector(".diabetic-case-quiz__options");
+      const feedback = card.querySelector(".diabetic-case-quiz__feedback");
+      const questionId = `diabeticCaseQuizQuestion-${index}`;
 
-  const renderFeedback = () => {
-    if (!state.submitted) {
-      feedback.hidden = true;
-      feedback.textContent = "";
-      feedback.className = "diabetic-case-quiz__feedback";
-      return;
-    }
+      label.textContent = t(quizQuestion.label);
+      question.id = questionId;
+      question.textContent = t(quizQuestion.prompt);
+      options.setAttribute("aria-labelledby", questionId);
 
-    const answer = getCurrentQuestionResult();
-    if (!answer) return;
+      if (quizQuestion.type === "multi") {
+        hint.id = `${questionId}-hint`;
+        hint.textContent = t("More than one answer may be correct.");
+        hint.hidden = false;
+        options.setAttribute("aria-describedby", hint.id);
+      }
 
-    feedback.hidden = false;
-    feedback.className = `diabetic-case-quiz__feedback ${
-      answer.correct ? "is-correct" : "is-wrong"
-    }`;
-    feedback.textContent = answer.correct
-      ? t("Correct.")
-      : `${t("Correct answer:")} ${answer.correctAnswers.map((value) => t(value)).join("; ")}`;
-  };
+      renderOptions(quizQuestion, index, options);
 
-  const renderQuestionNav = () => {
-    questionNavButtons.forEach((button, index) => {
-      const questionLetter = String.fromCharCode(65 + index);
-      const label = `${state.caseIndex + 1}${questionLetter}`;
-      const isActive = index === state.questionIndex;
+      const answer = getCurrentCaseResult()?.answers[index];
+      if (state.submitted && answer) {
+        feedback.hidden = false;
+        feedback.classList.add(answer.correct ? "is-correct" : "is-wrong");
+        feedback.textContent = answer.correct
+          ? t("Correct.")
+          : `${t("Correct answer:")} ${answer.correctAnswers.map((value) => t(value)).join("; ")}`;
+      }
 
-      button.textContent = label;
-      button.setAttribute(
-        "aria-label",
-        `${t("Case")} ${state.caseIndex + 1}, ${t("Quiz")} ${questionLetter}`,
-      );
-      button.setAttribute("aria-pressed", isActive ? "true" : "false");
-      button.classList.toggle("is-active", isActive);
+      return card;
     });
+
+    questionList.replaceChildren(...cards);
   };
 
   const renderCaseSummary = () => {
@@ -3804,12 +3767,9 @@ function initializeDiabeticCaseQuizPage() {
   };
 
   const render = () => {
-    renderProgress();
     renderCaseHeader();
     renderCaseVisual();
-    renderQuestion();
-    renderFeedback();
-    renderQuestionNav();
+    renderQuestions();
     renderCaseSummary();
     updateSubmitState();
     updateLessonProgress();
@@ -3875,7 +3835,6 @@ function initializeDiabeticCaseQuizPage() {
 
   const resetQuiz = () => {
     state.caseIndex = 0;
-    state.questionIndex = 0;
     state.caseResults = [];
     state.isComplete = false;
     state.renderedCaseIndex = -1;
@@ -3884,14 +3843,6 @@ function initializeDiabeticCaseQuizPage() {
     closeResultsModal();
     render();
   };
-
-  questionNavButtons.forEach((button, index) => {
-    button.addEventListener("click", () => {
-      if (state.questionIndex === index) return;
-      state.questionIndex = index;
-      render();
-    });
-  });
 
   const submitCurrentCase = () => {
     if (!hasAnsweredAllCurrentCaseQuestions()) return;
@@ -3929,7 +3880,6 @@ function initializeDiabeticCaseQuizPage() {
     }
 
     state.caseIndex += 1;
-    state.questionIndex = 0;
     resetQuestionState();
     render();
     try {
@@ -3960,6 +3910,23 @@ function initializeDiabeticCaseQuizPage() {
 
   introModal.addEventListener("click", (event) => {
     if (event.target === introModal) closeIntroModal();
+  });
+
+  introModal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeIntroModal();
+      return;
+    }
+    if (event.key !== "Tab") return;
+
+    const first = introCloseButtons[0];
+    const last = introCloseButtons[introCloseButtons.length - 1];
+    const boundary = event.shiftKey ? first : last;
+    if (document.activeElement === boundary) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
   });
 
   resultsModal.addEventListener("click", (event) => {

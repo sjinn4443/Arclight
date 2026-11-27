@@ -4821,10 +4821,16 @@ html:has(body[data-interactive-subapp-open="host-topbar"]) {
   }
 
   #interactiveLearningPage
-    .interactive-section-card[data-section="pupilApp"]
+    .interactive-section-card:is(
+      [data-section="pupilApp"],
+      [data-section="testPupilApp"]
+    )
     > h3,
   #interactiveLearningPage
-    .interactive-section-card[data-section="pupilApp"]
+    .interactive-section-card:is(
+      [data-section="pupilApp"],
+      [data-section="testPupilApp"]
+    )
     .lesson-row {
     width: 82% !important;
     max-width: none !important;
@@ -6289,15 +6295,20 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   grid-row: 1;
 }
 #interactiveLearningPage #interactiveCataractFolders .lesson-cta,
-#interactiveLearningPage #interactiveCataractInline .see-all-toggle {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .see-all-toggle {
   color: #15e115;
 }
-#interactiveLearningPage #interactiveCataractInline {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline) {
   box-sizing: border-box;
   width: 100%;
   margin: 0;
 }
-#interactiveLearningPage #interactiveCataractInline > h3 {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  > h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -6309,7 +6320,9 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   font-size: 14px;
   font-weight: 700;
 }
-#interactiveLearningPage #interactiveCataractInline .see-all-toggle {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .see-all-toggle {
   flex: 0 0 auto;
   margin-left: auto;
   width: auto;
@@ -6322,24 +6335,34 @@ html.is-apple-ui :is(.eyes-topbar .menuBtn, .icon.menuBtn, #tocToggleBtn) {
   font-size: 12px;
   font-weight: 800;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-row {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-row {
   width: calc(100% - 52px);
   max-width: 348px;
   margin: 8px auto 12px;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-top {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-top {
   width: auto;
   margin: 0 !important;
   min-height: 0;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-type {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-type {
   white-space: normal;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-progress {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-progress {
   width: 100%;
   margin-left: 0;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-cta {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-cta {
   margin-left: 0;
 }
 
@@ -6608,7 +6631,10 @@ html[dir="rtl"]
   max-height: none;
 }
 
-#interactiveLearningPage #interactiveCataractInline .lesson-row--quiz .thumb {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-row--quiz
+  .thumb {
   background-image: url("/images/icon/eyes/moduleicons/primary_casestudy.webp");
 }
 
@@ -6825,13 +6851,17 @@ html[dir="rtl"]
   font-size: 14px;
 }
 
-#interactiveLearningPage #interactiveCataractInline .lesson-row {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-row {
   width: calc(100% - 52px) !important;
   grid-template-columns: 62px minmax(0, 1fr) 42px !important;
   gap: 8px !important;
   padding: 8px 10px !important;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-main {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-main {
   margin: 0 !important;
   padding: 0 !important;
   transform: none !important;
@@ -6841,16 +6871,22 @@ html[dir="rtl"]
   justify-content: center !important;
   gap: 5px !important;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-type {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-type {
   margin: 0 !important;
   line-height: 1.2 !important;
 }
-#interactiveLearningPage #interactiveCataractInline .thumb {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .thumb {
   width: 62px;
   height: 52px;
   background-position: center;
 }
-#interactiveLearningPage #interactiveCataractInline .lesson-cta {
+#interactiveLearningPage
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
+  .lesson-cta {
   margin: 0 !important;
   align-self: end;
 }
@@ -7129,31 +7165,31 @@ html[dir="rtl"]
   outline-offset: -3px;
 }
 #interactiveLearningPage
-  #interactiveCataractInline
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
   [data-quiz-level="intermediate"]
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/intermediate_casestudy.webp");
 }
 #interactiveLearningPage
-  #interactiveCataractInline
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
   [data-quiz-level="advanced"]
   .thumb {
   background-image: url("/images/icon/eyes/moduleicons/advanced_casestudy.webp");
 }
 #interactiveLearningPage
-  #interactiveCataractInline
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
   [data-quiz-level="primary"]
   .lesson-progress__fill {
   background: #15e115 !important;
 }
 #interactiveLearningPage
-  #interactiveCataractInline
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
   [data-quiz-level="intermediate"]
   .lesson-progress__fill {
   background: #ff7a00 !important;
 }
 #interactiveLearningPage
-  #interactiveCataractInline
+  :is(#interactiveCataractInline, #for-test-interactiveCataractInline)
   [data-quiz-level="advanced"]
   .lesson-progress__fill {
   background: #e41e26 !important;

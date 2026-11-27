@@ -662,7 +662,10 @@ test("single fundal and direct tests open the requested shared quizzes and retur
     "rgb(242, 86, 0)",
   );
   await expect(
-    direct.locator(".diabetic-case-quiz__nav-button.is-active"),
+    direct.locator(".diabetic-case-quiz__question-label"),
+  ).toHaveText(["Sign", "Diagnosis", "Action"]);
+  await expect(
+    direct.locator(".diabetic-case-quiz__question-label").first(),
   ).toHaveCSS("background-color", "rgb(242, 86, 0)");
   await expect(direct.locator(".diabetic-next-wrap")).not.toBeVisible();
   await page.locator("#backBtnGlobal").click();

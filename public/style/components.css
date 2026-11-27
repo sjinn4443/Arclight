@@ -3801,26 +3801,20 @@ input:checked + .slider:before {
 }
 
 /* Interactive Learning: keep vertical gaps consistent between all cards */
-#interactiveLearningPage .pupil-level--primary .pupil-card.module-card,
-#interactiveLearningPage .pupil-level--intermediate .pupil-card.module-card {
+#interactiveLearningPage
+  :is(.pupil-level--primary, .pupil-level--intermediate, .pupil-level--for-test)
+  .pupil-card.module-card {
   margin-bottom: 0;
 }
 
 #interactiveLearningPage
-  .pupil-level--primary
-  .pupil-card.module-card:not(:last-of-type),
-#interactiveLearningPage
-  .pupil-level--intermediate
+  :is(.pupil-level--primary, .pupil-level--intermediate, .pupil-level--for-test)
   .pupil-card.module-card:not(:last-of-type) {
   padding-bottom: 0;
 }
 
 #interactiveLearningPage
-  .pupil-level--primary
-  .pupil-card.module-card
-  + .pupil-card.module-card,
-#interactiveLearningPage
-  .pupil-level--intermediate
+  :is(.pupil-level--primary, .pupil-level--intermediate, .pupil-level--for-test)
   .pupil-card.module-card
   + .pupil-card.module-card {
   margin-top: 0;
@@ -3828,12 +3822,7 @@ input:checked + .slider:before {
 }
 
 #interactiveLearningPage
-  .pupil-level--primary
-  .pupil-card.module-card
-  + .pupil-card.module-card
-  .lesson-row,
-#interactiveLearningPage
-  .pupil-level--intermediate
+  :is(.pupil-level--primary, .pupil-level--intermediate, .pupil-level--for-test)
   .pupil-card.module-card
   + .pupil-card.module-card
   .lesson-row {
@@ -11485,7 +11474,10 @@ body[data-rapd-orientation-notice-open="true"] {
 }
 
 #interactiveLearningPage
-  .interactive-section-card[data-section="pupilApp"]
+  .interactive-section-card:is(
+    [data-section="pupilApp"],
+    [data-section="testPupilApp"]
+  )
   .lesson-row {
   margin-bottom: 12px;
 }

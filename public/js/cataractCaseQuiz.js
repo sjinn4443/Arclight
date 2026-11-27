@@ -698,9 +698,12 @@ function createQuiz(page, config, showPage) {
   function returnToFolder() {
     closeModal({ restoreFocus: false });
     showPage?.("interactiveLearningPage");
-    const folder = document.querySelector(
-      '#interactiveLearningPage [data-folder="cataract"]',
-    );
+    const learningPage = document.getElementById("interactiveLearningPage");
+    const folderKey =
+      learningPage?.dataset.interactiveOpenFolder === "testCataract"
+        ? "testCataract"
+        : "cataract";
+    const folder = learningPage?.querySelector(`[data-folder="${folderKey}"]`);
     if (folder?.getAttribute("aria-expanded") !== "true") folder?.click();
   }
 
@@ -974,7 +977,13 @@ function createQuiz(page, config, showPage) {
             subPageId: "interactiveLearningPage",
           }),
         );
-        sessionStorage.setItem("interactiveLearning:cataractFolderOpen", "1");
+        if (
+          sessionStorage.getItem("interactiveLearning:testFolderOpen") !==
+          "testCataract"
+        ) {
+          sessionStorage.removeItem("interactiveLearning:testFolderOpen");
+          sessionStorage.setItem("interactiveLearning:cataractFolderOpen", "1");
+        }
       } catch {}
       if (!started) intro();
       else resume();

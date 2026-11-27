@@ -47,6 +47,7 @@ const DIABETIC_WORKSHOP_PROGRESS_PREFIX = "diabeticWorkshop:progress:";
 const GLAUCOMA_WORKSHOP_PROGRESS_PREFIX = "glaucomaWorkshop:progress:";
 const LESSON_PROGRESS_PREFIX = "lessonProgress:";
 const INTERACTIVE_LEARNING_RETURN_KEY = "interactiveLearning:returnTarget";
+const INTERACTIVE_TEST_FOLDER_KEY = "interactiveLearning:testFolderOpen";
 const CHILDHOOD_WORKSHOP_PROGRESS_EVENT = "childhoodWorkshop:progress-changed";
 const DIABETIC_WORKSHOP_PROGRESS_EVENT = "diabeticWorkshop:progress-changed";
 const LESSON_PROGRESS_EVENT = "arclight:lesson-progress-changed";
@@ -745,15 +746,18 @@ function setupInteractiveLearningFolders() {
 
     openFolderRow.style.display = "none";
     openFolderRow.setAttribute("aria-expanded", "true");
-    if (key === "cataract") {
-      try {
+    try {
+      if (openFolderRow.closest(".pupil-level--for-test")) {
+        sessionStorage.setItem(INTERACTIVE_TEST_FOLDER_KEY, key);
+      } else {
+        sessionStorage.removeItem(INTERACTIVE_TEST_FOLDER_KEY);
+      }
+      if (key === "cataract") {
         sessionStorage.setItem("interactiveLearning:cataractFolderOpen", "1");
-      } catch {}
-    } else {
-      try {
+      } else {
         sessionStorage.removeItem("interactiveLearning:cataractFolderOpen");
-      } catch {}
-    }
+      }
+    } catch {}
     page.classList.add("diabetic-folder-open");
     page.dataset.interactiveOpenFolder = key;
     openFolderRow.insertAdjacentElement("afterend", card);
@@ -783,11 +787,12 @@ function setupInteractiveLearningFolders() {
       page.classList.remove("diabetic-folder-open");
       delete page.dataset.interactiveOpenFolder;
       openFolderRow.setAttribute("aria-expanded", "false");
-      if (key === "cataract") {
-        try {
+      try {
+        sessionStorage.removeItem(INTERACTIVE_TEST_FOLDER_KEY);
+        if (key === "cataract") {
           sessionStorage.removeItem("interactiveLearning:cataractFolderOpen");
-        } catch {}
-      }
+        }
+      } catch {}
       openFolderRow.focus();
     };
 
@@ -829,7 +834,10 @@ function setupInteractiveLearningFolders() {
     });
   });
   try {
-    if (
+    const testFolder = sessionStorage.getItem(INTERACTIVE_TEST_FOLDER_KEY);
+    if (testFolder === "testCataract" || testFolder === "testPupilApp") {
+      showSectionByKey(testFolder);
+    } else if (
       sessionStorage.getItem("interactiveLearning:cataractFolderOpen") === "1"
     ) {
       showSectionByKey("cataract");
